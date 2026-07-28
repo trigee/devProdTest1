@@ -1,0 +1,193 @@
+automation_type: ""
+commonfields:
+  id: ServiceNow_ServiceNow_ModelingRule
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.4.0
+    isoverridable: false
+    itemVersion: 2.8.24
+    packID: ServiceNow
+    packName: ServiceNow
+    packPropagationLabels:
+    - all
+    prevname: ""
+    supportedModules:
+    - X1
+    - X3
+    - X5
+    - ENT_PLUS
+    - agentix
+    - xsiam
+    toServerVersion: ""
+externalitemdata: "fromversion: 8.4.0\nid: ServiceNow_ServiceNow_ModelingRule\nname:
+  ServiceNow ServiceNow Modeling Rule\nrules: >\n  [MODEL:dataset = \"servicenow_servicenow_raw\"]\n\n
+  \ // Transaction Logs\n\n  filter source_log_type = \"syslog transactions\"\n\n
+  \ |alter \n      // Event\n      event_type = source_log_type,\n      event_original_type
+  = type,\n      event_id = sys_id,\n      event_duration_1 = to_integer(total_wait_time),\n
+  \     event_duration_2 = to_integer(transaction_processing_time),\n      event_description
+  = object_create(\"Interaction ID\", interaction_id, \"Transaction Number\", transaction_number,
+  \"Output Length\", output_length, \"Database Category\", db_category, \n      \"Additional
+  Information\", additional_info, \"Debug Information\", additional_debug_info),\n
+  \     // IP Extraction\n      remote_ip_ipv4 = arrayindex(regextract(remote_ip,
+  \"(\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3})\"),0),\n      remote_ip_ipv6 = arrayindex(regextract(remote_ip
+  , \"(\\w+\\:\\w+\\:\\w+\\:\\w+\\:\\w+\\:\\w+\\:\\w+\\:\\w+)\"), 0),\n      created_by
+  = sys_created_by,\n      system_identifier = system_id,\n      source_user_agent
+  = user_agent,\n      target_url = url,\n      session_con_id = session,\n      protocol_layer
+  = protocol,\n      is_truncated = to_boolean(gzip),\n      tmp_origin_scope_val
+  = origin_scope -> value,\n      tmp_trim_url = arrayindex(regextract(url, \"table\\/(\\w+)\\?\"),
+  0),\n      //database\n      db_name = db_pool,\n      response_time = to_integer(multiply(to_integer(sql_time),1000))
+  // Convert from ms to s\n  |alter\n      table_name = to_string(if(len(`table`)
+  >= 1, `table`, tmp_trim_url)),\n      event_duration = to_integer(add(event_duration_1,
+  event_duration_2)),\n      application_name = if(tmp_origin_scope_val = \"global\",
+  \"Display Name: Global\", concat(\"Display Name: \", app_scope,\" ,ID: \", tmp_origin_scope_val))\n
+  \ | alter\n      xdm.event.id = event_id,\n      xdm.event.type = event_type, \n
+  \     xdm.event.original_event_type = event_original_type,\n      xdm.event.duration
+  = event_duration,\n      xdm.event.description = to_string(event_description),\n
+  \     xdm.source.application.name = application_name,\n      xdm.source.user.username
+  = created_by,\n      xdm.source.user.identifier = system_identifier,\n      xdm.source.user_agent
+  = source_user_agent,\n      xdm.source.ipv4 = remote_ip_ipv4,\n      xdm.source.ipv6
+  = remote_ip_ipv6, \n      xdm.target.url = target_url,\n      xdm.database.tables
+  = arraycreate(table_name), \n      xdm.database.response_time = response_time,\n
+  \     xdm.database.name = db_name,\n      xdm.network.dns.is_truncated = is_truncated,
+  \n      xdm.network.application_protocol = protocol_layer, \n      xdm.session_context_id
+  = session_con_id;\n\n  // Audit Logs\n\n  filter source_log_type not in (\"syslog
+  transactions\", \"case\")\n\n  |alter // sys_audit: https://docs.servicenow.com/bundle/vancouver-platform-security/page/administer/time/concept/exploring-auditing.html#d227507e148\n
+  \     xdm.database.tables = arraycreate(tablename), // Table that the audit record
+  is for (for example, \"incident\")\n      xdm.event.type = \"AUDIT\", \n      xdm.event.id
+  = sys_id, // the record id of the audit record in sys_audit\n      xdm.event.outcome_reason
+  = reason, // Reason for the change (if any reason is associated with the change)\n
+  \     xdm.session_context_id = documentkey, // the record id of the audited record
+  in <tablename>\n      xdm.source.user.username = user, // Name of the user who created
+  the change. \n      xdm.target.resource_before.value = oldvalue, // Old value of
+  the field change represented by this sys_audit record.\n      xdm.target.resource.id
+  = documentkey, // the record id of the audited record in <tablename>\n      xdm.target.resource.name
+  = fieldname, // Field that changed\n      xdm.target.resource.type = tablename,
+  // Table that the audit record is for (for example, \"incident\")\n      xdm.target.resource.value
+  = newvalue; // New value of the field change represented by this sys_audit record.\n\n\n
+  \ filter source_log_type = \"case\"\n\n  | alter\n      get_impact = to_string(impact),\n
+  \     get_urgency = to_string(urgency),\n      get_escalation = to_string(escalation),\n
+  \     get_category = to_string(category),\n      get_priority = to_string(priority)\n
+  \ | alter\n      check_impact = if(get_impact = \"1\", \"impact:High\", get_impact
+  = \"2\", \"impact:Medium\", get_impact = \"3\", \"impact:Low\"),\n      check_urgency
+  = if(get_urgency = \"1\", \"urgency:High\", get_urgency = \"2\", \"urgency:Medium\",
+  get_urgency = \"3\", \"urgency:Low\"),\n      check_escalation = if(get_escalation
+  = \"0\", \"escalation:Normall\", get_escalation = \"1\", \"escalation:Moderate\",
+  get_escalation = \"2\", \"escalation:High\", get_escalation = \"3\", \"escalation:Overdue\")\n
+  \ | alter\n      xdm.event.type = \"Case\",\n      xdm.event.id = sys_id,\n      xdm.alert.original_alert_id
+  = coalesce(number, case_report),\n      xdm.alert.risks = arraycreate(check_impact,
+  check_urgency, check_escalation),\n      xdm.event.description = object_create(\"active\",
+  active, \"made_sla\", made_sla, \"knowledge\", knowledge, \"time_worked\", time_worked,
+  \"upon_reject\", upon_reject, \"upon_approval\", upon_approval, \"follow_the_sun\",
+  follow_the_sun),\n      xdm.event.outcome = if(\n          approval = \"approved\",
+  XDM_CONST.OUTCOME_SUCCESS, \n          approval = \"cancelled\", XDM_CONST.OUTCOME_FAILED,
+  \n          approval = \"duplicate\", XDM_CONST.OUTCOME_UNKNOWN, \n          approval
+  = \"not_required\", XDM_CONST.OUTCOME_UNKNOWN, \n          approval = \"not requested\",
+  XDM_CONST.OUTCOME_UNKNOWN, \n          approval = \"rejected\", XDM_CONST.OUTCOME_FAILED,
+  \n          approval = \"requested\", XDM_CONST.OUTCOME_PARTIAL, \n          approval
+  = null, null, to_string(approval)\n      ),\n      xdm.event.outcome_reason = coalesce(resolution_code,
+  approval),\n      xdm.alert.category = if(get_category = \"0\", \"Question\", get_category
+  = \"1\", \"Issue\", get_category = \"2\", \"Feature\"),\n      xdm.alert.severity
+  = if(get_priority = \"1\", \"Low\", get_priority = \"2\", \"Moderate\", get_priority
+  = \"3\", \"High\", get_priority = \"4\", \"Critical\"),\n      xdm.source.user.identifier
+  = opened_by,\n      xdm.source.user.domain = concat(sys_domain_path, sys_domain),\n
+  \     xdm.alert.subcategory = if(subcategory != null, \"Question\", null),\n      xdm.source.interface
+  = contact_type,\n      xdm.observer.content_version = to_string(object_create(\"N_of_CaseUpdates\",
+  sys_mod_count, \"N_of_CaseReassign\", reassignment_count)),\n      xdm.database.tables
+  = arraycreate(sys_class_name),\n      xdm.source.user.username = sys_created_by,\n
+  \     xdm.alert.description = coalesce(short_description, description),\n      xdm.observer.name
+  = assigned_to,\n      xdm.observer.type = assignment_group,\n      xdm.target.location.city
+  = account -> city,\n      xdm.target.location.country = account -> country,\n      xdm.target.location.latitude
+  = to_float(account -> latitude),\n      xdm.target.location.longitude = to_float(account
+  -> longitude),\n      xdm.target.user.username = account -> name,\n      xdm.target.user.identifier
+  = account -> number,\n      xdm.target.url = account -> website;\nschema: >-\n  {\n
+  \     \"servicenow_servicenow_raw\": {\n          \"documentkey\": {\n              \"type\":
+  \"string\",\n              \"is_array\": false\n          },\n          \"fieldname\":
+  {\n              \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"oldvalue\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          },\n          \"newvalue\": {\n              \"type\": \"string\",\n
+  \             \"is_array\": false\n          },\n          \"reason\": {\n              \"type\":
+  \"string\",\n              \"is_array\": false\n          },\n          \"sys_id\":
+  {\n              \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"tablename\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          },\n          \"user\": {\n              \"type\": \"string\",\n
+  \             \"is_array\": false\n          },\n          \"source_log_type\":
+  {\n              \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"type\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          },\n          \"total_wait_time\": {\n              \"type\": \"string\",\n
+  \             \"is_array\": false\n          },\n          \"transaction_processing_time\":
+  {\n              \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"interaction_id\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          },\n          \"transaction_number\": {\n              \"type\":
+  \"string\",\n              \"is_array\": false\n          },\n          \"output_length\":
+  {\n              \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"db_category\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          },\n          \"additional_info\": {\n              \"type\": \"string\",\n
+  \             \"is_array\": false\n          },\n          \"additional_debug_info\":
+  {\n              \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"remote_ip\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          },\n          \"sys_created_by\": {\n              \"type\": \"string\",\n
+  \             \"is_array\": false\n          },\n          \"system_id\": {\n              \"type\":
+  \"string\",\n              \"is_array\": false\n          },\n          \"user_agent\":
+  {\n              \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"url\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          },\n          \"session\": {\n              \"type\": \"string\",\n
+  \             \"is_array\": false\n          },\n          \"protocol\": {\n              \"type\":
+  \"string\",\n              \"is_array\": false\n          },\n          \"gzip\":
+  {\n              \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"origin_scope\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          },\n          \"db_pool\": {\n              \"type\": \"string\",\n
+  \             \"is_array\": false\n          },\n          \"sql_time\": {\n              \"type\":
+  \"string\",\n              \"is_array\": false\n          },\n          \"table\":
+  {\n              \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"app_scope\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          },\n          \"state\": {\n              \"type\": \"int\",\n
+  \             \"is_array\": false\n          },\n          \"active\": {\n              \"type\":
+  \"int\",\n              \"is_array\": false\n          },\n          \"impact\":
+  {\n              \"type\": \"int\",\n              \"is_array\": false\n          },\n
+  \         \"number\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          },\n          \"urgency\": {\n              \"type\": \"int\",\n
+  \             \"is_array\": false\n          },\n          \"approval\": {\n              \"type\":
+  \"string\",\n              \"is_array\": false\n          },\n          \"category\":
+  {\n              \"type\": \"int\",\n              \"is_array\": false\n          },\n
+  \         \"made_sla\": {\n              \"type\": \"int\",\n              \"is_array\":
+  false\n          },\n          \"priority\": {\n              \"type\": \"int\",\n
+  \             \"is_array\": false\n          },\n          \"knowledge\": {\n              \"type\":
+  \"int\",\n              \"is_array\": false\n          },\n          \"opened_by\":
+  {\n              \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"escalation\": {\n              \"type\": \"int\",\n              \"is_array\":
+  false\n          },\n          \"sys_domain\": {\n              \"type\": \"string\",\n
+  \             \"is_array\": false\n          },\n          \"case_report\": {\n
+  \             \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"subcategory\": {\n              \"type\": \"int\",\n              \"is_array\":
+  false\n          },\n          \"time_worked\": {\n              \"type\": \"string\",\n
+  \             \"is_array\": false\n          },\n          \"upon_reject\": {\n
+  \             \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"contact_type\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          },\n          \"sys_mod_count\": {\n              \"type\": \"int\",\n
+  \             \"is_array\": false\n          },\n          \"upon_approval\": {\n
+  \             \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"follow_the_sun\": {\n              \"type\": \"int\",\n              \"is_array\":
+  false\n          },\n          \"sys_class_name\": {\n              \"type\": \"string\",\n
+  \             \"is_array\": false\n          },\n          \"sys_domain_path\":
+  {\n              \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"short_description\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          },\n          \"reassignment_count\": {\n              \"type\":
+  \"int\",\n              \"is_array\": false\n          },\n          \"account\":
+  {\n              \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"assigned_to\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          },\n          \"assignment_group\": {\n              \"type\":
+  \"string\",\n              \"is_array\": false\n          },\n          \"description\":
+  {\n              \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"resolution_code\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          }\n      }\n  }\nsupportedModules:\n- X1\n- X3\n- X5\n- ENT_PLUS\n-
+  agentix\n- xsiam\ntags: ''\n"
+filetype: yml
+is_auto_enabled: false
+name: ServiceNow ServiceNow Modeling Rule
+packid: ServiceNow
+packname: ServiceNow
+packversion: 2.8.24
+playbook_id: ""
+subtype: modelingrule
