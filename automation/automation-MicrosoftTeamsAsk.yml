@@ -1,0 +1,207 @@
+args:
+- auto: PREDEFINED
+  default: true
+  defaultValue: predefined-options
+  description: The mirroring type. Can be "all", which mirrors everything, "chat",
+    which mirrors only chats (not commands), or "none", which stops all mirroring.
+  name: form_type
+  predefined:
+  - predefined-options
+  - open-answer
+  supportedModules: []
+- description: Question (message) to send to the specified team member or channel.
+  name: message
+  supportedModules: []
+- auto: PREDEFINED
+  description: Indicates whether to use one-time entitlement or persistent entitlement.
+  name: persistent
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- defaultValue: "yes"
+  description: First reply option (used only for if the form type is "predefined-options").
+    Options cannot contain whitespaces.
+  name: option1
+  supportedModules: []
+- defaultValue: "no"
+  description: Second reply option  (used only for if the form type is "predefined-options").
+    Options cannot contain whitespaces.
+  name: option2
+  supportedModules: []
+- description: A CSV list of additional options (in case more than 2 options are required.
+    Used only for if the form type is "predefined-options"). Options cannot contain
+    whitespaces.
+  name: additional_options
+  supportedModules: []
+- default: true
+  description: The question recipient. Accepts the team member's email address or
+    username.
+  name: team_member
+  supportedModules: []
+- description: The question recipient. Accepts the user's email address or username.
+  name: user_id
+  supportedModules: []
+- description: Task ID of the playbook task to close with the reply. If not provided,
+    no playbook task will be closed.
+  name: task_id
+  supportedModules: []
+- description: Channel to which to send the question.
+  name: channel
+  supportedModules: []
+- description: The team in which to mirror the Cortex investigation. If not specified,
+    the default team configured in the integration parameters will be used.
+  name: team
+  supportedModules: []
+- description: Adaptive card to send to the specified team member or channel.
+  name: adaptive_card
+  supportedModules: []
+comment: Send a team member or channel a question with predefined response options
+  on Microsoft Teams. The response can be used to close a task (might be conditional)
+  in a playbook.
+commonfields:
+  id: MicrosoftTeamsAsk
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.5.58
+    packID: MicrosoftTeams
+    packName: Microsoft Teams
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dependson:
+  must:
+  - Microsoft Teams|||send-notification
+dockerimage: demisto/python3:3.12.13.7444307
+engineinfo: {}
+mainengineinfo: {}
+name: MicrosoftTeamsAsk
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('MicrosoftTeamsAsk', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.5.58'
+  demisto.debug('pack id = MicrosoftTeams, pack version = 1.5.58')
+  from enum import Enum
+
+
+
+
+
+
+
+  class FormType(Enum):
+      PREDEFINED_OPTIONS = "predefined-options"
+      OPEN_ANSWER = "open-answer"
+
+
+  def main():
+      script_arguments: dict = demisto.args()
+
+      team_member: str = script_arguments.get("team_member", "")
+      channel: str = script_arguments.get("channel", "")
+      team: str = script_arguments.get("team", "")
+      using_instance: str = script_arguments.get("using", "")
+      user_id: str = script_arguments.get("user_id", "")
+
+      if (team_member or channel or team) and user_id:
+          raise ValueError("Either provide a specific user ID or specify the team, team member, or channel.")
+      if not (team_member or channel or user_id):
+          raise ValueError("Either team member, channel or user id must be provided.")
+
+      if team_member and channel:
+          raise ValueError("Either team member or channel should be provided, not both.")
+
+      persistent: bool = script_arguments.get("persistent", "") == "true"
+      response: list = demisto.executeCommand("addEntitlement", {"persistent": persistent})
+      if isError(response[0]):
+          demisto.results(response)
+          return
+
+      entitlement: str = response[0]["Contents"]
+      investigation_id: str = demisto.investigation()["id"]
+      task_id: str = script_arguments.get("task_id", "")
+      message_text: str = script_arguments.get("message", "")
+      adaptive_card: str = script_arguments.get("adaptive_card", "")
+
+      if message_text and adaptive_card:
+          raise ValueError("Provide either message or adaptive card to send, not both.")
+
+      form_type = FormType(script_arguments.get("form_type", FormType.PREDEFINED_OPTIONS.value))
+      first_option: str = script_arguments.get("option1", "")
+      second_option: str = script_arguments.get("option2", "")
+      options: list = [first_option, second_option]
+      command_arguments: dict = {}
+
+      if adaptive_card:
+          try:
+              adaptive_card_parsed = json.loads(adaptive_card)
+          except json.JSONDecodeError as e:
+              raise ValueError(f"Invalid adaptive card JSON format: {str(e)}")
+
+          adaptive_card_object: dict = {
+              "adaptive_card": adaptive_card_parsed,
+              "entitlement": entitlement,
+              "investigation_id": investigation_id,
+              "task_id": task_id,
+          }
+          command_arguments["adaptive_card"] = adaptive_card_object
+          command_arguments["using"] = using_instance
+          command_arguments["using-brand"] = "Microsoft Teams"
+      else:
+          message: dict = {
+              "message_text": message_text,
+              "options": options,
+              "entitlement": entitlement,
+              "investigation_id": investigation_id,
+              "task_id": task_id,
+              "form_type": form_type.value,
+          }
+
+          if form_type == FormType.PREDEFINED_OPTIONS:
+              additional_options: list = argToList(script_arguments.get("additional_options"))
+              options.extend(additional_options)
+              message["options"] = options
+
+          command_arguments["message"] = json.dumps(message)
+          command_arguments["using"] = using_instance
+          command_arguments["using-brand"] = "Microsoft Teams"
+
+      command_to_use = "send-notification"
+      if channel:
+          command_arguments["channel"] = channel
+          if team:
+              command_arguments["team"] = team
+      elif team_member:
+          command_arguments["team_member"] = team_member
+      else:
+          command_arguments["user_id"] = user_id
+          command_to_use = "microsoft-teams-send-proactive-message"
+
+      demisto.debug(f"Calling command '{command_to_use}' with arguments:\n{command_arguments}")
+      demisto.results(demisto.executeCommand(command_to_use, command_arguments))
+
+
+  if __name__ == "builtins":
+      main()
+
+  register_module_line('MicrosoftTeamsAsk', 'end', __line__())
+scripttarget: 0
+signature: YQCc0SUrSy61VxynP20dpUTCqVDrMdKfEl0Ophr+qWfFxEHBPzp0OZfzw5KXMIQRJ7JxtodaDSGdLgr4hxBilf8SsvNaJiLshi4IuAuZynhMZuV+Ma7S+w0c5tHl4Rkgm0mQ9szqowsL8BTIuX3KyPd7JcTuS+mp691JvAvUCehYrk9RgbqllVg86YIy+HV+12iMnnoLiEBzpnV6i/lv2GJl8mTLBMdnteMNlXLW4CV0tlMwLcJw1ZfRQ5EuxrKvdgfr9QlgPayDZN2QRPvoo+IOiUrPTc28bofzBrX1dSM7AIOelkVfGzuM+Tl6R7wKCcV+tlwiMj1s0dE03YjqeA==
+subtype: python3
+system: true
+tags:
+- microsoftteams
+type: python
