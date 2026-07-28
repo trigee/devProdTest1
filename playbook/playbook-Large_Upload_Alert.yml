@@ -1,0 +1,4132 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.10.0
+    isoverridable: false
+    itemVersion: 3.5.66
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - cloud
+    - cloud_posture
+    - cloud_runtime_security
+    - edr
+    - xsiam
+    toServerVersion: ""
+description: "The playbook investigates Cortex XDR alerts involving large upload alerts.
+  \nThe playbook consists of the following procedures:\n- Searches for similar previous
+  alerts that were closed as false positives.\n- Enrichment and investigation of the
+  initiator and destination hostname and IP address.\n- Enrichment and investigation
+  of the initiator user, process, file, or command if it exists.\n- Detection of related
+  indicators and analysis of the relationship between the detected indicators.\n-
+  Utilize the detected indicators to conduct threat hunting.\n- Blocks detected malicious
+  indicators.\n- Endpoint isolation.\nThis playbook supports the following Cortex
+  XDR alert names:\n- Large Upload (Generic)\n- Large Upload (SMTP)\n- Large Upload
+  (FTP)\n- Large Upload (HTTPS)"
+id: Large Upload Alert
+inputs:
+- description: 'A list of IP ranges to check the IP against. The list should be provided
+    in CIDR notation, separated by commas. An example of a list of ranges would be:
+    "172.16.0.0/12,10.0.0.0/8,192.168.0.0/16" (without quotes). If a list is not provided,
+    will use default list provided in the IsIPInRanges script (the known IPv4 private
+    address ranges).'
+  key: InternalIPRanges
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: ${lists.PrivateIPs}
+- description: |-
+    Determines whether an alert should be further investigated if similar previous false positive alerts were found.
+    Possible values:True/False. Default: False.
+  key: FurtherInvestigation
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: "False"
+- description: |-
+    Determine whether the given indicators be automatically blocked, or if the user should be given the option to choose.
+    Possible values:True/False. Default: True.
+    If set to True - no prompt will appear, and all provided indicators will be blocked automatically.
+    If set to False - the user will be prompted to select which indicators to block.
+  key: AutoBlockIndicators
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: "True"
+- description: |-
+    Determine whether the blocking of any indicator requires the verification of the user.
+    Possible values:True/False. Default: False.
+  key: BlockIndicators_UserVerification
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: "False"
+- description: |-
+    Whether early containment should be allowed when the IP address is known to be malicious.
+    Possible values:True/False. Default: True.
+  key: EarlyContainment
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: "True"
+- description: |-
+    Whether to isolate the initiating endpoint automatically if the investigation verdict is malicious.
+    Possible values:True/False. Default: False.
+  key: AutoIsolateEndpoint
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: "False"
+- description: |-
+    Specify the uploaded data threshold volume (in MB) from which large upload alerts should be investigated.
+    By setting a threshold, you will be able to determine which large upload alerts require investigation.
+    Default value: 150 (MB).
+  key: Transferred_Data _Threshold
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: "150"
+- description: A list of known and authorized FW application IDs and processes used
+    in the organization.
+  key: FWApps_Processes_Whitlist
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: ip,tcp,udp,ssl,syslog,quic,Chrome.exe,Firefox.exe,Opera.exe,Safari.exe,iexplore.exe,msedge.exe,brave.exe
+- description: The Cortex XDR alert ID.
+  key: Alert_ID
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: ${alert.id}
+name: Large Upload Alert
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6c7dbcfb-6937-4b34-8f9c-819cbae9ae36
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 6c7dbcfb-6937-4b34-8f9c-819cbae9ae36
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -130
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8697d08d-678e-464f-835b-1f6ffd24f71a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Previous Similar Alerts
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 8697d08d-678e-464f-835b-1f6ffd24f71a
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 0
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      fieldExactMatch:
+        simple: alert.name,alert.rawName
+      fieldsToDisplay:
+        simple: ${alert.closeNotes}
+      fromDate:
+        simple: 2 months ago
+      minimunIncidentSimilarity:
+        simple: "0.8"
+      query:
+        simple: status:closed -closeReason:New -closeReason:Under Investigation -closeReason:Resolved
+          - True Positive
+      similarCategoricalField:
+        simple: alert.appid,alert.remoteport,alert.initiatorsha256,alert.cgosha256,alert.osparentsha256
+      similarTextField:
+        simple: alert.initiatedby,alert.remoteport,alert.initiatorcmd,alert.osparentcmd,alert.remoteip,alert.remotehost,alert.cgocmd,alert.cgosha256,alert.osparentsha256,alert.username,alert.initiatorsha256,alert.cgoname,alert.osparentname
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Find past similar alerts based on alert fields' similarity. Includes
+        an option to also display indicators similarity.
+      id: 72d68f27-3f59-4b81-8e76-0672b557a892
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Find Similar Alerts
+      playbooktaskmissingcomponent: null
+      script: DBotFindSimilarAlerts
+      type: regular
+      version: -1
+    taskid: 72d68f27-3f59-4b81-8e76-0672b557a892
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 130
+        }
+      }
+  "3":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: isSimilarIncidentFound
+          operator: isEqualString
+          right:
+            value:
+              simple: "true"
+      label: "yes"
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "6"
+      "yes":
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determine if previous false positive alerts have been detected
+        with similar characteristics.
+      id: c5a5bd0f-7d6e-4e90-8a9c-ee8cc950dcd8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Found Results?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c5a5bd0f-7d6e-4e90-8a9c-ee8cc950dcd8
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 290
+        }
+      }
+  "4":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.FurtherInvestigation
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "56"
+      "yes":
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines whether an alert requires further investigation if similar
+        previous false positive alerts were found.
+      id: 1ec586df-20a7-443a-8739-b444dcd6c8da
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation Should be Continued?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 1ec586df-20a7-443a-8739-b444dcd6c8da
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1710,
+          "y": 460
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "56"
+      "Yes":
+      - "6"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        The playbook detected similar alerts that were closed as false positives previously.
+
+        Review the alert details and similar closed false positive alerts to determine whether this Cortex XDR alert should be further investigated.
+      id: 90f51021-99b9-4ef9-8b52-ebdbc60bf287
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Alert Investigation Should Continue?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 90f51021-99b9-4ef9-8b52-ebdbc60bf287
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1450,
+          "y": 630
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 50c117ad-c5ac-462a-8561-d68218a6b8d5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Enrichment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 50c117ad-c5ac-462a-8561-d68218a6b8d5
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 800
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: fe568ede-c2ed-49c3-8960-93d68932bc81
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: fe568ede-c2ed-49c3-8960-93d68932bc81
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1710,
+          "y": 5110
+        }
+      }
+  "8":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: details
+                root: alert
+                transformers:
+                - args:
+                    flags: {}
+                    groups: {}
+                    keys: {}
+                    regex:
+                      value:
+                        simple: uploaded\s(?:\d+(?:[.]\d+)?(MB|GB|TB))\b
+                  operator: RegexGroups
+          operator: containsGeneral
+          right:
+            value:
+              simple: GB
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: details
+                root: alert
+                transformers:
+                - args:
+                    flags: {}
+                    groups: {}
+                    keys: {}
+                    regex:
+                      value:
+                        simple: uploaded\s(?:\d+(?:[.]\d+)?(MB|GB|TB))\b
+                  operator: RegexGroups
+          operator: containsGeneral
+          right:
+            value:
+              simple: TB
+        - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: details
+                root: alert
+                transformers:
+                - args:
+                    flags: {}
+                    groups:
+                      value:
+                        simple: "0"
+                    keys: {}
+                    regex:
+                      value:
+                        simple: (?i)uploaded\s(\d+(?:[.]\d+)?)
+                  operator: RegexGroups
+          operator: greaterThanOrEqual
+          right:
+            iscontext: true
+            value:
+              simple: inputs.Transferred_Data _Threshold
+      label: More Than Threshold
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "59"
+      More Than Threshold:
+      - "36"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines if the amount of data uploaded to an external host exceeds
+        the defined threshold amount.
+      id: e865ea1c-7558-4b04-8c30-778d7107c2f0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Uploaded Data Volume
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: e865ea1c-7558-4b04-8c30-778d7107c2f0
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 930
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "10"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      Domain:
+        complex:
+          accessor: dst_action_external_hostname
+          root: Core.OriginalAlert._all_events
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert._all_events.ssl_req_chello_sni_sample
+            operator: append
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert._all_events.target_address
+            operator: append
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert._all_events.domain
+            operator: append
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert._all_events.action_external_hostname
+            operator: append
+          - operator: uniq
+      Hostname:
+        complex:
+          accessor: hostname
+          root: alert
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert._all_events.agent_hostname
+            operator: append
+          - operator: uniq
+      IP:
+        complex:
+          accessor: action_local_ip
+          root: Core.OriginalAlert._all_events
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert._all_events.target_ip
+            operator: append
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert._all_events.action_remote_ip
+            operator: append
+          - operator: uniq
+      InternalRange:
+        simple: ${inputs.InternalIPRanges}
+      ResolveIP:
+        simple: "False"
+      SHA256:
+        complex:
+          accessor: os_actor_process_image_sha256
+          root: Core.OriginalAlert._all_events
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert._all_events.actor_process_image_sha256
+            operator: append
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert._all_events.causality_actor_process_image_sha256
+            operator: append
+          - operator: uniq
+      URLSSLVerification:
+        simple: "False"
+      Username:
+        complex:
+          accessor: username
+          root: Core.OriginalAlert._all_events.causality_actor_primary_normalized_user
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Enrich entities using one or more integrations.
+      id: e4410a4b-63d7-40b7-8a24-81d34e2853bb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Entity Enrichment - Generic v3
+      playbookId: Entity Enrichment - Generic v3
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: e4410a4b-63d7-40b7-8a24-81d34e2853bb
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1270
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+      - "12"
+      - "13"
+      - "14"
+      - "17"
+      - "19"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 3512a97c-3538-462f-8715-81922998871e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Analysis
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 3512a97c-3538-462f-8715-81922998871e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1430
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Analysis.AdditionalAlerts
+      value:
+        complex:
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert._all_events.product
+              operator: isEqualString
+              right:
+                value:
+                  simple: XDR Agent
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert.alert_name
+              operator: notContainsGeneral
+              right:
+                value:
+                  simple: Large Upload
+          root: Core.OriginalAlert.alert_name
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: 4512ad3f-a604-4ee3-8f9a-f0fc78614dbc
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set Additional Alerts to Context
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 4512ad3f-a604-4ee3-8f9a-f0fc78614dbc
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -550,
+          "y": 1570
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Analysis.FTP_Server
+      stringify:
+        simple: "true"
+      value:
+        complex:
+          accessor: name
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: ActiveDirectory.Computers.memberOf
+              operator: match
+              right:
+                value:
+                  simple: (?i)CN=.*(?:FTP|File).*,
+          root: ActiveDirectory.Computers
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: 6beec2c4-76c1-4f04-8002-d9757de02ba3
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Whether The Source Host Is an FTP Server
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 6beec2c4-76c1-4f04-8002-d9757de02ba3
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -150,
+          "y": 1570
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Analysis.SMTP_Server
+      stringify:
+        simple: "true"
+      value:
+        complex:
+          accessor: name
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: ActiveDirectory.Computers.memberOf
+              operator: match
+              right:
+                value:
+                  simple: (?i)CN=.*(?:SMTP|Mail).*,
+          root: ActiveDirectory.Computers
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: 42b98818-3436-40d0-8767-84ee2fe2cb49
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Whether The Source Host Is an SMTP Server
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 42b98818-3436-40d0-8767-84ee2fe2cb49
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 250,
+          "y": 1570
+        }
+      }
+  "14":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: fw_app_id
+                root: Core.OriginalAlert._all_events
+                transformers:
+                - args:
+                    delimiter:
+                      value:
+                        simple: ','
+                  operator: split
+                - operator: uniq
+          operator: notIn
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.FWApps_Processes_Whitlist
+                transformers:
+                - args:
+                    delimiter:
+                      value:
+                        simple: ','
+                  operator: split
+      label: "yes"
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "20"
+      "yes":
+      - "15"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether an unusual FW App ID was used.
+      id: feeaab53-6b95-4c8e-8db4-13ca6f651c0e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: An Unusual FW App ID was used?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: feeaab53-6b95-4c8e-8db4-13ca6f651c0e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 670,
+          "y": 1570
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Analysis.Unusual_FW_App_ID
+      value:
+        simple: "True"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 0fed42d5-2f74-41fd-8a07-f55027ea530d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set Unusual FW App ID
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 0fed42d5-2f74-41fd-8a07-f55027ea530d
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 670,
+          "y": 1730
+        }
+      }
+  "16":
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Analysis.Unusual_Process
+      value:
+        simple: "True"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: b12e6e1d-217c-4762-8e78-4799db5db267
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set Unusual Process
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: b12e6e1d-217c-4762-8e78-4799db5db267
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1080,
+          "y": 1730
+        }
+      }
+  "17":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: causality_actor_process_image_name
+                root: Core.OriginalAlert._all_events
+                transformers:
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.os_actor_process_image_name
+                  operator: append
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.actor_process_image_name
+                  operator: append
+                - args:
+                    delimiter:
+                      value:
+                        simple: ','
+                  operator: split
+                - operator: uniq
+          operator: notIn
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.FWApps_Processes_Whitlist
+                transformers:
+                - args:
+                    delimiter:
+                      value:
+                        simple: ','
+                  operator: split
+      label: "yes"
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "20"
+      "yes":
+      - "16"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether an unusual process was used.
+      id: 085d6d0b-264f-4102-8d3f-3d22c8b73b56
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: An Unusual Process was used?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 085d6d0b-264f-4102-8d3f-3d22c8b73b56
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1080,
+          "y": 1570
+        }
+      }
+  "18":
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Analysis.Unsigned_Process
+      value:
+        simple: "True"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 217db6e1-9ac4-430e-895a-df13d0530160
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set Unsigned Process
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 217db6e1-9ac4-430e-895a-df13d0530160
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1490,
+          "y": 1730
+        }
+      }
+  "19":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: causality_actor_process_signature_status
+                root: Core.OriginalAlert._all_events
+                transformers:
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.os_actor_process_signature_status
+                  operator: append
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.actor_process_signature_status
+                  operator: append
+                - operator: uniq
+          operator: isNotEqualString
+          right:
+            value:
+              simple: SIGNATURE_SIGNED
+      label: "yes"
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "20"
+      "yes":
+      - "18"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the initiator process is unsigned.
+      id: 39200c88-ab42-4156-862f-2fcf82f19f10
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Unsigned Initiator Process?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 39200c88-ab42-4156-862f-2fcf82f19f10
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1490,
+          "y": 1570
+        }
+      }
+  "20":
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "21"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6b43ad44-ea77-4ba0-8f65-a0492deee1b0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 6b43ad44-ea77-4ba0-8f65-a0492deee1b0
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1900
+        }
+      }
+  "21":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Score
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Type
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Domain
+                root: DBotScore
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "3"
+        - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Score
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Type
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: File
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Type
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: |-
+                          Hash
+                          As
+                root: DBotScore
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "3"
+      label: "yes"
+    continueonerrortype: ""
+    id: "21"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "24"
+      "yes":
+      - "22"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether there are any malicious indicators to block.
+      id: f3be381d-d9b0-43cb-8b39-88c0b23a9361
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Malicious Indicators Found?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: f3be381d-d9b0-43cb-8b39-88c0b23a9361
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 2030
+        }
+      }
+  "22":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.EarlyContainment
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "24"
+      "yes":
+      - "23"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether early containment is enabled for this playbook before
+        executing containment.
+      id: fd553753-a938-48a1-85e5-229e4fead72e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Early containment enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: fd553753-a938-48a1-85e5-229e4fead72e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 190,
+          "y": 2200
+        }
+      }
+  "23":
+    continueonerrortype: ""
+    id: "23"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "24"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AutoBlockIndicators:
+        simple: ${inputs.AutoBlockIndicators}
+      AutoCommit:
+        simple: "No"
+      CustomBlockRule:
+        simple: "True"
+      CustomURLCategory:
+        simple: XSOAR Remediation - Malicious URLs
+      DomainToBlock:
+        complex:
+          accessor: Indicator
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: domain
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          root: DBotScore
+          transformers:
+          - operator: uniq
+      FilesToBlock:
+        complex:
+          accessor: Indicator
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: file
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          root: DBotScore
+          transformers:
+          - operator: uniq
+      InputEnrichment:
+        simple: "False"
+      InternalRange:
+        simple: ${inputs.InternalIPRanges}
+      MD5:
+        complex:
+          accessor: Indicator
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: stringHasLength
+              right:
+                value:
+                  simple: "32"
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: file
+            - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: hash
+          root: DBotScore
+          transformers:
+          - operator: uniq
+      RuleDirection:
+        simple: outbound
+      RuleName:
+        simple: XSOAR - Block Indicators playbook - ${alert.id}
+      SHA256:
+        complex:
+          accessor: Indicator
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: stringHasLength
+              right:
+                value:
+                  simple: "64"
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: file
+            - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: hash
+          root: DBotScore
+          transformers:
+          - operator: uniq
+      Tag:
+        simple: Blocked Indicator In Systems
+      UserVerification:
+        simple: ${inputs.BlockIndicators_UserVerification}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        This playbook blocks malicious indicators using all integrations that are enabled, using the following sub-playbooks:
+
+        - Block URL - Generic v2
+        - Block Account - Generic v2
+        - Block IP - Generic v3
+        - Block File - Generic v2
+        - Block Email - Generic v2
+        - Block Domain - Generic v2.
+      id: 9a381545-3837-49c6-8462-0703a4b3a1fc
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Block Indicators - Generic v3
+      playbookId: Block Indicators - Generic v3
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 9a381545-3837-49c6-8462-0703a4b3a1fc
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 190,
+          "y": 2380
+        }
+      }
+  "24":
+    continueonerrortype: ""
+    id: "24"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "25"
+      - "27"
+      - "28"
+      - "31"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: dff2d00e-ead5-42af-8925-e9ab4bb392c5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: dff2d00e-ead5-42af-8925-e9ab4bb392c5
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 2550
+        }
+      }
+  "25":
+    continueonerrortype: ""
+    id: "25"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "34"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      Indicator:
+        complex:
+          accessor: Indicator
+          root: DBotScore
+          transformers:
+          - operator: uniq
+      LimitResults:
+        simple: "200"
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: |-
+        This playbook is designed to assist with a security investigation by providing an analysis of indicator relationships. The following information is included:
+        - Indicators of compromise (IOCs) related to the investigation.
+        - Attack patterns related to the investigation.
+        - Campaigns related to the investigation.
+        - IOCs associated with the identified campaigns.
+        - Reports containing details on the identified campaigns.
+      id: f96c9d24-ae8d-4888-8f43-1827d644292b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: TIM - Indicator Relationships Analysis
+      playbookName: TIM - Indicator Relationships Analysis
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: f96c9d24-ae8d-4888-8f43-1827d644292b
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": -170,
+          "y": 2690
+        }
+      }
+  "26":
+    continueonerrortype: ""
+    id: "26"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "34"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AzureSearchTime:
+        simple: ago(1d)
+      OktaSearch:
+        simple: "True"
+      QRadarSearchTime:
+        simple: Last 1 days
+      SIEMFailedLogonSearch:
+        simple: "True"
+      SplunkEarliestTime:
+        simple: -1d
+      SplunkIndex:
+        simple: '*'
+      SplunkLatestTime:
+        simple: now
+      ThreatLogSearch:
+        simple: "True"
+      Username:
+        complex:
+          accessor: identity
+          root: Core.OriginalAlert._all_events.actor_primary_normalized_user
+          transformers:
+          - operator: uniq
+      XDRAlertSearch:
+        simple: "True"
+      XDRUsernameField:
+        simple: actor_effective_username
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        This playbook performs an investigation on a specific user, using queries and logs from SIEM, Identity management systems, XDR, and firewalls.
+
+        Supported Integrations:
+        -Okta
+        -Splunk
+        -QRadar
+        -Azure Log Analytics
+        -PAN-OS
+        -XDR / Core By Palo Alto Networks.
+      id: dfaff694-5e45-4cfe-84b4-c80c885026ec
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: User Investigation - Generic
+      playbookName: User Investigation - Generic
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: dfaff694-5e45-4cfe-84b4-c80c885026ec
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 240,
+          "y": 2860
+        }
+      }
+  "27":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert._all_events.actor_primary_normalized_user.identity
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "27"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "34"
+      "yes":
+      - "26"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether an initiator username is available for investigation.
+      id: 5bf706da-8373-49a6-8d3a-718752ab995e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Has User to Investigate?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 5bf706da-8373-49a6-8d3a-718752ab995e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 240,
+          "y": 2690
+        }
+      }
+  "28":
+    continueonerrortype: ""
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "34"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      FileSHA256:
+        complex:
+          accessor: os_actor_process_image_sha256
+          root: Core.OriginalAlert._all_events
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert._all_events.actor_process_image_sha256
+            operator: append
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert._all_events.causality_actor_process_image_sha256
+            operator: append
+          - operator: uniq
+      HuntAttacker:
+        simple: "True"
+      HuntByFile:
+        simple: "True"
+      HuntByHost:
+        simple: "True"
+      HuntByTechnique:
+        simple: "False"
+      HuntCnCTechniques:
+        simple: "True"
+      HuntCollectionTechniques:
+        simple: "True"
+      HuntDefenseEvasionTechniques:
+        simple: "True"
+      HuntDiscoveryTechniques:
+        simple: "True"
+      HuntExecutionTechniques:
+        simple: "True"
+      HuntImpactTechniques:
+        simple: "True"
+      HuntInitialAccessTechniques:
+        simple: "True"
+      HuntLateralMovementTechniques:
+        simple: "True"
+      HuntPersistenceTechniques:
+        simple: "True"
+      HuntPrivilegeEscalationTechniques:
+        simple: "True"
+      HuntReconnaissanceTechniques:
+        simple: "True"
+      agentID:
+        complex:
+          accessor: agent_id
+          root: Core.OriginalAlert._all_events
+          transformers:
+          - operator: uniq
+      attackerExternalHost:
+        complex:
+          accessor: Indicator
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: Domain
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "2"
+          root: DBotScore
+          transformers:
+          - operator: uniq
+      attackerRemoteIP:
+        complex:
+          accessor: Indicator
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: IP
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          root: DBotScore
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "This playbook handles all the endpoint investigation actions by
+        performing the following tasks  on every alert associated with the alert:\n*
+        Pre-defined MITRE Tactics\n* Host fields (Host ID)\n* Attacker fields (Attacker
+        IP, External host)\n* MITRE techniques\n* File hash (currently, the playbook
+        supports only SHA256)  \n\nNote: The playbook inputs enable manipulating the
+        execution flow; read the input descriptions for details."
+      id: ed863d05-e3ef-409f-89d9-70fac8f65414
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Endpoint Investigation Plan
+      playbookId: Endpoint Investigation Plan
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: ed863d05-e3ef-409f-89d9-70fac8f65414
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 650,
+          "y": 2690
+        }
+      }
+  "29":
+    continueonerrortype: ""
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "32"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      Commandline:
+        complex:
+          accessor: os_actor_process_command_line
+          root: Core.OriginalAlert._all_events
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert._all_events.actor_process_command_line
+            operator: append
+          - operator: uniq
+      StringSimilarityThreshold:
+        simple: "0.5"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "This playbook takes a command line from the alert and performs
+        the following actions:\n- Checks for base64 string and decodes if exists\n-
+        Extracts and enriches indicators from the command line\n- Checks specific
+        arguments for malicious usage \n\nAt the end of the playbook, it sets a possible
+        verdict for the command line, based on the finding:\n1. Indicators found in
+        the command line\n2. Found AMSI techniques\n3. Found suspicious parameters\n4.
+        Usage of malicious tools\n5. Indication of network activity\n6. Indication
+        of suspicious LOLBIN execution\n\nNote: To run this playbook with a list of
+        command lines, set this playbook to run in a loop. To do so, navigate to 'Loop'
+        \ and check \"For Each Input\"."
+      id: c9c91b29-bca6-4a8e-8019-6293aa15fe02
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Command-Line Analysis
+      playbookId: Command-Line Analysis
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: c9c91b29-bca6-4a8e-8019-6293aa15fe02
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1450,
+          "y": 2870
+        }
+      }
+  "30":
+    continueonerrortype: ""
+    id: "30"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "32"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      HuntingTimeFrame:
+        simple: 7 days
+      Processes:
+        simple: |-
+          - value: ${Core.OriginalAlert._all_events.causality_actor_process_image_name},${Core.OriginalAlert._all_events.os_actor_process_image_name},${Core.OriginalAlert._all_events.actor_process_image_name}
+          - commands: ${Core.OriginalAlert._all_events.os_actor_process_command_line},${Core.OriginalAlert._all_events.actor_process_command_line}
+      SearchXDRAlerts:
+        simple: "True"
+      StringSimilarityThreshold:
+        simple: "0.5"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        This playbook is a generic playbook that receives a process name and a command-line argument. It searches for the given process executions and compares the command-line argument from the results to the command-line argument received from the playbook input. The playbook supports searching process executions using the following integrations:
+
+        - Cortex XDR XQL Engine
+        - Cortex XDR IR(Search executions inside XDR alerts)
+        - Microsoft Defender For Endpoint
+
+        Note: Under the "Processes" input, the playbook should receive an array that contains the following keys:
+        - value: *process name*
+        - commands: *command-line arguments*
+      id: 8e08bf08-c948-4753-8a76-ac6d34aa874f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search and Compare Process Executions - Generic
+      playbookId: Search and Compare Process Executions - Generic
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 8e08bf08-c948-4753-8a76-ac6d34aa874f
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1050,
+          "y": 2870
+        }
+      }
+  "31":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: actor_process_command_line
+                root: Core.OriginalAlert._all_events
+                transformers:
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.os_actor_process_command_line
+                  operator: append
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "31"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "34"
+      "yes":
+      - "30"
+      - "29"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether an initiator command-line is available for investigation.
+      id: 3b4bb95e-181d-4d4f-8f8d-d5ee3410b7cf
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Has Command-Line to Investigate?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 3b4bb95e-181d-4d4f-8f8d-d5ee3410b7cf
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1050,
+          "y": 2690
+        }
+      }
+  "32":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Findings
+          operator: isNotEmpty
+          right:
+            value: {}
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: CommandlineVerdict.suspiciousParameters
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: CommandlineVerdict.foundIndicators
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: CommandlineVerdict.maliciousTools
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: CommandlineVerdict.networkActivity
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: CommandlineVerdict.SuspiciousLolbinExecution
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "32"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "34"
+      "yes":
+      - "33"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the command-line investigation produced any results.
+      id: e4b8a16c-1eb6-4f0e-8b8a-7b6ec5b8fceb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Has Command-Line Investigation Results?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: e4b8a16c-1eb6-4f0e-8b8a-7b6ec5b8fceb
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1260,
+          "y": 3050
+        }
+      }
+  "33":
+    continueonerrortype: ""
+    id: "33"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "34"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Investigation.CMDReputation
+      value:
+        simple: Malicious
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 75661c64-aca9-4fec-870a-be6a05dda95c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set Malicious Command-Line
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 75661c64-aca9-4fec-870a-be6a05dda95c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1260,
+          "y": 3210
+        }
+      }
+  "34":
+    continueonerrortype: ""
+    id: "34"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "35"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c1251dbd-a14b-473c-836e-0c81f5667b56
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set Verdict
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: c1251dbd-a14b-473c-836e-0c81f5667b56
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 3380
+        }
+      }
+  "35":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Investigation.CMDReputation
+          operator: isEqualString
+          right:
+            value:
+              simple: Malicious
+        - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Score
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.os_actor_process_image_sha256
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.actor_process_image_sha256
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.causality_actor_process_image_sha256
+                root: DBotScore
+                transformers:
+                - operator: uniq
+                - args:
+                    descending:
+                      value:
+                        simple: "false"
+                  operator: sort
+                - operator: LastArrayElement
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "3"
+        - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Score
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.dst_action_external_hostname
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.ssl_req_chello_sni_sample
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.target_address
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.domain
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.action_external_hostname
+                root: DBotScore
+                transformers:
+                - operator: uniq
+                - args:
+                    descending:
+                      value:
+                        simple: "false"
+                  operator: sort
+                - operator: LastArrayElement
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "3"
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: RelatedAttackPatterns
+                transformers:
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: RelatedCampaign
+                  operator: append
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: RelatedFiles
+                  operator: append
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: RelatedDomains
+                  operator: append
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: RelatedIPs
+                  operator: append
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: RelatedURLs
+                  operator: append
+          operator: isNotEmpty
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: risk_level
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: Core.RiskyUser.id
+                    operator: containsString
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.username
+                root: Core.RiskyUser
+                transformers:
+                - operator: uniq
+          operator: isEqualString
+          right:
+            value:
+              simple: High
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: risk_level
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: Core.RiskyHost.id
+                    operator: containsString
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.hostname
+                root: Core.RiskyHost
+                transformers:
+                - operator: uniq
+          operator: isEqualString
+          right:
+            value:
+              simple: High
+        - left:
+            iscontext: true
+            value:
+              simple: NumOfSiemFailedLogon
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "3"
+        - left:
+            iscontext: true
+            value:
+              simple: NumOfThreatLogs
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "3"
+        - left:
+            iscontext: true
+            value:
+              simple: NumOfOktaSuspiciousActivities
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "3"
+        - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Alert
+                root: PaloAltoNetworksXDR
+                transformers:
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: Splunk.Result
+                  operator: append
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: QRadar.Search.Result
+                  operator: append
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: SuspiciousUserAgent
+                  operator: append
+          operator: isNotEmpty
+      label: ' Malicious'
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: raw_abioc.event.is_src_host_dns_server
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert.alert_name
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Large Upload (HTTPS)
+                root: Core.OriginalAlert
+                transformers:
+                - operator: uniq
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: raw_abioc.event.is_src_host_internet_facing_server
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert.alert_name
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Large Upload (HTTPS)
+                root: Core.OriginalAlert
+                transformers:
+                - operator: uniq
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: raw_abioc.event.is_src_host_http_server
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert.alert_name
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Large Upload (HTTPS)
+                root: Core.OriginalAlert
+                transformers:
+                - operator: uniq
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: _all_events.target_ip
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.target_port
+                    operator: isEqualNumber
+                    right:
+                      value:
+                        simple: "22"
+                  - left:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.action_remote_port
+                    operator: isEqualNumber
+                    right:
+                      value:
+                        simple: "22"
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert.alert_name
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Large Upload (Generic)
+                root: Core.OriginalAlert
+                transformers:
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.action_remote_ip
+                  operator: append
+                - operator: uniq
+          operator: IsInCidrRanges
+          right:
+            iscontext: true
+            value:
+              simple: inputs.InternalIPRanges
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: _all_events.agent_hostname
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.agent_hostname
+                    operator: isNotEmpty
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert.alert_name
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Large Upload (FTP)
+                root: Core.OriginalAlert
+                transformers:
+                - operator: uniq
+          operator: inList
+          right:
+            iscontext: true
+            value:
+              simple: Analysis.FTP_Server
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: _all_events.agent_hostname
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.agent_hostname
+                    operator: isNotEmpty
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert.alert_name
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Large Upload (SMTP)
+                root: Core.OriginalAlert
+                transformers:
+                - operator: uniq
+          operator: inList
+          right:
+            iscontext: true
+            value:
+              simple: Analysis.SMTP_Server
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Score
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.dst_action_external_hostname
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.ssl_req_chello_sni_sample
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.target_address
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.target_address
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.domain
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.action_external_hostname
+                root: DBotScore
+                transformers:
+                - operator: uniq
+                - args:
+                    descending:
+                      value:
+                        simple: "true"
+                  operator: sort
+                - operator: LastArrayElement
+          operator: lessThanOrEqual
+          right:
+            value:
+              simple: "1"
+        - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: dst_action_external_hostname
+                root: Core.OriginalAlert._all_events
+                transformers:
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.ssl_req_chello_sni_sample
+                  operator: append
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.target_address
+                  operator: append
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.domain
+                  operator: append
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.action_external_hostname
+                  operator: append
+          operator: isEmpty
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Score
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.os_actor_process_image_sha256
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.actor_process_image_sha256
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.causality_actor_process_image_sha256
+                root: DBotScore
+                transformers:
+                - operator: uniq
+                - args:
+                    descending:
+                      value:
+                        simple: "true"
+                  operator: sort
+                - operator: LastArrayElement
+          operator: lessThanOrEqual
+          right:
+            value:
+              simple: "1"
+        - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: os_actor_process_image_sha256
+                root: Core.OriginalAlert._all_events
+                transformers:
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.actor_process_image_sha256
+                  operator: append
+                - args:
+                    item:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert._all_events.causality_actor_process_image_sha256
+                  operator: append
+          operator: isEmpty
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Investigation.CMDReputation
+          operator: isNotEqualString
+          right:
+            value:
+              simple: Malicious
+      - - left:
+            iscontext: true
+            value:
+              simple: Analysis.AdditionalAlerts
+          operator: isNotExists
+      - - left:
+            iscontext: true
+            value:
+              simple: Analysis.Unusual_FW_App_ID
+          operator: isNotExists
+      - - left:
+            iscontext: true
+            value:
+              simple: Analysis.Unusual_Process
+          operator: isNotExists
+      - - left:
+            iscontext: true
+            value:
+              simple: Analysis.Unsigned_Process
+          operator: isNotExists
+      label: Benign
+    continueonerrortype: ""
+    id: "35"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      ' Malicious':
+      - "40"
+      '#default#':
+      - "38"
+      Benign:
+      - "37"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Estimate the verdict for the large upload Cortex XDR alerts.
+      id: 4e31d21d-f0e5-40d2-8333-750fd0973c3c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Calculate Verdict
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 4e31d21d-f0e5-40d2-8333-750fd0973c3c
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 3520
+        }
+      }
+  "36":
+    continueonerrortype: ""
+    id: "36"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      alert_ids:
+        complex:
+          root: inputs.Alert_ID
+          transformers:
+          - operator: uniq
+      filter_alert_fields:
+        simple: "false"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns information about each alert ID.
+      id: 6a389912-bd5d-45d5-85d1-c99eaffe7dc7
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get Alert Extra Data
+      playbooktaskmissingcomponent: null
+      script: '|||core-get-cloud-original-alerts'
+      type: regular
+      version: -1
+    taskid: 6a389912-bd5d-45d5-85d1-c99eaffe7dc7
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1110
+        }
+      }
+  "37":
+    continueonerrortype: ""
+    id: "37"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "57"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 02078163-8f58-4c46-8062-0e1f6fdceb62
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Benign
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 02078163-8f58-4c46-8062-0e1f6fdceb62
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 890,
+          "y": 3710
+        }
+      }
+  "38":
+    continueonerrortype: ""
+    id: "38"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "39"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 2847922d-ea7e-4f39-81dd-828d8beaace1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Suspicious
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 2847922d-ea7e-4f39-81dd-828d8beaace1
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 3710
+        }
+      }
+  "39":
+    continueonerrortype: ""
+    id: "39"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "57"
+      Remediation:
+      - "46"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Upon review, the playbook did not identify any obvious malicious
+        indicators associated with the alert. However, there are some noteworthy observations
+        that require manual investigation. \n\n**Review the following alert details
+        and determine whether remediation is necessary:**\n1. Verify if previous false
+        positive alerts with similar characteristics have been detected.\n2. Review
+        the additional alerts within the alert, if any exist.\n3. Examine the additional
+        alerts retrieved by the sub-playbooks associated with the initiator account,
+        similar command line, or initiator host.\n4. Check the FW application ID to
+        ensure it is a known and authorized application within the organization (if
+        the activity and application are valid, add the ID to the 'FWApps_Processes_Whitlist'
+        playbook input to avoid false positives).\n5. Check the initiator process
+        to ensure it is a known and authorized process within the organization (if
+        the activity and process are valid, add the process name to the 'FWApps_Processes_Whitlist'
+        playbook input to avoid false positives).\n6. Analyze the command line analysis
+        results and any additional alerts with similar initiator command lines retrieved
+        from the 'Cortex XDR - Search and Compare Process Executions - XDR Alerts'
+        sub-playbook.\n7. Determine whether the user is aware of the upload activity
+        and what caused the massive upload that triggered the alert.\n8. Verify whether
+        the uploaded files contain sensitive information."
+      id: 54b0d9f0-f693-45b4-87ba-11ff89012f78
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual Investigation
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 54b0d9f0-f693-45b4-87ba-11ff89012f78
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 3840
+        }
+      }
+  "40":
+    continueonerrortype: ""
+    id: "40"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "41"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8c8143f1-a8ab-4af1-88ce-eff1b5432196
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Malicious
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 8c8143f1-a8ab-4af1-88ce-eff1b5432196
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 0,
+          "y": 3710
+        }
+      }
+  "41":
+    continueonerrortype: ""
+    id: "41"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "42"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      verdict:
+        simple: Malicious
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: 34bb8400-7a94-4c18-85a9-23150907eb22
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Set Alert Verdict - Malicious
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlert
+      type: regular
+      version: -1
+    taskid: 34bb8400-7a94-4c18-85a9-23150907eb22
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 0,
+          "y": 3840
+        }
+      }
+  "42":
+    continueonerrortype: ""
+    id: "42"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "43"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 607d68dc-d4b9-472a-828a-a0b13f86e62c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation - Related Indicators Hunt
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 607d68dc-d4b9-472a-828a-a0b13f86e62c
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 0,
+          "y": 4000
+        }
+      }
+  "43":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: RelatedFiles
+          operator: isNotEmpty
+        - left:
+            iscontext: true
+            value:
+              simple: RelatedDomains
+          operator: isNotEmpty
+        - left:
+            iscontext: true
+            value:
+              simple: RelatedIPs
+          operator: isNotEmpty
+        - left:
+            iscontext: true
+            value:
+              simple: RelatedURLs
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "43"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "46"
+      "yes":
+      - "45"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether there are any indicators to hunt for.
+      id: d0e78f0e-d8d3-4d15-8af2-115c4658b381
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Found Related Indicators to Hunt?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: d0e78f0e-d8d3-4d15-8af2-115c4658b381
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 0,
+          "y": 4130
+        }
+      }
+  "45":
+    continueonerrortype: ""
+    id: "45"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "46"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      IPAddress:
+        complex:
+          accessor: Indicator
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: IP
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          root: DBotScore
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: RelatedIPs
+            operator: append
+          - operator: uniq
+      InternalRange:
+        complex:
+          accessor: PrivateIPs
+          root: lists
+          transformers:
+          - args:
+              error_if_no_match: {}
+              ignore_case: {}
+              multi_line: {}
+              period_matches_newline: {}
+              regex:
+                value:
+                  simple: (\b(?:\d{1,3}\.){3}\d{1,3}\b/\d{1,2})
+              unpack_matches: {}
+            operator: RegexExtractAll
+          - args:
+              separator:
+                value:
+                  simple: ','
+            operator: join
+      MD5:
+        complex:
+          accessor: Indicator
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: File
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: Hash
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: stringHasLength
+              right:
+                value:
+                  simple: "32"
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          root: DBotScore
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: RelatedFiles
+            operator: append
+          - operator: uniq
+      QRadarTimeFrame:
+        simple: LAST 7 DAYS
+      SHA1:
+        complex:
+          accessor: Indicator
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: File
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: Hash
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: stringHasLength
+              right:
+                value:
+                  simple: "40"
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          root: DBotScore
+          transformers:
+          - operator: uniq
+      SHA256:
+        complex:
+          accessor: Indicator
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: File
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: Hash
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: stringHasLength
+              right:
+                value:
+                  simple: "64"
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          root: DBotScore
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: RelatedFiles
+            operator: append
+          - operator: uniq
+      SplunkEarliestTime:
+        simple: -7d@d
+      SplunkLatestTime:
+        simple: now
+      URLDomain:
+        complex:
+          accessor: Indicator
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: domain
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          root: DBotScore
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: RelatedDomains
+            operator: append
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: RelatedDomains
+            operator: append
+          - operator: uniq
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "This playbook enables threat hunting for IOCs in your enterprise.
+        It currently supports the following integrations: \n- Splunk\n- Qradar\n-
+        Pan-os \n- Cortex Data Lake \n- Autofocus\n- Microsoft 365 Defender"
+      id: 279b4c05-7734-46aa-807a-7fab9fa62905
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Threat Hunting - Generic
+      playbookId: Threat Hunting - Generic
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 279b4c05-7734-46aa-807a-7fab9fa62905
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": -220,
+          "y": 4300
+        }
+      }
+  "46":
+    continueonerrortype: ""
+    id: "46"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "47"
+      - "48"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8245e301-48ee-4974-8bcc-ce88eaedb0d8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Remediation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 8245e301-48ee-4974-8bcc-ce88eaedb0d8
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 0,
+          "y": 4470
+        }
+      }
+  "47":
+    continueonerrortype: ""
+    id: "47"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "58"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AutoBlockIndicators:
+        simple: ${inputs.AutoBlockIndicators}
+      AutoCommit:
+        simple: "No"
+      CustomBlockRule:
+        simple: "True"
+      CustomURLCategory:
+        simple: XSOAR Remediation - Malicious URLs
+      DomainToBlock:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: domain
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: notIn
+              right:
+                iscontext: true
+                value:
+                  simple: IndicatorsToBlock
+          root: DBotScore.Indicator
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: RelatedDomains
+            operator: append
+          - operator: uniq
+      FilesToBlock:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: file
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: notIn
+              right:
+                iscontext: true
+                value:
+                  simple: IndicatorsToBlock
+          root: DBotScore.Indicator
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: RelatedFiles
+            operator: append
+          - operator: uniq
+      IP:
+        complex:
+          accessor: Indicator
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: isEqualString
+              right:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert._all_events.target_ip
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: isEqualString
+              right:
+                value:
+                  simple: Core.OriginalAlert._all_events.action_remote_ip
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          root: DBotScore
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: RelatedIPs
+            operator: append
+          - operator: uniq
+      InputEnrichment:
+        simple: "False"
+      InternalRange:
+        simple: ${inputs.InternalIPRanges}
+      MD5:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: stringHasLength
+              right:
+                value:
+                  simple: "32"
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: file
+            - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: hash
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: notIn
+              right:
+                value:
+                  simple: IndicatorsToBlock
+          root: DBotScore.Indicator
+          transformers:
+          - operator: uniq
+      RuleDirection:
+        simple: outbound
+      RuleName:
+        simple: XSOAR - Block Indicators playbook - ${alert.id}
+      SHA256:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: stringHasLength
+              right:
+                value:
+                  simple: "64"
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: file
+            - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: hash
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: notIn
+              right:
+                iscontext: true
+                value:
+                  simple: IndicatorsToBlock
+          root: DBotScore.Indicator
+          transformers:
+          - operator: uniq
+      Tag:
+        simple: Blocked Indicator In Systems
+      URL:
+        complex:
+          accessor: Indicator
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: url
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          root: DBotScore
+          transformers:
+          - operator: uniq
+      UserVerification:
+        simple: ${inputs.BlockIndicators_UserVerification}
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        This playbook blocks malicious indicators using all integrations that are enabled, using the following sub-playbooks:
+
+        - Block URL - Generic v2
+        - Block Account - Generic v2
+        - Block IP - Generic v3
+        - Block File - Generic v2
+        - Block Email - Generic v2
+        - Block Domain - Generic v2.
+      id: c49d14ac-14bc-43f0-8be7-852dbbd4f42b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Block Indicators - Generic v3
+      playbookId: Block Indicators - Generic v3
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: c49d14ac-14bc-43f0-8be7-852dbbd4f42b
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": -220,
+          "y": 4610
+        }
+      }
+  "48":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.AutoIsolateEndpoint
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      - - left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert._all_events.agent_id
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "48"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "58"
+      "yes":
+      - "55"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determine whether the endpoint should be isolated automatically.
+      id: 370de85c-8fbc-4c5b-8fff-84a66629234c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Endpoint auto-isolation enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 370de85c-8fbc-4c5b-8fff-84a66629234c
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 210,
+          "y": 4610
+        }
+      }
+  "55":
+    continueonerrortype: ""
+    id: "55"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "58"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      endpoint_id:
+        simple: ${Core.OriginalAlert._all_events.agent_id}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Isolates the specified endpoint.
+      id: fe091087-beca-4117-8e4c-871838eb6e59
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Core Isolate Endpoint
+      playbooktaskmissingcomponent: null
+      script: '|||core-isolate-endpoint'
+      type: regular
+      version: -1
+    taskid: fe091087-beca-4117-8e4c-871838eb6e59
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 210,
+          "y": 4770
+        }
+      }
+  "56":
+    continueonerrortype: ""
+    id: "56"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      status:
+        simple: Resolved - Duplicate Alert
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.alert.status
+      id: bd684ecc-ebd8-4d11-8a82-cbd4a7a2de29
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close Alert - Resolve As a Duplicate Alert
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlertStatus
+      type: regular
+      version: -1
+    taskid: bd684ecc-ebd8-4d11-8a82-cbd4a7a2de29
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1710,
+          "y": 810
+        }
+      }
+  "57":
+    continueonerrortype: ""
+    id: "57"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      status:
+        simple: Resolved - False Positive
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.alert.status
+      id: caab875b-9fe2-46df-87c8-7e9947a49d01
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close Alert - Resolve As False Positive
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlertStatus
+      type: regular
+      version: -1
+    taskid: caab875b-9fe2-46df-87c8-7e9947a49d01
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 890,
+          "y": 4015
+        }
+      }
+  "58":
+    continueonerrortype: ""
+    id: "58"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      status:
+        simple: Resolved - True Positive
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.alert.status
+      id: 030d70eb-cb22-4f1f-8f68-7e18df5a5931
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close Alert - Resolve As True Positive
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlertStatus
+      type: regular
+      version: -1
+    taskid: 030d70eb-cb22-4f1f-8f68-7e18df5a5931
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 0,
+          "y": 4940
+        }
+      }
+  "59":
+    continueonerrortype: ""
+    id: "59"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      status:
+        simple: Resolved - Other
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.alert.status
+      id: cf6b0725-4237-470a-88db-c526cf0a61de
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close Alert - Resolve As Other
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlertStatus
+      type: regular
+      version: -1
+    taskid: cf6b0725-4237-470a-88db-c526cf0a61de
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1490,
+          "y": 1110
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "14_20_#default#": 0.5,
+      "17_20_#default#": 0.16,
+      "19_20_#default#": 0.11,
+      "22_23_yes": 0.46,
+      "27_34_#default#": 0.28,
+      "31_34_#default#": 0.21,
+      "32_34_#default#": 0.25,
+      "39_46_Remediation": 0.18,
+      "39_57_#default#": 0.31,
+      "3_6_#default#": 0.34,
+      "48_58_#default#": 0.58,
+      "4_56_#default#": 0.41,
+      "5_56_#default#": 0.43,
+      "5_6_Yes": 0.13,
+      "8_36_More Than Threshold": 0.52,
+      "8_59_#default#": 0.77
+    },
+    "paper": {
+      "dimensions": {
+        "height": 5305,
+        "width": 2640,
+        "x": -550,
+        "y": -130
+      }
+    }
+  }
