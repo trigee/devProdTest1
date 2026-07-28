@@ -1,0 +1,87 @@
+args:
+- description: The URL to encode.
+  name: value
+  required: true
+  supportedModules: []
+- default: true
+  defaultValue: /
+  description: The optional safe_character argument allows to specify ASCII characters
+    that should not be encoded. Default value is "/".
+  name: safe_character
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Whether to ignore safe_character argument encoding - all characters
+    will be encoded. Default is "false".
+  name: ignore_safe_character
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+comment: 'Encodes a URL string by replacing special characters in the string using
+  the %xx escape. For example: https://example.com converts to https:%2F%2Fexample.com.'
+commonfields:
+  id: URLEncode
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.22
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.8428455
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: URLEncode
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('URLEncode', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.22'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  from urllib.parse import quote, unquote
+
+
+
+
+  """ MAIN FUNCTION """
+
+
+  def main():
+      try:
+          args = demisto.args()
+          value = args.get("value")
+          decoded_value = unquote(value)
+          if argToBoolean(args.get("ignore_safe_character", "false")):
+              return_results(quote(decoded_value, safe=""))
+          else:
+              return_results(quote(decoded_value, safe=args.get("safe_character", "/")))
+      except Exception as exc:
+          return_error(f"Failed to execute URLEncode.\nError: {exc!s}", error=exc)
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()  # pragma: no cover
+
+  register_module_line('URLEncode', 'end', __line__())
+scripttarget: 0
+signature: 3M8V1WTaRruvQuYXdLI/uWk/MO4j/KYyCNIw/Gimj74A4c3vHOa8Ura8WBCZjsDs9jYzSVL48uRzb/EdPR97vQ/HB09/7jFnE3CNx/X+DFBOayGHUyV4K+uMIy915DJgVsdHnmCcf8rlTBnDw7yR7ONG3x8a2KaWAKrVMB/Q2dwGtDb14DgXH/omoyz32eg0+KK/a2oeujtSCHRvOmtmIbBVjuxXzayZ+oEOzBAk1hdg+1A31/3ooqfCXik/dDjuRo4uMqPTbdBar8AThZTbvi4jFEtoUshDLLbgiqyKyYGswUaHilIq3f1LITuwwezmhhuqEmczBUFeoGey2D2UQA==
+subtype: python3
+system: true
+tags:
+- transformer
+type: python
