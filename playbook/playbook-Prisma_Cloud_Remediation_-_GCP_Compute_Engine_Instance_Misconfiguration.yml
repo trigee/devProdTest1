@@ -1,0 +1,590 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook remediates the following Prisma Cloud GCP Compute Engine VM Instance alerts.
+
+  Prisma Cloud policies remediated:
+
+   - GCP VM instances have serial port access enabled
+   - GCP VM instances have block project-wide SSH keys feature disabled
+   - GCP VM instances without any custom metadata information
+id: Prisma Cloud Remediation - GCP Compute Engine Instance Misconfiguration
+inputs:
+- description: Prisma Cloud policy Id.
+  key: policyId
+  playbookInputQuery: null
+  required: true
+  value: {}
+name: Prisma Cloud Remediation - GCP Compute Engine Instance Misconfiguration
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 61bee172-14d4-4a48-815c-913b49bef800
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 61bee172-14d4-4a48-815c-913b49bef800
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": -170
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      instance:
+        complex:
+          accessor: Instances.name
+          root: GoogleCloudCompute
+      metadataFingerprint:
+        complex:
+          accessor: Instances.metadata.fingerprint
+          root: GoogleCloudCompute
+      metadataItems:
+        simple: key=serial-port-enable,value=false
+      zone:
+        complex:
+          accessor: Instances.zone
+          root: GoogleCloudCompute
+          transformers:
+          - args:
+              groups: {}
+              keys: {}
+              regex:
+                value:
+                  simple: /([^/]*)$
+            operator: RegexGroups
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Google Cloud Compute
+      description: Sets metadata for the specified instance to the data included in
+        the request.
+      id: 6bba7b71-f758-459b-8f30-ed324bd0e5bb
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Disable VM instance serial port access
+      playbooktaskmissingcomponent: null
+      script: Google Cloud Compute|||gcp-compute-set-instance-metadata
+      type: regular
+      version: -1
+    taskid: 6bba7b71-f758-459b-8f30-ed324bd0e5bb
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 360,
+          "y": 690
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1abd9220-e39e-4206-8aa3-dba2695c7f4e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 1abd9220-e39e-4206-8aa3-dba2695c7f4e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 890
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      instance:
+        complex:
+          accessor: labels.resource
+          root: alert
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: name
+            operator: getField
+      zone:
+        complex:
+          accessor: labels.resource
+          root: alert
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: data
+            operator: getField
+          - args:
+              field:
+                value:
+                  simple: zone
+            operator: getField
+          - args:
+              groups: {}
+              keys: {}
+              regex:
+                value:
+                  simple: /([^/]*)$
+            operator: RegexGroups
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Google Cloud Compute
+      description: Returns the specified instance resource. Gets a list of available
+        instances by making a list() request.
+      id: 485101a7-fbb8-40d9-867f-a755d6d8bd93
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get VM instance details
+      playbooktaskmissingcomponent: null
+      script: Google Cloud Compute|||gcp-compute-get-instance
+      type: regular
+      version: -1
+    taskid: 485101a7-fbb8-40d9-867f-a755d6d8bd93
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 150
+        }
+      }
+  "5":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 72b422c8-bef1-4842-a6c6-7230bf0b3492
+      label: sshKeys
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: a7e6ca7c-8b47-4556-9a34-d2ab88347b4b
+      label: serialPort
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 10bc76ee-6f29-4c04-98bb-b9f8bafb0964
+      label: noMetaData
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      noMetaData:
+      - "9"
+      serialPort:
+      - "7"
+      sshKeys:
+      - "6"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        Execute the appropriate remediation sub-playbook based on the Prisma Cloud policy ID.
+      id: d7b45d30-e581-4e21-8e50-d7cfe4ab3c2f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Execute remediation
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: d7b45d30-e581-4e21-8e50-d7cfe4ab3c2f
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 330
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e15e3153-b016-4949-80a2-52a2a3930eb6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Block Project Wide SSH Keys Disabled
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: e15e3153-b016-4949-80a2-52a2a3930eb6
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1010,
+          "y": 550
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a9ac8370-bf0b-4b87-8da8-e2847bac72f0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Serial Port Access Enabled
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: a9ac8370-bf0b-4b87-8da8-e2847bac72f0
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 250,
+          "y": 550
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      instance:
+        complex:
+          accessor: Instances.name
+          root: GoogleCloudCompute
+      metadataFingerprint:
+        complex:
+          accessor: Instances.metadata.fingerprint
+          root: GoogleCloudCompute
+      metadataItems:
+        simple: key=block-project-ssh-keys,value=true
+      zone:
+        complex:
+          accessor: Instances.zone
+          root: GoogleCloudCompute
+          transformers:
+          - args:
+              groups: {}
+              keys: {}
+              regex:
+                value:
+                  simple: /([^/]*)$
+            operator: RegexGroups
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Google Cloud Compute
+      description: Sets metadata for the specified instance to the data included in
+        the request.
+      id: b4fa01a0-fa10-4536-80dc-615a024331d7
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Block project wide ssh-key access
+      playbooktaskmissingcomponent: null
+      script: Google Cloud Compute|||gcp-compute-set-instance-metadata
+      type: regular
+      version: -1
+    taskid: b4fa01a0-fa10-4536-80dc-615a024331d7
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 890,
+          "y": 690
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "10"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5520bf68-cdaf-4256-810f-d4bceed0eb58
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: No Metadata
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 5520bf68-cdaf-4256-810f-d4bceed0eb58
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -250,
+          "y": 500
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      instance:
+        complex:
+          accessor: Instances.name
+          root: GoogleCloudCompute
+      metadataFingerprint:
+        complex:
+          accessor: Instances.metadata.fingerprint
+          root: GoogleCloudCompute
+      metadataItems:
+        simple: key=serial-port-enable,value=false;key=block-project-ssh-keys,value=true
+      zone:
+        complex:
+          accessor: Instances.zone
+          root: GoogleCloudCompute
+          transformers:
+          - args:
+              groups: {}
+              keys: {}
+              regex:
+                value:
+                  simple: /([^/]*)$
+            operator: RegexGroups
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Google Cloud Compute
+      description: Sets metadata for the specified instance to the data included in
+        the request.
+      id: da424dcd-472b-403e-88cb-724e14f0ba16
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Add VM instance metadata
+      playbooktaskmissingcomponent: null
+      script: Google Cloud Compute|||gcp-compute-set-instance-metadata
+      type: regular
+      version: -1
+    taskid: da424dcd-472b-403e-88cb-724e14f0ba16
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -250,
+          "y": 650
+        }
+      }
+  "11":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: brand
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Google Cloud Compute
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      "yes":
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Is Google Cloud Compute integration enabled?
+      id: e014ab1e-ad60-4fd4-8929-53bd40be41a5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Google Cloud Compute integration enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: e014ab1e-ad60-4fd4-8929-53bd40be41a5
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": -30
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "5_3_#default#": 0.29,
+      "5_6_sshKeys": 0.51,
+      "5_7_serialPort": 0.54,
+      "5_9_noMetaData": 0.7
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1125,
+        "width": 1640,
+        "x": -250,
+        "y": -170
+      }
+    }
+  }
