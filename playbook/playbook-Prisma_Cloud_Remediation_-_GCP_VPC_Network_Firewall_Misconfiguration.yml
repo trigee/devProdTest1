@@ -1,0 +1,949 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook remediates the following Prisma Cloud GCP VPC Network Firewall alerts.
+
+  Prisma Cloud policies remediated:
+
+   - GCP Firewall rule allows internet traffic to FTP port (21)
+   - GCP Firewall rule allows internet traffic to HTTP port (80)
+   - GCP Firewall rule allows internet traffic to MongoDB port (27017)
+   - GCP Firewall rule allows internet traffic to MySQL DB port (3306)
+   - GCP Firewall rule allows internet traffic to Oracle DB port (1521)
+   - GCP Firewall rule allows internet traffic to PostgreSQL port (5432)
+   - GCP Firewall rule allows internet traffic to RDP port (3389)
+   - GCP Firewall rule allows internet traffic to SSH port (22)
+   - GCP Firewall rule allows internet traffic to Telnet port (23)
+   - GCP Firewall rule allows internet traffic to DNS port (53)
+   - GCP Firewall rule allows internet traffic to Microsoft-DS port (445)
+   - GCP Firewall rule allows internet traffic to NetBIOS-SSN port (139)
+   - GCP Firewall rule allows internet traffic to POP3 port (110)
+   - GCP Firewall rule allows internet traffic to SMTP port (25)
+   - GCP Default Firewall rule should not have any rules (except http and https)
+   - GCP Firewall with Inbound rule overly permissive to All Traffic
+id: Prisma Cloud Remediation - GCP VPC Network Firewall Misconfiguration
+inputs:
+- description: Prisma Cloud policy Id.
+  key: policyId
+  playbookInputQuery: null
+  required: true
+  value: {}
+name: Prisma Cloud Remediation - GCP VPC Network Firewall Misconfiguration
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 61bee172-14d4-4a48-815c-913b49bef800
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 61bee172-14d4-4a48-815c-913b49bef800
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": -160
+        }
+      }
+  "1":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      disabled:
+        simple: "true"
+      name:
+        complex:
+          accessor: Firewalls.name
+          root: GoogleCloudCompute
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Google Cloud Compute
+      description: Updates the specified firewall rule with the data included in the
+        request.
+      id: 3fc02302-4a03-4255-8734-e7e0ff56a942
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Disable the offending FW rule
+      playbooktaskmissingcomponent: null
+      script: Google Cloud Compute|||gcp-compute-patch-firewall
+      type: regular
+      version: -1
+    taskid: 3fc02302-4a03-4255-8734-e7e0ff56a942
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -490,
+          "y": 1130
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1abd9220-e39e-4206-8aa3-dba2695c7f4e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 1abd9220-e39e-4206-8aa3-dba2695c7f4e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 1300
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      name:
+        complex:
+          accessor: labels.resource
+          root: alert
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: name
+            operator: getField
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Google Cloud Compute
+      description: Returns the specified firewall.
+      id: 3aae1540-7ffb-4822-8aa3-5a2efa0acdb7
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get VPC firewall details
+      playbooktaskmissingcomponent: null
+      script: Google Cloud Compute|||gcp-compute-get-firewall
+      type: regular
+      version: -1
+    taskid: 3aae1540-7ffb-4822-8aa3-5a2efa0acdb7
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 150
+        }
+      }
+  "5":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: fab6a8ee-dc82-49f0-8c2c-a2a5c7666539
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 9f6d22f9-873a-4a71-91a8-41a82e4c9314
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: b7ad863b-d54c-4b43-a157-010199a37cac
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 1171a9b9-9648-405a-8e03-83e5025e81d3
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 39f48b70-3f22-481d-be71-13211bc87d98
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: b1a3c396-2e03-4050-b7b4-6cf8a7ab5f9b
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 34175634-0e4a-4e9d-9c77-0c75390b8bdc
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 49a154e8-6049-4317-bbb5-0c90cb078f94
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 024045e3-dfa3-4109-9d68-e7fcf3c6c4d1
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: dc3dd864-cff5-4730-84ac-11e212f2c1ff
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 1aa8f0f0-139f-49a2-9c9d-41c71a3c806f
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 7afdb939-4a9a-45b0-ba3b-f81dec86bc76
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 094b6b65-a37a-4f3b-b08f-5d313a6f5051
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: e35ce679-e427-4e00-a9d2-44d808c694bd
+      label: commonPorts
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 3b814978-44a0-4a5b-9736-492d67ee4994
+      label: webPorts
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: ff6a9cca-8bc5-4a72-9235-ec7b65c547d5
+      label: overlyPermissive
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      commonPorts:
+      - "7"
+      overlyPermissive:
+      - "12"
+      webPorts:
+      - "11"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Execute the appropriate remediation task.
+      id: 998f0dfe-3adb-41d8-8324-f75a10b7a6ee
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Execute remediation
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 998f0dfe-3adb-41d8-8324-f75a10b7a6ee
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 330
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6c2eba20-647c-4754-8c42-fddc318c20af
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Common Ports
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 6c2eba20-647c-4754-8c42-fddc318c20af
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -490,
+          "y": 500
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: portNumber
+      value:
+        complex:
+          root: alert
+          transformers:
+          - args:
+              field:
+                value:
+                  simple: rawName
+            operator: getField
+          - args:
+              from:
+                value:
+                  simple: port (
+            operator: substringFrom
+          - args:
+              to:
+                value:
+                  simple: )
+            operator: substringTo
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Sets a value into the context with the given context key.
+      id: 027f7a25-4442-4f10-849a-61de6ed7ad96
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Find the port number
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 027f7a25-4442-4f10-849a-61de6ed7ad96
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -490,
+          "y": 660
+        }
+      }
+  "9":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: labels.resource
+                root: alert
+                transformers:
+                - operator: ParseJSON
+                - args:
+                    field:
+                      value:
+                        simple: data
+                  operator: getField
+                - args:
+                    field:
+                      value:
+                        simple: sourceRanges
+                  operator: getField
+          operator: containsString
+          right:
+            value:
+              simple: 0.0.0.0/0
+      - - left:
+            iscontext: true
+            value:
+              simple: ${portNumber}
+          operator: inList
+          right:
+            value:
+              simple: 21, 80, 27017, 3306, 1521, 5432, 3389, 22, 23, 53, 445, 139,
+                110, 25
+      label: "yes"
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "10"
+      "yes":
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check the firewall rule for public access.
+      id: a6f27574-3295-4b37-8715-8771e18b4677
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check FW rule for public access to common ports
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: a6f27574-3295-4b37-8715-8771e18b4677
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -490,
+          "y": 840
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        1. Login to GCP Console and from Networking, select VPC network.
+        2. Go to Firewall rules and click on Ingress.
+        3. Modify, disable, or delete the offending firewall rule.
+      id: f13fa723-aae0-4c54-82e7-8b6507151987
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manually update FW rules
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: f13fa723-aae0-4c54-82e7-8b6507151987
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 380,
+          "y": 1130
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 74a304c0-9094-4d9b-8972-2d56f54c8e13
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Default Firewall Rules
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 74a304c0-9094-4d9b-8972-2d56f54c8e13
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -40,
+          "y": 500
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "14"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6eba9d9a-da40-4348-8f0a-1269d34d1a67
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Overly Permissive
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 6eba9d9a-da40-4348-8f0a-1269d34d1a67
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 380,
+          "y": 500
+        }
+      }
+  "13":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: labels.resource
+                root: alert
+                transformers:
+                - operator: ParseJSON
+                - args:
+                    field:
+                      value:
+                        simple: name
+                  operator: getField
+          operator: startWith
+          right:
+            value:
+              simple: default
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: labels.resource
+                root: alert
+                transformers:
+                - operator: ParseJSON
+                - args:
+                    field:
+                      value:
+                        simple: data
+                  operator: getField
+                - args:
+                    field:
+                      value:
+                        simple: sourceRanges
+                  operator: getField
+          operator: containsString
+          right:
+            value:
+              simple: 0.0.0.0/0
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: labels.resource
+                root: alert
+                transformers:
+                - operator: ParseJSON
+                - args:
+                    field:
+                      value:
+                        simple: data
+                  operator: getField
+                - args:
+                    field:
+                      value:
+                        simple: allowed
+                  operator: getField
+                - args:
+                    field:
+                      value:
+                        simple: ports
+                  operator: getField
+          operator: containsString
+          right:
+            value:
+              simple: "80"
+        - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: labels.resource
+                root: alert
+                transformers:
+                - operator: ParseJSON
+                - args:
+                    field:
+                      value:
+                        simple: data
+                  operator: getField
+                - args:
+                    field:
+                      value:
+                        simple: allowed
+                  operator: getField
+                - args:
+                    field:
+                      value:
+                        simple: ports
+                  operator: getField
+          operator: containsString
+          right:
+            value:
+              simple: "443"
+      label: "yes"
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "1"
+      "yes":
+      - "10"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check the default firewall rule for the web ports; 80 and 443.  If
+        the firewall rule contains either one, or both of these ports, manually update
+        the rule.
+      id: 41bb8983-af56-4858-856f-946ba9880276
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check default FW for HTTP/HTTPS rules
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 41bb8983-af56-4858-856f-946ba9880276
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -40,
+          "y": 660
+        }
+      }
+  "14":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: labels.resource
+                root: alert
+                transformers:
+                - operator: ParseJSON
+                - args:
+                    field:
+                      value:
+                        simple: data
+                  operator: getField
+                - args:
+                    field:
+                      value:
+                        simple: sourceRanges
+                  operator: getField
+          operator: containsString
+          right:
+            value:
+              simple: 0.0.0.0/0
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: labels.resource
+                root: alert
+                transformers:
+                - operator: ParseJSON
+                - args:
+                    field:
+                      value:
+                        simple: data
+                  operator: getField
+                - args:
+                    field:
+                      value:
+                        simple: allowed
+                  operator: getField
+                - args:
+                    field:
+                      value:
+                        simple: IPProtocol
+                  operator: getField
+          operator: isEqualString
+          right:
+            value:
+              simple: all
+      label: "yes"
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "10"
+      "yes":
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check the firewall rule for public access.
+      id: e9efe2ae-22ce-4705-831c-06a0ab2b7761
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check FW rule for public access to all protocols
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: e9efe2ae-22ce-4705-831c-06a0ab2b7761
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 380,
+          "y": 660
+        }
+      }
+  "15":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: brand
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Google Cloud Compute
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      "yes":
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Is Google Cloud Compute integration enabled?
+      id: b540e8c3-4ffb-4943-8c47-16ef885bd30a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Google Cloud Compute integration enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: b540e8c3-4ffb-4943-8c47-16ef885bd30a
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": -30
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "13_10_yes": 0.4,
+      "13_1_#default#": 0.4,
+      "14_10_#default#": 0.48,
+      "14_1_yes": 0.23,
+      "5_3_#default#": 0.31,
+      "5_7_commonPorts": 0.83,
+      "9_10_#default#": 0.1,
+      "9_1_yes": 0.43
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1525,
+        "width": 1500,
+        "x": -490,
+        "y": -160
+      }
+    }
+  }
