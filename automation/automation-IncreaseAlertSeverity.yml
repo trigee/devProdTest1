@@ -1,0 +1,79 @@
+args:
+- auto: PREDEFINED
+  description: The alert severity to increase the alert to. Can be "Unknown", "Informational",
+    "Low", "Medium", "High", "Critical", "0", "0.5", "1", "2", "3", or "4".
+  name: severity
+  predefined:
+  - Unknown
+  - Informational
+  - Low
+  - Medium
+  - High
+  - Critical
+  - "0"
+  - "0.5"
+  - "1"
+  - "2"
+  - "3"
+  - "4"
+  required: true
+  supportedModules: []
+comment: Optionally increases the alert severity to the new value if it is greater
+  than the existing severity.
+commonfields:
+  id: IncreaseAlertSeverity
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: IncreaseAlertSeverity
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.28
+  const SEVERITY_VALUES = {
+    "unknown": 0,
+    "informational": 0.5,
+    "low": 1,
+    "medium": 2,
+    "high": 3,
+    "critical": 4,
+    "0": 0,
+    "0.5": 0.5,
+    "1": 1,
+    "2": 2,
+    "3": 3,
+    "4": 4
+  };
+
+  const severity_str = `${args.severity}`.toLowerCase();
+  const severity = SEVERITY_VALUES[severity_str];
+  const current_incident_severity = incidents[0].severity;
+
+  if (severity > current_incident_severity) {
+      executeCommand('setIncident', { severity } );
+      return `Severity increased to ${severity}`;
+  }
+
+  return "Severity not increased";
+scripttarget: 0
+signature: Wz0iWZuFOHrclAfh/x9feViHN5KaS3/p+7ErogNnwS7R4Jh/JlCwK3ELFSLrWmOspAdDl2mE7xaEJ1S1fZccCj1BIICQkq1yu8F6OPC1rvRm4HgyTkpVs+bZicaQDVo7VurOHzxIyJmkXoucivicDFz3Qo9aT3V8nXgEMZfNW91btPtBGDIB71cO6Xo21FYUmRRPfDX1c1XNjilflceAogDmN92lnCUD258hu1gT6O2QlH6acOKp2YZQ986ZcFE88RwMlYN6M2NlJkPTEnOdvdfZronXm0SJoIAxBqqhe0CHyiFd5giZfFjC9LiTGCZCgU+7vwxzl4rNIZkk2e6JTQ==
+system: true
+tags: []
+type: javascript
