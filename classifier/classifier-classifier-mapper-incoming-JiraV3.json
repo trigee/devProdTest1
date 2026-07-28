@@ -1,0 +1,238 @@
+{
+	"brands": null,
+	"cacheVersn": 0,
+	"defaultIncidentType": "",
+	"definitionId": "",
+	"description": "Jira V3 mirror in classifier.",
+	"feed": false,
+	"fromServerVersion": "6.0.0",
+	"id": "classifier-mapper-incoming-JiraV3",
+	"incidentSamples": null,
+	"indicatorSamples": null,
+	"instanceIds": null,
+	"isOverridable": false,
+	"itemVersion": "3.3.21",
+	"keyTypeMap": null,
+	"locked": false,
+	"logicalVersion": 0,
+	"mapping": {
+		"Jira Create Issue and Mirror": {
+			"dontMapEventToLabels": false,
+			"internalMapping": {
+				"Created Time": {
+					"simple": "fields.created"
+				},
+				"IncomingMirrorError": {
+					"simple": "in_mirror_error"
+				},
+				"Jira Attachments": {
+					"simple": "fields.attachment"
+				},
+				"Jira Description": {
+					"simple": "parsedDescription"
+				},
+				"Jira Due Date": {
+					"simple": "fields.duedate"
+				},
+				"Jira Labels": {
+					"simple": "fields.labels"
+				},
+				"Jira Priority": {
+					"simple": "fields.priority.name"
+				},
+				"Jira Reporter Email": {
+					"simple": "fields.reporter.emailAddress"
+				},
+				"Jira Reporter Name": {
+					"simple": "fields.reporter.displayName"
+				},
+				"Jira Summary": {
+					"simple": "fields.summary"
+				},
+				"JiraV3 Status": {
+					"simple": "fields.status.name"
+				},
+				"Last Seen": {
+					"simple": "fields.lastViewed"
+				},
+				"Last Update Time": {
+					"simple": "fields.updated"
+				},
+				"dbotMirrorDirection": {
+					"simple": "mirror_direction"
+				},
+				"dbotMirrorId": {
+					"simple": "id"
+				},
+				"dbotMirrorInstance": {
+					"simple": "mirror_instance"
+				},
+				"dbotMirrorTags": {
+					"simple": "mirror_tags"
+				}
+			}
+		},
+		"JiraV3 Incident": {
+			"dontMapEventToLabels": false,
+			"internalMapping": {
+				"Assigned User": {
+					"simple": "fields.assignee.displayName"
+				},
+				"Created Time": {
+					"simple": "fields.created"
+				},
+				"IncomingMirrorError": {
+					"simple": "in_mirror_error"
+				},
+				"Jira Attachments": {
+					"simple": "extractedAttachments"
+				},
+				"Jira Comment": {
+					"simple": "extractedComments"
+				},
+				"Jira Component": {
+					"simple": "extractedComponents"
+				},
+				"Jira Description": {
+					"simple": "parsedDescription"
+				},
+				"Jira Due Date": {
+					"simple": "fields.duedate"
+				},
+				"Jira Estimate": {
+					"simple": "fields.timetracking.originalEstimate"
+				},
+				"Jira ID": {
+					"simple": "id"
+				},
+				"Jira Issue Key": {
+					"simple": "key"
+				},
+				"Jira Issue Type": {
+					"simple": "fields.issuetype.name"
+				},
+				"Jira Labels": {
+					"simple": "fields.labels"
+				},
+				"Jira Priority": {
+					"simple": "fields.priority.name"
+				},
+				"Jira Project": {
+					"simple": "fields.project.name"
+				},
+				"Jira Reporter Email": {
+					"simple": "fields.reporter.emailAddress"
+				},
+				"Jira Reporter Name": {
+					"simple": "fields.reporter.displayName"
+				},
+				"Jira Subtask": {
+					"simple": "extractedSubtasks"
+				},
+				"Jira Summary": {
+					"simple": "fields.summary"
+				},
+				"JiraV3 Status": {
+					"simple": "fields.status.name"
+				},
+				"Last Seen": {
+					"simple": "fields.lastViewed"
+				},
+				"Last Update Time": {
+					"simple": "fields.updated"
+				},
+				"Source Created By": {
+					"simple": "extractedCreator"
+				},
+				"dbotMirrorDirection": {
+					"simple": "mirror_direction"
+				},
+				"dbotMirrorId": {
+					"simple": "id"
+				},
+				"dbotMirrorInstance": {
+					"simple": "mirror_instance"
+				},
+				"dbotMirrorTags": {
+					"simple": "mirror_tags"
+				}
+			}
+		},
+		"dbot_classification_incident_type_all": {
+			"dontMapEventToLabels": false,
+			"internalMapping": {
+				"Assigned User": {
+					"simple": "fields.assignee.emailAddress"
+				},
+				"IncomingMirrorError": {
+					"simple": "in_mirror_error"
+				},
+				"Jira Attachments": {
+					"simple": "fields.attachment"
+				},
+				"Jira Description": {
+					"simple": "parsedDescription"
+				},
+				"Jira Due Date": {
+					"simple": "fields.duedate"
+				},
+				"Jira Labels": {
+					"simple": "fields.labels"
+				},
+				"Jira Priority": {
+					"simple": "fields.priority.name"
+				},
+				"Jira Reporter Email": {
+					"simple": "fields.reporter.emailAddress"
+				},
+				"Jira Reporter Name": {
+					"simple": "fields.reporter.displayName"
+				},
+				"Jira Summary": {
+					"simple": "fields.summary"
+				},
+				"JiraV3 Status": {
+					"simple": "fields.status.name"
+				},
+				"dbotMirrorDirection": {
+					"simple": "mirror_direction"
+				},
+				"dbotMirrorId": {
+					"simple": "id"
+				},
+				"dbotMirrorInstance": {
+					"simple": "mirror_instance"
+				},
+				"dbotMirrorTags": {
+					"simple": "mirror_tags"
+				}
+			}
+		}
+	},
+	"name": "classifier-mapper-incoming-JiraV3",
+	"nameRaw": "classifier-mapper-incoming-JiraV3",
+	"packID": "Jira",
+	"packName": "Atlassian Jira",
+	"packPropagationLabels": [
+		"all"
+	],
+	"sourceClassifierId": "",
+	"supportedModules": [
+		"X1",
+		"X3",
+		"X5",
+		"ENT_PLUS",
+		"agentix",
+		"xsiam",
+		"edr",
+		"cloud",
+		"cloud_runtime_security",
+		"cloud_posture"
+	],
+	"system": true,
+	"toServerVersion": "",
+	"transformer": {},
+	"type": "mapping-incoming",
+	"unclassifiedCases": null,
+	"version": -1
+}
