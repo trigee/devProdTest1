@@ -1,0 +1,735 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.5.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook remediates Prisma Cloud GCP Kubernetes Engine alerts.  It calls sub-playbooks that perform the actual remediation steps.
+
+  Remediation:
+  * GCP Kubernetes Engine Clusters Basic Authentication is set to Enabled
+  * GCP Kubernetes Engine Clusters have HTTP load balancing disabled
+  * GCP Kubernetes Engine Clusters have Legacy Authorization enabled
+  * GCP Kubernetes Engine Clusters have Master authorized networks disabled
+  * GCP Kubernetes Engine Clusters have Network policy disabled
+  * GCP Kubernetes Engine Clusters have Stackdriver Logging disabled
+  * GCP Kubernetes Engine Clusters have Stackdriver Monitoring disabled
+  * GCP Kubernetes Engine Clusters have binary authorization disabled
+  * GCP Kubernetes Engine Clusters web UI/Dashboard is set to Enabled
+  * GCP Kubernetes cluster intra-node visibility disabled.
+id: Prisma Cloud Remediation - GCP Kubernetes Engine Misconfiguration v2
+inputSections:
+- description: Relevant data regarding the incident.
+  inputs:
+  - policyId
+  name: Incident Data
+- description: Remediation settings and data, including containment, eradication,
+    and recovery.
+  inputs:
+  - AutoRemediateKubernetesEngine
+  name: Remediation
+inputs:
+- description: Grab the Prima Cloud policy ID.
+  key: policyId
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: labels.policy
+      root: alert
+      transformers:
+      - operator: ParseJSON
+      - args:
+          field:
+            value:
+              simple: policyId
+        operator: getField
+- description: Execute GCP Kubernetes Engine remediation automatically?
+  key: AutoRemediateKubernetesEngine
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "no"
+name: Prisma Cloud Remediation - GCP Kubernetes Engine Misconfiguration v2
+outlinetasks: {}
+outputSections:
+- description: Generic group for outputs
+  name: General (Outputs group)
+  outputs: []
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "14"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 61bee172-14d4-4a48-815c-913b49bef800
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 61bee172-14d4-4a48-815c-913b49bef800
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": -50,
+          "y": 50
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1abd9220-e39e-4206-8aa3-dba2695c7f4e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 1abd9220-e39e-4206-8aa3-dba2695c7f4e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -50,
+          "y": 1850
+        }
+      }
+  "4":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "8"
+      "yes":
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks for a Prisma Cloud policy ID.
+      id: c29ab7ff-a6fd-4211-80e8-eeccafa8981c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is there a policy to remediate?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c29ab7ff-a6fd-4211-80e8-eeccafa8981c
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 255,
+          "y": 370
+        }
+      }
+  "5":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.AutoRemediateKubernetesEngine
+                transformers:
+                - operator: toLowerCase
+          operator: isEqualString
+          right:
+            value:
+              simple: "yes"
+      label: "yes"
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "6"
+      "yes":
+      - "7"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines if the Kubernetes Engine is updated automatically.
+      id: 14ec4b6b-a5b7-4981-85be-a18ba5f49a84
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Update Kubernetes Engine automatically?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 14ec4b6b-a5b7-4981-85be-a18ba5f49a84
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 560,
+          "y": 540
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body:
+        simple: ${alert.id} Autoremediate?
+      cc: null
+      format: ""
+      methods: []
+      replyOptions:
+      - "Yes"
+      - "No"
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: false
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      '#default#':
+      - "8"
+      "Yes":
+      - "7"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines if the event is automatically remediated or manually
+        updated.
+      id: 16fb9188-5edd-4d99-814a-33090e0b03d2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Auto remediate?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 16fb9188-5edd-4d99-814a-33090e0b03d2
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 560,
+          "y": 770
+        }
+      }
+  "7":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 6e125379-081e-4b06-a7ba-f04da2f0901a
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: f57baa2a-6039-4a17-94e8-0be723bcdc75
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: e1b70bb4-bb77-4326-93d5-5dd9c5170d3f
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 6ddbfdfe-3936-43d0-8157-97a7899beae6
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 53793c32-dd41-430f-bbea-2f002ddafe42
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: ca4b4654-d36a-4b17-a055-9c5063fa2f41
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: fe81b03a-c602-4b16-8ae9-973724c1adae
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: a3688f2e-eb5b-4b8d-b26f-90d40f08fd84
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 50d5ec3b-1710-4ff7-bb09-061c30deef96
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: bee0893d-85fb-403f-9ba7-a5269a46d382
+      label: cluster
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "8"
+      cluster:
+      - "13"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Executes the appropriate remediation sub-playbook based on the
+        Prisma Cloud policy ID.
+      id: dc7b1198-6db2-4115-8ac2-e6661561335f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Execute playbook
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: dc7b1198-6db2-4115-8ac2-e6661561335f
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1090,
+          "y": 940
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Manually update Google Kubernetes Engine alert.
+      id: 5d63c6a5-e9c0-484a-84ee-11d31cd44017
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manually update Kubernetes Engine
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: 5d63c6a5-e9c0-484a-84ee-11d31cd44017
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 255,
+          "y": 1110
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      id:
+        complex:
+          accessor: id
+          root: alert
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: Closes the current alert.
+      id: fb37a3ed-6884-4601-8841-f9414cf4a2ac
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close investigation
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: fb37a3ed-6884-4601-8841-f9414cf4a2ac
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 255,
+          "y": 1680
+        }
+      }
+  "11":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: brand
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: PrismaCloud v2
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isExists
+      label: "yes"
+    continueonerror: true
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "12"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: PrismaCloud v2
+      description: Is Prisma Cloud v2 integration enabled?
+      id: ec388f16-6c05-47b6-8cd8-d3e4bf955f6e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Prisma Cloud v2 integration enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: ec388f16-6c05-47b6-8cd8-d3e4bf955f6e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 255,
+          "y": 1340
+        }
+      }
+  "12":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      alert_ids:
+        complex:
+          accessor: labels
+          root: alert
+          transformers:
+          - args:
+              field:
+                value:
+                  simple: id
+            operator: getField
+      dismissal_note:
+        simple: ${alert.labels.id} has been remediated by Cortex.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: PrismaCloud v2
+      description: Dismiss or snooze the alerts matching the given filter. Either
+        policy IDs or alert IDs must be provided. When no absolute time nor relative
+        time arguments are provided, the default time range is all times. For snoozing,
+        provide "snooze_unit" and "snooze_value" arguments.
+      id: a9f2cbfa-6e0e-43f6-840b-a0781fb6664e
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Dismiss Prisma Cloud alert
+      playbooktaskmissingcomponent: null
+      script: PrismaCloud v2|||prisma-cloud-alert-dismiss
+      type: regular
+      version: -1
+    taskid: a9f2cbfa-6e0e-43f6-840b-a0781fb6664e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 560,
+          "y": 1510
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      policyId:
+        complex:
+          root: inputs.policyId
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        This playbook remediates the following Prisma Cloud GCP Kubernetes Engine Cluster alerts.
+
+        Prisma Cloud policies remediated:
+
+        * GCP Kubernetes Engine Clusters Basic Authentication is set to Enabled
+        * GCP Kubernetes Engine Clusters have HTTP load balancing disabled
+        * GCP Kubernetes Engine Clusters have Legacy Authorization enabled
+        * GCP Kubernetes Engine Clusters have Master authorized networks disabled
+        * GCP Kubernetes Engine Clusters have Network policy disabled
+        * GCP Kubernetes Engine Clusters have Stackdriver Logging disabled
+        * GCP Kubernetes Engine Clusters have Stackdriver Monitoring disabled
+        * GCP Kubernetes Engine Clusters have binary authorization disabled
+        * GCP Kubernetes Engine Clusters web UI/Dashboard is set to Enabled
+        * GCP Kubernetes cluster intra-node visibility disabled
+      id: 1ba4f261-b3a6-40c7-8c51-ad726a3b42bd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Prisma Cloud Remediation - GCP Kubernetes Engine Cluster Misconfiguration
+      playbookId: Prisma Cloud Remediation - GCP Kubernetes Engine Cluster Misconfiguration
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 1ba4f261-b3a6-40c7-8c51-ad726a3b42bd
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1090,
+          "y": 1165
+        }
+      }
+  "14":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: GoogleKubernetesEngine
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      "yes":
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Verifies that the Google Kubernetes Engine integration is enabled.
+      id: 34fd8c47-e326-4ee2-8343-b9c0794a0e06
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Google Kubernetes Engine integration enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 34fd8c47-e326-4ee2-8343-b9c0794a0e06
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -50,
+          "y": 200
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "11_9_#default#": 0.49,
+      "4_5_yes": 0.3,
+      "4_8_#default#": 0.22,
+      "5_6_#default#": 0.55,
+      "5_7_yes": 0.46,
+      "6_7_Yes": 0.45,
+      "6_8_#default#": 0.37,
+      "7_13_cluster": 0.63,
+      "7_8_#default#": 0.42
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1865,
+        "width": 1520,
+        "x": -50,
+        "y": 50
+      }
+    }
+  }
