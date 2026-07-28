@@ -1,0 +1,83 @@
+args:
+- default: true
+  description: Incident ID to get tasks from
+  name: incidentId
+  required: true
+  supportedModules: []
+- description: 'Comma separated list of states. Possible values: New, InProgress,
+    Completed, Waiting, Error, Skipped, Blocked (leave empty to get all tasks)'
+  name: states
+  supportedModules: []
+comment: Deprecated. Use GetIncidentTasksByState instead.
+commonfields:
+  id: DemistoGetIncidentTasksByState
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.5.0
+    packID: DemistoRESTAPI
+    packName: Cortex REST API
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: DemistoGetIncidentTasksByState
+outputs:
+- contextPath: Tasks
+  description: The entire task object
+- contextPath: Tasks.id
+  description: Task ID
+  type: string
+- contextPath: Tasks.name
+  description: Task name
+  type: string
+- contextPath: Tasks.type
+  description: The type of the task (regular, condition, title, playbook, start)
+  type: string
+- contextPath: Tasks.owner
+  description: Task owner
+  type: string
+- contextPath: Tasks.state
+  description: Task state (inprogress, Completed, WillNotBeExecuted, Error, Waiting,
+    Blocked, and empty string for not started)
+  type: string
+- contextPath: Tasks.scriptId
+  description: Task related script (empty if manual)
+  type: string
+- contextPath: Tasks.startDate
+  description: Task start date
+  type: unknown
+- contextPath: Tasks.completedDate
+  description: Task completed date
+  type: unknown
+- contextPath: Tasks.dueDate
+  description: Task due date (SLA)
+  type: unknown
+- contextPath: Tasks.parentPlaybookID
+  description: Task parent playbook ID (in case the task is part of sub-playbook)
+  type: unknown
+- contextPath: Tasks.completedBy
+  description: Task completed by (username)
+  type: string
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  return executeCommand('DemistoGetAlertTasksByState', args)
+scripttarget: 0
+sensitive: true
+signature: R/d5O34Mo6oMykEca92isgvwYejnG6pOJNbOPZaCiadrWBJC+I+FZvlqwGCiN99PBNWpcLswtRqN1rBti4S+O/TO7IL/G9nafuO9JWSpENki6R6hi5lSrvk+4kcB30PLJXl/6hEfxN6gnJyOGrtTnreGSAcYXEV6AvdEZGstnWb0RrfcKs7uFcYREcso6+hEzfuviqII8yTtFcoOGhSz9TcypfGQXmL+Cq4MOryZ4Mc+9quCZqUNnLiqjhUOnTmLThMN1mvBMWhm4abwB/cOtC+FqxFRpQ69avnVvVFtAz8Rj6djGavAZbPC9TyzwP3/s4baiXiPQNLzeGHkKc3Pxw==
+system: true
+tags:
+- Utility
+type: javascript
