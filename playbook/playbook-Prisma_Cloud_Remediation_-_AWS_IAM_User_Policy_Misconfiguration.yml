@@ -1,0 +1,393 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook remediates the following Prisma Cloud AWS IAM User alerts.
+
+  Prisma Cloud policies remediated:
+
+   - AWS IAM user has two active Access Keys
+id: Prisma Cloud Remediation - AWS IAM User Policy Misconfiguration
+inputs:
+- description: Prisma Cloud policy Id.
+  key: policyId
+  playbookInputQuery: null
+  required: true
+  value: {}
+name: Prisma Cloud Remediation - AWS IAM User Policy Misconfiguration
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6d5fe016-d6c6-4952-8519-2e0aece8fe29
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 6d5fe016-d6c6-4952-8519-2e0aece8fe29
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 80
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      accessKeyId:
+        complex:
+          accessor: IAM.Users.AccessKeys.AccessKeyId
+          root: AWS
+          transformers:
+          - operator: LastArrayElement
+      status:
+        simple: Inactive
+      userName:
+        complex:
+          accessor: IAM.Users.AccessKeys.UserName
+          root: AWS
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Marks access key as "inactive"
+      id: bd7547a2-2f55-4a7e-8489-86e8d492730f
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Disable the user's 2nd access key
+      playbooktaskmissingcomponent: null
+      script: '|||aws-iam-update-access-key'
+      type: regular
+      version: -1
+    taskid: bd7547a2-2f55-4a7e-8489-86e8d492730f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -160,
+          "y": 1100
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ffcd7bb2-29a0-440c-8856-c6afe386fae9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: ffcd7bb2-29a0-440c-8856-c6afe386fae9
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 1270
+        }
+      }
+  "14":
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "17"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      value:
+        complex:
+          accessor: labels.resource
+          root: alert
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: data
+            operator: getField
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Outputs user's credential report, which contains access key attributes
+        and user login profile.
+      id: c63ad7ca-3d92-4db2-858b-a22fc1dc3f1c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Print credential report
+      playbooktaskmissingcomponent: null
+      script: Print
+      type: regular
+      version: -1
+    taskid: c63ad7ca-3d92-4db2-858b-a22fc1dc3f1c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 400
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      userName:
+        complex:
+          accessor: labels.resource
+          root: alert
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: id
+            operator: getField
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns information about the access key IDs associated with the
+        specified IAM user.
+      id: cd15e88c-60f8-48cc-8033-146dfc80950f
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: List user access keys
+      playbooktaskmissingcomponent: null
+      script: '|||aws-iam-list-access-keys-for-user'
+      type: regular
+      version: -1
+    taskid: cd15e88c-60f8-48cc-8033-146dfc80950f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -160,
+          "y": 910
+        }
+      }
+  "16":
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e706b3e4-eeca-410f-8933-48cbe29ceed2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Two Active Access Keys
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: e706b3e4-eeca-410f-8933-48cbe29ceed2
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -160,
+          "y": 760
+        }
+      }
+  "17":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: e809c246-2ef5-4319-bba9-2c5735d88aa8
+      label: twoKeys
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "7"
+      twoKeys:
+      - "16"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determine the appropriate course for remediation.
+      id: 55f84bcc-d85c-4f7a-8f0a-ca6a2286f0c1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Execute remediation
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 55f84bcc-d85c-4f7a-8f0a-ca6a2286f0c1
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 590
+        }
+      }
+  "18":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: brand
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: AWS - IAM
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "7"
+      "yes":
+      - "14"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Is AWS - IAM integration enabled?
+      id: 29813f24-d676-4746-834e-da00d0270dac
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is AWS - IAM integration enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 29813f24-d676-4746-834e-da00d0270dac
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 220
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "17_16_twoKeys": 0.52,
+      "17_7_#default#": 0.29,
+      "18_14_yes": 0.5
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1255,
+        "width": 805,
+        "x": -160,
+        "y": 80
+      }
+    }
+  }
