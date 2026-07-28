@@ -1,0 +1,772 @@
+{
+	"author": "Cortex",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Cloud Services"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"integration",
+		"agentixaction"
+	],
+	"contentItems": {
+		"agentixaction": [
+			{
+				"category": "",
+				"description": "Updates settings of an Azure storage account (encryption, HTTPS-only enforcement, minimum TLS version, public blob access, network rules, tags) to remediate cloud posture issues. REQUIRES `resource_group_name`, `subscription_id`, and `account_name`; if not in user input, resolve them first via `CortexListAssets` using the issue's asset_id or asset_name.",
+				"fromversion": "8.12.0",
+				"id": "CortexAzureStorageAccountUpdate",
+				"name": "AzureUpdateStorageAccount",
+				"supportedModules": [
+					"cloud_posture",
+					"agentix",
+					"xsiam"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			}
+		],
+		"agentixagent": null,
+		"agentixknowledgecollection": null,
+		"agentixknowledgesource": null,
+		"agentixskill": null,
+		"automation": null,
+		"casefield": null,
+		"classifier": null,
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": null,
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "Cloud Services",
+				"commands": [
+					{
+						"description": "Updates a security rule or creates one if it does not exist. Deprecated. Use the azure-vn-security-rule-update command instead. Required permissions: Microsoft.Network/networkSecurityGroups/securityRules/read, Microsoft.Network/networkSecurityGroups/securityRules/write.",
+						"hidden": false,
+						"name": "azure-nsg-security-rule-update"
+					},
+					{
+						"description": "Update a security rule. If one does not exist, it will be created. Required permissions: Microsoft.Network/networkSecurityGroups/securityRules/read, Microsoft.Network/networkSecurityGroups/securityRules/write.",
+						"hidden": false,
+						"name": "azure-vn-security-rule-update"
+					},
+					{
+						"description": "Updates a specific account storage. Required permissions: Microsoft.Storage/storageAccounts/read, Microsoft.Storage/storageAccounts/write.",
+						"hidden": false,
+						"name": "azure-storage-account-update"
+					},
+					{
+						"description": "Sets properties for the blob service in a specific account storage. The command is deprecated, please use azure-storage-blob-service-property-set.Required permissions: Microsoft.Storage/storageAccounts/blobServices/read, Microsoft.Storage/storageAccounts/blobServices/write.",
+						"hidden": false,
+						"name": "azure-storage-blob-service-properties-set"
+					},
+					{
+						"description": "Sets properties for the blob service in a specific account storage. Required permissions: Microsoft.Storage/storageAccounts/blobServices/read, Microsoft.Storage/storageAccounts/blobServices/write.",
+						"hidden": false,
+						"name": "azure-storage-blob-service-property-set"
+					},
+					{
+						"description": "Run this command to get the blob service properties of a specific account storage. The command is deprecated, please use azure-storage-blob-service-property-get.",
+						"hidden": false,
+						"name": "azure-storage-blob-service-properties-get"
+					},
+					{
+						"description": "Run this command to get the blob service properties of a specific account storage. Required permissions: Microsoft.Storage/storageAccounts/blobServices/read.",
+						"hidden": false,
+						"name": "azure-storage-blob-service-property-get"
+					},
+					{
+						"description": "Run this command to update a specific blob container. The command is deprecated, please use azure-storage-blob-container-update.",
+						"hidden": false,
+						"name": "azure-storage-blob-containers-update"
+					},
+					{
+						"description": "Updates container properties as specified in request body. Properties not mentioned in the request will be unchanged. Update fails if the specified container doesn't already exist. Required permissions: Microsoft.Storage/storageAccounts/blobServices/containers/write.",
+						"hidden": false,
+						"name": "azure-storage-blob-container-update"
+					},
+					{
+						"description": "Retrieves properties for a specific Container. Required permission: Microsoft.Storage/storageAccounts/blobServices/containers/read.",
+						"hidden": false,
+						"name": "azure-storage-container-property-get"
+					},
+					{
+						"description": "Creates a new Container under the specified account. Required permission: Microsoft.Storage/storageAccounts/blobServices/containers/write.",
+						"hidden": false,
+						"name": "azure-storage-container-create"
+					},
+					{
+						"description": "Marks a specific Container for deletion. The Container and any Blobs contained within it will be deleted during garbage collection. Required permission: Microsoft.Storage/storageAccounts/blobServices/containers/delete.",
+						"hidden": false,
+						"name": "azure-storage-container-delete"
+					},
+					{
+						"description": "Creates a new Blob under the specified Container. Deprecated. Use the azure-storage-blob-create command instead. Required permission: Microsoft.Storage/storageAccounts/blobServices/containers/blobs/write.",
+						"hidden": false,
+						"name": "azure-storage-container-blob-create"
+					},
+					{
+						"description": "Create a new Blob under the specified Container. Required permissions: Microsoft.Storage/storageAccounts/blobServices/containers/blobs/write.",
+						"hidden": false,
+						"name": "azure-storage-blob-create"
+					},
+					{
+						"description": "Retrieves a Blob from a Container. Deprecated. Use the azure-storage-blob-get command instead. Required permission: Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read.",
+						"hidden": false,
+						"name": "azure-storage-container-blob-get"
+					},
+					{
+						"description": "Retrieve a Blob from a Container. Required permissions: Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read.",
+						"hidden": false,
+						"name": "azure-storage-blob-get"
+					},
+					{
+						"description": "Retrieves the tags of a specific Blob. Deprecated. Use the azure-storage-blob-tag-get command instead. Required permission: Microsoft.Storage/storageAccounts/blobServices/containers/blobs/tags/read.",
+						"hidden": false,
+						"name": "azure-storage-container-blob-tag-get"
+					},
+					{
+						"description": "Retrieve the tags of the specified Blob. Required Permissions: Microsoft.Storage/storageAccounts/blobServices/containers/blobs/tags/read.",
+						"hidden": false,
+						"name": "azure-storage-blob-tag-get"
+					},
+					{
+						"description": "Updates the tags for a specific Blob. Replaces all existing tags or removes them if none are provided. Deprecated. Use the azure-storage-blob-tag-set command instead. Required permissions: Microsoft.Storage/storageAccounts/blobServices/containers/blobs/tags/read, Microsoft.Storage/storageAccounts/blobServices/containers/blobs/tags/write.",
+						"hidden": false,
+						"name": "azure-storage-container-blob-tag-set"
+					},
+					{
+						"description": "Updates the tags for the specified Blob. The command can replace the entire tags of the Blob and can be used to remove tags. Required permissions: Microsoft.Storage/storageAccounts/blobServices/containers/blobs/tags/write.",
+						"hidden": false,
+						"name": "azure-storage-blob-tag-set"
+					},
+					{
+						"description": "Retrieves Blob properties. Deprecated. Use the azure-storage-blob-property-get command instead. Required permission: Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read.",
+						"hidden": false,
+						"name": "azure-storage-container-blob-property-get"
+					},
+					{
+						"description": "Retrieve Blob properties. Required Permissions: Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read.",
+						"hidden": false,
+						"name": "azure-storage-blob-property-get"
+					},
+					{
+						"description": "Sets Blob properties. Deprecated. Use the azure-storage-blob-property-set command instead. Required permission: Microsoft.Storage/storageAccounts/blobServices/containers/blobs/write.",
+						"hidden": false,
+						"name": "azure-storage-container-blob-property-set"
+					},
+					{
+						"description": "Set Blob properties. Required permissions: Microsoft.Storage/storageAccounts/blobServices/containers/blobs/write.",
+						"hidden": false,
+						"name": "azure-storage-blob-property-set"
+					},
+					{
+						"description": "Blocks public access to a container. Required permission: Microsoft.Storage/storageAccounts/blobServices/containers/setAcl/action.",
+						"hidden": false,
+						"name": "azure-storage-container-public-access-block"
+					},
+					{
+						"description": "Creates a policy assignment. Required permission: Microsoft.Authorization/policyAssignments/read, Microsoft.Authorization/policyAssignments/write.",
+						"hidden": false,
+						"name": "azure-policy-assignment-create"
+					},
+					{
+						"description": "Updates a server configuration. Deprecated due to the retirement of Azure PostgreSQL Single Server. Required permissions: Microsoft.DBforPostgreSQL/servers/configurations/read, Microsoft.DBforPostgreSQL/servers/configurations/write.",
+						"hidden": false,
+						"name": "azure-postgres-config-set"
+					},
+					{
+						"description": "Updates the configuration settings of an existing Azure Web App. Deprecated. Use the azure-appservice-webapp-config-update command instead. Required permissions: Microsoft.Web/sites/config/read, Microsoft.Web/sites/config/write.",
+						"hidden": false,
+						"name": "azure-webapp-config-set"
+					},
+					{
+						"description": "Updates the configuration settings of an existing Azure Web App. Required permissions: Microsoft.Web/sites/config/write, Microsoft.Web/sites/config/read.",
+						"hidden": false,
+						"name": "azure-appservice-webapp-config-update"
+					},
+					{
+						"description": "Updates the authentication and authorization settings of an existing Azure Web App. Deprecated. Use the azure-appservice-webapp-auth-settings-update command instead. Required permissions: Microsoft.Web/sites/config/read, Microsoft.Web/sites/config/write.",
+						"hidden": false,
+						"name": "azure-webapp-auth-update"
+					},
+					{
+						"description": "Updates the authentication and authorization settings of an existing Azure Web App. Required permissions: Microsoft.Web/sites/config/read, Microsoft.Web/sites/config/write.",
+						"hidden": false,
+						"name": "azure-appservice-webapp-auth-settings-update"
+					},
+					{
+						"description": "Updates a server configuration. Required permissions: Microsoft.DBforMySQL/flexibleServers/configurations/read, Microsoft.DBforMySQL/flexibleServers/configurations/write.",
+						"hidden": false,
+						"name": "azure-mysql-flexible-server-param-set"
+					},
+					{
+						"description": "Updates a log profile in Azure Monitoring REST API. Required permissions: Microsoft.Insights/logprofiles/read, Microsoft.Insights/logprofiles/write.",
+						"hidden": false,
+						"name": "azure-monitor-log-profile-update"
+					},
+					{
+						"description": "Updates a disk. Deprecated. Use the azure-compute-disk-update command instead. Required permissions: Microsoft.Compute/disks/read, Microsoft.Compute/disks/write.",
+						"hidden": false,
+						"name": "azure-disk-update"
+					},
+					{
+						"description": "Updates a disk. Required permissions: Microsoft.Compute/disks/read, Microsoft.Compute/disks/write.",
+						"hidden": false,
+						"name": "azure-compute-disk-update"
+					},
+					{
+						"description": "Updates an Azure Web App. Deprecated. Use the azure-appservice-webapp-update command instead. Required permissions: Microsoft.Web/sites/read, Microsoft.Web/sites/write.",
+						"hidden": false,
+						"name": "azure-webapp-update"
+					},
+					{
+						"description": "Updates an Azure Web App. The required permissions are: Microsoft.Web/sites/read, Microsoft.Web/sites/write.",
+						"hidden": false,
+						"name": "azure-appservice-webapp-update"
+					},
+					{
+						"description": "Updates a container registry. Deprecated. Use the azure-cr-registry-update command instead. Required permissions: Microsoft.ContainerRegistry/registries/read, Microsoft.ContainerRegistry/registries/write.",
+						"hidden": false,
+						"name": "azure-acr-update"
+					},
+					{
+						"description": "Updates a container registry. Required permissions: Microsoft.ContainerRegistry/registries/read, Microsoft.ContainerRegistry/registries/write.",
+						"hidden": false,
+						"name": "azure-cr-registry-update"
+					},
+					{
+						"description": "Updates an existing server. Deprecated due to the retirement of Azure PostgreSQL Single Server. Required permissions: Microsoft.DBforPostgreSQL/servers/read, Microsoft.DBforPostgreSQL/servers/write.",
+						"hidden": false,
+						"name": "azure-postgres-server-update"
+					},
+					{
+						"description": "Updates a key vault in a specific subscription. Deprecated. Use the azure-keyvault-vault-update command instead. Required permissions: Microsoft.KeyVault/vaults/read, Microsoft.KeyVault/vaults/write.",
+						"hidden": false,
+						"name": "azure-key-vault-update"
+					},
+					{
+						"description": "Updates a key vault in the specified subscription. The required permissions are: Microsoft.KeyVault/vaults/read, Microsoft.KeyVault/vaults/write.",
+						"hidden": false,
+						"name": "azure-keyvault-vault-update"
+					},
+					{
+						"description": "Updates the database's threat detection policy. Deprecated. Use the azure-sqldb-security-alert-policy-update command instead. Required permissions: Microsoft.Sql/servers/databases/securityAlertPolicies/read, Microsoft.Sql/servers/databases/securityAlertPolicies/write.",
+						"hidden": false,
+						"name": "azure-sql-db-threat-policy-update"
+					},
+					{
+						"description": "Updates a database's security alert policy. The required permissions are: Microsoft.Sql/servers/databases/securityAlertPolicies/read, Microsoft.Sql/servers/databases/securityAlertPolicies/write.",
+						"hidden": false,
+						"name": "azure-sqldb-security-alert-policy-update"
+					},
+					{
+						"description": "Updates a logical database's transparent data encryption configuration. Required permissions: Microsoft.Sql/servers/databases/transparentDataEncryption/read, Microsoft.Sql/servers/databases/transparentDataEncryption/write.",
+						"hidden": false,
+						"name": "azure-sql-db-transparent-data-encryption-set"
+					},
+					{
+						"description": "Updates the properties of an existing Azure Cosmos DB database account. Deprecated. Use the azure-cosmosdb-db-account-update command instead. Required permissions: Microsoft.DocumentDB/databaseAccounts/read, Microsoft.DocumentDB/databaseAccounts/write.",
+						"hidden": false,
+						"name": "azure-cosmos-db-update"
+					},
+					{
+						"description": "Updates the properties of an existing Azure Cosmos DB database account. The required permissions are: Microsoft.DocumentDB/databaseAccounts/read, Microsoft.DocumentDB/databaseAccounts/write.",
+						"hidden": false,
+						"name": "azure-cosmosdb-db-account-update"
+					},
+					{
+						"description": "Lists all network security groups. Deprecated. Use the azure-vn-security-groups-list command instead. Required permission: Microsoft.Network/networkSecurityGroups/read.",
+						"hidden": false,
+						"name": "azure-nsg-security-groups-list"
+					},
+					{
+						"description": "Creates a network security group. Required Permissions: Microsoft.Network/networkSecurityGroups/write.",
+						"hidden": false,
+						"name": "azure-vn-security-group-create"
+					},
+					{
+						"description": "List all network security groups. Required permissions: Microsoft.Network/networkSecurityGroups/read.",
+						"hidden": false,
+						"name": "azure-vn-security-groups-list"
+					},
+					{
+						"description": "Retrieves a specific rule. Deprecated. Use the azure-vn-security-rule-get command instead. Required permission: Microsoft.Network/networkSecurityGroups/securityRules/read.",
+						"hidden": false,
+						"name": "azure-nsg-security-rule-get"
+					},
+					{
+						"description": "Get a specific rule. Required permissions: Microsoft.Network/networkSecurityGroups/securityRules/read.",
+						"hidden": false,
+						"name": "azure-vn-security-rule-get"
+					},
+					{
+						"description": "Retrieves all security rules in a network security group. Deprecated. Use the azure-vn-security-rules-list command instead. Required permission: Microsoft.Network/networkSecurityGroups/securityRules/read.",
+						"hidden": false,
+						"name": "azure-nsg-security-rules-list"
+					},
+					{
+						"description": "Gets all security rules in a network security group. Required permissions: Microsoft.Network/networkSecurityGroups/securityRules/read.",
+						"hidden": false,
+						"name": "azure-vn-security-rules-list"
+					},
+					{
+						"description": "Creates a security rule. Deprecated. Use the azure-vn-security-rule-create command instead. Required permissions: Microsoft.Network/networkSecurityGroups/securityRules/read, Microsoft.Network/networkSecurityGroups/securityRules/write.",
+						"hidden": false,
+						"name": "azure-nsg-security-rule-create"
+					},
+					{
+						"description": "Create a security rule. Required permissions: Microsoft.Network/networkSecurityGroups/securityRules/read, Microsoft.Network/networkSecurityGroups/securityRules/write.",
+						"hidden": false,
+						"name": "azure-vn-security-rule-create"
+					},
+					{
+						"description": "Delete a security rule. The command is deprecated, please use azure-vn-security-rule-delete.",
+						"hidden": false,
+						"name": "azure-nsg-security-rule-delete"
+					},
+					{
+						"description": "Delete a security rule. Required permissions: Microsoft.Network/networkSecurityGroups/securityRules/delete.",
+						"hidden": false,
+						"name": "azure-vn-security-rule-delete"
+					},
+					{
+						"description": "Gets all resource groups for a subscription. The command is deprecated, please use azure-rm-resource-groups-list.",
+						"hidden": false,
+						"name": "azure-nsg-resource-group-list"
+					},
+					{
+						"description": "Gets all resource groups for a subscription. Required Permissions: Microsoft.Resources/subscriptions/resourceGroups/read.",
+						"hidden": false,
+						"name": "azure-rm-resource-groups-list"
+					},
+					{
+						"description": "Gets network interfaces in a resource group. The command is deprecated, please use azure-vn-network-interfaces-list.",
+						"hidden": false,
+						"name": "azure-nsg-network-interfaces-list"
+					},
+					{
+						"description": "Gets network interfaces in a resource group. Required permissions: Microsoft.Network/networkInterfaces/read.",
+						"hidden": false,
+						"name": "azure-vn-network-interfaces-list"
+					},
+					{
+						"description": "Gets public IP addresses in a resource group. The command is deprecated, please use azure-vn-public-ip-addresses-list.",
+						"hidden": false,
+						"name": "azure-nsg-public-ip-addresses-list"
+					},
+					{
+						"description": "Gets public IP addresses in a resource group. Required permissions: Microsoft.Network/publicIPAddresses/read.",
+						"hidden": false,
+						"name": "azure-vn-public-ip-addresses-list"
+					},
+					{
+						"description": "Powers on a specific virtual machine. Deprecated. Use the azure-compute-vm-start command instead. Required permissions: Microsoft.Compute/virtualMachines/read, Microsoft.Compute/virtualMachines/start/action.",
+						"hidden": false,
+						"name": "azure-vm-instance-start"
+					},
+					{
+						"description": "Powers on a given virtual machine. Required Permissions: Microsoft.Compute/virtualMachines/start/action.",
+						"hidden": false,
+						"name": "azure-compute-vm-start"
+					},
+					{
+						"description": "Powers off a specific virtual machine. Deprecated. Use the azure-compute-vm-power-off command instead. Required permissions: Microsoft.Compute/virtualMachines/read, Microsoft.Compute/virtualMachines/poweroff/action.",
+						"hidden": false,
+						"name": "azure-vm-instance-power-off"
+					},
+					{
+						"description": "Powers off a given virtual machine. Required Permissions: Microsoft.Compute/virtualMachines/poweroff/action.",
+						"hidden": false,
+						"name": "azure-compute-vm-power-off"
+					},
+					{
+						"description": "Retrieves the properties of a specific virtual machine. Deprecated. Use the azure-compute-vm-get command instead. Required permission: Microsoft.Compute/virtualMachines/read.",
+						"hidden": false,
+						"name": "azure-vm-instance-details-get"
+					},
+					{
+						"description": "Gets the properties of a given virtual machine. Required Permissions: Microsoft.Compute/virtualMachines/read.",
+						"hidden": false,
+						"name": "azure-compute-vm-get"
+					},
+					{
+						"description": "Retrieves the properties of a specific network interface. Deprecated. Use the azure-vn-network-interface-get command instead. Required permission: Microsoft.Network/networkInterfaces/read.",
+						"hidden": false,
+						"name": "azure-vm-network-interface-details-get"
+					},
+					{
+						"description": "Gets the properties of a given network interface. Required permissions: Microsoft.Network/networkInterfaces/read.",
+						"hidden": false,
+						"name": "azure-vn-network-interface-get"
+					},
+					{
+						"description": "Updates a network interface. Required Permissions: Microsoft.Network/networkInterfaces/read, Microsoft.Network/networkInterfaces/write, Microsoft.Network/virtualNetworks/subnets/join/action, Microsoft.Network/publicIPAddresses/join/action, Microsoft.Network/networkSecurityGroups/join/action, Microsoft.Network/loadBalancers/backendAddressPools/join/action.",
+						"hidden": false,
+						"name": "azure-vn-network-interface-update"
+					},
+					{
+						"description": "Retrieves the properties of a specific public IP address. Deprecated. Use the azure-vn-public-ip-address-get command instead. Required permission: Microsoft.Network/publicIPAddresses/read.",
+						"hidden": false,
+						"name": "azure-vm-public-ip-details-get"
+					},
+					{
+						"description": "Gets the properties of a given public IP address. Permissions required: Microsoft.Network/publicIPAddresses/read.",
+						"hidden": false,
+						"name": "azure-vn-public-ip-address-get"
+					},
+					{
+						"description": "Deletes a network security group (NSG) rule. Required permission: Microsoft.Network/networkSecurityGroups/securityRules/delete.",
+						"hidden": true,
+						"name": "azure-nsg-security-rule-delete-quick-action"
+					},
+					{
+						"description": "Assigns a system managed identity to the web app, enabling secure access to other Azure services without managing credentials. Deprecated. Use Assign Web App Managed Identity instead. Required permission: Microsoft.Web/sites/read, Microsoft.Web/sites/write.",
+						"hidden": true,
+						"name": "azure-webapp-assign-managed-identity-quick-action"
+					},
+					{
+						"description": "Assigns a system-assigned managed identity to the web app, enabling secure access to other Azure services without managing credentials. Required permissions: Microsoft.Web/sites/read, Microsoft.Web/sites/write.",
+						"hidden": true,
+						"name": "azure-appservice-webapp-update-quick-action"
+					},
+					{
+						"description": "Configures the storage account's network rules to allow traffic from trusted Azure services. Required permissions: Microsoft.Storage/storageAccounts/read, Microsoft.Storage/storageAccounts/write.",
+						"hidden": true,
+						"name": "azure-storage-allow-access-quick-action"
+					},
+					{
+						"description": "Enables HTTP 2.0 for the web app. Deprecated. Use Set Web App HTTP Version to 2.0 instead. Required permissions: Microsoft.Web/sites/config/read, Microsoft.Web/sites/config/write.",
+						"hidden": true,
+						"name": "azure-webapp-set-http2-quick-action"
+					},
+					{
+						"description": "Enables HTTP 2.0 for the web app. Required permissions: Microsoft.Web/sites/config/read, Microsoft.Web/sites/config/write.",
+						"hidden": true,
+						"name": "azure-appservice-webapp-config-update-http2-quick-action"
+					},
+					{
+						"description": "Enables App Service Authentication for the web app. Deprecated. Use Enable Azure App Service Authentication instead. Required permissions: Microsoft.Web/sites/config/read, Microsoft.Web/sites/config/write.",
+						"hidden": true,
+						"name": "azure-webapp-auth-update-quick-action"
+					},
+					{
+						"description": "Enables App Service Authentication for the web app. Required permissions: Microsoft.Web/sites/config/read, Microsoft.Web/sites/config/write.",
+						"hidden": true,
+						"name": "azure-appservice-webapp-auth-settings-update-quick-action"
+					},
+					{
+						"description": "Disables cross-tenant object replication for the storage account, preventing data from being copied to other Azure AD tenants. Required permissions: Microsoft.Storage/storageAccounts/read, Microsoft.Storage/storageAccounts/write.",
+						"hidden": true,
+						"name": "azure-storage-disable-cross-tenant-replication-quick-action"
+					},
+					{
+						"description": "Enables HTTP 2.0 for the Function App. Deprecated. Use Set Web App HTTP Version to 2.0 instead. Required permissions: Microsoft.Web/sites/config/read, Microsoft.Web/sites/config/write.",
+						"hidden": true,
+						"name": "azure-set-function-app-http-version2-0-quick-action"
+					},
+					{
+						"description": "Disables public access to blobs for the storage account, blocking anonymous/public read access to containers and blobs. Required permissions: Microsoft.Storage/storageAccounts/read, Microsoft.Storage/storageAccounts/write.",
+						"hidden": true,
+						"name": "azure-storage-disable-storage-account-public-access-quick-action"
+					},
+					{
+						"description": "Disables remote debugging for the web app to reduce the risk of unauthorized code access. Deprecated. Use Disable Remote Debugging on Web App instead. Required permissions: Microsoft.Web/sites/config/read, Microsoft.Web/sites/config/write.",
+						"hidden": true,
+						"name": "azure-webapp-disable-remote-debugging-quick-action"
+					},
+					{
+						"description": "Disables remote debugging for the web app to reduce the risk of unauthorized code access. Required permissions: Microsoft.Web/sites/config/read, Microsoft.Web/sites/config/write.",
+						"hidden": true,
+						"name": "azure-appservice-webapp-config-disable-remote-debugging-quick-action"
+					},
+					{
+						"description": "Returns actual usage and cost details for a given time period, optionally filtered by service name. Required permission: Microsoft.Consumption/usageDetails/read.",
+						"hidden": false,
+						"name": "azure-billing-usage-list"
+					},
+					{
+						"description": "Returns cost forecast for a subscription over a given time range. Required permission: Microsoft.CostManagement/forecast/read.",
+						"hidden": false,
+						"name": "azure-billing-forecast-list"
+					},
+					{
+						"description": "Lists configured budgets at the subscription or resource group level. Required permission: Microsoft.Consumption/budgets/read.",
+						"hidden": false,
+						"name": "azure-billing-budgets-list"
+					},
+					{
+						"description": "Sets the web app's minimum accepted TLS version to 1.2 to enhance security. Deprecated. Use Set Web App Minimum TLS Version instead. Required permissions: Microsoft.Web/sites/config/read, Microsoft.Web/sites/config/write.",
+						"hidden": true,
+						"name": "azure-webapp-set-min-tls-version-quick-action"
+					},
+					{
+						"description": "Sets the web app's minimum accepted TLS version to 1.2 to enhance security. Required permissions: Microsoft.Web/sites/config/read, Microsoft.Web/sites/config/write.",
+						"hidden": true,
+						"name": "azure-appservice-webapp-config-update-min-tls-version-quick-action"
+					},
+					{
+						"description": "Sets the Function App's minimum accepted TLS version to 1.2 to enhance security. Deprecated. Use Set Web App Minimum TLS Version instead. Required permissions: Microsoft.Web/sites/config/read, Microsoft.Web/sites/config/write.",
+						"hidden": true,
+						"name": "azure-function-app-set-min-tls-version-quick-action"
+					},
+					{
+						"description": "Enforces secure transport (SSL/TLS) for connections to the MySQL Flexible Server. Required permissions: Microsoft.DBforMySQL/flexibleServers/configurations/read, Microsoft.DBforMySQL/flexibleServers/configurations/write.",
+						"hidden": true,
+						"name": "azure-mysql-set-secure-transport-quick-action"
+					},
+					{
+						"description": "Sets the storage account’s default network action to Deny. Only explicitly allowed IPs, subnets, or trusted Azure services will have access. Required permissions: Microsoft.Storage/storageAccounts/read, Microsoft.Storage/storageAccounts/write.",
+						"hidden": true,
+						"name": "azure-network-disable-storage-account-access-quick-action"
+					},
+					{
+						"description": "Sets the log profile’s retention policy to 365 days and enables it across all supported locations. Required permissions: Microsoft.Insights/logprofiles/read, Microsoft.Insights/logprofiles/write.",
+						"hidden": true,
+						"name": "azure-monitor-log-retention-period-quick-action"
+					},
+					{
+						"description": "Enforces HTTPS-only traffic for the storage account, rejecting any requests made over HTTP. Required permissions: Microsoft.Storage/storageAccounts/read, Microsoft.Storage/storageAccounts/write.",
+						"hidden": true,
+						"name": "azure-set-storage-account-https-only-quick-action"
+					},
+					{
+						"description": "Assigns a system-managed identity to the identified Function App, enabling secure access to Azure services without manual credential management. Deprecated. Use Assign Web App Managed Identity instead. Required permissions: Microsoft.Web/sites/read, Microsoft.Web/sites/write.",
+						"hidden": true,
+						"name": "azure-webapp-update-assign-managed-identity-quick-action"
+					},
+					{
+						"description": "Enables blob soft delete for the storage account to retain deleted blobs for 30 days. The quick action is now deprecated, please use Enable Blob Soft Deletion. Required permissions: Microsoft.Storage/storageAccounts/blobServices/read, Microsoft.Storage/storageAccounts/blobServices/write.",
+						"hidden": true,
+						"name": "azure-storage-blob-enable-soft-delete-quick-action"
+					},
+					{
+						"description": "Enables blob soft delete for the storage account to retain deleted blobs for 30 days. Required permissions: Microsoft.Storage/storageAccounts/blobServices/read, Microsoft.Storage/storageAccounts/blobServices/write.",
+						"hidden": true,
+						"name": "azure-storage-blob-soft-deletion-enable-quick-action"
+					},
+					{
+						"description": "Disables all public and private network access for a managed disk. Deprecated. Use Disable Public and Private Access to VM Disk instead. Required permissions: Microsoft.Compute/disks/read, Microsoft.Compute/disks/write.",
+						"hidden": true,
+						"name": "azure-disable-public-private-access-vm-disk-quick-action"
+					},
+					{
+						"description": "Disables all public and private network access for the managed disk. Required permissions: Microsoft.Compute/disks/read, Microsoft.Compute/disks/write.",
+						"hidden": true,
+						"name": "azure-disable-public-n-private-access-vm-disk-quick-action"
+					},
+					{
+						"description": "Sets the data access authentication mode for the managed disk to Azure Active Directory. Deprecated. Use Set Disk Data Access to Azure AD instead. Required permissions: Microsoft.Compute/disks/read, Microsoft.Compute/disks/write.",
+						"hidden": true,
+						"name": "azure-disk-set-data-access-ad-quick-action"
+					},
+					{
+						"description": "Sets the data access authentication mode for the managed disk to Azure Active Directory. Required permissions: Microsoft.Compute/disks/read, Microsoft.Compute/disks/write.",
+						"hidden": true,
+						"name": "azure-compute-disk-update-data-access-ad-quick-action"
+					},
+					{
+						"description": "Disables public network access and content exports for the Azure Container Registry (ACR) to enhance security. Deprecated. Use Disable Public Access \u0026 Exports on ACR instead. Required permissions: Microsoft.ContainerRegistry/registries/read, Microsoft.ContainerRegistry/registries/write.",
+						"hidden": true,
+						"name": "azure-acr-disable-public-private-access-quick-action"
+					},
+					{
+						"description": "Disables public network access and content exports for the Azure Container Registry (ACR) to enhance security.",
+						"hidden": true,
+						"name": "azure-cr-disable-public-private-access-quick-action"
+					},
+					{
+						"description": "Disables the legacy 'authentication as ARM' feature for the Azure Container Registry (ACR). Deprecated. Use Disable ACR ARM Authentication instead. Required permissions: Microsoft.ContainerRegistry/registries/read, Microsoft.ContainerRegistry/registries/write.",
+						"hidden": true,
+						"name": "azure-acr-disable-authentication-as-arm-quick-action"
+					},
+					{
+						"description": "Disables the legacy 'authentication as ARM' feature for the Azure Container Registry (ACR). Required permissions: Microsoft.ContainerRegistry/registries/read, Microsoft.ContainerRegistry/registries/write.",
+						"hidden": true,
+						"name": "azure-cr-disable-authentication-as-arm-quick-action"
+					},
+					{
+						"description": "Disables anonymous pull access for the Azure Container Registry (ACR), requiring clients to authenticate before pulling images. Deprecated. Use Disable Anonymous Pull for ACR instead. Required permissions: Microsoft.ContainerRegistry/registries/read, Microsoft.ContainerRegistry/registries/write.",
+						"hidden": true,
+						"name": "azure-acr-disable-anonymous-pull-quick-action"
+					},
+					{
+						"description": "Disables anonymous pull access for the Azure Container Registry (ACR), requiring clients to authenticate before pulling images. Required permissions: Microsoft.ContainerRegistry/registries/read, Microsoft.ContainerRegistry/registries/write.",
+						"hidden": true,
+						"name": "azure-cr-disable-anonymous-pull-quick-action"
+					},
+					{
+						"description": "Applies Microsoft Defender for Cloud built-in recommendations by creating a policy assignment\nfor the SecurityCenterBuiltIn initiative. This sets the following policies to 'AuditIfNotExists':\ndisk encryption monitoring (Windows and Linux), system updates monitoring, and JIT network access monitoring.\nRules for adaptive application controls, endpoint protection, and security configuration are excluded. Required permissions: Microsoft.Authorization/policyAssignments/read, Microsoft.Authorization/policyAssignments/write.\n",
+						"hidden": true,
+						"name": "azure-policy-assignment-create-quick-action"
+					},
+					{
+						"description": "Enables logging client disconnections on the PostgreSQL server. Deprecated due to the retirement of Azure PostgreSQL Single Server. Required permissions: Microsoft.DBforPostgreSQL/servers/configurations/read, Microsoft.DBforPostgreSQL/servers/configurations/write.",
+						"hidden": true,
+						"name": "azure-postgres-config-set-disconnection-logging-quick-action"
+					},
+					{
+						"description": "Enables checkpoint logging on the PostgreSQL server. Deprecated due to the retirement of Azure PostgreSQL Single Server. Required permissions: Microsoft.DBforPostgreSQL/servers/configurations/read, Microsoft.DBforPostgreSQL/servers/configurations/write.",
+						"hidden": true,
+						"name": "azure-postgres-config-set-checkpoint-logging-quick-action"
+					},
+					{
+						"description": "Enables connection throttling on the PostgreSQL server to manage log verbosity for concurrent connection queries and errors. Deprecated due to the retirement of Azure PostgreSQL Single Server. Required permissions: Microsoft.DBforPostgreSQL/servers/configurations/read, Microsoft.DBforPostgreSQL/servers/configurations/write.",
+						"hidden": true,
+						"name": "azure-postgres-config-set-connection-throttling-quick-action"
+					},
+					{
+						"description": "Enables email notifications to account administrators for SQL database threat detection alerts.",
+						"hidden": true,
+						"name": "azure-sql-db-threat-policy-update-quick-action"
+					},
+					{
+						"description": "Enables Transparent Data Encryption (TDE) for the SQL database to encrypt data at rest.",
+						"hidden": true,
+						"name": "azure-sql-db-transparent-data-encryption-enable-tde-quick-action"
+					},
+					{
+						"description": "Enables soft delete and purge protection for the Key Vault to prevent the permanent loss of keys and secrets. Note: Once purge-protection and soft-delete is enabled for a key vault, the action is irreversible.",
+						"hidden": true,
+						"name": "azure-key-vault-purge-and-soft-delete-enable-quick-action"
+					},
+					{
+						"description": "Enforces HTTPS-only traffic for the App Service.",
+						"hidden": true,
+						"name": "azure-webapp-set-webapp-to-https-only-quick-action"
+					},
+					{
+						"description": "Disables key-based write access for Cosmos DB metadata to enhance security.",
+						"hidden": true,
+						"name": "azure-cosmos-db-disable-key-quick-action"
+					},
+					{
+						"description": "Enables client certificate authentication for the App Service to secure incoming requests. Only clients that have a valid certificate will be able to reach the app.",
+						"hidden": true,
+						"name": "azure-webapp-enable-client-cert-quick-action"
+					},
+					{
+						"description": "Enables logging client connections on the PostgreSQL. Deprecated due to the retirement of Azure PostgreSQL Single Server. Required permissions: Microsoft.DBforPostgreSQL/servers/configurations/read, Microsoft.DBforPostgreSQL/servers/configurations/write.",
+						"hidden": true,
+						"name": "azure-postgres-config-set-session-connection-logging-quick-action"
+					},
+					{
+						"description": "Sets the log retention period for the PostgreSQL server to 4 days. NOTE: The recommended log retention period can be from 4 to 7 days. Deprecated due to the retirement of Azure PostgreSQL Single Server. Required permissions: Microsoft.DBforPostgreSQL/servers/configurations/read, Microsoft.DBforPostgreSQL/servers/configurations/write.",
+						"hidden": true,
+						"name": "azure-postgres-config-set-log-retention-period-quick-action"
+					},
+					{
+						"description": "Enables logging statement execution duration on the PostgreSQL server to help with performance analysis. Deprecated due to the retirement of Azure PostgreSQL Single Server. Required permissions: Microsoft.DBforPostgreSQL/servers/configurations/read, Microsoft.DBforPostgreSQL/servers/configurations/write.",
+						"hidden": true,
+						"name": "azure-postgres-config-set-statement-logging-quick-action"
+					},
+					{
+						"description": "Enforces SSL/TLS connections for the PostgreSQL server to reject unencrypted traffic. Deprecated due to the retirement of Azure PostgreSQL Single Server. Required permissions: Microsoft.DBforPostgreSQL/servers/read, Microsoft.DBforPostgreSQL/servers/write.",
+						"hidden": true,
+						"name": "azure-postgres-server-update-ssl-enforcement-quick-action"
+					},
+					{
+						"description": "Lists all the virtual machines in the specified subscription. Use the next_token argument to view the next page of results. Required Permissions: Microsoft.Compute/virtualMachines/read.",
+						"hidden": false,
+						"name": "azure-compute-vm-list"
+					}
+				],
+				"description": "Cloud integrations are installed from the **Data Sources** page. To configure a cloud integration, go to Settings \u003e Data Sources and click \"Add Data Source\", select Azure, then in Advanced Settings \u003e Security Capabilities, enable \"Automation\".",
+				"fromversion": "8.11.0",
+				"id": "Azure",
+				"internal": true,
+				"name": "Azure",
+				"toversion": ""
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"playbook": null,
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"created": "2025-07-08T20:30:23Z",
+	"currentVersion": "1.1.22",
+	"defaultDataSource": {
+		"id": "",
+		"name": ""
+	},
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.42.1",
+			"name": "Base"
+		}
+	},
+	"deprecated": false,
+	"description": "Microsoft Azure",
+	"downloads": 0,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"firstCreated": "2025-07-08T20:30:23Z",
+	"fromServerVersion": "8.11.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldFree",
+		"generalFieldSupportIncluded",
+		"generalFieldSupportModule"
+	],
+	"hybrid": false,
+	"id": "Azure",
+	"installMessage": "",
+	"integrations": [
+		{
+			"id": "Azure",
+			"imagePath": "content/packs/Azure/Azure_image.png",
+			"name": "Azure"
+		}
+	],
+	"isOverridable": false,
+	"itemVersion": "1.1.22",
+	"keywords": [],
+	"legacy": true,
+	"modules": [],
+	"name": "Azure",
+	"packID": "Azure",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"searchRank": 0,
+	"serverMaxVersion": "",
+	"serverMinVersion": "8.11.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"supportedModules": [
+		"cloud_posture",
+		"cloud",
+		"cloud_runtime_security",
+		"agentix",
+		"xsiam"
+	],
+	"tags": [],
+	"toServerVersion": "",
+	"updated": "2026-07-01T19:58:48Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "10654236",
+	"videos": []
+}
