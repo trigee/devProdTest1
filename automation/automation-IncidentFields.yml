@@ -1,0 +1,72 @@
+args:
+- auto: PREDEFINED
+  default: true
+  defaultValue: "false"
+  description: Whether to only return non-system fields. If "true", will only output
+    non-system fields. The default value is "false".
+  name: exclude_system_fields
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "true"
+  description: Whether to shorten the incident field names. If "true", will cause
+    output to use shortened field names. The default value is "true".
+  name: short_names
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+comment: Returns a dict of all incident fields that exist in the system.
+commonfields:
+  id: IncidentFields
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - cloud
+    - cloud_runtime_security
+    - cloud_posture
+    - xsiam
+    - edr
+    toServerVersion: ""
+dependson:
+  must:
+  - '|||core-api-get'
+deprecated: true
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: IncidentFields
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  register_module_line('IncidentFields', 'start', __line__())
+
+  return_results(demisto.executeCommand('AlertFields', demisto.args()))
+
+  register_module_line('IncidentFields', 'end', __line__())
+scripttarget: 0
+signature: ozrDSzNiQWPq/3lX9UefS1rEy4P/QbLpO98AfJOVOCUq7Saf1LUUvJgT+WJn0rZnE54vJfZcjjjm3duWVYaYP65D2/OtacFnGAUQDCa+sST3q9pncJmRdeDFDJziMWTunnvt3XhIOPd5TpLNKHRbzs218z6uxM/aCGOuev80FoR1QG39FPItyR/H2fjU1PnNat//yKq/aTpJ0DW6uEC0b8bk5qvHJ9i7ganQblIBPyd/0EtmqkazXTk5j5Plnt8tVXNx4HqoQHqhe5XO2fvD3Lf59yk2wyVZauqewkUiLYECZj3iZWW+cV+e0ghRITNQi1fMESAAG9fExo2CqVe99A==
+subtype: python3
+system: true
+tags: []
+type: python
