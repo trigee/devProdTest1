@@ -1,0 +1,1864 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.10.0
+    isoverridable: false
+    itemVersion: 1.3.54
+    packID: CortexResponseAndRemediation
+    packName: Cortex Response And Remediation
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  **This playbook addresses the following alerts**:
+  - Exchange user mailbox forwarding.
+  - Suspicious Exchange user mailbox forwarding.
+
+  **Playbook Stages**:
+
+  **Triage**:
+  - Collect initial information about the internal user and the associated external forwarding address.
+
+  **Investigation**:
+  - **Check IOCs Reputation**:
+    - Analyze the reputation of IP addresses, email addresses, and domains associated with the alert.
+  - **Get External Email Statistics**:
+    - Retrieve statistics of email interactions between the internal user and the external forwarding address over the last 2 days, including:
+      - Number of emails sent to and received from the external address.
+      - Number of users interacting with the external address.
+  - **Check if User is Risky**:
+    - Assess the internal user's risk score using:
+      - **Core Risk Evaluation**: Identify high-risk users and extract reasons behind elevated risk levels.
+      - **Azure Risk Indicators**: Retrieve Azure risk scores, detections, and recent security alerts for the internal user.
+  - **Check for Azure Alerts**:
+    - Perform an advanced hunting query in Microsoft 365 Defender to extract recent Azure alerts associated with the internal user.
+
+  **Containment**:
+  - Provide a manual task for an analyst to review the findings and determine the appropriate response.
+  - Possible actions:
+    - Disable the user in Azure AD to prevent further unauthorized actions.
+    - Disable mailbox forwarding for the user in Exchange Online.
+    - Disable both user and forwarding.
+    - Take no action.
+  - If the user is disabled, revoke active sessions to ensure immediate containment.
+
+  **Requirements**:
+  For the best results, it's recommended to ensure these integrations are configured and working:
+  - `Cortex Core - Investigation and Response` for Core user risk evaluation.
+  - `Azure Risky Users` for retrieving Azure-based user risk scores and detections.
+  - `Microsoft 365 Defender` for advanced hunting queries and extracting Azure alerts.
+  - `Microsoft Graph User` for disabling user accounts and revoking active sessions.
+  - `Exchange Online EWS` for disabling mailbox forwarding.
+  - `Security And Compliance V2` for fetching email interaction statistics.
+id: Exchange User Mailbox Forwarding
+inputs: []
+name: Exchange User Mailbox Forwarding
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tags:
+- TA0009 - Collection
+- TA0010 - Exfiltration
+- T1114 - Email Collection
+- T1020 - Automated Exfiltration
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1ac1b290-5044-4124-8c24-2b9b64b96c75
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 1ac1b290-5044-4124-8c24-2b9b64b96c75
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -440
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: af350203-fe3e-4456-8cfe-13aa951ad866
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check If User Is Risky
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: af350203-fe3e-4456-8cfe-13aa951ad866
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1090,
+          "y": 120
+        }
+      }
+  "3":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      additional_fields:
+        simple: "true"
+      user_name:
+        simple: ${alert.username}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: This script gathers user data from multiple integrations and returns
+        an Account entity with consolidated information to the context.
+      id: 6ec94329-01df-47f3-8591-913966bc4fa4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get user data
+      playbooktaskmissingcomponent: null
+      script: get-user-data
+      type: regular
+      version: -1
+    taskid: 6ec94329-01df-47f3-8591-913966bc4fa4
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1090,
+          "y": 580
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      updated_after:
+        simple: 1 days
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Returns a list of all risky users and their properties.
+      id: 81e20815-1f8f-4844-895e-68f66ea6db1f
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get Azure user risk score
+      playbooktaskmissingcomponent: null
+      script: '|||azure-risky-users-list'
+      type: regular
+      version: -1
+    taskid: 81e20815-1f8f-4844-895e-68f66ea6db1f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 670,
+          "y": 260
+        }
+      }
+  "5":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: UserData.RiskLevel
+          operator: containsGeneral
+          right:
+            value:
+              simple: HIGH
+      label: HIGH
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "26"
+      HIGH:
+      - "7"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9e18431c-9d6c-4d10-8bf9-a79e259b5472
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check user risk score
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 9e18431c-9d6c-4d10-8bf9-a79e259b5472
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1090,
+          "y": 745
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      detected_date_time_after:
+        simple: ${TimeNow}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Returns a comma-separated list of the Risk Detection objects and
+        their properties.
+      id: 58e997bd-fa51-41b9-8e94-3473c3881e59
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get Azure risky user detections
+      playbooktaskmissingcomponent: null
+      script: '|||azure-risky-users-risk-detections-list'
+      type: regular
+      version: -1
+    taskid: 58e997bd-fa51-41b9-8e94-3473c3881e59
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 670,
+          "y": 745
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "26"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: UserRiskyCoreReason
+      value:
+        complex:
+          accessor: description
+          root: UserData.AdditionalFields.reasons
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9bca58e7-7159-4149-824f-169580c9eb81
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get risky user activity
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 9bca58e7-7159-4149-824f-169580c9eb81
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1090,
+          "y": 910
+        }
+      }
+  "8":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: userPrincipalName
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: AzureRiskyUsers.RiskyUser.userPrincipalName
+                    operator: isEqualString
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert.event.identity_name
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: AzureRiskyUsers.RiskyUser.riskState
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: atRisk
+                  - left:
+                      iscontext: true
+                      value:
+                        simple: AzureRiskyUsers.RiskyUser.riskState
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: confirmedCompromised
+                root: AzureRiskyUsers.RiskyUser
+                transformers:
+                - operator: uniq
+          operator: isEqualString
+          right:
+            iscontext: true
+            value:
+              complex:
+                accessor: identity_name
+                root: Core.OriginalAlert.event
+                transformers:
+                - operator: uniq
+      label: "yes"
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "26"
+      "yes":
+      - "10"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 59da37a5-c608-4f67-84fe-087321520256
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check user risk score
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 59da37a5-c608-4f67-84fe-087321520256
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 670,
+          "y": 420
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "26"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: UserRiskyAzureDetections
+      value:
+        complex:
+          accessor: riskEventType
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: AzureRiskyUsers.RiskDetection.userPrincipalName
+              operator: in
+              right:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert.event.identity_name
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: AzureRiskyUsers.RiskDetection.riskState
+              operator: isEqualString
+              right:
+                value:
+                  simple: atRisk
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: AzureRiskyUsers.RiskDetection.riskState
+              operator: isEqualString
+              right:
+                value:
+                  simple: confirmedCompromised
+          root: AzureRiskyUsers.RiskDetection
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 19e009b2-b4a9-4b69-8a41-18c78f22e4ac
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Extract Azure user detections
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 19e009b2-b4a9-4b69-8a41-18c78f22e4ac
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 670,
+          "y": 910
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      dateFormat:
+        simple: ISO
+      daysAgo:
+        simple: "1"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        Retrieves the current date and time.
+      id: 7ce27bae-e219-4888-8d78-5afe5d9c48b8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get timestamp for Azure detections
+      playbooktaskmissingcomponent: null
+      script: GetTime
+      type: regular
+      version: -1
+    taskid: 7ce27bae-e219-4888-8d78-5afe5d9c48b8
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 670,
+          "y": 580
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "19"
+    note: false
+    quietmode: 0
+    reputationcalc: 2
+    scriptarguments:
+      alert_ids:
+        simple: ${alert.id}
+      filter_alert_fields:
+        simple: "false"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns information about each alert ID.
+      id: c0ff360a-1f8d-4af8-8635-9c29f2c06cf9
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Collect user information
+      playbooktaskmissingcomponent: null
+      script: '|||core-get-cloud-original-alerts'
+      type: regular
+      version: -1
+    taskid: c0ff360a-1f8d-4af8-8635-9c29f2c06cf9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -180
+        }
+      }
+  "12":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      external_enrichment:
+        simple: "true"
+      ip_list:
+        complex:
+          accessor: caller_ip
+          root: Core.OriginalAlert.event
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: This script gathers IP reputation data from multiple integrations
+        and returns an IP entity with consolidated information in the context.
+      id: 8aee3a72-4abc-41e8-8d9a-4c3b79b1b016
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get IP reputation
+      playbooktaskmissingcomponent: null
+      script: ip-enrichment
+      type: regular
+      version: -1
+    taskid: 8aee3a72-4abc-41e8-8d9a-4c3b79b1b016
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -1050,
+          "y": 260
+        }
+      }
+  "13":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "16"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      email:
+        complex:
+          accessor: mailbox_forwarding_address
+          root: Core.OriginalAlert.event
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Return email information and reputation.
+      id: 8b31ebe4-f831-4d96-8be9-68cc325b9bf1
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get Email reputation
+      playbooktaskmissingcomponent: null
+      script: '|||email'
+      type: regular
+      version: -1
+    taskid: 8b31ebe4-f831-4d96-8be9-68cc325b9bf1
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -630,
+          "y": 260
+        }
+      }
+  "14":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "17"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      domain_list:
+        complex:
+          accessor: mailbox_forwarding_address
+          root: Core.OriginalAlert.event
+          transformers:
+          - operator: uniq
+          - args:
+              delimiter:
+                value:
+                  simple: '@'
+              fields:
+                value:
+                  simple: "2"
+            operator: Cut
+      external_enrichment:
+        simple: "true"
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: This script enriches Domains data with information from multiple
+        integrations and returns a "DomainEnrichment" object with consolidated information
+        in the context output.
+      id: b5f28af3-c85f-4e9a-8432-98de0d324f2d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get Domain reputation
+      playbooktaskmissingcomponent: null
+      script: domain-enrichment
+      type: regular
+      version: -1
+    taskid: b5f28af3-c85f-4e9a-8432-98de0d324f2d
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -210,
+          "y": 260
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "12"
+      - "13"
+      - "14"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5563326e-2e66-48cd-83e6-804156328fed
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check IOCs Reputation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 5563326e-2e66-48cd-83e6-804156328fed
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -630,
+          "y": 120
+        }
+      }
+  "16":
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "26"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: MaliciousEmail
+      value:
+        complex:
+          accessor: Indicator
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: email
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          root: DBotScore
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 64be2b3d-af92-455f-818a-e2e4e75a9ee3
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Email reputation
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 64be2b3d-af92-455f-818a-e2e4e75a9ee3
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -630,
+          "y": 420
+        }
+      }
+  "17":
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "26"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: MaliciousDomain
+      value:
+        complex:
+          accessor: Value
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: DomainEnrichment.TIMScore
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          root: DomainEnrichment
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 35e0f51d-e1c2-4737-8f2a-d0b578241e90
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Domain reputation
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 35e0f51d-e1c2-4737-8f2a-d0b578241e90
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -210,
+          "y": 420
+        }
+      }
+  "18":
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 02cbe31c-9cfd-4cb0-833a-85358b09721c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Triage '
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 02cbe31c-9cfd-4cb0-833a-85358b09721c
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -310
+        }
+      }
+  "19":
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+      - "21"
+      - "2"
+      - "35"
+      - "26"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d0de6bf8-23c5-45ee-8c4f-5007e86cd02c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: d0de6bf8-23c5-45ee-8c4f-5007e86cd02c
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -20
+        }
+      }
+  "20":
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "26"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: MaliciousIP
+      value:
+        complex:
+          accessor: Value
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: IPEnrichment.TIMScore
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          root: IPEnrichment
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a4f41b44-31cb-4ffa-8b04-13c043ef3e6e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check IP reputation
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: a4f41b44-31cb-4ffa-8b04-13c043ef3e6e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -1050,
+          "y": 420
+        }
+      }
+  "21":
+    continueonerrortype: ""
+    id: "21"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "23"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d359526d-881e-4905-8933-9c999bd8862e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get External Email Statistics
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: d359526d-881e-4905-8933-9c999bd8862e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 220,
+          "y": 120
+        }
+      }
+  "22":
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "26"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      allow_not_found_exchange_locations:
+        simple: "true"
+      exchange_location:
+        simple: All
+      force:
+        simple: "false"
+      kql:
+        simple: (from:${Core.OriginalAlert.event.mailbox_forwarding_address} OR to:${Core.OriginalAlert.event.mailbox_forwarding_address})
+          AND (Received>=${ComplianceTime} OR Sent>=${ComplianceTime})
+      polling_interval:
+        simple: "1"
+      polling_timeout:
+        simple: "45"
+      preview:
+        simple: "true"
+    separatecontext: true
+    skipunavailable: true
+    task:
+      brand: ""
+      description: |-
+        This playbook performs the following steps:
+        1. Creates a compliance search.
+        2. Starts a compliance search.
+        3. Waits for the compliance search to complete.
+        4. Gets the results of the compliance search as an output.
+        5. Gets the preview results, if specified.
+      id: 2a178317-b1f5-418d-8716-9a2f93d42a8d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: O365 - Security And Compliance - Search
+      playbookName: O365 - Security And Compliance - Search
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 2a178317-b1f5-418d-8716-9a2f93d42a8d
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 220,
+          "y": 420
+        }
+      }
+  "23":
+    continueonerrortype: ""
+    id: "23"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "22"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      dateFormat:
+        simple: ISO
+      daysAgo:
+        simple: "2"
+      extend-context:
+        simple: ComplianceTime=.
+      ignore-outputs:
+        simple: "true"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        Retrieves the current date and time.
+      id: d6c7a3ca-8885-4e9e-8377-03cfe327e1f1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get timestamp for compliance search
+      playbooktaskmissingcomponent: null
+      script: GetTime
+      type: regular
+      version: -1
+    taskid: d6c7a3ca-8885-4e9e-8377-03cfe327e1f1
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 220,
+          "y": 260
+        }
+      }
+  "25":
+    continueonerrortype: ""
+    form:
+      description: Analyst review
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: |-
+            #### Internal User:
+            `${Core.OriginalAlert.event.identity_name}`
+
+            #### External User (forwarded address):
+            `${Core.OriginalAlert.event.mailbox_forwarding_address}`
+
+            ---
+
+            ### Malicious Indicators Found:
+            - **Malicious IP**: `${.=val.MaliciousIP || "None"}`
+            - **Malicious Domain**: `${.=val.MaliciousDomain || "None"}`
+            - **Malicious Email**: `${.=val.MaliciousEmail || "None"}`
+
+            ---
+
+            ### Internal User Risk Analysis:
+            - **User is risky (Core)**: `${.=val.UserRiskyCoreReason ? "Yes, Reason: " + val.UserRiskyCoreReason : "N/A"}`
+            - **User is risky (Azure)**: `${.=val.UserRiskyAzureDetections ? "Yes, Risk Types: " + val.UserRiskyAzureDetections : "N/A"}`
+
+            ---
+
+            ### User Azure Security Alerts:
+            - **Alerts titles from last day**: `${.=val.AzureSecurityAlerts || "N/A"}`
+
+            ---
+
+            ### Email Interaction Statistics of last 2 days:
+            - **Number of users interacted with ${Core.OriginalAlert.event.mailbox_forwarding_address}**:  `${.=val.O365.SecurityAndCompliance.ContentSearch.SearchAction.ExchangeLocation ? Object.keys(val.O365.SecurityAndCompliance.ContentSearch.SearchAction.ExchangeLocation).length : "No results"}`
+
+            - **Number of emails received from ${Core.OriginalAlert.event.mailbox_forwarding_address}**:  `${.=val.O365.SecurityAndCompliance.ContentSearch.SearchAction.Results ? val.O365.SecurityAndCompliance.ContentSearch.SearchAction.Results.filter(r => r.Sender.toLowerCase() === val.Core.OriginalAlert.event.mailbox_forwarding_address.toLowerCase()).length : "No results"}`
+
+            - **Number of emails sent to ${Core.OriginalAlert.event.mailbox_forwarding_address}**: `${.=val.O365.SecurityAndCompliance.ContentSearch.SearchAction.Results ? val.O365.SecurityAndCompliance.ContentSearch.SearchAction.Results.filter(r => r.ReceivedTime && r.Sender.toLowerCase() !== val.Core.OriginalAlert.event.mailbox_forwarding_address.toLowerCase()).length : "No results"}`
+
+            ---
+
+            ### Action Required:
+            Please choose the action you want to perform:
+
+            - **No Action**
+            - **Disable User**: Disable the user which configured the forwarding action on Azure.
+             - **Disable Forwarding**: Disable the forwarding action performed by the user.
+            - **Disable Both**: Disable the user in Azure and also disable the forwarding action.
+
+            **Note**: Disabling the auto-forwarding feature organization-wide can prevent potential data leakage and improve email security.
+        options: []
+        optionsarg:
+        - simple: No Action
+        - simple: Disable User
+        - simple: Disable Forwarding
+        - simple: Disable Both
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: singleSelect
+      sender: Your SOC team
+      syncid: ""
+      title: Analyst Action
+      totalanswers: 0
+    id: "25"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body: null
+      cc: null
+      format: ""
+      methods: []
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      '#none#':
+      - "27"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Message
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9a18dcd2-4dd3-4aa0-8697-02fa65b8089d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual Task - User Action Decision
+      playbooktaskmissingcomponent: null
+      type: collection
+      version: -1
+    taskid: 9a18dcd2-4dd3-4aa0-8697-02fa65b8089d
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1220
+        }
+      }
+  "26":
+    continueonerrortype: ""
+    id: "26"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "25"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9fceaec3-3ffe-45aa-8501-3eafac491d2c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 9fceaec3-3ffe-45aa-8501-3eafac491d2c
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1090
+        }
+      }
+  "27":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Analyst Action.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: No Action
+      label: No Action
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Analyst Action.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: Disable User
+      label: Disable User
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Analyst Action.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: Disable Forwarding
+      label: Disable Forwarding
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: Analyst Action.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: Disable Both
+      label: Disable Both
+    continueonerrortype: ""
+    id: "27"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      Disable Both:
+      - "39"
+      Disable Forwarding:
+      - "42"
+      Disable User:
+      - "41"
+      No Action:
+      - "28"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6947fa8d-dd5e-494a-8f94-03c19036be26
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Evaluate Analyst Response for Next Action
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 6947fa8d-dd5e-494a-8f94-03c19036be26
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1389
+        }
+      }
+  "28":
+    continueonerrortype: ""
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "29"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 0c2e3c83-aebd-47bf-84ce-2f3dd284005d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Close Alert
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 0c2e3c83-aebd-47bf-84ce-2f3dd284005d
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 2172
+        }
+      }
+  "29":
+    continueonerrortype: ""
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "33"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      closeReason:
+        complex:
+          root: .
+          transformers:
+          - args:
+              conditions:
+                value:
+                  simple: |-
+                    [
+                        {
+                          "condition": "#{Analyst Action.Answers.0} in ['Disable User','Disable Forwarding','Disable Both']",
+                          "return": "Resolved - True Positive"
+                        },
+                        {
+                          "condition": "#{MaliciousIP} != null or #{MaliciousEmail} != null or #{MaliciousDomain} != null or #{AzureSecurityAlerts} != null or #{UserRiskyCoreReason} != null or #{UserRiskyAzureDetections} != null",
+                          "return": "Resolved - Other"
+                        },
+                        {
+                          "default": "Resolved - False Positive"
+                        }
+                    ]
+              flags: {}
+            operator: If-Elif
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.close.inv
+      id: 555473c9-54f1-485f-87c7-77d049ff0ad1
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close Alert
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: 555473c9-54f1-485f-87c7-77d049ff0ad1
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 2314
+        }
+      }
+  "30":
+    continueonerrortype: ""
+    id: "30"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "28"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      identity:
+        complex:
+          accessor: identity_name
+          root: Core.OriginalAlert.event
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Disable mail forwarding for a given user.
+      id: d8140792-902e-43dc-8735-ba8ea75032a8
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Disable forwarding action
+      playbooktaskmissingcomponent: null
+      script: '|||ews-mail-forwarding-disable'
+      type: regular
+      version: -1
+    taskid: d8140792-902e-43dc-8735-ba8ea75032a8
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -236,
+          "y": 1868
+        }
+      }
+  "31":
+    continueonerrortype: ""
+    id: "31"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "34"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      brands:
+        simple: Microsoft Graph User
+      user_name:
+        complex:
+          accessor: identity_name
+          root: Core.OriginalAlert.event
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: This script disables users for multiple services.
+      id: f1db6f8a-0f7f-44f4-8e03-97775d8bafe9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Disable user in Azure
+      playbooktaskmissingcomponent: null
+      script: disable-user
+      type: regular
+      version: -1
+    taskid: f1db6f8a-0f7f-44f4-8e03-97775d8bafe9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 220,
+          "y": 1868
+        }
+      }
+  "33":
+    continueonerrortype: ""
+    id: "33"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 37a8e3aa-8d05-49d5-8839-ea94acc26f3a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 37a8e3aa-8d05-49d5-8839-ea94acc26f3a
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 2503
+        }
+      }
+  "34":
+    continueonerrortype: ""
+    id: "34"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "28"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      user_name:
+        complex:
+          accessor: identity_name
+          root: Core.OriginalAlert.event
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: This script clears user sessions across multiple integrations for
+        a list of usernames.
+      id: a5a85fc9-5d43-4dcf-8b3a-3303a8ed321b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Revoke user session
+      playbooktaskmissingcomponent: null
+      script: clear-user-session
+      type: regular
+      version: -1
+    taskid: a5a85fc9-5d43-4dcf-8b3a-3303a8ed321b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 220,
+          "y": 2029
+        }
+      }
+  "35":
+    continueonerrortype: ""
+    id: "35"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "38"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns a list of all risky users and their properties.
+      id: 6f4cd3b5-60d1-4cb6-8582-4321319b7aa8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check For Azure Alerts
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 6f4cd3b5-60d1-4cb6-8582-4321319b7aa8
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1500,
+          "y": 120
+        }
+      }
+  "36":
+    continueonerrortype: ""
+    id: "36"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "37"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        simple: let _start = now(-1d); AlertEvidence | where Timestamp >= _start |
+          where AccountUpn == "${UserUPN}"
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: 'Advanced hunting is a threat-hunting tool that uses specially
+        constructed queries to examine the past 30 days of event data in Microsoft
+        365 Defender. Details on how to write queries: https://docs.microsoft.com/en-us/microsoft-365/security/defender/advanced-hunting-query-language?view=o365-worldwide.'
+      id: e302b09c-496a-4e41-8a76-3eb89b8c8266
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get Azure alerts
+      playbooktaskmissingcomponent: null
+      script: '|||microsoft-365-defender-advanced-hunting'
+      type: regular
+      version: -1
+    taskid: e302b09c-496a-4e41-8a76-3eb89b8c8266
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1500,
+          "y": 745
+        }
+      }
+  "37":
+    continueonerrortype: ""
+    id: "37"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "26"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: AzureSecurityAlerts
+      value:
+        complex:
+          accessor: Title
+          root: Microsoft365Defender.Hunt.results
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8f66eab4-f9a6-49c3-8202-1e26c1993cd9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Extract Azure user alerts
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 8f66eab4-f9a6-49c3-8202-1e26c1993cd9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1500,
+          "y": 910
+        }
+      }
+  "38":
+    continueonerrortype: ""
+    id: "38"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "36"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: UserUPN
+      value:
+        complex:
+          accessor: identity_name
+          root: Core.OriginalAlert.event
+          transformers:
+          - operator: FirstArrayElement
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a8d35ffd-1cb6-4037-83b4-9d2a9b823606
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get user UPN
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: a8d35ffd-1cb6-4037-83b4-9d2a9b823606
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1500,
+          "y": 580
+        }
+      }
+  "39":
+    continueonerrortype: ""
+    id: "39"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "42"
+      - "41"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b3384680-5740-433d-8dbf-b3a1103b4580
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Disable User & Forwarding Settings
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: b3384680-5740-433d-8dbf-b3a1103b4580
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 2,
+          "y": 1522
+        }
+      }
+  "41":
+    continueonerrortype: ""
+    id: "41"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "31"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      severity:
+        simple: Medium
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e866ee0c-8e60-4240-89f5-086854c3cf91
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Increase Alert Severity to Medium
+      playbooktaskmissingcomponent: null
+      script: IncreaseAlertSeverity
+      type: regular
+      version: -1
+    taskid: e866ee0c-8e60-4240-89f5-086854c3cf91
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 220,
+          "y": 1693
+        }
+      }
+  "42":
+    continueonerrortype: ""
+    id: "42"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "30"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      severity:
+        simple: Medium
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: cf8bbdd1-10b4-4973-8136-050225e7ce52
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Increase Alert Severity to Medium
+      playbooktaskmissingcomponent: null
+      script: IncreaseAlertSeverity
+      type: regular
+      version: -1
+    taskid: cf8bbdd1-10b4-4973-8136-050225e7ce52
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -236,
+          "y": 1693
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "27_28_No Action": 0.67,
+      "27_39_Disable Both": 0.52,
+      "5_26_#default#": 0.14,
+      "5_7_HIGH": 0.6,
+      "8_26_#default#": 0.19
+    },
+    "paper": {
+      "dimensions": {
+        "height": 3003,
+        "width": 2931,
+        "x": -1050,
+        "y": -440
+      }
+    }
+  }
