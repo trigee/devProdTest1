@@ -1,0 +1,428 @@
+{
+	"author": "Cortex",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Messaging And Conferencing"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"integration",
+		"automation",
+		"agentixaction"
+	],
+	"contentItems": {
+		"agentixaction": [
+			{
+				"category": "",
+				"description": "Lists messages from a Microsoft Teams chat or channel based on the provided chat ID or channel name.\nTo retrieve the next page of results, use the value from the `MicrosoftTeams.MessagesListNextLink` output field as the `next_link` argument in the next execution.",
+				"fromversion": "8.12.0",
+				"id": "MicrosoftTeamsListMessages",
+				"name": "MicrosoftTeamsListMessages",
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			}
+		],
+		"agentixagent": null,
+		"agentixknowledgecollection": null,
+		"agentixknowledgesource": null,
+		"agentixskill": null,
+		"automation": [
+			{
+				"description": "This script grants a user the permissions needed to create a Teams meeting. It connects to MS Teams, creating an application access policy to a chosen application and then grants a user permissions.",
+				"fromversion": "5.5.0",
+				"id": "ConfigureAzureApplicationAccessPolicy",
+				"name": "ConfigureAzureApplicationAccessPolicy",
+				"tags": []
+			},
+			{
+				"description": "Send a team member or channel a question with predefined response options on Microsoft Teams. The response can be used to close a task (might be conditional) in a playbook.",
+				"fromversion": "5.0.0",
+				"id": "MicrosoftTeamsAsk",
+				"name": "MicrosoftTeamsAsk",
+				"tags": [
+					"microsoftteams"
+				]
+			}
+		],
+		"casefield": null,
+		"classifier": null,
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": null,
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "Messaging and Conferencing",
+				"commands": [
+					{
+						"description": "Sends a message to the specified teams.\nTo mention a user in the message, add a semicolon \";\" at the end of the user mention. For example: @Bruce Willis;.\n\nIf sending a reply to a message, the message ID must be provided and the reply will be sent via the Graph API which means\nthe message will appear from the account used to authorize the integration instance and not the bot. Setting the account's name\nand picture to match the bot will make it appear to be from the same source.",
+						"hidden": false,
+						"name": "send-notification"
+					},
+					{
+						"description": "Mirrors the XSOAR investigation to the specified Microsoft Teams channel. Supports only standard channels.",
+						"hidden": false,
+						"name": "mirror-investigation"
+					},
+					{
+						"description": "Deletes the specified Microsoft Teams channel.",
+						"hidden": false,
+						"name": "close-channel"
+					},
+					{
+						"description": "Returns real-time and historical data on the integration status.",
+						"hidden": false,
+						"name": "microsoft-teams-integration-health"
+					},
+					{
+						"description": "Tests the connectivity to MicrosoftTeams.",
+						"hidden": false,
+						"name": "microsoft-teams-auth-test"
+					},
+					{
+						"description": "Creates a new channel in a Microsoft Teams team.",
+						"hidden": false,
+						"name": "create-channel"
+					},
+					{
+						"description": "Adds a member (user) to a private/shared channel.",
+						"hidden": false,
+						"name": "add-user-to-channel"
+					},
+					{
+						"description": "Ring a user's Teams account. Note: This is a ring only! no media will play in case the generated call is answered. To use this make sure your Bot has the following permissions - Calls.Initiate.All and Calls.InitiateGroupCall.All",
+						"hidden": false,
+						"name": "microsoft-teams-ring-user"
+					},
+					{
+						"description": "Adds a member (user) to a private/shared channel.",
+						"hidden": false,
+						"name": "microsoft-teams-add-user-to-channel"
+					},
+					{
+						"description": "Creates a new channel in a Microsoft Teams team.",
+						"hidden": false,
+						"name": "microsoft-teams-create-channel"
+					},
+					{
+						"description": "Creates a new meeting in Microsoft Teams.",
+						"hidden": false,
+						"name": "microsoft-teams-create-meeting"
+					},
+					{
+						"description": "Removes a member (user) from a private/shared channel.",
+						"hidden": false,
+						"name": "microsoft-teams-user-remove-from-channel"
+					},
+					{
+						"description": "Retrieves a list of members from a channel.",
+						"hidden": false,
+						"name": "microsoft-teams-channel-user-list"
+					},
+					{
+						"description": "Creates a new chat.\nNote: Only one oneOnOne chat can exist between two members. If a oneOnOne chat already exists, it will be returned.",
+						"hidden": false,
+						"name": "microsoft-teams-chat-create"
+					},
+					{
+						"description": "Sends a new chat message in the specified chat. \nNotes: \n- This command works with the consent user, not with the bot. Which means, the message is sent to the given chat by the consent user, not the bot. \n- This command will fail if the consent user is not a member of the destination chat.\n- This command may fail if the bot app has not yet appeared in the \"built for your org\" section in teams.\n- This command can only send messages from type 'message'.",
+						"hidden": false,
+						"name": "microsoft-teams-message-send-to-chat"
+					},
+					{
+						"description": "Adds a member (user) to a group chat.\nNotes: \n- This command works with the consent user, not with the bot. Which means, the member will be added to the given chat by the consent user, not the bot. \n- This command will fail if the consent user is not a member of the destination chat.",
+						"hidden": false,
+						"name": "microsoft-teams-chat-add-user"
+					},
+					{
+						"description": "Retrieves a list of members from a chat.\n\nNotes: \n- This command works with the consent user, not with the bot. Which means, that the chat must include the consent user.",
+						"hidden": false,
+						"name": "microsoft-teams-chat-member-list"
+					},
+					{
+						"description": "Updates a message.",
+						"hidden": false,
+						"name": "microsoft-teams-message-update"
+					},
+					{
+						"description": "Retrieves a list of messages in a chat.\n\n Notes:\n- This command works with the consent user, not with the bot. Which means, that the chat must include the consent user.",
+						"hidden": false,
+						"name": "microsoft-teams-chat-message-list"
+					},
+					{
+						"description": "Retrieves a list of messages in a chat or channel.\n\nNotes:\n- When retrieving messages from a chat, this command works with the consent user, not with the bot. Which means, that the chat must include the consent user.",
+						"hidden": false,
+						"name": "microsoft-teams-list-messages"
+					},
+					{
+						"description": "Retrieves a list of chats that the consent user is a member of. If 'chat' is specified, retrieves this chat only.",
+						"hidden": false,
+						"name": "microsoft-teams-chat-list"
+					},
+					{
+						"description": "Updates the chat name. It can only be set for group chats.\n\nNotes: \n- This command works with the consent user, not with the bot. Which means, that the chat must include the consent user.",
+						"hidden": false,
+						"name": "microsoft-teams-chat-update"
+					},
+					{
+						"description": "Generate the login url used for Authorization code flow.",
+						"hidden": false,
+						"name": "microsoft-teams-generate-login-url"
+					},
+					{
+						"description": "Run this command if you need to rerun the authentication process.",
+						"hidden": false,
+						"name": "microsoft-teams-auth-reset"
+					},
+					{
+						"description": "Retrieves the API permissions associated with the used graph access token. \n\nNote: Use this command if you encounter insufficient permissions error when attempting to execute an integration command.\n Compare the permissions list obtained for the token with the permissions required for the desired command (can be found in the integration documentation). If there are missing API permissions, add them to your application, and then run the `microsoft-teams-auth-reset` command (as described here - https://xsoar.pan.dev/docs/reference/integrations/microsoft-teams#microsoft-teams-auth-reset).",
+						"hidden": false,
+						"name": "microsoft-teams-token-permissions-list"
+					},
+					{
+						"description": "Generates the messaging endpoint, based on the server URL, the server version, and the instance configurations. \n\nNote: The messaging endpoint should be added to the Demisto bot configuration in Microsoft Teams as part of the prerequisites of the integration's setup. For more information, see - https://xsoar.pan.dev/docs/reference/integrations/microsoft-teams#create-the-demisto-bot-in-microsoft-teams.",
+						"hidden": false,
+						"name": "microsoft-teams-create-messaging-endpoint"
+					},
+					{
+						"description": "Sends a message to the specified teams.",
+						"hidden": true,
+						"name": "teams-send-notification-quick-action"
+					},
+					{
+						"description": "Sends a proactive message to any Microsoft Teams user across the organization.\nThis command enables direct communication with users without requiring them to be in a specific team or channel.\nNote: Either 'message' or 'adaptive_card' must be provided, but not both.",
+						"hidden": false,
+						"name": "microsoft-teams-send-proactive-message"
+					}
+				],
+				"description": "Send messages and notifications to your team members.",
+				"fromversion": "5.0.0",
+				"id": "Microsoft Teams",
+				"name": "Microsoft Teams",
+				"toversion": ""
+			},
+			{
+				"category": "Messaging and Conferencing",
+				"commands": [
+					{
+						"description": "Run this command to start the authorization process and follow the instructions in the command results.",
+						"hidden": false,
+						"name": "microsoft-teams-auth-start"
+					},
+					{
+						"description": "Run this command to complete the authorization process.\nShould be used after running the microsoft-teams-auth-start command.",
+						"hidden": false,
+						"name": "microsoft-teams-auth-complete"
+					},
+					{
+						"description": "Run this command if for some reason you need to rerun the authentication process.",
+						"hidden": false,
+						"name": "microsoft-teams-auth-reset"
+					},
+					{
+						"description": "Tests connectivity to Microsoft.",
+						"hidden": false,
+						"name": "microsoft-teams-auth-test"
+					},
+					{
+						"description": "Creates a new team.",
+						"hidden": false,
+						"name": "microsoft-teams-team-create"
+					},
+					{
+						"description": "Create a new team under a group. In order to create a team, the group must have a least one owner and the group cannot be of type Security.",
+						"hidden": false,
+						"name": "microsoft-teams-team-create-from-group"
+					},
+					{
+						"description": "Returns all the groups that have teams in an organization.",
+						"hidden": false,
+						"name": "microsoft-teams-teams-list"
+					},
+					{
+						"description": "Update the properties of the specified team.",
+						"hidden": false,
+						"name": "microsoft-teams-team-update"
+					},
+					{
+						"description": "Deletes a group. Note: it might take time for the team to disappear from the teams list.",
+						"hidden": false,
+						"name": "microsoft-teams-team-delete"
+					},
+					{
+						"description": "Retrieve the properties and relationships of the specified team.",
+						"hidden": false,
+						"name": "microsoft-teams-team-get"
+					},
+					{
+						"description": "Returns the members of the specified team.",
+						"hidden": false,
+						"name": "microsoft-teams-members-list"
+					},
+					{
+						"description": "Gets a member of a team.",
+						"hidden": false,
+						"name": "microsoft-teams-member-get"
+					},
+					{
+						"description": "Add a user to be a team member.",
+						"hidden": false,
+						"name": "microsoft-teams-member-add"
+					},
+					{
+						"description": "Remove a member from the team.",
+						"hidden": false,
+						"name": "microsoft-teams-member-remove"
+					},
+					{
+						"description": "Updates a team member.",
+						"hidden": false,
+						"name": "microsoft-teams-member-update"
+					},
+					{
+						"description": "Archive the specified team. When a team is archived, users can no longer send or like messages on any channel in the team, edit the team's name, description, or other settings, or in general make most changes to the team. Membership changes to the team continue to be allowed. Archiving is an async operation. A team is archived once the async operation completes successfully, which may occur subsequent to a response from this command. In order to archive a team, the team and group must have an owner.",
+						"hidden": false,
+						"name": "microsoft-teams-team-archive"
+					},
+					{
+						"description": "Restore an archived team. This restores the users' ability to send messages and edit the team, abiding by tenant and team settings. Unarchiving is an async operation. A team is unarchived once the async operation completes successfully, which may occur subsequent to a response from this command.",
+						"hidden": false,
+						"name": "microsoft-teams-team-unarchive"
+					},
+					{
+						"description": "Create a copy of a team. This operation also creates a copy of the corresponding group. Cloning is a long-running operation.",
+						"hidden": false,
+						"name": "microsoft-teams-team-clone"
+					},
+					{
+						"description": "Get the teams in Microsoft Teams that the user is a direct member of.",
+						"hidden": false,
+						"name": "microsoft-teams-teams-list-joined"
+					}
+				],
+				"description": "Manage teams and members in Microsoft Teams.",
+				"fromversion": "5.0.0",
+				"id": "Microsoft Teams Management",
+				"name": "Microsoft Teams Management",
+				"toversion": ""
+			},
+			{
+				"category": "Messaging and Conferencing",
+				"commands": [
+					{
+						"description": "Send a message to Microsoft Teams via Incoming Webhook.",
+						"hidden": false,
+						"name": "ms-teams-message"
+					}
+				],
+				"description": "Integration for sending notifications to a Microsoft Teams channel via a workflow of type `Post to a channel when a webhook request is received`.",
+				"fromversion": "6.2.0",
+				"id": "Microsoft Teams via Webhook",
+				"name": "Microsoft Teams via Webhook",
+				"toversion": ""
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"playbook": null,
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"created": "2025-03-29T09:43:16Z",
+	"currentVersion": "1.5.58",
+	"defaultDataSource": {
+		"id": "Microsoft Teams",
+		"name": "Microsoft Teams"
+	},
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.42.0",
+			"name": "Base"
+		}
+	},
+	"deprecated": false,
+	"description": "Send messages and notifications to your team members.",
+	"downloads": 0,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"firstCreated": "2025-03-29T09:43:16Z",
+	"fromServerVersion": "5.0.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldFree",
+		"generalFieldSupportIncluded",
+		"generalFieldSupportModule"
+	],
+	"hybrid": false,
+	"id": "MicrosoftTeams",
+	"installMessage": "",
+	"integrations": [
+		{
+			"id": "Microsoft Teams",
+			"imagePath": "content/packs/MicrosoftTeams/MicrosoftTeams_image.png",
+			"name": "Microsoft Teams"
+		},
+		{
+			"id": "Microsoft Teams Management",
+			"imagePath": "content/packs/MicrosoftTeams/MicrosoftTeamsManagement_image.png",
+			"name": "Microsoft Teams Management"
+		},
+		{
+			"id": "Microsoft Teams via Webhook",
+			"imagePath": "content/packs/MicrosoftTeams/MicrosoftTeamsviaWebhook_image.png",
+			"name": "Microsoft Teams via Webhook"
+		}
+	],
+	"isOverridable": false,
+	"itemVersion": "1.5.58",
+	"keywords": [],
+	"legacy": true,
+	"modules": [],
+	"name": "Microsoft Teams",
+	"packID": "MicrosoftTeams",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"readme": "\n### Pack Contributors:\n\n---\n - nikstuckenbrock\n\nContributions are welcome and appreciated. For more info, visit our [Contribution Guide](https://xsoar.pan.dev/docs/contributing/contributing).",
+	"searchRank": 0,
+	"serverMaxVersion": "",
+	"serverMinVersion": "5.0.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"supportedModules": [
+		"agentix",
+		"cloud",
+		"cloud_runtime_security",
+		"cloud_posture",
+		"xsiam",
+		"edr"
+	],
+	"tags": [
+		"Data Source"
+	],
+	"toServerVersion": "",
+	"updated": "2026-06-30T10:18:32Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "10591842",
+	"videos": []
+}
