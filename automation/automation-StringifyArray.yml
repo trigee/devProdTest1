@@ -1,0 +1,44 @@
+args:
+- default: true
+  description: The array to encode
+  isArray: true
+  name: value
+  required: true
+  supportedModules: []
+comment: Return the string encoded with JSON from the whole array
+commonfields:
+  id: StringifyArray
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    isoverridable: false
+    itemVersion: 1.4.22
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: StringifyArray
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.4.22
+  return JSON.stringify(args.value)
+scripttarget: 0
+signature: GIozwQodbDTAlh1KOLjAlCVPLj2EpdyTDfl20xrxDiwSWGAuIIwRPqbi+G9cNI+p0uc/rWD8DE7GA4ZGSqRVUO2UEgpVExkO01NTY207rsXlOsw0IJKU5VKB3N2c7ds9VFwqfTlCBaM6f0li+3BPp7uOSK65OQfxsEFXAguIH6Ol42T4Hl9EXkRtEhcvOZGoCFQcQOnlitr1igEZmZLOyNS+vwp+Xp3/8nQ1CCJisEQcfFnJEb2GZvTI1Kg+dp8WmYDo1iOyAt+A31m1DPImyk7+Ol4RM42YphJShzpzo9LZQtrxurvTbP16nbDQg7iT/cMlQTfcZzpUCeQFXpJLOg==
+system: true
+tags:
+- entirelist
+- transformer
+- general
+type: javascript
