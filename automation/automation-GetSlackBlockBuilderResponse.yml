@@ -1,0 +1,122 @@
+comment: GetSlackBlockBuilderResponse will format a SlackBlockBuilder response and
+  insert it into an incident's context.
+commonfields:
+  id: GetSlackBlockBuilderResponse
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.10.0
+    isoverridable: false
+    itemVersion: 3.8.7
+    packID: Slack
+    packName: Slack
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dependson:
+  must:
+  - SlackV3|||send-notification
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: GetSlackBlockBuilderResponse
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: SlackBlockState
+  description: The state of the response from the user will be stored under this context
+    path.
+  type: unknown
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('GetSlackBlockBuilderResponse', 'start', __line__())
+  CONSTANT_PACK_VERSION = '3.8.7'
+  demisto.debug('pack id = Slack, pack version = 3.8.7')
+  import json
+  from typing import Any
+
+
+
+
+
+  def get_slack_block_builder_entry(entries: list[dict[str, Any]]) -> Optional[dict[str, Any]]:
+      """
+      Retrieves the entry which contains the SlackBlockBuilder response.
+
+      Args:
+      entries (List[Dict[str, Any]]): A list of entries from the war room.
+
+      Returns:
+      Dict[str, Any]: The last entry that matches the criteria or None if not found.
+      """
+      entries.reverse()
+      for entry in entries:
+          contents = entry.get("Contents", "")
+          if "xsoar-button-submit" in contents:
+              return entry
+      return None
+
+
+  def parse_entry(entry: dict[str, Any]) -> None:
+      """
+      Parses the entry content and returns the results.
+
+      Args:
+      entry (Dict[str, Any]): The entry to be parsed.
+
+      Raises:
+      json.JSONDecodeError: If the entry contents are not in valid JSON format.
+      """
+      try:
+          json_content = json.loads(entry["Contents"])
+          return_results(
+              {
+                  "Type": entryTypes["note"],
+                  "ContentsFormat": formats["json"],
+                  "Contents": json_content,
+                  "HumanReadable": "Successfully parsed the SlackBlockBuilder response.",
+                  "EntryContext": {"SlackBlockState": json_content},
+              }
+          )
+      except json.JSONDecodeError:
+          return_error(f"The response is not a valid JSON format. Received the following response: {entry['Contents']}")
+
+
+  def main() -> None:
+      """
+      Main function to process the war room entries.
+      """
+      try:
+          entries = demisto.executeCommand("getEntries", {})
+          if entries and isinstance(entries, list) and entries:
+              last_entry = get_slack_block_builder_entry(entries)
+              if last_entry:
+                  parse_entry(last_entry)
+              else:
+                  return_error("The response was not found.")
+          else:
+              return_error("No entries found.")
+      except Exception as e:
+          return_error(f"An error occurred: {e!s}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('GetSlackBlockBuilderResponse', 'end', __line__())
+scripttarget: 0
+signature: KVYD9K4tbtJddHsO8lRG4qqwS1HM0LC80tIfJW5N4APJOkETzB12drAXTuINhEFhNXlApIOiq/MDvre6vxzIXFWdMLEeY6lkgT3n5qZbpcyBgVgeQOXUeuF1/BN0lSeIvDs2kEX9n/Gwsm+vazvMwTTnCBTkxlHU/+du4tHMkGFyL8kBpL8XZBpviDuViDGAe9T73WRtYt+Gxl+yryeN0lzeq29oxC34RXVo0kq3DD0OXv9BKNRs4GHlNLSrFLrCNch4N4G9zhlYCKhPtHSFFtXG9lgeMIg6NttshjUpLQfCUVvgWeCRfdEbOGZxXpiCSS3Onw+Rsai9TIHxLg0pjw==
+subtype: python3
+system: true
+tags:
+- slack
+type: python
