@@ -1,0 +1,2694 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.8.0
+    isoverridable: false
+    itemVersion: 3.5.66
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - cloud
+    - cloud_posture
+    - cloud_runtime_security
+    - edr
+    - xsiam
+    toServerVersion: ""
+description: "This playbook investigates a “Possible External RDP Brute Force” XDR
+  Alert by gathering user, IP, and hostname information, and investigating if the
+  following suspicious elements exists:\n\n- \"IP Reputation\" - DBot Score is 2-3
+  \n- \"Source geolocation\" - RDP Connection made from rare geo-location \n-  Related
+  to campaign - IP address is related to campaign, based on TIM module\n-  Hunting
+  results - the hunt for indicators related to the source IP and the related campaign
+  returned results\n-  XDR Alert search - XDR Alerts that related to the same username
+  and endpoint, and to the MITRE tactics that comes after \"Credential Access\", were
+  found.\n- Risky User - The user that was identified in the attack was given a medium
+  or high score by the Core integration's ITDR module.\n- Risky Host - The destination
+  host that was identified in the attack was given a medium or high score by the Core
+  integration's ITDR module.\n\nSet verdict method:\n* Critical Element - The \"Critical
+  Element\" input allows you to select a specific element that, if identified as suspicious,
+  \ the investigation's final verdict will be deemed a \"True Positive\".\n\n* Final
+  Verdict -  Each suspicious element is being added to an array called \"Suspicious
+  Elements\", which is used to count potential security threats. The array size will
+  be compared to a final threshold. If the size is greater than or equal to the threshold,
+  the investigation's final verdict will be deemed a \"True Positive\".\n\n* User
+  Engagement - The \"UserEngagementThreshold\" input allows you to set the number
+  of suspicious elements that trigger user engagement. When this threshold is met,
+  an email will be sent to the user and their manager asking for authorization of
+  RDP activity. If the RDP activity is not authorized by the user, the investigation's
+  final verdict will be deemed a \"True Positive\".\n"
+id: Possible External RDP Brute-Force
+inputSections:
+- description: Alert management settings and data, including escalation processes,
+    and user engagements.
+  inputs:
+  - SOCEmailAddress
+  - UserEngagementThreshold
+  - EndpointID
+  - Country
+  name: Alert Management
+- description: Enrichment settings and data, including assets and indicators enrichment
+    using third-party enrichers.
+  inputs:
+  - ExternalIP
+  - Hostname
+  - Username
+  name: Enrichment
+- description: Investigation settings and data, including any deep dive alert investigation
+    and verdict determination.
+  inputs:
+  - FinalThreshold
+  - CriticalElement
+  name: Investigation
+- description: Remediation settings and data, including containment, eradication,
+    and recovery.
+  inputs:
+  - EarlyContainment
+  - AutoRemediation
+  - IsolateEndpoint
+  name: Remediation
+inputs:
+- description: RDP connection username.
+  key: Username
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: username
+      root: alert
+      transformers:
+      - operator: uniq
+- description: Source external IP address.
+  key: ExternalIP
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: localip
+      root: alert
+      transformers:
+      - operator: uniq
+- description: Set this value to "true" to enable auto remediation (IP Block and User
+    Block).
+  key: AutoRemediation
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "false"
+- description: The threshold number of suspicious elements required to determine a
+    'True Positive' verdict.
+  key: FinalThreshold
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "2"
+- description: |-
+    You can select a specific element that, if identified as suspicious, will automatically set the final verdict as true positive. The following options are available:
+    IP Reputation
+    Related Campaign
+    Hunting Results
+    Related Alerts
+    Unusual Country
+    Risky User
+    Risky Host
+
+    NOTE: You can read about the meaning of every element in the playbook description.
+  key: CriticalElement
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: |-
+    The threshold number of suspicious elements that will trigger a user engagement. Set 0 to disable user engagement.
+
+    NOTICE: If this threshold is equal to or higher than "FinalThreshold", the final verdict will be deemed by the user response and not by the FinalThreshold calculation.
+  key: UserEngagementThreshold
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "1"
+- description: RDP connection destination hostname.
+  key: Hostname
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: hostname
+      root: alert
+- description: RDP connection destination endpoint ID.
+  key: EndpointID
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: agentid
+      root: alert
+- description: Source external IP country.
+  key: Country
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: country
+      root: alert
+- description: Set this value to "true" to enable endpoint isolation in case of a
+    true positive.
+  key: IsolateEndpoint
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "false"
+- description: The SOC email address to use for the user engagement section.
+  key: SOCEmailAddress
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Set this value to "true" to allow early containment when the IP is
+    known malicious
+  key: EarlyContainment
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "true"
+name: Possible External RDP Brute-Force
+outlinetasks: {}
+outputSections:
+- description: Generic group for outputs
+  name: General (Outputs group)
+  outputs: []
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 50736091-a854-4f8c-8f4f-400309fe28bb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 50736091-a854-4f8c-8f4f-400309fe28bb
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 685,
+          "y": -400
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "160"
+      - "161"
+      - "162"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8f296f80-b71a-476b-8bf8-c9ad19852ada
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Analysis
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 8f296f80-b71a-476b-8bf8-c9ad19852ada
+    timertriggers:
+    - action: start
+      fieldname: triagesla
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 685,
+          "y": -265
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "111"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 948d54bb-c609-4e14-8d43-15ca3086fc10
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set Verdict
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 948d54bb-c609-4e14-8d43-15ca3086fc10
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 2410
+        }
+      }
+  "11":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.UserEngagementThreshold
+          operator: isEqualNumber
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: Suspicious_Elements
+                transformers:
+                - operator: count
+      label: "yes"
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.UserEngagementThreshold
+          operator: isEqualString
+          right:
+            value:
+              simple: "false"
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.UserEngagementThreshold
+          operator: lessThan
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: Suspicious_Elements
+                transformers:
+                - operator: count
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.UserEngagementThreshold
+          operator: greaterThan
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: Suspicious_Elements
+                transformers:
+                - operator: count
+      label: "no"
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      "no":
+      - "20"
+      "yes":
+      - "13"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if user engagement is needed, based on UserEngagementThreshold
+        input.
+      id: 3cd00cd4-b266-40ee-8b70-1bbadf41968c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Communicate With User?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 3cd00cd4-b266-40ee-8b70-1bbadf41968c
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 2865
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    form:
+      description: ""
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: Was the following action performed by you?
+        options: []
+        optionsarg:
+        - simple: Authorized
+        - simple: Unauthorized
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: singleSelect
+      sender: ""
+      syncid: ""
+      title: Was the following action performed by you?
+      totalanswers: 0
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body:
+        simple: |-
+          Hello,
+          We wanted to let you know that Cortex Core has flagged a potential issue related to your recent Remote Desktop Protocol (RDP) activity. Specifically, we detected a possible RDP brute force attempt by the user ${inputs.Username} from the remote IP address ${inputs.ExternalIP}.
+
+          This may happen due to various reasons, one of them being multiple login attempts by the user.
+
+          Was this action performed by you and can be considered as authorized?
+      cc: {}
+      format: ""
+      methods:
+      - email
+      subject:
+        simple: Was the following action performed by you?
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to:
+        complex:
+          accessor: mail
+          root: ActiveDirectory.Users
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: UserManagerEmail
+            operator: append
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: inputs.SOCEmailAddress
+            operator: append
+    nexttasks:
+      '#none#':
+      - "35"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Ask the user via email if the RDP connection is authorized activity.
+      id: 018c3943-4a66-49fd-849c-dd9f3a17dc7e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: User Communication
+      playbooktaskmissingcomponent: null
+      type: collection
+      version: -1
+    taskid: 018c3943-4a66-49fd-849c-dd9f3a17dc7e
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": 1155,
+          "y": 3040
+        }
+      }
+  "20":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: Suspicious_Elements
+                transformers:
+                - operator: count
+          operator: greaterThanOrEqual
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.FinalThreshold
+      label: "yes"
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "22"
+      "yes":
+      - "21"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determine if the activity is malicious.
+      id: d1155cc0-5465-42cd-82d4-12cd040b6bc8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Malicious Activity?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: d1155cc0-5465-42cd-82d4-12cd040b6bc8
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 3120
+        }
+      }
+  "21":
+    continueonerrortype: ""
+    id: "21"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "79"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 2cb14624-fcca-4f8b-8065-7c5bce54b3d3
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Malicious
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 2cb14624-fcca-4f8b-8065-7c5bce54b3d3
+    timertriggers:
+    - action: start
+      fieldname: remediationsla
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 160,
+          "y": 3410
+        }
+      }
+  "22":
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "32"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d2d19ace-cbeb-438b-8583-02ebad11b249
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Benign
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: d2d19ace-cbeb-438b-8583-02ebad11b249
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1155,
+          "y": 3410
+        }
+      }
+  "31":
+    continueonerrortype: ""
+    id: "31"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "105"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      username:
+        complex:
+          root: inputs.Username
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Expires the password of an Active Directory user.
+      id: 09851f9e-514a-4ee4-8b92-672d01ad5ab9
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Expire User Password
+      playbooktaskmissingcomponent: null
+      script: '|||ad-expire-password'
+      type: regular
+      version: -1
+    taskid: 09851f9e-514a-4ee4-8b92-672d01ad5ab9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -180,
+          "y": 5610
+        }
+      }
+  "32":
+    continueonerrortype: ""
+    id: "32"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5ee22f0c-8f3b-445b-87f8-4d31f2e5d761
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 5ee22f0c-8f3b-445b-87f8-4d31f2e5d761
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1155,
+          "y": 5930
+        }
+      }
+  "35":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: "0"
+                root: Was the following action performed by you?.Answers
+          operator: isEqualString
+          right:
+            value:
+              simple: authorized
+      label: "yes"
+    continueonerrortype: ""
+    id: "35"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "21"
+      "yes":
+      - "22"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if the user defined the RDP connection as an authorized activity.
+      id: f1b1a751-456b-44ef-828d-37c6ebb01148
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Authorized Activity?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: f1b1a751-456b-44ef-828d-37c6ebb01148
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1155,
+          "y": 3200
+        }
+      }
+  "53":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: RelatedFiles
+          operator: isNotEmpty
+          right:
+            value: {}
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: RelatedDomains
+          operator: isNotEmpty
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: RelatedIPs
+          operator: isNotEmpty
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: RelatedURLs
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "53"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "6"
+      "yes":
+      - "54"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Hunt for indicators that are related to the RDP Connection external
+        IP.
+      id: 67f583bb-2d88-4a99-8273-0270b9ddeb72
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Has related Indicators to hunt?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 67f583bb-2d88-4a99-8273-0270b9ddeb72
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 1750
+        }
+      }
+  "54":
+    continueonerrortype: ""
+    id: "54"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 0
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "112"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      IPAddress:
+        complex:
+          root: RelatedIPs
+      QRadarTimeFrame:
+        simple: LAST 7 DAYS
+      SHA256:
+        complex:
+          root: RelatedFiles
+      SplunkEarliestTime:
+        simple: -7d@d
+      SplunkLatestTime:
+        simple: now
+      URLDomain:
+        complex:
+          root: RelatedDomains
+    separatecontext: true
+    skipunavailable: true
+    task:
+      brand: ""
+      description: "This playbook enables threat hunting for IOCs in your enterprise.
+        It currently supports the following integrations: \n- Splunk\n- Qradar\n-
+        Pan-os \n- Cortex data lake \n- Autofocus\n- Microsoft 365 Defender"
+      id: 661bb675-16ba-47ba-8cb3-c158c5f7b655
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Threat Hunting - Generic
+      playbookId: Threat Hunting - Generic
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 661bb675-16ba-47ba-8cb3-c158c5f7b655
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": 1920
+        }
+      }
+  "56":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.CriticalElement
+          operator: in
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: Suspicious_Elements
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.CriticalElement
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "56"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "11"
+      "yes":
+      - "21"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if a critical element is defined.
+      id: 96912132-d133-4fa0-8b52-f4d7bf29bf13
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Critical Element exist?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 96912132-d133-4fa0-8b52-f4d7bf29bf13
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 2700
+        }
+      }
+  "66":
+    continueonerrortype: ""
+    id: "66"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "53"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 33b0afe8-d0f4-448b-8b84-b9341101507e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation - Related Indicators Hunt
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 33b0afe8-d0f4-448b-8b84-b9341101507e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 1620
+        }
+      }
+  "72":
+    continueonerrortype: ""
+    id: "72"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "110"
+      - "116"
+      - "157"
+      - "158"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8b1a9d9a-d1ff-4a16-8513-fcef5965d5c0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 8b1a9d9a-d1ff-4a16-8513-fcef5965d5c0
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 685,
+          "y": 1300
+        }
+      }
+  "73":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Score
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Type
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: IP
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Score
+                    operator: greaterThanOrEqual
+                    right:
+                      value:
+                        simple: "3"
+                root: DBotScore
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "73"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "72"
+      "yes":
+      - "153"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if the IP DbotScore is malicious.
+      id: 644e33ef-559f-4178-878a-f71e36ef3591
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is the IP malicious?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 644e33ef-559f-4178-878a-f71e36ef3591
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 685,
+          "y": 160
+        }
+      }
+  "74":
+    continueonerrortype: ""
+    id: "74"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "140"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a577cf3a-9766-44a6-8ec9-594eb1bb6bf6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment Execution
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: a577cf3a-9766-44a6-8ec9-594eb1bb6bf6
+    timertriggers:
+    - action: start
+      fieldname: containmentsla
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 230,
+          "y": 510
+        }
+      }
+  "79":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: IPBlockStatus
+          operator: isEqualString
+          right:
+            value:
+              simple: Executed
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: UserBlockStatus
+          operator: isEqualString
+          right:
+            value:
+              simple: Executed
+      label: "yes"
+    continueonerrortype: ""
+    id: "79"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "126"
+      "yes":
+      - "86"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if containment activities were already made.
+      id: 4c560b0b-a5ef-428b-830b-cf5f33f4569b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: IP and Account block playbooks executed?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 4c560b0b-a5ef-428b-830b-cf5f33f4569b
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 160,
+          "y": 3560
+        }
+      }
+  "82":
+    continueonerrortype: ""
+    id: "82"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "72"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 69f5516b-a773-46c8-86ce-da984f1deea8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment Complete
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 69f5516b-a773-46c8-86ce-da984f1deea8
+    timertriggers:
+    - action: stop
+      fieldname: containmentsla
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 230,
+          "y": 1160
+        }
+      }
+  "86":
+    continueonerrortype: ""
+    id: "86"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "87"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5f43f16d-1ec0-4573-8dd8-182c456e2237
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Isolate Endpoint
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 5f43f16d-1ec0-4573-8dd8-182c456e2237
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 160,
+          "y": 4370
+        }
+      }
+  "87":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.IsolateEndpoint
+          operator: isEqualString
+          right:
+            value:
+              simple: "true"
+      label: "yes"
+    continueonerrortype: ""
+    id: "87"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "163"
+      "yes":
+      - "156"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if IsolateEndpoint it true.
+      id: a903c83d-28d0-4ba3-8477-7440ac584511
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Isolate Endpoint?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: a903c83d-28d0-4ba3-8477-7440ac584511
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 160,
+          "y": 4500
+        }
+      }
+  "105":
+    continueonerrortype: ""
+    id: "105"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "32"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8e1160e5-cac0-48d9-853a-ef0530264cef
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Remediation Complete
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 8e1160e5-cac0-48d9-853a-ef0530264cef
+    timertriggers:
+    - action: stop
+      fieldname: remediationsla
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 160,
+          "y": 5785
+        }
+      }
+  "110":
+    continueonerrortype: ""
+    id: "110"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "66"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      Indicator:
+        complex:
+          root: inputs.ExternalIP
+      LimitResults:
+        simple: "200"
+    separatecontext: true
+    skipunavailable: true
+    task:
+      brand: ""
+      description: |-
+        This playbook is designed to assist with a security investigation by providing an analysis of indicator relationships. The following information is included:
+        - Indicators of compromise (IOCs) related to the investigation.
+        - Attack patterns related to the investigation.
+        - Campaigns related to the investigation.
+        - IOCs associated with the identified campaigns.
+        - Reports containing details on the identified campaigns.
+      id: fdbd192f-f668-41ab-82ee-910e330970d6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: TIM - Indicator Relationships Analysis
+      playbookName: TIM - Indicator Relationships Analysis
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: fdbd192f-f668-41ab-82ee-910e330970d6
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1310,
+          "y": 1440
+        }
+      }
+  "111":
+    continueonerrortype: ""
+    id: "111"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      HuntResults:
+        complex:
+          root: HasHuntResults
+      IpReputation:
+        complex:
+          accessor: Score
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: isEqualString
+              right:
+                iscontext: true
+                value:
+                  simple: inputs.ExternalIP
+          root: DBotScore
+      RelatedAlerts:
+        complex:
+          accessor: details
+          root: foundIncidents
+      RelatedCampaign:
+        complex:
+          root: RelatedCampaign
+      UnusualGeoLocation:
+        complex:
+          root: PermanentCountry
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "This playbook creating an array called \"Suspicious Elements\",
+        which is used to count potential security threats. The following elements
+        can be added to the array:\n\n- \"IP Reputation\" - Dbot Score is 2-3 \n-
+        \"Source geolocation\" - RDP Connection made from rare geo-location \n-  Related
+        to campaign - IP address is related to campaign, based on TIM module\n-  Hunting
+        results - the hunt for indicators related to the source IP and the related
+        campaign returned results\n-  XDR Alert search - XDR Alerts that related to
+        the same username and endpoint, and to the MITRE tactics that comes after
+        \"Credential Access\", were found.\n\nThe array will then be outputted and
+        its size will be compared to a final threshold. If the size is greater than
+        or equal to the threshold, the investigation's final verdict will be deemed
+        a \"True Positive.\""
+      id: 9d72cc1f-5e7d-4d1e-86f4-ba9b93217f1a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Possible External RDP Brute-Force - Set Verdict
+      playbookId: Possible External RDP Brute-Force - Set Verdict
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 9d72cc1f-5e7d-4d1e-86f4-ba9b93217f1a
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 695,
+          "y": 2540
+        }
+      }
+  "112":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: Splunk
+          operator: isNotEmpty
+          right:
+            value: {}
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: PANWHunting
+          operator: isNotEmpty
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: QRadar
+          operator: isNotEmpty
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: Microsoft365Defender
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "112"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "6"
+      "yes":
+      - "113"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if hunt results were found.
+      id: 6f7e1db4-33ec-4bbe-8c7f-df0a4c33ce0e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Has hunt results?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 6f7e1db4-33ec-4bbe-8c7f-df0a4c33ce0e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": 2080
+        }
+      }
+  "113":
+    continueonerrortype: ""
+    fieldMapping:
+    - incidentfield: Hunt Results Count
+      output:
+        complex:
+          root: HasHuntResults
+    id: "113"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: HasHuntResults
+      value:
+        simple: "true"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 1c3721d4-9fd1-4836-80d6-5d9570124728
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set hunt results true
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 1c3721d4-9fd1-4836-80d6-5d9570124728
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": 2240
+        }
+      }
+  "116":
+    continueonerrortype: ""
+    id: "116"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "66"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AzureSearchTime:
+        simple: ago(1d)
+      LoginCountry:
+        complex:
+          root: inputs.Country
+      OktaSearch:
+        simple: "true"
+      QRadarSearchTime:
+        simple: Last 1 days
+      SIEMFailedLogonSearch:
+        simple: "false"
+      SplunkEarliestTime:
+        simple: -1d
+      SplunkIndex:
+        simple: '*'
+      SplunkLatestTime:
+        simple: now
+      ThreatLogSearch:
+        simple: "false"
+      Username:
+        complex:
+          root: inputs.Username
+      XDRAlertSearch:
+        simple: "false"
+    separatecontext: true
+    skipunavailable: true
+    task:
+      brand: ""
+      id: d407ea4c-230d-4693-8adf-91fef707db93
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: User Investigation - Generic
+      playbookName: User Investigation - Generic
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: d407ea4c-230d-4693-8adf-91fef707db93
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 895,
+          "y": 1440
+        }
+      }
+  "126":
+    continueonerrortype: ""
+    id: "126"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "141"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c480dca9-c059-4f3a-8165-5aea1bbe98c3
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Block Indicators
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: c480dca9-c059-4f3a-8165-5aea1bbe98c3
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -350,
+          "y": 3740
+        }
+      }
+  "136":
+    continueonerrortype: ""
+    id: "136"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "137"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d91306a6-9a30-4c7b-8fac-4548f0a24563
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Account Password Expire
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: d91306a6-9a30-4c7b-8fac-4548f0a24563
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 160,
+          "y": 5290
+        }
+      }
+  "137":
+    continueonerrortype: ""
+    id: "137"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "105"
+      "yes":
+      - "31"
+    note: false
+    quietmode: 0
+    results:
+    - brandInstances
+    scriptarguments:
+      brandname:
+        simple: Active Directory Query v2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns 'yes' if the integration brand is available. Otherwise
+        returns 'no'.
+      id: 65c70a66-abe8-4665-8788-79835dec638e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Active Directory Enabled?
+      playbooktaskmissingcomponent: null
+      script: IsIntegrationAvailable
+      type: condition
+      version: -1
+    taskid: 65c70a66-abe8-4665-8788-79835dec638e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 160,
+          "y": 5440
+        }
+      }
+  "140":
+    continueonerrortype: ""
+    id: "140"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "142"
+      - "143"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AutoBlockIndicators:
+        complex:
+          root: inputs.AutoRemediation
+      AutoCommit:
+        simple: "No"
+      CustomBlockRule:
+        simple: "True"
+      CustomURLCategory:
+        simple: XSOAR Remediation - Malicious URLs
+      IP:
+        complex:
+          root: inputs.ExternalIP
+      InputEnrichment:
+        simple: "False"
+      RuleDirection:
+        simple: outbound
+      RuleName:
+        simple: XSOAR - Block IP playbook - ${alert.id}
+      UserVerification:
+        simple: "False"
+      Username:
+        complex:
+          root: inputs.Username
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |+
+        This playbook blocks malicious indicators using all integrations that are enabled, using the following sub-playbooks:
+
+        - Block URL - Generic v2
+        - Block Account - Generic v2
+        - Block IP - Generic v3
+        - Block File - Generic v2
+        - Block Email - Generic v2
+        - Block Domain - Generic v2
+
+      id: d96fe88f-c8ad-4078-8728-5ac76957f1d1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Block Indicators - Generic v3
+      playbookId: Block Indicators - Generic v3
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: d96fe88f-c8ad-4078-8728-5ac76957f1d1
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 230,
+          "y": 650
+        }
+      }
+  "141":
+    continueonerrortype: ""
+    id: "141"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "146"
+      - "147"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AutoBlockIndicators:
+        complex:
+          root: inputs.AutoRemediation
+      AutoCommit:
+        simple: "No"
+      CustomBlockRule:
+        simple: "True"
+      CustomURLCategory:
+        simple: XSOAR Remediation - Malicious URLs
+      IP:
+        complex:
+          root: inputs.ExternalIP
+      InputEnrichment:
+        simple: "False"
+      RuleDirection:
+        simple: outbound
+      RuleName:
+        simple: XSOAR - Block Indicators playbook - ${alert.id}
+      UserVerification:
+        simple: "False"
+      Username:
+        complex:
+          root: inputs.Username
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |+
+        This playbook blocks malicious indicators using all integrations that are enabled, using the following sub-playbooks:
+
+        - Block URL - Generic v2
+        - Block Account - Generic v2
+        - Block IP - Generic v3
+        - Block File - Generic v2
+        - Block Email - Generic v2
+        - Block Domain - Generic v2
+
+      id: 7b870f41-8b9e-4688-8052-aca3f4e92cde
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Block Indicators - Generic v3
+      playbookId: Block Indicators - Generic v3
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 7b870f41-8b9e-4688-8052-aca3f4e92cde
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": -350,
+          "y": 3870
+        }
+      }
+  "142":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.ExternalIP
+          operator: in
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: IndicatorsToBlock
+      label: "yes"
+    continueonerrortype: ""
+    id: "142"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "82"
+      "yes":
+      - "145"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the block IP playbook was executed.
+      id: 674bfbfe-f4dd-45d6-81ea-9d6eb134d8e3
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: IP block executed?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 674bfbfe-f4dd-45d6-81ea-9d6eb134d8e3
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 10,
+          "y": 820
+        }
+      }
+  "143":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.Username
+          operator: in
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: IndicatorsToBlock
+      label: "yes"
+    continueonerrortype: ""
+    id: "143"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "82"
+      "yes":
+      - "144"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the block account playbook was executed.
+      id: 5d209338-a5a6-4760-86d4-5d002d559dfa
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: User containment executed?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 5d209338-a5a6-4760-86d4-5d002d559dfa
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 820
+        }
+      }
+  "144":
+    continueonerrortype: ""
+    id: "144"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "82"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: UserBlockStatus
+      value:
+        simple: Executed
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: Set a value in context under the key you entered.
+      id: 065d9075-8bbe-45a8-8967-64faa910cbce
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set User Containment Executed
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 065d9075-8bbe-45a8-8967-64faa910cbce
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 990
+        }
+      }
+  "145":
+    continueonerrortype: ""
+    id: "145"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "82"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: IPBlockStatus
+      value:
+        simple: Executed
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: Set a value in context under the key you entered.
+      id: 62f7cc2e-fe84-4df9-8b94-e0c7fef778d2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set IP Block Executed
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 62f7cc2e-fe84-4df9-8b94-e0c7fef778d2
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 10,
+          "y": 990
+        }
+      }
+  "146":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.ExternalIP
+          operator: in
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: IndicatorsToBlock
+      label: "yes"
+    continueonerrortype: ""
+    id: "146"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "86"
+      "yes":
+      - "148"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the block IP playbook was executed.
+      id: 0dadf16c-f182-4348-8d29-84f62e8c1433
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: IP block executed?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 0dadf16c-f182-4348-8d29-84f62e8c1433
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -140,
+          "y": 4040
+        }
+      }
+  "147":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.Username
+          operator: in
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: IndicatorsToBlock
+      label: "yes"
+    continueonerrortype: ""
+    id: "147"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "86"
+      "yes":
+      - "149"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the block account playbook was executed.
+      id: 96d4ae23-3cec-4de9-8b2a-da2f1ee4bf56
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: User containment executed?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 96d4ae23-3cec-4de9-8b2a-da2f1ee4bf56
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -550,
+          "y": 4040
+        }
+      }
+  "148":
+    continueonerrortype: ""
+    id: "148"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "86"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      ipblockedstatus:
+        simple: Executed
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: 11c74593-f4bd-4161-824e-c2714d98de11
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Set IP Block Executed
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlert
+      type: regular
+      version: -1
+    taskid: 11c74593-f4bd-4161-824e-c2714d98de11
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -140,
+          "y": 4200
+        }
+      }
+  "149":
+    continueonerrortype: ""
+    id: "149"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "86"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      userblockstatus:
+        simple: Executed
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: 9a620ff9-1a8c-4b5d-81bf-78f2dedd8aa3
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Set User Containment Executed
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlert
+      type: regular
+      version: -1
+    taskid: 9a620ff9-1a8c-4b5d-81bf-78f2dedd8aa3
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -550,
+          "y": 4200
+        }
+      }
+  "153":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.EarlyContainment
+          operator: isEqualString
+          right:
+            value:
+              simple: "true"
+      label: "yes"
+    continueonerrortype: ""
+    id: "153"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "72"
+      "yes":
+      - "74"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether early containment is enabled in the playbook inputs.
+      id: eda6f3d3-203c-4d44-8ebf-0d430b9c946b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Early containment enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: eda6f3d3-203c-4d44-8ebf-0d430b9c946b
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 230,
+          "y": 330
+        }
+      }
+  "154":
+    continueonerrortype: ""
+    id: "154"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "73"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 12d0bf87-9d7e-44ad-815e-a4e6aa68c141
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Early Containment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 12d0bf87-9d7e-44ad-815e-a4e6aa68c141
+    timertriggers:
+    - action: stop
+      fieldname: triagesla
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 685,
+          "y": 50
+        }
+      }
+  "156":
+    continueonerrortype: ""
+    id: "156"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "136"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      endpoint_id:
+        complex:
+          root: inputs.EndpointID
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Isolates the specified endpoint.
+      id: 056cfafe-9e6d-4175-8b5e-1af397e739ca
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Isolate Endpoint
+      playbooktaskmissingcomponent: null
+      script: '|||core-isolate-endpoint'
+      type: regular
+      version: -1
+    taskid: 056cfafe-9e6d-4175-8b5e-1af397e739ca
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -300,
+          "y": 5110
+        }
+      }
+  "157":
+    continueonerrortype: ""
+    id: "157"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "66"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      EntityID:
+        complex:
+          root: inputs.Username
+          transformers:
+          - args:
+              delimiter:
+                value:
+                  simple: \
+              fields:
+                value:
+                  simple: "2"
+            operator: Cut
+          - operator: LastArrayElement
+      EntityType:
+        simple: username
+      HuntCnCTechniques:
+        simple: "True"
+      HuntCollectionTechniques:
+        simple: "True"
+      HuntDiscoveryTechniques:
+        simple: "True"
+      HuntImpactTechniques:
+        simple: "True"
+      HuntLateralMovementTechniques:
+        simple: "True"
+      HuntPersistenceTechniques:
+        simple: "True"
+      RunAll:
+        simple: "false"
+      timeRange:
+        simple: 7 days ago
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        This playbook searches XDR alerts related to specific entities , on a given timeframe, based on MITRE tactics.
+        Note: The playbook's inputs enable manipulating the execution flow. Read the input descriptions for details.
+      id: 2541b20a-64be-4403-84ae-333c7775f32c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get entity alerts by MITRE tactics
+      playbookId: Get entity alerts by MITRE tactics
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 2541b20a-64be-4403-84ae-333c7775f32c
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 1440
+        }
+      }
+  "158":
+    continueonerrortype: ""
+    id: "158"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "66"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      EntityID:
+        complex:
+          root: inputs.Hostname
+      EntityType:
+        simple: hostname
+      HuntCnCTechniques:
+        simple: "True"
+      HuntCollectionTechniques:
+        simple: "True"
+      HuntDiscoveryTechniques:
+        simple: "True"
+      HuntImpactTechniques:
+        simple: "True"
+      HuntLateralMovementTechniques:
+        simple: "True"
+      HuntPersistenceTechniques:
+        simple: "True"
+      RunAll:
+        simple: "false"
+      timeRange:
+        simple: 7 days ago
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        This playbook searches XDR alerts related to specific entities , on a given timeframe, based on MITRE tactics.
+        Note: The playbook's inputs enable manipulating the execution flow. Read the input descriptions for details.
+      id: ea6adc70-e84b-4d0a-86fe-33fac3dd1408
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get entity alerts by MITRE tactics
+      playbookId: Get entity alerts by MITRE tactics
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: ea6adc70-e84b-4d0a-86fe-33fac3dd1408
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 60,
+          "y": 1440
+        }
+      }
+  "160":
+    continueonerrortype: ""
+    id: "160"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "154"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      ip:
+        complex:
+          root: inputs.ExternalIP
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks the reputation of an IP address.
+      id: a4f9e83d-1369-4e7c-8f8d-c5d2559f663e
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: IP Enrichment
+      playbooktaskmissingcomponent: null
+      script: '|||ip'
+      type: regular
+      version: -1
+    taskid: a4f9e83d-1369-4e7c-8f8d-c5d2559f663e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 490,
+          "y": -120
+        }
+      }
+  "161":
+    continueonerrortype: ""
+    id: "161"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "154"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      Domain:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: inputs.Username
+              operator: containsString
+              right:
+                value:
+                  simple: \
+          root: inputs.Username
+          transformers:
+          - args:
+              delimiter:
+                value:
+                  simple: \
+              fields:
+                value:
+                  simple: "2"
+            operator: Cut
+      Username:
+        complex:
+          root: inputs.Username
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 323eaf88-bd92-47e7-8421-6a0013ce48b6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Account Enrichment - Generic v2.1
+      playbookId: Account Enrichment - Generic v2.1
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 323eaf88-bd92-47e7-8421-6a0013ce48b6
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 880,
+          "y": -120
+        }
+      }
+  "162":
+    continueonerrortype: ""
+    id: "162"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "154"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      Hostname:
+        complex:
+          root: inputs.Hostname
+          transformers:
+          - operator: uniq
+      UseReputationCommand:
+        simple: "False"
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 13d7349c-16d1-458e-8916-e334ddd16332
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Endpoint Enrichment - Generic v2.1
+      playbookName: Endpoint Enrichment - Generic v2.1
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 13d7349c-16d1-458e-8916-e334ddd16332
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 90,
+          "y": -120
+        }
+      }
+  "163":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: Core.RiskyHost.risk_level
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: HIGH
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: Core.RiskyHost.id
+                    operator: isEqualString
+                    right:
+                      iscontext: true
+                      value:
+                        simple: |2-
+
+                          inputs.EndpointID
+                root: Core.RiskyHost.id
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "163"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "136"
+      "yes":
+      - "164"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the Cortex Core IR integration associated the endpoint
+        with a high risk level.
+      id: df0c3102-fe07-4886-8e1e-7f8711a4efbf
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is the endpoint at high risk?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: df0c3102-fe07-4886-8e1e-7f8711a4efbf
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 160,
+          "y": 4750
+        }
+      }
+  "164":
+    continueonerrortype: ""
+    id: "164"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      Do Not Isolate:
+      - "136"
+      Isolate:
+      - "156"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Notice! The playbook input specifies that isolation should not be performed for the endpoint, but Cortex Core ITDR module considers it risky. Consider isolating it anyway.
+
+        Host ID: ${Core.RiskyHost.id}
+        Risk level: ${Core.RiskyHost.risk_level}
+        Reasons: ${Core.RiskyHost.reasons}
+      id: ba8f348a-2ad3-4e68-853d-64695b64cbb8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Recommend isolation anyway
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: ba8f348a-2ad3-4e68-853d-64695b64cbb8
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -50,
+          "y": 4940
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "112_113_yes": 0.31,
+      "112_6_#default#": 0.37,
+      "11_20_no": 0.18,
+      "142_82_#default#": 0.45,
+      "143_82_#default#": 0.42,
+      "146_86_#default#": 0.52,
+      "147_86_#default#": 0.71,
+      "153_72_#default#": 0.29,
+      "163_136_#default#": 0.61,
+      "164_136_Do Not Isolate": 0.21,
+      "164_156_Isolate": 0.58,
+      "20_21_yes": 0.18,
+      "20_22_#default#": 0.2,
+      "35_21_#default#": 0.17,
+      "35_22_yes": 0.62,
+      "53_6_#default#": 0.11,
+      "56_11_#default#": 0.42,
+      "56_21_yes": 0.21,
+      "73_72_#default#": 0.14,
+      "87_156_yes": 0.45,
+      "87_163_#default#": 0.57
+    },
+    "paper": {
+      "dimensions": {
+        "height": 6395,
+        "width": 2240,
+        "x": -550,
+        "y": -400
+      }
+    }
+  }
