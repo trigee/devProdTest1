@@ -1,0 +1,371 @@
+args:
+- description: A comma separated list of case IDs.
+  isArray: true
+  name: case_id_list
+  supportedModules: []
+- description: 'The start time for filtering according to case creation time. Supports
+    free text relative and absolute times. For example: 7 days ago, 2023-06-15T10:30:00Z,
+    13/8/2025.'
+  name: start_time
+  supportedModules: []
+- description: 'The end time for filtering according to case creation time. Supports
+    free text relative and absolute times. For example: 7 days ago, 2023-06-15T10:30:00Z,
+    13/8/2025.'
+  name: end_time
+  supportedModules: []
+- auto: PREDEFINED
+  description: Sorts returned cases by the date/time that the case was created ("asc"
+    - ascending, "desc" - descending).
+  name: sort_by_creation_time
+  predefined:
+  - asc
+  - desc
+  supportedModules: []
+- description: 'Filters for cases with the specified status. The options are: new,
+    under_investigation, resolved_known_issue, resolved_false_positive, resolved_true_positive
+    resolved_security_testing, resolved_other, resolved_auto.'
+  name: status
+  supportedModules: []
+- auto: PREDEFINED
+  description: Whether the case is starred.
+  name: starred
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Whether to include enriched case data in the response. Recommended
+    for up to 10 cases.
+  name: get_enriched_case_data
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- defaultValue: "0"
+  description: Page number (for pagination). The default is 0 (the first page).
+  name: page
+  supportedModules: []
+- defaultValue: "100"
+  description: Maximum number of cases to return per page. The default and maximum
+    is 100.
+  name: page_size
+  supportedModules: []
+comment: Retrieves cases based on the provided filters.
+commonfields:
+  id: SearchCases
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.6.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+dockerimage: demisto/python3:3.12.12.5490952
+enabled: true
+engineinfo: {}
+internal: true
+isInternal: true
+mainengineinfo: {}
+name: SearchCases
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: Core.Case.case_id
+  description: Unique ID assigned to each returned case.
+  type: String
+- contextPath: Core.Case.case_name
+  description: Name of the case.
+  type: String
+- contextPath: Core.Case.creation_time
+  description: Timestamp when the case was created.
+  type: Number
+- contextPath: Core.Case.modification_time
+  description: Timestamp when the case was last modified.
+  type: Number
+- contextPath: Core.Case.detection_time
+  description: Timestamp when the first issue was detected in the case. May be null.
+  type: Date
+- contextPath: Core.Case.status
+  description: Current status of the case.
+  type: String
+- contextPath: Core.Case.severity
+  description: Severity level of the case.
+  type: String
+- contextPath: Core.Case.description
+  description: Description of the case.
+  type: String
+- contextPath: Core.Case.assigned_user_mail
+  description: Email address of the assigned user. May be null.
+  type: String
+- contextPath: Core.Case.assigned_user_pretty_name
+  description: Full name of the assigned user. May be null.
+  type: String
+- contextPath: Core.Case.issue_count
+  description: Total number of issues in the case.
+  type: Number
+- contextPath: Core.Case.low_severity_issue_count
+  description: Number of issues with low severity.
+  type: Number
+- contextPath: Core.Case.med_severity_issue_count
+  description: Number of issues with medium severity.
+  type: Number
+- contextPath: Core.Case.high_severity_issue_count
+  description: Number of issues with high severity.
+  type: Number
+- contextPath: Core.Case.critical_severity_issue_count
+  description: Number of issues with critical severity.
+  type: Number
+- contextPath: Core.Case.user_count
+  description: Number of users involved in the case.
+  type: Number
+- contextPath: Core.Case.host_count
+  description: Number of hosts involved in the case.
+  type: Number
+- contextPath: Core.Case.notes
+  description: Notes related to the case. May be null.
+  type: String
+- contextPath: Core.Case.resolve_comment
+  description: Comments added when resolving the case. May be null.
+  type: String
+- contextPath: Core.Case.resolved_timestamp
+  description: Timestamp when the case was resolved.
+  type: Number
+- contextPath: Core.Case.manual_severity
+  description: Severity manually assigned by the user. May be null.
+  type: Number
+- contextPath: Core.Case.manual_description
+  description: Description manually provided by the user.
+  type: String
+- contextPath: Core.Case.xdr_url
+  description: URL to view the case in Cortex XDR.
+  type: String
+- contextPath: Core.Case.starred
+  description: Indicates whether the case is starred.
+  type: Boolean
+- contextPath: Core.Case.starred_manually
+  description: True if the case was starred manually; false if starred by rules.
+  type: Boolean
+- contextPath: Core.Case.hosts
+  description: List of hosts involved in the case.
+  type: Array
+- contextPath: Core.Case.users
+  description: List of users involved in the case.
+  type: Array
+- contextPath: Core.Case.case_sources
+  description: Sources of the case.
+  type: Array
+- contextPath: Core.Case.rule_based_score
+  description: Score based on rules.
+  type: Number
+- contextPath: Core.Case.manual_score
+  description: Manually assigned score. May be null.
+  type: Number
+- contextPath: Core.Case.wildfire_hits
+  description: Number of WildFire hits.
+  type: Number
+- contextPath: Core.Case.issues_grouping_status
+  description: Status of issue grouping.
+  type: String
+- contextPath: Core.Case.mitre_tactics_ids_and_names
+  description: List of MITRE ATT&CK tactic IDs and names associated with the case.
+  type: Array
+- contextPath: Core.Case.mitre_techniques_ids_and_names
+  description: List of MITRE ATT&CK technique IDs and names associated with the case.
+  type: Array
+- contextPath: Core.Case.issue_categories
+  description: Categories of issues associated with the case.
+  type: Array
+- contextPath: Core.Case.original_tags
+  description: Original tags assigned to the case.
+  type: Array
+- contextPath: Core.Case.tags
+  description: Current tags assigned to the case.
+  type: Array
+- contextPath: Core.Case.case_domain
+  description: Domain associated with the case.
+  type: String
+- contextPath: Core.Case.custom_fields
+  description: Custom fields for the case with standardized lowercase, whitespace-free
+    names.
+  type: Unknown
+- contextPath: Core.Case.CaseExtraData.issue_ids
+  description: List of issue IDs associated with the case.
+  type: Array
+- contextPath: Core.Case.CaseExtraData.file_artifacts
+  description: File artifacts associated with the case.
+  type: Array
+- contextPath: Core.Case.CaseExtraData.network_artifacts
+  description: Network artifacts associated with the case.
+  type: Array
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('SearchCases', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+
+
+
+
+  def extract_ids(case_extra_data: dict) -> list:
+      """
+      Extract a list of IDs from a command result.
+
+      Args:
+          command_res: The result of a command. It can be either a dictionary or a list.
+          field_name: The name of the field that contains the ID.
+
+      Returns:
+          A list of the IDs extracted from the command result.
+      """
+      if not case_extra_data:
+          return []
+
+      field_name = "issue_id"
+      issues = case_extra_data.get("issues", {})
+      issues_data = issues.get("data", {}) if issues else {}
+      issue_ids = [c.get(field_name) for c in issues_data if isinstance(c, dict) and field_name in c]
+      demisto.debug(f"Extracted issue ids: {issue_ids}")
+      return issue_ids
+
+
+  def get_case_extra_data(args):
+      """
+      Calls the core-get-case-extra-data command and parses the output to a standard structure.
+
+      Args:
+          args: The arguments to pass to the core-get-case-extra-data command.
+
+      Returns:
+          A dictionary containing the case data with the following keys:
+              issue_ids: A list of IDs of issues in the case.
+              network_artifacts: A list of network artifacts in the case.
+              file_artifacts: A list of file artifacts in the case.
+      """
+      demisto.debug(f"Calling core-get-case-extra-data, {args=}")
+      case_extra_data = execute_command("core-get-case-extra-data", args)
+      demisto.debug(f"After calling core-get-case-extra-data, {case_extra_data=}")
+      issue_ids = extract_ids(case_extra_data)
+      network_artifacts = case_extra_data.get("network_artifacts")
+      file_artifacts = case_extra_data.get("file_artifacts")
+      extra_data = {"issue_ids": issue_ids, "network_artifacts": network_artifacts, "file_artifacts": file_artifacts}
+      return extra_data
+
+
+  def add_cases_extra_data(case_data):
+      # for each case id in the entry context, get the case extra data
+      for case in case_data:
+          case_id = case.get("case_id")
+          extra_data = get_case_extra_data({"case_id": case_id, "limit": 1000})
+          case.update({"CaseExtraData": extra_data})
+
+      return case_data
+
+
+  def prepare_start_end_time(args: dict):
+      """
+      Prepare and validate start and end time parameters from args dictionary.
+
+      Parses start_time and end_time from string format to ISO format and validates
+      that when end_time is provided, start_time must also be provided. If only start_time
+      is provided, sets end_time to current time. Sets time_frame to 'custom' when both
+      times are specified.
+
+      Args:
+          args (dict): Dictionary containing start_time and end_time parameters
+
+      Raises:
+          DemistoException: If end_time is provided without start_time
+
+      Side Effects:
+          Modifies the args dictionary in place by:
+          - Converting start_time and end_time to ISO format
+          - Setting time_frame to 'custom' when both times are present
+          - Setting end_time to current time if only start_time is provided
+
+      """
+      start_time = args.get("start_time", "")
+      end_time = args.get("end_time", "")
+
+      if end_time and not start_time:
+          raise DemistoException("When end time is provided start_time must be provided as well.")
+
+      if start_time := dateparser.parse(start_time):
+          start_time = start_time.strftime("%Y-%m-%dT%H:%M:%S")
+
+      if end_time := dateparser.parse(end_time):
+          end_time = end_time.strftime("%Y-%m-%dT%H:%M:%S")
+
+      if start_time and not end_time:
+          # Set end_time to default now.
+          end_time = datetime.now().strftime("%Y-%m-%dT%H:%M:%S")
+
+      if start_time and end_time:
+          args["gte_creation_time"] = start_time
+          args["lte_creation_time"] = end_time
+
+
+  def main():  # pragma: nocover
+      """
+      Gets cases using the core-get-cases command with the given arguments.
+      """
+      args: dict = demisto.args()
+      prepare_start_end_time(args)
+      args["limit"] = args.pop("page_size", 100)
+      try:
+          demisto.debug(f"Calling core-get-cases with arguments: {args}")
+          results: dict = demisto.executeCommand("core-get-cases", args)[0]  # type: ignore
+          demisto.debug(f"core-get-cases command results {results}")
+
+          if is_error(results):
+              error = get_error(results)
+              demisto.debug("error: " + error)
+              raise DemistoException(f"Failed to execute the core-get-cases command {error}")
+
+          # In case enriched case data was requested
+          if argToBoolean(args.get("get_enriched_case_data", "false")):
+              raw_response_search_cases = results.get("Contents", {})
+              if isinstance(raw_response_search_cases, dict):
+                  raw_response_search_cases = [raw_response_search_cases]
+
+              case_extra_data = add_cases_extra_data(raw_response_search_cases)
+
+              return_results(
+                  CommandResults(
+                      readable_output=tableToMarkdown("Cases", case_extra_data, headerTransform=string_to_table_header),
+                      outputs_prefix="Core.Case",
+                      outputs_key_field="case_id",
+                      outputs=case_extra_data,
+                      raw_response=case_extra_data,
+                  )
+              )
+
+          return_results(results)
+
+      except DemistoException as error:
+          return_error(f"Failed to execute SearchCases. Error:\n{error}", error)
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):  # pragma: no cover
+      main()
+
+  register_module_line('SearchCases', 'end', __line__())
+scripttarget: 0
+signature: T+CP/nmSCtURQ+e8bhiqAGnjT6Molj+LCeYiVmH7LJ9Z+CwR9Jw7msDNzRMbp5MG/fO4q62nfn0C9RuZAsTvzQ2s6+/7hTcsTv8eTksxwmY8bWQKT4i7jTJb6f03fp+gd5+oSEgdxuqd8FEYjojYfq3ylPCKK9OKtc11aUz6PhWgGyKUviJuGQ2Ub8+9j99L6DHNS8/4o/7TdroN7lAwsLN2RHp37npHI0wKJiowxhazj8LW6fF9ZEfCkqidolipmyvGJMWytK8amhVG7nm1pZ6IWWPr1F0SJuHNJBF7L63oXxj0ffPgTu3SIZawSI6RVC31t9R3+R+IezciHk6ysQ==
+subtype: python3
+system: true
+tags: []
+type: python
