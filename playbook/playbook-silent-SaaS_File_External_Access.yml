@@ -1,0 +1,4736 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.9.0
+    isoverridable: false
+    itemVersion: 1.3.54
+    packID: CortexResponseAndRemediation
+    packName: Cortex Response And Remediation
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  ### This playbook addresses the following alert:
+  - External user accessed a sensitive SaaS file via anonymous link.
+
+  ### Playbook Stages:
+
+  #### Triage:
+  - Retrieve past **file activities**.
+  - Gather the **users** involved in the SaaS file (e.g., owner, sharer, actor).
+  - Get **any anomalies** related to the alert.
+
+  #### Investigation:
+  - Analyze the **IP/domain/email** reputation.
+  - Assess the user's **risk level** in Cortex.
+  - Verify that the sharing link has not been forgotten.
+  - Determine if the user account has been **disabled or deleted**.
+  - Look for the sharer user's anonymous link creation count.
+  - Search for medium or high **Azure Risk Detections and Defender Alerts** (*SharePoint/OneDrive only*).
+  - Check for anomalies in **User Agent, ASN, and Geo-location** (*SharePoint/OneDrive only*).
+  - Check the actor user's frequency of accessing various external files (*Drive only*).
+
+  #### Verdict:
+  - If there are at least *2 pieces of LOW* evidence.
+  - **OR** if there is at least *1 piece of HIGH* evidence.
+
+  #### Remediation:
+  - *Immediately* delete anonymous links from the file.
+  - Delete all file permissions (*approval needed*).
+  - Notify the owner and/or their manager (*approval needed*).
+
+  ### Requirements:
+
+  #### Triage:
+  - `Microsoft Graph Files`/`Google Drive` for retrieving **File Activities**.
+
+  #### Investigation:
+  - `Azure Risky Users` or `MSGraph Identity and Access` for retrieving **Azure Risk Detections**.
+  - `Microsoft 365 Defender` for retrieving **Defender Alerts**.
+  - `Microsoft Graph User`/`GSuite Admin` for retrieving user properties.
+  - `XQL Query Engine` to count past events.
+
+  #### Remediation:
+  - `Microsoft Graph Files`/`Google Drive` for removing permissions.
+  - `Mail Sender` or a similar intergration (e.g., Gmail, EWS) for notifying.
+id: silent-SaaS File External Access
+inputs: []
+issilent: true
+name: silent-SaaS File External Access
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tags:
+- T1530 - Data from Cloud Storage
+- TA0009 - Collection
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 787b4329-0fc3-49bd-824b-c9dd163df035
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 787b4329-0fc3-49bd-824b-c9dd163df035
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 449,
+          "y": 260
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 39391c99-d941-4f0a-8b82-0f11b1ae2e58
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Triage
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 39391c99-d941-4f0a-8b82-0f11b1ae2e58
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 449,
+          "y": 378
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      alert_ids:
+        simple: ${alert.id}
+      extend-context:
+        simple: RawLog=alerts.[0].original_alert_json=JSON.parse(val).raw_abioc.event.raw_log
+      filter_alert_fields:
+        simple: "false"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Provides additional information about the alert, such as **users,
+        IP address, anomalies, and SaaS raw log** (extended context).
+      id: 0799179e-8dc6-4dab-aac9-aa370b4f8848
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get Extended Alert Data
+      playbooktaskmissingcomponent: null
+      script: '|||core-get-cloud-original-alerts'
+      type: regular
+      version: -1
+    taskid: 0799179e-8dc6-4dab-aac9-aa370b4f8848
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 449,
+          "y": 505
+        }
+      }
+  "3":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.service_type
+          operator: isEqualString
+          right:
+            value:
+              simple: SharePoint
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.service_type
+          operator: isEqualString
+          right:
+            value:
+              simple: OneDrive
+      label: SharePoint/OneDrive
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.service_type
+          operator: isEqualString
+          right:
+            value:
+              simple: Drive
+      label: Drive
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "101"
+      Drive:
+      - "10"
+      - "4"
+      SharePoint/OneDrive:
+      - "7"
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 3baf1f29-cf45-467b-999e-1648df42bbcb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check SaaS Service
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 3baf1f29-cf45-467b-999e-1648df42bbcb
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 449,
+          "y": 625
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "101"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: InvestigationUsers
+      value:
+        complex:
+          accessor: event
+          root: Core.OriginalAlert
+          transformers:
+          - args:
+              expression:
+                value:
+                  simple: |-
+                    {
+                    Actor:{UPN: identity_name},
+                    Owner:{UPN: google_drive_owner}
+                    }
+            operator: jmespath
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        **Actor**: The user who **accessed** or **viewed** the file via the anonymous link.
+        **Owner**: The user who **uploaded** or **owns** the file.
+      id: 1c5e6f05-bbe7-4a59-838c-8eaea385cab0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set Actor & Owner Users
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 1c5e6f05-bbe7-4a59-838c-8eaea385cab0
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 694,
+          "y": 771
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "101"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: InvestigationUsers.Actor
+      value:
+        complex:
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert.event.identity_name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: '#ext#'
+          root: Core.OriginalAlert.event.identity_name
+          transformers:
+          - args:
+              dt:
+                value:
+                  simple: .={"UPN":val.split('#ext#')[0].replace(/_(?=[^_]*$)/, '@')}
+            operator: DT
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: '**Actor**: The user who **accessed** or **viewed** the file via
+        the anonymous link.'
+      id: ce16b5ec-4b28-4b6a-b283-e3f460396a1c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set Actor User
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: ce16b5ec-4b28-4b6a-b283-e3f460396a1c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 214,
+          "y": 771
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "71"
+      - "70"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: MsGraphFiles.Activities=value
+      ignore-outputs:
+        simple: "true"
+      site_id:
+        simple: ${RawLog.Site}/drive/items/${RawLog.ListItemUniqueId}/activities?
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Retrieves past **file** activity in SharePoint/OneDrive.
+      id: a2057309-b931-4dd8-bc8f-aa3a6b83ae72
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get SharePoint File Activities
+      playbooktaskmissingcomponent: null
+      script: '|||msgraph-list-drives-in-site'
+      type: regular
+      version: -1
+    taskid: a2057309-b931-4dd8-bc8f-aa3a6b83ae72
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -188.5,
+          "y": 771
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "54"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      properties:
+        simple: ID,UserPrincipalName,AccountEnabled,DeletedDateTime
+      user:
+        complex:
+          accessor: UPN
+          root: InvestigationUsers.Owner
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: InvestigationUsers.Sharer.UPN
+            operator: append
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Gathers more **owner/sharer** user details to determine the user's
+        legitimacy.
+      id: a8019d42-2c0e-4943-bc1d-69ffec15f687
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get File Owner+Sharer Users Details
+      playbooktaskmissingcomponent: null
+      script: '|||msgraph-user-get'
+      type: regular
+      version: -1
+    taskid: a8019d42-2c0e-4943-bc1d-69ffec15f687
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 676,
+          "y": 1662
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "79"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      item_name:
+        simple: items/${Core.OriginalAlert.event.referenced_resource}
+      user_id:
+        simple: ${Core.OriginalAlert.event.google_drive_owner}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Retrieves past **file** activity in Google Drive.
+      id: 6387057f-5c95-46d0-8245-c6102fb214a0
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get Drive File Activities
+      playbooktaskmissingcomponent: null
+      script: '|||google-drive-activity-list'
+      type: regular
+      version: -1
+    taskid: 6387057f-5c95-46d0-8245-c6102fb214a0
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1088,
+          "y": 771
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "12"
+      - "25"
+      - "69"
+      - "88"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e2f7ccd1-27d3-49ae-88b2-7a48028d4a94
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: e2f7ccd1-27d3-49ae-88b2-7a48028d4a94
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 449,
+          "y": 1139
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "19"
+      - "13"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c216bd59-7b84-4e73-878b-414ce712a433
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Users Indicators Enrichment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: c216bd59-7b84-4e73-878b-414ce712a433
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -1846,
+          "y": 1267
+        }
+      }
+  "13":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.caller_ip
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "37"
+      "yes":
+      - "14"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: aa508004-a077-4482-a8cd-ef3b5b3353d0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Actor IP
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: aa508004-a077-4482-a8cd-ef3b5b3353d0
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -2050,
+          "y": 1454
+        }
+      }
+  "14":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      external_enrichment:
+        simple: "true"
+      ip_list:
+        simple: ${Core.OriginalAlert.event.caller_ip}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: This script gathers IP reputation data from multiple integrations
+        and returns an IP entity with consolidated information to the context.
+      id: a9bd170f-11e3-4f70-ba88-af34c82690b5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Enrich Actor IP
+      playbooktaskmissingcomponent: null
+      script: ip-enrichment
+      type: regular
+      version: -1
+    taskid: a9bd170f-11e3-4f70-ba88-af34c82690b5
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -1846,
+          "y": 1662
+        }
+      }
+  "17":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "103"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      domain_list:
+        complex:
+          accessor: UPN
+          root: InvestigationUsers.Actor
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: InvestigationUsers.Owner.UPN
+            operator: append
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: InvestigationUsers.Sharer.UPN
+            operator: append
+          - args:
+              empty_values: {}
+              remove_keys: {}
+            operator: RemoveEmpty
+          - args:
+              delimiter:
+                value:
+                  simple: '@'
+              fields:
+                value:
+                  simple: "2"
+            operator: Cut
+      external_enrichment:
+        simple: "true"
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: This script gathers domain reputation data from multiple integrations
+        and returns a "DomainEnrichment" object with consolidated information to the
+        context output.
+      id: 4c6a537a-086e-4806-a042-f62711663c6e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Enrich Domains
+      playbooktaskmissingcomponent: null
+      script: domain-enrichment
+      type: regular
+      version: -1
+    taskid: 4c6a537a-086e-4806-a042-f62711663c6e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -1429,
+          "y": 1662
+        }
+      }
+  "18":
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "37"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Evidence.Low.MaliciousIP
+      value:
+        complex:
+          accessor: Value
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: IPEnrichment.TIMScore
+              operator: greaterThan
+              right:
+                value:
+                  simple: "2"
+          root: IPEnrichment
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f5dba435-f08e-4811-bc72-d009ac7e007b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save Malicious IP
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: f5dba435-f08e-4811-bc72-d009ac7e007b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -1846,
+          "y": 1795
+        }
+      }
+  "19":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: InvestigationUsers
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "37"
+      "yes":
+      - "17"
+      - "24"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 47c384da-bfcb-4b9a-bbaa-0b78e0ee8f42
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check for Users
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 47c384da-bfcb-4b9a-bbaa-0b78e0ee8f42
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -1224,
+          "y": 1454
+        }
+      }
+  "24":
+    continueonerrortype: ""
+    id: "24"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "37"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Evidence.Low.HighRiskUser
+      value:
+        complex:
+          accessor: ID
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: UserData.RiskLevel
+              operator: containsGeneral
+              right:
+                value:
+                  simple: HIGH
+          root: UserData
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: cf348daa-c671-4747-928c-16add6f625c4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save High-Risk Users
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: cf348daa-c671-4747-928c-16add6f625c4
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -1016,
+          "y": 1662
+        }
+      }
+  "25":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.service_type
+          operator: isEqualString
+          right:
+            value:
+              simple: SharePoint
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.service_type
+          operator: isEqualString
+          right:
+            value:
+              simple: OneDrive
+      label: SharePoint/OneDrive
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.service_type
+          operator: isEqualString
+          right:
+            value:
+              simple: Drive
+      label: Drive
+    continueonerrortype: ""
+    id: "25"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "37"
+      Drive:
+      - "27"
+      SharePoint/OneDrive:
+      - "78"
+      - "89"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 014fc474-4916-47f7-804e-450e6c80b237
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check SaaS Service
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 014fc474-4916-47f7-804e-450e6c80b237
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 449,
+          "y": 1262
+        }
+      }
+  "27":
+    continueonerrortype: ""
+    id: "27"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "66"
+      - "99"
+      - "107"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b94a9003-ec55-4de8-8a0d-3d1bb6b066fb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Drive
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: b94a9003-ec55-4de8-8a0d-3d1bb6b066fb
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1892,
+          "y": 1394
+        }
+      }
+  "28":
+    continueonerrortype: ""
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "29"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      detected_date_time_after:
+        simple: ${.=new Date(Date.now()-(1000*60*60*24)).toISOString()}
+      limit:
+        simple: "100"
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Returns a list of the **Risk Detection** objects and their properties
+        from the **past day**.
+      id: 17448ca2-66e4-44b9-855c-6a76952216b6
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get Azure Risk Detections
+      playbooktaskmissingcomponent: null
+      script: '|||azure-risky-users-risk-detections-list'
+      type: regular
+      version: -1
+    taskid: 17448ca2-66e4-44b9-855c-6a76952216b6
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -610,
+          "y": 1662
+        }
+      }
+  "29":
+    continueonerrortype: ""
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "37"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Evidence.Low.OwnerAzureRiskDetections
+      value:
+        complex:
+          accessor: riskEventType
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: AzureRiskyUsers.RiskDetection.userPrincipalName
+              operator: isEqualString
+              right:
+                iscontext: true
+                value:
+                  simple: InvestigationUsers.Owner.UPN
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: AzureRiskyUsers.RiskDetection.riskState
+              operator: isEqualString
+              right:
+                value:
+                  simple: atRisk
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: AzureRiskyUsers.RiskDetection.riskState
+              operator: isEqualString
+              right:
+                value:
+                  simple: confirmedCompromised
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: AzureRiskyUsers.RiskDetection.riskLevel
+              operator: isEqualString
+              right:
+                value:
+                  simple: medium
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: AzureRiskyUsers.RiskDetection.riskLevel
+              operator: isEqualString
+              right:
+                value:
+                  simple: high
+          root: AzureRiskyUsers.RiskDetection
+          transformers:
+          - operator: uniq
+          - args:
+              separator:
+                value:
+                  simple: ' | '
+            operator: join
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Where the owner's detections **risk state** is either *atRisk*
+        or *confirmedCompromised* and the **risk level** is *medium* or *high*.
+      id: 15852200-27b5-4dd4-8bdb-078dd2020074
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save Owner-Triggered Detections
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 15852200-27b5-4dd4-8bdb-078dd2020074
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -610,
+          "y": 1795
+        }
+      }
+  "30":
+    continueonerrortype: ""
+    id: "30"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "31"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      odata_query:
+        simple: $filter=(userPrincipalName eq '${InvestigationUsers.Owner.UPN}') and
+          (riskState eq 'atRisk' or riskState eq 'confirmedCompromised') and (riskLevel
+          eq 'medium' or riskLevel eq 'high') and (detectedDateTime ge ${.=new Date(Date.now()-(1000*60*60*24)).toISOString()})
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Retrieves owner's **Risk Detections** from the **past day** where
+        the **risk state** is either *atRisk* or *confirmedCompromised* and the **risk
+        level** is *medium* or *high*.
+      id: d8eac52d-5fce-4d6e-85ef-74e8f528e585
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get Azure Risk Detections
+      playbooktaskmissingcomponent: null
+      script: '|||msgraph-identity-protection-risks-list'
+      type: regular
+      version: -1
+    taskid: d8eac52d-5fce-4d6e-85ef-74e8f528e585
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -199.5,
+          "y": 1662
+        }
+      }
+  "31":
+    continueonerrortype: ""
+    id: "31"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "37"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Evidence.Low.OwnerAzureRiskDetections
+      value:
+        complex:
+          accessor: riskEventType
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: MSGraph.identityProtection.risks.riskDetections.userPrincipalName
+              operator: isEqualString
+              right:
+                iscontext: true
+                value:
+                  simple: InvestigationUsers.Owner.UPN
+          root: MSGraph.identityProtection.risks.riskDetections
+          transformers:
+          - operator: uniq
+          - args:
+              separator:
+                value:
+                  simple: ' | '
+            operator: join
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1e427260-8109-4954-811d-e8d365adcba1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save Owner-Triggered Detections
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 1e427260-8109-4954-811d-e8d365adcba1
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -199.5,
+          "y": 1795
+        }
+      }
+  "32":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: brand
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: AzureRiskyUsers
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isNotEmpty
+      label: Azure Risky Users
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: brand
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: MicrosoftGraphIdentityandAccess
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isNotEmpty
+      label: MSGraph Identity and Access
+    continueonerrortype: ""
+    id: "32"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "37"
+      Azure Risky Users:
+      - "28"
+      MSGraph Identity and Access:
+      - "30"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Integration with *MSGraph Identity and Access* or with *Azure Risky
+        Users* is required to retrieve **Azure Risk Detections**.
+      id: fd17d242-4153-450b-83c1-c18c446cd85b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Available Integrations
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: fd17d242-4153-450b-83c1-c18c446cd85b
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -404,
+          "y": 1524
+        }
+      }
+  "33":
+    continueonerrortype: ""
+    id: "33"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "34"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        simple: AlertEvidence | where Timestamp >= ago(1d) | where AccountUpn in ("${InvestigationUsers.Owner.UPN}")
+          | where Severity != "Informational"
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: |
+        Retrieves alerts from **the past day** for owner user, excluding those with **Info** severity status.
+      id: ce29b707-eb06-43dd-8ef6-0602c6eab9df
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get Defender Alerts
+      playbooktaskmissingcomponent: null
+      script: '|||microsoft-365-defender-advanced-hunting'
+      type: regular
+      version: -1
+    taskid: ce29b707-eb06-43dd-8ef6-0602c6eab9df
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 214,
+          "y": 1662
+        }
+      }
+  "34":
+    continueonerrortype: ""
+    id: "34"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "37"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Evidence.Low.OwnerDefenderAlerts
+      value:
+        complex:
+          accessor: Title
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: Microsoft365Defender.Hunt.results.AccountUpn
+              operator: isEqualString
+              right:
+                iscontext: true
+                value:
+                  simple: InvestigationUsers.Owner.UPN
+          root: Microsoft365Defender.Hunt.results
+          transformers:
+          - operator: uniq
+          - args:
+              separator:
+                value:
+                  simple: ' | '
+            operator: join
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 3ff6d4fb-6c8c-4217-84ac-b7094c89416e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save Owner-Triggered Alerts
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 3ff6d4fb-6c8c-4217-84ac-b7094c89416e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 214,
+          "y": 1795
+        }
+      }
+  "35":
+    continueonerrortype: ""
+    id: "35"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "37"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Evidence.Low.NewUA-ASN-Country
+      value:
+        complex:
+          accessor: event
+          root: Core.OriginalAlert
+          transformers:
+          - args:
+              conditions:
+                value:
+                  simple: |-
+                    [{
+                      "condition": "#{service_caller_ip_asn_days_seen_count} + #{saas_caller_ip_geolocation_days_seen_count} + #{saas_best_identity_user_agent_days_seen_count} == 0",
+                      "return": #{caller_ip_asn}+" | "+#{caller_ip_geolocation}+" | "+#{user_agent}
+                    }, {
+                      "condition": "#{service_caller_ip_asn_days_seen_count} + #{saas_caller_ip_geolocation_days_seen_count} == 0",
+                      "return": #{caller_ip_asn}+" | "+#{caller_ip_geolocation}
+                    }, {
+                      "condition": "#{service_caller_ip_asn_days_seen_count} + #{saas_best_identity_user_agent_days_seen_count} == 0",
+                      "return": #{caller_ip_asn}+" | "+#{user_agent}
+                    }, {
+                      "condition": "#{saas_caller_ip_geolocation_days_seen_count} + #{saas_best_identity_user_agent_days_seen_count} == 0",
+                      "return": #{caller_ip_geolocation}+" | "+#{user_agent}
+                    }, {
+                      "default": ""
+                    }]
+              flags: {}
+            operator: If-Elif
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Save *User Agent, ASN, and Country* if **two** of these are identified
+        **as new**.
+      id: 9297db24-df71-4d89-8e1a-4690acab0737
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Actor's UA|ASN|Country
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 9297db24-df71-4d89-8e1a-4690acab0737
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1075,
+          "y": 1662
+        }
+      }
+  "37":
+    continueonerrortype: ""
+    id: "37"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "38"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 44d02a2f-00e9-474a-8619-71522cd1a74a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Verdict
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 44d02a2f-00e9-474a-8619-71522cd1a74a
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1956
+        }
+      }
+  "38":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Low
+                root: Evidence
+                transformers:
+                - args:
+                    applyIfEmpty: {}
+                    defaultValue:
+                      value:
+                        simple: '{}'
+                  operator: SetIfEmpty
+                - args:
+                    expression:
+                      value:
+                        simple: '*'
+                  operator: jmespath
+                - operator: count
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "2"
+        - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: High
+                root: Evidence
+                transformers:
+                - args:
+                    applyIfEmpty: {}
+                    defaultValue:
+                      value:
+                        simple: '{}'
+                  operator: SetIfEmpty
+                - args:
+                    expression:
+                      value:
+                        simple: '*'
+                  operator: jmespath
+                - operator: count
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "1"
+      label: True Positive
+    continueonerrortype: ""
+    id: "38"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "102"
+      True Positive:
+      - "100"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: If there are at least *2 pieces of LOW* evidence, **OR** if there
+        is at least *1 piece of HIGH* evidence.
+      id: 435907c3-f8a4-4394-b40b-5efe6bb1d53b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Evidence
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 435907c3-f8a4-4394-b40b-5efe6bb1d53b
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 449,
+          "y": 2087
+        }
+      }
+  "39":
+    continueonerrortype: ""
+    id: "39"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "40"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a63f7ee6-d121-4a4e-88ff-572a47799dd2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Remediation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: a63f7ee6-d121-4a4e-88ff-572a47799dd2
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 449,
+          "y": 2352
+        }
+      }
+  "40":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.service_type
+          operator: isEqualString
+          right:
+            value:
+              simple: SharePoint
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.service_type
+          operator: isEqualString
+          right:
+            value:
+              simple: OneDrive
+      label: SharePoint/OneDrive
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.service_type
+          operator: isEqualString
+          right:
+            value:
+              simple: Drive
+      label: Drive
+    continueonerrortype: ""
+    id: "40"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "43"
+      Drive:
+      - "83"
+      - "80"
+      SharePoint/OneDrive:
+      - "85"
+      - "41"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c1112878-8731-4aaf-8f51-3095615e82f5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check SaaS Service
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c1112878-8731-4aaf-8f51-3095615e82f5
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 449,
+          "y": 2474
+        }
+      }
+  "41":
+    continueonerrortype: ""
+    id: "41"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "94"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: MsGraphFiles.Permissions=value
+      ignore-outputs:
+        simple: "true"
+      site_id:
+        simple: ${RawLog.Site}/drive/items/${RawLog.ListItemUniqueId}/permissions?
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Retrieves the list of all **file** permissions.
+      id: 7765ee33-d198-4f97-9ad4-f3737b98719d
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get File Permissions
+      playbooktaskmissingcomponent: null
+      script: '|||msgraph-list-drives-in-site'
+      type: regular
+      version: -1
+    taskid: 7765ee33-d198-4f97-9ad4-f3737b98719d
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 213,
+          "y": 2619
+        }
+      }
+  "42":
+    continueonerrortype: ""
+    id: "42"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "43"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      permission_id:
+        complex:
+          accessor: id
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: MsGraphFiles.Permissions.link
+              operator: isExists
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: MsGraphFiles.Permissions.link.scope
+              operator: isEqualString
+              right:
+                value:
+                  simple: anonymous
+          root: MsGraphFiles.Permissions
+      site_id:
+        simple: ${RawLog.Site}/drive/items/${RawLog.ListItemUniqueId}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Deletes all *anonymous-link* permissions from the **file**.
+      id: 4713160e-5c65-4725-b37a-65bc9cb995fb
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Delete Anonymous Links
+      playbooktaskmissingcomponent: null
+      script: '|||msgraph-delete-site-permissions'
+      type: regular
+      version: -1
+    taskid: 4713160e-5c65-4725-b37a-65bc9cb995fb
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 213,
+          "y": 2866
+        }
+      }
+  "43":
+    continueonerrortype: ""
+    form:
+      description: '**Review and take action if needed:**'
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: "---\n\n### **\U0001F4BB Alert Extended Info \U0001F4BB**\n\n**What?**\n-
+            File: `${Core.OriginalAlert.event=val.sharepoint_source_filename ? val.sharepoint_source_filename
+            : val.referenced_resource_name}`\n- SaaS Service: `${Core.OriginalAlert.event.service_type}`\n\n**Who?**\n${InvestigationUsers=Object.keys(val||{}).length
+            > 0 ? Object.entries(val).filter(([_, user]) => user && user.UPN).map(([title,
+            user]) => '- '+title+': `'+user.UPN+'`').join('\\n') : \"- Not Available\"}\n\n**When?**\n${InvestigationUsers=Object.keys(val||{}).length
+            > 0 ? Object.values(val).flatMap(user => Object.entries(user)).filter(([key,
+            value]) => key.includes(\"Datetime\")).map(([title, datetime]) => '- '+title+':
+            `'+datetime+'`').join('\\n') : \"\"}\n- FileAccessedDateTime: `${Core.OriginalAlert.event._time}`\n\n---\n\n###
+            **\U0001F6A5 Evidence \U0001F6A5**\n\n**Low:**\n${Evidence=Object.keys(val.Low||{}).length
+            > 0 ? Object.entries(val.Low).map(([k, v]) => '- '+k+': `'+v+'`').join('\\n')
+            : \"- None\"}\n\n**High:**\n${Evidence=Object.keys(val.High||{}).length
+            > 0 ? Object.entries(val.High).map(([k, v]) => '- '+k+': `'+v+'`').join('\\n')
+            : \"- None\"}\n\n---\n\nWe recommend enabling the **\"Disable Anonymous
+            Link Creation\"** feature in your SaaS service."
+        options: []
+        optionsarg:
+        - {}
+        - simple: Confirm
+        placeholder: ""
+        readonly: false
+        required: true
+        tooltip: ""
+        type: singleSelect
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "1"
+        label: ""
+        labelarg:
+          complex:
+            filters:
+            - - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: Microsoft_Graph_Files
+              - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: GoogleDrive
+            root: Available.Integrations
+            transformers:
+            - operator: count
+            - args:
+                conditions:
+                  value:
+                    simple: |-
+                      [{
+                        "condition": "#{.} > 0",
+                        "return": "Based on the evidence, we deleted the **file's anonymous links**. You may also **delete the other file permissions** by selecting `Delete All Permissions` below."
+                      }, {
+                        "default": "You may need to **manually delete the file's links** directly in your SaaS service. For enhanced future efficiency, we advise setting up the `Microsoft Graph Files` or `Google Drive` integration."
+                      }]
+                flags: {}
+              operator: If-Elif
+        options: []
+        optionsarg:
+        - complex:
+            filters:
+            - - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: Microsoft_Graph_Files
+              - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: GoogleDrive
+            root: Available.Integrations
+            transformers:
+            - operator: count
+            - args:
+                conditions:
+                  value:
+                    simple: |-
+                      [{
+                        "condition": "#{.} > 0",
+                        "return": "Delete All Permissions"
+                      }, {
+                        "default": "Confirm"
+                      }]
+                flags: {}
+              operator: If-Elif
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: multiSelect
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "2"
+        label: ""
+        labelarg:
+          complex:
+            filters:
+            - - left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: MicrosoftGraphMail
+              - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: Gmail Single User
+              - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: Gmail
+              - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: EWSO365
+            root: Available.Integrations
+            transformers:
+            - operator: count
+            - args:
+                conditions:
+                  value:
+                    simple: |-
+                      [{
+                        "condition": "#{.} > 0",
+                        "return": "Also, you can send an email to the file owner by selecting `Notify the Owner` below."
+                      }, {
+                        "default": "Also, we advise manually notifying the file owner or their manager. For enhanced efficiency, we recommend setting up the `Microsoft Graph Mail` or `Gmail` integration."
+                      }]
+                flags: {}
+              operator: If-Elif
+        options: []
+        optionsarg:
+        - complex:
+            filters:
+            - - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: MicrosoftGraphMail
+              - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: Gmail Single User
+              - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: Gmail
+              - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: EWSO365
+            root: Available.Integrations
+            transformers:
+            - operator: count
+            - args:
+                conditions:
+                  value:
+                    simple: |-
+                      [{
+                        "condition": "#{.} > 0",
+                        "return": "Notify the Owner"
+                      }, {
+                        "default": "Confirm"
+                      }]
+                flags: {}
+              operator: If-Elif
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: multiSelect
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "3"
+        label: ""
+        labelarg:
+          complex:
+            accessor: Integrations
+            filters:
+            - - left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: MicrosoftGraphMail
+              - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: Gmail Single User
+              - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: Gmail
+              - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: EWSO365
+            - - left:
+                  iscontext: true
+                  value:
+                    simple: Available.Manager
+                operator: isNotEmpty
+            root: Available
+            transformers:
+            - operator: count
+            - args:
+                conditions:
+                  value:
+                    simple: |-
+                      [{
+                        "condition": "#{.} > 0",
+                        "return": "Additionally, you can send an email to their manager by selecting `Notify the Owner's Manager` below."
+                      }, {
+                        "default": "Additionally, we advise manually notifying their manager."
+                      }]
+                flags: {}
+              operator: If-Elif
+        options: []
+        optionsarg:
+        - complex:
+            accessor: Integrations
+            filters:
+            - - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: MicrosoftGraphMail
+              - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: Gmail Single User
+              - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: Gmail
+              - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: Available.Integrations
+                operator: isEqualString
+                right:
+                  value:
+                    simple: EWSO365
+            - - left:
+                  iscontext: true
+                  value:
+                    simple: Available.Manager
+                operator: isNotEmpty
+            root: Available
+            transformers:
+            - operator: count
+            - args:
+                conditions:
+                  value:
+                    simple: |-
+                      [{
+                        "condition": "#{.} > 0",
+                        "return": "Notify the Owner's Manager"
+                      }, {
+                        "default": "Confirm"
+                      }]
+                flags: {}
+              operator: If-Elif
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: multiSelect
+      sender: Your SOC team
+      syncid: ""
+      title: "\U0001F50D Analyst Action Required \U0001F50D"
+      totalanswers: 0
+    id: "43"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body: null
+      cc: null
+      format: ""
+      methods: []
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      '#none#':
+      - "44"
+      - "46"
+      - "48"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Message
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 0edf8ae1-fb5e-4eaf-9974-00c1f2b0f066
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual Task - Analyst Action Decision
+      playbooktaskmissingcomponent: null
+      type: collection
+      version: -1
+    taskid: 0edf8ae1-fb5e-4eaf-9974-00c1f2b0f066
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": 448,
+          "y": 2994
+        }
+      }
+  "44":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: "\U0001F50D Analyst Action Required \U0001F50D.Answers.0"
+          operator: isEqualString
+          right:
+            value:
+              simple: Notify the Owner
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: "\U0001F50D Analyst Action Required \U0001F50D.Answers.1"
+          operator: isEqualString
+          right:
+            value:
+              simple: Notify the Owner
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: "\U0001F50D Analyst Action Required \U0001F50D.Answers.2"
+          operator: isEqualString
+          right:
+            value:
+              simple: Notify the Owner
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: "\U0001F50D Analyst Action Required \U0001F50D.Answers.3"
+          operator: isEqualString
+          right:
+            value:
+              simple: Notify the Owner
+      label: "yes"
+    continueonerrortype: ""
+    id: "44"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "53"
+      "yes":
+      - "45"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 4c53a25d-8b07-43b2-b911-05316696f245
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Notify the Owner
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 4c53a25d-8b07-43b2-b911-05316696f245
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1088,
+          "y": 3116
+        }
+      }
+  "45":
+    continueonerrortype: ""
+    id: "45"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "53"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      body:
+        simple: |-
+          Dear User,
+
+          This email is to inform you about a recent security alert involving a sensitive file in your possession. Our Security Operations Center (SOC) detected unauthorized external access to your file: ${Core.OriginalAlert.event=val.sharepoint_source_filename ? val.sharepoint_source_filename : val.referenced_resource_name} in ${Core.OriginalAlert.event.service_type}.
+
+          Please be assured that we have taken immediate action to mitigate this risk. The following steps have been completed:
+
+          - Anonymous Link Deletion: Any anonymous sharing links associated with the file have been removed.
+          - Permissions Reviewed and Modified: The permissions on the file have been reviewed and additional restrictions have been applied to enhance its security.
+
+          We recommend that you review the file's contents and ensure no sensitive information was compromised. If you notice anything unusual or have any concerns, please do not hesitate to contact the IT Help Desk immediately.
+
+          Thank you for your cooperation in maintaining our security standards.
+
+          Sincerely,
+
+          The SOC Team
+      subject:
+        simple: 'Security Notification: Unauthorized Access to Your Sensitive File
+          in ${Core.OriginalAlert.event.service_type}'
+      to:
+        simple: ${InvestigationUsers.Owner.UPN}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      id: 7bb49927-c384-4be1-a56d-98b866cdb156
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Send Mail to Owner
+      playbooktaskmissingcomponent: null
+      script: '|||send-mail'
+      type: regular
+      version: -1
+    taskid: 7bb49927-c384-4be1-a56d-98b866cdb156
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1088,
+          "y": 3363
+        }
+      }
+  "46":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: "\U0001F50D Analyst Action Required \U0001F50D.Answers.0"
+          operator: isEqualString
+          right:
+            value:
+              simple: Notify the Owner's Manager
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: "\U0001F50D Analyst Action Required \U0001F50D.Answers.1"
+          operator: isEqualString
+          right:
+            value:
+              simple: Notify the Owner's Manager
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: "\U0001F50D Analyst Action Required \U0001F50D.Answers.2"
+          operator: isEqualString
+          right:
+            value:
+              simple: Notify the Owner's Manager
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: "\U0001F50D Analyst Action Required \U0001F50D.Answers.3"
+          operator: isEqualString
+          right:
+            value:
+              simple: Notify the Owner's Manager
+      label: "yes"
+    continueonerrortype: ""
+    id: "46"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "53"
+      "yes":
+      - "47"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8ccd3bef-b43a-4c59-a4bc-657dd1340cfa
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Notify the Owner's Manager
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 8ccd3bef-b43a-4c59-a4bc-657dd1340cfa
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 675,
+          "y": 3116
+        }
+      }
+  "47":
+    continueonerrortype: ""
+    id: "47"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "53"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      body:
+        simple: |-
+          Dear Manager,
+
+          This email is to inform you about a recent security alert involving a sensitive file belonging to ${InvestigationUsers.Owner.UPN} from your team. Our Security Operations Center (SOC) detected unauthorized external access to their file: ${Core.OriginalAlert.event=val.sharepoint_source_filename ? val.sharepoint_source_filename : val.referenced_resource_name} in ${Core.OriginalAlert.event.service_type}.
+
+          Please be assured that we have taken immediate action to mitigate this risk. The following steps have been completed:
+
+          - Anonymous Link Deletion: Any anonymous sharing links associated with the file have been removed.
+          - Permissions Reviewed and Modified: The permissions on the file have been reviewed and additional restrictions have been applied to enhance its security.
+
+          We recommend you follow up with ${InvestigationUsers.Owner.UPN} to ensure they are aware and reinforce the importance of secure file handling and sharing best practices.
+
+          Thank you for your understanding and cooperation in maintaining our security standards.
+
+          Sincerely,
+
+          The SOC Team
+      subject:
+        simple: 'Security Notification: Incident Regarding a Sensitive File of ${InvestigationUsers.Owner.UPN}'
+      to:
+        simple: ${Available.Manager}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      id: ba1ac8a0-c985-46b8-a0be-ae6e8c29cfba
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Send Mail to Owner's Manager
+      playbooktaskmissingcomponent: null
+      script: '|||send-mail'
+      type: regular
+      version: -1
+    taskid: ba1ac8a0-c985-46b8-a0be-ae6e8c29cfba
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 675,
+          "y": 3363
+        }
+      }
+  "48":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: "\U0001F50D Analyst Action Required \U0001F50D.Answers.0"
+          operator: isEqualString
+          right:
+            value:
+              simple: Delete All Permissions
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: "\U0001F50D Analyst Action Required \U0001F50D.Answers.1"
+          operator: isEqualString
+          right:
+            value:
+              simple: Delete All Permissions
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: "\U0001F50D Analyst Action Required \U0001F50D.Answers.2"
+          operator: isEqualString
+          right:
+            value:
+              simple: Delete All Permissions
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: "\U0001F50D Analyst Action Required \U0001F50D.Answers.3"
+          operator: isEqualString
+          right:
+            value:
+              simple: Delete All Permissions
+      label: "yes"
+    continueonerrortype: ""
+    id: "48"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "53"
+      "yes":
+      - "49"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6ef79dd4-97e7-42b2-a9af-5fd8e59e0488
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Delete All Permissions
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 6ef79dd4-97e7-42b2-a9af-5fd8e59e0488
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 3,
+          "y": 3116
+        }
+      }
+  "49":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.service_type
+          operator: isEqualString
+          right:
+            value:
+              simple: SharePoint
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.service_type
+          operator: isEqualString
+          right:
+            value:
+              simple: OneDrive
+      label: SharePoint/OneDrive
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.service_type
+          operator: isEqualString
+          right:
+            value:
+              simple: Drive
+      label: Drive
+    continueonerrortype: ""
+    id: "49"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "53"
+      Drive:
+      - "97"
+      SharePoint/OneDrive:
+      - "96"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e569c72d-3084-482c-8f35-2ba582103548
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check SaaS Service
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: e569c72d-3084-482c-8f35-2ba582103548
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 3,
+          "y": 3235
+        }
+      }
+  "51":
+    continueonerrortype: ""
+    id: "51"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "53"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      permission_id:
+        complex:
+          accessor: id
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: MsGraphFiles.Permissions.link
+              operator: isExists
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: MsGraphFiles.Permissions.link.scope
+              operator: isNotEqualString
+              right:
+                value:
+                  simple: anonymous
+          root: MsGraphFiles.Permissions
+      site_id:
+        simple: ${RawLog.Site}/drive/items/${RawLog.ListItemUniqueId}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Deletes all *other link* permissions from the **file**, except
+        *default* permissions.
+      id: fd7460d4-d8eb-4101-9274-0efed736ffa0
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Delete All Other Permissions
+      playbooktaskmissingcomponent: null
+      script: '|||msgraph-delete-site-permissions'
+      type: regular
+      version: -1
+    taskid: fd7460d4-d8eb-4101-9274-0efed736ffa0
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -200.5,
+          "y": 3493
+        }
+      }
+  "52":
+    continueonerrortype: ""
+    id: "52"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8a284373-d1a9-47fd-8520-a89486a194b5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 8a284373-d1a9-47fd-8520-a89486a194b5
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -443,
+          "y": 3750
+        }
+      }
+  "53":
+    continueonerrortype: ""
+    id: "53"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "52"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      closeNotes:
+        simple: Handled by the playbook "SaaS File External Access"
+      closeReason:
+        simple: Resolved - True Positive
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      id: 5e530fa5-5f85-4ebf-8c5c-48b2ec98176d
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close Alert as True Positive
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: 5e530fa5-5f85-4ebf-8c5c-48b2ec98176d
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 448,
+          "y": 3621
+        }
+      }
+  "54":
+    continueonerrortype: ""
+    id: "54"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "37"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Evidence.Low.MicrosoftUserIndicators
+      value:
+        complex:
+          root: MSGraphUser
+          transformers:
+          - args:
+              conditions:
+                value:
+                  simple: |-
+                    [{
+                      "condition": "#{AccountEnabled} == false and #{DeletedDateTime} != null",
+                      "return": "Account Disabled & Deleted"
+                    }, {
+                      "condition": "#{AccountEnabled} == false",
+                      "return": "Account Disabled"
+                    }, {
+                      "condition": "#{DeletedDateTime} != null",
+                      "return": "Account Deleted"
+                    }, {
+                      "default": ""
+                    }]
+              flags: {}
+            operator: If-Elif
+          - args:
+              separator:
+                value:
+                  simple: ' '
+            operator: join
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines if Microsoft account has been disabled or deleted.
+      id: b24188ee-14dc-4c40-9a01-d70665c37087
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Microsoft Users Details
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: b24188ee-14dc-4c40-9a01-d70665c37087
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 676,
+          "y": 1795
+        }
+      }
+  "59":
+    continueonerrortype: ""
+    id: "59"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "37"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Evidence.High.DaysSinceShare
+      value:
+        complex:
+          accessor: FileLastSharedDatetime
+          root: InvestigationUsers.Sharer
+          transformers:
+          - args:
+              dt:
+                value:
+                  simple: .=Math.floor((new Date() - new Date(val))/(1000*60*60*24))
+            operator: DT
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: df491c09-c4b4-4813-a208-61bcae01ef25
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save Days Since Share
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: df491c09-c4b4-4813-a208-61bcae01ef25
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1485,
+          "y": 1795
+        }
+      }
+  "61":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "61"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "92"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        simple: |-
+          dataset = saas_audit_logs
+          | filter service_type in (ENUM.SharePoint, ENUM.OneDrive)
+            and service_sub_type = ENUM.SharePointSharingOperation
+            and operation_name_orig = "AnonymousLinkCreated"
+            and identity_name = "${InvestigationUsers.Sharer.UPN}"
+          | fields raw_log, event_id
+          | comp count_distinct(event_id) as unique_anonymous_link_creations
+      query_name:
+        simple: unique_anonymous_link_creations
+      time_frame:
+        simple: 7d
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Runs an XQL query to get the **sharer user's** *anonymous link
+        creation count* in the last week.
+      id: e1e8f3cb-3a7f-41dd-957c-65a294659e96
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Check SharePoint Link Creations
+      playbooktaskmissingcomponent: null
+      script: '|||xdr-xql-generic-query'
+      type: regular
+      version: -1
+    taskid: e1e8f3cb-3a7f-41dd-957c-65a294659e96
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2722,
+          "y": 1541
+        }
+      }
+  "65":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "65"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "92"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        simple: |-
+          dataset = saas_audit_logs
+          | filter service_type = ENUM.DRIVE
+            and service_sub_type = ENUM.ACL_CHANGE
+            and operation_name_orig = "change_document_visibility"
+            and (identity_name = "${InvestigationUsers.Sharer.UPN}" or identity_uuid = "${InvestigationUsers.Sharer.UserID=val.split('/')[1]}")
+          | alter parameters_array = json_extract_array(raw_log, "$.events.parameters")
+          | alter visibility_found_in_array = arrayfilter(parameters_array, json_extract_scalar("@element", "$.name") = "visibility")
+          | alter visibility_param_object = arrayindex(visibility_found_in_array, 0)
+          | alter visibility_value = json_extract_scalar(visibility_param_object, "$.value")
+          | filter visibility_value in ("people_with_link", "public_on_the_web")
+          | fields raw_log, event_id
+          | comp count_distinct(event_id) as unique_anonymous_link_creations
+      query_name:
+        simple: unique_anonymous_link_creations
+      time_frame:
+        simple: 7d
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Runs an XQL query to get the **sharer user's** *anonymous link
+        creation count* in the last week.
+      id: 667047ff-3fe7-4757-ad38-4adc1669908c
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Check Drive Link Creations
+      playbooktaskmissingcomponent: null
+      script: '|||xdr-xql-generic-query'
+      type: regular
+      version: -1
+    taskid: 667047ff-3fe7-4757-ad38-4adc1669908c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 3137,
+          "y": 1541
+        }
+      }
+  "66":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "66"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "90"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        simple: |-
+          dataset = saas_audit_logs
+          | filter service_type = ENUM.DRIVE
+            and service_sub_type = ENUM.ACCESS
+            and operation_name_orig = "view"
+            and identity_name = "${InvestigationUsers.Actor.UPN}"
+          | fields raw_log, referenced_resource
+          | alter parameters_array = json_extract_array(raw_log, "$.events.parameters")
+          | alter visibility_found_in_array = arrayfilter(parameters_array, json_extract_scalar("@element", "$.name") = "visibility")
+          | alter visibility_param_object = arrayindex(visibility_found_in_array, 0)
+          | alter visibility_value = json_extract_scalar(visibility_param_object, "$.value")
+          | filter visibility_value in ("people_with_link", "public_on_the_web")
+          | fields raw_log, referenced_resource
+          | comp count_distinct(referenced_resource) as unique_external_views
+      query_name:
+        simple: unique_external_views
+      time_frame:
+        simple: 7d
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Runs an XQL query to check the **actor user's** *frequency of accessing
+        various external files* in last week.
+      id: f50fc918-81b2-458c-ac04-2d1d152a42ad
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Check Actor Visits
+      playbooktaskmissingcomponent: null
+      script: '|||xdr-xql-generic-query'
+      type: regular
+      version: -1
+    taskid: f50fc918-81b2-458c-ac04-2d1d152a42ad
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2315,
+          "y": 1541
+        }
+      }
+  "69":
+    continueonerrortype: ""
+    id: "69"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "19"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: fbc757f6-fea2-4951-8159-238a7f108e1e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Core User Risk
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: fbc757f6-fea2-4951-8159-238a7f108e1e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -1016,
+          "y": 1267
+        }
+      }
+  "70":
+    continueonerrortype: ""
+    id: "70"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "101"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: InvestigationUsers.Sharer
+      value:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: MsGraphFiles.Activities.action.share
+              operator: isExists
+          - - left:
+                iscontext: true
+                value:
+                  simple: MsGraphFiles.Activities.action.share
+              operator: isEmpty
+          root: MsGraphFiles.Activities
+          transformers:
+          - args:
+              expression:
+                value:
+                  simple: "{\nUPN: actor.user.userPrincipalName, \nFileLastSharedDatetime:
+                    times.recordedDateTime\n}"
+            operator: jmespath
+          - operator: FirstArrayElement
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: '**Sharer**: The user who **last shared** the file or **created**
+        the anonymous link.'
+      id: 7da5c0b6-626e-48c4-b59b-1a81d3233912
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Extract File Sharer User
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 7da5c0b6-626e-48c4-b59b-1a81d3233912
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 14,
+          "y": 895
+        }
+      }
+  "71":
+    continueonerrortype: ""
+    id: "71"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "101"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: InvestigationUsers.Owner
+      value:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: MsGraphFiles.Activities.action.create
+              operator: isExists
+          root: MsGraphFiles.Activities
+          transformers:
+          - args:
+              expression:
+                value:
+                  simple: "{\nUPN: actor.user.userPrincipalName, \nFileCreatedDatetime:
+                    times.recordedDateTime\n}"
+            operator: jmespath
+          - operator: FirstArrayElement
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: '**Owner**: The user who **uploaded** or **owns** the file.'
+      id: 8be65647-8f61-4561-a4fa-88dfb9b12a4f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Extract File Owner User
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 8be65647-8f61-4561-a4fa-88dfb9b12a4f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -393,
+          "y": 895
+        }
+      }
+  "77":
+    continueonerrortype: ""
+    id: "77"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "37"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Evidence.Low.GoogleUserIndicators
+      value:
+        complex:
+          accessor: AdditionalFields
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: UserData.Brand
+              operator: isEqualString
+              right:
+                value:
+                  simple: GSuiteAdmin
+          root: UserData
+          transformers:
+          - args:
+              conditions:
+                value:
+                  simple: |-
+                    [{
+                      "condition": "#{suspended} == true and #{archived} == true and #{deletionTime} != null",
+                      "return": "Account suspended, archived, and deleted"
+                    }, {
+                      "condition": "#{suspended} == true and #{archived} == true",
+                      "return": "Account suspended, and archived"
+                    }, {
+                      "condition": "#{archived} == true and #{deletionTime} != null",
+                      "return": "Account archived, and deleted"
+                    }, {
+                      "condition": "#{suspended} == true and #{deletionTime} != null",
+                      "return": "Account suspended, and deleted"
+                    }, {
+                      "condition": "#{archived} == true",
+                      "return": "Account archived"
+                    }, {
+                      "condition": "#{suspended} == true",
+                      "return": "Account suspended"
+                    }, {
+                      "condition": "#{deletionTime} != null",
+                      "return": "Account deleted"
+                    }, {
+                      "default": ""
+                    }]
+              flags: {}
+            operator: If-Elif
+          - args:
+              separator:
+                value:
+                  simple: ' '
+            operator: join
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a48cd947-739f-4ebd-925c-89e7b57ebaf5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save Google Users Details
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: a48cd947-739f-4ebd-925c-89e7b57ebaf5
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1892,
+          "y": 1795
+        }
+      }
+  "78":
+    continueonerrortype: ""
+    id: "78"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "32"
+      - "33"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 509e7eda-511b-400b-8f5a-c745bd15523d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Detections & Alerts
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 509e7eda-511b-400b-8f5a-c745bd15523d
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -199.5,
+          "y": 1394
+        }
+      }
+  "79":
+    continueonerrortype: ""
+    id: "79"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "87"
+      - "101"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: InvestigationUsers.Sharer
+      value:
+        complex:
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: GoogleDrive.DriveActivity.primaryActionDetail.permissionChange.addedPermissions.anyone
+              operator: isExists
+          root: GoogleDrive.DriveActivity
+          transformers:
+          - args:
+              expression:
+                value:
+                  simple: "{\nUserID: actors[?user.knownUser].user.knownUser.personName|[0]
+                    \nFileLastSharedDatetime: timestamp\n}"
+            operator: jmespath
+          - operator: FirstArrayElement
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: '**Sharer**: The user who **last shared** the file or **created**
+        the anonymous link.'
+      id: ea076bf7-319e-4607-b239-5393ea425766
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Extract File Sharer UserID
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: ea076bf7-319e-4607-b239-5393ea425766
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1088,
+          "y": 895
+        }
+      }
+  "80":
+    continueonerrortype: ""
+    id: "80"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "95"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      file_id:
+        simple: ${Core.OriginalAlert.event.referenced_resource}
+      user_id:
+        simple: ${InvestigationUsers.Owner.UPN}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Retrieves the list of all **file** permissions.
+      id: 39f08d37-53bd-4b33-aa48-b30f77215ec7
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get File Permissions
+      playbooktaskmissingcomponent: null
+      script: '|||google-drive-file-permissions-list'
+      type: regular
+      version: -1
+    taskid: 39f08d37-53bd-4b33-aa48-b30f77215ec7
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 675,
+          "y": 2619
+        }
+      }
+  "81":
+    continueonerrortype: ""
+    id: "81"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "43"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      file_id:
+        simple: ${Core.OriginalAlert.event.referenced_resource}
+      ignore-outputs:
+        simple: "true"
+      permission_id:
+        complex:
+          accessor: id
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: GoogleDrive.FilePermission.FilePermission.type
+              operator: isEqualString
+              right:
+                value:
+                  simple: anyone
+          root: GoogleDrive.FilePermission.FilePermission
+      user_id:
+        simple: ${InvestigationUsers.Owner.UPN}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Deletes all *anonymous-link* permissions from the **file**.
+      id: 8bb3441a-6fa1-4782-ac6a-df76ea1bee1c
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Delete Anonymous Links
+      playbooktaskmissingcomponent: null
+      script: '|||google-drive-file-permission-delete'
+      type: regular
+      version: -1
+    taskid: 8bb3441a-6fa1-4782-ac6a-df76ea1bee1c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 675,
+          "y": 2866
+        }
+      }
+  "82":
+    continueonerrortype: ""
+    id: "82"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "53"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      file_id:
+        simple: ${Core.OriginalAlert.event.referenced_resource}
+      ignore-outputs:
+        simple: "true"
+      permission_id:
+        complex:
+          accessor: id
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: GoogleDrive.FilePermission.FilePermission.type
+              operator: isNotEqualString
+              right:
+                value:
+                  simple: anyone
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: GoogleDrive.FilePermission.FilePermission.role
+              operator: isNotEqualString
+              right:
+                value:
+                  simple: owner
+          root: GoogleDrive.FilePermission.FilePermission
+      user_id:
+        simple: ${InvestigationUsers.Owner.UPN}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Deletes all *other* permissions from the **file**, except *owner*
+        permissions.
+      id: 55ae96b5-3e48-4941-8a2c-303ddcea9476
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Delete All Other Permissions
+      playbooktaskmissingcomponent: null
+      script: '|||google-drive-file-permission-delete'
+      type: regular
+      version: -1
+    taskid: 55ae96b5-3e48-4941-8a2c-303ddcea9476
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 213,
+          "y": 3493
+        }
+      }
+  "83":
+    continueonerrortype: ""
+    id: "83"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "84"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Available.Integrations
+      value:
+        complex:
+          accessor: brand
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: modules.brand
+              operator: isEqualString
+              right:
+                value:
+                  simple: GoogleDrive
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: modules.brand
+              operator: isEqualString
+              right:
+                value:
+                  simple: Gmail Single User
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: modules.brand
+              operator: isEqualString
+              right:
+                value:
+                  simple: Gmail
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: modules.state
+              operator: isEqualString
+              right:
+                value:
+                  simple: active
+          root: modules
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Marks relevant activated Google integrations (e.g., Gmail, Drive)
+        for the manual task.
+      id: a99e517b-0253-4c62-b2a4-0550435d310e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get Available Google Integrations
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: a99e517b-0253-4c62-b2a4-0550435d310e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1088,
+          "y": 2619
+        }
+      }
+  "84":
+    continueonerrortype: ""
+    id: "84"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "43"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Available.Manager
+      value:
+        complex:
+          accessor: value
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: GSuite.User.relations.type
+              operator: isEqualString
+              right:
+                value:
+                  simple: manager
+          root: GSuite.User.relations
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 72b0f5e2-48f1-4465-84b4-bdd5a259bb56
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Manager Availability
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 72b0f5e2-48f1-4465-84b4-bdd5a259bb56
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1088,
+          "y": 2737
+        }
+      }
+  "85":
+    continueonerrortype: ""
+    id: "85"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "86"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Available.Integrations
+      value:
+        complex:
+          accessor: brand
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: modules.brand
+              operator: isEqualString
+              right:
+                value:
+                  simple: Microsoft_Graph_Files
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: modules.brand
+              operator: isEqualString
+              right:
+                value:
+                  simple: MicrosoftGraphMail
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: modules.brand
+              operator: isEqualString
+              right:
+                value:
+                  simple: EWSO365
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: modules.state
+              operator: isEqualString
+              right:
+                value:
+                  simple: active
+          root: modules
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Marks relevant activated Microsoft integrations (e.g., mail, files)
+        for the manual task.
+      id: 5a5fbe73-6f7c-4acc-905c-8c99db3eb253
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get Available Microsoft Integrations
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 5a5fbe73-6f7c-4acc-905c-8c99db3eb253
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -200.5,
+          "y": 2619
+        }
+      }
+  "86":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "86"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "43"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: Available.Manager=userPrincipalName
+      user:
+        simple: ${InvestigationUsers.Owner.UPN}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Retrieves the **owner's** manager properties.
+      id: 286b1230-17d6-4ba9-9d91-b0849581ff9e
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get Owner's Manager
+      playbooktaskmissingcomponent: null
+      script: '|||msgraph-user-get-manager'
+      type: regular
+      version: -1
+    taskid: 286b1230-17d6-4ba9-9d91-b0849581ff9e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -200.5,
+          "y": 2737
+        }
+      }
+  "87":
+    continueonerrortype: ""
+    id: "87"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: InvestigationUsers.Sharer.UPN=primaryEmail
+      user:
+        complex:
+          accessor: UserID
+          root: InvestigationUsers.Sharer
+          transformers:
+          - args:
+              delimiter:
+                value:
+                  simple: /
+              fields:
+                value:
+                  simple: "2"
+            operator: Cut
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Retrieves a user's details, especially their **UPN**.
+      id: 1abb2125-6c89-458a-bc75-1b53aee3d9e2
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get File Sharer User Details
+      playbooktaskmissingcomponent: null
+      script: '|||gsuite-user-get'
+      type: regular
+      version: -1
+    taskid: 1abb2125-6c89-458a-bc75-1b53aee3d9e2
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1088,
+          "y": 1016
+        }
+      }
+  "88":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: InvestigationUsers.Sharer
+          operator: isNotEmpty
+          right:
+            value: {}
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.service_type
+          operator: isEqualString
+          right:
+            value:
+              simple: SharePoint
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.service_type
+          operator: isEqualString
+          right:
+            value:
+              simple: OneDrive
+      label: Yes SharePoint
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: InvestigationUsers.Sharer
+          operator: isNotEmpty
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.service_type
+          operator: isEqualString
+          right:
+            value:
+              simple: Drive
+      label: Yes Drive
+    continueonerrortype: ""
+    id: "88"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "92"
+      Yes Drive:
+      - "65"
+      Yes SharePoint:
+      - "61"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8d270c13-6697-4300-b138-3c08db3c0597
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check for File Sharer User
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 8d270c13-6697-4300-b138-3c08db3c0597
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 2923,
+          "y": 1347
+        }
+      }
+  "89":
+    continueonerrortype: ""
+    id: "89"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "98"
+      - "35"
+      - "99"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f6be79d5-0cad-4845-ba08-37bbed9ed740
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: SharePoint/OneDrive
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: f6be79d5-0cad-4845-ba08-37bbed9ed740
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1075,
+          "y": 1394
+        }
+      }
+  "90":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: results.unique_external_views
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: PaloAltoNetworksXQL.GenericQuery.query_name
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: unique_external_views
+                root: PaloAltoNetworksXQL.GenericQuery
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "5"
+      label: "yes"
+    continueonerrortype: ""
+    id: "90"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "37"
+      "yes":
+      - "91"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: If there were 5 or more views by the same **actor user**, it looks
+        suspicious.
+      id: 387e48fb-379a-413a-8767-aed07ce85936
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Visits Count
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 387e48fb-379a-413a-8767-aed07ce85936
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 2315,
+          "y": 1662
+        }
+      }
+  "91":
+    continueonerrortype: ""
+    id: "91"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "37"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Evidence.High.ActorVisits
+      value:
+        complex:
+          accessor: results.unique_external_views
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: PaloAltoNetworksXQL.GenericQuery.query_name
+              operator: isEqualString
+              right:
+                value:
+                  simple: unique_external_views
+          root: PaloAltoNetworksXQL.GenericQuery
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f8645a5e-9428-4707-b538-2437b3c3c103
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save Actor Visits
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: f8645a5e-9428-4707-b538-2437b3c3c103
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2315,
+          "y": 1795
+        }
+      }
+  "92":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: results.unique_anonymous_link_creations
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: PaloAltoNetworksXQL.GenericQuery.query_name
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: unique_anonymous_link_creations
+                root: PaloAltoNetworksXQL.GenericQuery
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "10"
+      label: "yes"
+    continueonerrortype: ""
+    id: "92"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "37"
+      "yes":
+      - "93"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: If the **sharer user** creates 10 or more anonymous links, it looks
+        suspicious.
+      id: 080bd3af-ac00-46ee-8c10-5b555733d97d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Link Creations Count
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 080bd3af-ac00-46ee-8c10-5b555733d97d
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 2923,
+          "y": 1662
+        }
+      }
+  "93":
+    continueonerrortype: ""
+    id: "93"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "37"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Evidence.High.AnonymousLinkCreations
+      value:
+        complex:
+          accessor: results.unique_anonymous_link_creations
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: PaloAltoNetworksXQL.GenericQuery.query_name
+              operator: isEqualString
+              right:
+                value:
+                  simple: unique_anonymous_link_creations
+          root: PaloAltoNetworksXQL.GenericQuery
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b4fa6b57-b795-4a54-8984-05bc1466e8c1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save Anonymous Link Creations
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: b4fa6b57-b795-4a54-8984-05bc1466e8c1
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2923,
+          "y": 1795
+        }
+      }
+  "94":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: id
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: MsGraphFiles.Permissions.link
+                    operator: isExists
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: MsGraphFiles.Permissions.link.scope
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: anonymous
+                root: MsGraphFiles.Permissions
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "94"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "43"
+      "yes":
+      - "42"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b651813f-1bba-4593-bf1a-95e8a259be4b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check for Anonymous Links
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: b651813f-1bba-4593-bf1a-95e8a259be4b
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 213,
+          "y": 2737
+        }
+      }
+  "95":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: id
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: GoogleDrive.FilePermission.FilePermission.type
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: anyone
+                root: GoogleDrive.FilePermission.FilePermission
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "95"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "43"
+      "yes":
+      - "81"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: bae4d391-940d-4c89-92ee-38eedc944dbc
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check for Anonymous Links
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: bae4d391-940d-4c89-92ee-38eedc944dbc
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 675,
+          "y": 2737
+        }
+      }
+  "96":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: id
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: MsGraphFiles.Permissions.link
+                    operator: isExists
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: MsGraphFiles.Permissions.link.scope
+                    operator: isNotEqualString
+                    right:
+                      value:
+                        simple: anonymous
+                root: MsGraphFiles.Permissions
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "96"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "53"
+      "yes":
+      - "51"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1455de56-31c5-4b7a-a8f3-ae2f6402dfa3
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check for Other Permissions
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 1455de56-31c5-4b7a-a8f3-ae2f6402dfa3
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -200.5,
+          "y": 3363
+        }
+      }
+  "97":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: id
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: GoogleDrive.FilePermission.FilePermission.type
+                    operator: isNotEqualString
+                    right:
+                      value:
+                        simple: anyone
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: GoogleDrive.FilePermission.FilePermission.role
+                    operator: isNotEqualString
+                    right:
+                      value:
+                        simple: owner
+                root: GoogleDrive.FilePermission.FilePermission
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "97"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "53"
+      "yes":
+      - "82"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 7f84599e-ed08-4348-ac4a-e9dfbcec0bf3
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check for Other Permissions
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 7f84599e-ed08-4348-ac4a-e9dfbcec0bf3
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 213,
+          "y": 3363
+        }
+      }
+  "98":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: InvestigationUsers.Owner
+          operator: isNotEmpty
+          right:
+            value: {}
+        - left:
+            iscontext: true
+            value:
+              simple: InvestigationUsers.Sharer
+          operator: isNotEmpty
+      label: "Yes"
+    continueonerrortype: ""
+    id: "98"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "37"
+      "Yes":
+      - "9"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: bff29851-21f6-4fe7-851a-b267a7d5888d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check for File Owner/Sharer User
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: bff29851-21f6-4fe7-851a-b267a7d5888d
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 676,
+          "y": 1541
+        }
+      }
+  "99":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: FileLastSharedDatetime
+                root: InvestigationUsers.Sharer
+                transformers:
+                - args:
+                    dt:
+                      value:
+                        simple: .=Math.floor((new Date() - new Date(val))/(1000*60*60*24))
+                  operator: DT
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "7"
+      label: "yes"
+    continueonerrortype: ""
+    id: "99"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "37"
+      "yes":
+      - "59"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Verify the file's sharing link hasn't been **forgotten** by checking
+        if its **share date** is *less than a week old*.
+      id: dc89bd29-5d8c-42e5-b914-f9187d89bed6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check for Forgotten Link
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: dc89bd29-5d8c-42e5-b914-f9187d89bed6
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1485,
+          "y": 1662
+        }
+      }
+  "100":
+    continueonerrortype: ""
+    id: "100"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "39"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      severity:
+        simple: Medium
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: aad8a058-56b3-4b21-8ff5-08751191a427
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Increase Alert Severity to Medium
+      playbooktaskmissingcomponent: null
+      script: IncreaseAlertSeverity
+      type: regular
+      version: -1
+    taskid: aad8a058-56b3-4b21-8ff5-08751191a427
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 449,
+          "y": 2228
+        }
+      }
+  "101":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "101"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      additional_fields:
+        simple: "true"
+      user_id:
+        complex:
+          root: InvestigationUsers
+          transformers:
+          - args:
+              expression:
+                value:
+                  simple: '*.UPN'
+            operator: jmespath
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: InvestigationUsers.Sharer.UserID=val.split("/")[1]
+            operator: append
+      user_name:
+        complex:
+          root: InvestigationUsers
+          transformers:
+          - args:
+              expression:
+                value:
+                  simple: '*.UPN'
+            operator: jmespath
+          - args:
+              regex:
+                value:
+                  simple: ^(.*?)@([^.]+)\.?.*$
+              replaceWith:
+                value:
+                  simple: $2\$1
+            operator: replaceMatch
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This script gathers user data from multiple integrations and returns
+        an Account entity with consolidated information to the context.
+      id: 3d5e19c1-53fa-46df-99e8-d273377afd6f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get Users Data
+      playbooktaskmissingcomponent: null
+      script: get-user-data
+      type: regular
+      version: -1
+    taskid: 3d5e19c1-53fa-46df-99e8-d273377afd6f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 449,
+          "y": 1026
+        }
+      }
+  "102":
+    continueonerrortype: ""
+    id: "102"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "52"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Inconclusive
+      value:
+        simple: No suspicious evidence
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      id: 463bdb03-26a7-460c-af77-273e65fa56c5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Inconclusive | No suspicious evidence
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 463bdb03-26a7-460c-af77-273e65fa56c5
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -443,
+          "y": 3621
+        }
+      }
+  "103":
+    continueonerrortype: ""
+    id: "103"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "37"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Evidence.Low.MaliciousDomains
+      value:
+        complex:
+          accessor: Value
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: DomainEnrichment.TIMScore
+              operator: greaterThan
+              right:
+                value:
+                  simple: "2"
+          root: DomainEnrichment
+          transformers:
+          - args:
+              separator:
+                value:
+                  simple: ' | '
+            operator: join
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 34556fd9-bef5-4887-8bbe-dcea35faa040
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save Malicious Domains
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 34556fd9-bef5-4887-8bbe-dcea35faa040
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -1429,
+          "y": 1795
+        }
+      }
+  "107":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: AdditionalFields
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: UserData.Brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: GSuiteAdmin
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: UserData.AdditionalFields.archived
+                    operator: isTrue
+                  - left:
+                      iscontext: true
+                      value:
+                        simple: UserData.AdditionalFields.suspended
+                    operator: isTrue
+                  - left:
+                      iscontext: true
+                      value:
+                        simple: UserData.AdditionalFields.deletionTime
+                    operator: isExists
+                root: UserData
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "107"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "37"
+      "yes":
+      - "77"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines if Google account has been archived, suspended or deleted.
+      id: 1a0fe4eb-e4c3-43a3-8ad3-94153c4c4264
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Google Users Details
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 1a0fe4eb-e4c3-43a3-8ad3-94153c4c4264
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1892,
+          "y": 1662
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "13_37_#default#": 0.12,
+      "19_37_#default#": 0.17,
+      "25_27_Drive": 0.9,
+      "25_37_#default#": 0.1,
+      "32_37_#default#": 0.14,
+      "38_102_#default#": 0.34,
+      "40_43_#default#": 0.78,
+      "44_53_#default#": 0.9,
+      "46_53_#default#": 0.84,
+      "48_53_#default#": 0.89,
+      "49_53_#default#": 0.88,
+      "88_92_#default#": 0.38,
+      "90_37_#default#": 0.11,
+      "92_37_#default#": 0.1,
+      "96_53_#default#": 0.89,
+      "97_53_#default#": 0.76,
+      "98_37_#default#": 0.37,
+      "99_37_#default#": 0.19
+    },
+    "paper": {
+      "dimensions": {
+        "height": 3550,
+        "width": 5568,
+        "x": -2050,
+        "y": 260
+      }
+    }
+  }
