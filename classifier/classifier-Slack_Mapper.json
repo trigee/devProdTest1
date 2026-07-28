@@ -1,0 +1,121 @@
+{
+	"brands": null,
+	"cacheVersn": 0,
+	"defaultIncidentType": "",
+	"definitionId": "",
+	"description": "",
+	"feed": false,
+	"fromServerVersion": "6.8.0",
+	"id": "Slack Mapper",
+	"incidentSamples": null,
+	"indicatorSamples": null,
+	"instanceIds": null,
+	"isOverridable": false,
+	"itemVersion": "3.8.7",
+	"keyTypeMap": null,
+	"locked": false,
+	"logicalVersion": 0,
+	"mapping": {
+		"Password Reset via Chatbot": {
+			"dontMapEventToLabels": false,
+			"internalMapping": {
+				"Description": {
+					"complex": {
+						"filters": [],
+						"root": "Message",
+						"transformers": [
+							{
+								"args": {
+									"error_if_no_match": {
+										"isContext": false
+									},
+									"ignore_case": {
+										"isContext": false
+									},
+									"multi_line": {
+										"isContext": false
+									},
+									"period_matches_newline": {
+										"isContext": false
+									},
+									"regex": {
+										"isContext": false,
+										"value": {
+											"simple": "name=\"([^\"]+)\""
+										}
+									},
+									"unpack_matches": {
+										"isContext": false
+									}
+								},
+								"operator": "RegexExtractAll"
+							}
+						]
+					}
+				},
+				"Reporter Email Address": {
+					"simple": "ReporterEmail"
+				},
+				"name": {
+					"complex": {
+						"filters": [],
+						"root": "ReporterEmail",
+						"transformers": [
+							{
+								"args": {
+									"prefix": {
+										"isContext": false,
+										"value": {
+											"simple": "Password reset request: "
+										}
+									},
+									"suffix": {
+										"isContext": false
+									}
+								},
+								"operator": "concat"
+							}
+						]
+					}
+				}
+			}
+		},
+		"Slack - User Password Reset": {
+			"dontMapEventToLabels": true,
+			"internalMapping": {
+				"Reporter Email Address": {
+					"complex": {
+						"filters": [],
+						"root": "ReporterEmail",
+						"transformers": []
+					}
+				},
+				"Source Username": {
+					"complex": {
+						"filters": [],
+						"root": "Reporter",
+						"transformers": []
+					}
+				}
+			}
+		}
+	},
+	"name": "Slack Mapper",
+	"nameRaw": "Slack Mapper",
+	"packID": "Slack",
+	"packName": "Slack",
+	"packPropagationLabels": [
+		"all"
+	],
+	"sourceClassifierId": "",
+	"supportedModules": [
+		"agentix",
+		"xsiam"
+	],
+	"system": true,
+	"toServerVersion": "",
+	"transformer": {},
+	"type": "mapping-incoming",
+	"unclassifiedCases": null,
+	"version": -1
+}
