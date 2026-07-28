@@ -1,0 +1,120 @@
+args:
+- description: File entry ID.
+  isArray: true
+  name: entryID
+  predefined:
+  - ""
+  required: true
+  supportedModules: []
+- description: Incident ID to upload the file to.
+  name: incID
+  required: true
+  supportedModules: []
+- description: Integration instance used to run the script.
+  name: using
+  supportedModules: []
+- description: Request body.
+  name: body
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: war room entry
+  description: |-
+    Where to upload the file
+    - Available options are:
+    - `war room entry`: the file will be uploaded as war room entry.
+    - `incident attachment`: the file will be uploaded as incident attachment.
+    - default are `war room entry`.
+  name: target
+  predefined:
+  - war room entry
+  - incident attachment
+  supportedModules: []
+comment: Copies a file from this incident to the specified incident. The file is recorded
+  as an entry in the specified incident’s War Room.
+commonfields:
+  id: UploadFile
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.5.0
+    isoverridable: false
+    itemVersion: 1.5.0
+    packID: DemistoRESTAPI
+    packName: Cortex REST API
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dependson:
+  must:
+  - core-api-multipart
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: UploadFile
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('UploadFile', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.5.0'
+  demisto.debug('pack id = DemistoRESTAPI, pack version = 1.5.0')
+
+
+
+  def upload_file(incident_id: str, entry_id: str, body: str = "", using: str = "", as_incident_attachment: bool = True):
+      service_name = "incident" if as_incident_attachment else "entry"
+      return demisto.executeCommand(
+          "core-api-multipart", {"uri": f"{service_name}/upload/{incident_id}", "entryID": entry_id, "body": body, "using": using}
+      )
+
+
+  def upload_file_command(args: dict) -> list[CommandResults]:
+      command_results: list[CommandResults] = []
+      incident_id = args.get("incID", "")
+      entry_ids = argToList(args.get("entryID", ""))
+      body = args.get("body", "")
+      target = args.get("target", "war room entry")
+      using = args.get("using", "")
+      for entry_id in entry_ids:
+          response = upload_file(incident_id, entry_id, body, using, "attachment" in target)
+          if is_error(response[0]):
+              raise DemistoException(f"There was an issue uploading the file. Error received: {response[0]['Contents']}")
+
+          uploaded_entry_id = demisto.dt(response, "Contents.response.entries.id")
+          readable = "File uploaded successfully."
+          # in case the file uploaded as war room entry
+          if uploaded_entry_id:
+              readable += f" Entry ID is {uploaded_entry_id}"
+          if body:
+              readable += f". Comment is:{body}"
+          command_results.append(CommandResults(readable_output=readable, raw_response=response))
+      return command_results
+
+
+  def main():
+      try:
+          return_results(upload_file_command(demisto.args()))
+      except Exception as err:
+          return_error(str(err))
+
+
+  if __name__ in ["__main__", "builtin", "builtins"]:
+      main()
+
+  register_module_line('UploadFile', 'end', __line__())
+scripttarget: 0
+signature: uWAMAQbY5JkP1OFnc1RCtE10rNc0Zc907JEsFB9N+I4uKhFah3/o/nDJfGKnthgu0Cdq/+sROX576VnQAIPGxR9ORTr/+BIeZpt1WhzbejaBP3WBuTAYjs9S68ZW6vElj/s72drHP+aN+J8XqZQUgbT+M76QjTFz2e3LjahjDSh766UcAlCuxLtYhojkKIFyNulyQ31S5epY25oOnYb2C6uqyBV0sLSVp5Z2WOnmF3INnSeLSwK+FvgCZw/n0NXlSw/okzNk8ftTPh+Fsdx6EvsdCfiKk2cDzTtuBfdO0PlHvcowyKNPD52JbmSPxFqsKdVIj15anx9iVJga//iuHw==
+subtype: python3
+system: true
+tags:
+- DemistoAPI
+type: python
