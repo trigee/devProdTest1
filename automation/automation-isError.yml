@@ -1,0 +1,59 @@
+args:
+- default: true
+  description: Entry to check
+  isArray: true
+  name: entryId
+  required: true
+  supportedModules: []
+comment: Check whether given entry/entries returned an error. Use ${lastCompletedTaskEntries}
+  to check the previous task entries. If array is provided, will return yes if one
+  of the entries returned an error.
+commonfields:
+  id: isError
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: isError
+outputs:
+- contextPath: "yes"
+  description: If one or more entries is an error
+- contextPath: "no"
+  description: If none of the entries is not an error
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.28
+  entryIds = (Array.isArray(args.entryId)) ? args.entryId : [args.entryId];
+  for(var entryIdx=0; entryIdx < entryIds.length; ++entryIdx) {
+      res = executeCommand("getEntry", {"id":entryIds[entryIdx]});
+      for (var resIdx=0; resIdx < res.length; ++resIdx) {
+          if (isError(res[resIdx])) {
+              return 'yes';
+          }
+      }
+  }
+  return 'no';
+scripttarget: 0
+signature: DSVgwoGG729Xx+zz38NgViU2Bkrd22LklmKrh64jtMUW8uI5TXboK0CjYTMsq1R7aucZEIjExllLDbxDcRgMAoVGc3A2A7jPjJV3pfC8EKaUS3+R4dP+xhX/LerGZ1xKiDC27+Kb3q89/h9UIHDPBiUNWCC6RyoVA66WMg9eSHvt38MUU2LlDzaDca6fXBltARcBW1mgjIV8wIhVIUrn8SpW2N7u513DSaXM4vPZmRITLUtU9RAtUIv/EiWzkEEHxz56i2JcU8tgfmG+nm3aSmraepDg8LBck2MwFDmXrxwpytLCnvmK7FI974t6+mBIz8iEjw/aimMdo0++q9jlEg==
+system: true
+tags:
+- Condition
+- Utility
+type: javascript
