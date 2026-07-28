@@ -1,0 +1,556 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 3.8.7
+    packID: Slack
+    packName: Slack
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    toServerVersion: ""
+description: Investigates a failed login event. The playbook interacts with the user
+  via the Slack integration, checks whether the logins were a result of the user's
+  attempts or an attack, raises the severity, and expires the user's password according
+  to the user's replies.
+id: Slack - General Failed Logins v2.1
+inputs:
+- description: The username or the email address of the user who failed to login.
+  key: UsernameOrEmail
+  playbookInputQuery: null
+  required: true
+  value:
+    complex:
+      accessor: srcuser
+      root: alert
+name: Slack - General Failed Logins v2.1
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "10"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e0772674-d7ff-43df-8075-a871655a3f9b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: start_task
+      playbooktaskmissingcomponent: null
+      type: start
+      version: -1
+    taskid: e0772674-d7ff-43df-8075-a871655a3f9b
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 110,
+          "y": -40
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body:
+        simple: There were several failed login attempts with your user ID. Please
+          confirm that you attempted these logins.
+      cc: null
+      format: ""
+      methods:
+      - SlackV2
+      replyOptions:
+      - "Yes"
+      - "No"
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: false
+        retriescount: 2
+        retriesinterval: 360
+      to:
+        complex:
+          root: inputs.UsernameOrEmail
+    nexttasks:
+      "No":
+      - "4"
+      "Yes":
+      - "12"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    separatecontext: false
+    skipunavailable: false
+    sla:
+      days: 0
+      hours: 2
+      minutes: 0
+      weeks: 0
+    slareminder:
+      days: 0
+      hours: 1
+      minutes: 0
+      weeks: 0
+    task:
+      brand: ""
+      clonedfrom: 7a39f05d-23c9-412d-8e36-3dd1ba0dd2f2
+      description: Sends a message to the user on Slack, asking them to confirm the
+        failed login attempts.
+      id: eb7426d1-f210-4afd-8444-742ccdff9429
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Ask user to confirm failed login attempts
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: eb7426d1-f210-4afd-8444-742ccdff9429
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 240,
+          "y": 420
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      severity:
+        simple: High
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: Sets the alert severity to high.
+      id: 62ae1482-75b7-4df5-8644-7023bb01e93b
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Raise Alert Severity to High
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlert
+      type: regular
+      version: -1
+    taskid: 62ae1482-75b7-4df5-8644-7023bb01e93b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 20,
+          "y": 590
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body:
+        simple: Should we reset the password?
+      cc: null
+      format: ""
+      methods:
+      - SlackV2
+      replyOptions:
+      - "Yes"
+      - "No"
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: false
+        retriescount: 2
+        retriesinterval: 360
+      to:
+        complex:
+          root: inputs.UsernameOrEmail
+    nexttasks:
+      "No":
+      - "9"
+      "yes":
+      - "7"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines whether to reset the password, according to the user's
+        reply.
+      id: 76e305e6-94cb-43ed-87c5-0b68dbc946e5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should we reset the password?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 76e305e6-94cb-43ed-87c5-0b68dbc946e5
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 680,
+          "y": 760
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      username:
+        complex:
+          root: inputs.UsernameOrEmail
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      clonedfrom: b061d5be-194d-4413-804b-ea47a7f05317
+      description: Expires the password of the user who failed to login in Active
+        Directory.
+      id: f631ded5-6337-4bb8-8680-1b906db2d70d
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Expire Password
+      playbooktaskmissingcomponent: null
+      script: '|||ad-expire-password'
+      type: regular
+      version: -1
+    taskid: f631ded5-6337-4bb8-8680-1b906db2d70d
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 930
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      message:
+        simple: Your password was reset
+      to:
+        complex:
+          root: inputs.UsernameOrEmail
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      clonedfrom: 5e3d77e5-2172-4f74-87b6-c54e0f70fa62
+      description: Sends a direct message to the user on Slack, telling them that
+        their password was reset.
+      id: 547bc58c-9bbd-4ed9-87b0-e2efa438d319
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Notify User on Slack
+      playbooktaskmissingcomponent: null
+      script: '|||send-notification'
+      type: regular
+      version: -1
+    taskid: 547bc58c-9bbd-4ed9-87b0-e2efa438d319
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 1095
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      closeReason:
+        simple: The user ${inputs.UsernameOrEmail} approved that the failed logins
+          were attempted by him.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: Closes the current alert.
+      id: 26bd336a-3833-41be-82d1-5e3cb4ca436c
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close the alert
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: 26bd336a-3833-41be-82d1-5e3cb4ca436c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 460,
+          "y": 1260
+        }
+      }
+  "10":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: SlackV2
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "11"
+      "yes":
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the Slack V2 integration is enabled.
+      id: 8bb9fd11-d3d1-400f-838b-e93a122cf031
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Slack v2 enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 8bb9fd11-d3d1-400f-838b-e93a122cf031
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 110,
+          "y": 130
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b1d07087-5ef5-40f1-8fd9-1d24294ddf53
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: b1d07087-5ef5-40f1-8fd9-1d24294ddf53
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -200,
+          "y": 1440
+        }
+      }
+  "12":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Active Directory Query v2
+                root: modules
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "13"
+      "yes":
+      - "6"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the Active Directory Query v2 integration is enabled.
+      id: 7f92aac8-93f3-4b96-8aa0-2bd6ab8774b7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Active Directory Query v2 enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 7f92aac8-93f3-4b96-8aa0-2bd6ab8774b7
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 460,
+          "y": 590
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: In case the AD isn't connected, Reset the user password manually.
+      id: 453afa64-c77a-4cf9-8486-ecb224e3f821
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Reset the user password
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: 453afa64-c77a-4cf9-8486-ecb224e3f821
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 230,
+          "y": 760
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "10_11_#default#": 0.1,
+      "10_2_yes": 0.65,
+      "12_13_#default#": 0.44,
+      "12_6_yes": 0.44,
+      "2_12_Yes": 0.39,
+      "2_4_No": 0.35,
+      "6_7_yes": 0.41,
+      "6_9_No": 0.16
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1545,
+        "width": 1480,
+        "x": -200,
+        "y": -40
+      }
+    }
+  }
