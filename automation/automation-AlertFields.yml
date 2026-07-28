@@ -1,0 +1,135 @@
+args:
+- auto: PREDEFINED
+  default: true
+  defaultValue: "false"
+  description: Whether to only return non-system fields. If "true", will only output
+    non-system fields. The default value is "false".
+  name: exclude_system_fields
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "true"
+  description: Whether to shorten the alert field names. If "true", will cause output
+    to use shortened field names. The default value is "true".
+  name: short_names
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+comment: Returns a dict of all alert fields that exist in the system.
+commonfields:
+  id: AlertFields
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - cloud
+    - cloud_runtime_security
+    - cloud_posture
+    - xsiam
+    - edr
+    toServerVersion: ""
+dependson:
+  must:
+  - '|||core-api-get'
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: AlertFields
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('AlertFields', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+
+
+
+
+  def build_field_context_data(field):
+      field_context_data = {
+          "name": field["name"],
+          "shortName": field["cliName"],
+          "type": field["type"],
+          "associatedToAll": field["associatedToAll"],
+      }
+
+      if not field_context_data["associatedToAll"]:
+          if len(field.get("associatedTypes") or []) != 0:
+              field_context_data["associatedTypes"] = field["associatedTypes"]
+          else:
+              field_context_data["associatedTypes"] = None
+      else:
+          field_context_data["associatedTypes"] = "all"
+
+      return field_context_data
+
+
+  def main():
+      # get incident fields
+      res = demisto.executeCommand("core-api-get", {"uri": "/incidentfields"})
+      if is_error(res):
+          return_error(res[0]["Contents"])
+
+      fields = res[0]["Contents"]["response"]
+
+      # 'fields' contains non-incident fields (evidence and indicator), as well, so let's make a version
+      #  containing only incident fields
+      incident_fields = [field for field in fields if field["id"].startswith("incident_")]
+
+      # get arguments
+      args = demisto.args()
+
+      exclude_system_fields = False
+      if "exclude_system_fields" in args and argToBoolean(args["exclude_system_fields"]):
+          exclude_system_fields = True
+
+      use_short_name = False
+      if "short_names" in args and argToBoolean(args["short_names"]):
+          use_short_name = True
+
+      # build a dict of all field and their associated case types
+      output_fields = {}
+      for field in incident_fields:
+          if exclude_system_fields and field["system"]:
+              continue
+
+          field_name = field["name"]
+          if use_short_name:
+              field_name = field["cliName"]
+
+          output_fields[field_name] = build_field_context_data(field)
+
+      # output results
+      demisto.results(output_fields)
+
+
+  if __name__ in ["__builtin__", "builtins"]:
+      main()
+
+  register_module_line('AlertFields', 'end', __line__())
+scripttarget: 0
+signature: L0OSIrw0uKlKnh1rSmGDuxQb0xQljAY+i4hn9somEiF3nZaPnndTLwCmwDBo84gpwad3G2rH50n7DIbnbjgic5i/ehZ970b8mciHk4YTyVWo3m2Uf8Hn3Hglb3vItPaLs/nH35UbKGtHvQmM+YQ7JXNK2tRXGZZQU0LIyONLbA6HYam1233SgsXrFdPTK5IdgYYxtz51fX/zuQjzaZ/BGNwJ7SzFMrzPLtoVB/oyydzsEI1/VQuitDAAQo9nFOMQIQsNk82T1PMHfrD4IAWS2UVWVLNJ6hr71kYsqr7vxiekS4dZTNDOP/x6n6lpAyTADsD+NfpE1kgunt6TKwZHHw==
+subtype: python3
+system: true
+tags: []
+type: python
