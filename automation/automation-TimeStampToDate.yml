@@ -1,0 +1,53 @@
+args:
+- default: true
+  description: Time stamp to convert
+  name: value
+  required: true
+  supportedModules: []
+comment: |-
+  Converts UNIX Epoch time stamp to a simplified extended ISO format string. Use it to convert time stamp to Demisto date field
+
+  e.g. 1525006939 will return '2018-04-29T13:02:19.000Z'
+commonfields:
+  id: TimeStampToDate
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.22
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: TimeStampToDate
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.4.22
+  var value = parseInt(args.value)
+
+  // Add miliseconds if needed
+  if (value < 10000000000) {
+      value *= 1000
+  }
+
+  var date =  new Date(value);
+  return date.toISOString();
+scripttarget: 0
+signature: fSOi/pEHw0KMaLZIaPNU9SVJasHhGmzqtcLhRNo3vCaATzxUTPrNfavY7+BqLxCcsmK/GTEGxRNWfVzgP8eOiIRUFc0lBkIlqjsJ96Kn49y5YI0IeSpxe25o3IRAS39QtLoin/m/Oz/F3zVkYMe3VZ+w7KbbdxXj8Sdt0YA+a27yN7m7qFV6U4BIx6OazkoEII3vnW1+urzGvmKKzcycZvFrJfZkKqVRfv0ybqZvzqjJxff8IEr1laeEo/8u4YTOOvsCk3187U32Lm9735Aan21L8B9zbnNiFZbvUKdKRUdzNzAtTT9RySBuKjzPZXWIvPLd4K5WGLYgwnUu7hmPgw==
+system: true
+tags:
+- transformer
+- date
+type: javascript
