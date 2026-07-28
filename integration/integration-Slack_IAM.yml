@@ -1,0 +1,1643 @@
+category: Identity and Access Management
+commonfields:
+  id: Slack IAM
+  version: -1
+configuration:
+- display: ""
+  displaypassword: Access Token
+  hiddenusername: true
+  name: credentials
+  required: false
+  supportedModules: []
+  type: 9
+- display: Access Token
+  hidden: true
+  name: access_token
+  required: false
+  section: Connect
+  supportedModules: []
+  type: 4
+- advanced: true
+  display: Trust any certificate (not secure)
+  name: insecure
+  required: false
+  section: Connect
+  supportedModules: []
+  type: 8
+- advanced: true
+  display: Use system proxy settings
+  name: proxy
+  required: false
+  section: Connect
+  supportedModules: []
+  type: 8
+- additionalinfo: If set to false, iam-create-user command will be skipped, and user
+    will not be created.
+  advanced: true
+  defaultvalue: "true"
+  display: Allow creating users
+  name: create_user_enabled
+  required: false
+  section: Collect
+  supportedModules: []
+  type: 8
+- advanced: true
+  defaultvalue: "true"
+  display: Allow updating users
+  name: update_user_enabled
+  required: false
+  section: Collect
+  supportedModules: []
+  type: 8
+- advanced: true
+  defaultvalue: "true"
+  display: Allow enabling users
+  name: enable_user_enabled
+  required: false
+  section: Collect
+  supportedModules: []
+  type: 8
+- advanced: true
+  defaultvalue: "true"
+  display: Allow disabling users
+  name: disable_user_enabled
+  required: false
+  section: Collect
+  supportedModules: []
+  type: 8
+- advanced: true
+  defaultvalue: "true"
+  display: Automatically create user if not found in update command
+  name: create_if_not_exists
+  required: false
+  section: Collect
+  supportedModules: []
+  type: 8
+- defaultvalue: User Profile - SCIM (Incoming)
+  display: Incoming Mapper
+  name: mapper_in
+  required: true
+  section: Connect
+  supportedModules: []
+  type: 0
+- additionalinfo: Cortex only parameter.
+  defaultvalue: User Profile - SCIM (Outgoing)
+  display: Outgoing Mapper
+  hidden: true
+  name: mapper_out
+  required: false
+  section: Connect
+  supportedModules: []
+  type: 0
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    isoverridable: false
+    itemVersion: 3.8.7
+    packID: Slack
+    packName: Slack
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - xsiam
+    - agentix
+    - edr
+    - cloud
+    - cloud_runtime_security
+    toServerVersion: ""
+description: Integrate with Slack's services to execute CRUD operations for employee
+  lifecycle processes.
+detaileddescription: |-
+  ## Get Your Slack API Token
+  In order to use this integration, you need to enter your Slack access token in the **Access Token** integration instance parameter.
+  The simplest way to acquire this token is for an Org Owner to create a new Slack app, add the admin OAuth scope, install the app, and use the generated token.
+
+  For more information on getting your Slack access token, see the [Slack Documentation](https://api.slack.com/scim#accessing-the-scim-api)
+
+  ## Enable/Disable CRUD Commands
+  You can select which CRUD commands are enabled in the integration instance configuration settings. By default, all commands are enabled.
+
+  ## Automatically create user if not found in update command
+  The *create-if-not-exists* parameter specifies if a new user should be created when the User Profile passed was not found in the 3rd-party integration.
+
+  ---
+  [View Integration Documentation](https://xsoar.pan.dev/docs/reference/integrations/slack-iam)
+display: Slack IAM
+image: data:image/png;base64,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
+imagepath: content/packs/Slack/SlackIAM_image.png
+name: Slack IAM
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - description: User Profile indicator details.
+      name: user-profile
+      required: true
+      supportedModules: []
+    - auto: PREDEFINED
+      defaultValue: "true"
+      description: When set to true, after the command execution the status of the
+        user in the 3rd-party integration will be active.
+      name: allow-enable
+      predefined:
+      - "true"
+      - "false"
+      supportedModules: []
+    description: Creates a user.
+    execution: true
+    name: iam-create-user
+    outputs:
+    - contextPath: IAM.Vendor.active
+      description: When true, indicates that the employee's status is active in the
+        3rd-party integration.
+      type: Boolean
+    - contextPath: IAM.Vendor.brand
+      description: Name of the integration.
+      type: String
+    - contextPath: IAM.Vendor.details
+      description: Provides the raw data from the 3rd-party integration.
+      type: string
+    - contextPath: IAM.Vendor.email
+      description: The employee's email address.
+      type: String
+    - contextPath: IAM.Vendor.errorCode
+      description: HTTP error response code.
+      type: Number
+    - contextPath: IAM.Vendor.errorMessage
+      description: Reason why the API failed.
+      type: String
+    - contextPath: IAM.Vendor.id
+      description: The employee's user ID in the app.
+      type: String
+    - contextPath: IAM.Vendor.instanceName
+      description: Name of the integration instance.
+      type: string
+    - contextPath: IAM.Vendor.success
+      description: When true, indicates that the command was executed successfully.
+      type: Boolean
+    - contextPath: IAM.Vendor.username
+      description: The employee's username in the app.
+      type: String
+    supportedModules: []
+  - arguments:
+    - description: A User Profile indicator.
+      name: user-profile
+      required: true
+      supportedModules: []
+    - auto: PREDEFINED
+      defaultValue: "true"
+      description: When set to true, after the command execution the status of the
+        user in the 3rd-party integration will be active.
+      name: allow-enable
+      predefined:
+      - "true"
+      - "false"
+      supportedModules: []
+    compliantpolicies:
+    - User Hard Remediation
+    description: Updates an existing user with the data passed in the user-profile
+      argument.
+    execution: true
+    name: iam-update-user
+    outputs:
+    - contextPath: IAM.Vendor.active
+      description: When true, indicates that the employee's status is active in the
+        3rd-party integration.
+      type: Boolean
+    - contextPath: IAM.Vendor.brand
+      description: Name of the integration.
+      type: String
+    - contextPath: IAM.Vendor.details
+      description: Provides the raw data from the 3rd-party integration.
+      type: string
+    - contextPath: IAM.Vendor.email
+      description: The employee's email address.
+      type: String
+    - contextPath: IAM.Vendor.errorCode
+      description: HTTP error response code.
+      type: Number
+    - contextPath: IAM.Vendor.errorMessage
+      description: Reason why the API failed.
+      type: String
+    - contextPath: IAM.Vendor.id
+      description: The employee's user ID in the app.
+      type: String
+    - contextPath: IAM.Vendor.instanceName
+      description: Name of the integration instance.
+      type: string
+    - contextPath: IAM.Vendor.success
+      description: When true, indicates that the command was executed successfully.
+      type: Boolean
+    - contextPath: IAM.Vendor.username
+      description: The employee's username in the app.
+      type: String
+    supportedModules: []
+  - arguments:
+    - description: A User Profile indicator.
+      name: user-profile
+      required: true
+      supportedModules: []
+    description: Retrieves a single user resource.
+    name: iam-get-user
+    outputs:
+    - contextPath: IAM.Vendor.active
+      description: When true, indicates that the employee's status is active in the
+        3rd-party integration.
+      type: Boolean
+    - contextPath: IAM.Vendor.brand
+      description: Name of the integration.
+      type: String
+    - contextPath: IAM.Vendor.details
+      description: Provides the raw data from the 3rd-party integration.
+      type: string
+    - contextPath: IAM.Vendor.email
+      description: The employee's email address.
+      type: String
+    - contextPath: IAM.Vendor.errorCode
+      description: HTTP error response code.
+      type: Number
+    - contextPath: IAM.Vendor.errorMessage
+      description: Reason why the API failed.
+      type: String
+    - contextPath: IAM.Vendor.id
+      description: The employee's user ID in the app.
+      type: String
+    - contextPath: IAM.Vendor.instanceName
+      description: Name of the integration instance.
+      type: string
+    - contextPath: IAM.Vendor.success
+      description: When true, indicates that the command was executed successfully.
+      type: Boolean
+    - contextPath: IAM.Vendor.username
+      description: The employee's username in the app.
+      type: String
+    supportedModules: []
+  - arguments:
+    - description: A User Profile indicator.
+      name: user-profile
+      required: true
+      supportedModules: []
+    compliantpolicies:
+    - User Hard Remediation
+    description: Disable an active user.
+    execution: true
+    name: iam-disable-user
+    outputs:
+    - contextPath: IAM.Vendor.active
+      description: When true, indicates that the employee's status is active in the
+        3rd-party integration.
+      type: Boolean
+    - contextPath: IAM.Vendor.brand
+      description: Name of the integration.
+      type: String
+    - contextPath: IAM.Vendor.details
+      description: Provides the raw data from the 3rd-party integration.
+      type: string
+    - contextPath: IAM.Vendor.email
+      description: The employee's email address.
+      type: String
+    - contextPath: IAM.Vendor.errorCode
+      description: HTTP error response code.
+      type: Number
+    - contextPath: IAM.Vendor.errorMessage
+      description: Reason why the API failed.
+      type: String
+    - contextPath: IAM.Vendor.id
+      description: The employee's user ID in the app.
+      type: String
+    - contextPath: IAM.Vendor.instanceName
+      description: Name of the integration instance.
+      type: string
+    - contextPath: IAM.Vendor.success
+      description: When true, indicates that the command was executed successfully.
+      type: Boolean
+    - contextPath: IAM.Vendor.username
+      description: The employee's username in the app.
+      type: String
+    supportedModules: []
+  - arguments:
+    - description: Group SCIM data with displayName.
+      name: scim
+      required: true
+      supportedModules: []
+    description: Creates an empty group.
+    name: iam-create-group
+    outputs:
+    - contextPath: CreateGroup.id
+      description: ID of the group.
+      type: String
+    - contextPath: CreateGroup.displayName
+      description: The display name of the group.
+      type: String
+    - contextPath: CreateGroup.success
+      description: Indicates whether the command succeeded.
+      type: Boolean
+    - contextPath: CreateGroup.errorCode
+      description: HTTP error response code.
+      type: Number
+    - contextPath: CreateGroup.errorMessage
+      description: Reason why the API failed.
+      type: String
+    supportedModules: []
+  - arguments:
+    - description: Group SCIM Data.
+      name: scim
+      required: true
+      supportedModules: []
+    - auto: PREDEFINED
+      defaultValue: "false"
+      description: Wheather to include group's members.
+      name: includeMembers
+      predefined:
+      - "true"
+      - "false"
+      supportedModules: []
+    description: Retrieves the group information including members.
+    name: iam-get-group
+    outputs:
+    - contextPath: GetGroup.id
+      description: ID of the group.
+      type: String
+    - contextPath: GetGroup.displayName
+      description: The display name of the group.
+      type: String
+    - contextPath: GetGroup.members.display
+      description: The display name of the group member.
+      type: String
+    - contextPath: GetGroup.members.value
+      description: ID of the group member.
+      type: String
+    - contextPath: GetGroup.success
+      description: Indicates whether the command succeeded.
+      type: Boolean
+    - contextPath: GetGroup.errorCode
+      description: HTTP error response code.
+      type: Number
+    - contextPath: GetGroup.errorMessage
+      description: Reason why the API failed.
+      type: String
+    supportedModules: []
+  - arguments:
+    - description: Group SCIM with id in it.
+      name: scim
+      required: true
+      supportedModules: []
+    description: Permanently removes a group.
+    name: iam-delete-group
+    outputs:
+    - contextPath: DeleteGroup.id
+      description: ID of the group.
+      type: String
+    - contextPath: DeleteGroup.displayName
+      description: The display name of the group.
+      type: String
+    - contextPath: DeleteGroup.success
+      description: Indicates whether the command succeeded.
+      type: Boolean
+    - contextPath: DeleteGroup.errorCode
+      description: HTTP error response code.
+      type: Number
+    - contextPath: DeleteGroup.errorMessage
+      description: Reason why the API failed.
+      type: String
+    supportedModules: []
+  - arguments:
+    - description: Group SCIM data.
+      name: scim
+      required: true
+      supportedModules: []
+    - description: List of members ids to add. A maximum of 15,000 users per call
+        can be modified using this command.
+      isArray: true
+      name: memberIdsToAdd
+      supportedModules: []
+    - description: List of members ids to be deleted from the group. A maximum of
+        15,000 users per call can be modified using this command.
+      isArray: true
+      name: memberIdsToDelete
+      supportedModules: []
+    description: Updates an existing group resource. This command allows individual
+      (or groups of) users to be added or removed from the group with a single operation.
+      A max of 15,000 users can be modified in 1 call.
+    name: iam-update-group
+    outputs:
+    - contextPath: UpdateGroup.id
+      description: ID of the group.
+      type: String
+    - contextPath: UpdateGroup.displayName
+      description: The display name of the group.
+      type: String
+    - contextPath: UpdateGroup.success
+      description: Indicates whether the command succeeded.
+      type: Boolean
+    - contextPath: UpdateGroup.errorCode
+      description: HTTP error response code.
+      type: Number
+    - contextPath: UpdateGroup.errorMessage
+      description: Reason why the API failed.
+      type: String
+    supportedModules: []
+  dockerimage: demisto/python3:3.12.8.3296088
+  nativeimage:
+  - "8.8"
+  - "8.6"
+  runonce: false
+  script: |
+    register_module_line('Slack IAM', 'start', __line__())
+    CONSTANT_PACK_VERSION = '3.8.7'
+    demisto.debug('pack id = Slack, pack version = 3.8.7')
+    import traceback
+
+
+    import urllib3
+
+
+    # Disable insecure warnings
+    urllib3.disable_warnings()
+
+    """ GLOBALS """
+    INPUT_SCIM_EXTENSION_KEY = "urn:scim:schemas:extension:custom:1.0:user"
+    SLACK_SCIM_EXTENSION_KEY = "urn:scim:schemas:extension:enterprise:1.0"
+    SLACK_SCIM_CORE_SCHEMA_KEY = "urn:scim:schemas:core:1.0"
+
+    """CLIENT CLASSES"""
+
+
+    class Client(BaseClient):
+        """
+        Slack IAM Client class that implements logic to authenticate with Slack.
+        """
+
+        def test(self):
+            uri = "/Users?count=1"
+            res = self._http_request(method="GET", url_suffix=uri)
+            return res
+
+        def get_user(self, filter_name: str, filter_value: str):
+            uri = f"/Users/{filter_value}" if filter_name == "id" else "/Users"
+            query_params = {"filter": f"{filter_name} eq {filter_value}"} if filter_name != "id" else {}
+            res = self._http_request(method="GET", url_suffix=uri, params=query_params)
+            if res and res.get("totalResults") != 0:
+                user_app_data = res.get("Resources")[0] if "totalResults" in res and res.get("totalResults") == 1 else res
+                user_id = user_app_data.get("id")
+                is_active = user_app_data.get("active")
+                username = user_app_data.get("userName")
+                email = get_first_primary_email_by_scim_schema(user_app_data)
+
+                return IAMUserAppData(user_id, username, is_active, user_app_data, email)
+            return None
+
+        def create_user(self, user_data):
+            uri = "/Users"
+            user_data["schemas"] = ["urn:scim:schemas:core:1.0"]  # Mandatory user profile field.
+            if user_data.get("emails") and not isinstance(user_data["emails"], list):
+                user_data["emails"] = [user_data["emails"]]
+            if user_data.get("phoneNumbers") and not isinstance(user_data["phoneNumbers"], list):
+                user_data["phoneNumbers"] = [user_data["phoneNumbers"]]
+            res = self._http_request(method="POST", url_suffix=uri, json_data=user_data)
+            user_app_data = res
+            user_id = user_app_data.get("id")
+            is_active = user_app_data.get("active")
+            username = user_app_data.get("userName")
+            email = get_first_primary_email_by_scim_schema(user_app_data)
+
+            return IAMUserAppData(user_id, username, is_active, user_app_data, email)
+
+        def update_user(self, user_id, user_data):
+            uri = f"/Users/{user_id}"
+            if user_data.get("emails") and not isinstance(user_data["emails"], list):
+                user_data["emails"] = [user_data["emails"]]
+            if user_data.get("phoneNumbers") and not isinstance(user_data["phoneNumbers"], list):
+                user_data["phoneNumbers"] = [user_data["phoneNumbers"]]
+
+            res = self._http_request(method="PATCH", url_suffix=uri, json_data=user_data)
+            user_app_data = res
+            user_id = user_app_data.get("id")
+            is_active = user_app_data.get("active")
+            username = user_app_data.get("userName")
+            email = get_first_primary_email_by_scim_schema(user_app_data)
+
+            return IAMUserAppData(user_id, username, is_active, user_app_data, email)
+
+        def disable_user(self, user_id):
+            user_data = {"active": False}
+            return self.update_user(user_id, user_data)
+
+        def enable_user(self, user_id):
+            user_data = {"active": True}
+            return self.update_user(user_id, user_data)
+
+        def get_app_fields(self):
+            app_fields = {}
+            uri = "/Schemas/Users"
+            res = self._http_request(method="GET", url_suffix=uri)
+
+            elements = res.get("attributes", [])
+            for elem in elements:
+                if elem.get("name"):
+                    field_name = elem.get("name")
+                    description = elem.get("description")
+                    app_fields[field_name] = description
+
+            return app_fields
+
+        @staticmethod
+        def handle_exception(user_profile, e, action):
+            """Handles failed responses from the application API by setting the User Profile object with the results.
+
+            Args:
+                user_profile (IAMUserProfile): The User Profile object.
+                e (Exception): The exception error. If DemistoException, holds the response json.
+                action (IAMActions): An enum represents the current action (get, update, create, etc).
+            """
+            if e.__class__ is DemistoException and hasattr(e, "res") and e.res is not None:
+                error_code = e.res.status_code
+                try:
+                    resp = e.res.json()
+                    error_message = resp.get("Errors", {}).get("description")
+                except ValueError:
+                    error_message = str(e)
+            else:
+                error_code = ""
+                error_message = str(e)
+
+            user_profile.set_result(
+                action=action, success=False, error_code=error_code, error_message=f"{error_message}\n{traceback.format_exc()}"
+            )
+
+            demisto.error(traceback.format_exc())
+
+
+    class GroupClient(BaseClient):
+        """
+        GroupClient will implement the service API, and should not contain any Demisto logic.
+        Should only do requests and return data.
+        """
+
+        def __init__(self, base_url, verify=True, proxy=False, headers=None):
+            super().__init__(base_url=base_url, verify=verify, headers=headers, proxy=proxy)
+
+        def http_request(self, method, url_suffix, params=None, data=None, headers=None):
+            if headers is None:
+                headers = self._headers
+            full_url = self._base_url + url_suffix
+            res = requests.request(method, full_url, verify=self._verify, headers=headers, params=params, json=data)
+
+            return res
+
+        def get_group_by_id(self, group_id):
+            uri = f"/Groups/{group_id}"
+            return self.http_request(method="GET", url_suffix=uri)
+
+        def search_group(self, group_name):
+            uri = "/Groups"
+            query_params = {"filter": f'displayName eq "{group_name}"'}
+            return self.http_request(method="GET", url_suffix=uri, params=query_params)
+
+        def create_group(self, data):
+            uri = "/Groups"
+            return self.http_request(method="POST", url_suffix=uri, data=data)
+
+        def update_group(self, group_id, data):
+            uri = f"/Groups/{group_id}"
+            return self.http_request(method="PATCH", url_suffix=uri, data=data)
+
+        def delete_group(self, group_id):
+            uri = f"/Groups/{group_id}"
+            return self.http_request(method="DELETE", url_suffix=uri)
+
+        def build_slack_user_profile(self, args, scim, custom_mapping):
+            if args.get("customMapping"):
+                custom_mapping = json.loads(args.get("customMapping"))
+            elif custom_mapping:
+                custom_mapping = json.loads(custom_mapping)
+
+            extension_schema = scim.get(INPUT_SCIM_EXTENSION_KEY, {})
+
+            if extension_schema:
+                if custom_mapping:
+                    new_extension_schema = {}
+                    for key, value in custom_mapping.items():
+                        # key is the attribute name in input scim. value is the attribute name of slack profile
+                        new_extension_schema[value] = extension_schema.get(key)
+                    scim[SLACK_SCIM_EXTENSION_KEY] = new_extension_schema
+                else:
+                    scim[SLACK_SCIM_EXTENSION_KEY] = extension_schema
+
+            scim["schemas"] = [SLACK_SCIM_CORE_SCHEMA_KEY, SLACK_SCIM_EXTENSION_KEY]
+
+            return scim
+
+
+    """COMMAND FUNCTIONS"""
+
+
+    def test_module(client):
+        client.test()
+        return_results("ok")
+
+
+    def get_mapping_fields(client: Client) -> GetMappingFieldsResponse:
+        """Creates and returns a GetMappingFieldsResponse object of the user schema in the application
+
+        :param client: (Client) The integration Client object that implements a get_app_fields() method
+        :return: (GetMappingFieldsResponse) An object that represents the user schema
+        """
+        app_fields = client.get_app_fields()
+        incident_type_scheme = SchemeTypeMapping(type_name=IAMUserProfile.DEFAULT_INCIDENT_TYPE)
+
+        for field, description in app_fields.items():
+            incident_type_scheme.add_field(field, description)
+
+        return GetMappingFieldsResponse([incident_type_scheme])
+
+
+    class OutputContext:
+        """
+        Class to build a generic output and context.
+        """
+
+        def __init__(
+            self,
+            success=None,
+            active=None,
+            id=None,
+            username=None,
+            email=None,
+            errorCode=None,
+            errorMessage=None,
+            details=None,
+            displayName=None,
+            members=None,
+        ):
+            self.instanceName = demisto.callingContext["context"]["IntegrationInstance"]
+            self.brand = demisto.callingContext["context"]["IntegrationBrand"]
+            self.command = demisto.command().replace("-", "_").title().replace("_", "")
+            self.success = success
+            self.active = active
+            self.id = id
+            self.username = username
+            self.email = email
+            self.errorCode = errorCode
+            self.errorMessage = errorMessage
+            self.details = details
+            self.displayName = displayName  # Used in group
+            self.members = members  # Used in group
+            self.data = {
+                "brand": self.brand,
+                "instanceName": self.instanceName,
+                "success": success,
+                "active": active,
+                "id": id,
+                "username": username,
+                "email": email,
+                "errorCode": errorCode,
+                "errorMessage": errorMessage,
+                "details": details,
+                "displayName": displayName,
+                "members": members,
+            }
+            # Remoove empty values
+            self.data = {k: v for k, v in self.data.items() if v is not None}
+
+
+    def get_group_id_by_name(client, group_name):
+        res = client.search_group(group_name)
+
+        if res.get("totalResults") >= 1:
+            return res["Resources"][0].get("id")
+        return None
+
+
+    def get_group_command(client, args):
+        scim = safe_load_json(args.get("scim"))
+
+        group_id = scim.get("id")
+        group_name = scim.get("displayName")
+
+        if not (group_id or group_name):
+            return_error("You must supply either 'id' or 'displayName' in the scim data")
+        if not group_id:
+            res = client.search_group(group_name)
+            res_json = res.json()
+
+            if res.status_code == 200:
+                if res_json.get("totalResults") < 1:
+                    generic_iam_context = OutputContext(
+                        success=False, displayName=group_name, errorCode=404, errorMessage="Group Not Found", details=res_json
+                    )
+                    return CommandResults(
+                        raw_response=generic_iam_context.data,
+                        outputs_prefix=generic_iam_context.command,
+                        outputs_key_field="id",
+                        outputs=generic_iam_context.data,
+                        readable_output=tableToMarkdown("Slack Get Group:", generic_iam_context.data, removeNull=True),
+                    )
+                else:
+                    group_id = res_json["Resources"][0].get("id")
+            else:
+                generic_iam_context = OutputContext(
+                    success=False,
+                    displayName=group_name,
+                    id=group_id,
+                    errorCode=res_json["Errors"]["code"],
+                    errorMessage=res_json["Errors"]["description"],
+                    details=res_json,
+                )
+                return CommandResults(
+                    raw_response=generic_iam_context.data,
+                    outputs_prefix=generic_iam_context.command,
+                    outputs_key_field="id",
+                    outputs=generic_iam_context.data,
+                    readable_output=tableToMarkdown("Slack Get Group:", generic_iam_context.data, removeNull=True),
+                )
+        res = client.get_group_by_id(group_id)
+        res_json = res.json()
+
+        if res.status_code == 200:
+            include_members = args.get("includeMembers")
+            if include_members.lower() == "false" and "members" in res_json:
+                del res_json["members"]
+            generic_iam_context = OutputContext(
+                success=True, id=res_json.get("id"), displayName=res_json.get("displayName"), members=res_json.get("members")
+            )
+        elif res.status_code == 404:
+            generic_iam_context = OutputContext(
+                success=False, displayName=group_name, id=group_id, errorCode=404, errorMessage="Group Not Found", details=res_json
+            )
+        else:
+            generic_iam_context = OutputContext(
+                success=False,
+                displayName=group_name,
+                id=group_id,
+                errorCode=res_json["Errors"]["code"],
+                errorMessage=res_json["Errors"]["description"],
+                details=res_json,
+            )
+
+        return CommandResults(
+            raw_response=generic_iam_context.data,
+            outputs_prefix=generic_iam_context.command,
+            outputs_key_field="id",
+            outputs=generic_iam_context.data,
+            readable_output=tableToMarkdown("Slack Get Group:", generic_iam_context.data, removeNull=True),
+        )
+
+
+    def delete_group_command(client, args):
+        scim = safe_load_json(args.get("scim"))
+        group_id = scim.get("id")
+        group_name = scim.get("displayName")
+
+        if not group_id:
+            group_id = get_group_id_by_name(client, group_name)
+            if not group_id:
+                return_error("You must supply 'id' in the scim data")
+
+        res = client.delete_group(group_id)
+
+        if res.status_code == 204:
+            generic_iam_context = OutputContext(success=True, id=group_id, displayName=group_name)
+        elif res.status_code == 404:
+            generic_iam_context = OutputContext(
+                success=False, id=group_id, displayName=group_name, errorCode=404, errorMessage="Group Not Found", details=res.json()
+            )
+        else:
+            res_json = res.json()
+            generic_iam_context = OutputContext(
+                success=False,
+                displayName=group_name,
+                id=group_id,
+                errorCode=res_json["Errors"]["code"],
+                errorMessage=res_json["Errors"]["description"],
+                details=res_json,
+            )
+        return CommandResults(
+            raw_response=generic_iam_context.data,
+            outputs_prefix=generic_iam_context.command,
+            outputs_key_field="id",
+            outputs=generic_iam_context.data,
+            readable_output=tableToMarkdown("Slack Delete Group:", generic_iam_context.data, removeNull=True),
+        )
+
+
+    def create_group_command(client, args):
+        scim = safe_load_json(args.get("scim"))
+        group_name = scim.get("displayName")
+
+        if not group_name:
+            return_error("You must supply 'displayName' of the group in the scim data")
+
+        group_data = {"schemas": [SLACK_SCIM_CORE_SCHEMA_KEY], "displayName": group_name}
+        res = client.create_group(group_data)
+        res_json = res.json()
+
+        if res.status_code == 201:
+            generic_iam_context = OutputContext(success=True, id=res_json.get("id"), displayName=res_json.get("displayName"))
+        else:
+            res_json = res.json()
+            generic_iam_context = OutputContext(
+                success=False,
+                displayName=group_name,
+                errorCode=res_json["Errors"]["code"],
+                errorMessage=res_json["Errors"]["description"],
+                details=res_json,
+            )
+
+        return CommandResults(
+            raw_response=generic_iam_context.data,
+            outputs_prefix=generic_iam_context.command,
+            outputs_key_field="id",
+            outputs=generic_iam_context.data,
+            readable_output=tableToMarkdown("Slack Create Group:", generic_iam_context.data, removeNull=True),
+        )
+
+
+    def update_group_command(client, args):
+        scim = safe_load_json(args.get("scim"))
+
+        group_id = scim.get("id")
+        group_name = scim.get("displayName")
+
+        if not group_id:
+            group_id = get_group_id_by_name(client, group_name)
+            if not group_id:
+                return_error("You must supply 'id' in the scim data")
+
+        member_ids_to_add = args.get("memberIdsToAdd")
+        member_ids_to_delete = args.get("memberIdsToDelete")
+
+        member_ids_json_list = []
+        if member_ids_to_add:
+            if type(member_ids_to_add) is not list:
+                member_ids_to_add = json.loads(member_ids_to_add)
+            for member_id in member_ids_to_add:
+                member_ids_json_list.append({"value": member_id})
+        if member_ids_to_delete:
+            if type(member_ids_to_delete) is not list:
+                member_ids_to_delete = json.loads(member_ids_to_delete)
+            for member_id in member_ids_to_delete:
+                member_ids_json_list.append({"value": member_id, "operation": "delete"})
+
+        group_input = {"schemas": [SLACK_SCIM_CORE_SCHEMA_KEY], "members": member_ids_json_list}
+
+        res = client.update_group(group_id, group_input)
+
+        if res.status_code == 204:
+            generic_iam_context = OutputContext(success=True, id=group_id, displayName=group_name)
+        elif res.status_code == 404:
+            generic_iam_context = OutputContext(
+                success=False, id=group_id, displayName=group_name, errorCode=404, errorMessage="Group Not Found", details=res.json()
+            )
+        else:
+            res_json = res.json()
+            generic_iam_context = OutputContext(
+                success=False,
+                displayName=group_name,
+                id=group_id,
+                errorCode=res_json["Errors"]["code"],
+                errorMessage=res_json["Errors"]["description"],
+                details=res_json,
+            )
+        return CommandResults(
+            raw_response=generic_iam_context.data,
+            outputs_prefix=generic_iam_context.command,
+            outputs_key_field="id",
+            outputs=generic_iam_context.data,
+            readable_output=tableToMarkdown("Slack Update Group:", generic_iam_context.data, removeNull=True),
+        )
+
+
+    def main():
+        user_profile = None
+        params = demisto.params()
+        command = demisto.command()
+        args = demisto.args()
+
+        verify_certificate = not params.get("insecure", False)
+        proxy = params.get("proxy", False)
+        access_token = params.get("credentials", {}).get("password") or params.get("access_token")
+
+        mapper_in = params.get("mapper_in")
+        mapper_out = params.get("mapper_out")
+        is_create_enabled = params.get("create_user_enabled")
+        is_enable_enabled = demisto.params().get("enable_user_enabled")
+        is_disable_enabled = params.get("disable_user_enabled")
+        is_update_enabled = demisto.params().get("update_user_enabled")
+        create_if_not_exists = demisto.params().get("create_if_not_exists")
+
+        iam_command = IAMCommand(
+            is_create_enabled,
+            is_enable_enabled,
+            is_disable_enabled,
+            is_update_enabled,
+            create_if_not_exists,
+            mapper_in,
+            mapper_out,
+            get_user_iam_attrs=["id", "userName", "emails"],
+        )
+
+        base_url = "https://api.slack.com/scim/v1/"
+        headers = {"Content-Type": "application/json", "Accept": "application/json", "Authorization": f"Bearer {access_token}"}
+
+        client = Client(
+            base_url=base_url,
+            verify=verify_certificate,
+            proxy=proxy,
+            headers=headers,
+            ok_codes=(200, 201),
+        )
+
+        group_client = GroupClient(
+            base_url=base_url,
+            verify=verify_certificate,
+            proxy=proxy,
+            headers=headers,
+        )
+
+        demisto.debug(f"Command being called is {command}")
+
+        if command == "iam-get-user":
+            user_profile = iam_command.get_user(client, args)
+
+        elif command == "iam-create-user":
+            user_profile = iam_command.create_user(client, args)
+
+        elif command == "iam-update-user":
+            user_profile = iam_command.update_user(client, args)
+
+        elif command == "iam-disable-user":
+            user_profile = iam_command.disable_user(client, args)
+
+        if user_profile:
+            # user_profile.return_outputs()
+            return_results(user_profile)
+
+        try:
+            if command == "test-module":
+                test_module(client)
+
+            elif command == "get-mapping-fields":
+                return_results(get_mapping_fields(client))
+
+        except Exception as e:
+            # For any other integration command exception, return an error
+            return_error(f"Failed to execute {command} command. Error: {e!s}")
+
+        if command == "iam-get-group":
+            return_results(get_group_command(group_client, args))
+
+        elif command == "iam-create-group":
+            return_results(create_group_command(group_client, args))
+
+        elif command == "iam-update-group":
+            return_results(update_group_command(group_client, args))
+
+        elif command == "iam-delete-group":
+            return_results(delete_group_command(group_client, args))
+
+
+
+    ### GENERATED CODE ###: from IAMApiModule import *  # noqa: E402
+    # This code was inserted in place of an API module.
+    register_module_line('IAMApiModule', 'start', __line__(), wrapper=-3)
+
+
+
+
+
+
+    class IAMErrors:
+        """
+        An enum class to manually handle errors in IAM integrations
+        :return: None
+        :rtype: ``None``
+        """
+
+        BAD_REQUEST = 400, "Bad request - failed to perform operation"
+        USER_DOES_NOT_EXIST = 404, "User does not exist"
+        USER_ALREADY_EXISTS = 409, "User already exists"
+
+
+    class IAMActions:
+        """
+        Enum: contains all the IAM actions (e.g. get, update, create, etc.)
+        :return: None
+        :rtype: ``None``
+        """
+
+        GET_USER = "get"
+        UPDATE_USER = "update"
+        CREATE_USER = "create"
+        DISABLE_USER = "disable"
+        ENABLE_USER = "enable"
+
+
+    class IAMVendorActionResult:
+        """This class is used in IAMUserProfile class to represent actions data.
+        :return: None
+        :rtype: ``None``
+        """
+
+        def __init__(
+            self,
+            success=True,
+            active=None,
+            iden=None,
+            username=None,
+            email=None,
+            error_code=None,
+            error_message=None,
+            details=None,
+            skip=False,
+            skip_reason=None,
+            action=None,
+            return_error=False,
+        ):
+            """Sets the outputs and readable outputs attributes according to the given arguments.
+
+            :param success: (bool) whether or not the command succeeded.
+            :param active:  (bool) whether or not the user status is active.
+            :param iden: (str) the user ID.
+            :param username: (str) the username of the user.
+            :param email:  (str) the email of the user.
+            :param error_code: (str or int) the error code of the response, if exists.
+            :param error_message: (str) the error details of the response, if exists.
+            :param details: (dict) the full response.
+            :param skip: (bool) whether or not the command is skipped.
+            :param skip_reason: (str) If the command is skipped, describes the reason.
+            :param action: (IAMActions) An enum object represents the action taken (get, update, create, etc).
+            :param return_error: (bool) Whether or not to return an error entry.
+            """
+            self._brand = demisto.callingContext.get("context", {}).get("IntegrationBrand")
+            self._instance_name = demisto.callingContext.get("context", {}).get("IntegrationInstance")
+            self._success = success
+            self._active = active
+            self._iden = iden
+            self._username = username
+            self._email = email
+            self._error_code = error_code
+            self._error_message = error_message
+            self._details = details
+            self._skip = skip
+            self._skip_reason = skip_reason
+            self._action = action
+            self._return_error = return_error
+
+        def should_return_error(self):
+            return self._return_error
+
+        def create_outputs(self):
+            """Sets the outputs in `_outputs` attribute."""
+            outputs = {
+                "brand": self._brand,
+                "instanceName": self._instance_name,
+                "action": self._action,
+                "success": self._success,
+                "active": self._active,
+                "id": self._iden,
+                "username": self._username,
+                "email": self._email,
+                "errorCode": self._error_code,
+                "errorMessage": self._error_message,
+                "details": self._details,
+                "skipped": self._skip,
+                "reason": self._skip_reason,
+            }
+            return outputs
+
+        def create_readable_outputs(self, outputs):
+            """Sets the human readable output in `_readable_output` attribute.
+
+            :param outputs: (dict) the command outputs.
+            """
+            title = self._action.title() + f" User Results ({self._brand})"
+
+            if not self._skip:
+                headers = [
+                    "brand",
+                    "instanceName",
+                    "success",
+                    "active",
+                    "id",
+                    "username",
+                    "email",
+                    "errorCode",
+                    "errorMessage",
+                    "details",
+                ]
+            else:
+                headers = ["brand", "instanceName", "skipped", "reason"]
+
+            readable_output = tableToMarkdown(name=title, t=outputs, headers=headers, removeNull=True)
+
+            return readable_output
+
+
+    class IAMUserProfile:
+        """A User Profile object class for IAM integrations.
+
+        :type _user_profile: ``str``
+        :param _user_profile: The user profile information.
+
+        :type _user_profile_delta: ``str``
+        :param _user_profile_delta: The user profile delta.
+
+        :type _vendor_action_results: ``list``
+        :param _vendor_action_results: A List of data returned from the vendor.
+
+        :return: None
+        :rtype: ``None``
+        """
+
+        DEFAULT_INCIDENT_TYPE = "User Profile"
+        CREATE_INCIDENT_TYPE = "User Profile - Create"
+        UPDATE_INCIDENT_TYPE = "User Profile - Update"
+        DISABLE_INCIDENT_TYPE = "User Profile - Disable"
+        ENABLE_INCIDENT_TYPE = "User Profile - Enable"
+
+        def __init__(self, user_profile, mapper: str, incident_type: str, user_profile_delta=None):
+            self._user_profile = safe_load_json(user_profile)
+            # Mapping is added here for GET USER commands, where we need to map Cortex fields to the given app fields.
+            self.mapped_user_profile = None
+            self.mapped_user_profile = self.map_object(mapper, incident_type, map_old_data=True) if mapper else self._user_profile
+            self._user_profile_delta = safe_load_json(user_profile_delta) if user_profile_delta else {}
+            self._vendor_action_results: List = []
+
+        def get_attribute(self, item, use_old_user_data=False, user_profile_data: Optional[Dict] = None):
+            user_profile = user_profile_data if user_profile_data else self._user_profile
+            if use_old_user_data and user_profile.get("olduserdata", {}).get(item):
+                return user_profile.get("olduserdata", {}).get(item)
+            return user_profile.get(item)
+
+        def to_entry(self):
+            """Generates a XSOAR IAM entry from the data in _vendor_action_results.
+            Note: Currently we are using only the first element of the list, in the future we will support multiple results.
+
+            :return: A XSOAR entry.
+            :rtype: ``dict``
+            """
+
+            outputs = self._vendor_action_results[0].create_outputs()
+            readable_output = self._vendor_action_results[0].create_readable_outputs(outputs)
+
+            entry_context = {
+                "IAM.UserProfile(val.email && val.email == obj.email)": self._user_profile,
+                "IAM.Vendor(val.instanceName && val.instanceName == obj.instanceName && "
+                "val.email && val.email == obj.email)": outputs,
+            }
+
+            return_entry = {"ContentsFormat": EntryFormat.JSON, "Contents": outputs, "EntryContext": entry_context}
+
+            if self._vendor_action_results[0].should_return_error():
+                return_entry["Type"] = EntryType.ERROR
+            else:
+                return_entry["Type"] = EntryType.NOTE
+                return_entry["HumanReadable"] = readable_output
+
+            return return_entry
+
+        def return_outputs(self):
+            return_results(self.to_entry())
+
+        def set_result(
+            self,
+            success=True,
+            active=None,
+            iden=None,
+            username=None,
+            email=None,
+            error_code=None,
+            error_message=None,
+            details=None,
+            skip=False,
+            skip_reason=None,
+            action=None,
+            return_error=False,
+        ):
+            """Sets the outputs and readable outputs attributes according to the given arguments.
+
+            :param success: (bool) whether or not the command succeeded.
+            :param active:  (bool) whether or not the user status is active.
+            :param iden: (str) the user ID.
+            :param username: (str) the username of the user.
+            :param email:  (str) the email of the user.
+            :param error_code: (str or int) the error code of the response, if exists.
+            :param error_message: (str) the error details of the response, if exists.
+            :param details: (dict) the full response.
+            :param skip: (bool) whether or not the command is skipped.
+            :param skip_reason: (str) If the command is skipped, describes the reason.
+            :param action: (IAMActions) An enum object represents the action taken (get, update, create, etc).
+            :param return_error: (bool) Whether or not to return an error entry.
+            """
+            if not email:
+                email = self.get_attribute("email")
+
+            if not details:
+                details = self.mapped_user_profile
+
+            vendor_action_result = IAMVendorActionResult(
+                success=success,
+                active=active,
+                iden=iden,
+                username=username,
+                email=email,
+                error_code=error_code,
+                error_message=error_message if error_message else "",
+                details=details,
+                skip=skip,
+                skip_reason=skip_reason if skip_reason else "",
+                action=action,
+                return_error=return_error,
+            )
+
+            self._vendor_action_results.append(vendor_action_result)
+
+        def map_object(self, mapper_name, incident_type, map_old_data: bool = False):
+            """Returns the user data, in an application data format.
+
+            :type mapper_name: ``str``
+            :param mapper_name: The outgoing mapper from XSOAR to the application.
+
+            :type incident_type: ``str``
+            :param incident_type: The incident type used.
+
+            :type map_old_data ``bool``
+            :param map_old_data: Whether to map old data as well.
+
+            :return: the user data, in the app data format.
+            :rtype: ``dict``
+            """
+            if self.mapped_user_profile:
+                if not map_old_data:
+                    return {k: v for k, v in self.mapped_user_profile.items() if k != "olduserdata"}
+                return self.mapped_user_profile
+            if incident_type not in [
+                IAMUserProfile.CREATE_INCIDENT_TYPE,
+                IAMUserProfile.UPDATE_INCIDENT_TYPE,
+                IAMUserProfile.DISABLE_INCIDENT_TYPE,
+                IAMUserProfile.ENABLE_INCIDENT_TYPE,
+            ]:
+                raise DemistoException("You must provide a valid incident type to the map_object function.")
+            if not self._user_profile:
+                raise DemistoException("You must provide the user profile data.")
+            app_data = demisto.mapObject(self._user_profile, mapper_name, incident_type)
+            if map_old_data and "olduserdata" in self._user_profile:
+                app_data["olduserdata"] = demisto.mapObject(self._user_profile.get("olduserdata", {}), mapper_name, incident_type)
+            return app_data
+
+        def update_with_app_data(self, app_data, mapper_name, incident_type=None):
+            """updates the user_profile attribute according to the given app_data
+
+            :type app_data: ``dict``
+            :param app_data: The user data in app
+
+            :type mapper_name: ``str``
+            :param mapper_name: Incoming mapper name
+
+            :type incident_type: ``str``
+            :param incident_type: Optional - incident type
+            """
+            if not incident_type:
+                incident_type = IAMUserProfile.DEFAULT_INCIDENT_TYPE
+            if not isinstance(app_data, dict):
+                app_data = safe_load_json(app_data)
+            self._user_profile = demisto.mapObject(app_data, mapper_name, incident_type)
+
+        def get_first_available_iam_user_attr(self, iam_attrs: List[str], use_old_user_data: bool = False):
+            # Special treatment for ID field, because he is not included in outgoing mappers.
+            for iam_attr in iam_attrs:
+                # Special treatment for ID field, because he is not included in outgoing mappers.
+                if iam_attr == "id" and (attr_value := self.get_attribute(iam_attr, use_old_user_data)):
+                    return iam_attr, attr_value
+                if attr_value := self.get_attribute(iam_attr, use_old_user_data, self.mapped_user_profile):
+                    # Special treatment for emails, as mapper maps it to a list object.
+                    if iam_attr == "emails" and not isinstance(attr_value, str):
+                        if isinstance(attr_value, dict):
+                            attr_value = attr_value.get("value")
+                        elif isinstance(attr_value, list):
+                            if not attr_value:
+                                continue
+                            attr_value = next(
+                                (email.get("value") for email in attr_value if email.get("primary", False)),
+                                attr_value[0].get("value", ""),
+                            )
+                    return iam_attr, attr_value
+
+            raise DemistoException(
+                "Your user profile argument must contain at least one attribute that is mapped into one"
+                f" of the following attributes in the outgoing mapper: {iam_attrs}"
+            )
+
+        def set_user_is_already_disabled(self, details):
+            self.set_result(action=IAMActions.DISABLE_USER, skip=True, skip_reason="User is already disabled.", details=details)
+
+        def set_user_is_already_enabled(self, details):
+            self.set_result(action=IAMActions.ENABLE_USER, skip=True, skip_reason="User is already enabled.", details=details)
+
+
+    class IAMUserAppData:
+        """Holds user attributes retrieved from an application.
+
+        :type id: ``str``
+        :param id: The ID of the user.
+
+        :type username: ``str``
+        :param username: The username of the user.
+
+        :type is_active: ``bool``
+        :param is_active: Whether or not the user is active in the application.
+
+        :type full_data: ``dict``
+        :param full_data: The full data of the user in the application.
+
+        :return: None
+        :rtype: ``None``
+        """
+
+        def __init__(self, user_id, username, is_active, app_data, email=None):
+            self.id = user_id
+            self.username = username
+            self.is_active = is_active
+            self.full_data = app_data
+            self.email = email
+
+
+    class IAMCommand:
+        """A class that implements the IAM CRUD commands - should be used.
+
+        :type id: ``str``
+        :param id: The ID of the user.
+
+        :type username: ``str``
+        :param username: The username of the user.
+
+        :type is_active: ``bool``
+        :param is_active: Whether or not the user is active in the application.
+
+        :type full_data: ``dict``
+        :param full_data: The full data of the user in the application.
+
+        :return: None
+        :rtype: ``None``
+        """
+
+        def __init__(
+            self,
+            is_create_enabled=True,
+            is_enable_enabled=True,
+            is_disable_enabled=True,
+            is_update_enabled=True,
+            create_if_not_exists=True,
+            mapper_in=None,
+            mapper_out=None,
+            get_user_iam_attrs=None,
+        ):
+            """The IAMCommand c'tor
+
+            :param is_create_enabled: (bool) Whether or not to allow creating users in the application.
+            :param is_enable_enabled: (bool) Whether or not to allow enabling users in the application.
+            :param is_disable_enabled: (bool) Whether or not to allow disabling users in the application.
+            :param is_update_enabled: (bool) Whether or not to allow updating users in the application.
+            :param create_if_not_exists: (bool) Whether or not to create a user if does not exist in the application.
+            :param mapper_in: (str) Incoming mapper from the application to Cortex
+            :param mapper_out: (str) Outgoing mapper from the Cortex to the application
+            :param get_user_iam_attrs (List[str]): List of IAM attributes supported by integration by precedence
+                                                            order to get user details.
+            """
+            if get_user_iam_attrs is None:
+                get_user_iam_attrs = ["email"]
+            self.is_create_enabled = is_create_enabled
+            self.is_enable_enabled = is_enable_enabled
+            self.is_disable_enabled = is_disable_enabled
+            self.is_update_enabled = is_update_enabled
+            self.create_if_not_exists = create_if_not_exists
+            self.mapper_in = mapper_in
+            self.mapper_out = mapper_out
+            self.get_user_iam_attrs = get_user_iam_attrs
+
+        def get_user(self, client, args):
+            """Searches a user in the application and updates the user profile object with the data.
+                If not found, the error details will be resulted instead.
+            :param client: (Client) The integration Client object that implements a get_user() method
+            :param args: (dict) The `iam-get-user` command arguments
+            :return: (IAMUserProfile) The user profile object.
+            """
+            user_profile = IAMUserProfile(
+                user_profile=args.get("user-profile"), mapper=self.mapper_out, incident_type=IAMUserProfile.UPDATE_INCIDENT_TYPE
+            )
+            try:
+                iam_attribute, iam_attribute_val = user_profile.get_first_available_iam_user_attr(self.get_user_iam_attrs)
+                user_app_data = client.get_user(iam_attribute, iam_attribute_val)
+                if not user_app_data:
+                    error_code, error_message = IAMErrors.USER_DOES_NOT_EXIST
+                    user_profile.set_result(
+                        action=IAMActions.GET_USER, success=False, error_code=error_code, error_message=error_message
+                    )
+                else:
+                    user_profile.update_with_app_data(user_app_data.full_data, self.mapper_in)
+                    user_profile.set_result(
+                        action=IAMActions.GET_USER,
+                        active=user_app_data.is_active,
+                        iden=user_app_data.id,
+                        email=user_profile.get_attribute("email") or user_app_data.email,
+                        username=user_app_data.username,
+                        details=user_app_data.full_data,
+                    )
+
+            except Exception as e:
+                client.handle_exception(user_profile, e, IAMActions.GET_USER)
+
+            return user_profile
+
+        def disable_user(self, client, args):
+            """Disables a user in the application and updates the user profile object with the updated data.
+                If not found, the command will be skipped.
+
+            :param client: (Client) The integration Client object that implements get_user() and disable_user() methods
+            :param args: (dict) The `iam-disable-user` command arguments
+            :return: (IAMUserProfile) The user profile object.
+            """
+            user_profile = IAMUserProfile(
+                user_profile=args.get("user-profile"), mapper=self.mapper_out, incident_type=IAMUserProfile.UPDATE_INCIDENT_TYPE
+            )
+            if not self.is_disable_enabled:
+                user_profile.set_result(action=IAMActions.DISABLE_USER, skip=True, skip_reason="Command is disabled.")
+            else:
+                try:
+                    iam_attribute, iam_attribute_val = user_profile.get_first_available_iam_user_attr(self.get_user_iam_attrs)
+                    user_app_data = client.get_user(iam_attribute, iam_attribute_val)
+                    if not user_app_data:
+                        _, error_message = IAMErrors.USER_DOES_NOT_EXIST
+                        user_profile.set_result(action=IAMActions.DISABLE_USER, skip=True, skip_reason=error_message)
+                    else:
+                        if user_app_data.is_active:
+                            disabled_user = client.disable_user(user_app_data.id)
+                            user_profile.set_result(
+                                action=IAMActions.DISABLE_USER,
+                                active=False,
+                                iden=disabled_user.id,
+                                email=user_profile.get_attribute("email") or user_app_data.email,
+                                username=disabled_user.username,
+                                details=disabled_user.full_data,
+                            )
+                        else:
+                            user_profile.set_user_is_already_disabled(user_app_data.full_data)
+
+                except Exception as e:
+                    client.handle_exception(user_profile, e, IAMActions.DISABLE_USER)
+
+            return user_profile
+
+        def enable_user(self, client, args):
+            """Enables a user in the application and updates the user profile object with the updated data.
+                If not found, the command will be skipped.
+
+            :param client: (Client) The integration Client object that implements get_user(),
+                                    enable_user() and handle_exception methods
+            :param args: (dict) The `iam-enable-user` command arguments
+            :return: (IAMUserProfile) The user profile object.
+            """
+            user_profile = IAMUserProfile(
+                user_profile=args.get("user-profile"), mapper=self.mapper_out, incident_type=IAMUserProfile.UPDATE_INCIDENT_TYPE
+            )
+            if not self.is_enable_enabled:
+                user_profile.set_result(action=IAMActions.ENABLE_USER, skip=True, skip_reason="Command is disabled.")
+            else:
+                try:
+                    iam_attribute, iam_attribute_val = user_profile.get_first_available_iam_user_attr(self.get_user_iam_attrs)
+                    user_app_data = client.get_user(iam_attribute, iam_attribute_val)
+                    if not user_app_data:
+                        _, error_message = IAMErrors.USER_DOES_NOT_EXIST
+                        user_profile.set_result(action=IAMActions.ENABLE_USER, skip=True, skip_reason=error_message)
+                    else:
+                        if not user_app_data.is_active:
+                            enabled_user = client.enable_user(user_app_data.id)
+                            user_profile.set_result(
+                                action=IAMActions.ENABLE_USER,
+                                active=True,
+                                iden=enabled_user.id,
+                                email=user_profile.get_attribute("email") or user_app_data.email,
+                                username=enabled_user.username,
+                                details=enabled_user.full_data,
+                            )
+                        else:
+                            user_profile.set_user_is_already_enabled(user_app_data.full_data)
+
+                except Exception as e:
+                    client.handle_exception(user_profile, e, IAMActions.ENABLE_USER)
+
+            return user_profile
+
+        def create_user(self, client, args):
+            """Creates a user in the application and updates the user profile object with the data.
+                If a user in the app already holds the email in the given user profile, updates
+                its data with the given data.
+
+            :param client: (Client) A Client object that implements get_user(), create_user() and update_user() methods
+            :param args: (dict) The `iam-create-user` command arguments
+            :return: (IAMUserProfile) The user profile object.
+            """
+            user_profile = IAMUserProfile(
+                user_profile=args.get("user-profile"), mapper=self.mapper_out, incident_type=IAMUserProfile.CREATE_INCIDENT_TYPE
+            )
+            if not self.is_create_enabled:
+                user_profile.set_result(action=IAMActions.CREATE_USER, skip=True, skip_reason="Command is disabled.")
+            else:
+                try:
+                    iam_attribute, iam_attribute_val = user_profile.get_first_available_iam_user_attr(self.get_user_iam_attrs)
+                    user_app_data = client.get_user(iam_attribute, iam_attribute_val)
+                    if user_app_data:
+                        # if user exists, update it
+                        user_profile = self.update_user(client, args)
+
+                    else:
+                        app_profile = user_profile.map_object(self.mapper_out, IAMUserProfile.CREATE_INCIDENT_TYPE)
+                        created_user = client.create_user(app_profile)
+                        user_profile.set_result(
+                            action=IAMActions.CREATE_USER,
+                            active=created_user.is_active,
+                            iden=created_user.id,
+                            email=user_profile.get_attribute("email") or created_user.email,
+                            username=created_user.username,
+                            details=created_user.full_data,
+                        )
+
+                except Exception as e:
+                    client.handle_exception(user_profile, e, IAMActions.CREATE_USER)
+
+            return user_profile
+
+        def update_user(self, client, args):
+            """Creates a user in the application and updates the user profile object with the data.
+                If the user is disabled and `allow-enable` argument is `true`, also enables the user.
+                If the user does not exist in the app and the `create-if-not-exist` parameter is checked, creates the user.
+
+            :param client: (Client) A Client object that implements get_user(), create_user() and update_user() methods
+            :param args: (dict) The `iam-update-user` command arguments
+            :return: (IAMUserProfile) The user profile object.
+            """
+            user_profile = IAMUserProfile(
+                user_profile=args.get("user-profile"), mapper=self.mapper_out, incident_type=IAMUserProfile.UPDATE_INCIDENT_TYPE
+            )
+            allow_enable = args.get("allow-enable") == "true" and self.is_enable_enabled
+            if not self.is_update_enabled:
+                user_profile.set_result(action=IAMActions.UPDATE_USER, skip=True, skip_reason="Command is disabled.")
+            else:
+                try:
+                    iam_attribute, iam_attribute_val = user_profile.get_first_available_iam_user_attr(
+                        self.get_user_iam_attrs, use_old_user_data=True
+                    )
+                    user_app_data = client.get_user(iam_attribute, iam_attribute_val)
+                    if user_app_data:
+                        app_profile = user_profile.map_object(self.mapper_out, IAMUserProfile.UPDATE_INCIDENT_TYPE)
+
+                        if allow_enable and not user_app_data.is_active:
+                            client.enable_user(user_app_data.id)
+
+                        updated_user = client.update_user(user_app_data.id, app_profile)
+
+                        if updated_user.is_active is None:
+                            updated_user.is_active = True if allow_enable else user_app_data.is_active
+
+                        user_profile.set_result(
+                            action=IAMActions.UPDATE_USER,
+                            active=updated_user.is_active,
+                            iden=updated_user.id,
+                            email=user_profile.get_attribute("email") or updated_user.email or user_app_data.email,
+                            username=updated_user.username,
+                            details=updated_user.full_data,
+                        )
+                    else:
+                        if self.create_if_not_exists:
+                            user_profile = self.create_user(client, args)
+                        else:
+                            _, error_message = IAMErrors.USER_DOES_NOT_EXIST
+                            user_profile.set_result(action=IAMActions.UPDATE_USER, skip=True, skip_reason=error_message)
+
+                except Exception as e:
+                    client.handle_exception(user_profile, e, IAMActions.UPDATE_USER)
+
+            return user_profile
+
+
+    def get_first_primary_email_by_scim_schema(res: Dict):
+        return next((email.get("value") for email in res.get("emails", []) if email.get("primary")), None)
+
+    register_module_line('IAMApiModule', 'end', __line__(), wrapper=1)
+    ### END GENERATED CODE ###
+
+    if __name__ in ("__main__", "__builtin__", "builtins"):
+        main()
+
+    register_module_line('Slack IAM', 'end', __line__())
+  subtype: python3
+  type: python
+sectionorder:
+- Connect
+- Collect
+signature: K5xIc1NiTD8sRskFb+zuqPeryvB/gp/hXYuF+daoI4K7bMNyTyMElCbgj7vwzeGT9PjFTOiUCPkBgyNSKxm4CqjUJYhifoWJ+e+VXugsrErWR3g7/2V83EofPqZB6p9mticQ3+HPjtdiQaSNAcOf0vnfdJ6mXUw7rAEoN6uxn2971o5yZg9XZVez27HKZAhyXqwWmrFWjtsKq+++bqQenfGtHBtnZOcmjOO2HVGx9RHLe60ubBmVn1HjJ2GzmIfCCAihL5aXC/4V6V4pRLJdxR24ZaD96St9p/9wnh5zfmyvF5EBurjRqKwLFqlDXe2HOBIUWpM10H+cK32P1NM4eA==
+system: true
