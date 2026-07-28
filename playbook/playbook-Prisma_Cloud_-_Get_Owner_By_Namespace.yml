@@ -1,0 +1,483 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.10.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook will retrieve the potential owners of a runtime audit alert.
+  This is done using the "Namespace" value of the alert in order to query associated resource lists and user roles with associated users.
+  Eventually the playbook returns a list of user objects (if found).
+id: Prisma Cloud - Get Owner By Namespace
+inputs:
+- description: The namespace that the playbook would search associated users with.
+  key: Namespace
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Whether to enrich found users or not.
+  key: EnrichUsers
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+name: Prisma Cloud - Get Owner By Namespace
+outlinetasks: {}
+outputs:
+- contextPath: PrismaCloud.Users
+  description: The users which were found by this playbook.
+- contextPath: PrismaCloud.Users.email
+  description: Prisma Cloud user email.
+- contextPath: PrismaCloud.Users.firstName
+  description: User first name.
+- contextPath: PrismaCloud.Users.lastName
+  description: User last name.
+- contextPath: PrismaCloud.Users.enabled
+  description: User enabled.
+- contextPath: PrismaCloud.Users.username
+  description: User username.
+- contextPath: PrismaCloud.Users.type
+  description: User type.
+- contextPath: PrismaCloud.Users.displayName
+  description: User display name.
+- contextPath: PrismaCloud.UserRoles.associatedUsers
+  description: User roles associated users.
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 34655dca-4c3d-431c-8b9b-f7f8857b134e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 34655dca-4c3d-431c-8b9b-f7f8857b134e
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      "no":
+      - "2"
+      "yes":
+      - "3"
+    note: false
+    quietmode: 0
+    results:
+    - brandInstances
+    scriptarguments:
+      brandname:
+        simple: PrismaCloud v2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns 'yes' if integration brand is available. Otherwise returns
+        'no'
+      id: a0dbdde4-545d-4b54-8de9-31d52261a562
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Prisma Cloud v2 Enabled?
+      playbooktaskmissingcomponent: null
+      script: IsIntegrationAvailable
+      type: condition
+      version: -1
+    taskid: a0dbdde4-545d-4b54-8de9-31d52261a562
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 190
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 13abf983-8b26-4053-8b56-d899a32e0aef
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 13abf983-8b26-4053-8b56-d899a32e0aef
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 420,
+          "y": 2010
+        }
+      }
+  "3":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.Namespace
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "2"
+      "yes":
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 800e4f5b-64b0-43e7-8b23-7645c1db81ab
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Namespace input exist?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 800e4f5b-64b0-43e7-8b23-7645c1db81ab
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 410
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      all_results:
+        simple: "true"
+      namespace:
+        complex:
+          root: inputs.Namespace
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns all the resource lists. Maps to the Resource Lists under
+        Settings > Resource Lists in the Console UI.
+      id: 59e576de-9313-49aa-8903-dc648ffd0b10
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get associated resource lists
+      playbooktaskmissingcomponent: null
+      script: '|||prisma-cloud-resource-list'
+      type: regular
+      version: -1
+    taskid: 59e576de-9313-49aa-8903-dc648ffd0b10
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 660
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      all_results:
+        simple: "true"
+      resource_list_name:
+        complex:
+          accessor: name
+          root: PrismaCloud.ResourceList
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Retrieves user roles. Maps to Settings > Access Control > Roles
+        in the Console UI.
+      id: c59db337-686e-43dc-8f82-c9db2522ad79
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get associated user roles
+      playbooktaskmissingcomponent: null
+      script: '|||prisma-cloud-user-roles-list'
+      type: regular
+      version: -1
+    taskid: c59db337-686e-43dc-8f82-c9db2522ad79
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1100
+        }
+      }
+  "6":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: name
+                root: PrismaCloud.ResourceList
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "2"
+      "yes":
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b49e309a-75d2-4c86-886c-717120b5f75c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Any resource lists were found?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: b49e309a-75d2-4c86-886c-717120b5f75c
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 870
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      all_results:
+        simple: "true"
+      usernames:
+        complex:
+          accessor: associatedUsers
+          root: PrismaCloud.UserRoles
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Lists all users and service accounts for your tenant. Maps to Settings
+        > Access Control > Users in the Console UI.
+      id: b2fc4d02-c658-4e2f-8f11-79ab7d7aef94
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get user details
+      playbooktaskmissingcomponent: null
+      script: '|||prisma-cloud-users-list'
+      type: regular
+      version: -1
+    taskid: b2fc4d02-c658-4e2f-8f11-79ab7d7aef94
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -90,
+          "y": 1840
+        }
+      }
+  "8":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: associatedUsers
+                root: PrismaCloud.UserRoles
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "2"
+      "yes":
+      - "9"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f39edc2d-ba70-493e-84f2-c8cead5fdab2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Any associated users were found?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: f39edc2d-ba70-493e-84f2-c8cead5fdab2
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1300
+        }
+      }
+  "9":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.EnrichUsers
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "2"
+      "yes":
+      - "7"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 3542e395-7dab-438f-83a1-1f44a224290d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Enrich Users?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 3542e395-7dab-438f-83a1-1f44a224290d
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -90,
+          "y": 1580
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "1_2_no": 0.2,
+      "1_3_yes": 0.47,
+      "3_2_#default#": 0.11,
+      "3_4_yes": 0.43,
+      "6_2_#default#": 0.17,
+      "8_2_#default#": 0.28,
+      "9_7_yes": 0.45
+    },
+    "paper": {
+      "dimensions": {
+        "height": 2025,
+        "width": 890,
+        "x": -90,
+        "y": 50
+      }
+    }
+  }
