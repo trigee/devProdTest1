@@ -1,0 +1,122 @@
+args:
+- description: 'The context key to check (can contain ".", e.g: My.Context.Path).'
+  name: key
+  required: true
+  supportedModules: []
+- description: The regex pattern to check the field for (optional).
+  name: regex
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "False"
+  description: Whether character matching will be case-insensitive.
+  name: ignore_case
+  predefined:
+  - "True"
+  - "False"
+  supportedModules: []
+comment: This script checks that a context key exists (and contains data), and optionally
+  checks the value of the context key for a match against an input value. If a regex
+  is not supplied, the script checks that the key is not empty. This script can be
+  used with the "GenericPolling" playbook to poll for field population or that a field
+  contains a specific value. This scripts does not support a context key which holds
+  a list of values.
+commonfields:
+  id: CheckContextValue
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: CheckContextValue
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: CheckContextKey.name
+  description: Key Name.
+  type: string
+- contextPath: CheckContextKey.exists
+  description: Whether the Key Exists.
+  type: Unknown
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('CheckContextValue', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+
+
+
+  def check_key(field_value, regex=None):
+      if regex:
+          if re.search(regex, field_value):
+              return True
+      else:
+          if field_value:
+              return True
+      return False
+
+
+  def poll_field(args: dict[str, Any]) -> CommandResults:
+      keys_list = args.get("key", "").split(".")
+      regex = args.get("regex")
+      ignore_case = argToBoolean(args.get("ignore_case", "False"))
+
+      regex_ignore_case_flag = re.IGNORECASE if ignore_case else 0
+      regex = re.compile(regex, regex_ignore_case_flag) if regex else None
+
+      context = dict_safe_get(demisto.context(), keys_list)
+
+      data = {"key": ".".join(keys_list), "exists": False}
+
+      if context:
+          data["exists"] = check_key(context, regex)
+
+      command_results = CommandResults(
+          outputs_key_field="key",
+          outputs_prefix="CheckContextKey",
+          outputs=data,
+          readable_output="The key exists." if data["exists"] else "The key does not exist.",
+          raw_response=data,
+      )
+      return command_results
+
+
+  def main():
+      try:
+          return_results(poll_field(demisto.args()))
+      except Exception as err:
+          demisto.error(traceback.format_exc())  # print the traceback
+          return_error(f"Failed to execute CheckFieldValue script. Error: {err!s}")
+
+
+  """ ENTRY POINT """
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('CheckContextValue', 'end', __line__())
+scripttarget: 0
+signature: 2tbtItY8S/cP7u+J4To5evt0qTH6Bxih9G+keLJLujTZmXXxrnCj9DLdGCigrww4IDWxnbUwSzpzBGlr7/2HQRejBurPpx+MjtZz2fnEgR0yl6z42sUUt29NefV+tZHHpZA8U1h1z/qppMQ7gfVqZTO6ry8psiYVbz/KdJ3+sav/W4KWezJomDcM79KFiLVcgyU0KXpKjn/F+hS/x/XQw0ZcMc1FPm4g5XnOLIetGYTVqDDHNAe9wDSkdkbFLL3/Hmpc08QS5stVqBN1Pb6pR5EarGYB0VXgoZZypBzuHiShd4Hyt6BmpH73zo4yfVz8LF0kcFFlgI6m1tUfE88nXg==
+subtype: python3
+system: true
+tags:
+- evaluation
+- polling
+type: python
