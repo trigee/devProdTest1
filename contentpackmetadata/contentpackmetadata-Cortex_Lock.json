@@ -1,0 +1,204 @@
+{
+	"author": "Cortex",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Utilities"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"integration"
+	],
+	"contentItems": {
+		"agentixaction": null,
+		"agentixagent": null,
+		"agentixknowledgecollection": null,
+		"agentixknowledgesource": null,
+		"agentixskill": null,
+		"automation": null,
+		"casefield": null,
+		"classifier": null,
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": null,
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "Utilities",
+				"commands": [
+					{
+						"description": "Gets a specific lock. If the lock doesn't exist, it creates one. If the lock is already in use, the command waits until the lock is released or until timeout is reached. If timeout is reached and the lock hasn't been released, the command fails to get the lock.",
+						"hidden": false,
+						"name": "demisto-lock-get"
+					},
+					{
+						"description": "Release a lock.",
+						"hidden": false,
+						"name": "demisto-lock-release"
+					},
+					{
+						"description": "Show information on locks.",
+						"hidden": false,
+						"name": "demisto-lock-info"
+					},
+					{
+						"description": "Release all locks.",
+						"hidden": false,
+						"name": "demisto-lock-release-all"
+					}
+				],
+				"description": "Locking mechanism that prevents concurrent execution of different tasks.",
+				"fromversion": "5.0.0",
+				"id": "Demisto Lock",
+				"name": "Demisto Lock",
+				"toversion": ""
+			},
+			{
+				"category": "Utilities",
+				"commands": [
+					{
+						"description": "Gets a specific lock. If the lock doesn't exist, it creates one. If the lock is already in use, the command waits until the lock is released or until timeout is reached. If timeout is reached and the lock hasn't been released, the command fails to get the lock.",
+						"hidden": false,
+						"name": "demisto-lock-get"
+					},
+					{
+						"description": "Release a lock",
+						"hidden": false,
+						"name": "demisto-lock-release"
+					},
+					{
+						"description": "Show information on locks",
+						"hidden": false,
+						"name": "demisto-lock-info"
+					},
+					{
+						"description": "Release all locks",
+						"hidden": false,
+						"name": "demisto-lock-release-all"
+					},
+					{
+						"description": "Gets a specific lock. If the lock doesn't exist, it creates one. If the lock is already in use, the command waits until the lock is released or until timeout is reached. If timeout is reached and the lock hasn't been released, the command fails to get the lock.",
+						"hidden": false,
+						"name": "core-lock-get"
+					},
+					{
+						"description": "Release a lock",
+						"hidden": false,
+						"name": "core-lock-release"
+					},
+					{
+						"description": "Show information on locks",
+						"hidden": false,
+						"name": "core-lock-info"
+					},
+					{
+						"description": "Release all locks",
+						"hidden": false,
+						"name": "core-lock-release-all"
+					}
+				],
+				"description": "Locking mechanism that prevents concurrent execution of different tasks",
+				"fromversion": "5.0.0",
+				"id": "Core Lock",
+				"name": "Core Lock",
+				"toversion": ""
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"playbook": null,
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"created": "2025-03-29T09:34:54Z",
+	"currentVersion": "1.1.13",
+	"defaultDataSource": {
+		"id": "",
+		"name": ""
+	},
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.41.88",
+			"name": "Base"
+		}
+	},
+	"deprecated": false,
+	"description": "Locking mechanism that prevents concurrent execution of different tasks",
+	"downloads": 0,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"firstCreated": "2025-03-29T09:34:54Z",
+	"fromServerVersion": "5.0.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldFree",
+		"generalFieldSupportIncluded",
+		"generalFieldSupportModule"
+	],
+	"hybrid": false,
+	"id": "DemistoLocking",
+	"installMessage": "",
+	"integrations": [
+		{
+			"id": "Core Lock",
+			"imagePath": "content/packs/DemistoLocking/CoreLock_image.png",
+			"name": "Core Lock"
+		},
+		{
+			"id": "Demisto Lock",
+			"imagePath": "content/packs/DemistoLocking/DemistoLock_image.png",
+			"name": "Demisto Lock"
+		}
+	],
+	"isOverridable": false,
+	"itemVersion": "1.1.13",
+	"keywords": [
+		"Demisto Lock",
+		"Core Lock"
+	],
+	"legacy": true,
+	"modules": [],
+	"name": "Cortex Lock",
+	"packID": "DemistoLocking",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"searchRank": 0,
+	"serverMaxVersion": "",
+	"serverMinVersion": "5.0.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"supportedModules": [
+		"agentix",
+		"cloud",
+		"cloud_runtime_security",
+		"cloud_posture",
+		"xsiam",
+		"edr"
+	],
+	"tags": [],
+	"toServerVersion": "",
+	"updated": "2026-06-01T10:25:48Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "9705440",
+	"videos": []
+}
