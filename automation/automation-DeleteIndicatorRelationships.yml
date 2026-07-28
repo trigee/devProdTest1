@@ -1,0 +1,75 @@
+args:
+- default: true
+  description: The IDs of the relationships to delete. Can accept a list of ID's.
+  isArray: true
+  name: ids
+  required: true
+  supportedModules: []
+comment: This automation allows to delete a relationship between indicator objects
+  based on the relationship id.
+commonfields:
+  id: DeleteIndicatorRelationships
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.2.0
+    isoverridable: false
+    itemVersion: 1.42.2
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.8428455
+engineinfo: {}
+mainengineinfo: {}
+name: DeleteIndicatorRelationships
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('DeleteIndicatorRelationships', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.42.2'
+  demisto.debug('pack id = Base, pack version = 1.42.2')
+
+
+
+
+
+  """ MAIN FUNCTION """
+
+
+  def main():
+      try:
+          ids = demisto.args().get("ids")
+          res = demisto.executeCommand("deleteRelationships", {"relationshipsIDsKey": ids})
+          if is_error(res[0]):
+              raise Exception("Error in DeleteIndicatorRelationships command - {}".format(res[0]["Contents"]))
+          hr = f"The relationships {ids!s} were deleted successfully."
+          return_results(CommandResults(readable_output=hr))
+      except Exception as ex:
+          return_error(f"Failed to execute DeleteIndicatorRelationships. Error: {ex!s}")
+
+
+  """ ENTRY POINT """
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('DeleteIndicatorRelationships', 'end', __line__())
+scripttarget: 0
+signature: ll7YzLpftdTV0taDWixhdHqCSRiC9ApdnJiTr3nd9A3QZzDWyuzhLRd+eLurOWYN8FYIBSDMAnb/Y2ijxhQULW91EQvwL/jYkNS5Ohv5nKHhFXBpWqKvSHRYuZ+BidpLZO0tDzbGAY+j5oA/5YCl+kd8l+kZU42yLEcEY6Gy5GOEqXCBArRcDT3ueJqxLL02d8HsS4dRK3m3BFQee8KVfzfljBxyp19DMGZoPIHC/3bRyqYeH+a9H4cTqsdluV0qkYu3lo60qKPQWrLw7eNZZZIkpNI9L0xf2THE9k2tip2od2fWGfPjSqX2qt8DpU9BiBfvsmS1qHXlGcBecwXmxw==
+subtype: python3
+system: true
+tags:
+- basescript
+type: python
