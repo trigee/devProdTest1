@@ -1,0 +1,592 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.8.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: Find Public Cloud resource by Public IP using Prisma Cloud inventory
+id: Prisma Cloud - Find Public Cloud Resource by Public IP v2
+inputs:
+- description: Public IP Address to look up
+  key: PublicIPAddress
+  playbookInputQuery: null
+  required: true
+  value: {}
+- description: Public Cloud Provider (AWS, Azure, GCP)
+  key: CloudProvider
+  playbookInputQuery: null
+  required: false
+  value: {}
+name: Prisma Cloud - Find Public Cloud Resource by Public IP v2
+outlinetasks: {}
+outputs:
+- contextPath: PrismaCloud.Attribution
+  description: Prisma Cloud attributed asset information.
+  type: unknown
+- contextPath: PrismaCloud.Config.data.tags
+  description: Prisma Cloud Tags information.
+  type: unknown
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "16"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1f07728c-f683-4d88-899f-e676fd6ad242
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 1f07728c-f683-4d88-899f-e676fd6ad242
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 1820,
+          "y": -500
+        }
+      }
+  "2":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.CloudProvider
+          operator: inList
+          right:
+            value:
+              simple: AWS,Amazon Web Services,Amazon
+      label: AWS
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.CloudProvider
+          operator: inList
+          right:
+            value:
+              simple: Azure,Microsoft Azure
+      label: Azure
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.CloudProvider
+          operator: inList
+          right:
+            value:
+              simple: GCP,Google Cloud Platform,Google
+      label: GCP
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "6"
+      AWS:
+      - "3"
+      Azure:
+      - "4"
+      GCP:
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Branch based on Cloud Provider
+      id: 3d37f47e-6b6e-4b20-82bb-1806a2e77a64
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: What Cloud Provider?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 3d37f47e-6b6e-4b20-82bb-1806a2e77a64
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 175
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "23"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ca63fa11-d275-45c7-8c20-b24acda77da7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search in AWS
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: ca63fa11-d275-45c7-8c20-b24acda77da7
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 515
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "24"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 3f2b5c1c-7f22-4756-82fe-12bbee1a3e56
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search in Azure
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 3f2b5c1c-7f22-4756-82fe-12bbee1a3e56
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 515
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "26"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 05e81a0b-f0d3-4563-8cf2-37dba3c72160
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search in GCP
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 05e81a0b-f0d3-4563-8cf2-37dba3c72160
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 920,
+          "y": 515
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+      - "4"
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c00923a4-c0c6-4899-8716-7f441ab517ba
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search All Cloud Providers
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: c00923a4-c0c6-4899-8716-7f441ab517ba
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1110,
+          "y": 360
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: aa1954ba-8aae-42ef-8003-f1a73fc387a6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: aa1954ba-8aae-42ef-8003-f1a73fc387a6
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1150,
+          "y": 1150
+        }
+      }
+  "14":
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 044830f5-0514-48a9-83ac-52c1eb61f4c5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search in Prisma Cloud
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 044830f5-0514-48a9-83ac-52c1eb61f4c5
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 60
+        }
+      }
+  "15":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: PrismaCloud v2
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "13"
+      "yes":
+      - "14"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check whether Prisma Cloud integration is enabled.
+      id: 407ca958-8481-449a-821c-ceee9852a985
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Prisma Cloud enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 407ca958-8481-449a-821c-ceee9852a985
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1490,
+          "y": -150
+        }
+      }
+  "16":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.PublicIPAddress
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "13"
+      "yes":
+      - "15"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if there are any IP in the input.
+      id: 3c59aec2-bcc1-4092-89d3-d49fec735dd8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Are there IPs in input?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 3c59aec2-bcc1-4092-89d3-d49fec735dd8
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1820,
+          "y": -330
+        }
+      }
+  "23":
+    continueonerrortype: ""
+    id: "23"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      PublicIPAddress:
+        complex:
+          root: inputs.PublicIPAddress
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        Find AWS resources by Public IP using Prisma Cloud inventory.
+        Supported services: EC2, Network Load Balancer, ECS, Route53.
+      id: 3047b16c-0246-48c1-8ad8-a8e50ad3c9ad
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Prisma Cloud - Find AWS Resource by Public IP
+      playbookId: Prisma Cloud - Find AWS Resource by Public IP v2
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 3047b16c-0246-48c1-8ad8-a8e50ad3c9ad
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 800
+        }
+      }
+  "24":
+    continueonerrortype: ""
+    id: "24"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      PublicIPAddress:
+        complex:
+          root: inputs.PublicIPAddress
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        Find Azure resources by Public IP using Prisma Cloud inventory.
+        Supported services: Azure VM, Azure Load Balancer, Azure Application Gateway, Azure Web Apps.
+      id: 29b6f5fa-b386-43b0-82c2-3dfca31a242a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Prisma Cloud - Find Azure Resource by Public IP
+      playbookId: Prisma Cloud - Find Azure Resource by Public IP v2
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 29b6f5fa-b386-43b0-82c2-3dfca31a242a
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 800
+        }
+      }
+  "26":
+    continueonerrortype: ""
+    id: "26"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 0
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      PublicIPAddress:
+        complex:
+          root: inputs.PublicIPAddress
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        Find GCP resources by Public IP using Prisma Cloud inventory.
+        Supported services: GCE, Load Balancing, GKE.
+      id: ca4523b4-7f64-4c09-8c6e-a68a4b73094f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Prisma Cloud - Find GCP Resource by Public IP
+      playbookId: Prisma Cloud - Find GCP Resource by Public IP v2
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: ca4523b4-7f64-4c09-8c6e-a68a4b73094f
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 920,
+          "y": 800
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "2_3_AWS": 0.26,
+      "2_4_Azure": 0.51,
+      "2_5_GCP": 0.25
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1715,
+        "width": 2150,
+        "x": 50,
+        "y": -500
+      }
+    }
+  }
