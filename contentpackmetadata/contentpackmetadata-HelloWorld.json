@@ -1,0 +1,320 @@
+{
+	"author": "Cortex",
+	"authorImage": "",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Utilities"
+	],
+	"certification": "verified",
+	"contentItemTypes": [
+		"integration",
+		"automation",
+		"incidentfield",
+		"incidenttype",
+		"playbook",
+		"classifier"
+	],
+	"contentItems": {
+		"agentixaction": null,
+		"agentixagent": null,
+		"agentixknowledgecollection": null,
+		"agentixknowledgesource": null,
+		"agentixskill": null,
+		"automation": [
+			{
+				"description": "Hello World Script.",
+				"fromversion": "5.0.0",
+				"id": "HelloWorldScript",
+				"name": "HelloWorldScript",
+				"tags": [
+					"helloworld"
+				]
+			}
+		],
+		"casefield": null,
+		"classifier": [
+			{
+				"description": "Classifies Hello World alerts.",
+				"id": "HelloWorld",
+				"name": "Hello World - Classification"
+			},
+			{
+				"description": "Maps incoming Hello World alert fields.",
+				"id": "HelloWorld-mapper",
+				"name": "Hello World - Incoming Mapper"
+			}
+		],
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": [
+			{
+				"description": "",
+				"name": "Hello World Type",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Hello World ID",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Hello World Status",
+				"type": "shortText"
+			}
+		],
+		"incidenttype": [
+			{
+				"closureScript": "",
+				"days": 0,
+				"hours": 0,
+				"name": "Hello World Alert",
+				"playbook": "Handle Hello World Alert",
+				"weeks": 0
+			}
+		],
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "Utilities",
+				"commands": [
+					{
+						"description": "Hello command - prints hello to anyone.",
+						"hidden": false,
+						"name": "helloworld-say-hello"
+					},
+					{
+						"description": "Lists the example alerts as it would be fetched from the API.",
+						"hidden": false,
+						"name": "helloworld-alert-list"
+					},
+					{
+						"description": "Example of creating a new item in the API.",
+						"hidden": false,
+						"name": "helloworld-alert-note-create"
+					},
+					{
+						"description": "Return IP information and reputation.",
+						"hidden": false,
+						"name": "ip"
+					}
+				],
+				"description": "This is the Hello World integration for getting started.",
+				"fromversion": "6.8.0",
+				"id": "HelloWorld",
+				"name": "HelloWorld (Community Contribution)",
+				"toversion": ""
+			},
+			{
+				"category": "Data Enrichment \u0026 Threat Intelligence",
+				"commands": [
+					{
+						"description": "Gets indicators from the feed.",
+						"hidden": false,
+						"name": "helloworld-get-indicators"
+					}
+				],
+				"description": "This is the Feed Hello World integration for getting started with your feed integration.",
+				"fromversion": "5.5.0",
+				"id": "HelloWorld Feed",
+				"name": "HelloWorld Feed (Community Contribution)",
+				"toversion": ""
+			},
+			{
+				"category": "Utilities",
+				"commands": [
+					{
+						"description": "Prints hello to a specified name.",
+						"hidden": false,
+						"name": "helloworld-say-hello"
+					},
+					{
+						"description": "Lists example alerts as they would appear in a fetch operation.",
+						"hidden": false,
+						"name": "helloworld-alert-list"
+					},
+					{
+						"description": "Create a note in the API.",
+						"hidden": false,
+						"name": "helloworld-alert-note-create"
+					},
+					{
+						"description": "The returned IP information and reputation.",
+						"hidden": false,
+						"name": "ip"
+					},
+					{
+						"description": "Retrieves alerts from the HelloWorld API. Use this command for development and debugging only, as it may produce duplicate events, exceed API rate limits, or disrupt the fetch mechanism.",
+						"hidden": false,
+						"name": "helloworld-get-events"
+					},
+					{
+						"description": "Submits a job to the HelloWorld API and polls for completion. Used for asynchronous APIs and long-running operations.",
+						"hidden": false,
+						"name": "helloworld-job-submit"
+					},
+					{
+						"description": "Polls a submitted job for completion status. This is called automatically by helloworld-job-submit.",
+						"hidden": true,
+						"name": "helloworld-job-poll"
+					},
+					{
+						"description": "Retrieves resources and assets in the HelloWorld environment.",
+						"hidden": false,
+						"name": "helloworld-get-assets"
+					},
+					{
+						"description": "Retrieves vulnerabilities found in the HelloWorld environment.",
+						"hidden": false,
+						"name": "helloworld-get-vulnerabilities"
+					}
+				],
+				"description": "Use the Hello World v2 integration to learn how to build and configure Cortex integrations.",
+				"fromversion": "6.8.0",
+				"id": "HelloWorldV2",
+				"name": "Hello World v2 (Community Contribution)",
+				"toversion": ""
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"modelingrule": [],
+		"parsingrule": [],
+		"playbook": [
+			{
+				"description": "This is a playbook which will handle the alerts coming from the Hello World service",
+				"fromversion": "6.8.0",
+				"id": "Handle Hello World Alert",
+				"name": "Handle Hello World Alert",
+				"tags": []
+			},
+			{
+				"description": "Deprecated. No available replacement.",
+				"fromversion": "5.0.0",
+				"id": "HelloWorld Scan",
+				"name": "HelloWorld Scan",
+				"tags": []
+			}
+		],
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"created": "2025-03-29T09:38:42Z",
+	"currentVersion": "4.0.9",
+	"defaultDataSource": {
+		"id": "HelloWorldEventCollector",
+		"name": "HelloWorld Event Collector"
+	},
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.41.85",
+			"name": "Base"
+		},
+		"CommonPlaybooks": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "2.7.36",
+			"name": "Common Playbooks"
+		},
+		"CommonScripts": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.22.13",
+			"name": "Common Scripts"
+		},
+		"CommonTypes": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": false,
+			"minVersion": "3.10.10",
+			"name": "Common Types"
+		}
+	},
+	"deprecated": false,
+	"description": "This is the Hello World integration for getting started.",
+	"downloads": 0,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"firstCreated": "2025-03-29T09:38:42Z",
+	"fromServerVersion": "5.0.0",
+	"general": [
+		"generalFieldFree",
+		"generalFieldSupportModule"
+	],
+	"hybrid": false,
+	"id": "HelloWorld",
+	"installMessage": "",
+	"integrations": [
+		{
+			"id": "HelloWorldEventCollector",
+			"imagePath": "content/packs/HelloWorld/HelloWorldEventCollector_image.png",
+			"name": "HelloWorld Event Collector"
+		},
+		{
+			"id": "HelloWorldV2",
+			"imagePath": "content/packs/HelloWorld/HelloWorldV2_image.png",
+			"name": "Hello World v2"
+		},
+		{
+			"id": "HelloWorld",
+			"imagePath": "content/packs/HelloWorld/HelloWorld_image.png",
+			"name": "HelloWorld"
+		},
+		{
+			"id": "HelloWorld Feed",
+			"imagePath": "content/packs/HelloWorld/HelloWorldFeed_image.png",
+			"name": "HelloWorld Feed"
+		}
+	],
+	"isOverridable": false,
+	"itemVersion": "4.0.9",
+	"keywords": [],
+	"legacy": true,
+	"modules": [],
+	"name": "HelloWorld",
+	"packID": "HelloWorld",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"readme": "This content pack provides the Feed Hello World integration for getting started with your feed integration and the Hello World integration that imports events as incidents.\n\nThe purpose of this pack is to learn how to build a Cortex content pack.\n\n## What does this pack do?\n\n- Returns domain information and reputation.\n- Retrieves alert extra data by ID.\n- Retrieves scan status in context or as a file (default) for a scan.\n- Starts a scan on an asset.\n- Retrieves scan status for one or more scan IDs.\n- Searches HelloWorld alerts.\n- Updates the status for an alert.\n- Returns IP information and reputation.\n\nAs part of this pack, you get an out-of-the-box automation, classifiers, incident fields and a Hello World layout. In addition there are two playbooks:\n\n- A playbook that will handle the alerts coming from the Hello World service.\n- A playbook that simulates a vulnerability scan using the \"HelloWorld\" sample integration. It's used to demonstrate how to use the GenericPolling mechanism to run jobs that take several seconds or minutes to complete.\n",
+	"searchRank": 0,
+	"serverMaxVersion": "",
+	"serverMinVersion": "5.0.0",
+	"support": "community",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"supportedModules": [
+		"agentix",
+		"xsiam"
+	],
+	"tags": [
+		"Data Source",
+		"TIM",
+		"Getting Started",
+		"Collection"
+	],
+	"toServerVersion": "",
+	"updated": "2026-05-19T20:22:08Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "9153993",
+	"videos": []
+}
