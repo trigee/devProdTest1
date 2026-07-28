@@ -1,0 +1,89 @@
+args:
+- description: The time at which travel started.
+  name: start_time
+  required: true
+  supportedModules: []
+- description: The time at which travel ended.
+  name: end_time
+  required: true
+  supportedModules: []
+comment: Calculate the time difference, in minutes.
+commonfields:
+  id: CalculateTimeDifference
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: CalculateTimeDifference
+outputs:
+- contextPath: Time.Difference
+  description: Calculated time difference in minutes.
+- contextPath: Time.Start
+  description: Start time.
+- contextPath: Time.End
+  description: End time.
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  // pack version: 1.22.28
+   try {
+        var start_time = args.start_time.replace(/"/g, "");
+        var end_time = args.end_time.replace(/"/g, "");
+
+        // Strip microseconds and parse the datetime
+        var startTimeObj = new Date(start_time.split(".")[0]);
+        var endTimeObj = new Date(end_time.split(".")[0]);
+
+        // Calculate the difference in minutes
+        var timeDiff = (endTimeObj - startTimeObj) / 1000; // difference in seconds
+        var mins = Math.round((timeDiff / 60) * 100) / 100; // round to 2 decimal places
+
+
+        ec = {
+            'Time': {
+                Difference: Number(mins),
+                Start: start_time,
+                End: end_time
+            }
+        }
+
+        return {
+            Type: entryTypes.note,
+            Contents: Number(mins),
+            ContentsFormat: formats.json,
+            HumanReadable: `Calculated Time Difference: ${mins} minutes.`,
+            ReadableContentsFormat: formats.markdown,
+            EntryContext: ec
+        };
+
+
+    } catch (ex) {
+        return {
+            ContentsFormat: formats.markdown,
+            Type: entryTypes.error,
+            Contents: "Error occurred while parsing output from command. Exception info:\n" + ex.toString()
+        };
+
+    }
+scripttarget: 0
+signature: BbpNyMXBLdvwhDjrp/EVE8CmQeyZveC2FDo2KqjQJX+zsXqMXQB+VkhOahl6czaJX8TwTyFugxCmAjAQCD5siziLxPmHujHpOyNdjBuIocVi4qmlSQ4bV3WefRdo/w7AfuGV9FjgTxjJu2WCIjK0pz/oMLYCunt671L7XsnZtNz6GaTfDia1s7NxPP37rQjLBlqPCystnAaVyfbX2khwzUGzkbpXfqWs/+2wQcKH9qMufWiMCiQGXUgrAo2E99pMXPuO+2JUHCuZgd84sEaC5yCxoRmC9jKpBsJoq70o4FXwHLsgWskdB8LnWX7K8VeXJYk6EdOPbc6GxzmDoKlrRA==
+system: true
+tags:
+- Utilities
+type: javascript
