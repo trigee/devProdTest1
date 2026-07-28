@@ -1,0 +1,500 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.6.0
+    isoverridable: false
+    itemVersion: 3.5.66
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - cloud
+    - cloud_posture
+    - cloud_runtime_security
+    - edr
+    - xsiam
+    toServerVersion: ""
+description: |-
+  This playbook detects the ransomware type and searches for available decryptors.
+
+  The playbook uses the ID-Ransomware service, which allows you to detect the ransomware using multiple methods.
+id: Ransomware Advanced Analysis
+inputs: []
+name: Ransomware Advanced Analysis
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "35"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 94496b66-deeb-4ad3-850c-5b29297b6424
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 94496b66-deeb-4ad3-850c-5b29297b6424
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": -290,
+          "y": 20
+        }
+      }
+  "14":
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6bea0606-e0de-47aa-8622-a9dc9bf3c4bf
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 6bea0606-e0de-47aa-8622-a9dc9bf3c4bf
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -290,
+          "y": 1740
+        }
+      }
+  "35":
+    continueonerrortype: ""
+    id: "35"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "45"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 39aa0da1-a8d5-414a-8b1b-f60441955a36
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get ransomware note - Manual
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 39aa0da1-a8d5-414a-8b1b-f60441955a36
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -290,
+          "y": 145
+        }
+      }
+  "42":
+    continueonerrortype: ""
+    fieldMapping:
+    - incidentfield: Note
+      output:
+        complex:
+          root: FileData
+    id: "42"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "43"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      entryID:
+        complex:
+          accessor: EntryID
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: File.Extension
+              operator: isEqualString
+              right:
+                value:
+                  simple: txt
+            - left:
+                iscontext: true
+                value:
+                  simple: File.Extension
+              operator: isEqualString
+              right:
+                value:
+                  simple: html
+          root: File
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Loads the content of a file into context.
+      id: c7f23da2-0676-45c4-8dd7-57cff68e0bb2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Read the ransomware note
+      playbooktaskmissingcomponent: null
+      script: ReadFile
+      type: regular
+      version: -1
+    taskid: c7f23da2-0676-45c4-8dd7-57cff68e0bb2
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 110,
+          "y": 600
+        }
+      }
+  "43":
+    continueonerrortype: ""
+    id: "43"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "51"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      height:
+        simple: "800"
+      htmlBody:
+        complex:
+          root: FileData
+      width:
+        simple: "600"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Rasterize
+      description: Converts the body of an email to an image file or a PDF file.
+      id: 04faf861-3fcd-4cd2-804f-2e279c128cbe
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Rasterize the ransomware note
+      playbooktaskmissingcomponent: null
+      script: Rasterize|||rasterize-email
+      tags:
+      - RansomwareNote
+      type: regular
+      version: -1
+    taskid: 04faf861-3fcd-4cd2-804f-2e279c128cbe
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 110,
+          "y": 760
+        }
+      }
+  "45":
+    continueonerrortype: ""
+    id: "45"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "46"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Uploads the ransomware note for advanced analysis.
+      id: fa354c56-3f26-4e78-8218-c8bf57b54d28
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Upload the ransomware note
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: fa354c56-3f26-4e78-8218-c8bf57b54d28
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -290,
+          "y": 270
+        }
+      }
+  "46":
+    continueonerrortype: ""
+    id: "46"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "14"
+      "Yes":
+      - "42"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Manual validation for the ransomware file upload.
+      id: 57e20d64-4490-4bf4-805e-1edb473eb085
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Were the files uploaded successfully?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 57e20d64-4490-4bf4-805e-1edb473eb085
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -290,
+          "y": 430
+        }
+      }
+  "47":
+    continueonerrortype: ""
+    id: "47"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "48"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 72ff599b-0986-4a1e-843b-c562a545f884
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ID-Ransomware Enrichment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 72ff599b-0986-4a1e-843b-c562a545f884
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 110,
+          "y": 1090
+        }
+      }
+  "48":
+    continueonerrortype: ""
+    id: "48"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "49"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Use ID-Ransomware for identifying the ransomware type.
+        If the the ransomware was identified successfully, use the decryptor to recover the encrypted files.
+
+        [ID-Ransomware service](https://id-ransomware.malwarehunterteam.com/identify.php)
+
+        **The identification can be done by submitting one of the following:**
+
+        1.The ransomware note.
+
+        2.The contact link provided in the ransomware note.
+
+        3.An encrypted file sample (be careful when uploading encrypted files, as some may include sensitive information).
+      id: 180c115a-9d1c-4a76-8fa0-02ad4c57c3aa
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search decryptor using the ransomware URL
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: 180c115a-9d1c-4a76-8fa0-02ad4c57c3aa
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 110,
+          "y": 1220
+        }
+      }
+  "49":
+    continueonerrortype: ""
+    id: "49"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "14"
+      "Yes":
+      - "50"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Manual validation for the results of the ID-Ransomware query.
+      id: 54a17556-1c79-452c-8bc1-3be8419e1dcf
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Was the ransomware identified successfully?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 54a17556-1c79-452c-8bc1-3be8419e1dcf
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 110,
+          "y": 1390
+        }
+      }
+  "50":
+    continueonerrortype: ""
+    id: "50"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "14"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: A manual task for the analyst to verify that the decryptor works.
+      id: d7f9e68e-b92e-46f3-8fee-1afd80d3c922
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Test the decryptor
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: d7f9e68e-b92e-46f3-8fee-1afd80d3c922
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 110,
+          "y": 1570
+        }
+      }
+  "51":
+    continueonerrortype: ""
+    id: "51"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "47"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      text:
+        complex:
+          root: FileData
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: Extract all indicators according to the server's indicator extraction
+        configuration.
+      id: ea3e7ea6-ad7e-4b2d-83d9-e5c019523008
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Extract indicator from the ransomware note
+      playbooktaskmissingcomponent: null
+      script: Builtin|||extractIndicators
+      type: regular
+      version: -1
+    taskid: ea3e7ea6-ad7e-4b2d-83d9-e5c019523008
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 110,
+          "y": 920
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "46_14_#default#": 0.52,
+      "46_42_Yes": 0.43,
+      "49_14_#default#": 0.43,
+      "49_50_Yes": 0.43
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1785,
+        "width": 780,
+        "x": -290,
+        "y": 20
+      }
+    }
+  }
