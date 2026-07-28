@@ -1,0 +1,61 @@
+args:
+- description: the input value.
+  isArray: true
+  name: value
+  required: true
+  supportedModules: []
+comment: Extracts email addresses from the given value.
+commonfields:
+  id: ExtractEmailTransformer
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.11.0
+    isoverridable: false
+    itemVersion: 1.4.22
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ExtractEmailTransformer
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |+
+  // pack version: 1.4.22
+  function extract(values) {
+      // Extracts email addresses from a list of values.
+      // values: Array of strings.
+
+      const listResults = [];
+
+      for (const val of values) {
+          listResults.push(...((val || '').toLowerCase().match(emailRegex) || []));
+      }
+
+      return listResults;
+  }
+
+  try {
+      const values = argToList(args.value);
+      const results = extract(values);
+      return results;
+  } catch (error) {
+      throw 'Error occurred while running the script:\n' + error;
+  }
+
+scripttarget: 0
+signature: PXS0SrNztHNM3l7p6NLAAVDINlderyRDPS3AqzKh47IpE+UeCTPr9BU1ZtZwo/U622BXK8lD83JPmORs7tpRE4rX0g85eqfKvXz0MG0XdhPNietS+3WnjGTdELSKHjeXejgBL9DDsxGoqGSQL+vkd8f5xlDgsfS2yzSNfB9WLKqBZ6u9/6SdMn+J/cXbZtZwKXYQHUTLwyIKdVnCk50kz8XkDk0KG/MGyBAmlZuIEjKOe3NxrqGoLMbnxiuHN7CPwjWTL2pSwzhAQe5uwQcx8oY1Y+LZmKWoLJXamZJcJyQdQcXTw3bL2IOssSFD4mPVXxZbpCdyY9i3Ygbf+AqjWQ==
+system: true
+tags:
+- transformer
+type: javascript
