@@ -1,0 +1,784 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.9.0
+    isoverridable: false
+    itemVersion: 1.3.54
+    packID: CortexResponseAndRemediation
+    packName: Cortex Response And Remediation
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook is designed to handle the alert
+  'User added to local administrator group using a PowerShell command'
+
+  The playbook executes the following stages:
+
+  Investigation:
+  Check the following parameters to determine if remediation actions are needed:
+  - Cortex XSIAM alerts related to the hostname by MITRE tactics indicating malicious activity.
+  - Whether the process is unsigned.
+
+  Remediation:
+  Handles malicious alerts by terminating the relevant processes and requesting the analyst's approval to remove the user from the local Administrators group.
+  Handles non-malicious alerts identified during the investigation.
+id: silent-User added to local administrator group using a PowerShell command Test
+inputSections:
+- description: Generic group for inputs.
+  inputs: []
+  name: General (Inputs group)
+inputs: []
+issilent: true
+name: silent-User added to local administrator group using a PowerShell command Test
+outlinetasks: {}
+outputSections:
+- description: Generic group for outputs.
+  name: General (Outputs group)
+  outputs: []
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tags:
+- TA0003 - Persistence
+- T1098 - Account Manipulation
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d514ecb5-28bc-4273-869b-0d7ef9c9abfd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: d514ecb5-28bc-4273-869b-0d7ef9c9abfd
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 420,
+          "y": 160
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 0dafae19-38db-40d0-8261-e39c24a7370e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 0dafae19-38db-40d0-8261-e39c24a7370e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 420,
+          "y": 310
+        }
+      }
+  "6":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: osparentsignature
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: alert.osparentsigner
+                    operator: isNotEmpty
+                root: alert
+          operator: isNotEqualString
+          right:
+            value:
+              simple: SIGNATURE_SIGNED
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: alert.cgosignature
+                    operator: isNotEmpty
+                root: alert.cgosignature
+          operator: isNotEqualString
+          right:
+            value:
+              simple: SIGNATURE_SIGNED
+      label: "yes"
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "77"
+      "yes":
+      - "7"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        Determines the appropriate verdict based on process signature.
+      id: 0f9e2fc8-ed0a-4097-8cda-18a3a13e322c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check for unsigned CGO or OS process
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 0f9e2fc8-ed0a-4097-8cda-18a3a13e322c
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 420,
+          "y": 460
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "76"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8b97eafc-fe0d-498e-897d-9b716ef4093e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Remediation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 8b97eafc-fe0d-498e-897d-9b716ef4093e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 420,
+          "y": 980
+        }
+      }
+  "21":
+    continueonerrortype: ""
+    id: "21"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "22"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      closeNotes:
+        simple: Suspicious activity detected - Handled by the playbook "User added
+          to local administrator group using a PowerShell command"
+      closeReason:
+        simple: Resolved - True Positive
+      id:
+        simple: ${alert.id}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.close.inv
+      id: 7cf273d4-ca03-446a-83c5-924c3f002186
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close Alert - True Positive
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: 7cf273d4-ca03-446a-83c5-924c3f002186
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 420,
+          "y": 2293
+        }
+      }
+  "22":
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9c3357bb-cb32-44b1-8b98-c0879c070b0b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 9c3357bb-cb32-44b1-8b98-c0879c070b0b
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 420,
+          "y": 2437
+        }
+      }
+  "24":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: foundIncidents.name
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "24"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "26"
+      "yes":
+      - "7"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines whether the alert contains related alerts by MITRE Techniques,
+        indicating that the alert was part of an attack pattern.
+      id: 18e95de6-09ff-4ba2-8b88-313c427fa5d8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Found any alerts indicating this is malicious activity?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 18e95de6-09ff-4ba2-8b88-313c427fa5d8
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 740,
+          "y": 790
+        }
+      }
+  "26":
+    continueonerrortype: ""
+    id: "26"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "22"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 31b1b821-eb48-4e07-8725-24c8a915ee29
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: No Results Found
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 31b1b821-eb48-4e07-8725-24c8a915ee29
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1130,
+          "y": 980
+        }
+      }
+  "76":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "76"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "79"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      agent_id:
+        simple: ${alert.agentid}
+      causality_id:
+        simple: ${alert.cid}
+      timeout_in_seconds:
+        simple: "180"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Terminate a process tree by its causality ID. Available only from
+        Cortex XSIAM 2.4.
+      id: 03086ee2-491b-4706-8c41-fb4ac711fff3
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Terminate Causality (CGO)
+      playbooktaskmissingcomponent: null
+      script: '|||core-terminate-causality'
+      type: regular
+      version: -1
+    taskid: 03086ee2-491b-4706-8c41-fb4ac711fff3
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 420,
+          "y": 1110
+        }
+      }
+  "77":
+    continueonerrortype: ""
+    id: "77"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "24"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        complex:
+          accessor: parentXDRIncident
+          root: alert
+          transformers:
+          - args:
+              delimiter:
+                value:
+                  simple: '-'
+              fields:
+                value:
+                  simple: "2"
+            operator: Cut
+          - args:
+              prefix:
+                value:
+                  simple: '(mitreattcktechnique:*T1001* or mitreattcktechnique:*T1140*
+                    or mitreattcktechnique:*T1059* or name:"Suspicious local user
+                    account creation") and caseid:'
+              suffix: {}
+            operator: concat
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        This task searches for Cortex XSIAM suspicious alerts related to the current alert by Mitre Techniques that may indicate suspicious activity.
+
+        Focus on identifying alerts associated with the following MITRE techniques:
+        - T1001 - Data Obfuscation
+        - T1140 - Deobfuscate/Decode Files or Information
+        - T1059 - Command and Scripting Interpreter
+
+        And the following alert:
+        - "Suspicious local user account creation"
+      id: 339b915e-bf51-428f-87dc-f3780e040924
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search for related alerts by MITRE Technique
+      playbooktaskmissingcomponent: null
+      script: SearchAlertsV2
+      type: regular
+      version: -1
+    taskid: 339b915e-bf51-428f-87dc-f3780e040924
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 740,
+          "y": 630
+        }
+      }
+  "79":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "79"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "83"
+      '#none#':
+      - "82"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: ExtractedUsername
+      value:
+        complex:
+          accessor: targetprocesscmd
+          root: alert
+          transformers:
+          - args:
+              error_if_no_match: {}
+              ignore_case: {}
+              multi_line: {}
+              period_matches_newline: {}
+              regex:
+                value:
+                  simple: (?i)Administrators[\\]?[\"|']?\s+-Member\s+([^\s;}]+)
+              unpack_matches: {}
+            operator: RegexExtractAll
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: a9fc259a-30e4-4ef5-aa94-29decdcd8358
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Extract Username
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: a9fc259a-30e4-4ef5-aa94-29decdcd8358
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 420,
+          "y": 1270
+        }
+      }
+  "80":
+    continueonerrortype: ""
+    id: "80"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body:
+        simple: 'Remove the user: ${ExtractedUsername} from local admin group?'
+      cc: null
+      format: ""
+      methods: []
+      replyOptions:
+      - "Yes"
+      - "No"
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      "No":
+      - "21"
+      "Yes":
+      - "81"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Analyst approval is required to remove the user from the local
+        Administrator group.
+      id: aaf1afe9-dc1b-48b2-8abf-91f7484ccab1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Analyst approval to remove user from local Administrator group
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: aaf1afe9-dc1b-48b2-8abf-91f7484ccab1
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 420,
+          "y": 1610
+        }
+      }
+  "81":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "81"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "83"
+      '#none#':
+      - "84"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      command:
+        simple: powershell.exe Remove-LocalGroupMember -Group "Administrators" -Member
+          ${ExtractedUsername}
+      endpoint_ids:
+        simple: ${alert.agentid}
+      polling_timeout_in_seconds:
+        simple: "180"
+      timeout:
+        simple: "180"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Run a shell command on a specific endpoint and return its result.
+      id: b58eccd2-0222-495c-8dbc-6dee85a9fbaa
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Remove user from local Administrator group
+      playbooktaskmissingcomponent: null
+      script: '|||core-execute-command'
+      type: regular
+      version: -1
+    taskid: b58eccd2-0222-495c-8dbc-6dee85a9fbaa
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 190,
+          "y": 1780
+        }
+      }
+  "82":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: ExtractedUsername
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "82"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "83"
+      "yes":
+      - "80"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check whether the extracted username is defined.
+      id: 0a832c33-172e-4c87-884b-d558a44d801e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is the extracted username defined?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 0a832c33-172e-4c87-884b-d558a44d801e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 420,
+          "y": 1430
+        }
+      }
+  "83":
+    continueonerrortype: ""
+    id: "83"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "21"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        Dear Analyst,
+
+        Please note that during the remediation process, the playbook failed to remove the user from the local administrator group on the host: ${alert.hostname} .
+
+        Please take manual action to remove the user from the local administrator group on the host: ${alert.hostname} .
+
+        The user can be found in the following PowerShell command:
+        ${alert.targetprocesscmd}
+      id: e79216e0-0ac9-4be4-8816-f39b5f4d5b7b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Remove the user from the local administrator group manually
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: e79216e0-0ac9-4be4-8816-f39b5f4d5b7b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -120,
+          "y": 2132
+        }
+      }
+  "84":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: Core.ScriptResult.results.executed_command.standard_output
+          operator: notContainsString
+          right:
+            value:
+              simple: Exception
+      label: "yes"
+    continueonerrortype: ""
+    id: "84"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "83"
+      "yes":
+      - "21"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: checks whether the user was successfully removed from the administrators
+        group.
+      id: a81e50c1-25fe-4ae5-8724-ef214dea7235
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Was the user successfully removed from the administrators group?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: a81e50c1-25fe-4ae5-8724-ef214dea7235
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 190,
+          "y": 1936
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "24_7_yes": 0.23,
+      "6_7_yes": 0.35,
+      "79_83_#error#": 0.45,
+      "80_21_No": 0.48,
+      "80_81_Yes": 0.57,
+      "81_83_#error#": 0.32,
+      "82_80_yes": 0.39,
+      "82_83_#default#": 0.44
+    },
+    "paper": {
+      "dimensions": {
+        "height": 2337,
+        "width": 1630,
+        "x": -120,
+        "y": 160
+      }
+    }
+  }
