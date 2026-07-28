@@ -1,0 +1,107 @@
+args:
+- description: The file entry ID.
+  name: entryId
+  required: true
+  supportedModules: []
+- description: The list name in which to store the file. The list must exist in Demisto.
+  name: listName
+  required: true
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Whether to zip the file before storing it in the list.
+  name: zipFile
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+comment: |
+  Encode a file as base64 and store it in a Demisto list.
+commonfields:
+  id: FileToBase64List
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: FileToBase64List
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('FileToBase64List', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  import base64
+  import zlib
+
+
+
+
+
+
+
+  def get_file_data(file_path: str, is_zip: bool = False):
+      with open(file_path, "rb") as f:
+          data = f.read()
+      if is_zip:
+          data = zlib.compress(data)
+      return base64.b64encode(data).decode("utf-8")
+
+
+  def main():
+      list_name = demisto.args()["listName"]
+      is_zip = demisto.args()["zipFile"] == "true"
+      entry_id = demisto.args()["entryId"]
+
+      res = demisto.getFilePath(entry_id)
+      if not res:
+          return_error(f"Entry {entry_id} not found")
+      file_path = res["path"]
+
+      file_base64 = get_file_data(file_path, is_zip)
+
+      res = demisto.executeCommand("createList", {"listName": list_name, "listData": file_base64})
+      if isError(res):
+          return res
+
+      return {
+          "Contents": file_base64,
+          "ContentsFormat": formats["text"],
+          "HumanReadable": tableToMarkdown(
+              "File successfully stored in list", {"File Entry ID": entry_id, "List Name": list_name, "Size": len(file_base64)}
+          ),
+          "HumanReadableFormat": formats["markdown"],
+      }
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      demisto.results(main())
+
+  register_module_line('FileToBase64List', 'end', __line__())
+scripttarget: 0
+signature: xYA6qNc162N+Pv51vBmv/ryo/n3dIMfdb/SxrEOzcfQFFfrUE5POLoYGXPBjARuDoy9yEbixsIDTq6zXFfZkPtoGOn5lVpSMNTEbC6DKKuDou0eQycYWE4DlQKPmvjYegZ0Kr/7wJMqQx5IF+ymB02gx4U5ZjUt95Gg29vnkITakmCKeFCAVGuf0JzMTtXE7LVwx3+UXHssILaljfz4BDNirD+LRrYXUC6P4obnUQVSwUcDouMoj1pDAhc6O3GKzOa83fKwHuOC0Blzt974uy0Lh/0ph8bKYUgnr1mrwHkysbbzJSpPy1ptFcbbnW478GihS2uh8m31ax/aXrgJjbA==
+subtype: python3
+system: true
+tags:
+- Utility
+- list
+type: python
