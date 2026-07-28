@@ -1,0 +1,72 @@
+args:
+- default: true
+  description: Value to convert.
+  name: value
+  required: true
+  supportedModules: []
+- description: String to convert to.
+  name: convertTo
+  required: true
+  supportedModules: []
+- description: Comma separated list of exceptions.
+  isArray: true
+  name: except
+  supportedModules: []
+comment: Convert all chosen values but exceptions.
+commonfields:
+  id: ConvertAllExcept
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.22
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.8428455
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ConvertAllExcept
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('ConvertAllExcept', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.22'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+
+
+
+
+  def main(args):
+      value = args.get("value")
+      convert_to = args.get("convertTo")
+      exceptions = argToList(args.get("except"))
+
+      return value if value in exceptions else convert_to
+
+
+  if __name__ in ("builtins", "__builtin__"):
+      result = main(demisto.args())
+      demisto.results(result)
+
+  register_module_line('ConvertAllExcept', 'end', __line__())
+scripttarget: 0
+signature: CMXWCmW9MBdcbd6AJSPaEhP7d8YaBUb3YxTghI35bz4nQyYm1RU9blKFJkVNErNjECiLPO3BBZl3q0tzsmX8e2xWC34+rxcYMTEia58vJ4utHRf7grb748hXtDvapic27IXOXjoa0XNFeShjtfKLvtf6rSHXNf0YnSolvoz2YRLGjWotwaWDYOSXBTu/bgBHYZARrXr17Bftxj6iNU0MMgXPAO/UK2N0ZtgDMwLJ18uUZcd+IDFF8zOCFGHvyiyvsnW9AL4duX5CbG1lZKuS1wwEg4n2OjpziI/p7o06YzgIwhohJZDkEAtPlBvDdue1qgCvVbJ0+1whKm28afGpNA==
+subtype: python3
+system: true
+tags:
+- transformer
+type: python
