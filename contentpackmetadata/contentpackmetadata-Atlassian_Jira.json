@@ -1,0 +1,1112 @@
+{
+	"author": "Cortex",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Case Management"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"integration",
+		"automation",
+		"incidentfield",
+		"incidenttype",
+		"playbook",
+		"classifier",
+		"agentixaction",
+		"parsingrule",
+		"modelingrule"
+	],
+	"contentItems": {
+		"agentixaction": [
+			{
+				"category": "",
+				"description": "Fetches detailed information about a specific issue from Jira by its issue details. This command retrieves fields such as summary, description, status, assignee, reporter, and other relevant metadata to help track and manage Jira issues efficiently.\n",
+				"fromversion": "0.0.0",
+				"id": "jiraGetIssue",
+				"name": "JiraGetIssue",
+				"supportedModules": [
+					"agentix",
+					"xsiam",
+					"cloud_posture"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Creates a new issue in a Jira project (Cloud or Server). You can use this command to open incidents, tasks, or sub-tasks directly in Jira as part of an automated workflow or manual response. It supports both basic field-based input (like summary, project, and issue type) and advanced use through a full issue_json object for maximum flexibility. The command allows setting properties such as assignee, reporter, priority, due date, environment, components, and labels. Compatible with Jira Cloud and Jira Server. Fields and behavior may vary slightly between platforms.\n",
+				"fromversion": "0.0.0",
+				"id": "jiraCreateIssue",
+				"name": "JiraCreateIssue",
+				"supportedModules": [
+					"agentix",
+					"xsiam",
+					"cloud_posture"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Updates an existing issue from Jira (Cloud or Server).\n",
+				"fromversion": "0.0.0",
+				"id": "JiraUpdateIssue",
+				"name": "JiraUpdateIssue",
+				"supportedModules": [
+					"agentix",
+					"xsiam",
+					"cloud_posture"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Deletes issues from Jira (Cloud or Server). If the issue has sub-tasks, they will also be deleted.\n",
+				"fromversion": "0.0.0",
+				"id": "JiraDeleteIssue",
+				"name": "JiraDeleteIssue",
+				"supportedModules": [
+					"agentix",
+					"xsiam",
+					"cloud_posture"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			}
+		],
+		"agentixagent": null,
+		"agentixknowledgecollection": null,
+		"agentixknowledgesource": null,
+		"agentixskill": null,
+		"automation": [
+			{
+				"description": "This script is used to simplify the process of creating a new Issue in Jira. \nYou can specify custom fields using the `customFields` argument.\n",
+				"fromversion": "5.0.0",
+				"id": "JiraCreateIssue-example",
+				"name": "JiraCreateIssue-example",
+				"tags": [
+					"jira",
+					"example"
+				]
+			},
+			{
+				"description": "This script applies the transition supplied by the user from the Jira Transitions incident field. It gets the new Jira status after applying the transition and updates the Cortex incident status.",
+				"fromversion": "5.0.0",
+				"id": "script-JiraChangeTransition",
+				"name": "script-JiraChangeTransition",
+				"tags": [
+					"field-change-triggered"
+				]
+			},
+			{
+				"description": "This script is used to convert Jira comments to a table.",
+				"fromversion": "6.8.0",
+				"id": "JiraV3ConvertCommentsToTable",
+				"name": "JiraV3ConvertCommentsToTable",
+				"tags": [
+					"dynamic-section"
+				]
+			},
+			{
+				"description": "This script changes the status field of a Jira incident. It gets the new Jira status of the remote Jira issue and updates the Cortex incident status.",
+				"fromversion": "6.8.0",
+				"id": "JiraChangeStatus",
+				"name": "JiraChangeStatus",
+				"tags": [
+					"field-change-triggered"
+				]
+			},
+			{
+				"description": "This script is used to convert Jira subtasks to a table.",
+				"fromversion": "6.8.0",
+				"id": "JiraV3ConvertSubtasksToTable",
+				"name": "JiraV3ConvertSubtasksToTable",
+				"tags": [
+					"dynamic-section"
+				]
+			},
+			{
+				"description": "This script is used to convert Jira attachments to a table.",
+				"fromversion": "6.8.0",
+				"id": "JiraV3ConvertAttachmentsToTable",
+				"name": "JiraV3ConvertAttachmentsToTable",
+				"tags": [
+					"dynamic-section"
+				]
+			},
+			{
+				"description": "This script lists all possible transitions for a given Jira issue.",
+				"fromversion": "5.0.0",
+				"id": "script-JiraListTransition",
+				"name": "script-JiraListTransition",
+				"tags": [
+					"field-display"
+				]
+			},
+			{
+				"description": "This script lists all possible statuses for a given Jira issue. Works only for Jira v3.",
+				"fromversion": "6.8.0",
+				"id": "JiraListStatus",
+				"name": "JiraListStatus",
+				"tags": [
+					"field-display"
+				]
+			},
+			{
+				"description": "Use this script to add a comment with a tag (the \"Comment tag to Jira\" defined in the instance configuration) as an entry in XSOAR, which will then be mirrored as a comment to a Jira issue. This script should be run within an incident.",
+				"fromversion": "6.8.0",
+				"id": "JiraAddComment",
+				"name": "JiraAddComment",
+				"tags": []
+			},
+			{
+				"description": "Pretty print JIRA issue into the incident war room.",
+				"fromversion": "5.0.0",
+				"id": "JIRAPrintIssue",
+				"name": "JIRAPrintIssue",
+				"tags": [
+					"jira"
+				]
+			}
+		],
+		"casefield": null,
+		"classifier": [
+			{
+				"description": "",
+				"id": "JiraV3 Outgoing Mapper",
+				"name": "JiraV3 Outgoing Mapper",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam",
+					"edr",
+					"cloud",
+					"cloud_runtime_security",
+					"cloud_posture"
+				]
+			},
+			{
+				"description": "Jira V2 mirror out classifier.",
+				"id": "1a77d3a4-7a26-4223-82b1-ba0a5470899e",
+				"name": "classifier-mapper-outgoing-Jira",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				]
+			},
+			{
+				"description": "Jira V2 mirror in classifier.",
+				"id": "classifier-mapper-incoming-JiraV2",
+				"name": "classifier-mapper-incoming-JiraV2",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				]
+			},
+			{
+				"description": "Jira V3 mirror in classifier.",
+				"id": "classifier-mapper-incoming-JiraV3",
+				"name": "classifier-mapper-incoming-JiraV3",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam",
+					"edr",
+					"cloud",
+					"cloud_runtime_security",
+					"cloud_posture"
+				]
+			}
+		],
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": [
+			{
+				"description": "The Jira project where the issue resides in.",
+				"name": "Jira Project",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Jira Labels",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "tagsSelect"
+			},
+			{
+				"description": "",
+				"name": "Jira Transitions",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "singleSelect"
+			},
+			{
+				"description": "",
+				"name": "Jira Reporter Email",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "The due date for the issue (in the format 2018-03-11)",
+				"name": "Jira Due Date",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "The name of the status",
+				"name": "Jira Status",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "The components of a Jira issue.",
+				"name": "Jira Component",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "tagsSelect"
+			},
+			{
+				"description": "",
+				"name": "Jira ID",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "number"
+			},
+			{
+				"description": "The issue's summary",
+				"name": "Jira Summary",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "The issue type of the Jira issue.",
+				"name": "Jira Issue Type",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "The estimated timeline of a Jira issue in seconds. Please take a look at your `Time tracking settings` in Jira to identify what is considered an hour and a week.",
+				"name": "Jira Estimate",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "This will show the current status of the Jira issue, and when pressed, a list of possible statuses will be shown.",
+				"name": "JiraV3 Status",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "singleSelect"
+			},
+			{
+				"description": "",
+				"name": "Jira Attachments",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "attachments"
+			},
+			{
+				"description": "This issue's description",
+				"name": "Jira Description",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Jira Issue Key",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Jira Reporter Name",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "The subtasks of a Jira issue.",
+				"name": "Jira Subtask",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "longText"
+			},
+			{
+				"description": "The comments returned from a Jira issue.",
+				"name": "Jira Comment",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "longText"
+			},
+			{
+				"description": "The issue's priority",
+				"name": "Jira Priority",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			}
+		],
+		"incidenttype": [
+			{
+				"closureScript": "",
+				"days": 0,
+				"hours": 0,
+				"name": "Jira Create Issue and Mirror",
+				"playbook": "Create Jira Issue",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"weeks": 0
+			},
+			{
+				"closureScript": "",
+				"days": 0,
+				"hours": 0,
+				"name": "JiraV3 Incident",
+				"playbook": "",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"weeks": 0
+			},
+			{
+				"closureScript": "",
+				"days": 0,
+				"hours": 0,
+				"name": "Jira Incident",
+				"playbook": "",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"weeks": 0
+			}
+		],
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "Analytics \u0026 SIEM",
+				"commands": [
+					{
+						"description": "Returns a list of audit records",
+						"hidden": false,
+						"name": "jira-get-events"
+					}
+				],
+				"description": "Jira logs event collector integration for Cortex XSIAM.",
+				"fromversion": "6.5.0",
+				"id": "Jira Event Collector",
+				"name": "Jira Event Collector",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"toversion": ""
+			},
+			{
+				"category": "Case Management",
+				"commands": [
+					{
+						"description": "Download attachments for a specific issue (Will download a file to War Room).",
+						"hidden": false,
+						"name": "jira-issue-get-attachment"
+					},
+					{
+						"description": "Deletes an issue in Jira. Issue's sub-tasks will also be deleted if there are any.",
+						"hidden": false,
+						"name": "jira-delete-issue"
+					},
+					{
+						"description": "Gets specific fields from a Jira issue and adds it to context dynamically.",
+						"hidden": false,
+						"name": "jira-get-specific-field"
+					},
+					{
+						"description": "Creates (or updates) an issue link.",
+						"hidden": false,
+						"name": "jira-issue-add-link"
+					},
+					{
+						"description": "Gets the account ID for a given user attribute.",
+						"hidden": false,
+						"name": "jira-get-id-by-attribute"
+					},
+					{
+						"description": "Queries Jira issues.",
+						"hidden": false,
+						"name": "jira-issue-query"
+					},
+					{
+						"description": "Returns the ID offset, which is the ID of the first issue that was created in the current Jira instance, or the ID of the first issue with respect to the given query argument if given. You can use its result as the initial ID when fetching incidents by the issue id field.",
+						"hidden": false,
+						"name": "jira-get-id-offset"
+					},
+					{
+						"description": "Adds a new comment to an existing Jira issue.",
+						"hidden": false,
+						"name": "jira-issue-add-comment"
+					},
+					{
+						"description": "Uploads a file attachment to an issue.",
+						"hidden": false,
+						"name": "jira-issue-upload-file"
+					},
+					{
+						"description": "Lists all possible transitions for a given ticket in its current status.",
+						"hidden": false,
+						"name": "jira-list-transitions"
+					},
+					{
+						"description": "Modifies an issue in Jira. If the status or transition fields are given, then the other supplied fields should appear on the transition screen.",
+						"hidden": false,
+						"name": "jira-edit-issue"
+					},
+					{
+						"description": "Assigns an assignee to an existing issue.",
+						"hidden": false,
+						"name": "jira-issue-assign"
+					},
+					{
+						"description": "Creates a new issue in Jira.",
+						"hidden": false,
+						"name": "jira-create-issue"
+					},
+					{
+						"description": "Fetches an issue from Jira.",
+						"hidden": false,
+						"name": "jira-get-issue"
+					},
+					{
+						"description": "Returns the comments added to a ticket.",
+						"hidden": false,
+						"name": "jira-get-comments"
+					},
+					{
+						"description": "Use this command to complete the authorization process. After copying the authorization code found in the query parameter `code` of the callback URL, paste the value in the command as an argument to finish the process.",
+						"hidden": false,
+						"name": "jira-oauth-complete"
+					},
+					{
+						"description": "Use this command to start the authorization process. In order to authorize the instance, first run the command, and complete the process in the URL that is returned. You will then be redirected to the callback URL where you will copy the authorization code found in the query parameter `code`, and paste that value in the command `!jira-ouath-complete` as an argument to finish the process.",
+						"hidden": false,
+						"name": "jira-oauth-start"
+					},
+					{
+						"description": "Use this command to test the connectivity of the Jira instance.",
+						"hidden": false,
+						"name": "jira-oauth-test"
+					},
+					{
+						"description": "Delete a comment from an issue.",
+						"hidden": false,
+						"name": "jira-issue-delete-comment"
+					},
+					{
+						"description": "Delete an attachment from an issue.",
+						"hidden": false,
+						"name": "jira-issue-delete-file"
+					},
+					{
+						"description": "Edit a comment that is part of an issue.",
+						"hidden": false,
+						"name": "jira-issue-edit-comment"
+					},
+					{
+						"description": "This command returns the issue fields, both system and custom fields.",
+						"hidden": false,
+						"name": "jira-issue-list-fields"
+					},
+					{
+						"description": "Moves issues to backlog. If the issues supplied are NOT part of a board that supports sprints, then the board_id argument is required. At most 50 issues may be moved at once.",
+						"hidden": false,
+						"name": "jira-issue-to-backlog"
+					},
+					{
+						"description": "Moves issues from backlog to board, the command does not work with boards with sprints. At most 50 issues may be moved at once. This command is only supported for Jira Cloud instances.",
+						"hidden": false,
+						"name": "jira-issue-to-board"
+					},
+					{
+						"description": "Get board data. If board_id is given, then only the board that corresponds to the board_id is returned, otherwise, the the command will return boards that match the project_key_id, type, or board_name arguments.",
+						"hidden": false,
+						"name": "jira-board-list"
+					},
+					{
+						"description": "Get issues from the backlog of a specific board. For Jira OnPrem, the board must be of type scrum.",
+						"hidden": false,
+						"name": "jira-board-backlog-list"
+					},
+					{
+						"description": "Get all issues from a specific board.",
+						"hidden": false,
+						"name": "jira-board-issue-list"
+					},
+					{
+						"description": "Get all sprints of a specific board.",
+						"hidden": false,
+						"name": "jira-board-sprint-list"
+					},
+					{
+						"description": "Get all epics from a specific board.",
+						"hidden": false,
+						"name": "jira-board-epic-list"
+					},
+					{
+						"description": "Get all issues in a sprint.",
+						"hidden": false,
+						"name": "jira-sprint-issue-list"
+					},
+					{
+						"description": "Moves issues to a sprint, for a given sprint ID. Issues can only be moved to open or active sprints. At most 50 issues may be moved at once.",
+						"hidden": false,
+						"name": "jira-sprint-issue-move"
+					},
+					{
+						"description": "Get all issues that belong to an epic (Child Issues).",
+						"hidden": false,
+						"name": "jira-epic-issue-list"
+					},
+					{
+						"description": "Returns a list of all issue link types.",
+						"hidden": false,
+						"name": "jira-issue-link-type-get"
+					},
+					{
+						"description": "Use this command to create a link between two issues.",
+						"hidden": false,
+						"name": "jira-issue-to-issue-link"
+					},
+					{
+						"description": "Fetches questions and answers for forms tied to a Jira issue. This command requires Jira Service Desk, the ProForma plugin and an API user with `Service Desk Team` or higher permissions on the Jira project the forms are being pulled from.",
+						"hidden": false,
+						"name": "jira-issue-get-forms"
+					},
+					{
+						"description": "Retrieves information about a specified Jira user. For on-prem instances, you should use the user's key and username to retrieve their details. For Cloud instances, user's `account_id` is required. If no identifier is supplied, information for the user the API credentials belong to is returned.",
+						"hidden": false,
+						"name": "jira-get-user-info"
+					},
+					{
+						"description": "Get remote data from a remote incident. This method does not update the current incident, and should be used for debugging purposes only.",
+						"hidden": false,
+						"name": "get-remote-data-preview"
+					},
+					{
+						"description": "Returns a page of issue type metadata for a specified project.",
+						"hidden": false,
+						"name": "jira-create-metadata-issue-types-list"
+					},
+					{
+						"description": "Returns a page of field metadata for a specified project and issue type.",
+						"hidden": false,
+						"name": "jira-create-metadata-field-list"
+					},
+					{
+						"description": "Creates a new issue in Jira.",
+						"hidden": true,
+						"name": "jira-create-issue-quick-action"
+					},
+					{
+						"description": "Clears the cached Jira user timezone used for fetching incidents and mirroring from the internal cache. Use if the timezone settings tied to the chosen authentication method were changed.",
+						"hidden": false,
+						"name": "jira-reset-timezone-cache"
+					}
+				],
+				"description": "Use the Jira integration to manage issues, create Cortex incidents from Jira projects, and mirror issues to existing issue incidents in Cortex. The integration now supports both OnPrem, and Cloud instances.",
+				"fromversion": "6.8.0",
+				"id": "Jira V3",
+				"name": "Atlassian Jira v3",
+				"toversion": ""
+			},
+			{
+				"category": "Case Management",
+				"commands": [
+					{
+						"description": "Queries Jira issues.",
+						"hidden": false,
+						"name": "jira-issue-query"
+					},
+					{
+						"description": "Gets the account ID for a given user attribute.",
+						"hidden": false,
+						"name": "jira-get-id-by-attribute"
+					},
+					{
+						"description": "Fetches an issue from Jira.",
+						"hidden": false,
+						"name": "jira-get-issue"
+					},
+					{
+						"description": "Creates a new issue in Jira.",
+						"hidden": false,
+						"name": "jira-create-issue"
+					},
+					{
+						"description": "Uploads a file attachment to an issue.",
+						"hidden": false,
+						"name": "jira-issue-upload-file"
+					},
+					{
+						"description": "Adds a new comment to an existing Jira issue.",
+						"hidden": false,
+						"name": "jira-issue-add-comment"
+					},
+					{
+						"description": "Creates (or updates) an issue link.",
+						"hidden": false,
+						"name": "jira-issue-add-link"
+					},
+					{
+						"description": "Modifies an issue in Jira.",
+						"hidden": false,
+						"name": "jira-edit-issue"
+					},
+					{
+						"description": "Modifies a specific field in an issue in Jira by appending to it instead of replacing its content. \nField must be either of type string (appending by using ',') or array.",
+						"hidden": false,
+						"name": "jira-append-to-field"
+					},
+					{
+						"description": "Gets specific fields from a Jira issue and adds it to context dynamically.",
+						"hidden": false,
+						"name": "jira-get-specific-field"
+					},
+					{
+						"description": "Returns the comments added to a ticket.",
+						"hidden": false,
+						"name": "jira-get-comments"
+					},
+					{
+						"description": "Deletes an issue in Jira.",
+						"hidden": false,
+						"name": "jira-delete-issue"
+					},
+					{
+						"description": "Returns the ID offset. For example the first issue ID.",
+						"hidden": false,
+						"name": "jira-get-id-offset"
+					},
+					{
+						"description": "Lists all possible transitions for a given ticket.",
+						"hidden": false,
+						"name": "jira-list-transitions"
+					},
+					{
+						"description": "Gets the information related to the role, including assigned users.",
+						"hidden": false,
+						"name": "jira-get-project-role"
+					},
+					{
+						"description": "Adds the user to a project.",
+						"hidden": false,
+						"name": "jira-add-user-to-project"
+					},
+					{
+						"description": "Lists all the organizations.",
+						"hidden": false,
+						"name": "jira-get-organizations"
+					},
+					{
+						"description": "Edit the assignee of an existing issue.",
+						"hidden": false,
+						"name": "jira-issue-assign"
+					}
+				],
+				"deprecated": true,
+				"description": "Deprecated. Use the Atlassian Jira v3 integration instead",
+				"fromversion": "5.0.0",
+				"id": "jira-v2",
+				"name": "Atlassian Jira v2 (Deprecated)",
+				"supportedModules": [
+					"X3",
+					"X5",
+					"agentix",
+					"xsiam",
+					"edr",
+					"cloud",
+					"cloud_runtime_security",
+					"cloud_posture"
+				],
+				"toversion": ""
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"modelingrule": [
+			{
+				"datasets": [
+					"atlassian_jira_raw"
+				],
+				"deprecated": false,
+				"description": "",
+				"fromversion": "6.10.0",
+				"id": "JiraEventCollector",
+				"name": "JiraEventCollector",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"toversion": ""
+			}
+		],
+		"parsingrule": [
+			{
+				"deprecated": false,
+				"description": "",
+				"fromversion": "6.10.0",
+				"id": "Jira_Parsing_Rule",
+				"name": "Jira Parsing Rule",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"toversion": ""
+			}
+		],
+		"playbook": [
+			{
+				"description": "Create Jira issue allows you to open new issues.\nWhen creating the issue, you can decide to update based on on the issue's state, which will wait for the issue to resolve or close with StatePolling.\nAlternatively, you can select to mirror the Jira issue and alert fields. To apply either of these options, set the SyncTicket value in the playbook inputs to one of the following options: \n1. StatePolling\n2. Mirror\n3. Leave Blank to use none\n\nWhen creating Jira issues through XSOAR, using the mirroring function, make sure that you exclude those issues when fetching alerts. To exclude these issues, tag the relevant issues with a dedicated label and exclude that label from the JQL query (Labels!=).",
+				"fromversion": "6.0.0",
+				"id": "Create Jira Issue",
+				"name": "Create Jira Issue",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "Use Jira Alert State Polling as a sub-playbook when required to pause the execution of a master playbook until the Jira ticket state is either resolved or closed.\nThis playbook implements polling by continuously running the jira-get-issue command until the state is either resolved or closed.",
+				"fromversion": "6.0.0",
+				"id": "Jira Ticket State Polling",
+				"name": "Jira Ticket State Polling",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "Mirror Jira Ticket is designed to serve as a sub-playbook, which enables ticket mirroring with Jira.",
+				"fromversion": "6.0.0",
+				"id": "Mirror Jira Ticket",
+				"name": "Mirror Jira Ticket",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"tags": []
+			}
+		],
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"created": "2025-03-29T09:38:44Z",
+	"currentVersion": "3.3.21",
+	"defaultDataSource": {
+		"id": "Jira Event Collector",
+		"name": "Jira Event Collector"
+	},
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.41.52",
+			"name": "Base"
+		},
+		"CommonPlaybooks": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "2.7.25",
+			"name": "Common Playbooks"
+		},
+		"CommonScripts": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.20.67",
+			"name": "Common Scripts"
+		},
+		"CommonTypes": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": false,
+			"minVersion": "3.9.7",
+			"name": "Common Types"
+		},
+		"CoreAlertFields": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": false,
+			"minVersion": "1.0.43",
+			"name": "Core Alert Fields"
+		}
+	},
+	"deprecated": false,
+	"description": "Use the Jira integration to manage issues and create Cortex incidents from Jira projects.",
+	"downloads": 30913,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"firstCreated": "2025-03-29T09:38:44Z",
+	"fromServerVersion": "3.3.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldFree",
+		"generalFieldSupportIncluded",
+		"generalFieldSupportModule"
+	],
+	"hybrid": false,
+	"id": "Jira",
+	"installMessage": "",
+	"integrations": [
+		{
+			"id": "Jira Event Collector",
+			"imagePath": "content/packs/Jira/JiraEventCollector_image.png",
+			"name": "Jira Event Collector"
+		},
+		{
+			"id": "jira-v2",
+			"imagePath": "content/packs/Jira/jira-v2_image.png",
+			"name": "Atlassian Jira v2 (Deprecated)"
+		},
+		{
+			"id": "Jira V3",
+			"imagePath": "content/packs/Jira/JiraV3_image.png",
+			"name": "Atlassian Jira v3"
+		}
+	],
+	"isOverridable": false,
+	"itemVersion": "3.3.21",
+	"keywords": [],
+	"legacy": true,
+	"modules": [],
+	"name": "Atlassian Jira",
+	"packID": "Jira",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"readme": "This pack enables you to manage issues in Jira and exchange information between Jira and Cortex.\n\n## What does this pack do?\n\nThis pack enables you to\n\n- Create, edit, delete, and query Jira issues.\n- Add information to Jira issues in the form of links, comments, and attachments.\n- Get information concerning boards, and sprints.\n- Create Cortex incidents from Jira issues.\n- Mirror information from Jira to Cortex and vice versa.\n\nThe pack includes the **Atlassian Jira v2**, and **Atlassian Jira v3** integration, the **Jira Incident**, and **JiraV3 Incident** incident type, incident fields, incident layouts to display all of the Jira information, and 6 scripts:\n\n- **JiraCreateIssue-example**: Simplifies the process of creating a new issue in Jira.\n- **JIRAPrintIssue**: Prints a Jira issue in the War Room.\n- **script-JiraChangeTransition**: Gets the new Jira status and updates the Cortex incident status by applying a transition.\n- **script-JiraListTransition**: Lists all possible transitions for a given issue.\n- **script-JiraChangeStatus**: Gets the new Jira status and updates the Cortex incident status by choosing a specific status.\n- **script-JiraListStatus**: Lists all possible statuses for a given issue.\n\n## How does this pack work?\n\nCreate an instance of the **Atlassian Jira v2**, or **Atlassian Jira v3** integration and start fetching and ingesting incidents.\n\n### Pack Contributors:\n\n---\n - Paul-Adrian Dragoi\n\nContributions are welcome and appreciated. For more info, visit our [Contribution Guide](https://xsoar.pan.dev/docs/contributing/contributing).",
+	"searchRank": 10,
+	"serverMaxVersion": "",
+	"serverMinVersion": "3.3.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"supportedModules": [
+		"C1",
+		"C3",
+		"X0",
+		"X1",
+		"X3",
+		"X5",
+		"ENT_PLUS",
+		"agentix",
+		"cloud",
+		"cloud_runtime_security",
+		"cloud_posture",
+		"xsiam",
+		"edr"
+	],
+	"tags": [
+		"Collection",
+		"Data Source"
+	],
+	"toServerVersion": "",
+	"updated": "2026-01-06T13:13:37Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "6576318",
+	"videos": []
+}
