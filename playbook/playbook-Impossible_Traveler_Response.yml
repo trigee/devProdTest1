@@ -1,0 +1,1683 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.6.0
+    isoverridable: false
+    itemVersion: 3.5.66
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - cloud
+    - cloud_posture
+    - cloud_runtime_security
+    - edr
+    - xsiam
+    toServerVersion: ""
+description: "This playbook handles impossible traveler alerts.\n\nAn Impossible Traveler
+  event occurs when multiple login attempts seen for a user from multiple remote countries
+  in a short period of time, which shouldn't be possible. This may indicate the account
+  is compromised.\n\n**Attacker's Goals:**\n\nGain user-account credentials.\n\n**Investigative
+  Actions:**\n\nInvestigate the IP addresses and identities involved in the detected
+  activity using:\n\n* Impossible Traveler - Enrichment playbook\n* CalculateGeoDistance
+  automation\n\n**Response Actions**\n\nThe playbook's first response actions are
+  based on the data available within the alert. In that phase, the playbook will execute:\n\n*
+  Manual block indicators if the IP address found malicious\n* Manual disable user\n*
+  Manual clear of the user’s sessions (Okta)\n\nWhen the playbook continues, after
+  validating the activity with the user’s manager, another phase of response actions
+  is being executed, which includes:\n\n* Auto block indicators \n\n\n**External Resources:**\n\n[Impossible
+  traveler alert](https://docs-cortex.paloaltonetworks.com/r/Cortex-XDR-Analytics-Alert-Reference/Impossible-traveler-SSO)"
+id: Impossible Traveler Response
+inputSections:
+- description: Alert management settings and data, including escalation processes,
+    and user engagements.
+  inputs:
+  - domain
+  - username
+  - ContactUserManager
+  name: Alert Management
+- description: Investigation settings and data, including any deep dive alert investigation
+    and verdict determination.
+  inputs:
+  - WhitelistedIPs
+  - AllowlistCIDR
+  - MaxMilesPerHourAllowed
+  name: Investigation
+- description: Remediation settings and data, including containment, eradication,
+    and recovery.
+  inputs:
+  - preInvestigationContainment
+  - AutoContainment
+  - AbuseIPDBThreshold
+  name: Remediation
+- description: Ticket management settings and data.
+  inputs:
+  - ShouldOpenTicket
+  - serviceNowShortDescription
+  - serviceNowImpact
+  - serviceNowUrgency
+  - serviceNowSeverity
+  - serviceNowTicketType
+  - serviceNowCategory
+  - serviceNowAssignmentGroup
+  - ZendeskPriority
+  - ZendeskRequester
+  - ZendeskStatus
+  - ZendeskSubject
+  - ZendeskTags
+  - ZendeskType
+  - ZendeskAssigne
+  - ZendeskCollaborators
+  - description
+  - addCommentPerEndpoint
+  - CommentToAdd
+  name: Ticket Management
+inputs:
+- description: The maximum miles per hour that is considered reasonable. If the geographical
+    distance and difference in time between logins is greater than this value, the
+    user will be considered an impossible traveler.
+  key: MaxMilesPerHourAllowed
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "400"
+- description: A comma separated list of IP addresses that are allowed to be used
+    across long distances.
+  key: WhitelistedIPs
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Whether to ask the user manager for the legitimacy of the login events,
+    in case of an alleged impossible traveler.
+  key: ContactUserManager
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+- description: Whether to execute auto containment.
+  key: AutoContainment
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: The score needed from AbuseIPDB to consider IP address as malicious.
+  key: AbuseIPDBThreshold
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "80"
+- description: Whether to execute containment prior investigation phase
+  key: preInvestigationContainment
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: A comma separated list of CIDR that are allowed to be used across long
+    distances.
+  key: AllowlistCIDR
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: CIDR - Allowlist
+      root: lists
+- description: The username to iterate over.
+  key: username
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: username
+      root: alert
+- description: The organization domain.
+  key: domain
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Whether to open a ticket automatically in a ticketing system. (True/False).
+  key: ShouldOpenTicket
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: A short description of the ticket.
+  key: serviceNowShortDescription
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: XSIAM Incident ID - ${parentIncidentFields.incident_id}
+- description: The impact for the new ticket. Leave empty for ServiceNow default impact.
+  key: serviceNowImpact
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The urgency of the new ticket. Leave empty for ServiceNow default urgency.
+  key: serviceNowUrgency
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The severity of the new ticket. Leave empty for ServiceNow default
+    severity.
+  key: serviceNowSeverity
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The ServiceNow ticket type. Options are "incident", "problem", "change_request",
+    "sc_request", "sc_task", or "sc_req_item". Default is "incident".
+  key: serviceNowTicketType
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The category of the ServiceNow ticket.
+  key: serviceNowCategory
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The group to which to assign the new ticket.
+  key: serviceNowAssignmentGroup
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The urgency with which the ticket should be addressed. Allowed values
+    are "urgent", "high", "normal", or "low".
+  key: ZendeskPriority
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The user who requested this ticket.
+  key: ZendeskRequester
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The state of the ticket. Allowed values are "new", "open", "pending",
+    "hold", "solved", or "closed".
+  key: ZendeskStatus
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The value of the subject field for this ticket.
+  key: ZendeskSubject
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: XSIAM Incident ID - ${parentIncidentFields.incident_id}
+- description: The array of tags applied to this ticket.
+  key: ZendeskTags
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The type of this ticket. Allowed values are "problem", "incident",
+    "question", or "task".
+  key: ZendeskType
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The agent currently assigned to the ticket.
+  key: ZendeskAssigne
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The users currently CC'ed on the ticket.
+  key: ZendeskCollaborators
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The ticket description.
+  key: description
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: ${parentIncidentFields.description}. ${parentIncidentFields.xdr_url}
+- description: 'Whether to append a new comment to the ticket for each endpoint in
+    the incident. Possible values: True/False.'
+  key: addCommentPerEndpoint
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+- description: Comment for the ticket.
+  key: CommentToAdd
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: '${alert.name}. Alert ID: ${alert.id}'
+name: Impossible Traveler Response
+outlinetasks: {}
+outputSections:
+- description: Generic group for outputs
+  name: General (Outputs group)
+  outputs:
+  - Account.Email.Address
+  - DBotScore
+  - Account.ID
+  - Account.Username
+  - Account.Email
+  - Account.Type
+  - Account.Groups
+  - Account
+  - Account.DisplayName
+  - Account.Manager
+  - DBotScore.Indicator
+  - DBotScore.Type
+  - DBotScore.Vendor
+  - DBotScore.Score
+  - IP
+  - Endpoint
+  - Endpoint.Hostname
+  - Endpoint.OS
+  - Endpoint.IP
+  - Endpoint.MAC
+  - Endpoint.Domain
+outputs:
+- contextPath: Account.Email.Address
+  description: The email address object associated with the Account.
+  type: string
+- contextPath: DBotScore
+  description: Indicator, Score, Type, Vendor.
+  type: unknown
+- contextPath: Account.ID
+  description: The unique Account DN (Distinguished Name).
+  type: string
+- contextPath: Account.Username
+  description: The username of the Account.
+  type: string
+- contextPath: Account.Email
+  description: The email address associated with the Account.
+- contextPath: Account.Type
+  description: The type of the Account entity.
+  type: string
+- contextPath: Account.Groups
+  description: The groups that the Account is a part of.
+- contextPath: Account
+  description: Account object
+  type: unknown
+- contextPath: Account.DisplayName
+  description: The display name of the Account.
+  type: string
+- contextPath: Account.Manager
+  description: The manager of the Account.
+  type: string
+- contextPath: DBotScore.Indicator
+  description: The indicator value.
+  type: string
+- contextPath: DBotScore.Type
+  description: The indicator's type.
+  type: string
+- contextPath: DBotScore.Vendor
+  description: The indicator's vendor.
+  type: string
+- contextPath: DBotScore.Score
+  description: The indicator's score.
+  type: number
+- contextPath: IP
+  description: The IP objects.
+  type: unknown
+- contextPath: Endpoint
+  description: The Endpoint's object.
+  type: unknown
+- contextPath: Endpoint.Hostname
+  description: The hostname to enrich.
+  type: string
+- contextPath: Endpoint.OS
+  description: The Endpoint OS.
+  type: string
+- contextPath: Endpoint.IP
+  description: The list of Endpoint IP addresses.
+- contextPath: Endpoint.MAC
+  description: The list of Endpoint MAC addresses.
+- contextPath: Endpoint.Domain
+  description: The domain name of the Endpoint.
+  type: string
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "50"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 88f861eb-119b-433f-80fb-a44f7dc6eb48
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 88f861eb-119b-433f-80fb-a44f7dc6eb48
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": -30,
+          "y": -50
+        }
+      }
+  "32":
+    continueonerrortype: ""
+    id: "32"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "118"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d2cc6f85-633d-4296-862a-5f925794182e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: d2cc6f85-633d-4296-862a-5f925794182e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 220,
+          "y": 2985
+        }
+      }
+  "50":
+    continueonerrortype: ""
+    id: "50"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "111"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6ea8cc97-01a6-4500-8db9-70dd3cc2bdb8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Travel Information Enrichment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 6ea8cc97-01a6-4500-8db9-70dd3cc2bdb8
+    timertriggers:
+    - action: start
+      fieldname: detectionsla
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -30,
+          "y": 80
+        }
+      }
+  "51":
+    continueonerrortype: ""
+    id: "51"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "104"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9f0e24af-30c8-444f-8e7c-6b9b0c2c1658
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Containment '
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 9f0e24af-30c8-444f-8e7c-6b9b0c2c1658
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -30,
+          "y": 555
+        }
+      }
+  "63":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: distance
+                root: GeoEvents
+          operator: greaterThan
+          right:
+            iscontext: true
+            value:
+              simple: inputs.MaxMilesPerHourAllowed
+      label: "yes"
+    continueonerrortype: ""
+    id: "63"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "106"
+      "yes":
+      - "84"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the user traveled faster than the allowed speed
+        in MPH.
+      id: 9e9924bf-582c-4c05-880a-ce2faabc672f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Did the user travel more than the allowed MPH?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 9e9924bf-582c-4c05-880a-ce2faabc672f
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -30,
+          "y": 2230
+        }
+      }
+  "67":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: ImpossibleTravelerIPs
+                transformers:
+                - operator: uniq
+          operator: in
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.WhitelistedIPs
+                transformers:
+                - args:
+                    delimiter:
+                      value:
+                        simple: ','
+                  operator: splitAndTrim
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: ImpossibleTravelerIPs
+                transformers:
+                - operator: uniq
+          operator: IsInCidrRanges
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.AllowlistCIDR
+      label: "yes"
+    continueonerrortype: ""
+    id: "67"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "112"
+      "yes":
+      - "106"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether both user login events originated from IP addresses
+        on the allow list.
+      id: 1afa0528-0863-40fb-864e-164aef0f660b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Did the user login from IP addresses on allow list?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 1afa0528-0863-40fb-864e-164aef0f660b
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -280,
+          "y": 1860
+        }
+      }
+  "68":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: inputs.WhitelistedIPs
+          operator: isNotEmpty
+          right:
+            value: {}
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.AllowlistCIDR
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "68"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "112"
+      "yes":
+      - "67"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the allow list IPs were configured.
+      id: 0aae9ff5-92b0-4196-8df9-fe62836dc988
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Are there IPs / CIDR configured on allow list?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 0aae9ff5-92b0-4196-8df9-fe62836dc988
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -30,
+          "y": 1680
+        }
+      }
+  "70":
+    continueonerrortype: ""
+    id: "70"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "102"
+    note: false
+    quietmode: 2
+    reputationcalc: 1
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: Closes the alert.
+      id: 26fbbf6a-8cdf-4252-846f-59667df1acc9
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close alert
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: 26fbbf6a-8cdf-4252-846f-59667df1acc9
+    timertriggers:
+    - action: stop
+      fieldname: remediationsla
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 800,
+          "y": 3860
+        }
+      }
+  "73":
+    continueonerrortype: ""
+    id: "73"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "68"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b3f5688f-8244-481c-8edb-b109bb896850
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Process Travel Data
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: b3f5688f-8244-481c-8edb-b109bb896850
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -30,
+          "y": 1540
+        }
+      }
+  "84":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: UserManagerEmail
+          operator: isNotEmpty
+          right:
+            value: {}
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.ContactUserManager
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "84"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "32"
+      "yes":
+      - "113"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether an email address was retrieved for the manger of
+        the offending user.
+      id: b13f2219-7b15-400e-8b7f-311c944f4b00
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Can the manager be contacted for travel approval?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: b13f2219-7b15-400e-8b7f-311c944f4b00
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 220,
+          "y": 2405
+        }
+      }
+  "97":
+    continueonerrortype: ""
+    id: "97"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "73"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 29168b8b-4682-4c83-8442-f9b240441bce
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 29168b8b-4682-4c83-8442-f9b240441bce
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -30,
+          "y": 1400
+        }
+      }
+  "102":
+    continueonerrortype: ""
+    id: "102"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 761f3691-27cd-4689-8c72-f33cdf3ceff8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 761f3691-27cd-4689-8c72-f33cdf3ceff8
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 220,
+          "y": 4030
+        }
+      }
+  "104":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: PositiveDetections
+                root: IP
+          operator: greaterThan
+          right:
+            value:
+              simple: "5"
+        - left:
+            iscontext: true
+            value:
+              simple: AbuseIPDB.IP.AbuseConfidenceScore
+          operator: greaterThanOrEqual
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.AbuseIPDBThreshold
+        - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Score
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: in
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.localip
+                root: DBotScore
+          operator: isEqualString
+          right:
+            value:
+              simple: "3"
+      label: "yes"
+    continueonerrortype: ""
+    id: "104"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "110"
+      "yes":
+      - "119"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the IP address is blacklisted.
+      id: 310b06ad-c117-4aa9-87cb-59ce2eec50a5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check if the IP is blacklisted
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 310b06ad-c117-4aa9-87cb-59ce2eec50a5
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -30,
+          "y": 690
+        }
+      }
+  "106":
+    continueonerrortype: ""
+    id: "106"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "102"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.close.inv
+      id: 5e758133-c223-4b51-82dc-23e5e7fb9870
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: 'Close alert '
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: 5e758133-c223-4b51-82dc-23e5e7fb9870
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -280,
+          "y": 2405
+        }
+      }
+  "107":
+    continueonerrortype: ""
+    id: "107"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      forEach: true
+      iscommand: false
+      max: 100
+      wait: 3
+    nexttasks:
+      '#none#':
+      - "51"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      domain:
+        complex:
+          root: inputs.domain
+      sourceip:
+        complex:
+          root: ImpossibleTravelerIPs
+      username:
+        complex:
+          root: inputs.username
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        This playbook get as an input all of the involved IP addresses and identities from the Impossible Traveler playbook alert, and enriches them based on the following:
+        * Geo location
+        * Active Directory
+        * IP enrichment e.g. VirusTotal, AbuseIPDB, etc.
+      id: 3e64301f-3cc8-4687-86c9-9174c5ebd246
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Impossible Traveler - Enrichment
+      playbookId: Impossible Traveler - Enrichment
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 3e64301f-3cc8-4687-86c9-9174c5ebd246
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": -30,
+          "y": 390
+        }
+      }
+  "110":
+    continueonerrortype: ""
+    id: "110"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "119"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      key:
+        simple: BlockIndicators
+      value:
+        simple: "False"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Sets a value in context under the key you entered.
+      id: 94db504a-51c6-4c26-82cc-83e29e829184
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set containment actions
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 94db504a-51c6-4c26-82cc-83e29e829184
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -310,
+          "y": 860
+        }
+      }
+  "111":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "111"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "107"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      arrayData:
+        complex:
+          accessor: localip
+          root: alert
+          transformers:
+          - operator: uniq
+      contextKey:
+        simple: ImpossibleTravelerIPs
+      ignore-outputs:
+        simple: "false"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: 'Creates an array object in context from any given string input. '
+      id: fdd29a04-07fb-4099-8319-e8610b6d6ca3
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get all Impossible Traveler IP Addresses
+      playbooktaskmissingcomponent: null
+      script: CreateArray
+      type: regular
+      version: -1
+    taskid: fdd29a04-07fb-4099-8319-e8610b6d6ca3
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -30,
+          "y": 220
+        }
+      }
+  "112":
+    continueonerrortype: ""
+    id: "112"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "63"
+    note: false
+    quietmode: 2
+    reputationcalc: 1
+    scriptarguments:
+      dest_coords:
+        complex:
+          accessor: location
+          root: ImpossibleTraveler.Events
+      extend-context:
+        simple: GeoDistance
+      ignore-outputs:
+        simple: "false"
+      src_coords:
+        complex:
+          accessor: location
+          root: ImpossibleTraveler.Events
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Computes the distance between two sets of coordinates, in miles.
+      id: 6bc4d7e3-c086-43ac-82bb-09c17225c564
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Calculate geographical distance between logins
+      playbooktaskmissingcomponent: null
+      script: impossibleTravelerGetDistance
+      tags:
+      - geodistance
+      type: regular
+      version: -1
+    taskid: 6bc4d7e3-c086-43ac-82bb-09c17225c564
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -30,
+          "y": 2050
+        }
+      }
+  "113":
+    continueonerrortype: ""
+    form:
+      description: |-
+        The user ${alert.username} signed in from several countries in a one-hour timeframe, which is considered an impossible traveler activity.
+        Select the unapproved countries for the employee to sign in from.
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: Select the suspicious locations
+        options: []
+        optionsarg:
+        - {}
+        - complex:
+            accessor: source_country
+            root: GeoEvents
+            transformers:
+            - args:
+                item:
+                  iscontext: true
+                  value:
+                    simple: GeoEvents.dest_country
+              operator: append
+            - operator: uniq
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: multiSelect
+      sender: Your SOC team
+      syncid: ""
+      title: Impossible Traveler Alert Validation
+      totalanswers: 0
+    id: "113"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body: null
+      cc: null
+      format: ""
+      methods:
+      - email
+      subject:
+        simple: Impossible Traveler Alert Validation
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: false
+        retriescount: 2
+        retriesinterval: 360
+      to:
+        complex:
+          root: UserManagerEmail
+    nexttasks:
+      '#none#':
+      - "114"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Asks the manager to confirm the abnormal activity.
+      id: fa93ec7b-8855-4faa-8d83-c072bc2108e2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Ask manager if travel was expected
+      playbooktaskmissingcomponent: null
+      type: collection
+      version: -1
+    taskid: fa93ec7b-8855-4faa-8d83-c072bc2108e2
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": 800,
+          "y": 2600
+        }
+      }
+  "114":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: Impossible Traveler Alert Validation.Answers.0
+          operator: isEmpty
+          right:
+            value: {}
+      label: Approved
+    continueonerrortype: ""
+    id: "114"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "32"
+      Approved:
+      - "70"
+    note: false
+    quietmode: 2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks the manager response.
+      id: e2d0f764-b76d-4b82-88e9-2ec0ff0fef15
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Manager Response
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: e2d0f764-b76d-4b82-88e9-2ec0ff0fef15
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 800,
+          "y": 2800
+        }
+      }
+  "117":
+    continueonerrortype: ""
+    id: "117"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 0
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "97"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      AutoBlockIndicators:
+        simple: "True"
+      AutoContainment:
+        complex:
+          root: inputs.AutoContainment
+      BlockIndicators:
+        complex:
+          root: BlockIndicators
+          transformers:
+          - args:
+              applyIfEmpty: {}
+              defaultValue:
+                value:
+                  simple: "True"
+            operator: SetIfEmpty
+      ClearUserSessions:
+        simple: "True"
+      EndpointID:
+        complex:
+          accessor: agentid
+          root: alert
+          transformers:
+          - operator: uniq
+      FileContainment:
+        simple: "False"
+      FileRemediation:
+        simple: Quarantine
+      HostAutoContainment:
+        simple: "False"
+      HostContainment:
+        simple: "True"
+      IP:
+        complex:
+          root: ImpossibleTravelerIPs
+      UserContainment:
+        simple: "False"
+      UserVerification:
+        simple: "False"
+      Username:
+        complex:
+          accessor: username
+          root: alert
+          transformers:
+          - operator: uniq
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "This playbook handles all the containment actions available with
+        Cortex XSIAM, including:  \n* Isolate endpoint\n* Disable account\n* Quarantine
+        file\n* Block indicators\n* Clear user session (currently, the playbook supports
+        only Okta)\n\nNote: The playbook inputs enable manipulating the execution
+        flow; read the input descriptions for details."
+      id: e190537d-1b4b-4055-8eff-1f60d7651da1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment Plan
+      playbookName: Containment Plan
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: e190537d-1b4b-4055-8eff-1f60d7651da1
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 220,
+          "y": 1220
+        }
+      }
+  "118":
+    continueonerrortype: ""
+    id: "118"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 0
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "120"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      AutoContainment:
+        complex:
+          root: inputs.AutoContainment
+      BlockIndicators:
+        simple: "True"
+      ClearUserSessions:
+        simple: "true"
+      FileContainment:
+        simple: "False"
+      FileRemediation:
+        simple: Quarantine
+      HostAutoContainment:
+        simple: "False"
+      IP:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: ImpossibleTravelerIPs
+              operator: in
+              right:
+                iscontext: true
+                value:
+                  simple: inputs.WhitelistedIPs
+            - left:
+                iscontext: true
+                value:
+                  simple: ImpossibleTravelerIPs
+              operator: IsInCidrRanges
+              right:
+                iscontext: true
+                value:
+                  simple: inputs.AllowlistCIDR
+          root: ImpossibleTravelerIPs
+          transformers:
+          - operator: uniq
+      UserContainment:
+        simple: "true"
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "This playbook handles all the containment actions available with
+        Cortex XSIAM, including:  \n* Isolate endpoint\n* Disable account\n* Quarantine
+        file\n* Block indicators\n* Clear user session (currently, the playbook supports
+        only Okta)\n\nNote: The playbook inputs enable manipulating the execution
+        flow; read the input descriptions for details."
+      id: bd5bd031-c623-4eba-82b0-b342ebdab5dd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment Plan
+      playbookName: Containment Plan
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: bd5bd031-c623-4eba-82b0-b342ebdab5dd
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 220,
+          "y": 3120
+        }
+      }
+  "119":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.preInvestigationContainment
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "119"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "97"
+      "yes":
+      - "117"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether to run containment plan before Investigation phase.
+      id: 9f60839c-b73f-410c-8d26-e4d6fb3a8f98
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should execute pre investigation containment?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 9f60839c-b73f-410c-8d26-e4d6fb3a8f98
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -30,
+          "y": 1030
+        }
+      }
+  "120":
+    continueonerrortype: ""
+    id: "120"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "121"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      manual_severity:
+        simple: high
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.parent.alert.field
+      id: b4b81e66-cdaf-453c-847d-2e2ec377b6fc
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Set Alert Severity to High
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setParentIncidentFields
+      type: regular
+      version: -1
+    taskid: b4b81e66-cdaf-453c-847d-2e2ec377b6fc
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 220,
+          "y": 3295
+        }
+      }
+  "121":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.ShouldOpenTicket
+          operator: isEqualNumber
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "121"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "70"
+      "yes":
+      - "122"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether to open a ticket automatically in a ticketing system.
+      id: f7a17c64-5faa-4d72-8651-d2202a0d1ca7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should open a ticket automatically in a ticketing system?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: f7a17c64-5faa-4d72-8651-d2202a0d1ca7
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 220,
+          "y": 3460
+        }
+      }
+  "122":
+    continueonerrortype: ""
+    id: "122"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "70"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      CommentToAdd:
+        complex:
+          root: inputs.CommentToAdd
+      ZendeskAssigne:
+        complex:
+          root: inputs.ZendeskAssigne
+      ZendeskCollaborators:
+        complex:
+          root: inputs.ZendeskCollaborators
+      ZendeskPriority:
+        complex:
+          root: inputs.ZendeskPriority
+      ZendeskRequester:
+        complex:
+          root: inputs.ZendeskRequester
+      ZendeskStatus:
+        complex:
+          root: inputs.ZendeskStatus
+      ZendeskSubject:
+        complex:
+          root: inputs.ZendeskSubject
+      ZendeskTags:
+        complex:
+          root: inputs.ZendeskTags
+      ZendeskType:
+        complex:
+          root: inputs.ZendeskType
+      addCommentPerEndpoint:
+        complex:
+          root: inputs.addCommentPerEndpoint
+      description:
+        complex:
+          root: inputs.description
+      serviceNowAssignmentGroup:
+        complex:
+          root: inputs.serviceNowAssignmentGroup
+      serviceNowCategory:
+        complex:
+          root: inputs.serviceNowCategory
+      serviceNowImpact:
+        complex:
+          root: inputs.serviceNowImpact
+      serviceNowSeverity:
+        complex:
+          root: inputs.serviceNowSeverity
+      serviceNowShortDescription:
+        complex:
+          root: inputs.serviceNowShortDescription
+      serviceNowTicketType:
+        complex:
+          root: inputs.serviceNowTicketType
+      serviceNowUrgency:
+        complex:
+          root: inputs.serviceNowUrgency
+    separatecontext: true
+    skipunavailable: true
+    task:
+      brand: ""
+      description: "`Ticket Management - Generic` allows you to open new tickets or
+        update comments to the existing ticket in the following ticketing systems:\n-ServiceNow
+        \n-Zendesk \nusing the following sub-playbooks:\n-`ServiceNow - Ticket Management`\n-`Zendesk
+        - Ticket Management`\n"
+      id: b0ab22d5-3713-42df-8820-a04c73f3418a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Ticket Management - Generic
+      playbookId: Ticket Management - Generic
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: b0ab22d5-3713-42df-8820-a04c73f3418a
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 220,
+          "y": 3670
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "104_110_#default#": 0.56,
+      "104_119_yes": 0.51,
+      "114_32_#default#": 0.26,
+      "114_70_Approved": 0.18,
+      "121_122_yes": 0.47,
+      "121_70_#default#": 0.27,
+      "67_112_#default#": 0.51,
+      "68_112_#default#": 0.58,
+      "84_32_#default#": 0.31
+    },
+    "paper": {
+      "dimensions": {
+        "height": 4145,
+        "width": 1490,
+        "x": -310,
+        "y": -50
+      }
+    }
+  }
