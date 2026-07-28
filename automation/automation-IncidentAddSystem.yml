@@ -1,0 +1,75 @@
+args:
+- default: true
+  description: (default) a unique name that will be used in the investigation e.g.
+    when installing an agent.
+  name: name
+  supportedModules: []
+- description: User name in the remote system.
+  name: username
+  supportedModules: []
+- description: (mandatory) Host IP address or network identifiable name.
+  name: host
+  required: true
+  supportedModules: []
+- description: Workgroup or domain of the user.
+  name: workgroup
+  supportedModules: []
+- description: User password used to log in to the remote system (by default you will
+    be prompted to enter the password once you hit enter, however you can type the
+    password in the command line too. If you choose the latter password will be shown).
+  name: password
+  secret: true
+  supportedModules: []
+- description: Choose credentials to apply to system (instead of username & password).
+  name: credentialSet
+  supportedModules: []
+- description: Choose non-standard SMB port (seldom used).
+  name: dmbPort
+  supportedModules: []
+- description: Choose non-standard SSH port (default is 22).
+  name: sshPort
+  supportedModules: []
+- description: OS of the remote system (windows/linux/OSX).
+  name: os
+  supportedModules: []
+- description: Choose amd64 for 64bit systems and i386 for 32bit systems.
+  name: arch
+  supportedModules: []
+- description: Engine to be used if required.
+  name: engineName
+  supportedModules: []
+comment: |
+  Add a remote system (such as a desktop under investigation) to an investigation (this will allow you to install and agent on the system)
+commonfields:
+  id: IncidentAddSystem
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+engineinfo: {}
+mainengineinfo: {}
+name: IncidentAddSystem
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  return executeCommand('AlertAddSystem', args)
+scripttarget: 0
+signature: U+BMM6E2DEeYCAAyci1rvp7prAouayDX0We3qpDtWkYSMcUadTva4UaboV1kXyDDLleOuUHWAzodyx8e8EAu6nZpbdJvV9wizJR1fZrx+0ThfJC2szLLjhbbIuJ8D6djDbDlWSXFL4WG9X2pRSZr2nRHWEqoJPV+wlxtKQkJLV9pkEcgld3GCuq1AwM4Fzt15nOJpcv9/1Q3W5e2Rh0BnNn6HCWmx97AAgdxojcTPltYeUEtlJ/InqLFmZF7wFC75MFVRZfMctllMmS1ouuGPKxVvMC0tK9tLMo8dnQ3ZfRzaPyQENVOWkRyFosvgsTNJe5Wfh2Gjk+98mmi+WFu5w==
+system: true
+tags:
+- management
+type: javascript
