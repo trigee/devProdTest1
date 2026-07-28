@@ -1,0 +1,754 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.8.0
+    isoverridable: false
+    itemVersion: 2.8.2
+    packID: CommonPlaybooks
+    packName: Common Playbooks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: "`Ticket Management - Generic` allows you to open new tickets or update
+  comments to the existing ticket in the following ticketing systems:\n-ServiceNow
+  \n-Zendesk \nusing the following sub-playbooks:\n-`ServiceNow - Ticket Management`\n-`Zendesk
+  - Ticket Management`"
+id: Ticket Management - Generic
+inputs:
+- description: A short description of the ticket.
+  key: serviceNowShortDescription
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The impact for the new ticket. Leave empty for ServiceNow default impact.
+  key: serviceNowImpact
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The urgency of the new ticket. Leave empty for ServiceNow default urgency.
+  key: serviceNowUrgency
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The severity of the new ticket. Leave empty for ServiceNow default
+    severity.
+  key: serviceNowSeverity
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The ServiceNow ticket type. Options are "incident", "problem", "change_request",
+    "sc_request", "sc_task", or "sc_req_item". Default is "incident".
+  key: serviceNowTicketType
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The category of the ServiceNow ticket.
+  key: serviceNowCategory
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The group to which to assign the new ticket.
+  key: serviceNowAssignmentGroup
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The urgency with which the ticket should be addressed. Allowed values
+    are "urgent", "high", "normal", or "low".
+  key: ZendeskPriority
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The user who requested this ticket.
+  key: ZendeskRequester
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The state of the ticket. Allowed values are "new", "open", "pending",
+    "hold", "solved", or "closed".
+  key: ZendeskStatus
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The value of the subject field for this ticket.
+  key: ZendeskSubject
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The array of tags applied to this ticket.
+  key: ZendeskTags
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The type of this ticket. Allowed values are "problem", "incident",
+    "question", or "task".
+  key: ZendeskType
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The agent currently assigned to the ticket.
+  key: ZendeskAssigne
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The users currently CC'ed on the ticket.
+  key: ZendeskCollaborators
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The ticket description.
+  key: description
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: 'Whether to append a new comment to the ticket for each endpoint in
+    the incident. Possible values: True/False.'
+  key: addCommentPerEndpoint
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+- description: Comment for the ticket.
+  key: CommentToAdd
+  playbookInputQuery: null
+  required: false
+  value: {}
+name: Ticket Management - Generic
+outlinetasks: {}
+outputs:
+- contextPath: ServiceNow.Ticket.ID
+  description: ServiceNow ticket ID.
+- contextPath: Zendesk.Ticket.id
+  description: Zendesk ticket ID.
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "19"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8e482cde-8abb-4c9d-86a5-15c8ce3f7aa7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 8e482cde-8abb-4c9d-86a5-15c8ce3f7aa7
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": -280
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "12"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      Action:
+        complex:
+          root: Action
+      CommentToAdd:
+        complex:
+          root: inputs.CommentToAdd
+      addCommentPerEndpoint:
+        complex:
+          root: inputs.addCommentPerEndpoint
+      description:
+        complex:
+          root: inputs.description
+      serviceNowAssignmentGroup:
+        complex:
+          root: inputs.serviceNowAssignmentGroup
+      serviceNowCategory:
+        complex:
+          root: inputs.serviceNowCategory
+      serviceNowImpact:
+        complex:
+          root: inputs.serviceNowImpact
+      'serviceNowSeverity ':
+        complex:
+          root: inputs.serviceNowSeverity
+      serviceNowShortDescription:
+        complex:
+          root: inputs.serviceNowShortDescription
+      serviceNowTicketID:
+        complex:
+          accessor: ServiceNowTicketID
+          root: parentIncidentContext
+      serviceNowTicketType:
+        complex:
+          root: inputs.serviceNowTicketType
+      serviceNowUrgency:
+        complex:
+          root: inputs.serviceNowUrgency
+    separatecontext: true
+    skipunavailable: true
+    task:
+      brand: ""
+      description: '`ServiceNow - Ticket Management` allows you to open new tickets
+        or update comments to the existing ticket using the playbook''s tasks. '
+      id: f9e4560c-d621-4bf8-8849-f00beaa70d70
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ServiceNow - Ticket Management
+      playbookId: ServiceNow - Ticket Management
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: f9e4560c-d621-4bf8-8849-f00beaa70d70
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 230,
+          "y": 350
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      Action:
+        complex:
+          root: Action
+      CommentToAdd:
+        complex:
+          root: inputs.CommentToAdd
+      ZendeskAssigne:
+        complex:
+          root: inputs.ZendeskAssigne
+      ZendeskCollaborators:
+        complex:
+          root: inputs.ZendeskCollaborators
+      ZendeskPriority:
+        complex:
+          root: inputs.ZendeskPriority
+      ZendeskRequester:
+        complex:
+          root: inputs.ZendeskRequester
+      ZendeskStatus:
+        complex:
+          root: inputs.ZendeskStatus
+      ZendeskSubject:
+        complex:
+          root: inputs.ZendeskSubject
+      ZendeskTags:
+        complex:
+          root: inputs.ZendeskTags
+      ZendeskTicketID:
+        complex:
+          accessor: ZendeskTicketID
+          root: parentIncidentContext
+      ZendeskType:
+        complex:
+          root: inputs.ZendeskType
+      addCommentPerEndpoint:
+        complex:
+          root: inputs.addCommentPerEndpoint
+      description:
+        complex:
+          root: inputs.description
+    separatecontext: true
+    skipunavailable: true
+    task:
+      brand: ""
+      description: '`Zendesk - Ticket Management` allows you to open new tickets or
+        update comments to the existing ticket using the playbook''s tasks. '
+      id: bc8a5228-c2b8-46af-8e21-d7687a8edffe
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Zendesk - Ticket Management
+      playbookName: Zendesk - Ticket Management
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: bc8a5228-c2b8-46af-8e21-d7687a8edffe
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 660,
+          "y": 350
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 66b87a8c-c5a1-489c-8cef-ea4c198faa4e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 66b87a8c-c5a1-489c-8cef-ea4c198faa4e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 870,
+          "y": 950
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: ZendeskTicketID
+      value:
+        complex:
+          accessor: id
+          root: alert
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs==rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: Zendesk.Ticket.id
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: Zendesk.Ticket.id
+              lhsB: {}
+              options: {}
+              optionsB: {}
+              rhs: {}
+              rhsB: {}
+              then: {}
+            operator: If-Then-Else
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: Builtin
+      description: |-
+        Sets the `ZendeskTicketID` key to the alert's context.
+        If the output `Zendesk.Ticket.id` from sub-playbook `Zendesk - Ticket Management` is defined, set the ticket ID to the `ZendeskTicketID` key in the alert context else set the value of the `ZendeskTicketID` key as empty on the alert's context.
+      id: 159abeff-fe4e-42fc-8be0-67f4ba0f245b
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Set Zendesk Ticket ID
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setParentIncidentContext
+      type: regular
+      version: -1
+    taskid: 159abeff-fe4e-42fc-8be0-67f4ba0f245b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 660,
+          "y": 530
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: ServiceNowTicketID
+      value:
+        complex:
+          accessor: id
+          root: alert
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs==rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: ServiceNow.Ticket.ID
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: ServiceNow.Ticket.ID
+              lhsB: {}
+              options: {}
+              optionsB: {}
+              rhs: {}
+              rhsB: {}
+              then: {}
+            operator: If-Then-Else
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: Builtin
+      description: |-
+        Sets the `ServiceNowTicketID` key to the alert's context.
+        If the output `ServiceNow.Ticket.ID` from sub-playbook `ServiceNow - Ticket Management` is defined, set the ticket ID to the `ServiceNowTicketID` key in the alert context else set the value of the `ServiceNowTicketID` key as empty on the alert's context.
+      id: a27c8fa0-c258-41db-84e9-8b93a26c1623
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Set ServiceNow Ticket ID
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setParentIncidentContext
+      type: regular
+      version: -1
+    taskid: a27c8fa0-c258-41db-84e9-8b93a26c1623
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 230,
+          "y": 530
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Endpoint
+      value:
+        complex:
+          accessor: id
+          root: alert
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs==rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: alert.hostname
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: alert.hostname
+              lhsB: {}
+              options: {}
+              optionsB: {}
+              rhs: {}
+              rhsB: {}
+              then:
+                value:
+                  simple: There is no hostname in the alert
+            operator: If-Then-Else
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: Builtin
+      description: |-
+        Sets the `Endpoint` key to the alert's context.
+        If the alert.hostname  is defined on the alert context , set the hostname to the `Endpoint` key in the alert context else set the value `There is no hostname in the alert` to the alert's context.
+      id: 4d9c9b8f-0747-4eb0-8474-99316ead7621
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: 'Set Endpoint hostname from alerts '
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setParentIncidentContext
+      type: regular
+      version: -1
+    taskid: 4d9c9b8f-0747-4eb0-8474-99316ead7621
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 440,
+          "y": 760
+        }
+      }
+  "16":
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Action
+      value:
+        simple: NewTicket
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: c8d353d1-1319-420f-8831-8d04cb40effd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set key to open a ticket
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: c8d353d1-1319-420f-8831-8d04cb40effd
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 640,
+          "y": 40
+        }
+      }
+  "17":
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Action
+      value:
+        simple: AddComment
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 2e759af3-962e-48ad-8493-c4052d84f866
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set key to add a comment
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 2e759af3-962e-48ad-8493-c4052d84f866
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 210,
+          "y": 40
+        }
+      }
+  "18":
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 0be81a91-6f8f-488c-8cdc-9df4684fe290
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Ticket Management
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 0be81a91-6f8f-488c-8cdc-9df4684fe290
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": 210
+        }
+      }
+  "19":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: ServiceNowTicketID
+                root: parentIncidentContext
+          operator: isEmpty
+          right:
+            value: {}
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: ZendeskTicketID
+                root: parentIncidentContext
+          operator: isEmpty
+      label: New Ticket
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: ZendeskTicketID
+                root: parentIncidentContext
+          operator: isNotEmpty
+        - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: ServiceNowTicketID
+                root: parentIncidentContext
+          operator: isNotEmpty
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: hostname
+                root: alert
+          operator: notIn
+          right:
+            iscontext: true
+            value:
+              simple: parentIncidentContext.Endpoint
+      label: Add comment
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "4"
+      Add comment:
+      - "17"
+      New Ticket:
+      - "16"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Whether to open a new ticket or comment on an existing ticket.
+      id: 043ae1ef-de8c-490b-8526-cb5fdd8f521b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Open a new ticket or comment on existing ticket
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 043ae1ef-de8c-490b-8526-cb5fdd8f521b
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": -140
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 1295,
+        "width": 1040,
+        "x": 210,
+        "y": -280
+      }
+    }
+  }
