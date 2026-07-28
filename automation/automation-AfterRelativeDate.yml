@@ -1,0 +1,79 @@
+args:
+- description: Date value to check - Can be any time format. ex. "2020-01-01T00:00:00".
+  name: left
+  required: true
+  supportedModules: []
+- description: Relative time ex. "6 months ago".
+  name: right
+  required: true
+  supportedModules: []
+comment: Checks the given datetime has occured after the provided relative time.
+commonfields:
+  id: AfterRelativeDate
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.22
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.8428455
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: AfterRelativeDate
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('AfterRelativeDate', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.22'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  import dateparser
+
+
+
+
+
+
+  def check_date(value, relative_date):
+      settings = {"TO_TIMEZONE": "UTC", "RETURN_AS_TIMEZONE_AWARE": False}
+      v = dateparser.parse(value, settings=settings)  # type: ignore[arg-type]
+      da = dateparser.parse(relative_date, settings=settings)  # type: ignore[arg-type]
+      return v > da  # type: ignore
+
+
+  def main():
+      value = demisto.args().get("left")
+      if isinstance(value, list):
+          value = demisto.args().get("left")[0]
+
+      relative_date = demisto.args().get("right")
+      return_results(check_date(value, relative_date))
+
+
+  if __name__ in ("__builtin__", "builtins", "__main__"):
+      main()
+
+  register_module_line('AfterRelativeDate', 'end', __line__())
+scripttarget: 0
+signature: GR6uQMyNwVIZgkhtXb5/huEca1pnxnajJwzB3XiF/tY6pwxjHCWBoZ1xn/7nIVFlyaoCHIAVlFgEK+tpftcyKcDSB7t3dXVLE6H1KQrJPBsu1zbeLbxLOAuycS/eQGUUJLBQ+xqodRxGOmMFgfi9bIjTcsXY1bSUdRglFGvA86Y+kVA3NVIHk8Dj8qjrGOhzcAq7X6yxYDMQl9eguTAgvUYE2M7sI8AxkBtSVmsF32Q5RJGK8DSgUNU+0JgokEaLN0XGrN+bgxq+rZ80LFdwxqVXnfeO5QABvX67Nm6bGIuRGuvw2CIW7B/BuMgbk3dAiM6gno4TpE3L76iQG11HYA==
+subtype: python3
+system: true
+tags:
+- date
+- filter
+- Condition
+type: python
