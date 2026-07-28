@@ -1,0 +1,1600 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.8.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook handles alerts related to dozens of Prisma Cloud public VM alerts.
+  It determines the severity of the ingested alert based on data returned from Cortex commands interacting with the Prisma Cloud API and creates new issues in either Slack or Jira, with all of the relevant information.
+  The playbook updates the Cortex alert’s layout with information the analyst can use to investigate the alert. It also extracts and enriches indicators using existing configured integrations and then closes the investigation.
+
+  The flow of this playbook is as following:
+  1) Check the CSP type.
+  2) Check whether there's a public IP associated to the instance. In case there is, it will continue to other steps, if not, it will set the severity of the alert to "Low" and will close the alert.
+  3) Check if there are any vulnerabilities or findings related to the instance.
+  4) Check if there are any IAM permissions associated to the instance.
+  5) Set the alert severity based on the results:
+    - Low - No public IP was found.
+    - Medium - Public IP was found, other checks didn't return results.
+    - High - Public IP was found and also one of the other checks returned results.
+    - Critical - Public IP was found and both of the other checks returned results.
+  6) Notifications and ticketing with 3rd party systems.
+  7) Close the alert.
+
+  This playbook will run when a new alert is created with the **Prisma Cloud - VM Alert Prioritization** alert type which also includes a dedicated layout.
+id: Prisma Cloud - VM Alert Prioritization
+inputSections:
+- description: Incident management settings and data, including escalation processes,
+    user engagements, and ticketing methods
+  inputs:
+  - JiraProjectName
+  - JiraIssueTypeName
+  - CloseIncidentAfterNotification
+  - SlackChannelName
+  - SlackChannelID
+  name: Incident Management
+inputs:
+- description: The project name with which to associate the issue.
+  key: JiraProjectName
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The name of the issue type to be opened.
+  key: JiraIssueTypeName
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Whether to close the incident after Jira/Slack issue was opened. Default
+    value is "True".
+  key: CloseIncidentAfterNotification
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+- description: The name of the Slack channel to which to send the message.
+  key: SlackChannelName
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The ID of the Slack channel to which to send the message.
+  key: SlackChannelID
+  playbookInputQuery: null
+  required: false
+  value: {}
+name: Prisma Cloud - VM Alert Prioritization
+outlinetasks: {}
+outputSections:
+- description: Generic group for outputs
+  name: General (Outputs group)
+  outputs: []
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 0dc00a8d-c564-45af-88f2-66115d2177d9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 0dc00a8d-c564-45af-88f2-66115d2177d9
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 830,
+          "y": -690
+        }
+      }
+  "1":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: resourcecloudtype
+                root: alert
+          operator: isEqualString
+          right:
+            value:
+              simple: aws
+      label: aws
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: resourcecloudtype
+                root: alert
+          operator: isEqualString
+          right:
+            value:
+              simple: gcp
+      label: gcp
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: resourcecloudtype
+                root: alert
+          operator: isEqualString
+          right:
+            value:
+              simple: azure
+      label: azure
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      aws:
+      - "5"
+      azure:
+      - "7"
+      gcp:
+      - "6"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: ' '
+      id: dedb294b-c9bf-4446-8ff5-9480bb89894a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check CSP type
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: dedb294b-c9bf-4446-8ff5-9480bb89894a
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 830,
+          "y": -510
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "26"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        simple: config from cloud.resource where api.name = 'gcloud-compute-instances-list'
+          AND json.rule = networkInterfaces[*].accessConfigs[*].natIP size greater
+          than 0 and networkInterfaces[*].accessConfigs[*].natIP none empty and id
+          equals "${alert.resourceid}"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Search configuration inventory on the Prisma Cloud platform using
+        RQL language. Use this command for all queries that start with 'config'.
+      id: c9d0eff1-4c0b-4b93-8cda-51b1090d9b19
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Verify if public IP exists (GCP)
+      playbooktaskmissingcomponent: null
+      script: '|||prisma-cloud-config-search'
+      type: regular
+      version: -1
+    taskid: c9d0eff1-4c0b-4b93-8cda-51b1090d9b19
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 830,
+          "y": -100
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "26"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        simple: config from cloud.resource where api.name = 'azure-vm-list' AND json.rule
+          = ['properties.networkProfile'].networkInterfaces[*].ipConfigurations[*].publicIpAddress
+          exists and id equals "${alert.resourceid}"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Search configuration inventory on the Prisma Cloud platform using
+        RQL language. Use this command for all queries that start with 'config'.
+      id: 22c3cc20-acf7-46f1-84d3-7e19ff758b6b
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Verify if public IP exists (Azure)
+      playbooktaskmissingcomponent: null
+      script: '|||prisma-cloud-config-search'
+      type: regular
+      version: -1
+    taskid: 22c3cc20-acf7-46f1-84d3-7e19ff758b6b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1450,
+          "y": -110
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "35"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: be525c8b-4558-4d5a-8dbd-c7cf62ef811f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: AWS
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: be525c8b-4558-4d5a-8dbd-c7cf62ef811f
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 130,
+          "y": -300
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 11cc02f9-62de-4d63-8f01-f5ffd510c2d6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: GCP
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 11cc02f9-62de-4d63-8f01-f5ffd510c2d6
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 830,
+          "y": -295
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5b2c1079-75b3-4108-8026-d5398c1572a2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Azure
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 5b2c1079-75b3-4108-8026-d5398c1572a2
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1450,
+          "y": -300
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "33"
+    note: false
+    quietmode: 0
+    reputationcalc: 3
+    scriptarguments:
+      rrn:
+        complex:
+          accessor: rrn
+          root: PrismaCloud.Config
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Get resource host finding list.
+      id: a31c1962-3e3d-4f45-8806-883edc26b56b
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Check if any findings exist
+      playbooktaskmissingcomponent: null
+      script: '|||prisma-cloud-host-finding-list'
+      type: regular
+      version: -1
+    taskid: a31c1962-3e3d-4f45-8806-883edc26b56b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 560,
+          "y": 580
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "32"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        simple: config from iam where source.cloud.resource.name = '${alert.resourceid}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Get resource host finding list.
+      id: adb269f0-5220-4fd6-8ffa-14e035dd15ad
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Check if any IAM permissions attached to resource
+      playbooktaskmissingcomponent: null
+      script: '|||prisma-cloud-permission-list'
+      type: regular
+      version: -1
+    taskid: adb269f0-5220-4fd6-8ffa-14e035dd15ad
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1100,
+          "y": 580
+        }
+      }
+  "10":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: findingId
+                root: PrismaCloud.HostFinding
+          operator: isNotEmpty
+          right:
+            value: {}
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: id
+                root: PrismaCloud.Permission
+          operator: isNotEmpty
+      label: Critical
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: findingId
+                root: PrismaCloud.HostFinding
+          operator: isNotEmpty
+        - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: id
+                root: PrismaCloud.Permission
+          operator: isNotEmpty
+      label: High
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "16"
+      Critical:
+      - "11"
+      High:
+      - "15"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: ' '
+      id: 3c0c5248-ae55-4227-8e0c-44e6375f45db
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check severity based on results
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 3c0c5248-ae55-4227-8e0c-44e6375f45db
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 830,
+          "y": 1310
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      severity:
+        simple: "4"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: b44a38ab-a57e-42ba-8d8b-d706ba32fced
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Set severity as Critical
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlert
+      type: regular
+      version: -1
+    taskid: b44a38ab-a57e-42ba-8d8b-d706ba32fced
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 830,
+          "y": 1550
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      severity:
+        simple: "3"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: 8373bf8f-0a69-4a6a-873a-a2f28279b5b4
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Set severity as High
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlert
+      type: regular
+      version: -1
+    taskid: 8373bf8f-0a69-4a6a-873a-a2f28279b5b4
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1260,
+          "y": 1550
+        }
+      }
+  "16":
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      severity:
+        simple: "2"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: 8ab0db50-aef7-412b-8331-0c649663b823
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Set severity as Medium
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlert
+      type: regular
+      version: -1
+    taskid: 8ab0db50-aef7-412b-8331-0c649663b823
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 400,
+          "y": 1550
+        }
+      }
+  "17":
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "24"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      severity:
+        simple: "1"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: d0099e0d-69ce-4cc5-8d08-9bbbc7271815
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Set severity as Low
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlert
+      type: regular
+      version: -1
+    taskid: d0099e0d-69ce-4cc5-8d08-9bbbc7271815
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -30,
+          "y": 1550
+        }
+      }
+  "18":
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "37"
+      - "38"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: jira-v2
+      description: Creates a new issue in Jira.
+      id: 400351c3-54f7-46cf-83cd-336e4e361e6a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Notifications and ticketing
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 400351c3-54f7-46cf-83cd-336e4e361e6a
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 830,
+          "y": 1800
+        }
+      }
+  "19":
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 3b2e6a13-3d33-4208-88e1-9f9b84b54a06
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 3b2e6a13-3d33-4208-88e1-9f9b84b54a06
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 830,
+          "y": 3100
+        }
+      }
+  "20":
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "23"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      description:
+        simple: |-
+          *This alert was created automatically with Cortex.*
+
+          *Prisma Cloud - Public VM alert*
+          *Please review the following details:*
+
+          *Asset ID*: ${PrismaCloud.Config.assetId}
+
+          *RRN*: ${alert.rrn}
+
+
+          *Findings:*
+          ${FindingsResultsTable}
+
+
+          *IAM Permissions*:
+
+          ${IAMPermissionsTable}
+      issueTypeName:
+        complex:
+          root: inputs.JiraIssueTypeName
+      projectName:
+        complex:
+          root: inputs.JiraProjectName
+      summary:
+        complex:
+          accessor: name
+          root: alert
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: jira-v2
+      description: Creates a new issue in Jira.
+      id: 301823fe-1c5b-442a-8417-9263d8f9b225
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Create a Jira issue
+      playbooktaskmissingcomponent: null
+      script: jira-v2|||jira-create-issue
+      tags:
+      - NotificationsAndTicketing
+      type: regular
+      version: -1
+    taskid: 301823fe-1c5b-442a-8417-9263d8f9b225
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 390,
+          "y": 2490
+        }
+      }
+  "21":
+    continueonerrortype: ""
+    id: "21"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "10"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      columns:
+        simple: "Source Service,Source Resource,Granted By Entity Type,Granted By
+          Entity \nName,Granted By Policy Type,Granted By Policy Name,Source Cloud
+          Account,Dest Cloud Account,Action,Destination,Last Access"
+      context_path:
+        simple: PrismaCloud.Permission
+      grid_id:
+        simple: prismacloudiamresults
+      keys:
+        simple: sourceCloudServiceName,sourceResourceName,grantedByCloudEntityType,grantedByCloudEntityName,grantedByCloudPolicyType,grantedByCloudPolicyName,sourceCloudAccount,destCloudAccount,effectiveActionName,destResourceType,lastAccessStatus
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Creates a Grid table from items or key-value pairs.
+      id: 04c06126-c760-4f23-851b-dee54c4a727f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set IAM results grid
+      playbooktaskmissingcomponent: null
+      script: SetGridField
+      type: regular
+      version: -1
+    taskid: 04c06126-c760-4f23-851b-dee54c4a727f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1100,
+          "y": 1080
+        }
+      }
+  "22":
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "10"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      columns:
+        simple: Title,Normalized Name,Source,Type,Score,Severity
+      context_path:
+        simple: PrismaCloud.HostFinding
+      grid_id:
+        simple: prismacloudfindingsresults
+      keys:
+        simple: title,normalizedName,source,type,score,severity
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Creates a Grid table from items or key-value pairs.
+      id: 9046630c-a8d0-4646-8040-81fc587629c6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set findings results grid
+      playbooktaskmissingcomponent: null
+      script: SetGridField
+      type: regular
+      version: -1
+    taskid: 9046630c-a8d0-4646-8040-81fc587629c6
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 560,
+          "y": 1080
+        }
+      }
+  "23":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.CloseIncidentAfterNotification
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "23"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "19"
+      "yes":
+      - "24"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: af477e87-6b96-49ac-8f74-8e7061850987
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Close XSOAR alert?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: af477e87-6b96-49ac-8f74-8e7061850987
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 830,
+          "y": 2680
+        }
+      }
+  "24":
+    continueonerrortype: ""
+    id: "24"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "19"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.close.inv
+      id: b55e07cf-64f8-40ee-8f96-bf775f0bcec0
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close investigation
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: b55e07cf-64f8-40ee-8f96-bf775f0bcec0
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -30,
+          "y": 2900
+        }
+      }
+  "25":
+    continueonerrortype: ""
+    id: "25"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+      - "9"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 08cb9c95-c4e1-499d-8ac1-8966cc1690a1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check for IAM permissions and vulnerabilities
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 08cb9c95-c4e1-499d-8ac1-8966cc1690a1
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 830,
+          "y": 400
+        }
+      }
+  "26":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: id
+                root: PrismaCloud.Config
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "26"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "17"
+      "yes":
+      - "25"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: ' '
+      id: 8d1853cb-4627-4bc8-87e3-2cf9e94389e0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Was a public IP found?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 8d1853cb-4627-4bc8-87e3-2cf9e94389e0
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 830,
+          "y": 190
+        }
+      }
+  "27":
+    continueonerrortype: ""
+    id: "27"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "30"
+      - "31"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 76fb95be-23b7-4cee-82df-6bb55bce9a48
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Jira
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 76fb95be-23b7-4cee-82df-6bb55bce9a48
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 400,
+          "y": 2160
+        }
+      }
+  "28":
+    continueonerrortype: ""
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "29"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: db834cb7-fa3b-40d1-8eec-0e11cd0cec3d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Slack
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: db834cb7-fa3b-40d1-8eec-0e11cd0cec3d
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1240,
+          "y": 2160
+        }
+      }
+  "29":
+    continueonerrortype: ""
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "23"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      channel:
+        complex:
+          root: inputs.SlackChannelName
+      channel_id:
+        complex:
+          root: inputs.SlackChannelID
+      message:
+        simple: "*This alert was created automatically with Cortex.*\n\n*Prisma Cloud
+          - Public VM alert*\n*Please review the following details:*\n\n*Asset ID*:
+          ${PrismaCloud.Config.assetId}\n\n*RRN*: ${alert.rrn}\n\n\n*Findings:*\n```\n${.=JSON.stringify(val.incident.prismacloudfindingsresults,null,2)}\n```\n\n*IAM
+          Permissions*:\n``` \n${.=JSON.stringify(val.incident.prismacloudiamresults,null,2)}\n```\n"
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Sends a message to a user, group, or channel.
+      id: 242159b4-0494-498d-87d6-e89b2a06056b
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Send a slack message
+      playbooktaskmissingcomponent: null
+      script: SlackV3|||send-notification
+      tags:
+      - NotificationsAndTicketing
+      type: regular
+      version: -1
+    taskid: 242159b4-0494-498d-87d6-e89b2a06056b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1240,
+          "y": 2460
+        }
+      }
+  "30":
+    continueonerrortype: ""
+    id: "30"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: IAMPermissionsTable
+      value:
+        complex:
+          accessor: prismacloudiamresults
+          root: alert
+          transformers:
+          - args:
+              headers: {}
+              is_auto_json_transform: {}
+              json_transform_properties: {}
+              title: {}
+            operator: JsonToTable
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: ba8ba196-85ed-489e-838c-c25865beeaf7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Format IAM Permissions as markdown table
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: ba8ba196-85ed-489e-838c-c25865beeaf7
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 180,
+          "y": 2320
+        }
+      }
+  "31":
+    continueonerrortype: ""
+    id: "31"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: FindingsResultsTable
+      value:
+        complex:
+          accessor: prismacloudfindingsresults
+          root: alert
+          transformers:
+          - args:
+              headers: {}
+              is_auto_json_transform: {}
+              json_transform_properties: {}
+              title: {}
+            operator: JsonToTable
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: ed51c23d-1794-4411-8fb2-2fa328742ed7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Format findings as markdown table
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: ed51c23d-1794-4411-8fb2-2fa328742ed7
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 610,
+          "y": 2320
+        }
+      }
+  "32":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: id
+                root: PrismaCloud.Permission
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "32"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "10"
+      "yes":
+      - "21"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 451ca1d4-666a-46c8-85db-d11aafa3d8fe
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Any results for IAM query?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 451ca1d4-666a-46c8-85db-d11aafa3d8fe
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1100,
+          "y": 820
+        }
+      }
+  "33":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: findingId
+                root: PrismaCloud.HostFinding
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "33"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "10"
+      "yes":
+      - "22"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1c83a555-e26c-4c27-8f0f-39dbbd7a8076
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Any results for findings query?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 1c83a555-e26c-4c27-8f0f-39dbbd7a8076
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 560,
+          "y": 820
+        }
+      }
+  "34":
+    continueonerrortype: ""
+    id: "34"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "26"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        simple: config from cloud.resource where api.name = 'aws-ec2-describe-instances'
+          AND json.rule = networkInterfaces[*].privateIpAddresses[*].association.publicIp
+          exists and instanceId equals "${alert.resourceid}"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Search configuration inventory on the Prisma Cloud platform using
+        RQL language. Use this command for all queries that start with 'config'.
+      id: 356451eb-76dd-4b4e-888e-5b514a40af7d
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Verify if public IP exists (AWS)
+      playbooktaskmissingcomponent: null
+      script: '|||prisma-cloud-config-search'
+      type: regular
+      version: -1
+    taskid: 356451eb-76dd-4b4e-888e-5b514a40af7d
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -90,
+          "y": 10
+        }
+      }
+  "35":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: resourceid
+                root: alert
+          operator: startWith
+          right:
+            value:
+              simple: eni
+      label: "yes"
+    continueonerrortype: ""
+    id: "35"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "34"
+      "yes":
+      - "36"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 434e6363-0a85-4e94-8042-23bbdf56a4fd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is this a network interface?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 434e6363-0a85-4e94-8042-23bbdf56a4fd
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 130,
+          "y": -160
+        }
+      }
+  "36":
+    continueonerrortype: ""
+    id: "36"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "26"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        simple: config from cloud.resource where api.name = 'aws-ec2-describe-instances'
+          AND json.rule = networkInterfaces[*].networkInterfaceId equals "${alert.resourceid}"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Search configuration inventory on the Prisma Cloud platform using
+        RQL language. Use this command for all queries that start with 'config'.
+      id: b69bc1f4-7ebf-46a1-874b-b1159d026738
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Verify if public IP of related instance exists (AWS)
+      playbooktaskmissingcomponent: null
+      script: '|||prisma-cloud-config-search'
+      type: regular
+      version: -1
+    taskid: b69bc1f4-7ebf-46a1-874b-b1159d026738
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 350,
+          "y": 10
+        }
+      }
+  "37":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.JiraProjectName
+          operator: isNotEmpty
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.JiraIssueTypeName
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "37"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "23"
+      "yes":
+      - "27"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c892c2c3-39e8-4e86-8c54-767360b1600c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Open Jira issue?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c892c2c3-39e8-4e86-8c54-767360b1600c
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 400,
+          "y": 1950
+        }
+      }
+  "38":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.SlackChannelName
+          operator: isNotEmpty
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.SlackChannelID
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "38"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "23"
+      "yes":
+      - "28"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 31a1f2ba-107a-4da3-80f9-9f9928e850fc
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Send a Slack message?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 31a1f2ba-107a-4da3-80f9-9f9928e850fc
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1240,
+          "y": 1950
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "10_11_Critical": 0.59,
+      "1_6_gcp": 0.51,
+      "26_17_#default#": 0.27,
+      "37_27_yes": 0.5,
+      "38_28_yes": 0.56
+    },
+    "paper": {
+      "dimensions": {
+        "height": 3855,
+        "width": 1920,
+        "x": -90,
+        "y": -690
+      }
+    }
+  }
