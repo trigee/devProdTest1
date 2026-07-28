@@ -1,0 +1,175 @@
+args:
+- description: List of Prisma Cloud assets to return.
+  isArray: true
+  name: assets
+  supportedModules: []
+- defaultValue: id,cloudType,resourceName,resourceType,regionId,accountId,accountName,hasAlert,service,ip,fqdn
+  description: Fields to be returned (comma separated string).
+  isArray: true
+  name: fields
+  supportedModules: []
+comment: Recursively extracts specified fields from provided list of assets for Prisma
+  Cloud attribution use case.
+commonfields:
+  id: PrismaCloudAttribution
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: PrismaCloudAttribution
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: PrismaCloud.Attribution.accountId
+  description: Cloud Account ID.
+- contextPath: PrismaCloud.Attribution.accountName
+  description: Cloud Account Name.
+- contextPath: PrismaCloud.Attribution.cloudType
+  description: Cloud Type.
+- contextPath: PrismaCloud.Attribution.fqdn
+  description: FQDNs associated to the resource.
+- contextPath: PrismaCloud.Attribution.rrn
+  description: Resource RRN.
+- contextPath: PrismaCloud.Attribution.ip
+  description: IPs associated to the resource.
+- contextPath: PrismaCloud.Attribution.regionId
+  description: Cloud Region ID.
+- contextPath: PrismaCloud.Attribution.hasAlert
+  description: Resource has Prisma Cloud Alert.
+- contextPath: PrismaCloud.Attribution.resourceName
+  description: Resource Name.
+- contextPath: PrismaCloud.Attribution.resourceType
+  description: Resource Type.
+- contextPath: PrismaCloud.Attribution.service
+  description: Cloud Service.
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('PrismaCloudAttribution', 'start', __line__())
+  CONSTANT_PACK_VERSION = '4.4.30'
+  demisto.debug('pack id = PrismaCloud, pack version = 4.4.30')
+
+
+
+
+
+  """PrismaCloudAttribution
+
+  """
+
+
+  from collections.abc import Iterable
+  from typing import Any
+
+  IPADDRESS_KEYS = ["publicIpAddress", "natIP", "publicIp", "inboundIpAddress", "ipAddress", "IPAddress"]
+  FQDN_KEYS = [
+      "publicDnsName",
+      "dnsname",
+      "domainName",
+      "name",
+      "dnsName",
+      "hostName",
+      "properties.hostName",
+      "fqdn",
+      "enabledHostNames",
+      "web",
+  ]
+
+  """ STANDALONE FUNCTION """
+
+
+  def recursive_find(keys: list[str] | str, value: Iterable[Any]) -> Iterable[Any]:
+      if not isinstance(keys, list):
+          keys = [keys]
+      for k, v in value.items() if isinstance(value, dict) else enumerate(value) if isinstance(value, list) else []:
+          if k in keys:
+              yield v
+          elif isinstance(v, list):
+              for result in recursive_find(keys, v):
+                  yield result
+          elif isinstance(v, dict):
+              for result in recursive_find(keys, v):
+                  yield result
+
+
+  def handle_data(data: dict[str, Any], fields: list[str]) -> dict[str, Any]:
+      out_dict: dict = {}
+      if "ip" in fields:
+          ips = list(set(recursive_find(IPADDRESS_KEYS, data)))
+          out_dict["ip"] = ips if ips else None
+      if "fqdn" in fields:
+          fqdns = list({fq for fq in recursive_find(FQDN_KEYS, data) if fq.count(".") > 0})
+          out_dict["fqdn"] = fqdns if fqdns else None
+      return out_dict
+
+
+  """ COMMAND FUNCTION """
+
+
+  def attribution_command(args: dict[str, Any]) -> CommandResults:
+      assets = argToList(args.get("assets", []))
+      fields = argToList(
+          args.get("fields", "id,cloudType,resourceName,resourceType,regionId,accountId,accountName,hasAlert,service,ip,fqdn")
+      )
+
+      asset_dict: dict[str, dict[str, Any]] = {}
+
+      for asset in assets:
+          if not isinstance(asset, dict):
+              continue
+          if "rrn" not in asset:
+              continue
+          rrn = asset["rrn"]
+          asset_dict[rrn] = {"rrn": rrn}
+          for k in asset:
+              if k == "name" and "resourceName" in fields:
+                  asset_dict[rrn]["resourceName"] = asset["name"]
+              elif k == "data" and isinstance(asset[k], dict):
+                  asset_dict[rrn].update(handle_data(asset[k], fields))
+              elif k in fields:
+                  asset_dict[rrn][k] = asset[k]
+
+      return CommandResults(outputs=list(asset_dict.values()), outputs_prefix="PrismaCloud.Attribution", outputs_key_field="rrn")
+
+
+  """ MAIN FUNCTION """
+
+
+  def main():
+      try:
+          return_results(attribution_command(demisto.args()))
+      except Exception as ex:
+          return_error(f"Failed to execute PrismaCloudAttribution. Error: {ex!s}")
+
+
+  """ ENTRY POINT """
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('PrismaCloudAttribution', 'end', __line__())
+scripttarget: 0
+signature: UFi80nlHRIkMsXKs2/biagitWBTYmYEhDt8st+S+/dnPMgalt6Liit+NzFxZeCOhGJbK5Dv0OgCxJTEpSF0Y862lQLP7BhMA3adysc2jasD4rgFk/slUy5jtqbDDHbc7qd/t10PD5xicl4YhdfU29mg+jO2DY463nfD/ERVAEbziNuF5pPSOEZRJcWVGwxx3SUBXUSgvH/SUG8+dn5/kknmK+v1C5OisjjEekWEWV9ITG+FdxFUqpGQIOssvASOXcq8T69/s4y3pVcBxKT3oap54MHhV37YikX3PopkrRjgzRtwpvZJoCYlSOjqDLDCF+Ty2cfNV3WhTN4CrT/zpyw==
+subtype: python3
+system: true
+tags: []
+type: python
