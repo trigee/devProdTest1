@@ -1,0 +1,1761 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.9.0
+    isoverridable: false
+    itemVersion: 1.3.54
+    packID: CortexResponseAndRemediation
+    packName: Cortex Response And Remediation
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook addresses the following alerts:
+
+  - Abnormal Azure Temporary Access Pass (TAP) account registration
+
+  Playbook Stages:
+
+  Triage:
+
+  - Retrieve additional data about the TAP registration including start/end times, usage type, and user details
+
+  Investigation:
+
+  - Analyze the reputation of the caller IP address
+  - Examine alerts from Microsoft Defender 365 related to the TAP assigner
+  - Check Azure AD risky user status and risk detections
+  - Review Cortex Core risk level for the user
+  - Verify creation date of the user account in Azure AD to identify recently created accounts
+  - Correlate evidence across multiple sources to determine potential compromise
+
+  Containment:
+
+  - For alerts determined to be true positives, automatically revoke the user's session in Microsoft applications
+  - Upon analyst approval, disable the user account that granted the TAP
+
+  Requirements: For response actions, you need the following integrations:
+
+  - Microsoft Graph User.
+id: silent-Azure Temporary Access Pass (TAP) registered to an account
+inputs: []
+issilent: true
+name: silent-Azure Temporary Access Pass (TAP) registered to an account
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 854d400f-305b-48ba-80fa-c88e55afd147
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 854d400f-305b-48ba-80fa-c88e55afd147
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 581,
+          "y": 173
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      alert_ids:
+        simple: ${alert.id}
+      filter_alert_fields:
+        simple: "false"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns additional information about the TAP, such as its start
+        and end times, it's usage type (single sign-ins / multiple sign-ins), the
+        user who received the TAP and more.
+      id: c4286763-2714-4378-9b6a-2411300354d6
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get TAP registration information
+      playbooktaskmissingcomponent: null
+      script: '|||core-get-cloud-original-alerts'
+      type: regular
+      version: -1
+    taskid: c4286763-2714-4378-9b6a-2411300354d6
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 581,
+          "y": 416
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f72817c7-adae-4dc3-8f45-fa16246d3fce
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Triage
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: f72817c7-adae-4dc3-8f45-fa16246d3fce
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 581,
+          "y": 303
+        }
+      }
+  "3":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    reputationcalc: 2
+    scriptarguments:
+      additional_fields:
+        simple: "false"
+      external_enrichment:
+        simple: "true"
+      ip_list:
+        complex:
+          accessor: hostip
+          root: alert
+          transformers:
+          - operator: LastArrayElement
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This script gathers ip reputation data from multiple integrations
+        and returns an ip entity with consolidated information to the context.
+      id: 260958ed-d7fc-4636-9b01-f827f01a2973
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Enrich Caller IP
+      playbooktaskmissingcomponent: null
+      script: ip-enrichment
+      type: regular
+      version: -1
+    taskid: 260958ed-d7fc-4636-9b01-f827f01a2973
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -84,
+          "y": 780
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+      - "12"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b24c9b75-3239-46f6-84bf-f4b02cd7ef3a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: b24c9b75-3239-46f6-84bf-f4b02cd7ef3a
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 581,
+          "y": 540
+        }
+      }
+  "5":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      detected_date_time_after:
+        simple: ${TimeNow}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Returns a comma-separated list of the Risk Detection objects and
+        their properties.
+      id: 1f7b44ce-6f5c-4c80-85e5-4a2a27c35da2
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get Azure risk detections
+      playbooktaskmissingcomponent: null
+      script: '|||azure-risky-users-risk-detections-list'
+      type: regular
+      version: -1
+    taskid: 1f7b44ce-6f5c-4c80-85e5-4a2a27c35da2
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1369.25,
+          "y": 1042
+        }
+      }
+  "6":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      dateFormat:
+        simple: ISO
+      daysAgo:
+        simple: "2"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        Retrieves the current date and time.
+      id: 89dab4fb-8f8e-4cf8-8a95-899acf6bbcd2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Generate timestamp for searching user detections
+      playbooktaskmissingcomponent: null
+      script: GetTime
+      type: regular
+      version: -1
+    taskid: 89dab4fb-8f8e-4cf8-8a95-899acf6bbcd2
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1369.25,
+          "y": 923
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a1f1717e-df16-4920-831b-e19829851c64
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Caller IP Reputation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: a1f1717e-df16-4920-831b-e19829851c64
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -84,
+          "y": 670
+        }
+      }
+  "9":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: TIMScore
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: IPEnrichment.TIMScore
+                    operator: greaterThanOrEqual
+                    right:
+                      value:
+                        simple: "3"
+                root: IPEnrichment
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: Malicious
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "11"
+      Malicious:
+      - "10"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the external Source IP is malicious (DBotScore above
+        2).
+      id: 6cacb963-fb86-43b9-a697-4f879dccdbfd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check IP reputation
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 6cacb963-fb86-43b9-a697-4f879dccdbfd
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -84,
+          "y": 904
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence.MaliciousIP
+      value:
+        simple: "True"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves a key indicating that the IP is malicious.
+      id: 3b47ccae-3129-43ed-ac30-eeab0bb77557
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save malicious IP result
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 3b47ccae-3129-43ed-ac30-eeab0bb77557
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -84,
+          "y": 1055
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "30"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 06c8ffbf-b587-45dc-88d6-2357c3b6ac52
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Verdict
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 06c8ffbf-b587-45dc-88d6-2357c3b6ac52
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 581,
+          "y": 1696
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "24"
+      - "25"
+      - "26"
+      - "31"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: aaebc8d3-c412-426e-85c2-017533f9eb44
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: User Analysis
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: aaebc8d3-c412-426e-85c2-017533f9eb44
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 581,
+          "y": 668
+        }
+      }
+  "13":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: AzureRiskyUsers.RiskDetection.userPrincipalName
+                    operator: isEqualString
+                    right:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert.event.cloud_best_identity_match
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: AzureRiskyUsers.RiskDetection.riskState
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: atRisk
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: AzureRiskyUsers.RiskDetection
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: confirmedCompromised
+                root: AzureRiskyUsers.RiskDetection
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerror: true
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "11"
+      "yes":
+      - "16"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Checks if there are any unhandled risks for the user in Azure.
+      id: 5d9b1ad7-50d0-4aff-87b1-779670549092
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check related detections for TAP assigner
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 5d9b1ad7-50d0-4aff-87b1-779670549092
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1369.25,
+          "y": 1177
+        }
+      }
+  "16":
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence.AzureRiskDetections
+      value:
+        simple: "True"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves a key indicating risk detections were found for the user
+        in Azure.
+      id: 0822f1f3-f6d1-4578-ae39-7e609542665b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save Azure user risk detections result
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 0822f1f3-f6d1-4578-ae39-7e609542665b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1369.25,
+          "y": 1308
+        }
+      }
+  "17":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "19"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        simple: let _start = now(-2d); AlertEvidence | where Timestamp >= _start |
+          where AccountUpn == "${Core.OriginalAlert.event.cloud_best_identity_match}"
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: 'Advanced hunting is a threat-hunting tool that uses specially
+        constructed queries to examine the past 30 days of event data in Microsoft
+        365 Defender. Details on how to write queries: https://docs.microsoft.com/en-us/microsoft-365/security/defender/advanced-hunting-query-language?view=o365-worldwide.'
+      id: 68a74c93-f09e-47cc-bd77-43823893dc78
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get Defender 365 alerts for TAP assigner
+      playbooktaskmissingcomponent: null
+      script: '|||microsoft-365-defender-advanced-hunting'
+      type: regular
+      version: -1
+    taskid: 68a74c93-f09e-47cc-bd77-43823893dc78
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 349.5,
+          "y": 930
+        }
+      }
+  "19":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: Microsoft365Defender.Hunt.results
+                    operator: isNotEmpty
+                root: Microsoft365Defender.Hunt.results
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerror: true
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "11"
+      "yes":
+      - "23"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Returns a comma-separated list of the Risk Detection objects and
+        their properties.
+      id: 4966fa4c-bb3a-4928-a86a-5636eebfdf3e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check if any unhandled detection matches TAP assigner
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 4966fa4c-bb3a-4928-a86a-5636eebfdf3e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 349.5,
+          "y": 1049
+        }
+      }
+  "23":
+    continueonerrortype: ""
+    id: "23"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence.Defender365Alerts
+      value:
+        simple: "True"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves a key indicating alerts were found in Defender 365.
+      id: 082ad94a-1bf7-49cc-9dce-dd824f951500
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save Defender 365 alerts result
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 082ad94a-1bf7-49cc-9dce-dd824f951500
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 349.5,
+          "y": 1184
+        }
+      }
+  "24":
+    continueonerrortype: ""
+    id: "24"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "47"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f1f523b8-c1b2-454d-8f09-70832476b1b8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: User Risk - Core
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: f1f523b8-c1b2-454d-8f09-70832476b1b8
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1836,
+          "y": 807
+        }
+      }
+  "25":
+    continueonerrortype: ""
+    id: "25"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 84cf01ea-cb7f-46f8-9344-9eb6903f8642
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: User Risk - Azure AD
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 84cf01ea-cb7f-46f8-9344-9eb6903f8642
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1369.25,
+          "y": 807
+        }
+      }
+  "26":
+    continueonerrortype: ""
+    id: "26"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "17"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 4e653669-baf7-408f-ba73-bec4abb19381
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Alerts - Defender 365
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 4e653669-baf7-408f-ba73-bec4abb19381
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 349.5,
+          "y": 811
+        }
+      }
+  "28":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: UserData.RiskLevel
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: HIGH
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: UserData.ID
+                    operator: isEqualString
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.username.[0]
+                root: UserData
+                transformers:
+                - operator: uniq
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "11"
+      "yes":
+      - "29"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the TAP assigner user is risky.
+      id: fe10e6d3-33e3-489b-931c-2b8f8eceeb29
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check if the TAP assigner is risky
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: fe10e6d3-33e3-489b-931c-2b8f8eceeb29
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1836,
+          "y": 1049
+        }
+      }
+  "29":
+    continueonerrortype: ""
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence.CoreRiskyUser
+      value:
+        simple: "True"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves a key indicating the TAP assigner is risky.
+      id: 9b94335a-3f03-4427-9dbe-e3ca4976e80b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save Core risky user result
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 9b94335a-3f03-4427-9dbe-e3ca4976e80b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1836,
+          "y": 1177
+        }
+      }
+  "30":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: Evidence
+                transformers:
+                - args:
+                    dt:
+                      value:
+                        simple: '.=Array.isArray(val) ? val : Object.values(val)'
+                  operator: DT
+                - operator: count
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "3"
+      label: True Positive
+    continueonerrortype: ""
+    id: "30"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "54"
+      True Positive:
+      - "55"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if 2 or more suspicious results were found.
+      id: 022f3113-445f-40dc-88d7-cf6754639c93
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check evidence
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 022f3113-445f-40dc-88d7-cf6754639c93
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 581,
+          "y": 1808
+        }
+      }
+  "31":
+    continueonerrortype: ""
+    id: "31"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "32"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8881129d-1fd5-476a-b3b0-829551677a30
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Creation Date - MS Graph User
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 8881129d-1fd5-476a-b3b0-829551677a30
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 805
+        }
+      }
+  "32":
+    continueonerrortype: ""
+    id: "32"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "33"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      properties:
+        simple: createdDateTime
+      user:
+        simple: ${Core.OriginalAlert.event.cloud_best_identity_match}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: |-
+        Retrieves the properties and relationships of a user object. For more information, visit: https://docs.microsoft.com/en-us/graph/api/user-update?view=graph-rest-1.0).
+        Permissions: - User.Read (Delegated) - User.Read.All (Application).
+      id: 1efb30c4-1a2e-4ac6-932b-d0aa1622ec43
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get user creation date
+      playbooktaskmissingcomponent: null
+      script: '|||msgraph-user-get'
+      type: regular
+      version: -1
+    taskid: 1efb30c4-1a2e-4ac6-932b-d0aa1622ec43
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 923
+        }
+      }
+  "33":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: MSGraphUser.CreatedDateTime
+          operator: isNotEmpty
+      label: Exists
+    continueonerrortype: ""
+    id: "33"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "11"
+      Exists:
+      - "36"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the creation date was retrieved for the user.
+      id: 043fb79b-965a-4806-a76c-97b5f66e2d5d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check retrieved date
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 043fb79b-965a-4806-a76c-97b5f66e2d5d
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 1042
+        }
+      }
+  "36":
+    continueonerrortype: ""
+    id: "36"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "39"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: UserCreationDateInEpoch
+      value:
+        complex:
+          accessor: CreatedDateTime
+          root: MSGraphUser
+          transformers:
+          - operator: toUnix
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Converts the user creation date to epoch to find relative time
+        of creation.
+      id: a0072e04-fcde-4755-8294-3ced81514d8e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Convert user creation date to epoch
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: a0072e04-fcde-4755-8294-3ced81514d8e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 1177
+        }
+      }
+  "37":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: TimeNowUnix
+                transformers:
+                - args:
+                    by:
+                      iscontext: true
+                      value:
+                        simple: UserCreationDateInEpoch
+                  operator: subtraction
+          operator: lessThanOrEqual
+          right:
+            value:
+              simple: "604800"
+      label: "Yes"
+    continueonerrortype: ""
+    id: "37"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "11"
+      "Yes":
+      - "38"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the user's creation date in AD happened 24 hours or less
+        since the time that this alert occurred.
+      id: 9c880423-50ed-4b7a-bdb1-94b1f5050bb1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check if user was created recently
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 9c880423-50ed-4b7a-bdb1-94b1f5050bb1
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 899,
+          "y": 1432
+        }
+      }
+  "38":
+    continueonerrortype: ""
+    id: "38"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence.UserCreatedRecently
+      value:
+        simple: "True"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves a context key indicating the user was created recently.
+      id: 3444e162-b1d3-49a9-89b8-a260cf6e4bae
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save result - user created recently
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 3444e162-b1d3-49a9-89b8-a260cf6e4bae
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 899,
+          "y": 1557
+        }
+      }
+  "39":
+    continueonerrortype: ""
+    id: "39"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "37"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        Retrieves the current date and time.
+      id: 14165724-8b66-4b94-9622-df92a4b76c49
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get current date & time
+      playbooktaskmissingcomponent: null
+      script: GetTime
+      type: regular
+      version: -1
+    taskid: 14165724-8b66-4b94-9622-df92a4b76c49
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 899,
+          "y": 1308
+        }
+      }
+  "40":
+    continueonerrortype: ""
+    id: "40"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "43"
+      - "51"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 3122ef6c-e09c-4660-b3fa-b5c92d6aee09
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Renediation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 3122ef6c-e09c-4660-b3fa-b5c92d6aee09
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 853,
+          "y": 2074
+        }
+      }
+  "42":
+    continueonerrortype: ""
+    id: "42"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body: {}
+      cc: null
+      format: ""
+      methods: []
+      replyOptions:
+      - Disable User
+      - Skip Remediation
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      Disable User:
+      - "45"
+      Skip Remediation:
+      - "46"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "The investigation found several suspicious indicators related
+        to the user who granted the TAP or the IP from which this TAP was granted.
+        \n\nAs a response, the user's current session was revoked, as well as the
+        TAP that was granted to them.\n\nReview the findings and decide on remediation
+        actions.\n\n#### Temporary Access Pass (TAP) Information\nGranted by: `${Core.OriginalAlert.event.cloud_best_identity_match}`\n\nGranted
+        to: `${Core.OriginalAlert.raw_abioc.event.referenced_resource_name}`\n\nTAP
+        type: `${Core.OriginalAlert.event.tap_usage}`\n\nStart Time: `${Core.OriginalAlert.event.tap_start}`\n\nEnd
+        Time: `${Core.OriginalAlert.event.tap_end}`\n\nTAP ID: `${Core.OriginalAlert.event.tap_id}`\n\n\n---\n\n\n####
+        TAP assigner Information\nInformation regarding the user who granted the TAP
+        access.\n\nUser creation date analysis: `${.=val.Evidence && val.Evidence.UserCreatedRecently
+        ? \"User created recently\" : \"User is not new\"}`\n\nRelated alerts in Defender
+        365: `${.=val.Evidence && val.Evidence.Defender365Alerts ? \"Alerts found
+        for the user\" : \"Alerts not found\"}`\n\nUser risk analysis (Core IR): `${.=val.Evidence
+        && val.Evidence.CoreRiskyUser ? \"Risky\" : \"Not risky\"}`\n\nUser risk analysis
+        (Azure AD): `${.=val.Evidence && val.Evidence.AzureRiskDetections ? \"Risky\"
+        : \"Not risky\"}`\n\nNumber of TAPs granted (last 30 days): `${Core.OriginalAlert.event.provider_project_best_identity_operation_count_distinct_referenced_resource_name_azure_ad_audit_successful}`\n\n\n---\n\n\n###
+        Caller IP Information\nIP reputation: `${.=val.Evidence && val.Evidence.MaliciousIP
+        ? \"Malicious\" : \"Benign\"}`\n\nIP geolocation: `${Core.OriginalAlert.event.caller_ip_geolocation}`\n\n\n---\n\n\n###
+        Suggested Analyst Response\nAfter reviewing the evidence, depending on the
+        analyst verdict, we recommend the following response actions:\n- If the TAP
+        was not deleted automatically - manually delete the Temporary Access Pass
+        (TAP) granted to the user in Microsoft Entra Admin Center\n- Disable the user
+        who granted the TAP in Azure AD"
+      id: a7c5fdf6-26da-4a55-be90-33057ff1af88
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual - get remediation approval
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: a7c5fdf6-26da-4a55-be90-33057ff1af88
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 853,
+          "y": 2356
+        }
+      }
+  "43":
+    continueonerrortype: ""
+    id: "43"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "42"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      user_name:
+        simple: ${Core.OriginalAlert.event.cloud_best_identity_match}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This script clears user sessions across multiple integrations for
+        a list of usernames.
+      id: 19980677-958b-409f-b1d8-1292f8d652a0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Revoke user session
+      playbooktaskmissingcomponent: null
+      script: clear-user-session
+      type: regular
+      version: -1
+    taskid: 19980677-958b-409f-b1d8-1292f8d652a0
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 853,
+          "y": 2207
+        }
+      }
+  "45":
+    continueonerrortype: ""
+    id: "45"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "46"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      user_name:
+        simple: ${Core.OriginalAlert.event.cloud_best_identity_match}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: This script disables users for multiple services.
+      id: 31a622fa-60ee-4879-95ec-367b802e0a11
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Disable the TAP granter user
+      playbooktaskmissingcomponent: null
+      script: disable-user
+      type: regular
+      version: -1
+    taskid: 31a622fa-60ee-4879-95ec-367b802e0a11
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 853,
+          "y": 2503
+        }
+      }
+  "46":
+    continueonerrortype: ""
+    id: "46"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    scriptarguments:
+      closeNotes:
+        simple: Handled by the playbook “Azure Temporary Access Pass (TAP) registered
+          to an account”.
+      closeReason:
+        simple: Resolved - True Positive
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: Closes the current alert.
+      id: b58c7a40-cec5-41c6-86b8-73fe55e534ba
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close alert
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: b58c7a40-cec5-41c6-86b8-73fe55e534ba
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 571,
+          "y": 2641
+        }
+      }
+  "47":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "47"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "28"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      user_name:
+        complex:
+          accessor: username
+          root: alert
+          transformers:
+          - operator: LastArrayElement
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This script gathers user data from multiple integrations and returns
+        an Account entity with consolidated information to the context.
+      id: 698969ad-9257-43a6-8e67-5613464ce40d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get user risk score
+      playbooktaskmissingcomponent: null
+      script: get-user-data
+      type: regular
+      version: -1
+    taskid: 698969ad-9257-43a6-8e67-5613464ce40d
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1836,
+          "y": 923
+        }
+      }
+  "51":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "51"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "52"
+      '#none#':
+      - "46"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      policy_id:
+        simple: ${Core.OriginalAlert.event.tap_id}
+      user_id:
+        simple: ${Core.OriginalAlert.event.referenced_resource_name}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Deletes a specific TAP policy. Permission:UserAuthenticationMethod.ReadWrite.All
+      id: 42b04122-be7b-4311-a44e-4cd5db27ca0e
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Delete TAP policy from granted user
+      playbooktaskmissingcomponent: null
+      script: '|||msgraph-user-tap-policy-delete'
+      type: regular
+      version: -1
+    taskid: 42b04122-be7b-4311-a44e-4cd5db27ca0e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1271,
+          "y": 2207
+        }
+      }
+  "52":
+    continueonerrortype: ""
+    id: "52"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "46"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |+
+        Investigation has determined this Azure TAP (Temporary Access Pass) is a security risk. Revocation is required to reduce account exposure.
+
+        Review the TAP details below and delete the new authentication method that was granted to the user in Entra ID.
+
+        #### Temporary Access Pass (TAP) Information
+        Granted by: `${Core.OriginalAlert.event.cloud_best_identity_match}`
+
+        Granted to: `${Core.OriginalAlert.raw_abioc.event.referenced_resource_name}`
+
+        TAP type: `${Core.OriginalAlert.event.tap_usage}`
+
+        Start Time: `${Core.OriginalAlert.event.tap_start}`
+
+        End Time: `${Core.OriginalAlert.event.tap_end}`
+
+        TAP ID: `${Core.OriginalAlert.event.tap_id}`
+
+      id: 2e538e12-4263-4841-a13a-f69c70afc207
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual - delete TAP policy
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: 2e538e12-4263-4841-a13a-f69c70afc207
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1509,
+          "y": 2339
+        }
+      }
+  "54":
+    continueonerrortype: ""
+    id: "54"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: dfad0459-d191-4d02-93ee-b513deb48c10
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Inconclusive
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: dfad0459-d191-4d02-93ee-b513deb48c10
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 327,
+          "y": 1938
+        }
+      }
+  "55":
+    continueonerrortype: ""
+    id: "55"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "40"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      severity:
+        simple: Medium
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Optionally increases the alert severity to the new value if it
+        is greater than the existing severity.
+      id: 10b41eaa-7299-4be8-81e0-1af669b72ee9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Increase alert severity to medium
+      playbooktaskmissingcomponent: null
+      script: IncreaseAlertSeverity
+      type: regular
+      version: -1
+    taskid: 10b41eaa-7299-4be8-81e0-1af669b72ee9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 853,
+          "y": 1938
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "13_11_#default#": 0.26,
+      "19_11_#default#": 0.1,
+      "28_11_#default#": 0.11,
+      "33_11_#default#": 0.29,
+      "37_11_#default#": 0.33,
+      "42_46_Skip Remediation": 0.36,
+      "9_11_#default#": 0.12
+    },
+    "paper": {
+      "dimensions": {
+        "height": 2538,
+        "width": 2301,
+        "x": -84,
+        "y": 173
+      }
+    }
+  }
