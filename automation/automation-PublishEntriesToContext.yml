@@ -1,0 +1,71 @@
+args:
+- default: true
+  description: The entry IDs we want to publish. Accepts comma separated IDs or a
+    list of strings.
+  name: ids
+  required: true
+  supportedModules: []
+- description: The name of the context key. Default is "entries".
+  name: out
+  supportedModules: []
+comment: Publish entries to incident's context
+commonfields:
+  id: PublishEntriesToContext
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: PublishEntriesToContext
+outputs:
+- contextPath: entries
+  description: The entries published to context if out key was not provided
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.28
+  var ids = argToList(args.ids);
+  var out = args.out ? args.out : 'entries';
+  var data = [];
+
+  for (var i=0; i<ids.length; i++) {
+      var entryRes = executeCommand('getEntry', {id: ids[i]});
+      if (entryRes && Array.isArray(entryRes)) {
+          if (entryRes[0].Type !== entryTypes.error) {
+              data.push(entryRes[0].Contents);
+          }
+      }
+  }
+  if (data.length > 0) {
+      var ec = {};
+      ec[out] = data;
+      return {
+          Type: entryTypes.note,
+          Contents: data,
+          ContentsFormat: formats.json,
+          HumanReadable: 'Published ' + data.length + ' entries to context under ' + out,
+          EntryContext: ec
+      };
+  }
+  return 'No entries found';
+scripttarget: 0
+signature: IJ+Aj05B0ekNjIfhGGM2+I7siIJ1KwMl8ToYd/xSZWTy6rNZMxy3BfX+z4ig6qKsX14LVXXty/Te9Er0dVv1itKqq8NTjGvR6C4417nwoaX3EC/cuDLyRTJmkPPrGkxRD0LleOXlSUC4Mj2I7asu8NvQxEVKTCDWqQhBK64pfj5olc5igQ8LOjhgeyv9HGrTBhUtTEEPrrnJMluquywwucfw6odcA7ncJqx0pUfBZ95AHWY1QPl+0QR9w9ArNnOmeVGU1WIyH5jFc0CeDHA1o7IAtYDYtrWg/TTcLQmOB6lQuKXDEUS3vpI8CJCKBYH9FdtKVmYrHkb36GIY/Br/FQ==
+system: true
+tags:
+- Utility
+type: javascript
