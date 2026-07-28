@@ -1,0 +1,862 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.10.0
+    isoverridable: false
+    itemVersion: 1.3.54
+    packID: CortexResponseAndRemediation
+    packName: Cortex Response And Remediation
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: "This playbook is designed to handle the following alert:\n\n- A successful
+  login from TOR\n\nThe playbook executes the following stages:\n\nTriage:\n\n- The
+  playbook will fetch the user identity details.\n\nRemediation & Eradication:\n\n-
+  The playbooks will suggest several actions for the analyst to take: disabling the
+  user account using Active Directory or Azure Active Directory, expiring the user
+  password using Active Directory, or blocking traffic from TOR exit nodes using PAN-OS
+  and Palo Alto Networks' predefined EDL.\n\nThe analyst can select multiple actions,
+  which will then be executed by the playbook based on the analyst's choices.\n\nRequirements:
+  \nFor any response action, you will need one of the following integrations: Azure
+  Active Directory Users / Active Directory Users."
+id: A Successful login from TOR
+inputs: []
+name: A Successful login from TOR
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tags:
+- TA0001 - Initial Access
+- T1090 - Proxy
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "23"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 31ec7e08-1f47-4c7c-8152-2892e9e547a9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 31ec7e08-1f47-4c7c-8152-2892e9e547a9
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -70
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d792840b-3502-4cc8-87c4-2f02e5661e06
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment & Eradication
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: d792840b-3502-4cc8-87c4-2f02e5661e06
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 360
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    form:
+      description: ""
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: Select containment plan for the user ${alert.username.[0]}
+        options: []
+        optionsarg:
+        - {}
+        - simple: Disable the user account
+        - simple: Expire the user password (Active Directory Only)
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: multiSelect
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "1"
+        label: ""
+        labelarg:
+          simple: "Would you like to block traffic from TOR exit nodes using PAN-OS
+            and Palo Alto Networks predefined EDL. \nNOTICE: By selecting \"Yes, commit
+            automatically\" you are allowing to automatically commit the rule to your
+            firewalls."
+        options: []
+        optionsarg:
+        - simple: "No"
+        - simple: Yes, commit manually
+        - simple: Yes, commit automatically
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: singleSelect
+      sender: ""
+      syncid: ""
+      title: Select containment & Eradication plans
+      totalanswers: 0
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body: null
+      cc: null
+      format: ""
+      methods: []
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      '#none#':
+      - "8"
+      - "19"
+      - "10"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 331cade7-b3e9-4a82-8cf8-1ee613a71d7c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Select containment & Eradication plans
+      playbooktaskmissingcomponent: null
+      type: collection
+      version: -1
+    taskid: 331cade7-b3e9-4a82-8cf8-1ee613a71d7c
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 490
+        }
+      }
+  "3":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: Select containment & Eradication plans.Answers.0
+          operator: containsGeneral
+          right:
+            value:
+              simple: Disable the user account
+      - - left:
+            iscontext: true
+            value:
+              simple: ActiveDirectory.Users.sAMAccountName
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "8"
+      "yes":
+      - "12"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9e1167c7-f6f3-4230-8db0-ef2f65c915b7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Disable User Account?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 9e1167c7-f6f3-4230-8db0-ef2f65c915b7
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 0,
+          "y": 830
+        }
+      }
+  "4":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Select containment & Eradication plans.Answers.0
+          operator: containsGeneral
+          right:
+            value:
+              simple: Expire the user password (Active Directory Only)
+      - - left:
+            iscontext: true
+            value:
+              simple: ActiveDirectory.Users.sAMAccountName
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "8"
+      "yes":
+      - "15"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 08e40ba9-ff3b-4bdf-809c-914a919a54fa
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Expire User Password?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 08e40ba9-ff3b-4bdf-809c-914a919a54fa
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -460,
+          "y": 830
+        }
+      }
+  "5":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Select containment & Eradication plans.Answers.1
+          operator: containsGeneral
+          right:
+            value:
+              simple: Yes, commit automatically
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Select containment & Eradication plans.Answers.1
+          operator: containsGeneral
+          right:
+            value:
+              simple: Yes, commit manually
+      label: "yes"
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "13"
+      "yes":
+      - "7"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b31d6055-ca01-444c-8587-c9b76b4fed78
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Block Traffic From TOR Exit Nodes?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: b31d6055-ca01-444c-8587-c9b76b4fed78
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 680,
+          "y": 1300
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AutoCommit:
+        complex:
+          accessor: '}'
+          root: ${
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs==rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                value:
+                  simple: "No"
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: Select containment & Eradication plans.Answers.1
+              lhsB: {}
+              options: {}
+              optionsB: {}
+              rhs:
+                value:
+                  simple: Yes, commit automatically
+              rhsB: {}
+              then:
+                value:
+                  simple: "Yes"
+            operator: If-Then-Else
+      EDLName:
+        simple: panw-torexit-ip-list
+      RuleName:
+        simple: TOR Exit nodes from predefined EDLs was Blocked by Cortex XSIAM
+    separatecontext: true
+    skipunavailable: true
+    task:
+      brand: ""
+      description: This playbook blocks IP addresses from External Dynamic List using
+        Custom Block Rules in Palo Alto Networks Panorama or Firewall. The playbook
+        receives an EDL name as input, creates a custom "from" directional rule to
+        block, and commits the configuration.
+      id: 4e9d89fa-2d50-46c7-8e68-b33cda0f4dbe
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: PAN-OS - Block IPs From EDL - Custom Block Rule
+      playbookId: PAN-OS - Block IPs From EDL - Custom Block Rule
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 4e9d89fa-2d50-46c7-8e68-b33cda0f4dbe
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 880,
+          "y": 1470
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+      - "13"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.close.inv
+      id: 16e0ff95-8ea1-4a5c-84a5-45b385dd19ff
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Eradication
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 16e0ff95-8ea1-4a5c-84a5-45b385dd19ff
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1160
+        }
+      }
+  "10":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+      - "4"
+    note: true
+    quietmode: 0
+    scriptarguments:
+      sAMAccountName:
+        simple: ${Core.OriginalAlert.event.login_data_dst_normalized_user.username}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Retrieves detailed information about a user account. The user can
+        be specified by name, email address, or as an Active Directory Distinguished
+        Name (DN). If no filter is specified, all users are returned.
+      id: b5b43e75-8fc6-4216-8302-8bfffe18b6b7
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Active Directory - Search User
+      playbooktaskmissingcomponent: null
+      script: '|||ad-get-user'
+      type: regular
+      version: -1
+    taskid: b5b43e75-8fc6-4216-8302-8bfffe18b6b7
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 0,
+          "y": 660
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      username:
+        simple: ${ActiveDirectory.Users.sAMAccountName}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Disables an Active Directory user account.
+      id: 8729df19-7078-4516-826d-0566d3be66d8
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Active Directory - Disable User Account
+      playbooktaskmissingcomponent: null
+      script: '|||ad-disable-account'
+      type: regular
+      version: -1
+    taskid: 8729df19-7078-4516-826d-0566d3be66d8
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 0,
+          "y": 990
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "14"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      id:
+        complex:
+          accessor: id
+          root: alert
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.close.inv
+      id: a402f3c4-396d-4962-8210-267d645ad480
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close Alert
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: a402f3c4-396d-4962-8210-267d645ad480
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1640
+        }
+      }
+  "14":
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a5cfd092-601a-4ff2-8f25-7cabd460ec84
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: a5cfd092-601a-4ff2-8f25-7cabd460ec84
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1800
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      username:
+        simple: ${Core.OriginalAlert.event.login_data_dst_normalized_user.username}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Expires the password of an Active Directory user.
+      id: a6e46587-a13a-4ca9-8276-199a1743d113
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Active Directory - Expire User Password
+      playbooktaskmissingcomponent: null
+      script: '|||ad-expire-password'
+      type: regular
+      version: -1
+    taskid: a6e46587-a13a-4ca9-8276-199a1743d113
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -460,
+          "y": 990
+        }
+      }
+  "16":
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      alert_ids:
+        simple: ${alert.id}
+      filter_alert_fields:
+        simple: "false"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns information about each alert ID.
+      id: 82ced8bc-aea8-486b-8f86-374b6254bc37
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get User Identity Details
+      playbooktaskmissingcomponent: null
+      script: '|||core-get-cloud-original-alerts'
+      type: regular
+      version: -1
+    taskid: 82ced8bc-aea8-486b-8f86-374b6254bc37
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 200
+        }
+      }
+  "19":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: true
+    quietmode: 0
+    scriptarguments:
+      filter:
+        simple: startswith(userPrincipalName,'${Core.OriginalAlert.event.login_data_dst_normalized_user.username}@')
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: |-
+        Retrieves a list of user objects.
+        Permissions: - User.ReadBasic.All (Delegated) - User.Read.All (Application).
+      id: f0c501d7-19d6-4ef6-8864-980df56d8132
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Azure AD - Search User
+      playbooktaskmissingcomponent: null
+      script: '|||msgraph-user-list'
+      type: regular
+      version: -1
+    taskid: f0c501d7-19d6-4ef6-8864-980df56d8132
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 860,
+          "y": 660
+        }
+      }
+  "20":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: Select containment & Eradication plans.Answers.0
+          operator: containsGeneral
+          right:
+            value:
+              simple: Disable the user account
+      - - left:
+            iscontext: true
+            value:
+              simple: MSGraphUser.ID
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "8"
+      "yes":
+      - "22"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f5edf591-d22f-4306-8852-4f8d17ffee3f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Disable User Account?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: f5edf591-d22f-4306-8852-4f8d17ffee3f
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 860,
+          "y": 820
+        }
+      }
+  "22":
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      user:
+        simple: ${MSGraphUser.ID}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: |-
+        Disables a user from all Office 365 applications, and prevents sign in. Note: This command disables user,
+        but does not terminate an existing session. Supported only in a self-deployed app flow with the
+        Permission: Directory.AccessAsUser.All(Delegated).
+      id: 1adf22f2-87e0-415b-8aad-495172d41031
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Azure AD - Disable User Account
+      playbooktaskmissingcomponent: null
+      script: '|||msgraph-user-account-disable'
+      type: regular
+      version: -1
+    taskid: 1adf22f2-87e0-415b-8aad-495172d41031
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 860,
+          "y": 990
+        }
+      }
+  "23":
+    continueonerrortype: ""
+    id: "23"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "16"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 964e5b3e-f677-43bd-87f8-84e400da8a36
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Triage
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 964e5b3e-f677-43bd-87f8-84e400da8a36
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 60
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "20_8_#default#": 0.23,
+      "3_12_yes": 0.7,
+      "3_8_#default#": 0.43,
+      "4_8_#default#": 0.23,
+      "5_7_yes": 0.51
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1935,
+        "width": 1720,
+        "x": -460,
+        "y": -70
+      }
+    }
+  }
