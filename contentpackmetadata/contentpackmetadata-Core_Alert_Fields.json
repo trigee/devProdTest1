@@ -1,0 +1,632 @@
+{
+	"author": "Cortex",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Endpoint"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"incidentfield"
+	],
+	"contentItems": {
+		"agentixaction": null,
+		"agentixagent": null,
+		"agentixknowledgecollection": null,
+		"agentixknowledgesource": null,
+		"agentixskill": null,
+		"automation": null,
+		"casefield": null,
+		"classifier": null,
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": [
+			{
+				"description": "Whether the alert is starred by starring configuration",
+				"name": "Starred",
+				"type": "boolean"
+			},
+			{
+				"description": "Alert category based on the alert source. An example of an XDR Agent alert category is Exploit Modules. ",
+				"name": "Category Name",
+				"type": "shortText"
+			},
+			{
+				"description": "Signature status of the process that triggered the alert: Unsigned, Signed, Invalid Signature, Unknown.",
+				"name": "Process execution signature",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The URL destination address of the domain triggering the firewall alert.",
+				"name": "URL",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The name of the process whose creation triggered the alert.",
+				"name": "Target process name",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The risk level associated with the risky host. Can be LOW, MED, or HIGH",
+				"name": "Host Risk Level",
+				"type": "shortText"
+			},
+			{
+				"description": "A more specific classification of the identity initiated operation. For example, for Identity Type: Temporary Credentials the sub type could be Assumed Role",
+				"name": "Cloud Identity Sub Type",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Whether the alert is excluded by an exclusion configuration",
+				"name": "Excluded",
+				"type": "boolean"
+			},
+			{
+				"description": "If the alert triggered on network activity (the Event Type is Network Connection) this is the the remote host name that triggered the alert. If not, then N/A.",
+				"name": "Remote Host",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Thread ID (TID) of the initiating process.",
+				"name": "Initiator TID",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Command-line used to by the parent operating system to initiate the process including any arguments",
+				"name": "OS Parent CMD",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Signing status of the process that initiated the activity: Unsigned, Signed, Invalid Signature, Unknown.",
+				"name": "Initiator signature",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The email sender value of a firewall alerts triggered on a the content of a malicious email.",
+				"name": "Email Sender",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The name of the process that started the causality chain based on Cortex XDR causality logic.",
+				"name": "CGO name",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Displays the type of MITRE ATT\u0026CK tactic on which the alert was triggered.",
+				"name": "Mitre ATT\u0026CK Tactic",
+				"type": "multiSelect"
+			},
+			{
+				"description": "",
+				"name": "Cluster Name",
+				"type": "multiSelect"
+			},
+			{
+				"description": "SHA256 hash value of an Microsoft Office file macro",
+				"name": "File Macro SHA256",
+				"type": "multiSelect"
+			},
+			{
+				"description": "IP address of the endpoint or server on which this alert triggered.",
+				"name": "Host IP",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The firewall rule ID that triggered the firewall alert",
+				"name": "XFF",
+				"type": "multiSelect"
+			},
+			{
+				"description": "OS parent process ID",
+				"name": "OS Parent PID",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Signer of the process that triggered the alert.",
+				"name": "Initiator signer",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The date and time when the alert was triggered. Right-click to Show rows 30 days prior or 30 days after the selected timestamp field value",
+				"name": "Timestamp",
+				"type": "date"
+			},
+			{
+				"description": "When the alert triggered on a file (the Event Type is File) this is the path to the file on the endpoint. If not, then N/A.",
+				"name": "File path",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The MD5 value of the CGO that initiated the alert.",
+				"name": "CGO MD5",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Action taken by the alert sensor, either Detected or Prevented with action status displayed in parenthesis.",
+				"name": "Action",
+				"type": "singleSelect"
+			},
+			{
+				"description": "The ID that matches the rule that triggered the alert",
+				"name": "Rule ID",
+				"type": "shortText"
+			},
+			{
+				"description": "If the alert triggered on registry modifications (the Event Type is Registry) this is the registry data that triggered the alert. If not, then N/A",
+				"name": "Registry Data",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Classification used to map identity type that initiated an operation which triggered an alert. For example, Service, Application and Temporary Credentials",
+				"name": "Cloud Identity Type",
+				"type": "multiSelect"
+			},
+			{
+				"description": "OS parent thread ID.",
+				"name": "OS Parent ID",
+				"type": "multiSelect"
+			},
+			{
+				"description": "",
+				"name": "CGO path",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The MD5 value of the process which initiated the alert.",
+				"name": "Initiator MD5",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The command-line of the process whose creation triggered the alert.",
+				"name": "Target process CMD",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Parent operating system signer",
+				"name": "OS Parent Signer",
+				"type": "multiSelect"
+			},
+			{
+				"description": "",
+				"name": "Contains Featured User",
+				"type": "multiSelect"
+			},
+			{
+				"description": "If the alert triggered on network activity (the Event Type is Network Connection) this is the IP address of the host that triggered the alert. If not, then N/A.",
+				"name": "Local IP",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The SHA256 value of the CGO that initiated the alert.",
+				"name": "CGO SHA256",
+				"type": "multiSelect"
+			},
+			{
+				"description": "APP-ID technology name associated with a firewall alert",
+				"name": "App Technology",
+				"type": "multiSelect"
+			},
+			{
+				"description": "APP-ID Sub category name associated with a firewall alert",
+				"name": "appsubcategory",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Signing status of the operating system of the activity",
+				"name": "OS Parent Signature",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The email subject value of a firewall alerts triggered on a the content of a malicious email.",
+				"name": "Email Subject",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The fully qualified domain name (FQDN) of the Windows endpoint or server on which this alert triggered.",
+				"name": "Host FQDN",
+				"type": "shortText"
+			},
+			{
+				"description": "The SHA256 hash vale of an external DLL file that triggered the alert.",
+				"name": "Target process SHA256",
+				"type": "multiSelect"
+			},
+			{
+				"description": "If the alert triggered on registry modifications (the Event Type is Registry) this is the full registry key that triggered the alert. If not, then N/A.",
+				"name": "Registry Full Key",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The name of the process that initiated an activity such as a network connection or registry change.",
+				"name": "Initiated By",
+				"type": "multiSelect"
+			},
+			{
+				"description": "If the alert triggered on network activity (the Event Type is Network Connection) this is the port on the endpoint that triggered the alert. If not, then N/A.",
+				"name": "Local Port",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Related App-ID for an alert. App-ID is a traffic classification system that determines what an application is irrespective of port, protocol, encryption (SSH or SSL) or any other evasive tactic used by the application. When known, you can also pivot to the Palo Alto Networks Applipedia entry that describes the detected application.",
+				"name": "App-id",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Indicates whether a firewall alert is classified as phishing",
+				"name": "Is Phishing",
+				"type": "multiSelect"
+			},
+			{
+				"description": "For XDR Agent alerts, this field identifies the protection module that triggered the alert.",
+				"name": "Module",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The type of event on which the alert was triggered: File Event, Injection Event, Load Image Event, Network Event, Process Execution, Registry Event",
+				"name": "Event Type",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Unique identifier of the Action Process instance generated by Cortex XDR",
+				"name": "Action Process Instance ID",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The firewall rule name that matches the network traffic that triggered the firewall alert.",
+				"name": "FW Rule Name",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Path of the initiating process.",
+				"name": "Initiator path",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The descriptions of the reasons that contributed to the user's risk level.",
+				"name": "User Risk Reasons",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Represents the resources that are referenced in the alert log. In most cases, the referred resource will be where the operation was initiated on",
+				"name": "Cloud Referenced Resource",
+				"type": "multiSelect"
+			},
+			{
+				"description": "SHA256 hash value of the file.",
+				"name": "File SHA256",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Name of the virtual system for the Palo Alto Networks firewall that triggered an alert",
+				"name": "NGFW Vsys Name",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The email recipient value of a firewall alerts triggered on a the content of a malicious email.",
+				"name": "Email Recipient",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The name of the user that initiated the behavior that triggered the alert. If the user is a domain user account, this field also identifies the domain. Any alert triggered based on network, authentication, or login events, displays the User Name in the follow standardized format in the Alerts and Incidents pages.\u003ccompany domain\u003e\\\u003cusername\u003e",
+				"name": "User name",
+				"type": "multiSelect"
+			},
+			{
+				"description": "A more specific classification used to map the types of resources. For example, DISK,VPC, Subnet are all mapped to Compute",
+				"name": "Cloud Resource Sub-type",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The remote port of a network operation that triggered the alert.",
+				"name": "Remote Port",
+				"type": "multiSelect"
+			},
+			{
+				"description": "",
+				"name": "Alert Search Results",
+				"type": "grid"
+			},
+			{
+				"description": "The domain name queried in the DNS request.",
+				"name": "DNS Query Name",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The SHA256 hash value of the initiator.",
+				"name": "Initiator SHA256",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The descriptions of the reasons that contributed to the host's risk level.",
+				"name": "Host Risk Reasons",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Unique identifier of the Actor Process instance generated by Cortex XDR",
+				"name": "Actor Process Instance ID",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The hostname of the endpoint or server on which this alert triggered. The hostname is generally available for XDR agent alerts or alerts that are stitched with EDR data. When the hostname is unknown, this field is blank.",
+				"name": "Hostname",
+				"type": "shortText"
+			},
+			{
+				"description": "Miscellaneous information about the alert.",
+				"name": "Misc",
+				"type": "multiSelect"
+			},
+			{
+				"description": "",
+				"name": "Contains Featured Host",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Process ID (PID) of the initiating process.",
+				"name": "Initiator PID",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Displays the type of MITRE ATT\u0026CK technique and sub-technique on which the alert was triggered.",
+				"name": "Mitre ATT\u0026CK Technique",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The name of the software publishing vendor that signed the file in the causality chain that led up to the alert.",
+				"name": "CGO signer",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Signer of the process that triggered the alert.",
+				"name": "Process execution signer",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The remote IP address of a network operation that triggered the alert.",
+				"name": "Remote IP",
+				"type": "multiSelect"
+			},
+			{
+				"description": "",
+				"name": "Country",
+				"type": "multiSelect"
+			},
+			{
+				"description": "",
+				"name": "Container ID",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The risk level associated with the risky user. Can be LOW, MED or HIGH.",
+				"name": "User Risk Level",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "Contains Featured IP Address",
+				"type": "multiSelect"
+			},
+			{
+				"description": "",
+				"name": "OS Parent Name",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Action taken by the alert sensor, either Detected or Prevented with action status displayed in parenthesis.",
+				"name": "Host OS",
+				"type": "singleSelect"
+			},
+			{
+				"description": "",
+				"name": "Image Name",
+				"type": "multiSelect"
+			},
+			{
+				"description": "",
+				"name": "File Name",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Represents the cloud provider folders or projects. For example, AWS Accounts and Azure Subscriptions",
+				"name": "Cloud Project",
+				"type": "multiSelect"
+			},
+			{
+				"description": "MAC address of the endpoint or server on which this alert triggered.",
+				"name": "Host Mac Address",
+				"type": "shortText"
+			},
+			{
+				"description": "The serial number of the firewall that raised the firewall alert.",
+				"name": "FW Serial Number",
+				"type": "multiSelect"
+			},
+			{
+				"description": "",
+				"name": "Cloud Operation Type",
+				"type": "multiSelect"
+			},
+			{
+				"description": "MD5 hash value of the file.",
+				"name": "File MD5",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The destination zone of the connection for firewall alerts.",
+				"name": "Destination Zone Name",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Name of the user associated with the parent operating system",
+				"name": "OS Parent User Name",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Command-line arguments of the Causality Group Owner.",
+				"name": "CGO CMD",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The operating system subtype of the agent from which the alert was triggered.",
+				"name": "Agent OS Sub Type",
+				"type": "shortText"
+			},
+			{
+				"description": "",
+				"name": "User Agent",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Name of firewall on which a firewall alert was raised.",
+				"name": "FW Name",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The source zone name of the connection for firewall alerts.",
+				"name": "Source Zone Name",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Parent operating system SHA256 hash value",
+				"name": "OS Parent SHA256",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Signing status of the CGO: Unsigned, Signed, Invalid Signature, Unknown.",
+				"name": "CGO signature",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The name of the cloud provider where the alert occurred: AWS/GCP/Azure/etc",
+				"name": "Cloud Provider",
+				"type": "multiSelect"
+			},
+			{
+				"description": "A unique identifier per agent.",
+				"name": "Agent Id",
+				"type": "shortText"
+			},
+			{
+				"description": "Unique identifier of the causality instance generated by Cortex XDR",
+				"name": "CID",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Command-line used to initiate the process including any arguments.",
+				"name": "Initiator CMD",
+				"type": "multiSelect"
+			},
+			{
+				"description": "APP-ID category name associated with a firewall alert",
+				"name": "App Category",
+				"type": "multiSelect"
+			},
+			{
+				"description": "",
+				"name": "Remote Agent Hostname",
+				"type": "multiSelect"
+			},
+			{
+				"description": "The domain on which an alert was triggered.",
+				"name": "Domain",
+				"type": "shortText"
+			},
+			{
+				"description": "The firewall rule ID that triggered the firewall alert",
+				"name": "FW Rule ID",
+				"type": "multiSelect"
+			},
+			{
+				"description": "Classifications used to map similar types of resources across different cloud providers. For example, EC2, Google Compute Engine, and Microsoft Compute are all mapped to Compute",
+				"name": "Cloud Resource Type",
+				"type": "multiSelect"
+			}
+		],
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": null,
+		"layoutscontainer": null,
+		"list": null,
+		"playbook": null,
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"created": "2025-03-29T09:37:42Z",
+	"currentVersion": "1.0.50",
+	"defaultDataSource": {
+		"id": "",
+		"name": ""
+	},
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.42.1",
+			"name": "Base"
+		}
+	},
+	"deprecated": false,
+	"description": "This Content Pack will provide you with the core alert fields.",
+	"downloads": 0,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"firstCreated": "2025-03-29T09:37:42Z",
+	"fromServerVersion": "6.5.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldFree",
+		"generalFieldSupportIncluded",
+		"generalFieldSupportModule"
+	],
+	"hybrid": false,
+	"id": "CoreAlertFields",
+	"installMessage": "",
+	"integrations": [],
+	"isOverridable": false,
+	"itemVersion": "1.0.50",
+	"keywords": [],
+	"legacy": true,
+	"modules": [],
+	"name": "Core Alert Fields",
+	"packID": "CoreAlertFields",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"searchRank": 0,
+	"serverMaxVersion": "",
+	"serverMinVersion": "6.5.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"supportedModules": [
+		"exposure_management",
+		"cloud",
+		"cloud_runtime_security",
+		"agentix",
+		"cloud_posture",
+		"xsiam",
+		"edr",
+		"agentix_xsiam"
+	],
+	"tags": [],
+	"toServerVersion": "",
+	"updated": "2026-07-05T10:09:23Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "10732763",
+	"videos": []
+}
