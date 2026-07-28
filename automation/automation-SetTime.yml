@@ -1,0 +1,73 @@
+args:
+- default: true
+  description: Incident field name to set.
+  name: fieldName
+  required: true
+  supportedModules: []
+comment: Fill the current time in a custom incident field.
+commonfields:
+  id: SetTime
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10116658
+engineinfo: {}
+mainengineinfo: {}
+name: SetTime
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('SetTime', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  from datetime import datetime
+
+
+
+
+
+  def set_time():
+      now = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S+00:00")
+
+      fieldName = demisto.args()["fieldName"]
+
+      # Example format: '2018-02-02T22:58:21+02:00'
+
+      demisto.debug("[*] " + fieldName + " <- " + now)
+
+      demisto.setContext(fieldName, now)
+
+      demisto.results(demisto.executeCommand("setIncident", {fieldName: now}))
+
+
+  def main():
+      set_time()
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):  # pragma: no cover
+      main()
+
+  register_module_line('SetTime', 'end', __line__())
+scripttarget: 0
+signature: OI38LGrhMqbGt6cObrzgpZBDpIXb9VrOWDMrl+Buv8JMiK0SbW4wlU7QvG5e5hRupZ5rhIzGyEQswWcew855WyTwtbHdtL1Bj9sEq2/NtNPBte2G9CjXRIKbvPhH9rRnc6B22qbh9ZsYTk2i3oVj5eQWTwvYO/W/Z/J17RTBYqVw0FXmR2EzibcqBkRRMyl/0EvIwjPH9+vFKpimRATMwE0GmuPkyHHccdya9ePR7QW4fqQH2IGNqXvQv0qPIheRzEUmlylD6mFYktf61V9ubsj/U8lu863KF6z/uu6ZuEs2QtYD+Ad7k6LKNK6JJD4uqMkYXCSg+h/tu2/ulm9g3A==
+subtype: python3
+system: true
+tags: []
+type: python
