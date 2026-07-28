@@ -1,0 +1,59 @@
+args:
+- description: IP(s) to unescape.
+  isArray: true
+  name: input
+  supportedModules: []
+comment: |-
+  Remove escaping chars from IP
+  127[.]0[.]0[.]1 -> 127.0.0.1
+commonfields:
+  id: UnEscapeIPs
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: UnEscapeIPs
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.28
+  function format_ip(ip) {
+      return ip.replace(/\[\.\]/g,'.');
+  }
+
+  function format_ip_list(ip_list) {
+      var len = ip_list.length;
+      var formatted_ips = new Array(len);
+      ip_list.forEach(function(the_ip, index) {
+          formatted_ips[index] = format_ip(the_ip.trim());
+      });
+      return formatted_ips;
+  }
+
+  var ips;
+  // It is assumed that args.input is a string
+  var unformatted_ips = argToList(args.input);
+  ips = format_ip_list(unformatted_ips);
+  return ips;
+scripttarget: 0
+signature: wA+0RRx1bMZY40q5GIW40nLXZyefM6pTpgsouUyvGjR63X5n6nWXrETS6QqLvgnU94x6jfNDNUMTAFjhVJP0RXeZr64V8ZZs5YTE5FP1OS84nwz6iJRlmSMh47fyD05J4uIiDq9ASbeaCMOUEDL67omA0oUT9kPlATDbmAULjV3cZSmGFxNNY2VnG1GPgcUlYTOVPHDmTgyd0aH0uUxpw92I8o8WKa27rGZYteml5OR5DvFeRCVIxXnDvEDCRtwfaf/xQ2SV9Nr2DQUxjs63ivTO0sfk0BtxqJPgq3lU59ELea2IpkXuMZ6jyBs6ADUQzOLePeCDISENTFD+zhlbww==
+system: true
+tags:
+- indicator-format
+type: javascript
