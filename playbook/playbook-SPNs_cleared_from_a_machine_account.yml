@@ -1,0 +1,1498 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.9.0
+    isoverridable: false
+    itemVersion: 1.3.54
+    packID: CortexResponseAndRemediation
+    packName: Cortex Response And Remediation
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook addresses the following alerts:
+
+  - SPNs cleared from a machine account
+  - SPNs cleared from a machine account for the first time
+
+  Playbook Stages:
+
+  Triage:
+
+  - Retrieve additional data about the Account Changed event, including the Machine Account whose SPNs were cleared and the number of times the user cleared SPNs in the last 30 days.
+  Investigation:
+
+  - Search for creation of suspicious account on the Domain Controller.
+  - Search for suspicious TGT/Service ticket requests.
+  - Search for user insights associated with malicious tools related to Kerberos ticket manipulation.
+  - Search for suspicious account renames, particularly to mimic DC name.
+  - Search for additional alerts in the alert that could indicate attempts to find controlled accounts or create accounts.
+
+  Containment:
+
+  - For alerts determined to be true positives, prompt the analyst to decide whether to disable the user account.
+  - Upon analyst approval: Disable the suspicious user account in Active Directory.
+
+  Requirements:
+
+  For response actions, you need the following integrations:
+
+  - Active Directory Query v2.
+id: SPNs cleared from a machine account
+inputs: []
+name: SPNs cleared from a machine account
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tags:
+- T1078 - Valid Accounts
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 92a78776-fe6c-47f2-87b9-5ed54911b0c5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 92a78776-fe6c-47f2-87b9-5ed54911b0c5
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 160
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      alert_ids:
+        simple: ${alert.id}
+      filter_alert_fields:
+        simple: "false"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns information like the Machine Account whose SPNs were cleared,
+        and the number of times the user cleared SPNs in the last 30 days.
+      id: 983be7f8-144e-4ed3-81e1-160d088a0f77
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get additional data about the Account Changed event
+      playbooktaskmissingcomponent: null
+      script: '|||core-get-cloud-original-alerts'
+      type: regular
+      version: -1
+    taskid: 983be7f8-144e-4ed3-81e1-160d088a0f77
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 396
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+      - "35"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 17eff5a4-397c-41f0-8707-e615f16581f8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Triage
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 17eff5a4-397c-41f0-8707-e615f16581f8
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 285
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: RelatedIncidentAlertsResults=
+      fromdate:
+        simple: 1 days ago
+      ignore-outputs:
+        simple: "true"
+      query:
+        complex:
+          accessor: parentXDRIncident
+          root: alert
+          transformers:
+          - args:
+              delimiter:
+                value:
+                  simple: '-'
+              fields:
+                value:
+                  simple: "2"
+            operator: Cut
+          - args:
+              prefix:
+                value:
+                  simple: 'caseid:'
+              suffix:
+                value:
+                  simple: ' and (name:"A user executed suspicious LDAP enumeration
+                    queries" or name:"Multiple suspicious user accounts were created")'
+            operator: concat
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Searches for additional alerts in the alert that could indicate
+        attempts to find controlled accounts or create accounts, as the first step
+        of an attack.
+      id: ba34f600-c2df-41a5-99f4-1e3ef1331a61
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search alert for additional alerts
+      playbooktaskmissingcomponent: null
+      script: SearchAlertsV2
+      type: regular
+      version: -1
+    taskid: ba34f600-c2df-41a5-99f4-1e3ef1331a61
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -410,
+          "y": 791
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "13"
+      - "14"
+      - "16"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f4cf3cc4-dafc-42ca-8943-92b9e090f730
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: f4cf3cc4-dafc-42ca-8943-92b9e090f730
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 531
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: RareMachineAccountCreationResults=
+      fromdate:
+        simple: 1 hours ago
+      ignore-outputs:
+        simple: "true"
+      includeinformational:
+        simple: "true"
+      query:
+        simple: name:"Rare machine account creation" and hostname:"${alert.hostname}"
+      todate:
+        simple: now
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Searches for Rare Machine Account Creation insight on the Domain
+        Controller of this alert.
+      id: d00e6988-4678-486c-a6eb-1eb4b331c751
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search for creation of suspicious account on DC
+      playbooktaskmissingcomponent: null
+      script: SearchAlertsV2
+      type: regular
+      version: -1
+    taskid: d00e6988-4678-486c-a6eb-1eb4b331c751
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 791
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: SuspiciousToolsResults=
+      fromdate:
+        simple: 1 hours ago
+      ignore-outputs:
+        simple: "true"
+      includeinformational:
+        simple: "true"
+      query:
+        simple: username:"${alert.username.[0]}" and mitreattcktechnique:*T1558*
+      todate:
+        simple: now
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Searches for insights about the user who cleared the SPNs from
+        the machine account, that are associated with the "Steal or Forge Kerberos
+        Tickets" MITRE technique (T1558). These insights may appear when the user
+        is using tools to manipulate tickets.
+      id: 25483130-120d-445a-9c2f-c22c27174dca
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search for user insights for malicious tools
+      playbooktaskmissingcomponent: null
+      script: SearchAlertsV2
+      type: regular
+      version: -1
+    taskid: 25483130-120d-445a-9c2f-c22c27174dca
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 880,
+          "y": 791
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+      - "18"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 4c00758c-3ef2-4597-81f7-abd84d8f101e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: User Investigation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 4c00758c-3ef2-4597-81f7-abd84d8f101e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1078,
+          "y": 672
+        }
+      }
+  "14":
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+      - "20"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5a64fad1-8b4d-45ba-894d-535fcb1e8cd4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Host Investigation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 5a64fad1-8b4d-45ba-894d-535fcb1e8cd4
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 672
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "21"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 2fc7206b-192d-4c91-80a4-e45c1bce0e8f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Verdict
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 2fc7206b-192d-4c91-80a4-e45c1bce0e8f
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1224
+        }
+      }
+  "16":
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f535f56f-8a57-40d3-8336-15b476955cbb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Alert Alerts
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: f535f56f-8a57-40d3-8336-15b476955cbb
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -410,
+          "y": 672
+        }
+      }
+  "18":
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "22"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: SuspiciousAccountRenamesResults=
+      fromdate:
+        simple: 1 hours ago
+      ignore-outputs:
+        simple: "true"
+      includeinformational:
+        simple: "false"
+      query:
+        simple: (username:"${alert.username.[0]}") and (name:"Suspicious sAMAccountName
+          change" or name:"Suspicious sAMAccountName change to DC hostname")
+      todate:
+        simple: now
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Searches for suspicious sAMAccountName change alerts for the user
+        who cleared the SPNs from the machine account. If the user cleared the SPNs
+        of the machine account and made a suspicious account rename this can be part
+        of a privilege escalation attack.
+      id: 8b50317c-e48e-4b09-9476-9825a3cb0c0f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search for suspicious account renames
+      playbooktaskmissingcomponent: null
+      script: SearchAlertsV2
+      type: regular
+      version: -1
+    taskid: 8b50317c-e48e-4b09-9476-9825a3cb0c0f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1290,
+          "y": 791
+        }
+      }
+  "20":
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "34"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: SuspiciousTicketRequestsResults=
+      fromdate:
+        simple: 1 hours ago
+      ignore-outputs:
+        simple: "true"
+      includeinformational:
+        simple: "false"
+      query:
+        simple: name:"TGT request with a spoofed sAMAccountName" or name:"Service
+          ticket request with a spoofed sAMAccountName"
+      todate:
+        simple: now
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Searches for alerts regarding Kerberos ticket requests using spoofed sAMAccountNames.
+        A general search of these alerts is first executed, after which another check is done to identify whether the hostname of the alert is the name of the DC (the current alert's agent hostname in the case of SPNs cleared alerts).
+      id: 4a3c0b30-dc22-4860-ae8c-a468c4030787
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search for suspicious TGT/Service ticket requests
+      playbooktaskmissingcomponent: null
+      script: SearchAlertsV2
+      type: regular
+      version: -1
+    taskid: 4a3c0b30-dc22-4860-ae8c-a468c4030787
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 30,
+          "y": 791
+        }
+      }
+  "21":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: RareMachineAccountCreationResults
+          operator: isNotEmpty
+          right:
+            value: {}
+        - left:
+            iscontext: true
+            value:
+              simple: RelatedIncidentAlertsResults
+          operator: isNotEmpty
+      - - left:
+            iscontext: true
+            value:
+              simple: SuspiciousAccountRenamesResults
+          operator: isNotEmpty
+        - left:
+            iscontext: true
+            value:
+              simple: SuspiciousToolsResults
+          operator: isNotEmpty
+      - - left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.evtlog_subject_user_count_distinct_target_user_spns_cleared
+          operator: lessThan
+          right:
+            value:
+              simple: "3"
+      label: "yes"
+    continueonerrortype: ""
+    id: "21"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "25"
+      "yes":
+      - "23"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether evidence is sufficient to consider this a True Positive
+        and execute remediation. If not, additional conditions are considered.
+      id: 5d5aec5d-760f-4643-8b6f-153d1f591c28
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Evaluate if SPN was cleared for malicious purposes
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 5d5aec5d-760f-4643-8b6f-153d1f591c28
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1340
+        }
+      }
+  "22":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: SuspiciousAccountRenamesResults.Contents.data.name
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Suspicious sAMAccountName change to DC hostname
+                root: SuspiciousAccountRenamesResults.Contents.data.name
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "15"
+      "yes":
+      - "24"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the search for account rename alerts yielded any
+        results that include the "Suspicious sAMAccountName change to DC hostname"
+        alert.
+      id: 6887409c-6d19-4d47-8a19-217940f742f5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check if the account was renamed to mimic DC name
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 6887409c-6d19-4d47-8a19-217940f742f5
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1290,
+          "y": 913
+        }
+      }
+  "23":
+    continueonerrortype: ""
+    id: "23"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "32"
+      - "39"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 05feda72-f7d3-4522-87c8-f4d171f9f38b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: True Positive - Remediation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 05feda72-f7d3-4522-87c8-f4d171f9f38b
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 400,
+          "y": 1990
+        }
+      }
+  "24":
+    continueonerrortype: ""
+    id: "24"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: RenameIsHighlySuspicious
+      value:
+        simple: "True"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves a context key indicating that the account rename alerts included
+        higher severity alerts about renaming of an account to the name of the DC.
+      id: 0838723a-7592-46f5-831f-86114fc32fbe
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save highly suspicious rename flag
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 0838723a-7592-46f5-831f-86114fc32fbe
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1290,
+          "y": 1031
+        }
+      }
+  "25":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: RenameIsHighlySuspicious
+          operator: isNotEmpty
+          right:
+            value: {}
+        - left:
+            iscontext: true
+            value:
+              simple: SuspiciousTicketRequestsResults
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "25"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "27"
+      "yes":
+      - "23"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether an account was also renamed to the Domain Controller's
+        name, or whether TGT / Service Tickets were requested by an account using
+        the DC's name.
+      id: ae8c534a-d4e5-40c8-803d-454a1ec56161
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Evaluate additional high risk indicators
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: ae8c534a-d4e5-40c8-803d-454a1ec56161
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 697,
+          "y": 1477
+        }
+      }
+  "27":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: RareMachineAccountCreationResults
+          operator: isNotEmpty
+          right:
+            value: {}
+        - left:
+            iscontext: true
+            value:
+              simple: RelatedIncidentAlertsResults
+          operator: isNotEmpty
+        - left:
+            iscontext: true
+            value:
+              simple: SuspiciousAccountRenamesResults
+          operator: isNotEmpty
+        - left:
+            iscontext: true
+            value:
+              simple: SuspiciousToolsResults
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "27"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "37"
+      "yes":
+      - "30"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether any signs at all of malicious activity were detected
+        in the investigation.
+      id: e0404c0b-1fe1-4203-8a22-1c0a0555fe03
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check if findings require analyst decision
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: e0404c0b-1fe1-4203-8a22-1c0a0555fe03
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 909,
+          "y": 1606
+        }
+      }
+  "28":
+    continueonerrortype: ""
+    form:
+      description: After monitoring incoming alerts, and before this alert is closed,
+        please choose the closing reason for the alert.
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: What is the closing reason for this alert?
+        options: []
+        optionsarg:
+        - {}
+        - simple: Resolved - True Positive
+        - simple: Resolved - False Positive
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: singleSelect
+      sender: Your SOC team
+      syncid: ""
+      title: Provide Closing Details
+      totalanswers: 0
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body: null
+      cc: null
+      format: ""
+      methods: []
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      '#none#':
+      - "38"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        There were some indications of an attack, but not enough to consider the alert a True Positive.
+
+        Examine the findings:
+
+        Rare machine account creation: `${.=val.RareMachineAccountCreationResults && Object.keys(val.RareMachineAccountCreationResults).length > 0 ? "True" : "False"}`
+
+        Suspicious account renamings:
+        `${.=val.SuspiciousAccountRenamesResults&& Object.keys(val.SuspiciousAccountRenamesResults).length > 0 ? "True" : "False"}`
+
+        Suspicious tools used: `${.=val.SuspiciousToolsResults&& Object.keys(val.SuspiciousToolsResults).length > 0 ? "True" : "False"}`
+
+        Other alerts in the alert: `${.=val.RelatedAlertAlertsResults&& Object.keys(val.RelatedAlertAlertsResults).length > 0 ? "True" : "False"}`
+
+        ---
+
+        Check if any of the following alerts trigger in the near future:
+        - TGT request with a spoofed sAMAccountName
+        - Service ticket request with a spoofed sAMAccountName
+
+        If they do, we suggest disabling the offending account.
+      id: 5a52e63c-6ba6-41c6-8f56-7626500c110e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Monitor incoming alerts
+      playbooktaskmissingcomponent: null
+      type: collection
+      version: -1
+    taskid: 5a52e63c-6ba6-41c6-8f56-7626500c110e
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": 909,
+          "y": 1860
+        }
+      }
+  "29":
+    continueonerrortype: ""
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    scriptarguments:
+      closeNotes:
+        simple: Handled by the playbook “SPNs cleared from a machine account”.
+      closeReason:
+        simple: Resolved - True Positive
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: Closes the current alert.
+      id: 38154208-0899-46b8-90b4-bc9d256fb7c5
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close alert as True Positive
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: 38154208-0899-46b8-90b4-bc9d256fb7c5
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 400,
+          "y": 2396
+        }
+      }
+  "30":
+    continueonerrortype: ""
+    id: "30"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "28"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 18668a15-6ea9-4477-814d-35e0d70aa2ad
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Inconclusive - Continue Monitoring
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 18668a15-6ea9-4477-814d-35e0d70aa2ad
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 909,
+          "y": 1732
+        }
+      }
+  "32":
+    continueonerrortype: ""
+    id: "32"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body: {}
+      cc: null
+      format: ""
+      methods: []
+      replyOptions:
+      - Disable
+      - Do not disable
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      Disable:
+      - "40"
+      Do not disable:
+      - "29"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Review the following findings and decide whether you want to disable the user.
+
+        Username: ${alert.username.[0]}
+
+
+        Below are the findings of the investigation:
+
+        ---
+
+        #### Rare machine account creation
+        If the host insights show that the machine account whose SPN was cleared was created recently, it can indicate an attack.
+
+        Detected: `${.=val.RareMachineAccountCreationResults && Object.keys(val.RareMachineAccountCreationResults).length > 0 ? "True" : "False"}`
+
+        ---
+
+        #### Suspicious account renames
+        If the user has alerts indicating they changed the sAMAccountName of the machine account, this raises the suspicion for an attack.
+
+        Detected: `${.=val.SuspiciousAccountRenamesResults&& Object.keys(val.SuspiciousAccountRenamesResults).length > 0 ? "True" : "False"}`
+
+        ---
+
+        #### Tools associated with Kerberos ticket manipulation
+        Detected: `${.=val.SuspiciousToolsResults&& Object.keys(val.SuspiciousToolsResults).length > 0 ? "True" : "False"}`
+
+        ---
+
+        #### Suspicious ticket requests
+        If an account using a Domain Controller's hostname is requesting a TGT / service ticket from the DC, this is a strong indication that the SPN clearing was done as part of an attack. If a "Name match" is also detected, this means that the same machine that was renamed is also the same machine that requested the suspicious ticket - making the evidence stronger for a TP.
+
+        Detected: `${.=val.SuspiciousTicketRequestsResults&& Object.keys(val.SuspiciousTicketRequestsResults).length > 0 ? "True" : "False"}`
+        Detected name match: `${.=val.ImpersonatingThisDC? "True" : "False"}`
+
+        ---
+
+        #### Additional alerts in the alert:
+        If the same alert shows general reconnaissance indications or creation of other suspicious users - this increases the chances that the SPN clearing was done maliciously.
+
+        Detected: `${.=val.RelatedAlertAlertsResults&& Object.keys(val.RelatedAlertAlertsResults).length > 0 ? "True" : "False"}`
+
+        ---
+
+        #### Historical events
+
+        Number of past SPN clearing events: `${Core.OriginalAlert.event.evtlog_subject_user_count_distinct_target_user_spns_cleared}`
+      id: b387e45f-7be0-414f-90de-de09f72edbff
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual - decide whether to disable the user
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: b387e45f-7be0-414f-90de-de09f72edbff
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 210,
+          "y": 2119
+        }
+      }
+  "34":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: SuspiciousTicketRequestsResults.Contents.data.details
+                    operator: containsString
+                    right:
+                      iscontext: true
+                      value:
+                        simple: TicketRequestForDCString
+                root: SuspiciousTicketRequestsResults.Contents.data.details
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "34"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "15"
+      "yes":
+      - "36"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if any alert among all recent Kerberos ticket using spoofed
+        sAMAccountName alerts, includes the name of the DC that handled the SPNs Cleared
+        alert.
+      id: b7a0bffd-22e8-4768-8ea4-0bb93725e4ab
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check if the requests were impersonating this DC
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: b7a0bffd-22e8-4768-8ea4-0bb93725e4ab
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 30,
+          "y": 913
+        }
+      }
+  "35":
+    continueonerrortype: ""
+    id: "35"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: TicketRequestForDCString
+      value:
+        simple: Account ${alert.hostname}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves a search term to help check if the subject host of the suspicious
+        Kerberos ticket request alerts is the same domain controller involved in the
+        SPNs Cleared alert.
+      id: bf47695c-401c-4e6b-8413-e114a8dc7a59
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save search keywords for investigation
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: bf47695c-401c-4e6b-8413-e114a8dc7a59
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 842,
+          "y": 396
+        }
+      }
+  "36":
+    continueonerrortype: ""
+    id: "36"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: ImpersonatingThisDC
+      value:
+        simple: "True"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Save a context key indicating that Kerberos ticket request alerts
+        where the requester has the name of the Domain Controller of this alert have
+        been found.
+      id: dfabdfc4-4bcf-4d59-8b2f-ef957dbdfc82
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save suspicious ticket request flag
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: dfabdfc4-4bcf-4d59-8b2f-ef957dbdfc82
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 30,
+          "y": 1054
+        }
+      }
+  "37":
+    continueonerrortype: ""
+    id: "37"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    scriptarguments:
+      closeNotes:
+        simple: Handled by the playbook “SPNs cleared from a machine account”.
+      closeReason:
+        simple: Resolved - False Positive
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: Closes the current alert.
+      id: c3b72679-9ad8-4496-8b2a-e7fcd4b4eba5
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close alert as False Positive
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: c3b72679-9ad8-4496-8b2a-e7fcd4b4eba5
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1171,
+          "y": 2119
+        }
+      }
+  "38":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Provide Closing Details.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: Resolved - True Positive
+      label: True Positive
+    continueonerrortype: ""
+    id: "38"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "37"
+      True Positive:
+      - "39"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks what closing reason the user chose.
+      id: d3a187f0-5aa7-495a-8ab7-3eb9f9792044
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check closing reason
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: d3a187f0-5aa7-495a-8ab7-3eb9f9792044
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 909,
+          "y": 1985
+        }
+      }
+  "39":
+    continueonerrortype: ""
+    id: "39"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "29"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      severity:
+        simple: Medium
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Optionally increases the alert severity to the new value if it
+        is greater than the existing severity.
+      id: 2f88feea-7de3-4486-be52-e686ee648df4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Increase alert severity
+      playbooktaskmissingcomponent: null
+      script: IncreaseAlertSeverity
+      type: regular
+      version: -1
+    taskid: 2f88feea-7de3-4486-be52-e686ee648df4
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 613,
+          "y": 2119
+        }
+      }
+  "40":
+    continueonerrortype: ""
+    id: "40"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "29"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      brands:
+        simple: Active Directory Query v2
+      user_name:
+        complex:
+          accessor: username
+          root: alert
+          transformers:
+          - operator: LastArrayElement
+          - args:
+              error_if_no_match: {}
+              ignore_case: {}
+              multi_line: {}
+              period_matches_newline: {}
+              regex:
+                value:
+                  simple: (?<=\\)[^\\]+$
+              unpack_matches: {}
+            operator: RegexExtractAll
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: This script disables users for multiple services.
+      id: ef54d98e-a4a6-43d3-8564-688939671533
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Disable user in AD
+      playbooktaskmissingcomponent: null
+      script: disable-user
+      type: regular
+      version: -1
+    taskid: ef54d98e-a4a6-43d3-8564-688939671533
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -46,
+          "y": 2256
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "21_23_yes": 0.27,
+      "21_25_#default#": 0.47,
+      "22_15_#default#": 0.2,
+      "22_24_yes": 0.53,
+      "25_23_yes": 0.23,
+      "27_30_yes": 0.17,
+      "27_37_#default#": 0.37,
+      "32_29_Do not disable": 0.16,
+      "34_15_#default#": 0.48,
+      "38_37_#default#": 0.25,
+      "38_39_True Positive": 0.48
+    },
+    "paper": {
+      "dimensions": {
+        "height": 2306,
+        "width": 2081,
+        "x": -410,
+        "y": 160
+      }
+    }
+  }
