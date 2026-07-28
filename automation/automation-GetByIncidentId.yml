@@ -1,0 +1,56 @@
+args:
+- default: true
+  description: The ID of the incident from which to get context values. The default
+    is the current incident.
+  name: incident_id
+  supportedModules: []
+- description: The key to get.
+  name: get_key
+  required: true
+  supportedModules: []
+- description: The key to set. The default is "get_key".
+  name: set_key
+  supportedModules: []
+comment: Gets a value from the specified incident's context.
+commonfields:
+  id: GetByIncidentId
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: GetByIncidentId
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  register_module_line('GetByIncidentId', 'start', __line__())
+
+  return_results(demisto.executeCommand('GetByAlertId', demisto.args()))
+
+  register_module_line('GetByIncidentId', 'end', __line__())
+scripttarget: 0
+signature: XdatntBR2yrZmsBqxZ03mXHi/S0ydWEVPpTYc35XVvY6iTWB2ujP0rc2uXStDgf0SpkKm2CUP8LR/qKGKtLt9JDMWdMOwb/w6L4dyyngNc4A4V/ua8UasoFxFqFv6sZ30poaE/+xI82rP5OvY9VuhI1DZIbIhxEzDTNlK3nU8n008wJqxnhYEXKijF/irj44kdkD/tI9Mkyw0aDfqPnGNkoecGQLolClGNOiuPeUUZrMejjctAJTyXhiY+DK7XNMadxX4+oK2HeMK5qmWiHKBJ5ndDaFw6ldAU1ZrYQRSKnOHEwU8zNCSLnbJup+vLjdCwz8jD00UOSatY8ipTs1dg==
+subtype: python3
+system: true
+tags: []
+type: python
