@@ -1,0 +1,2607 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.6.0
+    isoverridable: false
+    itemVersion: 3.5.66
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - cloud
+    - cloud_posture
+    - cloud_runtime_security
+    - edr
+    - xsiam
+    toServerVersion: ""
+description: |-
+  When an unknown executable, DLL, or macro attempts to run on a Windows or Mac endpoint, the Cortex XDR agent uses local analysis to determine if it is likely to be malware. Local analysis uses a static set of pattern-matching rules that inspect multiple file features and attributes, and a statistical model that was developed with machine learning on WildFire threat intelligence.
+
+  **Investigative Actions:**
+
+  Investigate the executed process image and verify if it is malicious using:
+
+  * XDR trusted signers
+  * VT trusted signers
+  * VT detection rate
+  * NSRL DB
+
+  **Response Actions**
+
+  The playbook's first response action is a containment plan that is based on the initial data provided within the alert. In that phase, the playbook will execute:
+
+  * Auto block indicators
+  * Auto file quarantine
+  * Manual endpoint isolation
+
+  When the playbook executes, it checks for additional activity using the Endpoint Investigation Plan playbook, and another phase, which includes containment and eradication, is executed.
+
+  This phase will execute the following containment actions:
+
+  * Manual block indicators
+  * Manual file quarantine
+  * Auto endpoint isolation
+
+  And the following eradication actions:
+
+  * Manual process termination
+  * Manual file deletion
+  * Manual reset of the user’s password
+
+  External resources:
+
+  [Malware Protection Flow](https://docs-cortex.paloaltonetworks.com/r/Cortex-XSIAM/Cortex-XSIAM-Administrator-Guide/File-Analysis-and-Protection-Flow)
+id: Local Analysis alert Investigation
+inputSections:
+- description: Alert management settings and data, including escalation processes,
+    and user engagements.
+  inputs:
+  - AutoCloseAlert
+  - ShouldManualReviewFP
+  name: Alert Management
+- description: Enrichment settings and data, including assets and indicators enrichment
+    using third-party enrichers.
+  inputs:
+  - Query
+  - SHA256
+  - Path
+  name: Enrichment
+- description: Investigation settings and data, including any deep dive alert investigation
+    and verdict determination.
+  inputs:
+  - GraywareAsMalware
+  - ShouldRescanBenign
+  name: Investigation
+- description: Remediation settings and data, including containment, eradication,
+    and recovery.
+  inputs:
+  - AutoEradication
+  - AutoContainment
+  - FileRemediation
+  - AutoRecovery
+  name: Remediation
+- description: Ticket management settings and data.
+  inputs:
+  - ShouldOpenTicket
+  - serviceNowShortDescription
+  - serviceNowImpact
+  - serviceNowUrgency
+  - serviceNowSeverity
+  - serviceNowTicketType
+  - serviceNowCategory
+  - serviceNowAssignmentGroup
+  - ZendeskPriority
+  - ZendeskRequester
+  - ZendeskStatus
+  - ZendeskSubject
+  - ZendeskTags
+  - ZendeskType
+  - ZendeskAssigne
+  - ZendeskCollaborators
+  - description
+  - addCommentPerEndpoint
+  - CommentToAdd
+  name: Ticket Management
+inputs:
+- description: 'Whether to treat Grayware verdict as Malware. '
+  key: GraywareAsMalware
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: |-
+    Setting this input will impact both Containment Plan sub-playbooks. Without setting this input, the default values are True for the first occurrence and False for the second.
+    Whether to execute automatically or manually the containment plan tasks:
+    * Isolate endpoint
+    * Block indicators
+    * Quarantine file
+    * Disable user
+  key: AutoContainment
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+- description: |-
+    Whether to execute automatically or manually the eradication plan tasks:
+    * Terminate process
+    * Delete file
+    * Reset the user's password
+  key: AutoEradication
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: Should be either 'Quarantine' or 'Delete'.
+  key: FileRemediation
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: Quarantine
+- description: Whether to execute the Recovery playbook.
+  key: AutoRecovery
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: Whether to close the alert automatically or manually, after an analyst's
+    review.
+  key: AutoCloseAlert
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: Whether to rescan (Using WildFire detonate file) benign files.
+  key: ShouldRescanBenign
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+- description: Whether to ask for a manual review before false positive handling.
+    Should be True or False
+  key: ShouldManualReviewFP
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: The SHA256 hash of the file to respond to. Decided by the DT expression
+    wether it's the initiator or the target file SHA256.
+  key: SHA256
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      root: alert
+      transformers:
+      - args:
+          dt:
+            value:
+              simple: .=pickvalue(val);function pickvalue(x){if(x.filesha256){return
+                x.filesha256} else {return x.initiatorsha256}}
+        operator: DT
+- description: The path of the file to respond to. Decided by the DT expression wether
+    it's the initiator or the target file path.
+  key: Path
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      root: alert
+      transformers:
+      - args:
+          dt:
+            value:
+              simple: .=pickvalue(val);function pickvalue(x){if(x.filepath){return
+                x.filepath} else {return x.initiatorpath}}
+        operator: DT
+- description: The query for searching previous alerts based on the file we want to
+    respond to. Decided by the If-Then-Else expression wether it's the initiator or
+    the target file.
+  key: Query
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      root: alert
+      transformers:
+      - args:
+          condition:
+            value:
+              simple: lhs!=rhs
+          conditionB: {}
+          conditionInBetween: {}
+          else:
+            value:
+              simple: ${alert= '(initiatorsha256:"' + val.initiatorsha256 + '" or
+                agentid:"' + val.agentid + '") ' + 'and sourceBrand:"' + val.sourceBrand
+                + '" and name:"' + val.name + '"'}
+          equals: {}
+          lhs:
+            iscontext: true
+            value:
+              simple: alert.filesha256
+          lhsB: {}
+          options: {}
+          optionsB: {}
+          rhs: {}
+          rhsB: {}
+          then:
+            value:
+              simple: ${alert= '(filesha256:"' + val.filesha256 + '" or agentid:"'
+                + val.agentid + '") ' + 'and sourceBrand:"' + val.sourceBrand + '"
+                and name:"' + val.name + '"'}
+        operator: If-Then-Else
+- description: Whether to open a ticket automatically in a ticketing system. (True/False).
+  key: ShouldOpenTicket
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: A short description of the ticket.
+  key: serviceNowShortDescription
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: XSIAM Incident ID - ${parentIncidentFields.incident_id}
+- description: The impact for the new ticket. Leave empty for ServiceNow default impact.
+  key: serviceNowImpact
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The urgency of the new ticket. Leave empty for ServiceNow default urgency.
+  key: serviceNowUrgency
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The severity of the new ticket. Leave empty for ServiceNow default
+    severity.
+  key: serviceNowSeverity
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The ServiceNow ticket type. Options are "incident", "problem", "change_request",
+    "sc_request", "sc_task", or "sc_req_item". Default is "incident".
+  key: serviceNowTicketType
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The category of the ServiceNow ticket.
+  key: serviceNowCategory
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The group to which to assign the new ticket.
+  key: serviceNowAssignmentGroup
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The urgency with which the ticket should be addressed. Allowed values
+    are "urgent", "high", "normal", or "low".
+  key: ZendeskPriority
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The user who requested this ticket.
+  key: ZendeskRequester
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The state of the ticket. Allowed values are "new", "open", "pending",
+    "hold", "solved", or "closed".
+  key: ZendeskStatus
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The value of the subject field for this ticket.
+  key: ZendeskSubject
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: XSIAM Incident ID - ${parentIncidentFields.incident_id}
+- description: The array of tags applied to this ticket.
+  key: ZendeskTags
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The type of this ticket. Allowed values are "problem", "incident",
+    "question", or "task".
+  key: ZendeskType
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The agent currently assigned to the ticket.
+  key: ZendeskAssigne
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The users currently CC'ed on the ticket.
+  key: ZendeskCollaborators
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The ticket description.
+  key: description
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: ${parentIncidentFields.description}. ${parentIncidentFields.xdr_url}
+- description: 'Whether to append a new comment to the ticket for each endpoint in
+    the incident. Possible values: True/False.'
+  key: addCommentPerEndpoint
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Comment for the ticket.
+  key: CommentToAdd
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: '${alert.name}. Alert ID: ${alert.id}'
+name: Local Analysis alert Investigation
+outlinetasks: {}
+outputSections:
+- description: Generic group for outputs
+  name: General (Outputs group)
+  outputs: []
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b83fd3f5-7f61-43c0-88e8-6075d17650dc
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: b83fd3f5-7f61-43c0-88e8-6075d17650dc
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": -1800
+        }
+      }
+  "2":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: FileVerdict
+          operator: isEqualString
+          right:
+            value:
+              simple: Suspicious
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: value
+                root: Core.AnalyticsPrevalence.Hash
+          operator: isEqualString
+          right:
+            value:
+              simple: "false"
+      label: True Positive
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "33"
+      True Positive:
+      - "81"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks the verdict returned by the 'Enrichment for Verdict' playbook.
+      id: c91fc254-410b-425e-87b2-c69a28f65349
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Verdict by FileVerdict AND Prevalence
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c91fc254-410b-425e-87b2-c69a28f65349
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": -1000
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "61"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b3b9a73a-24d7-4008-8646-07fa816ad9d5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Analysis
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: b3b9a73a-24d7-4008-8646-07fa816ad9d5
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": -1660
+        }
+      }
+  "6":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: action
+                root: alert
+          operator: isEqualString
+          right:
+            value:
+              simple: BLOCKED
+      label: Blocked
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "57"
+      Blocked:
+      - "35"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the file execution was prevented.
+      id: d6e52022-e411-45b0-8b80-a79e9e7afa71
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Was the action prevented? '
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: d6e52022-e411-45b0-8b80-a79e9e7afa71
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": -310
+        }
+      }
+  "14":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Verdict
+                root: WildFire.Verdicts
+          operator: isEqualString
+          right:
+            value:
+              simple: "0"
+      label: Benign
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: WildFire.Verdicts.Verdict
+          operator: isEqualString
+          right:
+            value:
+              simple: "2"
+      - - left:
+            iscontext: true
+            value:
+              simple: inputs.GraywareAsMalware
+          operator: isEqualString
+          right:
+            value:
+              simple: "False"
+      label: Greyware
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "39"
+      Benign:
+      - "85"
+      Greyware:
+      - "86"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks the WildFire verdict.
+      id: c2495b22-ee9c-48c6-8f2f-6fc37c1bac1d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check WF alert verdict
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c2495b22-ee9c-48c6-8f2f-6fc37c1bac1d
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 825
+        }
+      }
+  "33":
+    continueonerrortype: ""
+    id: "33"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "75"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6b6f4826-2aa2-456a-8587-93f122f1c99e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Handle FP
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 6b6f4826-2aa2-456a-8587-93f122f1c99e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": 1640
+        }
+      }
+  "34":
+    continueonerrortype: ""
+    id: "34"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      "No":
+      - "39"
+      "Yes":
+      - "67"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |+
+        Was it your security vendor?
+        Script from your IT?
+
+        ....
+
+      id: f74d27e4-3546-40ce-8aee-0c1c2047fc61
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual review - was it your security vendor?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: f74d27e4-3546-40ce-8aee-0c1c2047fc61
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": 2070
+        }
+      }
+  "35":
+    continueonerrortype: ""
+    id: "35"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "14"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 29c59ae5-63a9-494e-86a9-d98e85aeec7c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: WildFire Verdict
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 29c59ae5-63a9-494e-86a9-d98e85aeec7c
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 690
+        }
+      }
+  "39":
+    continueonerrortype: ""
+    id: "39"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "63"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 91b3c33e-25e4-42d5-83f9-b9cbe172e16d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigate
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 91b3c33e-25e4-42d5-83f9-b9cbe172e16d
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 2250
+        }
+      }
+  "41":
+    continueonerrortype: ""
+    id: "41"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "64"
+      - "65"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 076a0a10-7b8f-4584-859c-11b39ea83664
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Remediation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 076a0a10-7b8f-4584-859c-11b39ea83664
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 2800
+        }
+      }
+  "44":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: FoundIncidents
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "44"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "47"
+      "yes":
+      - "41"
+      - "76"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if other alerts were found on the endpoint.
+      id: f9946ed1-7266-408f-8bde-147e9d09581d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Found relevant information?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: f9946ed1-7266-408f-8bde-147e9d09581d
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 2560
+        }
+      }
+  "45":
+    continueonerrortype: ""
+    id: "45"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "51"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.close.inv
+      id: 767a19fc-c96e-4b33-8053-889e45256edf
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close alert
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: 767a19fc-c96e-4b33-8053-889e45256edf
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 3990
+        }
+      }
+  "46":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.AutoRecovery
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "46"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "47"
+      "yes":
+      - "66"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Whether to execute the Recovery Plan playbook.
+      id: d5a05362-eb31-403f-84b9-493f500d455f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Restore affected endpoint?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: d5a05362-eb31-403f-84b9-493f500d455f
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 3310
+        }
+      }
+  "47":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.AutoCloseAlert
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "47"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "48"
+      "yes":
+      - "45"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Whether to close the alert automatically.
+      id: 858764a5-e107-4b04-894f-245053dd10a6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Close alert automatically?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 858764a5-e107-4b04-894f-245053dd10a6
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 3650
+        }
+      }
+  "48":
+    continueonerrortype: ""
+    id: "48"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "45"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Continue manually with the alert investigation.
+      id: da1d7739-25a2-416b-8c41-98d80f898913
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Continue with the alert investigation
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: da1d7739-25a2-416b-8c41-98d80f898913
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1270,
+          "y": 3820
+        }
+      }
+  "50":
+    continueonerrortype: ""
+    id: "50"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "46"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 41e96b8f-fa0a-436e-8ca4-a1b526352653
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Recovery
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 41e96b8f-fa0a-436e-8ca4-a1b526352653
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 3115
+        }
+      }
+  "51":
+    continueonerrortype: ""
+    id: "51"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 909bbeff-e2db-4c81-81ac-90cb08c5a6e1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 909bbeff-e2db-4c81-81ac-90cb08c5a6e1
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 40,
+          "y": 4160
+        }
+      }
+  "54":
+    continueonerrortype: ""
+    id: "54"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "58"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a5190e8c-7ec7-4605-8789-496a8195a02f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Pre-Investigation Containment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: a5190e8c-7ec7-4605-8789-496a8195a02f
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1410,
+          "y": 180
+        }
+      }
+  "55":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: autime
+                root: alert
+          operator: greaterThanOrEqual
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: LastDayTimeNowUnix
+      label: 24H
+    continueonerrortype: ""
+    id: "55"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "35"
+      24H:
+      - "54"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks for the hash execution timestamp.
+      id: 9e5a149b-b6f9-4aea-8305-61a13d898878
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check hash execution timestamp
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 9e5a149b-b6f9-4aea-8305-61a13d898878
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1410,
+          "y": 20
+        }
+      }
+  "57":
+    continueonerrortype: ""
+    id: "57"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "55"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      contextKey:
+        simple: LastDay
+      daysAgo:
+        simple: "1"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        Retrieves the current date and time.
+      id: feccfedf-58d9-41c1-8810-f3a9187230de
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get time for the last day
+      playbooktaskmissingcomponent: null
+      script: GetTime
+      type: regular
+      version: -1
+    taskid: feccfedf-58d9-41c1-8810-f3a9187230de
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1410,
+          "y": -140
+        }
+      }
+  "58":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.AutoContainment
+                transformers:
+                - operator: toLowerCase
+          operator: isEqualString
+          right:
+            value:
+              simple: "true"
+      label: "yes"
+    continueonerrortype: ""
+    id: "58"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "35"
+      "yes":
+      - "62"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks the AutoContainment input.
+      id: ce2f012d-f8f2-4125-8af7-04c1072ac4de
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is auto-containment set to true?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: ce2f012d-f8f2-4125-8af7-04c1072ac4de
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1410,
+          "y": 320
+        }
+      }
+  "59":
+    continueonerrortype: ""
+    id: "59"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "60"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      endpoint_ids:
+        complex:
+          accessor: agentid
+          root: alert
+      windows_file_paths:
+        complex:
+          root: inputs.Path
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Retrieves files from selected endpoints. You can retrieve up to
+        20 files, from no more than 10 endpoints. At least one endpoint ID and one
+        file path are necessary in order to run the command. After running this command,
+        you can use the core-action-status-get command with returned action_id, to
+        check the action status.
+      id: fbf6583d-dc19-4d34-84cd-2655d7e6aa29
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Retrieve the suspected file
+      playbooktaskmissingcomponent: null
+      script: '|||core-retrieve-files'
+      type: regular
+      version: -1
+    taskid: fbf6583d-dc19-4d34-84cd-2655d7e6aa29
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1340,
+          "y": 1590
+        }
+      }
+  "60":
+    continueonerrortype: ""
+    id: "60"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "68"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      action_id:
+        complex:
+          accessor: action_id
+          root: Core.RetrievedFiles
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: View the file retrieved by the core-retrieve-files command according
+        to the action ID. Before running this command, you can use the core-action-status-get
+        command to check if this action completed successfully.
+      id: 91d762cb-ae2c-42b9-817b-beba202a674c
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get retrieved file
+      playbooktaskmissingcomponent: null
+      script: '|||core-retrieve-file-details'
+      type: regular
+      version: -1
+    taskid: 91d762cb-ae2c-42b9-817b-beba202a674c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1340,
+          "y": 1750
+        }
+      }
+  "61":
+    continueonerrortype: ""
+    id: "61"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "79"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      CloseReason:
+        simple: Resolved - False Positive,Resolved - Duplicate Incident,Resolved -
+          Known Issue
+      Domain:
+        complex:
+          accessor: domainname
+          root: alert
+      FileSHA256:
+        complex:
+          root: inputs.SHA256
+      IP:
+        complex:
+          accessor: hostip
+          root: alert
+      URL:
+        complex:
+          accessor: url
+          root: alert
+      User:
+        complex:
+          accessor: username
+          root: alert
+      query:
+        complex:
+          root: inputs.Query
+      threshold:
+        simple: "5"
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This playbook checks prior alert closing reasons and performs enrichment
+        and prevalence checks on different IOC types. It then returns the information
+        needed to establish the alert's verdict.
+      id: 109f06df-2f1f-4c89-8b00-e84b143cf481
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Enrichment for Verdict
+      playbookId: Enrichment for Verdict
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 109f06df-2f1f-4c89-8b00-e84b143cf481
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": -1520
+        }
+      }
+  "62":
+    continueonerrortype: ""
+    id: "62"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "35"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AutoContainment:
+        complex:
+          root: inputs.AutoContainment
+          transformers:
+          - args:
+              applyIfEmpty: {}
+              defaultValue:
+                value:
+                  simple: "true"
+            operator: SetIfEmpty
+      BlockIndicators:
+        simple: "True"
+      ClearUserSessions:
+        simple: "False"
+      EndpointID:
+        complex:
+          accessor: agentid
+          root: alert
+      FileContainment:
+        simple: "True"
+      FileHash:
+        complex:
+          root: inputs.ShouldManualReviewFP
+      FilePath:
+        complex:
+          root: inputs.Path
+      FileRemediation:
+        simple: Quarantine
+      HostContainment:
+        simple: "True"
+      UserContainment:
+        simple: "True"
+      UserVerification:
+        simple: "False"
+      Username:
+        complex:
+          accessor: username
+          root: alert
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "This playbook handles all the containment actions available with
+        Cortex XSIAM, including:  \n* Isolate endpoint\n* Disable account\n* Quarantine
+        file\n* Block indicators\n* Clear user session (currently, the playbook supports
+        only Okta)\n\nNote: The playbook inputs enable manipulating the execution
+        flow; read the input descriptions for details."
+      id: 00ca705e-0d89-43f9-8176-fea4dc6eaea5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment Plan
+      playbookName: Containment Plan
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 00ca705e-0d89-43f9-8176-fea4dc6eaea5
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1410,
+          "y": 510
+        }
+      }
+  "63":
+    continueonerrortype: ""
+    id: "63"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "44"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      HuntCnCTechniques:
+        simple: "True"
+      HuntCollectionTechniques:
+        simple: "True"
+      HuntDefenseEvasionTechniques:
+        simple: "True"
+      HuntDiscoveryTechniques:
+        simple: "True"
+      HuntExecutionTechniques:
+        simple: "True"
+      HuntImpactTechniques:
+        simple: "True"
+      HuntInitialAccessTechniques:
+        simple: "True"
+      HuntLateralMovementTechniques:
+        simple: "True"
+      HuntPersistenceTechniques:
+        simple: "True"
+      HuntPrivilegeEscalationTechniques:
+        simple: "True"
+      HuntReconnaissanceTechniques:
+        simple: "True"
+      agentID:
+        complex:
+          accessor: agentid
+          root: alert
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "This playbook handles all the endpoint investigation actions available
+        with Cortex XSIAM, including the following tasks:\n* Pre-defined MITRE tactics\n*
+        Host fields (Host ID)\n* Attacker fields (Attacker IP, External host)\n* MITRE
+        techniques\n* File hash (currently, the playbook supports only SHA256)  \n\nNote:
+        The playbook inputs enable manipulating the execution flow; read the input
+        descriptions for details."
+      id: 461f2351-9e50-443b-8486-795bc963d33c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Endpoint Investigation Plan
+      playbookId: Endpoint Investigation Plan
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 461f2351-9e50-443b-8486-795bc963d33c
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 2390
+        }
+      }
+  "64":
+    continueonerrortype: ""
+    id: "64"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "50"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AutoContainment:
+        complex:
+          root: inputs.AutoContainment
+          transformers:
+          - args:
+              applyIfEmpty: {}
+              defaultValue:
+                value:
+                  simple: "false"
+            operator: SetIfEmpty
+      BlockIndicators:
+        simple: "True"
+      ClearUserSessions:
+        simple: "True"
+      EndpointID:
+        complex:
+          accessor: agentid
+          root: alert
+      FileContainment:
+        simple: "True"
+      FileHash:
+        complex:
+          root: alert
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs!=rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: foundIncidents.CustomFields.initiatorsha256
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: alert.filesha256
+              lhsB: {}
+              options: {}
+              optionsB: {}
+              rhs: {}
+              rhsB: {}
+              then:
+                iscontext: true
+                value:
+                  simple: foundIncidents.CustomFields.filesha256
+            operator: If-Then-Else
+          - operator: uniq
+      FilePath:
+        complex:
+          root: alert
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs!=rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: foundIncidents.CustomFields.initiatorpath
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: alert.filesha256
+              lhsB: {}
+              options: {}
+              optionsB: {}
+              rhs: {}
+              rhsB: {}
+              then:
+                iscontext: true
+                value:
+                  simple: foundIncidents.CustomFields.filepath
+            operator: If-Then-Else
+          - operator: uniq
+      FileRemediation:
+        complex:
+          root: inputs.FileRemediation
+      HostContainment:
+        simple: "True"
+      UserContainment:
+        simple: "True"
+      UserVerification:
+        simple: "False"
+      Username:
+        complex:
+          accessor: username
+          root: foundIncidents.CustomFields
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "This playbook handles all the containment actions available with
+        Cortex XSIAM, including:  \n* Isolate endpoint\n* Disable account\n* Quarantine
+        file\n* Block indicators\n* Clear user session (currently, the playbook supports
+        only Okta)\n\nNote: The playbook inputs enable manipulating the execution
+        flow; read the input descriptions for details."
+      id: f232d4e1-9457-469a-805a-2064f2f0c30e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment Plan
+      playbookName: Containment Plan
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: f232d4e1-9457-469a-805a-2064f2f0c30e
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1300,
+          "y": 2940
+        }
+      }
+  "65":
+    continueonerrortype: ""
+    id: "65"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 0
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "50"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AutoEradicate:
+        complex:
+          root: inputs.AutoEradication
+      EndpointID:
+        complex:
+          accessor: agentid
+          root: alert
+      FilePath:
+        complex:
+          root: alert
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs!=rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: foundIncidents.CustomFields.initiatorpath
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: alert.filesha256
+              lhsB: {}
+              options: {}
+              optionsB: {}
+              rhs: {}
+              rhsB: {}
+              then:
+                iscontext: true
+                value:
+                  simple: foundIncidents.CustomFields.filepath
+            operator: If-Then-Else
+      FileRemediation:
+        complex:
+          root: inputs.FileRemediation
+      Username:
+        complex:
+          accessor: username
+          root: foundIncidents.CustomFields
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "This playbook handles all the eradication actions available with
+        Cortex XSIAM, including the following tasks:\n* Reset user password\n* Delete
+        file\n* Kill process (currently, the playbook supports terminating a process
+        by name)  \n\nNote: The playbook inputs enable manipulating the execution
+        flow; read the input descriptions for details."
+      id: d59aca07-8dd0-410e-8c3f-a971980653cf
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Eradication Plan
+      playbookId: Eradication Plan
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: d59aca07-8dd0-410e-8c3f-a971980653cf
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 2940
+        }
+      }
+  "66":
+    continueonerrortype: ""
+    id: "66"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "47"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      FileHash:
+        complex:
+          root: inputs.SHA256
+      endpointID:
+        complex:
+          accessor: agentid
+          root: alert
+      releaseFile:
+        simple: "False"
+      unIsolateEndpoint:
+        simple: "False"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        This playbook handles all the recovery actions available with Cortex XSIAM, including the following tasks:
+        * Unisolate endpoint
+        * Restore quarantined file
+
+        Note: The playbook inputs enable manipulating the execution flow; read the input descriptions for details.
+      id: 32acfe19-fb1e-43f7-8302-9f695f5173cb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Recovery Plan
+      playbookName: Recovery Plan
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 32acfe19-fb1e-43f7-8302-9f695f5173cb
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1270,
+          "y": 3480
+        }
+      }
+  "67":
+    continueonerrortype: ""
+    id: "67"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "51"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      FileSHA256:
+        complex:
+          root: inputs.SHA256
+      ShouldCloseAutomatically:
+        complex:
+          root: inputs.AutoCloseAlert
+      ShouldHandleFPautomatically:
+        complex:
+          root: inputs.ShouldManualReviewFP
+      alertName:
+        complex:
+          accessor: name
+          root: alert
+      sourceIP:
+        complex:
+          accessor: hostip
+          root: alert
+      username:
+        complex:
+          accessor: username
+          root: alert
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        This playbook handles false positive alerts.
+        It creates an alert exclusion or alert exception, or adds a file to an allow list based on the alert fields and playbook inputs.
+      id: 58f335fb-7b1f-4de2-83e6-5c80421dbdc5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Handle False Positive Alerts
+      playbookName: Handle False Positive Alerts
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 58f335fb-7b1f-4de2-83e6-5c80421dbdc5
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 40,
+          "y": 2390
+        }
+      }
+  "68":
+    continueonerrortype: ""
+    id: "68"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "69"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      lastZipFileInWarroom:
+        simple: "yes"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Unzip a file using fileName or entryID to specify a file. Unzipped
+        files are loaded to the War Room and names are put in the context.
+      id: b36fe43f-fee9-49e5-8258-396a1cfb1c0a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: |
+        Extract retrieved file
+      playbooktaskmissingcomponent: null
+      script: UnzipFile
+      type: regular
+      version: -1
+    taskid: b36fe43f-fee9-49e5-8258-396a1cfb1c0a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1340,
+          "y": 1910
+        }
+      }
+  "69":
+    continueonerrortype: ""
+    id: "69"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      scriptArguments:
+        File:
+          complex:
+            filters:
+            - - ignorecase: true
+                left:
+                  iscontext: true
+                  value:
+                    simple: File.Name
+                operator: isNotEqualString
+                right:
+                  value:
+                    simple: manifest.json
+            - - left:
+                  iscontext: true
+                  value:
+                    simple: File.Name
+                operator: in
+                right:
+                  iscontext: true
+                  value:
+                    simple: ExtractedFiles
+            root: File
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "39"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      File:
+        complex:
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: File.Name
+              operator: isNotEqualString
+              right:
+                value:
+                  simple: manifest.json
+          - - left:
+                iscontext: true
+                value:
+                  simple: File.Name
+              operator: in
+              right:
+                iscontext: true
+                value:
+                  simple: ExtractedFiles
+          root: File
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        This playbook uploads, detonates, and analyzes files for the Wildfire sandbox.
+      id: cfc113e8-2775-4153-8dec-d3f91a312a58
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Wildfire Detonate and Analyze File
+      playbookId: Wildfire Detonate and Analyze File
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: cfc113e8-2775-4153-8dec-d3f91a312a58
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1340,
+          "y": 2070
+        }
+      }
+  "70":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Verdict
+                root: WildFire.Verdicts
+          operator: isEqualString
+          right:
+            value:
+              simple: "0"
+      label: Benign
+    continueonerrortype: ""
+    id: "70"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "50"
+      Benign:
+      - "71"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks the WildFire verdict received.
+      id: 39171c50-dc44-42ee-8862-eaf3ae8cf3b4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check WildFire alert verdict
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 39171c50-dc44-42ee-8862-eaf3ae8cf3b4
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1760,
+          "y": 2940
+        }
+      }
+  "71":
+    continueonerrortype: ""
+    id: "71"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "46"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      file_hash:
+        complex:
+          accessor: SHA256
+          root: WildFire.Report
+      new_verdict:
+        simple: "1"
+      reason:
+        simple: Cortex XDR Local Analysis found the file to be malicious.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Reports to WildFire about incorrect hash verdict through Cortex.
+      id: 252e5f23-9b93-4179-8c69-103b23f11bbc
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Flip verdict request to keep WF updated
+      playbooktaskmissingcomponent: null
+      script: '|||core-report-incorrect-wildfire'
+      type: regular
+      version: -1
+    taskid: 252e5f23-9b93-4179-8c69-103b23f11bbc
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1760,
+          "y": 3140
+        }
+      }
+  "75":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.ShouldManualReviewFP
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "75"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "67"
+      "yes":
+      - "34"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the playbook should wait for manual review.
+      id: 16d66dde-d441-4612-8e15-f3e4838624c4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is manual review required?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 16d66dde-d441-4612-8e15-f3e4838624c4
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": 1815
+        }
+      }
+  "76":
+    continueonerrortype: ""
+    id: "76"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "70"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 2f158f72-bc3f-4136-8861-eb07a692ce06
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Flip WildFire Verdict
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 2f158f72-bc3f-4136-8861-eb07a692ce06
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1760,
+          "y": 2800
+        }
+      }
+  "77":
+    continueonerrortype: ""
+    id: "77"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "78"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      sha256:
+        complex:
+          root: inputs.SHA256
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Retrieves results for a file hash using WildFire.
+      id: 825db812-8d09-472e-8829-f2808842eb05
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Check for existing WF report
+      playbooktaskmissingcomponent: null
+      script: '|||internal-wildfire-get-report'
+      type: regular
+      version: -1
+    taskid: 825db812-8d09-472e-8829-f2808842eb05
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1340,
+          "y": 1150
+        }
+      }
+  "78":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Status
+                root: WildFire.Report
+          operator: isEqualString
+          right:
+            value:
+              simple: Success
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.ShouldRescanBenign
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "no"
+    continueonerrortype: ""
+    id: "78"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "59"
+      "no":
+      - "39"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Do we have a WildFire report or should we detonate the file?
+      id: 922f67bb-ea36-4ade-8dfb-89e824d86b5e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should detonate file?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 922f67bb-ea36-4ade-8dfb-89e824d86b5e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1340,
+          "y": 1350
+        }
+      }
+  "79":
+    continueonerrortype: ""
+    id: "79"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "80"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c07b312c-3605-4fc3-84e4-5f0de4dec751
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Continue by Verdict
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: c07b312c-3605-4fc3-84e4-5f0de4dec751
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": -1350
+        }
+      }
+  "80":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Score
+                root: DBotScore
+          operator: containsGeneral
+          right:
+            value:
+              simple: "3"
+      label: True Positive
+    continueonerrortype: ""
+    id: "80"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "2"
+      True Positive:
+      - "81"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if DbotScore equals 3 (Malicious)
+      id: 8ac754b3-8eb9-4480-8804-df4cf57620fa
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Verdict by DbotScore
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 8ac754b3-8eb9-4480-8804-df4cf57620fa
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": -1200
+        }
+      }
+  "81":
+    continueonerrortype: ""
+    id: "81"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "83"
+    note: false
+    quietmode: 2
+    scriptarguments:
+      manual_severity:
+        simple: high
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.parent.alert.field
+      id: 59958d6b-33b1-4e97-82d4-4c46bc7301ad
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Set Alert Severity to High
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setParentIncidentFields
+      type: regular
+      version: -1
+    taskid: 59958d6b-33b1-4e97-82d4-4c46bc7301ad
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": -810
+        }
+      }
+  "83":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.ShouldOpenTicket
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "83"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "6"
+      "yes":
+      - "84"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether to open a ticket automatically in a ticketing system.
+      id: 827b7119-1b9f-4d4b-89d4-2e6b4c61f6da
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should open a ticket automatically in a ticketing system?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 827b7119-1b9f-4d4b-89d4-2e6b4c61f6da
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": -650
+        }
+      }
+  "84":
+    continueonerrortype: ""
+    id: "84"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      CommentToAdd:
+        complex:
+          root: inputs.CommentToAdd
+      ZendeskAssigne:
+        complex:
+          root: inputs.ZendeskAssigne
+      ZendeskCollaborators:
+        complex:
+          root: inputs.ZendeskCollaborators
+      ZendeskPriority:
+        complex:
+          root: inputs.ZendeskPriority
+      ZendeskRequester:
+        complex:
+          root: inputs.ZendeskRequester
+      ZendeskStatus:
+        complex:
+          root: inputs.ZendeskStatus
+      ZendeskSubject:
+        complex:
+          root: inputs.ZendeskSubject
+      ZendeskTags:
+        complex:
+          root: inputs.ZendeskTags
+      ZendeskType:
+        complex:
+          root: inputs.ZendeskType
+      addCommentPerEndpoint:
+        complex:
+          root: inputs.addCommentPerEndpoint
+      description:
+        complex:
+          root: inputs.description
+      serviceNowAssignmentGroup:
+        complex:
+          root: inputs.serviceNowAssignmentGroup
+      serviceNowCategory:
+        complex:
+          root: inputs.serviceNowCategory
+      serviceNowImpact:
+        complex:
+          root: inputs.serviceNowImpact
+      serviceNowSeverity:
+        complex:
+          root: inputs.serviceNowSeverity
+      serviceNowShortDescription:
+        complex:
+          root: inputs.serviceNowShortDescription
+      serviceNowTicketType:
+        complex:
+          root: inputs.serviceNowTicketType
+      serviceNowUrgency:
+        complex:
+          root: inputs.serviceNowUrgency
+    separatecontext: true
+    skipunavailable: true
+    task:
+      brand: ""
+      description: "`Ticket Management - Generic` allows you to open new tickets or
+        update comments to the existing ticket in the following ticketing systems:\n-ServiceNow
+        \n-Zendesk \nusing the following sub-playbooks:\n-`ServiceNow - Ticket Management`\n-`Zendesk
+        - Ticket Management`\n"
+      id: dc6ec815-5f93-49bb-89af-1ca132ce5acb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Ticket Management - Generic
+      playbookId: Ticket Management - Generic
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: dc6ec815-5f93-49bb-89af-1ca132ce5acb
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1140,
+          "y": -480
+        }
+      }
+  "85":
+    continueonerrortype: ""
+    id: "85"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "77"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d5e7fd85-67c3-44c5-8f35-f08f3727a564
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Benign
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: d5e7fd85-67c3-44c5-8f35-f08f3727a564
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1550,
+          "y": 1010
+        }
+      }
+  "86":
+    continueonerrortype: ""
+    id: "86"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "77"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 4457cf9c-89af-450f-8fe6-c211a98c3eca
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Greyware
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 4457cf9c-89af-450f-8fe6-c211a98c3eca
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1130,
+          "y": 1010
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "14_39_#default#": 0.23,
+      "2_33_#default#": 0.1,
+      "2_81_True Positive": 0.62,
+      "34_39_No": 0.58,
+      "34_67_Yes": 0.54,
+      "46_47_#default#": 0.35,
+      "46_66_yes": 0.49,
+      "47_48_#default#": 0.5,
+      "55_35_#default#": 0.19,
+      "58_35_#default#": 0.33,
+      "6_35_Blocked": 0.12,
+      "6_57_#default#": 0.58,
+      "70_50_#default#": 0.18,
+      "70_71_Benign": 0.63,
+      "75_67_#default#": 0.67,
+      "78_39_no": 0.14,
+      "78_59_#default#": 0.72,
+      "80_2_#default#": 0.48,
+      "80_81_True Positive": 0.5,
+      "83_84_yes": 0.38
+    },
+    "paper": {
+      "dimensions": {
+        "height": 6025,
+        "width": 2100,
+        "x": 40,
+        "y": -1800
+      }
+    }
+  }
