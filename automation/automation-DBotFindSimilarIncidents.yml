@@ -1,0 +1,178 @@
+args:
+- description: Incident ID to get the prediction of. If empty, predicts the the current
+    incident ID.
+  name: incidentId
+  supportedModules: []
+- auto: PREDEFINED
+  description: 'Comma-separated list of incident text fields to take into account
+    when computing similarity. For example: commandline, URL. Note: In order to calculate
+    similarity, fields must consist of a minimum of 2 letters.'
+  name: similarTextField
+  supportedModules: []
+- auto: PREDEFINED
+  description: 'Comma-separated list of incident categorical fields to take into account
+    whe computing similarity. For example: IP, URL. Note: In order to calculate similarity,
+    fields must consist of a minimum of 2 letters.'
+  name: similarCategoricalField
+  supportedModules: []
+- auto: PREDEFINED
+  description: 'Comma-separated list of incident JSON fields to take into account
+    whe computing similarity. For example: CustomFields. Note: In order to calculate
+    similarity, fields must consist of a minimum of 2 letters.'
+  name: similarJsonField
+  supportedModules: []
+- auto: PREDEFINED
+  description: Comma-separated list of additional incident fields to display, but
+    which will not be taken into account when computing similarity.
+  name: fieldsToDisplay
+  supportedModules: []
+- auto: PREDEFINED
+  description: Comma-separated list of incident fields that have to be equal to the
+    current incident fields. This helps reduce the query size. These fields are not
+    part of the similarity calculation.
+  name: fieldExactMatch
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "False"
+  description: Whether to use a predefined set of fields and custom fields to compute
+    similarity. If "True", it will ignore values in similarTextField, similarCategoricalField,
+    similarJsonField.
+  name: useAllFields
+  predefined:
+  - "True"
+  - "False"
+  supportedModules: []
+- defaultValue: 1 months ago
+  description: The start date by which to filter incidents. Date format will be the
+    same as in the incidents query page, for example, "3 days ago", ""2019-01-01T00:00:00
+    +0200").
+  name: fromDate
+  supportedModules: []
+- description: The end date by which to filter incidents. Date format will be the
+    same as in the incidents query page, for example, "3 days ago", ""2019-01-01T00:00:00
+    +0200").
+  name: toDate
+  supportedModules: []
+- description: Argument for the query. This helps reduce the query size.
+  name: query
+  supportedModules: []
+- defaultValue: "1500"
+  description: The maximum number of incidents to query.
+  name: limit
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "False"
+  description: Whether to aggregate duplicate incidents within diffrerent dates.
+  name: aggreagateIncidentsDifferentDate
+  predefined:
+  - "True"
+  - "False"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "False"
+  description: Whether to display the similarity score for each of the incident fields.
+  name: showIncidentSimilarityForAllFields
+  predefined:
+  - "True"
+  - "False"
+  supportedModules: []
+- defaultValue: "0.2"
+  description: Retain incidents with similarity score that's higher than the MinimunIncidentSimilarity.
+  name: minimunIncidentSimilarity
+  supportedModules: []
+- defaultValue: "100"
+  description: The maximum number of incidents to display.
+  name: maxIncidentsToDisplay
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "False"
+  description: Whether to display the current incident.
+  name: showCurrentIncident
+  predefined:
+  - "True"
+  - "False"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "False"
+  description: Whether to include similarity of indicators from DBotFindSimilarIncidentsByIndicators
+    in the final score.
+  name: includeIndicatorsSimilarity
+  predefined:
+  - "True"
+  - "False"
+  supportedModules: []
+- description: The minimum number of indicators required related to the incident before
+    running the model. Relevant if includeIndicatorsSimilarity is "True".
+  name: minNumberOfIndicators
+  supportedModules: []
+- auto: PREDEFINED
+  description: Comma-separated list of indicator types to take into account. If empty,
+    uses all indicators types. Relevant if includeIndicatorsSimilarity is "True".
+  name: indicatorsTypes
+  supportedModules: []
+- description: Help to filter out indicators that appear in many incidents. Relevant
+    if includeIndicatorsSimilarity is "True".
+  name: maxIncidentsInIndicatorsForWhiteList
+  supportedModules: []
+comment: |-
+  Finds past similar incidents based on incident fields' similarity. Includes an option to also display indicators similarity.
+  Note: For the similarity calculation, at least one field must be provided in one of the "similarTextField", "similarCategoricalField", or "similarJsonField" arguments.
+commonfields:
+  id: DBotFindSimilarIncidents
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.42.2
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+dockerimage: demisto/sklearn:1.0.0.8425368
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: DBotFindSimilarIncidents
+outputs:
+- contextPath: DBotFindSimilarIncidents.isSimilarIncidentFound
+  description: Indicates whether similar incidents have been found.
+  type: boolean
+- contextPath: DBotFindSimilarIncidents.similarIncident.created
+  description: The creation date of the linked incident.
+  type: date
+- contextPath: DBotFindSimilarIncidents.similarIncident.id
+  description: The ID of the linked incident.
+  type: string
+- contextPath: DBotFindSimilarIncidents.similarIncident.name
+  description: The name of the linked incident.
+  type: string
+- contextPath: DBotFindSimilarIncidents.similarIncident.similarity incident
+  description: The similarity of the linked incident represented as a float in the
+    range 0-1.
+  type: number
+- contextPath: DBotFindSimilarIncidents.similarIncident.details
+  description: The details of the linked incident.
+  type: string
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  register_module_line('DBotFindSimilarIncidents', 'start', __line__())
+
+  return_results(demisto.executeCommand('DBotFindSimilarAlerts', demisto.args()))
+
+  register_module_line('DBotFindSimilarIncidents', 'end', __line__())
+scripttarget: 0
+signature: BML/yq5JKmq/XoD9OYT/5SWO/spnVX10dYMJIQisQxadku12RiF7lwTj5qJ1As3bqG4X2ZiJkYVMS9hULgL6P44LFkaueqjXxzs/yclff3k8wDypIGPvjnsoLinHuofNCGyldytReTjIQ/pYSEjPNs2RxMxZTtWyRed4l7QFtnKjq+Vu0l34BTi4e9gcyOmZLUUlR2VdVEvV1xG8wntLgGfTH/Js51IxGChEopbaZkPVgmVrWREBIdRqp/bNCuJPUBxQzif30aV/e5swzcIrZe26CQlKYzgLMinm/iWg5NLZJ3K3I6i3Ja2wT/ByqozayleCnawhWm6Z3k45zDotZg==
+subtype: python3
+system: true
+tags: []
+type: python
