@@ -1,0 +1,80 @@
+args:
+- default: true
+  description: Incident to set context values in (Default is current incident).
+  name: id
+  supportedModules: []
+- description: The key to set.
+  name: key
+  required: true
+  supportedModules: []
+- description: The value to set to the key. Can be an array. Usually, a dq expression.
+  name: value
+  required: true
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: If false then the context key will be overwritten. If set to true then
+    the script will append to existing context key.
+  name: append
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Returns an error if not all of the incidents where modified.
+  name: errorUnfinished
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+comment: "Works the same as the 'Set' command, but can work across incidents by specifying
+  'id' as an argument.\nSets a value into the context with the given context key.
+  Doesn't append by default.\n\nThis automation runs using the default Limited User
+  role, unless you explicitly change the permissions.\nFor more information, see the
+  section about permissions here:\n- For Cortex XSOAR 6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+  \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+  For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+commonfields:
+  id: SetByIncidentId
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+dockerimage: demisto/python3:3.12.13.8428455
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: SetByIncidentId
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  register_module_line('SetByIncidentId', 'start', __line__())
+
+  return_results(demisto.executeCommand('SetByAlertId', demisto.args()))
+
+  register_module_line('SetByIncidentId', 'end', __line__())
+scripttarget: 0
+signature: KhjQ8cywSbnH7N0vHpso69mOrAOn65AqZ09SmcqsrQdMDr90+oHY8zsgE0SSkbnUkFCNdhYYvEn8AcJUSd2hQQ827RVpfaz8Z10pGXOiXkXx3Hy9eLf0P6n2YCOCqXLqPTsOoSsyYCHspVnFXFi9aHwsOhZR/Av/EyUgTC3oA4+V3yZKUQODfLdhZYwi40iFAarFSqG08CHor3BttT3iR0cbF7apYd7Z85VV1+ToxaVmq4yuSUnvYwfJlyVcd9Xrb6VCYwZTVvYDClWm3M0gVovfQDlpzQDqPuypr6nwe4cELi7rERsMVhjNQa3ogH5rkBPoCX+e/sfA1LX4jgSoCw==
+subtype: python3
+system: true
+tags:
+- DemistoAPI
+type: python
