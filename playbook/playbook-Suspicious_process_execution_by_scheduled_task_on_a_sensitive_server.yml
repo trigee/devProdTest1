@@ -1,0 +1,1115 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.8.0
+    isoverridable: false
+    itemVersion: 1.3.54
+    packID: CortexResponseAndRemediation
+    packName: Cortex Response And Remediation
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook handles "Suspicious process execution by scheduled task on a sensitive server" alerts.
+
+  Playbook Stages:
+
+  Analysis:
+
+  - Checks the suspicious process reputation.
+
+  Investigation:
+
+  - Searches for related XSIAM agent alerts to identify any malicious activity on the server.
+
+  Remediation:
+
+  If the suspicious process reputation is malicious, or if a related alert is found, the following remediation actions will be taken:
+
+  - Disable the scheduled task responsible for executing the process.
+  - Terminate the malicious process.
+  - Quarantine the malicious process.
+  - Automatically Close the alert.
+id: Suspicious process execution by scheduled task on a sensitive server
+inputs: []
+name: Suspicious process execution by scheduled task on a sensitive server
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tags:
+- TA0002 - Execution
+- T1053 - Scheduled Task/Job
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "43"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e27de70b-ada6-422e-81fe-6950a566b050
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: e27de70b-ada6-422e-81fe-6950a566b050
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -370
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6f7359e7-6ace-48a6-8f72-c30dc8bce825
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 6f7359e7-6ace-48a6-8f72-c30dc8bce825
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 205
+        }
+      }
+  "2":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: TIMScore
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.targetprocesssha256
+                root: FileEnrichment
+          operator: isEqualNumber
+          right:
+            value:
+              simple: "3"
+      label: "yes"
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "6"
+      "yes":
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        Determines the appropriate verdict based on the process reputation.
+      id: 2d5e9ca0-0a58-419b-809f-408f67e88427
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check if the process has a malicious reputation
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 2d5e9ca0-0a58-419b-809f-408f67e88427
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 340
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "21"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ababf146-0f9f-4621-8323-18c3256738ee
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Remediation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: ababf146-0f9f-4621-8323-18c3256738ee
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1070
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d6cce08c-349e-44db-807d-b6348886db73
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: No evidence of malicious activity
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: d6cce08c-349e-44db-807d-b6348886db73
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1200,
+          "y": 1070
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        complex:
+          accessor: parentXDRIncident
+          root: alert
+          transformers:
+          - args:
+              delimiter:
+                value:
+                  simple: '-'
+              fields:
+                value:
+                  simple: "2"
+            operator: Cut
+          - args:
+              prefix:
+                value:
+                  simple: 'caseid:'
+              suffix: {}
+            operator: concat
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        This task searches for Cortex XSIAM related alerts to the current alert.
+      id: 1af6e23e-8c24-4a76-8cc8-7959b9b6fb1f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get Alert related alerts
+      playbooktaskmissingcomponent: null
+      script: SearchAlertsV2
+      type: regular
+      version: -1
+    taskid: 1af6e23e-8c24-4a76-8cc8-7959b9b6fb1f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 720,
+          "y": 525
+        }
+      }
+  "8":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: foundIncidents.sourceBrand
+          operator: isEqualString
+          right:
+            value:
+              simple: TRAPS
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: foundIncidents.CustomFields.categoryname
+          operator: isEqualString
+          right:
+            value:
+              simple: Malware
+      label: "yes"
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "44"
+      "yes":
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines whether the alert contains agent alerts indicating that
+        the alert was part of an attack pattern.
+      id: 8f551570-3805-49d7-879a-cae5facbe566
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Found any alerts indicating a malicious process execution?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 8f551570-3805-49d7-879a-cae5facbe566
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 720,
+          "y": 690
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "42"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      closeNotes:
+        simple: Resolved as False Positive - Handled by the playbook "Suspicious process
+          execution by scheduled task on a sensitive server"
+      closeReason:
+        simple: Resolved - False Positive
+      id:
+        simple: ${alert.id}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.close.inv
+      id: 4ddeb53e-ca31-47cf-8a68-30b6fd21e81c
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close Alert - False Positive
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: 4ddeb53e-ca31-47cf-8a68-30b6fd21e81c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1200,
+          "y": 1200
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "19"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      closeNotes:
+        simple: Malicious scheduled task detected - Resolved as "True Positive". Handled
+          by the playbook "Suspicious process execution by scheduled task on a sensitive
+          server"
+      closeReason:
+        simple: Resolved - True Positive
+      id:
+        simple: ${alert.id}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.close.inv
+      id: 408e1d97-c97e-439e-80d9-c4a4e8b20cfa
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close Alert - True Positive
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: 408e1d97-c97e-439e-80d9-c4a4e8b20cfa
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 2699
+        }
+      }
+  "19":
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8d184163-2d17-405f-8c45-17395f67790f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 8d184163-2d17-405f-8c45-17395f67790f
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 2844
+        }
+      }
+  "21":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "21"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "37"
+      '#none#':
+      - "41"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      command:
+        simple: powershell -Command "$ActionPath = '${alert.targetprocesscmd.[0]}';
+          $tasks = Get-ScheduledTask | Where-Object { $_.Actions | Where-Object {
+          $_.Execute -eq $ActionPath } }; if ($tasks -or $tasks.Count -gt 0) { $tasks
+          | ForEach-Object { Disable-ScheduledTask -TaskPath $_.TaskPath -TaskName
+          $_.TaskName; Write-Host 'The task ' + $_.TaskName + ' has been disabled
+          successfully.' } } else { Write-Host 'No tasks found running the action
+          at ' + $ActionPath }"
+      endpoint_ids:
+        simple: ${alert.agentid}
+      polling_timeout_in_seconds:
+        simple: "120"
+      timeout:
+        simple: "120"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Run a shell command on a specific endpoint and return its result.
+      id: 4441878b-6246-43e1-89e9-2d39529ab7d1
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Run script to locate and disable the malicious scheduled task.
+      playbooktaskmissingcomponent: null
+      script: '|||core-execute-command'
+      type: regular
+      version: -1
+    taskid: 4441878b-6246-43e1-89e9-2d39529ab7d1
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1200
+        }
+      }
+  "27":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: action
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: foundIncidents.CustomFields.cid
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.actionprocessinstanceid
+                root: foundIncidents.CustomFields
+          operator: isEqualString
+          right:
+            value:
+              simple: BLOCKED
+      label: Blocked
+    continueonerrortype: ""
+    id: "27"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "29"
+      Blocked:
+      - "46"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks the alert's alerts for an alert that blocked the causality
+        using the agent.
+      id: c949acc9-c497-4818-8560-69c5c4044f39
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check if the causality was blocked by the agent
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c949acc9-c497-4818-8560-69c5c4044f39
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1689
+        }
+      }
+  "29":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "38"
+      '#none#':
+      - "46"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      agent_id:
+        simple: ${alert.agentid}
+      causality_id:
+        simple: ${alert.actionprocessinstanceid}
+      timeout_in_seconds:
+        simple: "180"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Terminate a process tree by its causality ID. Available only for
+        XSIAM 2.4.
+      id: a6a1e05b-54c2-4fbd-891c-4089c958040d
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Terminate Causality - Action Process
+      playbooktaskmissingcomponent: null
+      script: '|||core-terminate-causality'
+      type: regular
+      version: -1
+    taskid: a6a1e05b-54c2-4fbd-891c-4089c958040d
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 180,
+          "y": 1859
+        }
+      }
+  "37":
+    continueonerrortype: ""
+    id: "37"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "27"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Dear Analyst,
+
+        The playbook did not successfully disable the scheduled task responsible for executing the suspicious process.
+
+        Please manually identify and disable the scheduled task with the following execution path: ${alert.targetprocesscmd.[0]}
+      id: 17d5b08e-68f9-4099-8de8-29df0394f8f9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Disable the malicious scheduled task manually
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: 17d5b08e-68f9-4099-8de8-29df0394f8f9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 180,
+          "y": 1519
+        }
+      }
+  "38":
+    continueonerrortype: ""
+    id: "38"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "46"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Dear Analyst,\n\nThe playbook couldn't terminate the process:
+        ${alert.targetprocessname}\n\nPlease terminate the process manually if possible. "
+      id: 95f5747a-f209-47b2-855c-9035ae5fa433
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Terminate Process Manually
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: 95f5747a-f209-47b2-855c-9035ae5fa433
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 0,
+          "y": 2030
+        }
+      }
+  "39":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "39"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      additional_fields:
+        simple: "true"
+      external_enrichment:
+        simple: "true"
+      file_hash:
+        simple: ${alert.targetprocesssha256}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This script gathers file reputation data from multiple integrations
+        and returns a "FileEnrichment" object with consolidated information to the
+        context output.
+      id: 1e47b57c-e541-4f30-8de2-d17a7d4d22ed
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check the process reputation
+      playbooktaskmissingcomponent: null
+      script: file-enrichment
+      type: regular
+      version: -1
+    taskid: 1e47b57c-e541-4f30-8de2-d17a7d4d22ed
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 40
+        }
+      }
+  "41":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.ScriptResult.results.executed_command.standard_output
+          operator: AnyMatch
+          right:
+            value:
+              simple: '--------'
+      label: "yes"
+    continueonerrortype: ""
+    id: "41"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "37"
+      "yes":
+      - "27"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Verify if the script successfully disabled the task.
+      id: 729a62c7-ddec-4f8f-829b-0ea4266ca887
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Has the script disabled the task successfully?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 729a62c7-ddec-4f8f-829b-0ea4266ca887
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1349
+        }
+      }
+  "42":
+    continueonerrortype: ""
+    id: "42"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 66bdcd2f-9d8b-435a-8b3a-b2896c694ac1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 66bdcd2f-9d8b-435a-8b3a-b2896c694ac1
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1200,
+          "y": 1360
+        }
+      }
+  "43":
+    continueonerrortype: ""
+    id: "43"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "45"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: edb87387-6638-4845-84b3-ead6433e8f54
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Analysis
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: edb87387-6638-4845-84b3-ead6433e8f54
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -240
+        }
+      }
+  "44":
+    continueonerrortype: ""
+    id: "44"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body:
+        simple: |
+          Dear Analyst,
+
+          The playbook did not identify any related alerts indicating malicious process execution, and the file reputation is not flagged as malicious.
+
+          Please review the alert to determine if remediation actions are necessary, such as disabling the scheduled task and terminating the process, or if the alert should be closed as a false positive.
+      cc: null
+      format: ""
+      methods: []
+      replyOptions:
+      - Remediation
+      - False Positive
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      False Positive:
+      - "5"
+      Remediation:
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Analyst review is required to determine whether to take remediation
+        actions, such as disabling the scheduled task and terminating the process
+        if malicious, or to close the alert as a false positive.
+      id: 2d8044c7-5bce-4043-84f2-5044da195500
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Analyst decision to proceed with remediation actions
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 2d8044c7-5bce-4043-84f2-5044da195500
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 880,
+          "y": 880
+        }
+      }
+  "45":
+    continueonerrortype: ""
+    id: "45"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "39"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      alert_ids:
+        simple: ${alert.id}
+      filter_alert_fields:
+        simple: "false"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns information about each alert ID.
+      id: 3d9f2465-ad52-4e3b-8c88-f249f46794b3
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get Action process extra data
+      playbooktaskmissingcomponent: null
+      script: '|||core-get-cloud-original-alerts'
+      type: regular
+      version: -1
+    taskid: 3d9f2465-ad52-4e3b-8c88-f249f46794b3
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -110
+        }
+      }
+  "46":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: TIMScore
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.targetprocesssha256
+                root: FileEnrichment
+          operator: isEqualNumber
+          right:
+            value:
+              simple: "3"
+      label: "Yes"
+    continueonerrortype: ""
+    id: "46"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "13"
+      "Yes":
+      - "47"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |+
+        Determines whether to quarantine the files based on the file reputation.
+
+      id: 3c544ddc-89be-4038-8c7a-45973912cea9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should quarantine the malicious file?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 3c544ddc-89be-4038-8c7a-45973912cea9
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 2199
+        }
+      }
+  "47":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "47"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "48"
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      endpoint_id:
+        simple: ${alert.agentid}
+      file_hash:
+        simple: ${alert.targetprocesssha256}
+      file_path:
+        simple: ${Core.OriginalAlert.event.action_process_image_path}
+      timeout:
+        simple: "180"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This script executes the 'quarantine-file' command on a specified
+        file via the appropriate agent. This script is used to isolate files identified
+        as suspicious.
+      id: 8cccc287-8d56-4959-b12f-6655ee4764a8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: File quarantine
+      playbooktaskmissingcomponent: null
+      script: quarantine-file
+      type: regular
+      version: -1
+    taskid: 8cccc287-8d56-4959-b12f-6655ee4764a8
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 180,
+          "y": 2370
+        }
+      }
+  "48":
+    continueonerrortype: ""
+    id: "48"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Dear Analyst,
+
+        The playbook was unable to quarantine the malicious file due to the following possible reasons:
+
+        - The file was not found or no longer exists on the local host.
+        - The endpoint is currently disconnected.
+
+        Please take manual action to terminate the causality process if needed and quarantine the file.
+        ${Core.OriginalAlert.event.action_process_image_path}
+      id: fb37dec6-ea91-443c-85e1-1359a575679e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual action needed – The file couldn't be quarantined
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: fb37dec6-ea91-443c-85e1-1359a575679e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 0,
+          "y": 2530
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "21_37_#error#": 0.53,
+      "29_38_#error#": 0.49,
+      "2_3_yes": 0.29,
+      "41_27_yes": 0.4,
+      "44_3_Remediation": 0.39,
+      "44_5_False Positive": 0.4,
+      "46_47_Yes": 0.69,
+      "8_3_yes": 0.49,
+      "8_44_#default#": 0.59
+    },
+    "paper": {
+      "dimensions": {
+        "height": 3274,
+        "width": 1580,
+        "x": 0,
+        "y": -370
+      }
+    }
+  }
