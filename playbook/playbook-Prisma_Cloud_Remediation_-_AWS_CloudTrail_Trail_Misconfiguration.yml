@@ -1,0 +1,454 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook remediates the following Prisma Cloud AWS CloudTrail alerts.
+
+  Prisma Cloud policies remediated:
+
+   - AWS CloudTrail Trail Log Validation Is Not Enabled In All Regions
+   - AWS CloudTrail is not enabled in all regions.
+id: Prisma Cloud Remediation - AWS CloudTrail Trail Misconfiguration
+inputs:
+- description: Grab the Prisma Cloud policy Id.
+  key: policyId
+  playbookInputQuery: null
+  required: true
+  value: {}
+name: Prisma Cloud Remediation - AWS CloudTrail Trail Misconfiguration
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 305bea67-c7fc-4c7b-82e4-2fe016a2dc8d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 305bea67-c7fc-4c7b-82e4-2fe016a2dc8d
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -160
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      includeShadowTrails:
+        simple: "False"
+      region:
+        complex:
+          accessor: labels.resource
+          root: alert
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: regionId
+            operator: getField
+      trailNameList:
+        complex:
+          accessor: labels.resource
+          root: alert
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: name
+            operator: getField
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: AWS - CloudTrail
+      description: Retrieves settings for the trail associated with the current region
+        for your account.
+      id: cc4e73f0-012b-4764-8371-d19ac7ec4f12
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get CloudTrail detail
+      playbooktaskmissingcomponent: null
+      script: AWS - CloudTrail|||aws-cloudtrail-describe-trails
+      type: regular
+      version: -1
+    taskid: cc4e73f0-012b-4764-8371-d19ac7ec4f12
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 230,
+          "y": 160
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 4bbca790-07ae-46d0-875c-fbe36ec0fea1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 4bbca790-07ae-46d0-875c-fbe36ec0fea1
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 850
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      enableLogFileValidation:
+        simple: "True"
+      name:
+        complex:
+          accessor: CloudTrail.Trails.Name
+          root: AWS
+      region:
+        complex:
+          accessor: CloudTrail.Trails.HomeRegion
+          root: AWS
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: AWS - CloudTrail
+      description: Updates the settings that specify delivery of log files. Changes
+        to a trail do not require stopping the CloudTrail service.
+      id: 4345980c-8417-4c1d-8731-b60891f78292
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Update CloudTrail LogValidation
+      playbooktaskmissingcomponent: null
+      script: AWS - CloudTrail|||aws-cloudtrail-update-trail
+      type: regular
+      version: -1
+    taskid: 4345980c-8417-4c1d-8731-b60891f78292
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 680
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 38769991-b99b-49d9-81f6-08fa7804e258
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Log Validation Is Not Enabled In All Regions
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 38769991-b99b-49d9-81f6-08fa7804e258
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 540
+        }
+      }
+  "8":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 38e3d3cf-b694-46ec-8bd2-8f02194b5040
+      label: logValid
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 36a5345a-230d-438e-a04c-a287a513e3dc
+      label: allRegions
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      allRegions:
+      - "9"
+      logValid:
+      - "7"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Remediate the appropriate Prisma Cloud policy based on the policy
+        Id.
+      id: 25ce1127-90a3-4d3d-8534-682c1cbaa338
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Execute remediation
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 25ce1127-90a3-4d3d-8534-682c1cbaa338
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 230,
+          "y": 340
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "10"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 995dca59-86c9-448b-8e89-9aadebb39be7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Trail Not Enabled In All Regions
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 995dca59-86c9-448b-8e89-9aadebb39be7
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -430,
+          "y": 540
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      includeGlobalServiceEvents:
+        simple: "True"
+      isMultiRegionTrail:
+        simple: "True"
+      name:
+        complex:
+          accessor: CloudTrail.Trails.Name
+          root: AWS
+      region:
+        complex:
+          accessor: CloudTrail.Trails.HomeRegion
+          root: AWS
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: AWS - CloudTrail
+      description: Updates the settings that specify delivery of log files. Changes
+        to a trail do not require stopping the CloudTrail service.
+      id: 3957322d-5aa1-42a0-8f63-22d364fcf373
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Update CloudTrail MultiRegion
+      playbooktaskmissingcomponent: null
+      script: AWS - CloudTrail|||aws-cloudtrail-update-trail
+      type: regular
+      version: -1
+    taskid: 3957322d-5aa1-42a0-8f63-22d364fcf373
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -430,
+          "y": 670
+        }
+      }
+  "11":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: brand
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: AWS - CloudTrail
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      "yes":
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Is AWS - CloudTrail integration enabled?
+      id: c3d9c341-1e4b-4025-846d-dd4c45929670
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is AWS - CloudTrail integration enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c3d9c341-1e4b-4025-846d-dd4c45929670
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -30
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "11_3_#default#": 0.81,
+      "8_3_#default#": 0.26,
+      "8_7_logValid": 0.48,
+      "8_9_allRegions": 0.55
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1075,
+        "width": 1260,
+        "x": -430,
+        "y": -160
+      }
+    }
+  }
