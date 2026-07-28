@@ -1,0 +1,464 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook remediates the following Prisma Cloud GCP VPC Network Project alerts.
+
+  Prisma Cloud policies remediated:
+
+   - GCP project is using the default network
+id: Prisma Cloud Remediation - GCP VPC Network Project Misconfiguration
+inputs:
+- description: Prisma Cloud policy Id.
+  key: policyId
+  playbookInputQuery: null
+  required: true
+  value: {}
+name: Prisma Cloud Remediation - GCP VPC Network Project Misconfiguration
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 61bee172-14d4-4a48-815c-913b49bef800
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 61bee172-14d4-4a48-815c-913b49bef800
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": -160
+        }
+      }
+  "1":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      network:
+        complex:
+          accessor: Networks.name
+          root: GoogleCloudCompute
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Google Cloud Compute
+      description: Deletes the specified network.
+      id: e0c6d561-84ef-40a0-8c33-46b1cd7facbc
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Attempt to delete default VPC network
+      playbooktaskmissingcomponent: null
+      script: Google Cloud Compute|||gcp-compute-delete-network
+      type: regular
+      version: -1
+    taskid: e0c6d561-84ef-40a0-8c33-46b1cd7facbc
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 130,
+          "y": 820
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1abd9220-e39e-4206-8aa3-dba2695c7f4e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 1abd9220-e39e-4206-8aa3-dba2695c7f4e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 1330
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      network:
+        complex:
+          accessor: labels.resource
+          root: alert
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: name
+            operator: getField
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Google Cloud Compute
+      description: Returns the specified network.
+      id: c6481460-c0e5-4518-8c78-c7d1403aae3e
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get VPC network details
+      playbooktaskmissingcomponent: null
+      script: Google Cloud Compute|||gcp-compute-get-network
+      type: regular
+      version: -1
+    taskid: c6481460-c0e5-4518-8c78-c7d1403aae3e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 150
+        }
+      }
+  "5":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: c2cf4439-9ac2-44b8-a0d2-7076cf82c29a
+      label: default
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      default:
+      - "7"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Execute the appropriate remediation task.
+      id: a27e47fb-063c-48ad-8e76-0b3fb6d7f446
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Execute remediation
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: a27e47fb-063c-48ad-8e76-0b3fb6d7f446
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 330
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 191c3374-6528-442f-87d6-e7bc615b53d5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Default Network
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 191c3374-6528-442f-87d6-e7bc615b53d5
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 250,
+          "y": 505
+        }
+      }
+  "8":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Networks.name
+                root: GoogleCloudCompute
+          operator: isEqualString
+          right:
+            value:
+              simple: default
+      label: "yes"
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "10"
+      "yes":
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Verify that this is the project default network.
+      id: ca0198e7-2228-4e75-8b90-8d8822edfe1e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check for default VPC network?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: ca0198e7-2228-4e75-8b90-8d8822edfe1e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 380,
+          "y": 650
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      "no":
+      - "3"
+      "yes":
+      - "10"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      entryId:
+        simple: ${lastCompletedTaskEntries}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the given entry/entries returned an error. Use ${lastCompletedTaskEntries}
+        to check the previous task entries. If an array is provided, it returns 'yes'
+        if one of the entries returned an error.
+      id: 8457fd75-d770-4c23-8c2c-d32e3aa523d8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Did we encounter an error?
+      playbooktaskmissingcomponent: null
+      script: isError
+      type: condition
+      version: -1
+    taskid: 8457fd75-d770-4c23-8c2c-d32e3aa523d8
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -50,
+          "y": 990
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Manually remove all existing resources from your default VPC network.  Then
+        delete the default network.
+      id: bdc74c5f-447e-47bd-8111-c7e89194d74a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manually remove default VPC and its resources
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: bdc74c5f-447e-47bd-8111-c7e89194d74a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 380,
+          "y": 1160
+        }
+      }
+  "11":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: brand
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Google Cloud Compute
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      "yes":
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Is Google Cloud Compute integration enabled?
+      id: c8cc511a-d4da-4e44-86a2-eca1d1a26855
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Google Cloud Compute integration enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c8cc511a-d4da-4e44-86a2-eca1d1a26855
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": -30
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "5_3_#default#": 0.16,
+      "5_7_default": 0.56,
+      "8_10_#default#": 0.39,
+      "8_1_yes": 0.47,
+      "9_10_yes": 0.54,
+      "9_3_no": 0.17
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1555,
+        "width": 1060,
+        "x": -50,
+        "y": -160
+      }
+    }
+  }
