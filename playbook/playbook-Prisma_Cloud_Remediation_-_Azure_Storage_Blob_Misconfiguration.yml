@@ -1,0 +1,539 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |
+  This playbook remediates the following Prisma Cloud Azure Storage blob alerts.
+
+  Prisma Cloud policies remediated:
+
+  - Azure storage account has a blob container with public access
+  - Azure storage account logging for blobs is disabled
+id: Prisma Cloud Remediation - Azure Storage Blob Misconfiguration
+inputs:
+- description: Prisma Cloud policy Id.
+  key: policyId
+  playbookInputQuery: null
+  required: true
+  value: {}
+name: Prisma Cloud Remediation - Azure Storage Blob Misconfiguration
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 61bee172-14d4-4a48-815c-913b49bef800
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 61bee172-14d4-4a48-815c-913b49bef800
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 0
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1abd9220-e39e-4206-8aa3-dba2695c7f4e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 1abd9220-e39e-4206-8aa3-dba2695c7f4e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 880
+        }
+      }
+  "5":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 7a506ab4-d0a2-48ee-a6f5-75a97f11397d
+      label: publicAccess
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: bc4e467f-10fa-471e-aa9b-28981dc73e93
+      label: secureTransfer
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "10"
+      publicAccess:
+      - "12"
+      secureTransfer:
+      - "21"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Execute the appropriate remediation task using the Prisma Cloud
+        policy Id.
+      id: 7098bb05-a1f5-4697-852a-d59496cba130
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Execute remediation
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 7098bb05-a1f5-4697-852a-d59496cba130
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 330
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        1. Log in to the Azure Portal
+        2. Go to SQL servers
+        3. Choose the reported each DB server
+        4. Under the Security section, Click on 'Auditing'
+        5. Set 'Auditing' to 'On'
+        6. Select 'Storage' and click on 'Storage Details'
+        7. Configure 'Retention (days)' setting to greater than or equal to 90 days
+        Note: The default value for the retention period is 0 (unlimited retention).
+        8. Click on 'Ok'
+        9. Click on 'Save'
+      id: bd7fff21-b704-45c4-8ea5-d5a31539bf70
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manually update Storage blob settings
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: bd7fff21-b704-45c4-8ea5-d5a31539bf70
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 840,
+          "y": 650
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "22"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 969cc2cc-e279-44a0-85ba-52679ea457bc
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Public access
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 969cc2cc-e279-44a0-85ba-52679ea457bc
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 290,
+          "y": 500
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      "yes":
+      - "5"
+    note: false
+    quietmode: 0
+    results:
+    - brandInstances
+    scriptarguments:
+      brandname:
+        simple: Azure Storage
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns 'yes' if integration brand is available. Otherwise returns
+        'no'
+      id: 5d417179-2b35-4255-8b78-50adcd0a9bed
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Azure Storage integration enabled?
+      playbooktaskmissingcomponent: null
+      script: IsIntegrationAvailable
+      type: condition
+      version: -1
+    taskid: 5d417179-2b35-4255-8b78-50adcd0a9bed
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 160
+        }
+      }
+  "21":
+    continueonerrortype: ""
+    id: "21"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "27"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: fc68be83-eeeb-40d4-802f-8fe8afb0cf2d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Secure transfer is disabled
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: fc68be83-eeeb-40d4-802f-8fe8afb0cf2d
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1350,
+          "y": 500
+        }
+      }
+  "22":
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      account_name:
+        complex:
+          accessor: resource
+          root: alert.labels
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: data
+            operator: getField
+          - args:
+              field:
+                value:
+                  simple: name
+            operator: getField
+      allow_blob_public_access:
+        simple: "false"
+      kind:
+        complex:
+          accessor: resource
+          root: alert.labels
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: data
+            operator: getField
+          - args:
+              field:
+                value:
+                  simple: kind
+            operator: getField
+      location:
+        complex:
+          accessor: resource
+          root: alert.labels
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: data
+            operator: getField
+          - args:
+              field:
+                value:
+                  simple: location
+            operator: getField
+      sku:
+        complex:
+          accessor: resource
+          root: alert.labels
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: data
+            operator: getField
+          - args:
+              field:
+                value:
+                  simple: sku
+            operator: getField
+          - args:
+              field:
+                value:
+                  simple: tier
+            operator: getField
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Azure Storage
+      description: |-
+        Run this command to create or update a specific
+        account storage.
+      id: 5fa20ec1-d22a-4d2d-839d-3c8d3339fd42
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Disable blob public access
+      playbooktaskmissingcomponent: null
+      script: Azure Storage|||azure-storage-account-create-update
+      type: regular
+      version: -1
+    taskid: 5fa20ec1-d22a-4d2d-839d-3c8d3339fd42
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 290,
+          "y": 650
+        }
+      }
+  "27":
+    continueonerrortype: ""
+    id: "27"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      account_name:
+        complex:
+          accessor: resource
+          root: alert.labels
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: data
+            operator: getField
+          - args:
+              field:
+                value:
+                  simple: name
+            operator: getField
+      kind:
+        complex:
+          accessor: resource
+          root: alert.labels
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: data
+            operator: getField
+          - args:
+              field:
+                value:
+                  simple: kind
+            operator: getField
+      location:
+        complex:
+          accessor: resource
+          root: alert.labels
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: data
+            operator: getField
+          - args:
+              field:
+                value:
+                  simple: location
+            operator: getField
+      sku:
+        complex:
+          accessor: resource
+          root: alert.labels
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: data
+            operator: getField
+          - args:
+              field:
+                value:
+                  simple: sku
+            operator: getField
+          - args:
+              field:
+                value:
+                  simple: tier
+            operator: getField
+      supports_https_traffic_only:
+        simple: "true"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Azure Storage
+      description: |-
+        Run this command to create or update a specific
+        account storage.
+      id: c5b24d61-3807-4248-86ee-be23e0236c1a
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Enable blob secure transfer
+      playbooktaskmissingcomponent: null
+      script: Azure Storage|||azure-storage-account-create-update
+      type: regular
+      version: -1
+    taskid: c5b24d61-3807-4248-86ee-be23e0236c1a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1350,
+          "y": 650
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "15_3_#default#": 0.1,
+      "15_5_yes": 0.55,
+      "5_10_#default#": 0.65,
+      "5_21_secureTransfer": 0.7
+    },
+    "paper": {
+      "dimensions": {
+        "height": 945,
+        "width": 1440,
+        "x": 290,
+        "y": 0
+      }
+    }
+  }
