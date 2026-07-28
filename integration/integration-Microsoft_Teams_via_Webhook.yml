@@ -1,0 +1,363 @@
+category: Messaging and Conferencing
+commonfields:
+  id: Microsoft Teams via Webhook
+  version: -1
+configuration:
+- additionalinfo: The webhook URL in the Teams channel.
+  display: Microsoft workflow URL
+  name: webhookurl
+  required: true
+  section: Connect
+  supportedModules: []
+  type: 0
+- advanced: true
+  display: Trust any certificate (not secure)
+  name: insecure
+  required: false
+  section: Connect
+  supportedModules: []
+  type: 8
+- advanced: true
+  display: Use system proxy settings
+  name: proxy
+  required: false
+  section: Connect
+  supportedModules: []
+  type: 8
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.2.0
+    isoverridable: false
+    itemVersion: 1.5.58
+    packID: MicrosoftTeams
+    packName: Microsoft Teams
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: Integration for sending notifications to a Microsoft Teams channel via
+  a workflow of type `Post to a channel when a webhook request is received`.
+detaileddescription: "Use the Microsoft Teams Webhook integration to send messages
+  and notifications to Teams configured with an incoming webhook or a workflow.  When
+  using an adaptive card, the message will always include a link back to the investigation
+  from which it was sent.\n​\n## Create a workflow in Microsoft Teams.\nFirst, [Install
+  the Workflows app in Microsoft Teams](https://learn.microsoft.com/en-us/power-automate/teams/install-teams-app).<br/>\nSecond,
+  [Browse and add workflows in Microsoft Teams Create a workflow to support Teams
+  Webhook](https://support.microsoft.com/en-us/office/browse-and-add-workflows-in-microsoft-teams-4998095c-8b72-4b0e-984c-f2ad39e6ba9a).
+  <br/>\nCreate a workflow of type `Post to a channel when a webhook request is received`
+  and follow the set up instructions.<br/>\nIn order to create an instance of the
+  Microsoft Teams Webhook in Cortex, complete the following:\n​\n1. Add an instance
+  of the integration and add the Workflow URL for the Teams channel.\n2. Test the
+  integration. If successful, you'll see a test message in the channel.\n​\n​\n##
+  Support for Multiple Teams\n​\nThis integration supports sending messages to additional
+  Teams via a workflow.  There are 2 methods for this:\n​\n- Configure additional
+  integration instances, adding the workflow URL for each Team. You can then send
+  notifications to multiple teams at once, or select the integration instance to use
+  via the playbook task editor.\n​\n- The ***ms-teams-message*** command includes
+  the *team_webhook* argument, which allows you to pass an alternative workflow URL
+  to override the one from the integration settings.  \n​\nYou can store the additional
+  workflow in a Cortex list, and use a transformer on the task in a playbook to send
+  to a specific team.  \n​\nFor example, create a list containing a dictionary where
+  the **Key** is the Team, and the **Value** is the webhook for that team.\n​\n```\n{\n\"ReadyTeamOne\":\"workflow
+  url\",\n\"ReadyTeamTwo\":\"workflow url\"\n}\n```\n​\nYou can then pass the list
+  into the *team_webhook* argument, and use the GetField transformer with the value
+  of the Team   (i.e., ReadyTeamOne) to retrieve the workflow URL that will be used
+  to override the default from the integration instance, and send the message. <br/>\n​\nFor
+  more information, see the [integration documentation](https://xsoar.pan.dev/docs/reference/integrations/microsoft-teams)\n\n---\n[View
+  Integration Documentation](https://xsoar.pan.dev/docs/reference/integrations/microsoft-teams-via-webhook)"
+display: Microsoft Teams via Webhook
+image: data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAHgAAAAyCAYAAACXpx/YAAAAAXNSR0IArs4c6QAAC+9JREFUeAHtWXtwVNUZP+c+du9udiGB8DBjImkFWrRTpB1ardToQAVEyggZx9ZSBOQ5FAgJFGw1UssrD94BeQz4oB3hj7ZDBdERqUPRGW1x6kyAgI0ELIRHXvu+ex/9fQub7i7ZZBXoxJlzmMve+53vO4/f9zwnjIkmEBAICAQEAgIBgYBAQCAgEBAICAQEAgIBgYBAQCAgEBAICAQEAgIBgYBA4CYQ4JnInnrcm+tUXOWyxBxWJwJOzrnpZ4e3L22MuCw2Ro8wOx07p5k5M7nGlj/3Y3YhHZ+g3xwCSibi3JJ6MJvPcckSt+z0NuGSOQvIhmXbzO90s+lSelZGCo5GGYuE2GasQSg4E0V8BZ6MFGy54YlRFgyZdhZpL32TmG1Zum1Cd2HG4MFpGynYspjOLPwT7bYhkJGCb9vsYuAOEVi6dGlvy7LyWluVpq1bf/9Fh0wZEruNgouLix35+YU/kmVb1XU9vH79+qPYQ4fevXjx4sG2bd9Fe7xy5crxXbt2XYa8q6CgAOFevlNR+PTVq1c3ZIhBd2KTysrKSg3DXKiqan+PJ/IBFvfAzSxQuhnhWyk7cODAHEmy/yTLyiGnU3uvpKRkeEfjz5gxQ4V1v64o6iF6cnJyfkB8hYWFOZzLT7nd2qhw2BjckWx3p8Fwx2FPq2G8qmkay7HPXVgz6Yhj33csWLBgGL1/mX10Gw+mRWNDZjQatR0Oh4QN/hKkD1M3k52d/SDKgO/Dy01FUWTIxIqCNWvW/GfhwoWj/f5or1AocCRV7uvwjZrkYU1TWSQS3lhZWfFifM3Y13AY/V8NI1oH2oNxeia/3UrBOGWRtV6MRKIK3ieVlpa+UFlZeSlxIwhfz0qShPLNPovfQYl9a9eu/Vvid8q7NG3atOzc3FwT4bs1pa/9E57i3rZtW7CdgBeieb1et8/nC6b2JfJNmTIlu3///nzVqlU0/g3pZcyYMc6hQ4d6WltbIzU1Nf5EWXq3LCOmD1mWk/aMcO0FrU80qp9IlenqOyN3P1ncs1CLap/KMkcVnX5IHKOY6Y9u2lJ6OeBV2BIdlXS6Fq+iDYvdVz6W1S5btqyfrkdPwYobZJl9oGmuGYGAf1Z1dfXL8THmzp17V1aWp9YwrMOcWyqs+tFgMDBu3bp1bwJcrXfv3Fdsm/dDCf/0xo0bz5Mc5eb8/Py5AOgpOPs3YDg4CPCPkKefRCi0TJP9kaCVZQkh0V6JiHB3OBwaBQWcgYHdi5xexpj5MKIGUgC/inW/i2FXVFRUfBZfF0LnJEVxzuPc/g5oEoY9iwgzacOGDaeJZ968eXe6XK4yy+JjMVc/zOtH8DkWDodXo9b4aM6cOfkul+cPkB8Eo+2L/TVAqZewj/VY6z1Op/qEaVqDIOfDGk6Zpl3v97f+HMaGg2bnLaMcLAUZtzlXVXCrONymexT028yW4YdIpYCmiwfZRJW05JyCTcoI07sjcGM49DN79+6V41sASD9D+HbbtrEDG00yNQrraA/ACB+CktwkU1RUrqHwet3t9lSQckF6C4o6CKAKgsGgF0rA2NYI0B8xDPtVjHkvHr/T6WSU72AUhx0OZTL46wH0XiiuBUY1Fd9vLVmypIDmQN6cANpejDME/a8Agc22LbVhPb2on/jQ/47D4fwV5HxQMsbhZwDQRE3TDi1a9OvvZWVlQVEmKeu614OLW9g/RxqSDKzdpLEgDzUwA2x4MmuxkNAVq8vdGlHCkX9y03LhwiMtu6TITDODDVhpKBRh/8KSk5SQKohoEMWWQsl02wHwP5Yk+QiseOTRo/+gIuoYeSL2NzUUCtWfP3/+7fz8gvnJcti2ZesEABQTm3fYsLZfuFxZT8AjTyK8jY97FIXSxsbGEIVLRI0wlNFX141/NzVdnQxZX3NzM4dhHFJVR59wOPK7qqqq52kuihJ9+khvuN1Z40Oh4AKQSgyDjfN6Ne7zta1GtKmMr6m4uNxB76Zp/gb830I02tPQ0DB13759OtFRLa9DlJofjYaWIxo8BtIjKCw3uN3ueT5foAphfhPxUYMRHUa9cRg5+DhqjaIYMcP/MlLwhJH7m/PYHS9ItqFw6Rp4HY0vWwoPMsfnb7TdY4a97LRppVcwuaUBd29uYpfKkwbjjEIPwuMOADzKNINT0H0sL69wlMvlvBshuRwghUpKytJGn7iC4QHFNDTC26q4cul79+7dLfQ7ZMgQL7yNQwmWYURe3LlzZxPRMXchPP1+hNCr8MoNRKMGufCiRYtqEGHGQ6SIaOj/BBEDN3PyXCjC39bWtn/r1q1f7NtXrmOcLBjlKBiliWhRFVcuycGIa1AQz0YgGk7n3pUrV14FOeY9shyrnIkt3mJ7xTzpvSvOmfKbkYJ7SwP7RRyOP0uSAi+6oXZoH1J2uFgooG6G6UadMltgtQfXdpb2F8rBMACjt4N9F8Ta9g680JkYABwAyGfBNxGgLkPImgqQIuGwvSeRt6N3hPcYGVEgD8qg4iVp/EQZAMwNw/DDi8/F6ZDJRVh1QvGfobBKKsigsIvgZ5LEe1DR1Nx8ZYck9RmAHD4ToX2L18tfgiduHDx48Ira2loPjDQHMkGs6WJ8fPpFeG6CwtrwmoWI4cUvKfiWt7RecMNMNtRhmYx38lC/hRoGYTd2AQkJUmLaB7ZixeJVymTISRJVmQDxNQDdC7l1GYx7JIA9WFOz9kwKe9pPeFkI3gzv4n3TMqED/UlWi28/lGvCuHoFAnmuRFnLknIQLmE0vNXj8Rjk1VVVFaUw/KGBQKjMtk0dIbn85MnTM+vq6hApbEpBGkJvduI4mMOLGsMDWgBneV9iX7p34NBpyutILnMFdyR9m2nBoPIaLD8AFcyDorIA1vZMpoQCYqFMktj7pGBZdsxHVCAwY23GjHI3jj4qvLZDwFpaWupRztSiMOrft69/clyOfqHbZ1AbwCisdxFyTVTIPYhOVXV1dUUlvPV5KAIebo84ePBgBN8fojiEiDqT+OIN3vu0y6VpMKK/IzzHUkO8L/UXESW2H8jEisfU/s6+MwrRnQ1wK/tQJKmw7PY1bd68sq6kZNE78OgJCNm1TU1Nh+PzAUDlGpD/+5sVPF4BoAo5H/EFg9Y61Hs/BZCjCgoKj6KweRP9DpxSHpLl7Al4J++i+VTijzfySlwu/NYwpH2qKm9ELr0f4NZhvh8iooxGTj0Bw8HYjMFIVqJSzoYS3sfaNRjjdPDCw633qB+KXY5CbQRC9XzUDd9EPPsY54tvozp/EinnMmTKwRY3NJn2BPEkx8NcF8GLCloahj28jLHPIvxXkQHRHJ21pIE6Y7zdffBUOgogV/LTqHDjG4b3SVsQmgEuryHgE9ZRD1BPY7OxCwMAgPOtVYeH8m1s4zU11eeQtscA4L04PhVgbAr1c+GdjX6/vw0KRmiWTiLXn8A4SUcPXJr8BVXrBHjYUchMxLGmHL/DcXp71efTx9LNGa0FCjkLJT0K8Lfgqca3ExVz6fHjx3dQP6rh47haH4Mq/gD2UETjIO8/hqn348ZqNDz/E+K73i5gr9iTlJSPcdlTi7Ffwjyg82ex3sdxtsfau24xS++K7SfbTxYyVf4UDpKFvwemZZdQZPnDjk1v5+TqPJuV0J8M0zUAR0Ppts7u806IFVkcRYsDec1OrDZJvqioSDty5EjSaFSIUa6G0imNxxZFNCiOw7KJ1m4kNAZCaR9N69lDVS3/ihUrGomGFpuTXjqSIToanzXruTyvV9cQQZrjlfa1rmv/z549O6dnz545Pl/UDASuNqYYYjsrXea0tIS8brfclnpDR0zYpzJgwAAlEAhEKfy3C15/oT1gHk99ff3VPXv2UIHWZetOCu5ysYLhyyPQbUL0l1+6kMgEAaHgTFD6GvO0V6yd7cGSdZSnboXjjNBpDsblM47BdA+D22iUp3jSNcrBURsVbMpddDp+Qf9qCGSk4IAn54K3NUB/CelEZTgAYA26qZ7Tcd/h0NmBcMotc+ISFRwo0KwAZ5/H3sR/AgGBgEBAICAQEAgIBAQCAgGBgEBAICAQEAgIBAQCAgGBgEBAICAQEAgIBAQCAgGBwP8Zgf8CqLeLzH1CkPwAAAAASUVORK5CYII=
+imagepath: content/packs/MicrosoftTeams/MicrosoftTeamsviaWebhook_image.png
+name: Microsoft Teams via Webhook
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - defaultValue: None
+      description: 'The message to send. For example: "This is a message from Cortex".
+        To use a newline use \n\n or \r\r.'
+      name: message
+      supportedModules: []
+    - description: The alternative webhook for a different team.  If not defined,
+        the integration's default webhook is used.
+      name: team_webhook
+      supportedModules: []
+    - description: The alternative URL to send in place of the link to the Cortex
+        Investigation.
+      name: alternative_url
+      supportedModules: []
+    - defaultValue: Cortex URL
+      description: The title for the link, defaults to "Cortex URL".
+      name: url_title
+      supportedModules: []
+    - auto: PREDEFINED
+      defaultValue: "true"
+      description: Should the adaptive card format be used or a single text message.
+      name: adaptive_cards_format
+      predefined:
+      - "true"
+      - "false"
+      supportedModules: []
+    - description: JSON object used to overwrite the default adaptive card JSON.
+      name: overwrite_adaptive_card_json
+      supportedModules: []
+    description: Send a message to Microsoft Teams via Incoming Webhook.
+    name: ms-teams-message
+    supportedModules: []
+  dockerimage: demisto/python3:3.12.8.3296088
+  nativeimage:
+  - "8.8"
+  - "8.6"
+  runonce: false
+  script: |
+    register_module_line('Microsoft Teams via Webhook', 'start', __line__())
+    CONSTANT_PACK_VERSION = '1.5.58'
+    demisto.debug('pack id = MicrosoftTeams, pack version = 1.5.58')
+
+    import urllib3
+
+
+    # Disable insecure warnings
+    urllib3.disable_warnings()
+
+
+    class Client(BaseClient):
+        def __init__(self, base_url: str, proxy: bool, verify: bool, is_workflow: bool = True):
+            """
+            Client to use in the. Overrides BaseClient.
+
+            Args:
+                base_url (str): URL to access when doing a http request. Webhook url.
+
+            """
+            self.base_url = base_url
+            self.is_workflow = is_workflow
+            super().__init__(base_url=base_url, proxy=proxy, verify=verify)
+
+        def send_teams_message(self, messagecard: dict, adaptive_cards_format: bool = False):
+            """
+            Sends the Teams Message to the provided webhook.
+
+            Args:
+                messagecard (dict): dict the adaptive card to send to Teams.
+                adaptive_cards_format (bool): Should the adaptive card url format be used?
+            """
+
+            if adaptive_cards_format or self.is_workflow:
+                res = self._http_request(
+                    method="POST", json_data=messagecard, raise_on_status=True, resp_type="text", full_url=self.base_url
+                )
+            else:
+                res = self._http_request(method="POST", json_data=messagecard, raise_on_status=True, resp_type="text")
+            demisto.info(f"completed post of message. response text: {res}")
+
+
+    def create_teams_message(
+        message: str,
+        title: str,
+        serverurls: str,
+        adaptive_cards_format: bool = False,
+        is_workflow: bool = True,
+        overwrite_adaptive_card_json: dict | None = None,
+    ) -> dict:
+        """
+        Creates the Teams message using the messageCard format, and returns the card
+
+        Args:
+            message (str): The message to send in the message card to Teams.
+            title (str): The title of the message card.
+            serverurls (str): The URL to send in the message card.
+            adaptive_cards_format (bool): Should the adaptive cards format be used?
+            is_workflow (bool): Is the Microsoft Webhook URL is a workflow.
+            overwrite_adaptive_card_json (dict | None): Value to overwrite the default adaptive card format.
+
+            Returns:
+            messagecard (dict): dict the adaptive card to send to Teams.
+        """
+        demisto.debug(
+            f"Creating Teams message with parameters: message={message},\n"
+            f"title={title}, serverurls={serverurls}, adaptive_cards_format={adaptive_cards_format}, is_workflow={is_workflow}"
+        )
+        # replacing special character so it will be shown correctly in the UI.
+        message = message.replace("\\n", "\n")
+        message = message.replace("\\r", "\r")
+
+        messagecard: dict = {}
+        if adaptive_cards_format:
+            demisto.debug("Using adaptive cards format")
+            if overwrite_adaptive_card_json is None:
+                demisto.debug("Using default adaptive card format")
+                messagecard = {
+                    "type": "message",
+                    "attachments": [
+                        {
+                            "contentType": "application/vnd.microsoft.card.adaptive",
+                            "content": {
+                                "type": "AdaptiveCard",
+                                "body": [
+                                    {
+                                        "type": "TextBlock",
+                                        "text": "Cortex Notification",
+                                        "weight": "bolder",
+                                        "size": "medium",
+                                        "color": "accent",
+                                    },
+                                    {"type": "TextBlock", "text": message, "wrap": True},
+                                ],
+                                "actions": [{"type": "Action.OpenUrl", "title": title, "url": serverurls}],
+                                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                                "version": "1.0",
+                            },
+                        }
+                    ],
+                }
+            else:
+                demisto.debug("Using overwritten adaptive card format")
+                messagecard = overwrite_adaptive_card_json
+        else:
+            if is_workflow:
+                demisto.debug("Creating message for workflow")
+                messagecard = {
+                    "type": "message",
+                    "attachments": [
+                        {
+                            "contentType": "application/vnd.microsoft.card.adaptive",
+                            "content": {
+                                "type": "AdaptiveCard",
+                                "body": [{"type": "TextBlock", "text": message}],
+                                "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
+                                "version": "1.0",
+                            },
+                        }
+                    ],
+                }
+            else:
+                demisto.debug("Creating message for non-workflow")
+                messagecard = {
+                    "@type": "MessageCard",
+                    "@context": "http://schema.org/extensions",
+                    "themeColor": "0076D7",
+                    "summary": "Cortex Notification",
+                    "sections": [{"activityTitle": "Cortex Notification", "activitySubtitle": message, "markdown": True}],
+                    "potentialAction": [{"@type": "OpenUri", "name": title, "targets": [{"os": "default", "uri": serverurls}]}],
+                }
+
+        return messagecard
+
+
+    def test_module(client: Client, serverurls: str) -> str:
+        """
+        Test command, will send a notification with a static message.
+
+        Args:
+            client (Client): HelloWorld client to use.
+            serverurls (str): The URL to send in the message card.
+
+        Returns:
+            str: 'ok' if test passed, anything else will raise an exception and will fail the test.
+        """
+        try:
+            message = "Successful test message from Cortex"
+            title = "Cortex Notification"
+            test_message = create_teams_message(message, title, serverurls, is_workflow=client.is_workflow)
+            client.send_teams_message(test_message)
+            return "ok"
+        except DemistoException as e:
+            return f"Error: {e}"
+
+
+    def send_teams_message_command(
+        client: Client,
+        message: str,
+        title: str,
+        serverurls: str,
+        adaptive_cards_format: bool = False,
+        overwrite_adaptive_card_json: dict | None = None,
+    ) -> CommandResults:
+        """
+        send_teams_message command: Sends the Teams Message to the provided webhook.
+
+        Args:
+            client (Client): Teams client to use.
+            message (str): The message to send in the message card to Teams.
+            title (str): The title of the message card.
+            serverurls (str): The URL to send in the message card.
+            adaptive_cards_format (bool): Should the adaptive cards format be used?
+            overwrite_adaptive_card_json (dict | None): Value to overwrite the default adaptive card format.
+
+        Returns:
+            CommandResults/dict: A ``CommandResults`` compatible to return ``return_results()``,
+            which contains the readable_output indicating the message was sent.
+        """
+
+        messagecard = create_teams_message(
+            message,
+            title,
+            serverurls,
+            adaptive_cards_format,
+            is_workflow=client.is_workflow,
+            overwrite_adaptive_card_json=overwrite_adaptive_card_json,
+        )
+        client.send_teams_message(messagecard, adaptive_cards_format)
+        return CommandResults(readable_output="Message sent successfully")
+
+
+    def main() -> None:  # pragma: no cover
+        """
+        main function, parses params and runs command functions
+        grab the params and the server urls, and send the message, or test message.
+        """
+        params = demisto.params()
+        args = demisto.args()
+        command = demisto.command()
+        serverurls = demisto.demistoUrls()
+
+        title = args.get("url_title", "Cortex URL")
+        webhook = args.get("team_webhook", params.get("webhookurl"))
+        verify_certificate = not params.get("insecure", False)
+        proxy = params.get("proxy", False)
+        adaptive_cards_format: bool = argToBoolean(args.get("adaptive_cards_format", False))
+        overwrite_adaptive_card_json_param: str = args.get("overwrite_adaptive_card_json", None)
+        overwrite_adaptive_card_json: dict | None = (
+            json.loads(overwrite_adaptive_card_json_param) if overwrite_adaptive_card_json_param else None
+        )
+
+        if args.get("alternative_url"):
+            serverurls = args.get("alternative_url", "")
+        else:
+            serverurls = serverurls.get("investigation", serverurls["server"])
+
+        demisto.debug(f"Command being called is {command}")
+        try:
+            client = Client(base_url=webhook, verify=verify_certificate, proxy=proxy, is_workflow="workflow" in webhook)
+
+            if command == "test-module":
+                return_results(test_module(client, serverurls))
+            elif command == "ms-teams-message":
+                message = args.get("message", "")
+                return_results(
+                    send_teams_message_command(
+                        client, message, title, serverurls, adaptive_cards_format, overwrite_adaptive_card_json
+                    )
+                )
+            else:
+                raise NotImplementedError(f"command {command} is not implemented.")
+
+        except Exception as e:
+            return_error(f"Failed to execute {command} command.\n" f"{str(e)}", error=traceback.format_exc())
+
+
+    if __name__ in ("__builtin__", "builtins", "__main__"):
+        main()
+
+    register_module_line('Microsoft Teams via Webhook', 'end', __line__())
+  subtype: python3
+  type: python
+sectionorder:
+- Connect
+- Collect
+signature: kqUiDSICb3R8p3frkR9EWAve6dwm31eun5JsZsqd80k43NZaG3pNfJ/m6Z6qvrf/Vh0l6HjNrAGRJDnPt59n7tnTf0jMkVf3fXzT7xtSOBPoeccIqtxVVKlpm/Pmxo+wto16+VstzYQMG5PlyjI74RS7lvXX/s4ZxUCgQxvFNVgDNYBB3pDsCw/6Ale9LlE68cBmKbeN/c3ndbEUOpVA0Zk5sdzlFIgQU3d8etUxJ0blQjigbPPSnKFC/Ul+yOlYuCwFv1DQOT+bxjj4Is0DvMQn8Zxfhi0N8kQ0ygv3DG9oL30ojWMH9Q/unpEdVywGvynes1L4yhZ9GA8MSjNCjw==
+system: true
