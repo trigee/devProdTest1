@@ -1,0 +1,588 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+description: Deprecated. Use Prisma Cloud Correlate Alerts v2 instead. Search alerts
+  in Prisma Cloud for a specific asset ID and, if present in XSOAR, link them.
+hidden: true
+id: Prisma Cloud Correlate Alerts
+inputs:
+- description: Attribution information from Prisma Cloud.
+  key: Prisma Cloud Attribution
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: Attribution
+      root: PrismaCloud
+- description: Link found Prisma Cloud incidents to current one?
+  key: Link Incidents
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+name: Prisma Cloud Correlate Alerts
+outlinetasks: {}
+outputs:
+- contextPath: foundIncidents
+  description: Found Prisma Cloud Incidents
+  type: unknown
+- contextPath: PrismaCloud.Alert
+  description: Prisma Cloud Alert
+  type: unknown
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "109"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f0892a91-8613-4cdb-8618-330e16f69af8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: f0892a91-8613-4cdb-8618-330e16f69af8
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 970,
+          "y": 5650
+        }
+      }
+  "109":
+    continueonerrortype: ""
+    id: "109"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "169"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: cb8e4a34-210c-4701-84e7-004595c7e4b8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Prisma Cloud Alert Detection
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: cb8e4a34-210c-4701-84e7-004595c7e4b8
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 970,
+          "y": 5810
+        }
+      }
+  "110":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.Prisma Cloud Attribution
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "110"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "111"
+      "yes":
+      - "112"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if Prisma Cloud assets are present
+      id: a8c93e03-4367-44d4-88f4-1c778a392639
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Are assets in Prisma Cloud found?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: a8c93e03-4367-44d4-88f4-1c778a392639
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 680,
+          "y": 6110
+        }
+      }
+  "111":
+    continueonerrortype: ""
+    id: "111"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 00a2c3af-78b7-4b01-885f-d5c2e01d6af9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done Prisma Cloud Alert Detection
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 00a2c3af-78b7-4b01-885f-d5c2e01d6af9
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 970,
+          "y": 7590
+        }
+      }
+  "112":
+    continueonerrortype: ""
+    id: "112"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "113"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      resource-id:
+        complex:
+          accessor: id
+          root: inputs.Prisma Cloud Attribution
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: PrismaCloud v2
+      description: Search alerts on the Prisma Cloud platform. If no time-range arguments
+        are given, the search will filter only alerts from the last 7 days.
+      id: 6dc73a58-59f7-4511-8884-1358d318e01f
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Find Prisma Cloud Alerts for detected assets
+      playbooktaskmissingcomponent: null
+      script: PrismaCloud v2|||redlock-search-alerts
+      type: regular
+      version: -1
+    taskid: 6dc73a58-59f7-4511-8884-1358d318e01f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 440,
+          "y": 6295
+        }
+      }
+  "113":
+    continueonerrortype: ""
+    evidencedata:
+      customfields: {}
+      description:
+        simple: Prisma Cloud Alerts related to assets
+    id: "113"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "167"
+    note: true
+    quietmode: 0
+    scriptarguments:
+      data:
+        complex:
+          accessor: Alert
+          root: PrismaCloud
+          transformers:
+          - args:
+              applyIfEmpty:
+                value:
+                  simple: "true"
+              defaultValue:
+                value:
+                  simple: '[]'
+            operator: SetIfEmpty
+      title:
+        simple: Prisma Cloud Alerts related to discovered assets
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Convert an array to a nice table display. Usually, from the context.
+      id: b6b02f01-2db2-4859-8756-3e7ad37c9072
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Print Prisma Cloud Alerts
+      playbooktaskmissingcomponent: null
+      script: ToTable
+      type: regular
+      version: -1
+    taskid: b6b02f01-2db2-4859-8756-3e7ad37c9072
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 440,
+          "y": 6490
+        }
+      }
+  "114":
+    continueonerrortype: ""
+    id: "114"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "170"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        complex:
+          accessor: id
+          root: PrismaCloud.Alert
+          transformers:
+          - args:
+              prefix:
+                value:
+                  simple: 'prismacloudid:'
+              suffix: {}
+            operator: concat
+      type:
+        simple: Prisma Cloud
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Searches Demisto alerts
+      id: f8fef3ac-24cc-4da8-808c-f528da2e4018
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Find Prisma Cloud Alerts
+      playbooktaskmissingcomponent: null
+      script: SearchAlertsV2
+      type: regular
+      version: -1
+    taskid: f8fef3ac-24cc-4da8-808c-f528da2e4018
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -380,
+          "y": 7030
+        }
+      }
+  "115":
+    continueonerrortype: ""
+    id: "115"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "111"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      action:
+        simple: link
+      linkedIncidentIDs:
+        complex:
+          accessor: id
+          root: foundIncidents
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.linkAlerts
+      id: d4bbc5e9-ca03-4c23-8d1c-6db397ff37b0
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Link Alerts
+      playbooktaskmissingcomponent: null
+      script: Builtin|||linkIncidents
+      type: regular
+      version: -1
+    taskid: d4bbc5e9-ca03-4c23-8d1c-6db397ff37b0
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -700,
+          "y": 7400
+        }
+      }
+  "167":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Alert
+                root: PrismaCloud
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "167"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "111"
+      "yes":
+      - "168"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if Prisma Cloud alerts were found
+      id: 9fe334d8-188b-4bf0-83a1-2d82effa470e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Prisma Cloud Alerts found?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 9fe334d8-188b-4bf0-83a1-2d82effa470e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 440,
+          "y": 6670
+        }
+      }
+  "168":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: foundIncidents
+          operator: isNotEmpty
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.Link Incidents
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "168"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "111"
+      "yes":
+      - "114"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if we should link Prisma Cloud alerts to the current alert.
+      id: d2dfa186-ed78-4ed7-8d06-63ca91c91c0b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Are we linking found Prisma Cloud Alerts?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: d2dfa186-ed78-4ed7-8d06-63ca91c91c0b
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 80,
+          "y": 6840
+        }
+      }
+  "169":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: PrismaCloud v2
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "169"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "111"
+      "yes":
+      - "110"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if the Prisma Cloud integration is enabled
+      id: e44f2a90-27f4-4584-8548-e285eac679a5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Prisma Cloud enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: e44f2a90-27f4-4584-8548-e285eac679a5
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 970,
+          "y": 5940
+        }
+      }
+  "170":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: id
+                root: foundIncidents
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "170"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "111"
+      "yes":
+      - "115"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if any linkable alerts are found in XSOAR.
+      id: ff612a87-2f7a-4742-8630-ef241e51577e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Did we find any related Prisma Cloud alerts to link?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: ff612a87-2f7a-4742-8630-ef241e51577e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -380,
+          "y": 7190
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "167_111_#default#": 0.17,
+      "168_111_#default#": 0.19,
+      "169_111_#default#": 0.17
+    },
+    "paper": {
+      "dimensions": {
+        "height": 2005,
+        "width": 2050,
+        "x": -700,
+        "y": 5650
+      }
+    }
+  }
