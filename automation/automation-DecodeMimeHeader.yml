@@ -1,0 +1,92 @@
+args:
+- description: The header value to decode.
+  name: value
+  supportedModules: []
+comment: Decode MIME base64 headers.
+commonfields:
+  id: DecodeMimeHeader
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: DecodeMimeHeader
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: DecodedMimeHeader
+  description: The result of decoded value.
+  type: string
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('DecodeMimeHeader', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  from email.header import decode_header
+
+
+
+
+
+  def decode(s):
+      dh = decode_header(s.strip())
+      default_charset = "ASCII"
+      res = "".join([str(t[0], t[1] or default_charset) for t in dh])
+      return res
+
+
+  def main():  # pragma: no cover
+      s = demisto.args()["value"]
+
+      if s.startswith('"'):
+          s = s[1:]
+
+      if s.endswith('"'):
+          s = s[:-1]
+
+      lines = []
+      for line in s.split("\n"):
+          try:
+              lines.append(decode(line))
+          except Exception:
+              lines.append(line)
+
+      res = "\n".join(lines)
+      demisto.results(
+          {
+              "ContentsFormat": formats["text"],
+              "Type": entryTypes["note"],
+              "Contents": res,
+              "EntryContext": {"DecodedMimeHeader": res},
+          }
+      )
+
+
+  if __name__ in ["__main__", "__builtin__", "builtins"]:
+      main()
+
+  register_module_line('DecodeMimeHeader', 'end', __line__())
+scripttarget: 0
+signature: AHUd15QkfV25AI9ny1aG3T1yqQxhEmxl58yZdhFFP9Q/wV4qq60Rpp02DafHbnK3KKYK3eTvW6kGxC0Ts9K6NPbsdFsgp8GzBm8kV1A3nPCbTK540lrRe/CnDh7stJlf0635tPofpNmXZ93F8s+ChBnoF5Z0T54tQNnT5kMtQPVz+4qW+IczO5C7VfFC97fCsHgMpAgTQCe9um2GDH9FAww1fYVvQdH/2/qDW4pC5nk0Zae0WKkLGzADpDD7v5aufFYNV/5TErDdkDVZ1vs/rINH67pmv4HIC0YO24yOm+wI90ZeFVLecwUc8D60R1o5kqUeqdfTljvedz6dX/YIvA==
+subtype: python3
+system: true
+tags: []
+type: python
