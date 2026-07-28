@@ -1,0 +1,124 @@
+args:
+- description: Alert ID to copy notes to.
+  name: target_incident
+  required: true
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "true"
+  description: Whether auto extract the indicators from the notes.
+  name: auto_extract
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- description: Replicate only notes with these tags (array or comma separated).
+  isArray: true
+  name: tags
+  supportedModules: []
+comment: Copy all entries marked as notes from current alert to another alert.
+commonfields:
+  id: CopyNotesToAlert
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: CopyNotesToAlert
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('CopyNotesToAlert', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+
+
+
+
+  from typing import Any
+  import traceback
+
+  """ STANDALONE FUNCTION """
+
+
+  def remove_id_and_version_from_entry(entry):
+      entry.pop("ID", None)
+      entry.pop("Version", None)
+
+
+  def copy_notes_to_target_incident(args: dict[str, Any]) -> CommandResults:
+      target_incident = args.get("target_incident", None)
+      if not target_incident:
+          raise ValueError("Target Incident ID not specified")
+
+      tags = argToList(args.get("tags"))
+      auto_extract = argToBoolean(args.get("auto_extract", False))
+      entries = demisto.executeCommand("getEntries", {"filter": {"tags": tags}})
+
+      note_entries: list = []
+      md: str = ""
+
+      if isinstance(entries, list) and len(entries) > 0:
+          for entry in entries:
+              if entry.get("Note") is True:
+                  remove_id_and_version_from_entry(entry)
+                  if not auto_extract:
+                      # indicators won't be extracted from the notes in the destination incident
+                      entry["IgnoreAutoExtract"] = True
+                  note_entries.append(entry)
+
+          if len(note_entries) > 0:
+              res = demisto.executeCommand("addEntries", {"id": target_incident, "entries": note_entries})
+              if is_error(res):
+                  raise DemistoException(get_error(res))
+              md = f"## {len(note_entries)} notes copied"
+          else:
+              md = "## No notes found"
+      else:
+          md = "## No notes found"
+
+      return CommandResults(readable_output=md)
+
+
+  """ MAIN FUNCTION """
+
+
+  def main():
+      try:
+          return_results(copy_notes_to_target_incident(demisto.args()))
+      except Exception as ex:
+          demisto.error(traceback.format_exc())  # print the traceback
+          return_error(f"Failed to execute CopyNotesToIncident. Error: {ex!s}")
+
+
+  """ ENTRY POINT """
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('CopyNotesToAlert', 'end', __line__())
+scripttarget: 0
+signature: CBzU6Q9KeH5oBWrt2QFnlt7keo45gTn11nAy3tuT4TaXk5XyDRdqyY1oCQRMBOBhwLFwAJKpu8SoACZj8cB9JwPZKnTiVC8LafYW3QDRzmfp/SX1Ykh1G/leC/MUzTKlWQGuhVA/E9nlkYqXEQIGm3Yt8khJ1VcnWofh8m9OQ6ukGGwMZfK01tFWSn/Ujxl+bY0xIO4rMIlFhVt2XBuKavopmgdRThBYQJV0e7CJcJ7PqW4Pym/My+TYtrOc6myATF8dWHxD7I/46bu6FmpzkqAmWLrPfe6t1UjCNXrThUIcGwhdaQ29kjMeR0XfvhAfOpeNTRhMGRl/u0wdvSf6pg==
+subtype: python3
+system: true
+tags: []
+type: python
