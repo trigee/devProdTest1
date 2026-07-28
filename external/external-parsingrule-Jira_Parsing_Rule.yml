@@ -1,0 +1,44 @@
+automation_type: ""
+commonfields:
+  id: Jira_Parsing_Rule
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.10.0
+    isoverridable: false
+    itemVersion: 3.3.21
+    packID: Jira
+    packName: Atlassian Jira
+    packPropagationLabels:
+    - all
+    prevname: ""
+    supportedModules:
+    - X1
+    - X3
+    - X5
+    - ENT_PLUS
+    - agentix
+    - xsiam
+    toServerVersion: ""
+externalitemdata: "fromversion: 6.10.0\nid: Jira_Parsing_Rule\nname: Jira Parsing
+  Rule\nrules: >-\n  [INGEST:vendor=\"atlassian\", product=\"jira\", target_dataset=\"atlassian_jira_raw\",
+  no_hit=drop]\n\n  // Support only date time of format: YYYY-MM-DDTHH:MM:SS.E3Z%z.
+  For example: \"2022-11-20T15:17:11.419+0000\".\n\n  filter created ~= \"\\d{4}\\-\\d{2}\\-\\d{2}T\\d{2}\\:\\d{2}\\:\\d{2}\\.\\d{3}[\\+|\\-]\\d{4}\"
+  and _raw_log = null //adding rawlog filter for Jira Datacenter events\n\n  |alter
+  \n      tmp_date_part = arraystring(regextract(created, \"^(\\d{4}\\-\\d{2}\\-\\d{2})T\"),
+  \"\"),\n      tmp_time_part = arraystring(regextract(created, \"T(\\d{2}\\:\\d{2}\\:\\d{2})\\.\"),
+  \"\"),\n      tmp_zone_part = arraystring(regextract(created, \"\\.[\\d]+([+|-]\\d+)\"),
+  \"\")\n  | alter \n      tmp_datetime = arraystring(arraycreate(tmp_date_part, tmp_time_part),
+  \" \")\n  | alter\n      _time = parse_timestamp(\"%Y-%m-%d %H:%M:%S %z\", arraystring(arraycreate(tmp_datetime,
+  tmp_zone_part), \" \"))\n  | fields -tmp_date_part, tmp_time_part, tmp_zone_part,
+  tmp_datetime;\nsamples: ''\nsupportedModules:\n- X1\n- X3\n- X5\n- ENT_PLUS\n- agentix\n-
+  xsiam\ntags: []\n"
+filetype: yml
+is_auto_enabled: false
+name: Jira Parsing Rule
+packid: Jira
+packname: Atlassian Jira
+packversion: 3.3.21
+playbook_id: ""
+subtype: parsingrule
