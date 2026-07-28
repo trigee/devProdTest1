@@ -1,0 +1,211 @@
+args:
+- description: Summary of the issue, a mandatory field.
+  name: summary
+  required: true
+  supportedModules: []
+- description: Project key to associate the issue.
+  name: projectKey
+  supportedModules: []
+- description: Choose issue type by name - e.g. Problem.
+  name: issueTypeName
+  supportedModules: []
+- description: Choose issue type by its numeric ID.
+  name: issueTypeId
+  supportedModules: []
+- description: Project name to associate the issue.
+  name: projectName
+  supportedModules: []
+- description: Issue description.
+  name: description
+  supportedModules: []
+- description: comma separated list of labels.
+  isArray: true
+  name: labels
+  supportedModules: []
+- description: priority name, e.g. High/Medium.
+  name: priority
+  supportedModules: []
+- description: Due date for the issue, in format YYYY-MM-DD.
+  name: dueDate
+  supportedModules: []
+- description: assignee name.
+  name: assignee
+  supportedModules: []
+- description: reporter name.
+  name: reporter
+  supportedModules: []
+- description: Parent issue key if you create a sub-task.
+  name: parentIssueKey
+  supportedModules: []
+- description: Parent issue ID if you create a sub-task.
+  name: parentIssueId
+  supportedModules: []
+- description: Comma-separated custom field keys and values to include in the created
+    incident, e.g. `customfield_10101=foo,customfield_10102=bar`.
+  isArray: true
+  name: customFields
+  supportedModules: []
+comment: "This script is used to simplify the process of creating a new Issue in Jira.
+  \nYou can specify custom fields using the `customFields` argument.\n"
+commonfields:
+  id: JiraCreateIssue-example
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 3.3.21
+    packID: Jira
+    packName: Atlassian Jira
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dependson:
+  must:
+  - jira-create-issue
+dockerimage: demisto/python3:3.12.12.5490952
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: JiraCreateIssue-example
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: Ticket.Id
+  description: Id of ticket.
+- contextPath: Ticket.Key
+  description: Key of ticket.
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('JiraCreateIssue-example', 'start', __line__())
+  CONSTANT_PACK_VERSION = '3.3.21'
+  demisto.debug('pack id = Jira, pack version = 3.3.21')
+  import re
+  from datetime import datetime
+  from typing import Any
+
+
+
+
+  """
+  This script is used to simplify the process of creating a new Issue in Jira,
+  including using custom fields.
+  """
+
+  INTEGRATION_COMMAND = "jira-create-issue"
+  DATE_FORMAT = "%Y-%m-%d"
+
+
+  def validate_date_field(date_str: str):
+      """
+      Private method to validate the date field is in expected format
+      YYYY-MM-DD.
+
+      Args:
+          - `date_str` (`str`): The date field to validate
+      """
+
+      # This raises a ValueError when the parsing fails
+      datetime.strptime(date_str, DATE_FORMAT)
+
+
+  def parse_custom_fields(custom_fields: list[str]) -> dict[str, Any]:
+      """
+      Parse the custom fields into a dictionary.
+      The custom fields arrive as comma-separated values:
+          `customfield_10101=foo,customfield_10102=bar`
+
+      And are returned as a dict:
+          `'customfield_10101': 'foo', 'customfield_10101': 'bar'`
+
+      Args:
+          - `custom_fields` (`List[str]`): List of custom fields.s
+
+      Returns:
+          - `Dict[str, Any]` representing the custom fields.
+      """
+
+      result: dict[str, Any] = {}
+      regex = r"(customfield_\d{5,})={1}(\w+)"
+
+      for custom_field in custom_fields:
+          field_regex_match = re.search(regex, custom_field)
+
+          if field_regex_match:
+              field_key, field_value = re.findall(regex, custom_field)[0]
+
+              if field_value.isnumeric() and not field_value.startswith("0"):
+                  field_value = int(field_value)  # type: ignore
+
+              result[field_key] = field_value
+
+      return result
+
+
+  def add_custom_fields(args: dict[str, Any], custom_fields: dict[str, Any]) -> dict[str, Any]:
+      """
+      Method to generate the payload representing the Jira issue custom fields and add it to the script arguments.
+
+      Args:
+          - `custom_fields` (`Dict[str, Any]`): A dicto of custom fields
+      Returns:
+          - A `Dict[str, Any]` with the Jira issue payload
+      """
+
+      args["issueJson"] = {}
+      args["issueJson"]["fields"] = custom_fields
+
+      return args
+
+
+  def main():  # pragma: no cover
+      try:
+          args = demisto.args()
+
+          demisto.debug(f"Arguments provided: \n{args}")
+
+          if "dueDate" in args:
+              validate_date_field(args.get("dueDate"))
+
+          if "customFields" in args:
+              demisto.debug("Found customFields arguments. Attempting to parse them...")
+              custom_fields = parse_custom_fields(argToList(args.get("customFields")))
+
+              # supplied custom fields might not parse correctly
+              if custom_fields:
+                  demisto.debug(f"Custom fields parsed: {custom_fields}. Removing 'customFields' argument...")
+
+                  # `jira-create-issue`` doesn't include `customFields` arg so we need to remove it and replace it with `issueJson`.
+                  del args["customFields"]
+                  demisto.debug("'customFields' removed. Adding custom field payload to the rest of the command arguments...")
+                  args = add_custom_fields(args, custom_fields)
+                  demisto.debug("Custom fields added to command arguments")
+
+          demisto.debug(f"Executing {INTEGRATION_COMMAND} with arguments: \n{args}")
+          create_issue_result = demisto.executeCommand(INTEGRATION_COMMAND, args)
+
+          return_results(create_issue_result)
+      except Exception as e:
+          return_error(f"Failed to JiraCreateIssueExample command. Error: {e!s}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):  # pragma: no cover
+      main()
+
+  register_module_line('JiraCreateIssue-example', 'end', __line__())
+scripttarget: 0
+signature: ""
+subtype: python3
+system: true
+tags:
+- jira
+- example
+type: python
