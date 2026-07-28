@@ -1,0 +1,336 @@
+category: Analytics & SIEM
+commonfields:
+  id: Jira Event Collector
+  version: -1
+configuration:
+- defaultvalue: https://<your-domain>.atlassian.net
+  display: Server URL
+  name: url
+  required: true
+  section: Connect
+  supportedModules: []
+  type: 0
+- additionalinfo: The user name (admin@example.com) and password
+  display: User name
+  displaypassword: API token
+  name: credentials
+  required: true
+  section: Connect
+  supportedModules: []
+  type: 9
+- defaultvalue: 3 days
+  display: First fetch time (<number> <time unit>, e.g., 12 hours, 1 day, 3 months).
+    default is 3 days.
+  name: first_fetch
+  required: true
+  section: Collect
+  supportedModules: []
+  type: 0
+- defaultvalue: "1000"
+  display: The maximum number of events per fetch. Default is 1000.
+  name: max_fetch
+  required: true
+  section: Collect
+  supportedModules: []
+  type: 0
+- display: Trust any certificate (not secure)
+  name: insecure
+  required: false
+  section: Connect
+  supportedModules: []
+  type: 8
+- display: Use system proxy settings
+  name: proxy
+  required: false
+  section: Connect
+  supportedModules: []
+  type: 8
+- display: Fetch Events
+  name: isFetchEvents
+  required: false
+  section: Collect
+  supportedModules: []
+  type: 8
+- advanced: true
+  defaultvalue: "1"
+  display: Events Fetch Interval
+  name: eventFetchInterval
+  required: false
+  section: Collect
+  supportedModules: []
+  type: 19
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.5.0
+    isoverridable: false
+    itemVersion: 3.3.21
+    packID: Jira
+    packName: Atlassian Jira
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - X1
+    - X3
+    - X5
+    - ENT_PLUS
+    - agentix
+    - xsiam
+    toServerVersion: ""
+description: Jira logs event collector integration for Cortex XSIAM.
+detaileddescription: "Use the Jira Event Collector integration to get Audit logs using
+  REST APIs.\n\nBefore you start, you need to get your-domain, username, and password.
+  For more information, see [Jira Documentation](https://developer.atlassian.com/cloud/jira/platform/rest/v3/intro/#ad-hoc-api-calls).\n\n##
+  Configuration Parameters\n\n**Server URL**    \nThe endpoint to get the logs. For
+  example, ``https://{{your-domain}}.atlassian.net``\n\n**User name and Password**
+  \   \nThe user name and password.\n\n\n---\n[View Integration Documentation](https://xsoar.pan.dev/docs/reference/integrations/jira-event-collector)"
+display: Jira Event Collector
+image: data:image/png;base64,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
+imagepath: content/packs/Jira/JiraEventCollector_image.png
+name: Jira Event Collector
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - description: The maximum number of incidents per fetch. Default is 1000.
+      isArray: true
+      name: max_fetch
+      supportedModules: []
+    - description: First fetch time (<number> <time unit>, e.g., 12 hours, 1 day,
+        3 months). Default is 3 days.
+      isArray: true
+      name: first_fetch
+      supportedModules: []
+    description: Returns a list of audit records
+    name: jira-get-events
+    supportedModules: []
+  dockerimage: demisto/py3-tools:1.0.0.4027705
+  isfetchevents: true
+  nativeimage:
+  - "8.8"
+  - "8.6"
+  runonce: false
+  script: |
+    register_module_line('Jira Event Collector', 'start', __line__())
+    CONSTANT_PACK_VERSION = '3.3.21'
+    demisto.debug('pack id = Jira, pack version = 3.3.21')
+    from datetime import datetime, timedelta
+    from enum import Enum
+
+    import dateparser
+
+    import requests
+    import urllib3
+
+    from pydantic import AnyUrl, BaseConfig, BaseModel, Field, Json  # pylint: disable=no-name-in-module
+    from requests.auth import HTTPBasicAuth
+
+    urllib3.disable_warnings()
+
+    DATETIME_FORMAT = "%Y-%m-%dT%H:%M:%S.%f"
+    VENDOR = "atlassian"
+    PRODUCT = "jira"
+
+
+    class Method(str, Enum):
+        GET = "GET"
+        POST = "POST"
+        PUT = "PUT"
+        HEAD = "HEAD"
+        PATCH = "PATCH"
+        DELETE = "DELETE"
+
+
+    class Args(BaseModel):
+        from_: str = Field(
+            datetime.strftime(
+                dateparser.parse(demisto.params().get("first_fetch", "3 days"), settings={"TIMEZONE": "UTC"})
+                or datetime.now() - timedelta(days=3),
+                DATETIME_FORMAT,
+            ),
+            alias="from",
+        )
+        limit: int = 1000
+        offset: int = 0
+
+
+    class ReqParams(BaseModel):
+        from_: str = Field(
+            datetime.strftime(
+                dateparser.parse(demisto.params().get("first_fetch", "3 days"), settings={"TIMEZONE": "UTC"})
+                or datetime.now() - timedelta(days=3),
+                DATETIME_FORMAT,
+            ),
+            alias="from",
+        )
+        limit: int = 1000
+        offset: int = 0
+
+
+    class Request(BaseModel):
+        method: Method = Method.GET
+        url: AnyUrl
+        headers: Union[Json, dict] = {}
+        params: ReqParams
+        insecure: bool = Field(not demisto.params().get("insecure", False), alias="verify")
+        proxy: bool = Field(demisto.params().get("proxy", False), alias="proxies")
+        data: Optional[str] = None
+        auth: Optional[HTTPBasicAuth] = Field(
+            HTTPBasicAuth(
+                demisto.params().get("credentials", {}).get("identifier"), demisto.params().get("credentials", {}).get("password")
+            )
+        )
+
+        class Config(BaseConfig):
+            arbitrary_types_allowed = True
+
+
+    class Client:
+        def __init__(self, request: Request, session=requests.Session()):
+            self.request = request
+            self.session = session
+            self._set_proxy()
+            self._set_cert_verification()
+
+        def __del__(self):
+            try:
+                self.session.close()
+            except AttributeError as err:
+                demisto.debug(f"Ignore exceptions raised due to session not used by the client. {err}")
+
+        def call(self) -> requests.Response:
+            try:
+                response = self.session.request(**self.request.dict(by_alias=True))
+                response.raise_for_status()
+                return response
+            except Exception as exc:
+                msg = f"Something went wrong with the http call {exc}"
+                LOG(msg)
+                raise DemistoException(msg) from exc
+
+        def prepare_next_run(self, offset: int):
+            self.request.params.offset += offset
+
+        def _set_cert_verification(self):
+            if not self.request.insecure:
+                skip_cert_verification()
+
+        def _set_proxy(self):
+            if self.request.proxy:
+                ensure_proxy_has_http_prefix()
+            else:
+                skip_proxy()
+
+
+    class GetEvents:
+        def __init__(self, client: Client) -> None:
+            self.client = client
+
+        def call(self) -> list:
+            resp = self.client.call()
+            return resp.json().get("records", [])
+
+        def _iter_events(self):
+            events = self.call()
+
+            while events:
+                yield events
+
+                self.client.prepare_next_run(self.client.request.params.limit)
+                events = self.call()
+
+        def run(self, max_fetch: int = 1000) -> List[dict]:
+            stored = []
+            last_run = demisto.getLastRun()
+
+            for logs in self._iter_events():
+                stored.extend(logs)
+
+                if len(stored) > max_fetch:
+                    last_run["offset"] = last_run.get("offset", 0) + max_fetch
+                    demisto.setLastRun(last_run)
+                    return stored[:max_fetch]
+
+            last_run["offset"] = 0
+            demisto.setLastRun(last_run)
+            return stored
+
+        @staticmethod
+        def set_next_run(log: dict) -> dict:
+            """
+            Handles and saves the values required for next fetch.
+
+            There are 3 values:
+                * from: From which time to fetch
+                * next_run: Time of creation of the last event fetched
+                * offset: The size of the offset (how many events to skip)
+
+            Since the rest API returns the events in desc order (the last event returns first), We need to save the last
+            event time creation in some variable (next_run) for the next fetches, in addition we need to save in another
+            variable (offset) the number of how many events we already fetched to skip them in the next fetch to avoid
+            duplicates, in addition we need to save the time (from) from when to fetch if there is still some incident
+            to fetch with offset
+            """
+            last_run = demisto.getLastRun()
+
+            if not last_run.get("next_time"):
+                last_datetime = log.get("created", "").removesuffix("+0000")
+                last_datetime_with_delta = datetime.strptime(last_datetime, DATETIME_FORMAT) + timedelta(milliseconds=1)
+                next_time = datetime.strftime(last_datetime_with_delta, DATETIME_FORMAT)
+
+                if last_run.get("offset"):
+                    last_run["next_time"] = next_time
+                else:
+                    last_run["from"] = next_time
+
+            else:
+                if not last_run.get("offset"):
+                    last_run["from"] = last_run.pop("next_time")
+
+            return last_run
+
+
+    def main():
+        # Args is always stronger. Get last run even stronger
+        demisto_params = demisto.params() | demisto.args() | demisto.getLastRun()
+
+        demisto_params["url"] = f'{str(demisto_params.get("url", "")).removesuffix("/")}/rest/api/3/auditing/record'
+        demisto_params["params"] = ReqParams.model_validate(demisto_params)  # type: ignore[attr-defined]
+
+        request = Request.model_validate(demisto_params)  # type: ignore[attr-defined]
+        client = Client(request)
+        get_events = GetEvents(client)
+        command = demisto.command()
+
+        if command == "test-module":
+            get_events.run(max_fetch=1)
+            demisto.results("ok")
+
+        elif command in ("fetch-events", "jira-get-events"):
+            events = get_events.run(int(demisto_params.get("max_fetch", 1000)))
+            send_events_to_xsiam(events, vendor=VENDOR, product=PRODUCT)
+
+            if events:
+                demisto.setLastRun(get_events.set_next_run(events[0]))
+                demisto.debug(f"Last run set to {demisto.getLastRun()}")
+                if command == "jira-get-events":
+                    command_results = CommandResults(
+                        readable_output=tableToMarkdown("Jira Audit Records", events, removeNull=True, headerTransform=pascalToSpace),
+                        raw_response=events,
+                    )
+                    return_results(command_results)
+
+
+    if __name__ in ("__main__", "__builtin__", "builtins"):
+        main()
+
+    register_module_line('Jira Event Collector', 'end', __line__())
+  subtype: python3
+  type: python
+sectionorder:
+- Connect
+- Collect
+signature: ""
+system: true
