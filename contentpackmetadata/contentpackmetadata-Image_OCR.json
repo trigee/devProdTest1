@@ -1,0 +1,136 @@
+{
+	"author": "Cortex",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Utilities"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"integration"
+	],
+	"contentItems": {
+		"agentixaction": null,
+		"agentixagent": null,
+		"agentixknowledgecollection": null,
+		"agentixknowledgesource": null,
+		"agentixskill": null,
+		"automation": null,
+		"casefield": null,
+		"classifier": null,
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": null,
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "Utilities",
+				"commands": [
+					{
+						"description": "Lists supported languages for which the integration can extract text.",
+						"hidden": false,
+						"name": "image-ocr-list-languages"
+					},
+					{
+						"description": "Extract text from images.",
+						"hidden": false,
+						"name": "image-ocr-extract-text"
+					}
+				],
+				"description": "Extracts text from images.",
+				"fromversion": "5.0.0",
+				"id": "Image OCR",
+				"name": "Image OCR",
+				"toversion": ""
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"playbook": null,
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"created": "2025-03-29T09:46:09Z",
+	"currentVersion": "1.1.47",
+	"defaultDataSource": {
+		"id": "",
+		"name": ""
+	},
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.41.94",
+			"name": "Base"
+		}
+	},
+	"deprecated": false,
+	"description": "Extracts text from images.",
+	"downloads": 0,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"firstCreated": "2025-03-29T09:46:09Z",
+	"fromServerVersion": "5.0.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldFree",
+		"generalFieldSupportIncluded",
+		"generalFieldSupportModule"
+	],
+	"hybrid": false,
+	"id": "ImageOCR",
+	"installMessage": "",
+	"integrations": [
+		{
+			"id": "Image OCR",
+			"imagePath": "content/packs/ImageOCR/ImageOCR_image.png",
+			"name": "Image OCR"
+		}
+	],
+	"isOverridable": false,
+	"itemVersion": "1.1.47",
+	"keywords": [],
+	"legacy": true,
+	"modules": [],
+	"name": "Image OCR",
+	"packID": "ImageOCR",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"readme": "This pack uses an open source text recognition engine (OCR) called [tesseract](https://tesseract-ocr.github.io/tessdoc/).\n\nThe Tesseract OCR extracts text from an image and is fairly accurate out-of-the box.\nHowever, you can improve the character extraction by providing a high quality image.\n\nUse this pack to extract text from an image in an email that contains a message, such as, \"give me money or I will block your computer\".\nIf domains and hashes appear in the image, the text extraction will probably provide satisfactory results, but not necessarily for URLs and email addresses.\nExtracting IOCs from images, Whatsapp images, or Facebook Messenger screenshots is not within the capability of this pack (although it may provide reasonable results).\n",
+	"searchRank": 0,
+	"serverMaxVersion": "",
+	"serverMinVersion": "5.0.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"supportedModules": [
+		"agentix",
+		"xsiam",
+		"edr",
+		"cloud",
+		"cloud_runtime_security"
+	],
+	"tags": [],
+	"toServerVersion": "",
+	"updated": "2026-06-18T10:11:39Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "10281058",
+	"videos": []
+}
