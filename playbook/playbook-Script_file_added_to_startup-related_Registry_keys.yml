@@ -1,0 +1,3212 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.9.0
+    isoverridable: false
+    itemVersion: 1.3.54
+    packID: CortexResponseAndRemediation
+    packName: Cortex Response And Remediation
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook handles "Script file added to startup-related Registry keys" alerts.
+
+  Playbook Stages:
+
+  Analysis:
+
+  - Extract the script path from the registry key value.
+  - Check the reputation of the associated processes.
+
+  Investigation:
+
+  - Searches for related Cortex XSIAM alerts to identify potential attack patterns.
+  - Retrieves the script file and relevant details for investigation.
+  - Analyzes the script for malicious or suspicious parameters:
+    - If malicious parameters are found, proceed to remediation.
+    - If suspicious parameters are found, detonate and analyze the script using WildFire Sandbox.
+  - Checks the script file reputation.
+  - Detonates and analyzes the script using WildFire Sandbox.
+
+  Remediation:
+
+  - Terminates the malicious process.
+  - Quarantines the malicious process.
+  - Adds the malicious process hash to the blocklist.
+  - Calculates the script file’s SHA256 hash if not already available.
+  - Deletes the Registry key value (Requires analyst approval).
+  - Adds the script file hash to the blocklist (Requires analyst approval).
+  - Automatically close the alert.
+id: Script file added to startup-related Registry keys
+inputSections:
+- description: Generic group for inputs
+  inputs: []
+  name: General (Inputs group)
+inputs: []
+name: Script file added to startup-related Registry keys
+outlinetasks: {}
+outputSections:
+- description: Generic group for outputs
+  name: General (Outputs group)
+  outputs: []
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tags:
+- TA0003 - Persistence
+- T1547 - Boot or Logon Autostart Execution
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "43"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: cf6e8c28-cf7c-4636-87be-f7131f1b2e59
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: cf6e8c28-cf7c-4636-87be-f7131f1b2e59
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 433,
+          "y": -244
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "96"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 05199548-0c7f-479f-a76e-549f82c96c07
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation
+      playbooktaskmissingcomponent: null
+      tags:
+      - related_alerts
+      type: title
+      version: -1
+    taskid: 05199548-0c7f-479f-a76e-549f82c96c07
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 838,
+          "y": 613
+        }
+      }
+  "2":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: TIMScore
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.osparentsha256
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.cgosha256
+                root: FileEnrichment
+          operator: isNotEmpty
+          right:
+            value: {}
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: TIMScore
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.cgosha256
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.osparentsha256
+                root: FileEnrichment
+          operator: isEqualNumber
+          right:
+            value:
+              simple: "3"
+      label: "yes"
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "1"
+      "yes":
+      - "83"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines the appropriate verdict based on the reputation of the
+        processes.
+      id: 1a538e87-4008-429c-9401-3ac9a6926128
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check if the process has a malicious reputation
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 1a538e87-4008-429c-9401-3ac9a6926128
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 433,
+          "y": 465
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "29"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f6a7b9d9-7506-4220-9586-f642211bf61c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Remediation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: f6a7b9d9-7506-4220-9586-f642211bf61c
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 443,
+          "y": 3908
+        }
+      }
+  "8":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: foundIncidents.sourceBrand
+          operator: isEqualString
+          right:
+            value:
+              simple: TRAPS
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: foundIncidents.name
+          operator: isEqualString
+          right:
+            value:
+              simple: WildFire Malware
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: foundIncidents.name
+          operator: isEqualString
+          right:
+            value:
+              simple: Local Analysis Malware
+        - left:
+            iscontext: true
+            value:
+              simple: foundIncidents.name
+          operator: isEqualString
+          right:
+            value:
+              simple: Behavioral Threat
+      label: "yes"
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "50"
+      "yes":
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines whether the related alerts indicate malicious activity.
+      id: 7b81ecc4-b16b-4dd9-9d45-7bda32a67cc0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Found any alerts indicating a malicious process execution?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 7b81ecc4-b16b-4dd9-9d45-7bda32a67cc0
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 838,
+          "y": 890
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "131"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: Groups all tasks for a specific alert according to the task headers
+        (titles).
+      id: 4aec3115-806f-4b66-873a-ab60d142cfc9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Block Script File
+      playbooktaskmissingcomponent: null
+      tags:
+      - true_positive
+      type: title
+      version: -1
+    taskid: 4aec3115-806f-4b66-873a-ab60d142cfc9
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 443,
+          "y": 4659
+        }
+      }
+  "29":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "123"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      agent_id:
+        simple: ${alert.agentid}
+      causality_id:
+        simple: ${alert.cid}
+      timeout_in_seconds:
+        simple: "180"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Terminates a process tree by its causality ID. Available only from
+        Cortex XSIAM 2.4.
+      id: 678cb554-5537-4e26-8868-59600f237faf
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Terminate Causality Process
+      playbooktaskmissingcomponent: null
+      script: '|||core-terminate-causality'
+      type: regular
+      version: -1
+    taskid: 678cb554-5537-4e26-8868-59600f237faf
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 443,
+          "y": 4039
+        }
+      }
+  "39":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "39"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      external_enrichment:
+        simple: "true"
+      file_hash:
+        complex:
+          accessor: cgosha256
+          root: alert
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: alert.osparentsha256
+            operator: append
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: This script gathers file reputation data from multiple integrations
+        and returns a "FileEnrichment" object with consolidated information to the
+        context output.
+      id: 6a9dfdda-5aa5-449a-966e-d51c9f7c371f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check the processes reputation
+      playbooktaskmissingcomponent: null
+      script: file-enrichment
+      type: regular
+      version: -1
+    taskid: 6a9dfdda-5aa5-449a-966e-d51c9f7c371f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 433,
+          "y": 315
+        }
+      }
+  "43":
+    continueonerrortype: ""
+    id: "43"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "53"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 357da12c-5fcc-4eec-8dbf-ff8f712069e4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Analysis
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 357da12c-5fcc-4eec-8dbf-ff8f712069e4
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 433,
+          "y": -110
+        }
+      }
+  "50":
+    continueonerrortype: ""
+    id: "50"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "104"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f8da1674-a3c2-46b6-8aa9-75628b0e6795
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Script File Analysis
+      playbooktaskmissingcomponent: null
+      tags:
+      - prevalence_check
+      type: title
+      version: -1
+    taskid: f8da1674-a3c2-46b6-8aa9-75628b0e6795
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1128,
+          "y": 1052
+        }
+      }
+  "53":
+    continueonerrortype: ""
+    id: "53"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "125"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      alert_ids:
+        simple: ${alert.id}
+      filter_alert_fields:
+        simple: "false"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns additional alert data, including registry keys and values
+        that reference the script file.
+      id: ef3721b8-94c4-4bec-9f66-056906400434
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get registry data
+      playbooktaskmissingcomponent: null
+      script: '|||core-get-cloud-original-alerts'
+      type: regular
+      version: -1
+    taskid: ef3721b8-94c4-4bec-9f66-056906400434
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 433,
+          "y": 27
+        }
+      }
+  "56":
+    continueonerrortype: ""
+    form:
+      description: ""
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: |-
+            #### Dear Analyst,
+            Please note that during the investigation, the playbook was unable to retrieve all script files found in the startup-related registry keys.
+
+            This may be due to one of the following reasons:
+            - The device is disconnected.
+            - The script file was modified, moved, or deleted.
+
+            ####The script path:
+            ${ScriptPath}
+
+            ---
+
+            ### Decision Required:
+            Please investigate the script file that the playbook was unable to retrieve and choose the action you would like to perform:
+
+            - **False Positive** - Close the alert as a false positive.
+            - **True Positive** - Handle the alert as a true positive. This will initiate remediation actions such as terminating malicious processes, blocking related files, and deleting the associated registry key entries.
+            *(Note: During the remediation stage, you will need to approve the remediation actions.)*
+        options: []
+        optionsarg:
+        - simple: False Positive
+        - simple: True Positive
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: singleSelect
+      sender: Your SOC team
+      syncid: ""
+      title: Analyst Decision
+      totalanswers: 0
+    id: "56"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body: null
+      cc: null
+      format: ""
+      methods: []
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      '#none#':
+      - "57"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Message
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Analyst review is required to determine whether to take remediation
+        actions, or to close the alert as a false positive.
+      id: 08ea3f9b-405c-457a-a486-c26135d72c4d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual Task - Analyst Decision
+      playbooktaskmissingcomponent: null
+      tags:
+      - analyst_decision
+      type: collection
+      version: -1
+    taskid: 08ea3f9b-405c-457a-a486-c26135d72c4d
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": 2062,
+          "y": 3597
+        }
+      }
+  "57":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Analyst Decision.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: False Positive
+      label: False Positive
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Analyst Decision.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: True Positive
+      label: True Positive
+    continueonerrortype: ""
+    id: "57"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      False Positive:
+      - "115"
+      True Positive:
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Evaluate the analyst's decision on whether to proceed with remediation
+        actions or close the alert as a false positive.
+      id: f3a597a9-afb5-4b65-808f-76d7f4075385
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Analyst Decision
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: f3a597a9-afb5-4b65-808f-76d7f4075385
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 2062,
+          "y": 3736
+        }
+      }
+  "79":
+    continueonerrortype: ""
+    form:
+      description: ""
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: "${QuarantineFile(val.Status == \"Failed\").FilePath=>\"Note: During
+            the quarantine process, the following files could not be quarantined.
+            Please manually quarantine these files: \\n - \" + val.join(\"\\n - \")}\n\n
+            ---\n\n**Select the response actions:**\nThe following script file found
+            as part of an attack and seems to be malicious, please select the response
+            actions:\n\n--- \nScript details:\n---\n**Script Paths:**\n- ${ScriptPath}\n\n**Script
+            SHA256:**\n- ${ScriptSHA256} ${ExtractedIndicators.File}\n\n**Registry
+            Key:**\n- ${Core.OriginalAlert.event.action_registry_key_name}\n\n**Registry
+            Key Value Name:**\n- ${Core.OriginalAlert.event.action_registry_value_name}\n"
+        options: []
+        optionsarg:
+        - {}
+        - simple: Add to Block List and Delete registry value
+        - simple: Add to Block List
+        - simple: Delete registry value
+        - simple: No Action
+        placeholder: ""
+        readonly: false
+        required: true
+        tooltip: ""
+        type: singleSelect
+      sender: Your SOC team
+      syncid: ""
+      title: Remediation Approval
+      totalanswers: 0
+    id: "79"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body: null
+      cc: null
+      format: ""
+      methods: []
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      '#none#':
+      - "91"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Message
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Analyst approval is required for the following remediation actions:
+        - Add malicious scripts to the block list
+        - Delete related registry key value and add the malicious scripts to the block list
+        - Delete related registry key value
+        - No action
+      id: cadb3946-79b7-4e15-ab92-e57d3d9247e0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual Task - Analyst Decision for Next Actions
+      playbooktaskmissingcomponent: null
+      type: collection
+      version: -1
+    taskid: cadb3946-79b7-4e15-ab92-e57d3d9247e0
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": 443,
+          "y": 5414
+        }
+      }
+  "81":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: TIMScore
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.cgosha256
+                root: FileEnrichment
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "3"
+      label: "yes"
+    continueonerrortype: ""
+    id: "81"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "86"
+      "yes":
+      - "82"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Verify if the CGO process has a malicious reputation.
+      id: b631faff-7cdd-41bf-bfc4-081c666d4ae7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is the reputation of the CGO process malicious?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: b631faff-7cdd-41bf-bfc4-081c666d4ae7
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -319,
+          "y": 747
+        }
+      }
+  "82":
+    continueonerrortype: ""
+    id: "82"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "86"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      keys:
+        simple: cgoPath,cgoSha256
+      parent:
+        simple: MaliciousCGOProcess
+      values:
+        simple: ${alert.cgopath.[0]},${alert.cgosha256.[0]}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set multiple keys/values related to the malicious CGO process to
+        the context.
+      id: 3350e748-e72f-49db-ab3e-bf5350cb59c6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set malicious CGO process
+      playbooktaskmissingcomponent: null
+      script: SetMultipleValues
+      tags:
+      - malicious_causality_process
+      type: regular
+      version: -1
+    taskid: 3350e748-e72f-49db-ab3e-bf5350cb59c6
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -319,
+          "y": 901
+        }
+      }
+  "83":
+    continueonerrortype: ""
+    id: "83"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "81"
+      - "84"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 13eb30d5-cb72-4a0f-85bb-d7d6a841d9e6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set keys for malicious processes
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 13eb30d5-cb72-4a0f-85bb-d7d6a841d9e6
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -61,
+          "y": 614
+        }
+      }
+  "84":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: TIMScore
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.osparentsha256
+                root: FileEnrichment
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "3"
+      label: "yes"
+    continueonerrortype: ""
+    id: "84"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "86"
+      "yes":
+      - "85"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Verify if the OS Actor process has a malicious reputation.
+      id: 8db40268-d731-4662-8f5d-1f1eb212e7b0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is the reputation of the OS Actor process malicious?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 8db40268-d731-4662-8f5d-1f1eb212e7b0
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 179,
+          "y": 747
+        }
+      }
+  "85":
+    continueonerrortype: ""
+    id: "85"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "86"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      keys:
+        simple: actorPath,actorSha256
+      parent:
+        simple: MaliciousOSActorProcess
+      values:
+        simple: ${alert.initiatorpath.[0]},${alert.initiatorsha256.[0]}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set multiple keys/values related to the malicious OS Actor process
+        to the context.
+      id: 2aa42aba-9426-49bc-99f1-324668962d2c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set malicious OS Actor process
+      playbooktaskmissingcomponent: null
+      script: SetMultipleValues
+      tags:
+      - malicious_actor_process
+      type: regular
+      version: -1
+    taskid: 2aa42aba-9426-49bc-99f1-324668962d2c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 179,
+          "y": 901
+        }
+      }
+  "86":
+    continueonerrortype: ""
+    id: "86"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9964a51f-6e6d-49d9-9451-9a7222143378
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set keys for malicious processes - Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 9964a51f-6e6d-49d9-9451-9a7222143378
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -61,
+          "y": 1071
+        }
+      }
+  "91":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Remediation Approval.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: Delete registry value
+      label: Delete registry value
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Remediation Approval.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: Add to Block List
+      label: Add to Block List
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Remediation Approval.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: Add to Block List and Delete registry value
+      label: Add to Block List & Delete registry value
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Remediation Approval.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: No Action
+        - left:
+            iscontext: true
+            value:
+              simple: Remediation Approval.Answers.0
+          operator: isEmpty
+      label: No Action
+    continueonerrortype: ""
+    id: "91"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      Add to Block List:
+      - "132"
+      Add to Block List & Delete registry value:
+      - "135"
+      Delete registry value:
+      - "124"
+      No Action:
+      - "121"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Evaluate the analyst's decision for the following response actions.
+      id: 3cafba16-7530-4e25-9d9b-0aae7fe8b63b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Analyst Decision for Next Response Actions
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 3cafba16-7530-4e25-9d9b-0aae7fe8b63b
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 443,
+          "y": 5553
+        }
+      }
+  "93":
+    continueonerrortype: ""
+    id: "93"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      comment:
+        simple: 'The hash was added to the block list by the playbook ''Script file
+          added to startup-related Registry keys'' as part of handling alert ID: ${alert.id}'
+      hash_list:
+        complex:
+          accessor: cgoSha256
+          root: MaliciousCGOProcess
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: MaliciousOSActorProcess.actorSha256
+            operator: append
+          - args:
+              empty_values: {}
+              remove_keys: {}
+            operator: RemoveEmpty
+          - operator: uniq
+      incident_id:
+        complex:
+          accessor: parentXDRIncident
+          root: alert
+          transformers:
+          - args:
+              delimiter:
+                value:
+                  simple: '-'
+              fields:
+                value:
+                  simple: "2"
+            operator: Cut
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Block lists requested files which have not already been block listed
+        or added to allow lists.
+      id: e37c8ea0-eace-4196-a502-3f7c05aa9b30
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Add hash to Block list
+      playbooktaskmissingcomponent: null
+      script: '|||core-blocklist-files'
+      type: regular
+      version: -1
+    taskid: e37c8ea0-eace-4196-a502-3f7c05aa9b30
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 225,
+          "y": 4471
+        }
+      }
+  "94":
+    continueonerrortype: ""
+    id: "94"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "93"
+      - "149"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f1e22b15-cf9e-4f18-8919-945fa9e70ed8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Process Block and Quarantine
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: f1e22b15-cf9e-4f18-8919-945fa9e70ed8
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 10,
+          "y": 4340
+        }
+      }
+  "96":
+    continueonerrortype: ""
+    id: "96"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      fromdate:
+        simple: 3 hours ago
+      query:
+        simple: agentid:${alert.agentid} and (cid:${alert.cid.[0]} or actorprocessinstanceid:${alert.cid.[0]}
+          or actionprocessinstanceid:${alert.cid.[0]} or actorprocessinstanceid:${alert.actorprocessinstanceid.[0]}
+          or actionprocessinstanceid:${alert.actorprocessinstanceid.[0]})
+      todate:
+        simple: now
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This task searches for related alerts generated by processes within
+        the same causality chain, which may indicate a compromised endpoint.
+      id: 288a8e3b-248d-4fab-844d-10ae731b6226
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search for related alerts by processes
+      playbooktaskmissingcomponent: null
+      script: SearchAlertsV2
+      type: regular
+      version: -1
+    taskid: 288a8e3b-248d-4fab-844d-10ae731b6226
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 838,
+          "y": 737
+        }
+      }
+  "98":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "98"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "138"
+      '#none#':
+      - "133"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      command:
+        simple: ${CertutilCommands}
+      command_type:
+        simple: native
+      endpoint_ids:
+        simple: ${alert.agentid}
+      ignore-outputs:
+        simple: "false"
+      is_raw_command:
+        simple: "true"
+      timeout:
+        simple: "120"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Run a shell command on a specific endpoint and return its result.
+      id: 59938bae-9c90-4bb9-8514-6737aa9bb63a
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Execute shell command to get the script file hash
+      playbooktaskmissingcomponent: null
+      script: '|||core-execute-command'
+      type: regular
+      version: -1
+    taskid: 59938bae-9c90-4bb9-8514-6737aa9bb63a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 443,
+          "y": 5104
+        }
+      }
+  "101":
+    continueonerrortype: ""
+    id: "101"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "98"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: CertutilCommands
+      value:
+        complex:
+          root: ScriptPath
+          transformers:
+          - args:
+              prefix:
+                value:
+                  simple: certutil -hashfile "
+              suffix:
+                value:
+                  simple: '" sha256'
+            operator: concat
+          - args:
+              limit: {}
+              replaceWith:
+                value:
+                  simple: '"'
+              toReplace:
+                value:
+                  simple: '""'
+            operator: replace
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered. If no value is
+        entered, the script doesn't do anything.
+      id: 8996323f-70fe-450a-9ba2-2124d49ab33e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set commands to get Script SHA256
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 8996323f-70fe-450a-9ba2-2124d49ab33e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 443,
+          "y": 4966
+        }
+      }
+  "104":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "104"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "105"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      endpoint_ids:
+        simple: ${alert.agentid}
+      windows_file_paths:
+        complex:
+          root: ScriptPath
+          transformers:
+          - args:
+              limit: {}
+              replaceWith: {}
+              toReplace:
+                value:
+                  simple: '"'
+            operator: replace
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Retrieves script files from the endpoint.
+      id: 22350a2e-efd2-467c-bf53-beea19fb23f3
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Retrieve Script Files
+      playbooktaskmissingcomponent: null
+      script: '|||core-retrieve-files'
+      type: regular
+      version: -1
+    taskid: 22350a2e-efd2-467c-bf53-beea19fb23f3
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1128,
+          "y": 1175
+        }
+      }
+  "105":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "105"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "106"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      action_id:
+        simple: ${Core.RetrievedFiles.action_id}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: View the file retrieved by the core-retrieve-files command according
+        to the action ID. Before running this command, you can use the core-action-status-get
+        command to check if this action completed successfully.
+      id: e1a95030-09b6-47b5-9666-1d72cc705758
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Retrieve file details
+      playbooktaskmissingcomponent: null
+      script: '|||core-retrieve-file-details'
+      type: regular
+      version: -1
+    taskid: e1a95030-09b6-47b5-9666-1d72cc705758
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1128,
+          "y": 1325
+        }
+      }
+  "106":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "106"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "112"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      entryID:
+        simple: ${File.EntryID}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Unzip a file using fileName or entryID to specify a file. Unzipped
+        files will be loaded to the War Room and names will be put into the context.
+      id: cb21690a-10e7-40f6-bea8-5047157b771b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Unzip Script file
+      playbooktaskmissingcomponent: null
+      script: UnzipFile
+      type: regular
+      version: -1
+    taskid: cb21690a-10e7-40f6-bea8-5047157b771b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1128,
+          "y": 1476
+        }
+      }
+  "107":
+    continueonerrortype: ""
+    id: "107"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "108"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      entryID:
+        complex:
+          accessor: EntryID
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: File.Info
+              operator: inList
+              right:
+                value:
+                  simple: vbs,vbe,vb,js,jse,ps1,bat,jar,cpl,wsf,wsh,asp,cmd,hta,pyc,rb,py,sh
+          root: File
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Load the contents of a file into context.
+      id: 9c0ff61f-a602-4e47-82da-f6b3e9b6d9b9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Loads script contents to context
+      playbooktaskmissingcomponent: null
+      script: ReadFile
+      type: regular
+      version: -1
+    taskid: 9c0ff61f-a602-4e47-82da-f6b3e9b6d9b9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1128,
+          "y": 2236
+        }
+      }
+  "108":
+    continueonerrortype: ""
+    id: "108"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "109"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      command_line:
+        simple: ${FileData}
+      custom_patterns:
+        simple: (?i)(DownloadFile|\$payload|regsvr32|subprocess|chr|urlopen|socket\.socket|addEventListener|unescape|WinHttpRequest|bitsadmin|beval\(|atob\(|WScript\.Sleep|String\.fromCharCode|binascii\.a2b_base64|Base64Decode|CreateObject\(\"Wscript\.Shell\"\)|objShell\.Run|requests\.get|os\.system|os\.popen|urllib\.request|ctypes\.windll\.kernel32|Base64\.decode64|base64\.b64decode|ActiveXObject\(\"WScript\.Shell\"\)|ActiveXObject\(\"MSXML2\.XMLHTTP\"\)|ActiveXObject\(\"MSXML2\.ServerXMLHTTP\"\)|addEventListener\(\)|ADODB\.Stream|Scripting\.FileSystemObject|Shell\.Application|GetObject\(\"winmgmts\:|-ExecutionPolicy\s+Unrestricted)
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        This script evaluates command-line threats by analyzing both original and decoded inputs. It assigns weighted scores to detected patterns, such as AMSI bypass or credential dumping, and applies risk combination bonuses for multiple detections. The total score is normalized to a 0-100 scale, with risk levels categorized as follows:
+
+        * 0-25: Low Risk
+        * 26-50: Medium Risk
+        * 51-90: High Risk
+        * 91-100: Critical Risk
+
+        The scoring mechanism provides a comprehensive risk assessment, considering both the severity and frequency of malicious behaviors.
+      id: 7420ae41-2d29-4ff8-8552-b9afde0ca4f2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Script Analysis
+      playbooktaskmissingcomponent: null
+      script: CommandLineAnalysis
+      type: regular
+      version: -1
+    taskid: 7420ae41-2d29-4ff8-8552-b9afde0ca4f2
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1128,
+          "y": 2372
+        }
+      }
+  "109":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: CommandLineAnalysis.score
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "30"
+      label: Malicious
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: score
+                root: CommandLineAnalysis
+                transformers:
+                - args:
+                    descending:
+                      value:
+                        simple: "true"
+                  operator: sort
+                - operator: FirstArrayElement
+          operator: InRange
+          right:
+            value:
+              simple: 10,29
+      label: Suspicious
+    continueonerrortype: ""
+    id: "109"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "113"
+      Malicious:
+      - "3"
+      Suspicious:
+      - "144"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |+
+        This task evaluates the command-line analysis results and checks if the risk score is greater than or equal to 30. If it is, mark the result as **Malicious**.
+
+        If the score is in the range of 10–29, mark the result as **Suspicious**.
+
+      id: 2f1d5725-7918-4432-ac87-7ab1575ff86d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Does the script have a malicious or suspicious parameters?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 2f1d5725-7918-4432-ac87-7ab1575ff86d
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1128,
+          "y": 2522
+        }
+      }
+  "110":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: TIMScore
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: ScriptSHA256
+                root: FileEnrichment
+          operator: isNotEmpty
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: TIMScore
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: ScriptSHA256
+                root: FileEnrichment
+          operator: isEqualNumber
+          right:
+            value:
+              simple: "3"
+      label: Malicious
+    continueonerrortype: ""
+    id: "110"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "107"
+      Malicious:
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines the appropriate verdict based on the reputation of the
+        scripts files.
+      id: 296c2d87-6ae9-4ad8-ab70-315760eb0996
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Does the script have a malicious reputation?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 296c2d87-6ae9-4ad8-ab70-315760eb0996
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1128,
+          "y": 2078
+        }
+      }
+  "111":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "111"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "110"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      external_enrichment:
+        simple: "true"
+      file_hash:
+        simple: ${ScriptSHA256}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: This script gathers file reputation data from multiple integrations
+        and returns a "FileEnrichment" object with consolidated information to the
+        context output.
+      id: 4afadfd9-48cc-4a91-afb2-f4e5746747e9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check the script file reputation
+      playbooktaskmissingcomponent: null
+      script: file-enrichment
+      type: regular
+      version: -1
+    taskid: 4afadfd9-48cc-4a91-afb2-f4e5746747e9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1128,
+          "y": 1927
+        }
+      }
+  "112":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: ExtractedFiles
+          operator: isNotEmpty
+          right:
+            value: {}
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: File.Info
+          operator: inList
+          right:
+            value:
+              simple: vbs,vbe,vb,js,jse,ps1,bat,jar,cpl,wsf,wsh,asp,cmd,hta,pyc,rb,py,sh
+      label: "yes"
+    continueonerrortype: ""
+    id: "112"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "56"
+      "yes":
+      - "128"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the script was retrieved successfully.
+      id: 837c714f-fbed-49e7-9b3e-f296326cca87
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Script Successfully Retrieved?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 837c714f-fbed-49e7-9b3e-f296326cca87
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1128,
+          "y": 1626
+        }
+      }
+  "113":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: ScriptPath
+                transformers:
+                - operator: count
+          operator: isEqualNumber
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: FileData
+                transformers:
+                - operator: count
+      label: "yes"
+    continueonerrortype: ""
+    id: "113"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "56"
+      "yes":
+      - "114"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if all the scripts were retrieved.
+      id: 62ea4c89-fee2-43f0-8ba5-5f508c6bd797
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Were all the scripts retrieved?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 62ea4c89-fee2-43f0-8ba5-5f508c6bd797
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1341,
+          "y": 3442
+        }
+      }
+  "114":
+    continueonerrortype: ""
+    id: "114"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "115"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a6bb0316-0def-4d8c-8f24-b56dd03477d6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Close alert
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: a6bb0316-0def-4d8c-8f24-b56dd03477d6
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1341,
+          "y": 3612
+        }
+      }
+  "115":
+    continueonerrortype: ""
+    id: "115"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "148"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      closeNotes:
+        simple: Resolved as False Positive - Handled by the playbook "Script file
+          added to startup-related Registry keys".
+      closeReason:
+        simple: Resolved - False Positive
+      id:
+        simple: ${alert.id}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.close.inv
+      id: 757d0b25-8d25-4fa6-a723-21f4ba12f5c7
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close Alert as False Positive
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: 757d0b25-8d25-4fa6-a723-21f4ba12f5c7
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1341,
+          "y": 3938
+        }
+      }
+  "118":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "118"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "138"
+      '#none#':
+      - "137"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      command:
+        simple: Remove-ItemProperty -Path "${RegistryValueToDelete}" -Name "${Core.OriginalAlert.event.action_registry_value_name}"
+      command_type:
+        simple: powershell
+      endpoint_ids:
+        simple: ${alert.agentid}
+      ignore-outputs:
+        simple: "false"
+      is_raw_command:
+        simple: "true"
+      timeout:
+        simple: "120"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Run a shell command on a specific endpoint and return its result.
+      id: b776cbc4-d0d6-4bd1-87ab-687fc48ccda4
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Execute shell command to get the script file hash
+      playbooktaskmissingcomponent: null
+      script: '|||core-execute-command'
+      type: regular
+      version: -1
+    taskid: b776cbc4-d0d6-4bd1-87ab-687fc48ccda4
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 25,
+          "y": 6179
+        }
+      }
+  "121":
+    continueonerrortype: ""
+    id: "121"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "122"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 3f3678bf-515d-453b-9892-aac112b1b76c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Close alerts
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 3f3678bf-515d-453b-9892-aac112b1b76c
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1090,
+          "y": 6710
+        }
+      }
+  "122":
+    continueonerrortype: ""
+    id: "122"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "147"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      closeNotes:
+        simple: Resolved as True Positive - Handled by the playbook "Script file added
+          to startup-related Registry keys".
+      closeReason:
+        simple: Resolved - True Positive
+      id:
+        simple: ${alert.id}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.close.inv
+      id: e5d36a03-aa6b-4375-a089-d7bf91b56e2e
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close Alert as True Positive
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: e5d36a03-aa6b-4375-a089-d7bf91b56e2e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1090,
+          "y": 6840
+        }
+      }
+  "123":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: MaliciousCGOProcess
+          operator: isNotEmpty
+          right:
+            value: {}
+        - left:
+            iscontext: true
+            value:
+              simple: MaliciousOSActorProcess
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "123"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "13"
+      "yes":
+      - "94"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether any of the processes are identified as malicious.
+      id: eac154ca-1a4d-4b1c-bd35-7adf6c07a8ed
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Found any malicious processes?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: eac154ca-1a4d-4b1c-bd35-7adf6c07a8ed
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 443,
+          "y": 4175
+        }
+      }
+  "124":
+    continueonerrortype: ""
+    id: "124"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "139"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a553d7f2-3fd1-4c75-830f-80e2b2f1e916
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Delete registry value
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: a553d7f2-3fd1-4c75-830f-80e2b2f1e916
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 25,
+          "y": 5725
+        }
+      }
+  "125":
+    continueonerrortype: ""
+    id: "125"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "39"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      contextKey:
+        simple: ScriptPath
+      data:
+        simple: ${Core.OriginalAlert.event.action_registry_data}
+      regex:
+        simple: (?i)[\"']([^\".]+?[.](?:vbs|vbe|vb|js|jse|ps1|bat|jar|cpl|wsf|wsh|asp|cmd|hta|pyc|rb|py|sh))[\"']|[^\"\s']+?[.](?:vbs|vbe|vb|js|jse|ps1|bat|jar|cpl|wsf|wsh|asp|cmd|hta|pyc|rb|py|sh)
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Extracts script paths using regex from startup-related registry
+        key values.
+      id: 6436391b-5253-441d-94cc-f780ca2477ee
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Extract script path
+      playbooktaskmissingcomponent: null
+      script: MatchRegexV2
+      type: regular
+      version: -1
+    taskid: 6436391b-5253-441d-94cc-f780ca2477ee
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 433,
+          "y": 171
+        }
+      }
+  "128":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "128"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "111"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: ScriptSHA256
+      value:
+        complex:
+          accessor: SHA256
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: File.Info
+              operator: inList
+              right:
+                value:
+                  simple: vbs,vbe,vb,js,jse,ps1,bat,jar,cpl,wsf,wsh,asp,cmd,hta,pyc,rb,py,sh
+          root: File
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered. If no value is
+        entered, the script doesn't do anything.
+      id: 687933c2-6a9c-4ac2-9ebb-38b89cf4b75e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set Script SHA256
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 687933c2-6a9c-4ac2-9ebb-38b89cf4b75e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1128,
+          "y": 1783
+        }
+      }
+  "130":
+    continueonerrortype: ""
+    id: "130"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "121"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      comment:
+        simple: 'The hash was added to the block list by the playbook ''Script file
+          added to startup-related Registry keys'' as part of handling alert ID: ${alert.id}'
+      hash_list:
+        complex:
+          accessor: File
+          root: ExtractedIndicators
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: ScriptSHA256
+            operator: append
+          - args:
+              empty_values: {}
+              remove_keys: {}
+            operator: RemoveEmpty
+          - operator: uniq
+      incident_id:
+        complex:
+          accessor: parentXDRIncident
+          root: alert
+          transformers:
+          - args:
+              delimiter:
+                value:
+                  simple: '-'
+              fields:
+                value:
+                  simple: "2"
+            operator: Cut
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Block lists requested files which have not already been block listed
+        or added to allow lists.
+      id: 2088355f-d4f6-427b-906a-acf5b1facf40
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Add hash to Block list
+      playbooktaskmissingcomponent: null
+      script: '|||core-blocklist-files'
+      type: regular
+      version: -1
+    taskid: 2088355f-d4f6-427b-906a-acf5b1facf40
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 443,
+          "y": 6035
+        }
+      }
+  "131":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: ExtractedFiles
+          operator: isEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "131"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "79"
+      "yes":
+      - "101"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the playbook should calculate the script hash or
+        if it was already calculated during the investigation phase.
+      id: f42d7f7c-eee1-4a16-9bcc-25ff6dceacde
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should calculate the script hash?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: f42d7f7c-eee1-4a16-9bcc-25ff6dceacde
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 443,
+          "y": 4804
+        }
+      }
+  "132":
+    continueonerrortype: ""
+    id: "132"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "146"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 99f38d12-62cb-4e7a-9fc7-6b4e1f43ffa1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Block malicious script
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 99f38d12-62cb-4e7a-9fc7-6b4e1f43ffa1
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 443,
+          "y": 5726
+        }
+      }
+  "133":
+    continueonerrortype: ""
+    id: "133"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "79"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      text:
+        simple: ${Core.ScriptResult.results.executed_command.standard_output}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.extract.indicators
+      id: 4257cf78-8345-45e2-a7b0-9092e0ae0dce
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Extract Indicators
+      playbooktaskmissingcomponent: null
+      script: Builtin|||extractIndicators
+      type: regular
+      version: -1
+    taskid: 4257cf78-8345-45e2-a7b0-9092e0ae0dce
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 443,
+          "y": 5279
+        }
+      }
+  "135":
+    continueonerrortype: ""
+    id: "135"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "139"
+      - "146"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a26a2024-ca11-4089-84ce-891a0b42babc
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add to Block List and Delete registry value
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: a26a2024-ca11-4089-84ce-891a0b42babc
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 866,
+          "y": 5725
+        }
+      }
+  "136":
+    continueonerrortype: ""
+    id: "136"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "118"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: RegistryValueToDelete
+      value:
+        complex:
+          accessor: action_registry_key_name
+          root: Core.OriginalAlert.event
+          transformers:
+          - args:
+              limit: {}
+              replaceWith:
+                value:
+                  simple: Registry::HKEY_USERS
+              toReplace:
+                value:
+                  simple: HKEY_USERS
+            operator: replace
+          - args:
+              limit: {}
+              replaceWith:
+                value:
+                  simple: Registry::HKEY_USERS
+              toReplace:
+                value:
+                  simple: HKEY_CURRENT_USER
+            operator: replace
+          - args:
+              limit: {}
+              replaceWith:
+                value:
+                  simple: Registry::HKEY_LOCAL_MACHINE
+              toReplace:
+                value:
+                  simple: HKEY_LOCAL_MACHINE
+            operator: replace
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: a445f63f-3d4e-4773-8f87-57395c20a201
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set Registry key value to delete
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: a445f63f-3d4e-4773-8f87-57395c20a201
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 25,
+          "y": 6035
+        }
+      }
+  "137":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: standard_output
+                root: Core.ScriptResult.results.executed_command
+                transformers:
+                - operator: Stringify
+          operator: containsGeneral
+          right:
+            value:
+              simple: does not exist
+      label: "yes"
+    continueonerrortype: ""
+    id: "137"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "121"
+      "yes":
+      - "138"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Checks if the registry key was not found. \nIf found, close the
+        alert; if not, escalate to manual deletion by an analyst."
+      id: 6a4b1f3a-eb74-4c27-9cdb-aeac617471b5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Registry key was not found?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 6a4b1f3a-eb74-4c27-9cdb-aeac617471b5
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 25,
+          "y": 6326
+        }
+      }
+  "138":
+    continueonerrortype: ""
+    id: "138"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "121"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "### Action Required:\n**Dear Analyst,** \n\nPlease manually delete
+        the following registry key entry:\n\nRegistry Key Path:\n- ${Core.OriginalAlert.event.action_registry_key_name}\n\nRegistry
+        Key Value Name:\n- ${Core.OriginalAlert.event.action_registry_value_name}\"\n\n\n"
+      id: 548a1df0-ff02-412f-8c34-ef1869a0bfd6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual Registry Key Deletion
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: 548a1df0-ff02-412f-8c34-ef1869a0bfd6
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -280,
+          "y": 6540
+        }
+      }
+  "139":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.action_registry_key_name
+          operator: endWith
+          right:
+            value:
+              simple: Userinit
+      label: "yes"
+    continueonerrortype: ""
+    id: "139"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "136"
+      "yes":
+      - "138"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines whether a sensitive registry key value needs to be deleted.
+        If so, manual deletion by an analyst is required.
+      id: 8961b57c-4778-4906-9e7b-39788f701032
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Sensitive registry key deletion requiring manual action?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 8961b57c-4778-4906-9e7b-39788f701032
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 25,
+          "y": 5887
+        }
+      }
+  "141":
+    continueonerrortype: ""
+    id: "141"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "142"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      File:
+        complex:
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: File.Info
+              operator: inList
+              right:
+                value:
+                  simple: vbs,vbe,vb,js,jse,ps1,bat,jar,cpl,wsf,wsh,asp,cmd,hta,pyc,rb,py,sh
+          root: File
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        This playbook uploads, detonates, and analyzes files for Wildfire sandbox.
+      id: 6450df29-ef39-4fb8-816f-47b1b70f800d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Wildfire Sandbox - Detonate and Analyze File
+      playbookId: Wildfire Detonate and Analyze File
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 6450df29-ef39-4fb8-816f-47b1b70f800d
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1574,
+          "y": 2973
+        }
+      }
+  "142":
+    continueonerrortype: ""
+    id: "142"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "143"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      hash:
+        simple: ${ScriptSHA256}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Returns a verdict for a hash.
+      id: e1b30cb3-e1fe-4ad0-8faa-40d2f52fec85
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Wildfire get verdict
+      playbooktaskmissingcomponent: null
+      script: '|||wildfire-get-verdict'
+      type: regular
+      version: -1
+    taskid: e1b30cb3-e1fe-4ad0-8faa-40d2f52fec85
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1574,
+          "y": 3119
+        }
+      }
+  "143":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: WildFire.Verdicts.VerdictDescription
+          operator: isEqualString
+          right:
+            value:
+              simple: malware
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: WildFire.Verdicts.VerdictDescription
+          operator: isEqualString
+          right:
+            value:
+              simple: C2
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: WildFire.Verdicts.VerdictDescription
+          operator: isEqualString
+          right:
+            value:
+              simple: phishing
+      label: Malicious
+    continueonerrortype: ""
+    id: "143"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "113"
+      Malicious:
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the WildFire verdict is malicious for the script.
+      id: 20233f1f-4489-4457-a140-b470e4ec1554
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is the WildFire verdict malicious for the script?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 20233f1f-4489-4457-a140-b470e4ec1554
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1341,
+          "y": 3265
+        }
+      }
+  "144":
+    continueonerrortype: ""
+    id: "144"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "145"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      hash:
+        simple: ${ScriptSHA256}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Returns a verdict for a hash.
+      id: b4fcf3b2-81ca-4068-8e9a-396b2c3336f4
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Wildfire get verdict
+      playbooktaskmissingcomponent: null
+      script: '|||wildfire-get-verdict'
+      type: regular
+      version: -1
+    taskid: b4fcf3b2-81ca-4068-8e9a-396b2c3336f4
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1341,
+          "y": 2668
+        }
+      }
+  "145":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: WildFire.Verdicts.VerdictDescription
+          operator: notContainsString
+          right:
+            value:
+              simple: unknown
+      label: "yes"
+    continueonerrortype: ""
+    id: "145"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "141"
+      "yes":
+      - "143"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the hash is known by WildFire Sandbox.
+      id: 03646e6b-52af-40ae-a427-5375666c4528
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is the hash known by WildFire Sandbox?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 03646e6b-52af-40ae-a427-5375666c4528
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1341,
+          "y": 2813
+        }
+      }
+  "146":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: ExtractedIndicators.File
+          operator: isNotEmpty
+        - left:
+            iscontext: true
+            value:
+              simple: ScriptSHA256
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "146"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "121"
+      "yes":
+      - "130"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if there a script SHA-256 that needs to be blocked.
+      id: 1f7a70b7-96b7-4c25-a2a1-b75560ab2438
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is there a script SHA-256 that needs to be blocked?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 1f7a70b7-96b7-4c25-a2a1-b75560ab2438
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 443,
+          "y": 5887
+        }
+      }
+  "147":
+    continueonerrortype: ""
+    id: "147"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c21e2c03-4979-4614-9c05-852671f021fe
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: c21e2c03-4979-4614-9c05-852671f021fe
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1090,
+          "y": 6990
+        }
+      }
+  "148":
+    continueonerrortype: ""
+    id: "148"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 3e10c33d-b270-49f0-b249-18d5034548b5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 3e10c33d-b270-49f0-b249-18d5034548b5
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1341,
+          "y": 4094
+        }
+      }
+  "149":
+    continueonerrortype: ""
+    id: "149"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      endpoint_id:
+        simple: ${alert.agentid}
+      file_hash:
+        complex:
+          accessor: cgoSha256
+          root: MaliciousCGOProcess
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: MaliciousOSActorProcess.actorSha256
+            operator: append
+          - args:
+              empty_values: {}
+              remove_keys:
+                value:
+                  simple: "true"
+            operator: RemoveEmpty
+          - operator: uniq
+      file_path:
+        complex:
+          accessor: cgoPath
+          root: MaliciousCGOProcess
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: MaliciousOSActorProcess.actorPath
+            operator: append
+          - args:
+              empty_values: {}
+              remove_keys:
+                value:
+                  simple: "true"
+            operator: RemoveEmpty
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This script executes the 'quarantine-file' command on a specified
+        file via the appropriate agent. This script is used to isolate files identified
+        as suspicious.
+      id: cc199625-928a-47e9-80d0-5c337d256b51
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Quarantine File
+      playbooktaskmissingcomponent: null
+      script: quarantine-file
+      type: regular
+      version: -1
+    taskid: cc199625-928a-47e9-80d0-5c337d256b51
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -201,
+          "y": 4471
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "109_113_#default#": 0.33,
+      "109_144_Suspicious": 0.5,
+      "109_3_Malicious": 0.14,
+      "110_107_#default#": 0.45,
+      "110_3_Malicious": 0.28,
+      "112_128_yes": 0.47,
+      "113_114_yes": 0.59,
+      "118_138_#error#": 0.34,
+      "123_94_yes": 0.39,
+      "131_101_yes": 0.4,
+      "131_79_#default#": 0.23,
+      "137_121_#default#": 0.1,
+      "137_138_yes": 0.29,
+      "139_136_#default#": 0.37,
+      "139_138_yes": 0.2,
+      "143_113_#default#": 0.45,
+      "143_3_Malicious": 0.45,
+      "145_141_#default#": 0.78,
+      "146_130_yes": 0.53,
+      "57_115_False Positive": 0.65,
+      "57_3_True Positive": 0.24,
+      "81_82_yes": 0.43,
+      "81_86_#default#": 0.55,
+      "84_85_yes": 0.38,
+      "84_86_#default#": 0.51,
+      "8_3_yes": 0.1,
+      "8_50_#default#": 0.4,
+      "91_121_No Action": 0.64,
+      "91_124_Delete registry value": 0.72,
+      "91_135_Add to Block List \u0026 Delete registry value": 0.9,
+      "98_138_#error#": 0.15
+    },
+    "paper": {
+      "dimensions": {
+        "height": 7294,
+        "width": 2761,
+        "x": -319,
+        "y": -244
+      }
+    }
+  }
