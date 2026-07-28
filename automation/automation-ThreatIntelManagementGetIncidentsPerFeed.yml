@@ -1,0 +1,47 @@
+comment: "Total number of incidents per OOTB feed.\n\nThis automation runs using the
+  default Limited User role, unless you explicitly change the permissions.\nFor more
+  information, see the section about permissions here:\n- For Cortex XSOAR 6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+  \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+  For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+commonfields:
+  id: ThreatIntelManagementGetIncidentsPerFeed
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.5.0
+    isoverridable: false
+    itemVersion: 1.1.23
+    packID: ThreatIntelligenceManagement
+    packName: Threat Intelligence Management
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+dockerimage: demisto/python3:3.12.8.3296088
+engineinfo: {}
+mainengineinfo: {}
+name: ThreatIntelManagementGetIncidentsPerFeed
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  register_module_line('ThreatIntelManagementGetIncidentsPerFeed', 'start', __line__())
+
+  return_results(demisto.executeCommand('ThreatIntelManagementGetAlertsPerFeed', demisto.args()))
+
+  register_module_line('ThreatIntelManagementGetIncidentsPerFeed', 'end', __line__())
+scripttarget: 0
+signature: fB0RQrPv40yp2Ush2gohfFNrOl8MQTMQII22w+xBOMnfaMhE0A8KrB9bShVDaMpYNOIgw0Qwv4cRKw4VIBL62KbXnzlFbUjIY3Q5ZTO5b2bJyHmfEx+TXoMx0TYC32mEVUbe9v7Wwc2JCIPOg6eSLLIc8R3lM6ZEKuwufn745cuINQpJdcyYAuH7+nzoQEhRPRoAjTCXgRc8EU/Zj3GNivNN5kQoqiJi6YXcX/mnj8SYlXambwMaTFj/l1KskFs1wPoU++xaeBk8RBFmTMZNHr2wfws/QggF5JetWNH9DR8PB++lp8dxDd8GNv3nPG5o9tq6C0mx+pyZ3beJ7z4DQQ==
+subtype: python3
+system: true
+tags:
+- Threat Intel Management
+type: python
