@@ -1,0 +1,64 @@
+args:
+- description: The string to search in, e.g., "string1"
+  name: left
+  supportedModules: []
+- description: The array of substrings to search in the string, e.g., ["string1","string2"]
+  name: right
+  supportedModules: []
+comment: |
+  Checks whether a substring or an array of substrings is within a string array(each item will be checked). Supports single strings as well. For example, for substrings ['a','b','c'] in a string 'a' the script will return true.
+commonfields:
+  id: StringContainsArray
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.22
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: StringContainsArray
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.4.22
+  var str = args.left;
+  var substring = args.right;
+
+  if(!str || !substring){
+      return false;
+  }
+
+  if (Array.isArray(substring)) {
+      var arr = substring;
+      for (var i = 0; i < arr.length; ++i) {
+          if (arr[i] && str.indexOf(arr[i]) > -1) {
+                  return true;
+          }
+      }
+  } else {
+      if (str.indexOf(substring) > -1) {
+          return true;
+      }
+  }
+
+  return false;
+scripttarget: 0
+signature: TNdhedQFNlIk+H9AgGghDgxLg7EqnOeaHW13muMXwUN7hPLL2Z0hPnEQ1nXJ+yQ/EItGHAR6Nh9sRRBJvXfWluE8JlmegYu+wb+tDAJb2472mBgkbO1chcO4SaMzCEJ3mu8Pi+oYNCNhLGknsY5MOAlZVQz30EGgq7p3qx70tPKtM5YZQFABci1GRw2ccLIk0wYoTgjKAFyIW9EOGphicutyf6iXSjDJWXLBHGHX5rQORzVJaWQlNsOPJXK8qaCeGW7KpB0T7M2KxQG/V7J0C6Has/pgS50bsHMNBppY5Q3B/gqFdbZCqi/BUKBCM/3NcR/o55Due9U6oUzvg96MUg==
+system: true
+tags:
+- filter
+- string
+type: javascript
