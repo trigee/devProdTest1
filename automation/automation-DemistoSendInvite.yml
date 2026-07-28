@@ -1,0 +1,86 @@
+args:
+- default: true
+  description: Email of user being invited.
+  name: email
+  required: true
+  supportedModules: []
+- description: Roles of invited user.
+  name: roles
+  required: true
+  supportedModules: []
+comment: Deprecated. No available replacement.
+commonfields:
+  id: DemistoSendInvite
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.5.0
+    packID: DemistoRESTAPI
+    packName: Cortex REST API
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dependson:
+  must:
+  - core-api-post
+  - core-api-get
+deprecated: true
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: DemistoSendInvite
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.5.0
+  var res = executeCommand('core-api-get', {uri: '/roles'});
+  if (isError(res[0])) {
+      throw res[0].Contents;
+  }
+
+  var roles = res[0].Contents.response;
+  var roleIDs = [];
+  var roleNames = args.roles.split(',');
+
+  roleNames.forEach(function(roleName) {
+      var roleID = dq({roles:roles},'roles(val.name=="'+roleName+'").id');
+      if (!roleID) {
+          throw 'Cannot find role ' + roleName;
+      }
+      roleIDs.push(roleID[0]);
+  });
+
+  body = {
+      email: args.email,
+      roles: roleIDs
+  };
+
+  res = executeCommand('core-api-post', {uri: '/invite', body: body});
+  if (isError(res[0])) {
+      throw res[0].Contents;
+  }
+
+  var response = res[0].Contents.response;
+  var md = tableToMarkdown('Demisto invite user', response);
+  var ec = {email: response.email, link: response.url};
+
+  return {
+      ContentsFormat: formats.json,
+      Type: entryTypes.note,
+      Contents: response,
+      HumanReadable: md
+  };
+scripttarget: 0
+signature: 08t68YgswGMMsHPBzYLK/P0mTf9Q/dWwKmTVFt+/4hV4CQjpLS6DbvQzulVxxH5J2znS56KiZMn6KAXW1HeVlaOfhOYyWJBSHXkIX/R1HS1Z9+5W3+w1/T1s90oNOTMOhDRTe6dAz0pDhlhuZWQwATKocBJVsvdUT2gFNZ91wTnpPhIaarFfcSQJlENLDkdUGQvEjKOQsaQdgWaWnUF6KuQdA9xRKWBMmi8pp5b3J6X5yk7WEETsddt8nR09n4AldqAVDm2KvXqzf/39G19NeJRiMOkzGZUim1W5Aj0fL9wzGRIu32bDLanCIvbpLWTdIET3pAJ65DlYTZ7TzqgluQ==
+system: true
+tags:
+- DemistoAPI
+type: javascript
