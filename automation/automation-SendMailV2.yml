@@ -1,0 +1,90 @@
+args:
+- description: Comma-separated list of email addresses to send the email to.
+  isArray: true
+  name: to
+  required: true
+  supportedModules: []
+- description: The subject of the email.
+  name: subject
+  required: true
+  supportedModules: []
+- description: |-
+    The email body supports HTML and Markdown input.
+    HTML is the preferred format for reliable rendering across email clients.
+  name: body
+  required: true
+  supportedModules: []
+- description: Comma-separated list of CC email addresses.
+  isArray: true
+  name: cc
+  supportedModules: []
+- description: Comma-separated list of BCC email addresses.
+  isArray: true
+  name: bcc
+  supportedModules: []
+- description: Email address for replies.
+  name: replyTo
+  supportedModules: []
+- description: Comma-separated list of War Room entry IDs to attach to the email.
+  isArray: true
+  name: attachIDs
+  supportedModules: []
+comment: Script that dynamically calls the SendMail managed script to avoid dependency
+  conflicts between Base pack and managed content packs.
+commonfields:
+  id: SendMailV2
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.14.0
+    isoverridable: false
+    itemVersion: 1.42.2
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.7444307
+engineinfo: {}
+internal: true
+mainengineinfo: {}
+name: SendMailV2
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('SendMailV2', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.42.2'
+  demisto.debug('pack id = Base, pack version = 1.42.2')
+
+
+
+
+  def main():
+      """Main entry point for the script."""
+      args = demisto.args()
+      command_name = "SendMail"  # Variable assignment - avoids hardcoded dependency
+      results = execute_command(command_name, args, extract_contents=False)
+      return_results(results)
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('SendMailV2', 'end', __line__())
+scripttarget: 0
+signature: CU+RD8qPPehZE+WG25NFV4xso4Ng8uNC22Lgz4JLnOh2G4hfYzjIdNdiPQbq3QDXLRhZg709MLF6D7NLLXHJjIpcfc4Yqt1Ilidjmel67wZCzOANH9GD3gKi1fAq6xXxIpU7t/1mWywAyZ8j7T5Dv/xyKiOyvQAqJGvMOGAxaonW+zWoXnnbUhc2wWKcLVOhzb778/bl1+ZL5AnZb03rQFW2WhzmMW/HEyftN77oEij/uJb9S+29dhPt6Rd7u1DGJcmgx32HwR47gFL6/TjdUOxMyXuGVnaFl7X4i/k4Y3XSQnH2yzUxvsbfRjsXRJfYPrRqu7u0RpmhvC8eZglxwA==
+source: agentix
+subtype: python3
+system: true
+tags:
+- basescript
+type: python
