@@ -1,0 +1,58 @@
+args:
+- description: Incident ID of the first incident.
+  name: incident_id_1
+  required: true
+  supportedModules: []
+- description: Incident ID of the second incident.
+  name: incident_id_2
+  required: true
+  supportedModules: []
+comment: "Compares the labels of two incidents. Returns the labels that are unique
+  to each incident.\n\nThis automation runs using the default Limited User role, unless
+  you explicitly change the permissions.\nFor more information, see the section about
+  permissions here:\n- For Cortex XSOAR 6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+  \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+  For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+commonfields:
+  id: CompareIncidentsLabels
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+dockerimage: demisto/python3:3.12.13.8428455
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: CompareIncidentsLabels
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  register_module_line('CompareIncidentsLabels', 'start', __line__())
+
+  return_results(demisto.executeCommand('CompareAlertsLabels', demisto.args()))
+
+  register_module_line('CompareIncidentsLabels', 'end', __line__())
+scripttarget: 0
+signature: HihKh7OxylyDggrMDv2KunRDp3kkGfXjLxyd309qV85wEoWVbAm3g1SLwpIZOjyLUHxof0ICnjjZqJXSVuEKlcY+02RafBX5uAzQoeBTZeiFayNi4iexCXgwPGMFjsvr3rppTiCPvZYjYdqi1+p2GHTK1PLdTL/ngW8sulRrJbl5Mlg9vNxLaJCXoDIuQspmejzVVufzYDr2xYmu+B/VMmTPDqYtjE8S9fiNniARZN7yLga8fBdTNPhs7snJ3Yc5/QT/cQqTBuQKL2uNeqjNqValBQBiOg/BNbsA/IKbDs/Ne+5LOdA3JEKYhSd6tBy0PIjegkyfC3tU7nV9PAjLYw==
+subtype: python3
+system: true
+tags:
+- incidents
+type: python
