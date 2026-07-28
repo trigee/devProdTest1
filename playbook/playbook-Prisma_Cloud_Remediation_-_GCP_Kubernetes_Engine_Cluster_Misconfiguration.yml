@@ -1,0 +1,1174 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook remediates the following Prisma Cloud GCP Kubernetes Engine Cluster alerts.
+
+  Prisma Cloud policies remediated:
+
+  * GCP Kubernetes Engine Clusters Basic Authentication is set to Enabled
+  * GCP Kubernetes Engine Clusters have HTTP load balancing disabled
+  * GCP Kubernetes Engine Clusters have Legacy Authorization enabled
+  * GCP Kubernetes Engine Clusters have Master authorized networks disabled
+  * GCP Kubernetes Engine Clusters have Network policy disabled
+  * GCP Kubernetes Engine Clusters have Stackdriver Logging disabled
+  * GCP Kubernetes Engine Clusters have Stackdriver Monitoring disabled
+  * GCP Kubernetes Engine Clusters have binary authorization disabled
+  * GCP Kubernetes Engine Clusters web UI/Dashboard is set to Enabled
+  * GCP Kubernetes cluster intra-node visibility disabled
+id: Prisma Cloud Remediation - GCP Kubernetes Engine Cluster Misconfiguration
+inputs:
+- description: Prisma Cloud policy Id.
+  key: policyId
+  playbookInputQuery: null
+  required: true
+  value: {}
+name: Prisma Cloud Remediation - GCP Kubernetes Engine Cluster Misconfiguration
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "27"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 61bee172-14d4-4a48-815c-913b49bef800
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 61bee172-14d4-4a48-815c-913b49bef800
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": -430
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1abd9220-e39e-4206-8aa3-dba2695c7f4e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 1abd9220-e39e-4206-8aa3-dba2695c7f4e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 1180
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      cluster:
+        complex:
+          accessor: resource
+          root: alert.labels
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: name
+            operator: getField
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: GoogleKubernetesEngine
+      description: Gets the details of a specific cluster.
+      id: 4b994469-67b1-4bcc-875b-a1b7922b49a4
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get cluster details
+      playbooktaskmissingcomponent: null
+      script: '|||gcloud-clusters-describe'
+      type: regular
+      version: -1
+    taskid: 4b994469-67b1-4bcc-875b-a1b7922b49a4
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": -120
+        }
+      }
+  "5":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 6e125379-081e-4b06-a7ba-f04da2f0901a
+      label: basicAuth
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: f57baa2a-6039-4a17-94e8-0be723bcdc75
+      label: legacyAuth
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: e1b70bb4-bb77-4326-93d5-5dd9c5170d3f
+      label: networksAuth
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 6ddbfdfe-3936-43d0-8157-97a7899beae6
+      label: networkPolicy
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 53793c32-dd41-430f-bbea-2f002ddafe42
+      label: logging
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: ca4b4654-d36a-4b17-a055-9c5063fa2f41
+      label: monitoring
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: fe81b03a-c602-4b16-8ae9-973724c1adae
+      label: dashboard
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: a3688f2e-eb5b-4b8d-b26f-90d40f08fd84
+      label: httpLB
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 50d5ec3b-1710-4ff7-bb09-061c30deef96
+      label: binaryAuth
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: bee0893d-85fb-403f-9ba7-a5269a46d382
+      label: intraNode
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "28"
+      basicAuth:
+      - "10"
+      binaryAuth:
+      - "15"
+      dashboard:
+      - "9"
+      httpLB:
+      - "14"
+      intraNode:
+      - "16"
+      legacyAuth:
+      - "12"
+      logging:
+      - "6"
+      monitoring:
+      - "7"
+      networkPolicy:
+      - "13"
+      networksAuth:
+      - "11"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        Execute the appropriate remediation sub-playbook based on the Prisma Cloud policy ID.
+      id: cb6588c8-b32a-463c-81f1-ec3a0fabc99b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Execute remediation
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: cb6588c8-b32a-463c-81f1-ec3a0fabc99b
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 80
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "21"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 3892c9dc-ecb3-4b6f-8709-630d76f010fa
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Stackdriver Logging Disabled
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 3892c9dc-ecb3-4b6f-8709-630d76f010fa
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 930,
+          "y": 830
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "22"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d39e03e8-460a-4d01-85fc-80002a0b4a23
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Stackdriver Monitoring Disabled
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: d39e03e8-460a-4d01-85fc-80002a0b4a23
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -610,
+          "y": 360
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "24"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 797e286f-20bd-4a2c-88b2-7d0aca20810c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: UI/Dashboard is Enabled
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 797e286f-20bd-4a2c-88b2-7d0aca20810c
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -390,
+          "y": 475
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "17"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 86ed4bf1-bdf4-45f7-8fc3-09841cf386aa
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Basic Auth Enabled
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 86ed4bf1-bdf4-45f7-8fc3-09841cf386aa
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1800,
+          "y": 360
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "19"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 10dc8bf3-4545-4557-8dbd-e49de993792e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Auth Networks Disabled
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 10dc8bf3-4545-4557-8dbd-e49de993792e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1360,
+          "y": 590
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "18"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 44c80488-d44f-4daf-86dd-1e6ce535e6bd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Legacy Auth Enabled
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 44c80488-d44f-4daf-86dd-1e6ce535e6bd
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1580,
+          "y": 460
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 29c5f818-5f38-4abd-85a7-b41d4778bf24
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Network Policy Disabled
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 29c5f818-5f38-4abd-85a7-b41d4778bf24
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1170,
+          "y": 720
+        }
+      }
+  "14":
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "23"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 7958ee0c-3fa8-483a-8df4-93abbfda7f60
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: HTTP Load Balacing Disabled
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 7958ee0c-3fa8-483a-8df4-93abbfda7f60
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -160,
+          "y": 595
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "25"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: bf1e3d69-305f-4176-8a0f-5565ed81cf2f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Binary Auth Disabled
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: bf1e3d69-305f-4176-8a0f-5565ed81cf2f
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 60,
+          "y": 720
+        }
+      }
+  "16":
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "26"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 14892cdb-120c-4603-8100-7ebd074cd6e7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Intra-node Visibility Disabled
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 14892cdb-120c-4603-8100-7ebd074cd6e7
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 310,
+          "y": 830
+        }
+      }
+  "17":
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      basic_auth:
+        simple: disable
+      cluster:
+        complex:
+          accessor: Name
+          root: GKE.Cluster
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: GoogleKubernetesEngine
+      description: Enable basic (username/password) auth for the cluster. Enable will
+        create user admin with generated password.
+      id: 245adf70-f841-4cfc-88da-185631bce956
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Disable basic auth
+      playbooktaskmissingcomponent: null
+      script: '|||gcloud-clusters-set-muster-auth'
+      type: regular
+      version: -1
+    taskid: 245adf70-f841-4cfc-88da-185631bce956
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2110,
+          "y": 510
+        }
+      }
+  "18":
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      cluster:
+        complex:
+          accessor: Name
+          root: GKE.Cluster
+      enable:
+        simple: "false"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: GoogleKubernetesEngine
+      description: Configuration for the legacy Attribute Based Access Control authorization
+        mode.
+      id: 6e0531dd-e652-4380-8d51-cd2b9eaa5d94
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Disable legacy auth
+      playbooktaskmissingcomponent: null
+      script: '|||gcloud-clusters-set-legacy-auth'
+      type: regular
+      version: -1
+    taskid: 6e0531dd-e652-4380-8d51-cd2b9eaa5d94
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1800,
+          "y": 635
+        }
+      }
+  "19":
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      cluster:
+        complex:
+          accessor: Name
+          root: GKE.Cluster
+      enable:
+        simple: "true"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: GoogleKubernetesEngine
+      description: |-
+        Configuration options for the master authorized networks feature.
+        Enabled master authorized networks will disallow all external traffic to access Kubernetes master through HTTPS except traffic from the given CIDR blocks, Google Compute Engine Public IPs and Google Prod IPs.
+      id: 32ac86fd-c500-462b-809c-3abe9d1dc7eb
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Enable networks auth
+      playbooktaskmissingcomponent: null
+      script: '|||gcloud-clusters-set-master-authorized-network'
+      type: regular
+      version: -1
+    taskid: 32ac86fd-c500-462b-809c-3abe9d1dc7eb
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1580,
+          "y": 760
+        }
+      }
+  "20":
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      cluster:
+        complex:
+          accessor: Name
+          root: GKE.Cluster
+      network_policy:
+        simple: enable
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Sets the addons for a specific cluster.
+      id: 6b17e87f-26c4-412f-8965-43c89a33e75c
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Enable network policy
+      playbooktaskmissingcomponent: null
+      script: '|||gcloud-clusters-set-addons'
+      type: regular
+      version: -1
+    taskid: 6b17e87f-26c4-412f-8965-43c89a33e75c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1360,
+          "y": 885
+        }
+      }
+  "21":
+    continueonerrortype: ""
+    id: "21"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      cluster:
+        complex:
+          accessor: Name
+          root: GKE.Cluster
+      enable:
+        simple: "true"
+      zone:
+        complex:
+          accessor: Location
+          root: GKE.Cluster
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: GoogleKubernetesEngine
+      description: Enable or Disable k8s stackdriver. Important - To use this functinality
+        the user should enable manually logging to "monitoring.googleapis.com/kubernetes"
+        manulally via the GCP console.
+      id: 732041a6-4c99-440f-8851-8138082365f1
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Enable logging
+      playbooktaskmissingcomponent: null
+      script: '|||gcloud-clusters-set-k8s-stackdriver'
+      type: regular
+      version: -1
+    taskid: 732041a6-4c99-440f-8851-8138082365f1
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1040,
+          "y": 1010
+        }
+      }
+  "22":
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      cluster:
+        complex:
+          accessor: Name
+          root: GKE.Cluster
+      enable:
+        simple: "true"
+      zone:
+        complex:
+          accessor: Location
+          root: GKE.Cluster
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: GoogleKubernetesEngine
+      description: Enable or Disable k8s stackdriver. Important - To use this functinality
+        the user should enable manually logging to "monitoring.googleapis.com/kubernetes"
+        manulally via the GCP console.
+      id: 03b16ac7-cf90-4e63-8e39-6ee27115ab6a
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Enable monitoring
+      playbooktaskmissingcomponent: null
+      script: '|||gcloud-clusters-set-k8s-stackdriver'
+      type: regular
+      version: -1
+    taskid: 03b16ac7-cf90-4e63-8e39-6ee27115ab6a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -920,
+          "y": 510
+        }
+      }
+  "23":
+    continueonerrortype: ""
+    id: "23"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      cluster:
+        complex:
+          accessor: Name
+          root: GKE.Cluster
+      http_load_balancing:
+        simple: enable
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: GoogleKubernetesEngine
+      description: Sets the addons for a specific cluster.
+      id: 93908a7a-ecdc-4ec9-8f95-024368b25523
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Enable HTTP load balancing
+      playbooktaskmissingcomponent: null
+      script: '|||gcloud-clusters-set-addons'
+      type: regular
+      version: -1
+    taskid: 93908a7a-ecdc-4ec9-8f95-024368b25523
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -390,
+          "y": 770
+        }
+      }
+  "24":
+    continueonerrortype: ""
+    id: "24"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      cluster:
+        complex:
+          accessor: Name
+          root: GKE.Cluster
+      kubernetes_dashboard:
+        simple: disable
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: GoogleKubernetesEngine
+      description: Sets the addons for a specific cluster.
+      id: 16e0934b-2c10-4118-8850-665a2e9b929b
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Disable UI/Dashboard
+      playbooktaskmissingcomponent: null
+      script: '|||gcloud-clusters-set-addons'
+      type: regular
+      version: -1
+    taskid: 16e0934b-2c10-4118-8850-665a2e9b929b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -600,
+          "y": 620
+        }
+      }
+  "25":
+    continueonerrortype: ""
+    id: "25"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      cluster:
+        complex:
+          accessor: Name
+          root: GKE.Cluster
+      enable:
+        simple: "true"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: GoogleKubernetesEngine
+      description: Enable or Disable binary auth.
+      id: d67c07bd-d2f6-4d11-823d-9c232e30727d
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Enable binary auth
+      playbooktaskmissingcomponent: null
+      script: '|||gcloud-clusters-set-binary-auth'
+      type: regular
+      version: -1
+    taskid: d67c07bd-d2f6-4d11-823d-9c232e30727d
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -70,
+          "y": 905
+        }
+      }
+  "26":
+    continueonerrortype: ""
+    id: "26"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      cluster:
+        complex:
+          accessor: Name
+          root: GKE.Cluster
+      enable:
+        simple: "true"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: GoogleKubernetesEngine
+      description: Enable or Disable for intra node visibility in cluster.
+      id: 8123d948-e03b-447b-8ec4-6bae03a73006
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Enable intra-node visibility
+      playbooktaskmissingcomponent: null
+      script: '|||gcloud-clusters-set-intra-node-visibility'
+      type: regular
+      version: -1
+    taskid: 8123d948-e03b-447b-8ec4-6bae03a73006
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 370,
+          "y": 980
+        }
+      }
+  "27":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: GoogleKubernetesEngine
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "27"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "28"
+      "yes":
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ea767dcf-270e-4f4e-8028-44d8c017b18d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Google Kubernetes Engine integration enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: ea767dcf-270e-4f4e-8028-44d8c017b18d
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1040,
+          "y": -290
+        }
+      }
+  "28":
+    continueonerrortype: ""
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Manually update Google Kubernetes Engine alert.
+      id: a40d66e3-1d1c-448e-8f89-eabd41bf9768
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual update Kubernetes Engine
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: a40d66e3-1d1c-448e-8f89-eabd41bf9768
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 540
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "27_28_#default#": 0.26,
+      "27_4_yes": 0.4,
+      "5_13_networkPolicy": 0.84,
+      "5_15_binaryAuth": 0.85,
+      "5_16_intraNode": 0.89,
+      "5_28_#default#": 0.33,
+      "5_6_logging": 0.9
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1675,
+        "width": 3410,
+        "x": -920,
+        "y": -430
+      }
+    }
+  }
