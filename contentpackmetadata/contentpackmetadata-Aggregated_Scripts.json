@@ -1,0 +1,303 @@
+{
+	"author": "Cortex",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Utilities"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"automation",
+		"agentixaction"
+	],
+	"contentItems": {
+		"agentixaction": [
+			{
+				"category": "",
+				"description": "Retrieves identity context from external identity providers, such as Active Directory and Okta, to enrich an account observed in alerts, events, or investigations.\n",
+				"fromversion": "8.12.0",
+				"id": "GetUserData",
+				"name": "EnrichUser",
+				"toversion": "",
+				"underlyingContentItemType": "script"
+			},
+			{
+				"category": "",
+				"description": "Retrieves detailed information about a specific endpoint by querying multiple integrated security tools\n(such as EDR, asset management, or vulnerability scanners).\nThe command consolidates the results into a single unified endpoint object and stores it in the context\nfor further analysis or automation.",
+				"fromversion": "8.12.0",
+				"id": "GetEndpointData",
+				"name": "EnrichEndpoint",
+				"toversion": "",
+				"underlyingContentItemType": "script"
+			}
+		],
+		"agentixagent": null,
+		"agentixknowledgecollection": null,
+		"agentixknowledgesource": null,
+		"agentixskill": null,
+		"automation": [
+			{
+				"description": "Enriches CVE indicators with reputation data from multiple integrations and outputs a consolidated CVEEnrichment object. This script exclusively supports indicators of type CVE and will automatically create the indicator in TIM if it is not already exists.",
+				"fromversion": "8.0.0",
+				"id": "cve-enrichment",
+				"name": "cve-enrichment",
+				"tags": [
+					"basescript"
+				]
+			},
+			{
+				"description": "This script gathers user data from multiple integrations and returns an Account entity with consolidated information to the context.",
+				"fromversion": "6.10.0",
+				"id": "get-user-data",
+				"name": "get-user-data",
+				"tags": []
+			},
+			{
+				"description": "Enriches File indicators with reputation data from multiple integrations and outputs a consolidated FileEnrichment object. This script exclusively supports indicators of type File and will automatically create the indicator in TIM if it is not already exists. Note: The script runs core-get-hash-analytics-prevalence on SHA256 values only.",
+				"fromversion": "8.0.0",
+				"id": "file-enrichment",
+				"name": "file-enrichment",
+				"tags": [
+					"basescript"
+				]
+			},
+			{
+				"description": "Enriches Domain indicators with reputation data from multiple integrations and outputs a consolidated DomainEnrichment object. This script exclusively supports indicators of type Domain and will automatically create the indicator in TIM if it is not already exists.",
+				"fromversion": "8.0.0",
+				"id": "domain-enrichment",
+				"name": "domain-enrichment",
+				"tags": [
+					"basescript"
+				]
+			},
+			{
+				"description": "This script expires users password for multiple services.",
+				"fromversion": "6.10.0",
+				"id": "expire-password",
+				"name": "expire-password",
+				"tags": []
+			},
+			{
+				"description": "Enriches URL indicators with reputation data from multiple integrations and outputs a consolidated URLEnrichment object. This script exclusively supports indicators of type URL and will automatically create the indicator in TIM if it is not already exists.",
+				"fromversion": "8.0.0",
+				"id": "url-enrichment",
+				"name": "url-enrichment",
+				"tags": [
+					"basescript"
+				]
+			},
+			{
+				"description": "This script disables users for multiple services.",
+				"fromversion": "6.10.0",
+				"id": "disable-user",
+				"name": "disable-user",
+				"tags": []
+			},
+			{
+				"description": "Enriches IP indicators with reputation data from multiple integrations and outputs a consolidated IPEnrichment object. This script exclusively supports indicators of type IPv4 (IPv6 is not supported) and will automatically create the indicator in TIM if it is not already exists. Note: If enabled, get-endpoint-data is executed only for internal IP addresses.",
+				"fromversion": "8.0.0",
+				"id": "ip-enrichment",
+				"name": "ip-enrichment",
+				"tags": [
+					"basescript"
+				]
+			},
+			{
+				"description": "The script blocks a list of IP addresses in supported integrations.",
+				"fromversion": "6.1.0",
+				"id": "block-external-ip",
+				"name": "block-external-ip",
+				"tags": []
+			},
+			{
+				"description": "This script executes the 'quarantine-file' command on a specified file via the appropriate agent. This script is used to isolate files identified as suspicious. Currently supported brands are \"Cortex XDR - IR\", \"Cortex Core - IR\", and \"Microsoft Defender Advanced Threat Protection\".",
+				"fromversion": "6.10.0",
+				"id": "quarantine-file",
+				"name": "quarantine-file",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "This script isolates endpoints using multiple integrations and returns a success or failure message.",
+				"fromversion": "6.10.0",
+				"id": "isolate-endpoint",
+				"name": "isolate-endpoint",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "This script clears user sessions across multiple integrations for a list of usernames.",
+				"fromversion": "6.10.0",
+				"id": "clear-user-session",
+				"name": "clear-user-session",
+				"tags": []
+			},
+			{
+				"description": "This script gathers endpoint data from multiple integrations and returns an endpoint entity with consolidated information to the context.",
+				"fromversion": "6.10.0",
+				"id": "get-endpoint-data",
+				"name": "get-endpoint-data",
+				"tags": []
+			},
+			{
+				"description": "Enriches indicators from a provided list or a block of free text. This script detects the indicator type and runs the correct underlying enrichment script. Currently supports: IP, URL, Domain, CVE, and File.",
+				"fromversion": "8.0.0",
+				"id": "indicator-enrichment",
+				"name": "indicator-enrichment",
+				"tags": [
+					"basescript",
+					"enrichment"
+				]
+			}
+		],
+		"casefield": null,
+		"classifier": null,
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": null,
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": null,
+		"layoutscontainer": null,
+		"list": null,
+		"playbook": null,
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"created": "2025-06-18T20:34:03Z",
+	"currentVersion": "1.3.47",
+	"defaultDataSource": {
+		"id": "",
+		"name": ""
+	},
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.42.1",
+			"name": "Base"
+		},
+		"Core": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": false,
+			"minVersion": "3.5.65",
+			"name": "Core"
+		},
+		"Palo_Alto_Networks_WildFire": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": false,
+			"minVersion": "2.1.82",
+			"name": "WildFire by Palo Alto Networks"
+		}
+	},
+	"deprecated": false,
+	"description": "A pack containing all aggregated scripts.",
+	"downloads": 0,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"firstCreated": "2025-06-18T20:34:03Z",
+	"fromServerVersion": "6.1.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldFree",
+		"generalFieldSupportIncluded",
+		"generalFieldSupportModule"
+	],
+	"hybrid": false,
+	"id": "AggregatedScripts",
+	"installMessage": "",
+	"integrations": [
+		{
+			"id": "Cortex Core - Platform",
+			"imagePath": "content/packs/Core/CortexCore-Platform_image.png",
+			"name": "Cortex Platform - Core"
+		},
+		{
+			"id": "Cortex Core - IOC",
+			"imagePath": "content/packs/Core/CortexCore-IOC_image.png",
+			"name": "Indicators detection"
+		},
+		{
+			"id": "Cortex Core - IR",
+			"imagePath": "content/packs/Core/CortexCore-IR_image.png",
+			"name": "Investigation \u0026 Response"
+		},
+		{
+			"id": "XQL Query Engine",
+			"imagePath": "content/packs/Core/XQLQueryEngine_image.png",
+			"name": "XQL Query Engine"
+		},
+		{
+			"id": "WildFire-Reports",
+			"imagePath": "content/packs/Palo_Alto_Networks_WildFire/WildFire-Reports_image.png",
+			"name": "Palo Alto Networks WildFire Reports"
+		},
+		{
+			"id": "WildFire-v2",
+			"imagePath": "content/packs/Palo_Alto_Networks_WildFire/WildFire-v2_image.png",
+			"name": "Palo Alto Networks WildFire v2"
+		}
+	],
+	"isOverridable": false,
+	"itemVersion": "1.3.47",
+	"keywords": [],
+	"legacy": true,
+	"modules": [],
+	"name": "Aggregated Scripts",
+	"packID": "AggregatedScripts",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"readme": "\n#### What does this pack do?\n\nThe Aggregated Scripts pack contains scripts that execute multiple commands, significantly streamlining playbook creation and execution.\n",
+	"searchRank": 0,
+	"serverMaxVersion": "",
+	"serverMinVersion": "6.1.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"supportedModules": [
+		"agentix",
+		"xsiam",
+		"edr",
+		"cloud_runtime_security",
+		"cloud_posture",
+		"cloud"
+	],
+	"tags": [
+		"Core"
+	],
+	"toServerVersion": "",
+	"updated": "2026-06-30T20:02:14Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "10610743",
+	"videos": []
+}
