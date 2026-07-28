@@ -1,0 +1,53 @@
+comment: This button will generate summary 'Case Report' template for a given Incident.
+commonfields:
+  id: GenerateSummaryReportButton
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.8428455
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: GenerateSummaryReportButton
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('GenerateSummaryReportButton', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+
+
+
+  # get incident id
+  incident_id = demisto.incidents()[0].get("id")
+
+  # generate the Case Report
+  demisto.results(
+      demisto.executeCommand("generateSummaryReport", {"incidentId": incident_id, "name": "Case Report", "type": "pdf"})
+  )
+
+  register_module_line('GenerateSummaryReportButton', 'end', __line__())
+scripttarget: 0
+signature: 3dtwMF0oFpuBSLHolj7/dLCz66QUxiblHmKZovb74VshP7wATc6bdMrm/z9twRROmVdUk9q1SlCyr9BvEwQnXRBPhuVzsSekQV5QGe+YEanLGwZFUgdiHYT5bP8t1QnlqF08+P2zgEYnLrDoawZlrXlzF385MVHP9waA/mg4I31y7F7tM0qTDGYSGBltlZNl1lUuNHtzfOPMUphRzjMKyE6VvoAQ9qO/0SsIVrfX19wQwsN5PsEMn5F7DPg4uAw1OG/l2OC5EZvzP2pXdC4lICgGvXthQ+s8CUJR4SIilat4aSnY/GKq4S7Pe36knQ3KSCmW3iW9Pzc40aADYUnb9Q==
+subtype: python3
+system: true
+tags:
+- incident-action-button
+type: python
