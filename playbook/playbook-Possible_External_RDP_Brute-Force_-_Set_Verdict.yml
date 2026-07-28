@@ -1,0 +1,838 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.8.0
+    isoverridable: false
+    itemVersion: 3.5.66
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - cloud
+    - cloud_posture
+    - cloud_runtime_security
+    - edr
+    - xsiam
+    toServerVersion: ""
+description: "This playbook creating an array called \"Suspicious Elements\", which
+  is used to count potential security threats. The following elements can be added
+  to the array:\n\n- \"IP Reputation\" - DBot Score is 2-3 \n- \"Source geolocation\"
+  - RDP Connection made from rare geo-location \n-  Related to campaign - IP address
+  is related to campaign, based on TIM module\n-  Hunting results - the hunt for indicators
+  related to the source IP and the related campaign returned results\n-  XDR Alert
+  search - XDR Alerts that related to the same username and endpoint, and to the MITRE
+  tactics that comes after \"Credential Access\", were found.\n- Risky User - one
+  or more risky users are involved in the alert, as identified by the Cortex Core
+  - IR integration's ITDR module.\n- Risky Host - one or more risky hosts are involved
+  in the alert, as identified by the Cortex Core - IR integration's ITDR module.\n\nThe
+  array will then be outputted and its size will be compared to a final threshold.
+  If the size is greater than or equal to the threshold, the investigation's final
+  verdict will be deemed a \"True Positive.\""
+id: Possible External RDP Brute-Force - Set Verdict
+inputs:
+- description: Number of XDR alerts that are related to the same user or endpoint.
+  key: RelatedAlerts
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Campaign related to the external IP.
+  key: RelatedCampaign
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Determine whether hunting results exist. The input value should be
+    true or false.
+  key: HuntResults
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: ' determine whether the RDP connection has made RDP Connection made
+    from rare geo-location. the input value should be true or false.'
+  key: UnusualGeoLocation
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The external IP reputation.
+  key: IpReputation
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Usernames of users that were found as risky by Cortex Core IR.
+  key: RiskyUser
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: id
+      filters:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.RiskyUser.risk_level
+          operator: isEqualString
+          right:
+            value:
+              simple: MED
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.RiskyUser.risk_level
+          operator: isEqualString
+          right:
+            value:
+              simple: HIGH
+      root: Core.RiskyUser
+- description: Hostnames that were found as risky by Cortex Core IR.
+  key: RiskyHost
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: id
+      filters:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.RiskyHost.risk_level
+          operator: isEqualString
+          right:
+            value:
+              simple: MED
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.RiskyHost.risk_level
+          operator: isEqualString
+          right:
+            value:
+              simple: HIGH
+      root: Core.RiskyHost
+name: Possible External RDP Brute-Force - Set Verdict
+outlinetasks: {}
+outputs:
+- contextPath: Suspicious_Elements
+  description: Array that contains all the suspicious elements.
+  type: unknown
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+      - "4"
+      - "1"
+      - "2"
+      - "10"
+      - "12"
+      - "13"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 446f9247-e57a-430f-8aeb-02d0e5f53cae
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 446f9247-e57a-430f-8aeb-02d0e5f53cae
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 50
+        }
+      }
+  "1":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.RelatedCampaign
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "8"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if a related campaign exists.
+      id: 56055fa9-a5d2-4c5a-8f16-fa9f84262480
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Related to specific campaign?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 56055fa9-a5d2-4c5a-8f16-fa9f84262480
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 30,
+          "y": 190
+        }
+      }
+  "2":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.HuntResults
+          operator: isEqualString
+          right:
+            value:
+              simple: "true"
+      label: "yes"
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "7"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if hunting results exist.
+      id: f92cdec9-e639-463f-8b27-90e97920209e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Has Hunting Results?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: f92cdec9-e639-463f-8b27-90e97920209e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 190
+        }
+      }
+  "3":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.RelatedAlerts
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "6"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if XDR related alerts exist.
+      id: d82ac18e-cec4-486a-8fca-9e877d3a1e37
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Has related alerts?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: d82ac18e-cec4-486a-8fca-9e877d3a1e37
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 880,
+          "y": 190
+        }
+      }
+  "4":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.UnusualGeoLocation
+          operator: isEqualString
+          right:
+            value:
+              simple: "false"
+      label: "yes"
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if the connection was made from an unusual country.
+      id: d3816b97-2a2f-4539-83ee-af6592faad20
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Connection from unusual country?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: d3816b97-2a2f-4539-83ee-af6592faad20
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1300,
+          "y": 190
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    fieldMapping:
+    - incidentfield: Source Geolocation
+      output:
+        simple: Connection from unusual country
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Suspicious_Elements
+      value:
+        simple: Unusual Country
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 5408731d-6b13-46de-8490-f196f1890360
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set unusual country
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 5408731d-6b13-46de-8490-f196f1890360
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1300,
+          "y": 350
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    fieldMapping:
+    - incidentfield: Alert Search Results
+      output:
+        complex:
+          root: inputs.RelatedAlerts
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Suspicious_Elements
+      value:
+        simple: Related Alerts
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: bc3eca1f-c99b-4630-884d-9e573739a061
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set related alerts
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: bc3eca1f-c99b-4630-884d-9e573739a061
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 880,
+          "y": 350
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    fieldMapping:
+    - incidentfield: Hunt Results Count
+      output:
+        simple: Has campaign hunt results
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Suspicious_Elements
+      value:
+        simple: Hunting Results
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 0e017a52-2083-4c77-8f32-542c271a1761
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set hunting results
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 0e017a52-2083-4c77-8f32-542c271a1761
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 350
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    fieldMapping:
+    - incidentfield: Part of Campaign
+      output:
+        complex:
+          root: inputs.RelatedCampaign
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Suspicious_Elements
+      value:
+        simple: Related Campaign
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 0cfadcf4-e302-4714-8cdf-c22fe1640354
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set campaign
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 0cfadcf4-e302-4714-8cdf-c22fe1640354
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 30,
+          "y": 350
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d18b4c9c-408b-4155-8a49-c07e400508b3
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: d18b4c9c-408b-4155-8a49-c07e400508b3
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 520
+        }
+      }
+  "10":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.IpReputation
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "2"
+      label: "yes"
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "11"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if the IP reputation is suspicious or higher.
+      id: 8e87df54-e1ee-4dcb-8911-0da0077e8b65
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: IP Reputation is suspicious?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 8e87df54-e1ee-4dcb-8911-0da0077e8b65
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -390,
+          "y": 190
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Suspicious_Elements
+      value:
+        simple: IP Reputation
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 2820bf44-fc60-4781-84ef-fe725a1b3628
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set IP Reputation
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 2820bf44-fc60-4781-84ef-fe725a1b3628
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -390,
+          "y": 350
+        }
+      }
+  "12":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.RiskyUser
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "14"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if a risky user is involved in the alert.
+      id: 16c9bbda-5247-47c2-81d5-2909757ab287
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Risky user involved?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 16c9bbda-5247-47c2-81d5-2909757ab287
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -800,
+          "y": 190
+        }
+      }
+  "13":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.RiskyHost
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "15"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if a risky user is involved in the alert.
+      id: 03fb3ebe-d5d6-4695-81d2-5ceab496655b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Risky host involved?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 03fb3ebe-d5d6-4695-81d2-5ceab496655b
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -1210,
+          "y": 190
+        }
+      }
+  "14":
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Suspicious_Elements
+      value:
+        simple: Risky User
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: f480c89c-1647-44ec-8e9e-d1af77bcb52e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add risky user to suspicious elements
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: f480c89c-1647-44ec-8e9e-d1af77bcb52e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -800,
+          "y": 350
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Suspicious_Elements
+      value:
+        simple: Risky Host
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 93f3be3f-29e0-499f-8cc3-ac8fb5e8fa06
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add risky host to suspicious elements
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 93f3be3f-29e0-499f-8cc3-ac8fb5e8fa06
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -1210,
+          "y": 350
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "10_9_#default#": 0.28,
+      "3_9_#default#": 0.19,
+      "4_9_#default#": 0.2
+    },
+    "paper": {
+      "dimensions": {
+        "height": 535,
+        "width": 2890,
+        "x": -1210,
+        "y": 50
+      }
+    }
+  }
