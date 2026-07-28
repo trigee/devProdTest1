@@ -1,0 +1,85 @@
+args:
+- description: Date value to check - Can be any time format. ex. "2020-01-01T00:00:00".
+  name: left
+  required: true
+  supportedModules: []
+- description: Relative time ex. "6 months ago".
+  name: right
+  required: true
+  supportedModules: []
+comment: Checks the given datetime has occured before the provided relative time.
+commonfields:
+  id: BeforeRelativeDate
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.22
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.11.4819260
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: BeforeRelativeDate
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('BeforeRelativeDate', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.22'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  import dateparser
+
+
+
+
+
+
+  def check_date(value: str, relative_date: str) -> bool:
+      settings = {"TO_TIMEZONE": "UTC", "RETURN_AS_TIMEZONE_AWARE": False}
+      v = dateparser.parse(value, settings=settings)  # type: ignore[arg-type]
+      da = dateparser.parse(relative_date, settings=settings)  # type: ignore[arg-type]
+      return v < da  # type: ignore
+
+
+  def main():
+      try:
+          args = demisto.args()
+          value = args.get("left", "")
+          relative_date = args.get("right", "")
+          if value == "" or relative_date == "":
+              raise ValueError("A required input is missing or malformed.")
+          result = check_date(value, relative_date)
+          human_readable = f'# BeforeRelativeDate\nThe date *{value}* {"*IS*" if result else "*IS NOT*"} before *{relative_date}*'
+
+          return_results(CommandResults(outputs_prefix="BeforeRelativeDate", readable_output=human_readable, outputs=result))
+      except Exception as e:
+          return_error(message="Error Occured", error=str(e))
+
+
+  if __name__ in ("__builtin__", "builtins", "__main__"):
+      main()
+
+  register_module_line('BeforeRelativeDate', 'end', __line__())
+scripttarget: 0
+signature: w4F1W1WR+/cxNcphSQ6ONLqW7LzZcptmOfc5bhf/wbpeR46xlwFlRcTQZl6LXpM40N74Ic59aeppjPD+zY/yi74HCUauTcR7tf9oMfbaHHqpe9LPPzg789YxSLHS0zUJU5ZmQjLe6mZZjS+s3jCCfiYBi3ezN8E1UGLdwxAFz0xTadxHe7x1hJuHcrAbWSH2oVYePT7qc55RyBcVOEXQesrMjV6p3XecWHqomn430ZT1qTpk+VbzV53d4oCOLyCp5LHzkw6HXJGBPVP1AYoZbJ91RmAHIoU7jzCJFNaFU3Oj+DkpFv6+4bR1LlWKHO6no9abN59RYrzYPTzvIBQNsg==
+subtype: python3
+system: true
+tags:
+- date
+- filter
+- Condition
+type: python
