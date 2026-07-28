@@ -1,0 +1,1055 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook remediates the following Prisma Cloud Azure Network security group alerts.
+
+  Prisma Cloud policies remediated:
+
+  - Azure Network Security Group (NSG) having Inbound rule overly permissive to allow all traffic from any source on any protocol
+  - Azure Network Security Group (NSG) having Inbound rule overly permissive to allow all traffic from any source on TCP protocol
+  - Azure Network Security Group (NSG) having Inbound rule overly permissive to allow all traffic from any source on UDP protocol
+  - Azure Network Security Group (NSG) allows SSH traffic from internet on port 22
+  - Azure Network Security Group (NSG) allows traffic from internet on port 3389
+  - Azure Network Security Group allows DNS (TCP Port 53)
+  - Azure Network Security Group allows FTP (TCP Port 21)
+  - Azure Network Security Group allows FTP-Data (TCP Port 20)
+  - Azure Network Security Group allows MSQL (TCP Port 4333)
+  - Azure Network Security Group allows MySQL (TCP Port 3306)
+  - Azure Network Security Group allows Windows RPC (TCP Port 135)
+  - Azure Network Security Group allows Windows SMB (TCP Port 445)
+  - Azure Network Security Group allows PostgreSQL (TCP Port 5432)
+  - Azure Network Security Group allows SMTP (TCP Port 25)
+  - Azure Network Security Group allows SqlServer (TCP Port 1433)
+  - Azure Network Security Group allows Telnet (TCP Port 23)
+  - Azure Network Security Group allows VNC Listener (TCP Port 5500)
+  - Azure Network Security Group allows all traffic on ICMP (Ping)
+  - Azure Network Security Group allows CIFS (UDP Port 445)
+  - Azure Network Security Group allows NetBIOS (UDP Port 137)
+  - Azure Network Security Group allows NetBIOS (UDP Port 138)
+  - Azure Network Security Group allows SQLServer (UDP Port 1434)
+  - Azure Network Security Group allows DNS (UDP Port 53)
+id: Prisma Cloud Remediation - Azure Network Security Group Misconfiguration
+inputs:
+- description: Prisma Cloud policy Id.
+  key: policyId
+  playbookInputQuery: null
+  required: true
+  value: {}
+- description: Port number.
+  key: portNumber
+  playbookInputQuery: null
+  required: false
+  value: {}
+name: Prisma Cloud Remediation - Azure Network Security Group Misconfiguration
+outlinetasks: {}
+outputs:
+- contextPath: incident.resourcename
+  description: Security group name.
+  type: string
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 61bee172-14d4-4a48-815c-913b49bef800
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 61bee172-14d4-4a48-815c-913b49bef800
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 0
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      security_group_name:
+        complex:
+          root: alert
+          transformers:
+          - args:
+              field:
+                value:
+                  simple: resourcename
+            operator: getField
+      security_rule_name:
+        simple: ${ruleName}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Azure Network Security Groups
+      description: Delete the offending security group rule.
+      id: 4404047d-d05c-4394-8bae-0d1f8b97c6fb
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Remove the offending security group rule
+      playbooktaskmissingcomponent: null
+      script: Azure Network Security Groups|||azure-nsg-security-rule-delete
+      type: regular
+      version: -1
+    taskid: 4404047d-d05c-4394-8bae-0d1f8b97c6fb
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -480,
+          "y": 1130
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1abd9220-e39e-4206-8aa3-dba2695c7f4e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 1abd9220-e39e-4206-8aa3-dba2695c7f4e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 1300
+        }
+      }
+  "5":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: a36a7170-d628-47fe-aab2-0e734702373d
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 0c620876-4549-46c4-a5b3-16e86e3cefe7
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 472e08a2-c741-43eb-a3ca-e2f5cd275cf7
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: f48eda6b-5d66-4d73-a62e-671de3844555
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 5826e50f-2f29-4444-9cad-3bb4e66ee3ca
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 5dbd0da1-cfa4-4bce-a753-56dade428bd4
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 4afdc071-53ca-4516-8a3c-d5c91345c409
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 500e9f2a-1063-4066-8eea-780efa90a0d7
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: a0791206-a669-4948-a845-cc735212013c
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: ac851899-1007-48c8-842f-dddb9a38c4ba
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 3aa12e75-d78b-4157-9eca-6049187a30d7
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 936dd3cb-a9cc-4a13-9a2c-ea5d40856072
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 91a53c5d-d629-45bb-9610-fbd2cb4c6f3c
+      label: commonTCPPorts
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 0a3f1d49-4c05-47c4-98e2-3a42b822d05b
+      label: ICMP
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 840b4b1c-a50b-11e8-98d0-529269fb1459
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: d979e854-a50d-11e8-98d0-529269fb1459
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 543c6a0a-a50c-11e8-98d0-529269fb1459
+      label: overlyPermissive
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: bc7929f8-fe70-48ec-8690-4288aa0b98ae
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 18e1dd76-9d0f-4cdb-96d4-9d01b5cd68dc
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 3784cdfd-dd25-4cf3-b506-ad77033ccc35
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 0546188d-6f21-449d-948e-677c285a5fcf
+        - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 709b47cd-6b7a-4500-b99e-a58529a6c79e
+      label: commonUDPPorts
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.policyId
+          operator: isEqualString
+          right:
+            value:
+              simple: 3beed53c-3f2d-47b6-bb6f-95da39ff0f26
+      label: SSH
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "10"
+      ICMP:
+      - "11"
+      SSH:
+      - "21"
+      commonTCPPorts:
+      - "7"
+      commonUDPPorts:
+      - "16"
+      overlyPermissive:
+      - "12"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Execute the appropriate remediation task.
+      id: 2234f384-548b-4481-89b5-aa95620891bf
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Execute remediation
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 2234f384-548b-4481-89b5-aa95620891bf
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 330
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "19"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: efcd02d5-485e-4e9a-8e4e-9aa94d5d9136
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Common TCP Ports
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: efcd02d5-485e-4e9a-8e4e-9aa94d5d9136
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -480,
+          "y": 500
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        1. Log in to the Azure Portal.
+        2. Select 'All services'.
+        3. Select 'Network security groups', under NETWORKING.
+        4. Select the Network security group you need to modify.
+        5. Select 'Inbound security rules' under Settings.
+        6. Select the rule you need to modify, and edit it to allow specific IP addresses OR set the 'Action' to 'Deny' OR 'Delete' the rule based on your requirement.
+        7. 'Save' your changes.
+      id: dac20b6b-feb8-4f9e-8582-1a0dea1e5432
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manually update security group rules
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: dac20b6b-feb8-4f9e-8582-1a0dea1e5432
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 380,
+          "y": 1130
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "25"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: dd3c9091-2e89-4ba2-85cc-20f0dd1971e9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ICMP Rules
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: dd3c9091-2e89-4ba2-85cc-20f0dd1971e9
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -40,
+          "y": 500
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "26"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6eba9d9a-da40-4348-8f0a-1269d34d1a67
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Overly Permissive
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 6eba9d9a-da40-4348-8f0a-1269d34d1a67
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 380,
+          "y": 500
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      "yes":
+      - "5"
+    note: false
+    quietmode: 0
+    results:
+    - brandInstances
+    scriptarguments:
+      brandname:
+        simple: Azure Network Security Groups
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns 'yes' if integration brand is available. Otherwise returns
+        'no'
+      id: 4a94bec7-faed-4e09-80ba-e5ca9e4f64cd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Azure Network Security Groups integration enabled?
+      playbooktaskmissingcomponent: null
+      script: IsIntegrationAvailable
+      type: condition
+      version: -1
+    taskid: 4a94bec7-faed-4e09-80ba-e5ca9e4f64cd
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 160
+        }
+      }
+  "16":
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "19"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9b7d05a0-47c0-4d32-8036-47b22bbc15c3
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Common UDP Ports
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 9b7d05a0-47c0-4d32-8036-47b22bbc15c3
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -920,
+          "y": 500
+        }
+      }
+  "19":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: ruleName
+      stringify:
+        simple: "true"
+      value:
+        complex:
+          accessor: resource
+          root: alert.labels
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: data
+            operator: getField
+          - args:
+              field:
+                value:
+                  simple: securityRules
+            operator: getField
+          - args:
+              equalTo:
+                iscontext: true
+                value:
+                  simple: inputs.portNumber
+              field:
+                value:
+                  simple: destinationPortRange
+              getField:
+                value:
+                  simple: name
+              stringify: {}
+            operator: WhereFieldEquals
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Find the offending TCP/UDP security group rule.
+      id: 8946063e-95ee-4518-85eb-62892dcb3530
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Find the offending TCP/UDP rule name
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 8946063e-95ee-4518-85eb-62892dcb3530
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -480,
+          "y": 640
+        }
+      }
+  "20":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: ${ruleName}
+          operator: isNotEmpty
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: resource
+                root: alert.labels
+                transformers:
+                - operator: ParseJSON
+                - args:
+                    field:
+                      value:
+                        simple: data
+                  operator: getField
+                - args:
+                    field:
+                      value:
+                        simple: securityRules
+                  operator: getField
+                - args:
+                    equalTo:
+                      value:
+                        simple: ${ruleName}
+                    field:
+                      value:
+                        simple: name
+                    getField:
+                      value:
+                        simple: sourceAddressPrefix
+                    stringify: {}
+                  operator: WhereFieldEquals
+          operator: inList
+          right:
+            value:
+              simple: 0.0.0.0/0, ::/0, *
+      label: "yes"
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "10"
+      "yes":
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Verify the security group rule name is open globally.
+      id: c3849fe9-0955-4fdb-807d-40d2c386cf9b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check rule name
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c3849fe9-0955-4fdb-807d-40d2c386cf9b
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -40,
+          "y": 880
+        }
+      }
+  "21":
+    continueonerrortype: ""
+    id: "21"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "22"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 575c93c9-da15-4c1d-8e13-80b6c9a21203
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: SSH (22)
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 575c93c9-da15-4c1d-8e13-80b6c9a21203
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1260,
+          "y": 500
+        }
+      }
+  "22":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: ruleName
+      stringify:
+        simple: "true"
+      value:
+        complex:
+          accessor: resource
+          root: alert.labels
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: data
+            operator: getField
+          - args:
+              field:
+                value:
+                  simple: securityRules
+            operator: getField
+          - args:
+              equalTo:
+                iscontext: true
+                value:
+                  simple: "22"
+              field:
+                value:
+                  simple: destinationPortRange
+              getField:
+                value:
+                  simple: name
+              stringify: {}
+            operator: WhereFieldEquals
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Sets a value into the context with the given context key.
+      id: d57f2f44-b1db-4f03-85d9-d341d27ff5a0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Find the offending SSH rule name
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: d57f2f44-b1db-4f03-85d9-d341d27ff5a0
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1260,
+          "y": 640
+        }
+      }
+  "25":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "25"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: ruleName
+      stringify:
+        simple: "true"
+      value:
+        complex:
+          accessor: resource
+          root: alert.labels
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: data
+            operator: getField
+          - args:
+              field:
+                value:
+                  simple: securityRules
+            operator: getField
+          - args:
+              equalTo:
+                value:
+                  simple: Icmp
+              field:
+                value:
+                  simple: protocol
+              getField:
+                value:
+                  simple: name
+              stringify: {}
+            operator: WhereFieldEquals
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Find the offending ICMP security group rule.
+      id: 4dc0879d-8912-40a3-8347-fb994f4e680e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Find the offending ICMP rule name
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 4dc0879d-8912-40a3-8347-fb994f4e680e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -40,
+          "y": 640
+        }
+      }
+  "26":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "26"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: ruleName
+      stringify:
+        simple: "true"
+      value:
+        complex:
+          accessor: resource
+          root: alert.labels
+          transformers:
+          - operator: ParseJSON
+          - args:
+              field:
+                value:
+                  simple: data
+            operator: getField
+          - args:
+              field:
+                value:
+                  simple: securityRules
+            operator: getField
+          - args:
+              equalTo:
+                value:
+                  simple: '*'
+              field:
+                value:
+                  simple: protocol
+              getField:
+                value:
+                  simple: name
+              stringify: {}
+            operator: WhereFieldEquals
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Find the offending overly permissive security group rule.
+      id: 2f030b38-e2f0-4637-8ce1-d76719ff0e4b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Find the offending rule name
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 2f030b38-e2f0-4637-8ce1-d76719ff0e4b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 380,
+          "y": 640
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "15_3_#default#": 0.1,
+      "15_5_yes": 0.55,
+      "20_10_#default#": 0.49,
+      "20_1_yes": 0.46,
+      "5_11_ICMP": 0.8,
+      "5_12_overlyPermissive": 0.72,
+      "5_16_commonUDPPorts": 0.9,
+      "5_21_SSH": 0.63,
+      "5_7_commonTCPPorts": 0.87
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1365,
+        "width": 2560,
+        "x": -920,
+        "y": 0
+      }
+    }
+  }
