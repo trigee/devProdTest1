@@ -1,0 +1,3998 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.9.0
+    isoverridable: false
+    itemVersion: 1.3.54
+    packID: CortexResponseAndRemediation
+    packName: Cortex Response And Remediation
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook is designed to handle the following alerts:
+  - Suspicious port scan
+  - Highly suspicious port scan
+  - Port scan by suspicious process
+
+  Playbook Stages:
+
+  Analysis:
+
+  - Checks whether the reputation of associated processes is malicious.
+  - Checks whether the endpoint has a high risk score.
+  - Determines whether the alert process is a known scanner.
+  - Checks whether the port scan has a highly suspicious connection ratio compared to the baseline.
+
+  Investigation:
+
+  - Checks for a suspicious ratio of unique ports to connections.
+  - Checks if the port scan intervals are indicative of an automated scan.
+  - Checks if the reputation of associated processes is suspicious.
+  - Checks if the endpoint has a medium risk score.
+  - Searches for related XSIAM alerts related to the destination host that indicate suspicious activity.
+  - Searches for related XSIAM alerts related to the source host that indicate suspicious or malicious activity.
+
+  Verdict:
+
+  Determine the verdict as malicious if:
+  - At least four specific related alerts indicating malicious activity are found.
+  - At least two suspicious indicators are detected.
+
+  Remediation:
+
+  - Terminates the processes.
+  - Quarantines the malicious process.
+  - Adds the malicious process hash to the blocklist.
+  - Adds an IOC rule for malicious processes.
+  - Isolate the source host.  (Requires analyst approval).
+  - Block the source IP Address (Requires analyst approval).
+  - Automatically close the alert.
+id: silent-Suspicious Port Scan
+inputSections:
+- description: Generic group for inputs
+  inputs: []
+  name: General (Inputs group)
+inputs: []
+issilent: true
+name: silent-Suspicious Port Scan
+outlinetasks: {}
+outputSections:
+- description: Generic group for outputs
+  name: General (Outputs group)
+  outputs: []
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tags:
+- TA0007 - Discovery
+- T1046 - Network Service Discovery
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "43"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: cf6e8c28-cf7c-4636-87be-f7131f1b2e59
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: cf6e8c28-cf7c-4636-87be-f7131f1b2e59
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 170,
+          "y": -22
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "96"
+      - "148"
+      - "161"
+      - "177"
+      - "179"
+      - "146"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 05199548-0c7f-479f-a76e-549f82c96c07
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation
+      playbooktaskmissingcomponent: null
+      tags:
+      - related_alerts
+      type: title
+      version: -1
+    taskid: 05199548-0c7f-479f-a76e-549f82c96c07
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 2486,
+          "y": 1631
+        }
+      }
+  "2":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: TIMScore
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.cgosha256
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.osparentsha256
+                root: FileEnrichment
+          operator: isNotEmpty
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: TIMScore
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.cgosha256
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.osparentsha256
+                root: FileEnrichment
+          operator: isEqualNumber
+          right:
+            value:
+              simple: "3"
+      label: "yes"
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "145"
+      "yes":
+      - "83"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines the appropriate verdict based on the reputation of the
+        processes.
+      id: c507d4f4-5e48-45fa-ae69-87632f971c96
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check if the process has a malicious reputation
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c507d4f4-5e48-45fa-ae69-87632f971c96
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 170,
+          "y": 816
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "166"
+      - "183"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f6a7b9d9-7506-4220-9586-f642211bf61c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Remediation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: f6a7b9d9-7506-4220-9586-f642211bf61c
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 218,
+          "y": 2797
+        }
+      }
+  "8":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: SrcHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Nmap Scripting Engine Detection
+        - left:
+            iscontext: true
+            value:
+              simple: SrcHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Abnormal sensitive RPC traffic to multiple hosts in multiple
+                interfaces
+      label: "yes"
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "167"
+      "yes":
+      - "169"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines whether specific alerts related to the source host have
+        been found and indicate malicious activity.
+      id: 81912a32-c19c-4b6b-8dbc-6150de1c2c7b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Found any alerts indicating a malicious activity on the source host?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 81912a32-c19c-4b6b-8dbc-6150de1c2c7b
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 3884,
+          "y": 1914
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "122"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: Groups all tasks for a specific alert according to the task headers
+        (titles).
+      id: 1bf160cf-b0f4-485f-9806-629ef45accc3
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Close Alert
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 1bf160cf-b0f4-485f-9806-629ef45accc3
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 244,
+          "y": 4427
+        }
+      }
+  "29":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "123"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      agent_id:
+        complex:
+          accessor: AdditionalFields.endpoint_id
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: EndpointData.Brand
+              operator: isEqualString
+              right:
+                value:
+                  simple: Cortex Core - IR
+          root: EndpointData
+      causality_id:
+        simple: ${alert.cid}
+      timeout_in_seconds:
+        simple: "120"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Terminate a process tree by its causality ID.
+      id: 0bd3add5-ef26-48eb-9fdb-8b4a2356a61b
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Terminate Causality Process
+      playbooktaskmissingcomponent: null
+      script: '|||core-terminate-causality'
+      type: regular
+      version: -1
+    taskid: 0bd3add5-ef26-48eb-9fdb-8b4a2356a61b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -65,
+          "y": 3187
+        }
+      }
+  "43":
+    continueonerrortype: ""
+    id: "43"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "53"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 357da12c-5fcc-4eec-8dbf-ff8f712069e4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Analysis
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 357da12c-5fcc-4eec-8dbf-ff8f712069e4
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 170,
+          "y": 109
+        }
+      }
+  "53":
+    continueonerrortype: ""
+    id: "53"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "144"
+      - "151"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      alert_ids:
+        simple: ${alert.id}
+      filter_alert_fields:
+        simple: "false"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns additional alert data, including connection details and
+        scanning events.
+      id: 43eecccd-496b-4de9-9c9e-c186a8c29a62
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get scan events
+      playbooktaskmissingcomponent: null
+      script: '|||core-get-cloud-original-alerts'
+      type: regular
+      version: -1
+    taskid: 43eecccd-496b-4de9-9c9e-c186a8c29a62
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 170,
+          "y": 236
+        }
+      }
+  "81":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: TIMScore
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.cgosha256
+                root: FileEnrichment
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "3"
+      label: "yes"
+    continueonerrortype: ""
+    id: "81"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "86"
+      "yes":
+      - "82"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Verify if the CGO process has a malicious reputation.
+      id: b631faff-7cdd-41bf-bfc4-081c666d4ae7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is the reputation of the CGO process malicious?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: b631faff-7cdd-41bf-bfc4-081c666d4ae7
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -557,
+          "y": 1198
+        }
+      }
+  "82":
+    continueonerrortype: ""
+    id: "82"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "86"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      keys:
+        simple: cgoPath,cgoSha256
+      parent:
+        simple: MaliciousCGOProcess
+      values:
+        simple: ${alert.cgopath.[0]},${alert.cgosha256.[0]}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set multiple keys/values related to the malicious CGO process to
+        the context.
+      id: 3350e748-e72f-49db-ab3e-bf5350cb59c6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set malicious CGO process
+      playbooktaskmissingcomponent: null
+      script: SetMultipleValues
+      tags:
+      - malicious_causality_process
+      type: regular
+      version: -1
+    taskid: 3350e748-e72f-49db-ab3e-bf5350cb59c6
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -557,
+          "y": 1352
+        }
+      }
+  "83":
+    continueonerrortype: ""
+    id: "83"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "81"
+      - "84"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 13eb30d5-cb72-4a0f-85bb-d7d6a841d9e6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set keys for malicious processes
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 13eb30d5-cb72-4a0f-85bb-d7d6a841d9e6
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -299,
+          "y": 1075
+        }
+      }
+  "84":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: TIMScore
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: FileEnrichment.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.osparentsha256
+                root: FileEnrichment
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "3"
+      label: "yes"
+    continueonerrortype: ""
+    id: "84"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "86"
+      "yes":
+      - "85"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Verify if the OS Actor process has a malicious reputation.
+      id: 8db40268-d731-4662-8f5d-1f1eb212e7b0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is the reputation of the OS Actor process malicious?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 8db40268-d731-4662-8f5d-1f1eb212e7b0
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -59,
+          "y": 1198
+        }
+      }
+  "85":
+    continueonerrortype: ""
+    id: "85"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "86"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      keys:
+        simple: actorPath,actorSha256
+      parent:
+        simple: MaliciousOSActorProcess
+      values:
+        simple: ${alert.initiatorpath.[0]},${alert.initiatorsha256.[0]}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set multiple keys/values related to the malicious OS Actor process
+        to the context.
+      id: 2aa42aba-9426-49bc-99f1-324668962d2c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set malicious OS Actor process
+      playbooktaskmissingcomponent: null
+      script: SetMultipleValues
+      tags:
+      - malicious_actor_process
+      type: regular
+      version: -1
+    taskid: 2aa42aba-9426-49bc-99f1-324668962d2c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -65,
+          "y": 1352
+        }
+      }
+  "86":
+    continueonerrortype: ""
+    id: "86"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9964a51f-6e6d-49d9-9451-9a7222143378
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set keys for malicious processes - Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 9964a51f-6e6d-49d9-9451-9a7222143378
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -299,
+          "y": 1492
+        }
+      }
+  "93":
+    continueonerrortype: ""
+    id: "93"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      comment:
+        simple: 'The hash was added to the block list by the playbook ''Suspicious
+          Port Scan'' as part of handling alert ID: ${alert.id}'
+      hash_list:
+        complex:
+          accessor: cgoSha256
+          root: MaliciousCGOProcess
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: MaliciousOSActorProcess.actorSha256
+            operator: append
+          - args:
+              empty_values: {}
+              remove_keys: {}
+            operator: RemoveEmpty
+          - operator: uniq
+      incident_id:
+        complex:
+          accessor: parentXDRIncident
+          root: alert
+          transformers:
+          - args:
+              delimiter:
+                value:
+                  simple: '-'
+              fields:
+                value:
+                  simple: "2"
+            operator: Cut
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Block lists requested files which have not already been block listed
+        or added to allow lists.
+      id: ab43bfb8-4f03-4b8a-b1ac-42f2c956128c
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Add malicious process hash to Block list
+      playbooktaskmissingcomponent: null
+      script: '|||core-blocklist-files'
+      type: regular
+      version: -1
+    taskid: ab43bfb8-4f03-4b8a-b1ac-42f2c956128c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -568,
+          "y": 3576
+        }
+      }
+  "94":
+    continueonerrortype: ""
+    id: "94"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "93"
+      - "197"
+      - "204"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f1e22b15-cf9e-4f18-8919-945fa9e70ed8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Process Block and Quarantine
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: f1e22b15-cf9e-4f18-8919-945fa9e70ed8
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -568,
+          "y": 3447
+        }
+      }
+  "96":
+    continueonerrortype: ""
+    id: "96"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: SrcHostRelatedAlerts=
+      fromdate:
+        simple: 3 hours ago
+      ignore-outputs:
+        simple: "true"
+      includeinformational:
+        simple: "true"
+      query:
+        simple: (agentid:${alert.agentid} or localip:${Core.OriginalAlert.event.action_local_ip})
+          and -name:"Port Scan" and -name:"Highly suspicious port scan" and -name:"Port
+          scan by suspicious process" and -name:"Suspicious port scan" and -name:"Port
+          Scan With Low Direction Confidence"
+      todate:
+        simple: now
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This task searches for related alerts generated by processes within
+        the same causality chain, which may indicate a compromised endpoint.
+      id: e8f49b4f-e6ba-42cf-855c-fa658685d32d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search for related alerts to the source host
+      playbooktaskmissingcomponent: null
+      script: SearchAlertsV2
+      type: regular
+      version: -1
+    taskid: e8f49b4f-e6ba-42cf-855c-fa658685d32d
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 3884,
+          "y": 1774
+        }
+      }
+  "122":
+    continueonerrortype: ""
+    id: "122"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "175"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      closeNotes:
+        simple: Resolved as True Positive - Handled by the playbook "Suspicious Port
+          Scan"
+      closeReason:
+        simple: Resolved - True Positive
+      id:
+        simple: ${alert.id}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.close.inv
+      id: 061cb9a7-6ca1-45ba-a04d-3ceee6cb161e
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close Alert as True Positive
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: 061cb9a7-6ca1-45ba-a04d-3ceee6cb161e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 244,
+          "y": 4542
+        }
+      }
+  "123":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: MaliciousCGOProcess
+          operator: isNotEmpty
+          right:
+            value: {}
+        - left:
+            iscontext: true
+            value:
+              simple: MaliciousOSActorProcess
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "123"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "13"
+      "yes":
+      - "94"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether any of the processes are identified as malicious.
+      id: eac154ca-1a4d-4b1c-bd35-7adf6c07a8ed
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Found any malicious processes?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: eac154ca-1a4d-4b1c-bd35-7adf6c07a8ed
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -65,
+          "y": 3323
+        }
+      }
+  "141":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Brute Force
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Port Scan
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Vulnerability
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Failed Connections
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Password Spray
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Uncommon SSH session
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Uncommon VNC server communication
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Abnormal connections to a dormant host
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: New SSH Administrative Behavior
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Unusual SSH activity that resembles SSH proxy
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Uncommon SSH session was established to an internal IP
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: connections over DNS ports
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: LDAP traffic from non-standard
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Rare WinRM Session
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Port Sweep
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Abnormal process connection to default Meterpreter port
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Abnormal RDP connections to multiple hosts
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Rare Windows Remote Management (WinRM) HTTP Activity
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Abnormal SMB scanning activity to multiple hosts
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Uncommon RDP connection
+        - left:
+            iscontext: true
+            value:
+              simple: DstHostRelatedAlerts.Contents.data.name
+          operator: containsGeneral
+          right:
+            value:
+              simple: Rare NTLM Access By User To Host
+      label: "yes"
+    continueonerrortype: ""
+    id: "141"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "165"
+      "yes":
+      - "173"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determines whether specific alerts related to the destination host
+        have been found and indicate suspicious activity.
+      id: 19e39a28-03d4-43bb-b0aa-f835560493e9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Found any alerts indicating a malicious activity on the destination host?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 19e39a28-03d4-43bb-b0aa-f835560493e9
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 3224,
+          "y": 1914
+        }
+      }
+  "144":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "144"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "181"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      additional_fields:
+        simple: "true"
+      endpoint_ip:
+        complex:
+          accessor: agentid
+          root: alert
+          transformers:
+          - args:
+              error_if_no_match: {}
+              ignore_case: {}
+              multi_line: {}
+              period_matches_newline: {}
+              regex:
+                value:
+                  simple: \b(?:(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\b
+              unpack_matches: {}
+            operator: RegexExtractAll
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This script gathers endpoint data from multiple integrations and
+        returns an endpoint entity with consolidated information to the context.
+      id: 18cefc5b-952c-4257-bc30-fa203dcc8e97
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get Endpoint details by ip address
+      playbooktaskmissingcomponent: null
+      script: get-endpoint-data
+      type: regular
+      version: -1
+    taskid: 18cefc5b-952c-4257-bc30-fa203dcc8e97
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -83,
+          "y": 368
+        }
+      }
+  "145":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "145"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "154"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      host_id:
+        simple: ${Endpoint.ID}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Retrieve the risk score of a specific host or list of hosts with
+        the highest risk score in the environment along with the reason affecting
+        each score.
+      id: 070d6655-9b19-4ab4-afa0-955cb3d77544
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get Host Risk level
+      playbooktaskmissingcomponent: null
+      script: '|||core-list-risky-hosts'
+      type: regular
+      version: -1
+    taskid: 070d6655-9b19-4ab4-afa0-955cb3d77544
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 640,
+          "y": 949
+        }
+      }
+  "146":
+    continueonerrortype: ""
+    id: "146"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "147"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      timestamps:
+        complex:
+          accessor: '}'
+          root: ${
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs==rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert.stateful_raw_data.events_from_decider.event_timestamp
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert.stateful_raw_data.events_from_decider.event_timestamp
+              lhsB: {}
+              options: {}
+              optionsB: {}
+              rhs: {}
+              rhsB: {}
+              then:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert._all_events.event_timestamp
+            operator: If-Then-Else
+          - args:
+              by:
+                value:
+                  simple: "1"
+            operator: division
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Analyze a list of Unix timestamps in milliseconds, to detect simple
+        patterns of consistency or high frequency. The script can aid in the investigation
+        of multi-event alerts that contain a list of timestamps.
+      id: 670a4de6-883b-4883-a0dd-681c649357db
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Analyze Timestamp Intervals
+      playbooktaskmissingcomponent: null
+      script: AnalyzeTimestampIntervals
+      type: regular
+      version: -1
+    taskid: 670a4de6-883b-4883-a0dd-681c649357db
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1758,
+          "y": 1774
+        }
+      }
+  "147":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: IntervalAnalysis.IsPatternLikelyAutomated
+          operator: isTrue
+      label: "yes"
+    continueonerrortype: ""
+    id: "147"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "165"
+      "yes":
+      - "164"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the port scan intervals are indicative of an automated
+        scan.
+      id: 77f74e26-b8e9-4f19-8d15-ac7f1666db7c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Are the intervals indicative of an automated port scan?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 77f74e26-b8e9-4f19-8d15-ac7f1666db7c
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1758,
+          "y": 1914
+        }
+      }
+  "148":
+    continueonerrortype: ""
+    id: "148"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "149"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: SuspiciousRatio
+      value:
+        complex:
+          accessor: count_distinct_story_id
+          root: Core.OriginalAlert.stateful_raw_data
+          transformers:
+          - args:
+              by:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert.stateful_raw_data.count_distinct_remote_port
+            operator: division
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered. If no value is
+        entered, the script doesn't do anything.
+      id: b5cf9594-e9f3-45e5-87f5-30a04bd48cfe
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Suspicious ratio of unique ports to connections
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: b5cf9594-e9f3-45e5-87f5-30a04bd48cfe
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1309,
+          "y": 1770
+        }
+      }
+  "149":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: SuspiciousRatio
+          operator: isNotEmpty
+      - - left:
+            iscontext: true
+            value:
+              simple: SuspiciousRatio
+          operator: InRange
+          right:
+            value:
+              simple: 1,1.1
+        - left:
+            iscontext: true
+            value:
+              simple: SuspiciousRatio
+          operator: notContainsGeneral
+          right:
+            value:
+              simple: .
+      label: "yes"
+    continueonerrortype: ""
+    id: "149"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "165"
+      "yes":
+      - "163"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if a suspicious ratio of unique ports to connections is
+        found.
+      id: 4dfb8c0e-ca97-4263-a2c2-2e218f895d4a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Found suspicious ratio of unique ports to connections?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 4dfb8c0e-ca97-4263-a2c2-2e218f895d4a
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1309,
+          "y": 1914
+        }
+      }
+  "151":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: alert.cgosha256
+          operator: isNotEmpty
+          right:
+            value: {}
+        - left:
+            iscontext: true
+            value:
+              simple: alert.osparentsha256
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "151"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "145"
+      "yes":
+      - "198"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether there are any processes in the alert context.
+      id: 4ebca7d3-ef89-487f-a408-a6f0de6111e5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Are there any processes in the alert context?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 4ebca7d3-ef89-487f-a408-a6f0de6111e5
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 421,
+          "y": 368
+        }
+      }
+  "154":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: EndpointData.RiskLevel
+          operator: isNotEmpty
+          right:
+            value: {}
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: EndpointData.RiskLevel
+          operator: containsGeneral
+          right:
+            value:
+              simple: High
+      label: "yes"
+    continueonerrortype: ""
+    id: "154"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "156"
+      "yes":
+      - "196"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the endpoint has a high risk score.
+      id: 8b342812-aba3-45ea-b13d-b36198b71f16
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is host risk score is high?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 8b342812-aba3-45ea-b13d-b36198b71f16
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 640,
+          "y": 1069
+        }
+      }
+  "156":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: alert.cgoname
+          operator: isNotEmpty
+          right:
+            value: {}
+        - left:
+            iscontext: true
+            value:
+              simple: alert.osparentname
+          operator: isNotEmpty
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: alert.cgoname
+          operator: AnyMatch
+          right:
+            value:
+              simple: nmap,nessusd,freeportscanner,ipscan,portscanner,Lanspy,advanced_ip_scanner,advanced_port_scanner,domotz,LookAtLan,ldapwhoami,netscan,PortQry,Pinger,sweep
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: alert.osparentname
+          operator: AnyMatch
+          right:
+            value:
+              simple: nmap,nessusd,freeportscanner,ipscan,portscanner,Lanspy,advanced_ip_scanner,advanced_port_scanner,domotz,LookAtLan,ldapwhoami,netscan,PortQry,Pinger,sweep
+      label: "yes"
+    continueonerrortype: ""
+    id: "156"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "160"
+      "yes":
+      - "195"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the process in the alert is a known scanner.
+      id: 159f2bd6-9995-425f-b485-8186c1d13505
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is the process known as scanner?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 159f2bd6-9995-425f-b485-8186c1d13505
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 996,
+          "y": 1198
+        }
+      }
+  "157":
+    continueonerrortype: ""
+    id: "157"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AutoCommit:
+        simple: "No"
+      CustomBlockRule:
+        simple: "True"
+      Folder:
+        simple: Shared
+      IP:
+        simple: ${Core.OriginalAlert.event.action_local_ip}
+      InputEnrichment:
+        simple: "False"
+      InternalRange:
+        complex:
+          accessor: PrivateIPs
+          root: lists
+          transformers:
+          - args:
+              error_if_no_match: {}
+              ignore_case: {}
+              multi_line: {}
+              period_matches_newline: {}
+              regex:
+                value:
+                  simple: (\b(?:\d{1,3}\.){3}\d{1,3}\b/\d{1,2})
+              unpack_matches: {}
+            operator: RegexExtractAll
+          - args:
+              separator:
+                value:
+                  simple: ','
+            operator: join
+      RuleDirection:
+        simple: outbound
+      RuleName:
+        simple: XSIAM- Block IP playbook - ${alert.id}
+      UserVerification:
+        simple: "False"
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "This playbook blocks malicious IP addresses using all integrations
+        that are enabled. The direction of the traffic that will be blocked is determined
+        by the XSOAR user (and set by default to outgoing)\nNote the following:\n-
+        \ some of those integrations require specific parameters to run, which are
+        based on the playbook inputs. Also, certain integrations use FW rules or appended
+        network objects.\n- Note that the appended network objects should be specified
+        in blocking rules inside the system later on. \n\n\nSupported integrations
+        for this playbook [Network security products such as FW/WAF/IPs/etc.]: \n\n*
+        Check Point Firewall\n* Palo Alto Networks PAN-OS\n* Zscaler\n* FortiGate\n*
+        Aria Packet Intelligence\n* Cisco Firepower \n* Cisco Secure Cloud Analytics\n*
+        Cisco ASA\n* Akamai WAF\n* F5 SilverLine\n* ThreatX\n* Signal Sciences WAF\n*
+        Sophos Firewall."
+      id: 52e90940-b790-4880-9fcc-de9a35519bf6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Block IP - Generic v3
+      playbookId: Block IP - Generic v3
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 52e90940-b790-4880-9fcc-de9a35519bf6
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 940,
+          "y": 4283
+        }
+      }
+  "158":
+    continueonerrortype: ""
+    id: "158"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "29"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 2453af93-2909-4949-8fc3-0b9741bd86bb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Terminate Process
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 2453af93-2909-4949-8fc3-0b9741bd86bb
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -65,
+          "y": 3069
+        }
+      }
+  "159":
+    continueonerrortype: ""
+    id: "159"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "199"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d02f20bf-d8ab-4cda-b841-8413d251857c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Block IP
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: d02f20bf-d8ab-4cda-b841-8413d251857c
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 940,
+          "y": 3878
+        }
+      }
+  "160":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: alert.name
+          operator: isEqualString
+          right:
+            value:
+              simple: Highly suspicious port scan
+      label: "yes"
+    continueonerrortype: ""
+    id: "160"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "1"
+      "yes":
+      - "194"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the port scan has a highly suspicious connection ratio
+        compared to the baseline.
+      id: 37ecf6c8-61c3-4a69-8c38-bada08063d6c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is it a high-ratio port scan?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 37ecf6c8-61c3-4a69-8c38-bada08063d6c
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1244,
+          "y": 1352
+        }
+      }
+  "161":
+    continueonerrortype: ""
+    id: "161"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "141"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: DstHostRelatedAlerts=
+      fromdate:
+        simple: 3 hours ago
+      ignore-outputs:
+        simple: "true"
+      includeinformational:
+        simple: "true"
+      query:
+        simple: (agentid:${Core.OriginalAlert.event.action_remote_ip} or localip:${Core.OriginalAlert.event.action_remote_ip}
+          or remoteip:${Core.OriginalAlert.event.action_remote_ip}) and -name:"Port
+          Scan" and -name:"Highly suspicious port scan" and -name:"Port scan by suspicious
+          process" and -name:"Suspicious port scan" and -name:"Port Scan With Low
+          Direction Confidence"
+      todate:
+        simple: now
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This task searches for related alerts generated by processes within
+        the same causality chain, which may indicate a compromised endpoint.
+      id: 44583cba-46de-4b50-af6e-be223a43cff3
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search for related alerts to the destination host
+      playbooktaskmissingcomponent: null
+      script: SearchAlertsV2
+      type: regular
+      version: -1
+    taskid: 44583cba-46de-4b50-af6e-be223a43cff3
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 3224,
+          "y": 1774
+        }
+      }
+  "163":
+    continueonerrortype: ""
+    id: "163"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "165"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidences
+      value:
+        simple: Suspicious ports-to-connections ratio detected
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 522a7b0d-f287-4400-9fb0-88a40bcd2d80
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set evidence for suspicious ratio
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 522a7b0d-f287-4400-9fb0-88a40bcd2d80
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1309,
+          "y": 2144
+        }
+      }
+  "164":
+    continueonerrortype: ""
+    id: "164"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "165"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidences
+      value:
+        simple: Likely automated scanning pattern detected
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: f2fc2c9c-41b1-41eb-a53a-376e53cd4320
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set evidence for automated scan pattern
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: f2fc2c9c-41b1-41eb-a53a-376e53cd4320
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1758,
+          "y": 2097
+        }
+      }
+  "165":
+    continueonerrortype: ""
+    id: "165"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "172"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 593a5563-6e22-4964-93f3-e125522c5486
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Evaluate investigation results
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 593a5563-6e22-4964-93f3-e125522c5486
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 2486,
+          "y": 2512
+        }
+      }
+  "166":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: EndpointData.Brand
+          operator: isNotEmpty
+          right:
+            value: {}
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: EndpointData.Brand
+          operator: isEqualString
+          right:
+            value:
+              simple: Cortex Core - IR
+      - - left:
+            iscontext: true
+            value:
+              simple: EndpointData.AdditionalFields.endpoint_id
+          operator: isNotEmpty
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: endpoint_id
+                root: EndpointData.AdditionalFields
+                transformers:
+                - operator: count
+          operator: isEqualNumber
+          right:
+            value:
+              simple: "1"
+      label: "yes"
+    continueonerrortype: ""
+    id: "166"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "159"
+      "yes":
+      - "184"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the endpoint ID is found.
+      id: 13b43477-c142-4a42-9412-e0a255c76dc6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is endpoint id exist?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 13b43477-c142-4a42-9412-e0a255c76dc6
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 644,
+          "y": 2917
+        }
+      }
+  "167":
+    continueonerrortype: ""
+    id: "167"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "168"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: SuspiciousRelatedAlertsSrc
+      value:
+        complex:
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Vulnerability
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Brute Force Attempt
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: New Administrative Behavior
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Host Sweep
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Password Spray
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Failed Connections
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Port Sweep
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: RPC traffic to multiple
+            - left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Abnormal process connection to default Meterpreter port
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Port Scan
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Rare WinRM Session
+            - left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Uncommon VNC server communication
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Abnormal RDP connections to multiple hosts
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Uncommon RDP connection
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: SMB scanning
+            - left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Rare SMB session to a remote host
+            - left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Rare AppID usage to a rare destination
+            - left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Rare Windows Remote Management (WinRM) HTTP Activity
+            - left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: LDAP traffic from non-standard process
+            - left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: Unsigned process makes connections over DNS ports
+            - left:
+                iscontext: true
+                value:
+                  simple: SrcHostRelatedAlerts.Contents.data.name
+              operator: containsGeneral
+              right:
+                value:
+                  simple: 'generic:'
+          root: SrcHostRelatedAlerts.Contents.data.name
+          transformers:
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered. If no value is
+        entered, the script doesn't do anything.
+      id: b8cc2295-50b9-4109-85e5-f0630fce74bd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set Suspicious alert related to the source host
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: b8cc2295-50b9-4109-85e5-f0630fce74bd
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 3673,
+          "y": 2074
+        }
+      }
+  "168":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: SuspiciousRelatedAlertsSrc
+          operator: isNotEmpty
+          right:
+            value: {}
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: SuspiciousRelatedAlertsSrc
+                transformers:
+                - operator: count
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "4"
+      label: Malicious
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: SuspiciousRelatedAlertsSrc
+          operator: isNotEmpty
+      label: Suspicious
+    continueonerrortype: ""
+    id: "168"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "165"
+      Malicious:
+      - "169"
+      Suspicious:
+      - "171"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if a suspicious or malicious combination of related alerts
+        to the source host was found.
+      id: c6f3edce-2cf1-4aa4-9717-20a891bd15fb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Found suspicious or malicious combination of related alerts?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c6f3edce-2cf1-4aa4-9717-20a891bd15fb
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 3673,
+          "y": 2214
+        }
+      }
+  "169":
+    continueonerrortype: ""
+    id: "169"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "165"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidences
+      value:
+        simple: Malicious related alerts to source host detected
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: a8869978-46ef-4eab-a367-c893fcc89553
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set evidences for malicious related alerts to the source host
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: a8869978-46ef-4eab-a367-c893fcc89553
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 4103,
+          "y": 2391
+        }
+      }
+  "171":
+    continueonerrortype: ""
+    id: "171"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "165"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidences
+      value:
+        simple: Suspicious related alerts to source host detected
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: d5fb7501-b17c-400f-a1d3-15f2d3bbc9b3
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set evidences for suspicious related alerts to the source host
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: d5fb7501-b17c-400f-a1d3-15f2d3bbc9b3
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 3673,
+          "y": 2391
+        }
+      }
+  "172":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: Evidences
+                transformers:
+                - operator: count
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "2"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Evidences
+          operator: containsGeneral
+          right:
+            value:
+              simple: Malicious
+      label: "yes"
+    continueonerrortype: ""
+    id: "172"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "174"
+      "yes":
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether malicious evidence was found during the investigation.
+      id: 67753c8e-1049-4b1b-8c66-33040f9460cc
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Any evidence found requiring remediation?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 67753c8e-1049-4b1b-8c66-33040f9460cc
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 2486,
+          "y": 2655
+        }
+      }
+  "173":
+    continueonerrortype: ""
+    id: "173"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "165"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidences
+      value:
+        simple: Suspicious related alerts to destination host detected
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 939d00d3-9c2b-44ec-9fb9-93fc6e499d1c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set evidence for suspicious related alerts to the destination host
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 939d00d3-9c2b-44ec-9fb9-93fc6e499d1c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 3224,
+          "y": 2073
+        }
+      }
+  "174":
+    continueonerrortype: ""
+    id: "174"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "175"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6f92da3c-a991-4173-854b-e922c54c33b4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Inconclusive
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 6f92da3c-a991-4173-854b-e922c54c33b4
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 2486,
+          "y": 2872
+        }
+      }
+  "175":
+    continueonerrortype: ""
+    id: "175"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 50d9b666-8923-4470-a0be-7a41b0b3ef63
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 50d9b666-8923-4470-a0be-7a41b0b3ef63
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 244,
+          "y": 4681
+        }
+      }
+  "177":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Score
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: Indicators.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.osparentsha256
+                  - left:
+                      iscontext: true
+                      value:
+                        simple: Indicators.Value
+                    operator: containsGeneral
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.cgosha256
+                root: Indicators
+          operator: isEqualNumber
+          right:
+            value:
+              simple: "2"
+      label: "yes"
+    continueonerrortype: ""
+    id: "177"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "165"
+      "yes":
+      - "178"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if the process has a suspicious reputation.
+      id: 099673df-ebeb-463d-b393-235a2ff5f78e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check if the process has a suspicious reputation
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 099673df-ebeb-463d-b393-235a2ff5f78e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 2229,
+          "y": 1770
+        }
+      }
+  "178":
+    continueonerrortype: ""
+    id: "178"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "165"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidences
+      value:
+        simple: Suspicious process reputation detected
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 4c47a60b-503c-4b7f-b2bb-c1d978c60285
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set evidence for suspicious process reputation
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 4c47a60b-503c-4b7f-b2bb-c1d978c60285
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2229,
+          "y": 1914
+        }
+      }
+  "179":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: EndpointData.RiskLevel
+          operator: isNotEmpty
+          right:
+            value: {}
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: EndpointData.RiskLevel
+          operator: containsGeneral
+          right:
+            value:
+              simple: med
+      label: "yes"
+    continueonerrortype: ""
+    id: "179"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "165"
+      "yes":
+      - "180"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the host risk score is medium.
+      id: e2d1d0d1-25a0-4ee2-81c4-2d216c4acdd4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check if the host risk score is medium
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: e2d1d0d1-25a0-4ee2-81c4-2d216c4acdd4
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 2752,
+          "y": 1770
+        }
+      }
+  "180":
+    continueonerrortype: ""
+    id: "180"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "165"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidences
+      value:
+        simple: Host detected with medium risk score
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: af9b7732-e8b5-4e95-a322-91af63e3c54e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set evidences for medium risk score
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: af9b7732-e8b5-4e95-a322-91af63e3c54e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2752,
+          "y": 1914
+        }
+      }
+  "181":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "181"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "182"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      additional_fields:
+        simple: "true"
+      endpoint_id:
+        simple: ${alert.agentid}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This script gathers endpoint data from multiple integrations and
+        returns an endpoint entity with consolidated information to the context.
+      id: 2b311a78-177d-4e99-a1db-f161cc3fc58c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get Endpoint details by agent id
+      playbooktaskmissingcomponent: null
+      script: get-endpoint-data
+      type: regular
+      version: -1
+    taskid: 2b311a78-177d-4e99-a1db-f161cc3fc58c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -83,
+          "y": 516
+        }
+      }
+  "182":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "182"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      additional_fields:
+        simple: "true"
+      endpoint_hostname:
+        simple: ${alert.agentid}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This script gathers endpoint data from multiple integrations and
+        returns an endpoint entity with consolidated information to the context.
+      id: 6b66067c-b344-4186-90ce-bd2d09dc5c59
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get Endpoint details by hostname
+      playbooktaskmissingcomponent: null
+      script: get-endpoint-data
+      type: regular
+      version: -1
+    taskid: 6b66067c-b344-4186-90ce-bd2d09dc5c59
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -83,
+          "y": 670
+        }
+      }
+  "183":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: alert.cid
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "183"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "123"
+      "yes":
+      - "158"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks for processes to terminate.
+      id: d5624280-4cc7-4231-80c1-bcba4ad1a68a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Found any process to terminate?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: d5624280-4cc7-4231-80c1-bcba4ad1a68a
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -65,
+          "y": 2917
+        }
+      }
+  "184":
+    continueonerrortype: ""
+    id: "184"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "187"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: aa273708-ddea-4af5-ac69-67da4e9f4c21
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Isolate Endpoint
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: aa273708-ddea-4af5-ac69-67da4e9f4c21
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 644,
+          "y": 3069
+        }
+      }
+  "185":
+    continueonerrortype: ""
+    form:
+      description: |+
+        A malicious port scan was detected on the following endpoint. Isolation is recommended to prevent potential lateral movement within the network.
+
+
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: "The activity was classified as malicious based on the following
+            findings:\n${Evidences(val.length > 0) =>\"- \" + val.join(\"\\n - \")}\n${.=val.MaliciousCGOProcess
+            ? \"- **Malicious CGO Process detected:** \" + val.MaliciousCGOProcess.cgoPath
+            : \"\"}  \n${.=val.MaliciousOSActorProcess ? \"- **Malicious OS Actor
+            Process detected:** \" + val.MaliciousOSActorProcess.actorPath : \"\"}
+            \ \n\n\n**Should Isolate the endpoint?**\n- Hostname: ${EndpointData.AdditionalFields.endpoint_name}\n-
+            IP Address: ${EndpointData.AdditionalFields.ip.[0]}\n- Endpoint ID: ${EndpointData.AdditionalFields.endpoint_id}"
+        options: []
+        optionsarg:
+        - simple: "No"
+        - simple: "Yes"
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: This action will isolate the endpoint and is recommended to prevent
+          the attacker from executing lateral movement.
+        type: singleSelect
+      sender: Your SOC team
+      syncid: ""
+      title: IsolationApproval
+      totalanswers: 0
+    id: "185"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body: null
+      cc: null
+      format: ""
+      methods: []
+      replyOptions:
+      - "Yes"
+      - "No"
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      '#none#':
+      - "190"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Analyst approval is required for the following actions:
+        - Blocking the malicious URL.
+        - Executing an XQL query to identify files downloaded via the malicious URL.
+        - Isolating the endpoint.
+      id: 8575b582-e049-4d05-bf83-44bba974416c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Approve Isolation
+      playbooktaskmissingcomponent: null
+      type: collection
+      version: -1
+    taskid: 8575b582-e049-4d05-bf83-44bba974416c
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": 640,
+          "y": 3354
+        }
+      }
+  "186":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "186"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "159"
+      '#none#':
+      - "202"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      brands:
+        simple: Cortex Core - IR
+      endpoint_id:
+        complex:
+          accessor: AdditionalFields.endpoint_id
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: EndpointData.Brand
+              operator: isEqualString
+              right:
+                value:
+                  simple: Cortex Core - IR
+          root: EndpointData
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This script isolates endpoints using multiple integrations and
+        returns a success or failure message.
+      id: fd39248b-a9b8-4115-8aef-980b26662630
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Isolate Endpoint '
+      playbooktaskmissingcomponent: null
+      script: isolate-endpoint
+      type: regular
+      version: -1
+    taskid: fd39248b-a9b8-4115-8aef-980b26662630
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 640,
+          "y": 3633
+        }
+      }
+  "187":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: AdditionalFields.endpoint_type
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: EndpointData.Brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Cortex Core - IR
+                root: EndpointData
+          operator: containsString
+          right:
+            value:
+              simple: WORKSTATION
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: AdditionalFields.endpoint_status
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: EndpointData.Brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Cortex Core - IR
+                root: EndpointData
+          operator: isEqualString
+          right:
+            value:
+              simple: CONNECTED
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: AdditionalFields.is_isolated
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: EndpointData.Brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Cortex Core - IR
+                root: EndpointData
+          operator: isEqualString
+          right:
+            value:
+              simple: AGENT_UNISOLATED
+      label: Isolate
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                accessor: AdditionalFields.is_isolated
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: EndpointData.Brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Cortex Core - IR
+                root: EndpointData
+          operator: isEqualString
+          right:
+            value:
+              simple: AGENT_ISOLATED
+      label: Already isolated
+    continueonerrortype: ""
+    id: "187"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "159"
+      Already isolated:
+      - "13"
+      Isolate:
+      - "185"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Determine whether to isolate the endpoint based on its status,
+        isolation state, and OS type.
+      id: 9794e74e-6233-45c4-8b16-9ca1db483131
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Verify endpoint isn't isolated, disconnected, or a server
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 9794e74e-6233-45c4-8b16-9ca1db483131
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 644,
+          "y": 3187
+        }
+      }
+  "190":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: IsolationApproval.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: "Yes"
+      label: "yes"
+    continueonerrortype: ""
+    id: "190"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "159"
+      "yes":
+      - "186"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks analyst’s decision on endpoint isolation.
+      id: aa73e003-0082-4bc5-878d-a9efa95b2520
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Analyst decision
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: aa73e003-0082-4bc5-878d-a9efa95b2520
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 640,
+          "y": 3474
+        }
+      }
+  "194":
+    continueonerrortype: ""
+    id: "194"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidences
+      value:
+        simple: Port scan with extremely high ratio detected
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 9c5257fb-06da-45c2-96fd-8fac1fb05bfb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set evidence for extremely high ratio
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 9c5257fb-06da-45c2-96fd-8fac1fb05bfb
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 996,
+          "y": 1522
+        }
+      }
+  "195":
+    continueonerrortype: ""
+    id: "195"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidences
+      value:
+        simple: Process known as scanner
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 969da77c-00dd-4fdf-b104-571ddfb061e0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set evidence for process known as scanner
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 969da77c-00dd-4fdf-b104-571ddfb061e0
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 731,
+          "y": 1352
+        }
+      }
+  "196":
+    continueonerrortype: ""
+    id: "196"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidences
+      value:
+        simple: Host detected with high risk score
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: 7bdca7d2-c3da-426b-87ba-b75fa01d605a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set evidence for high risk score
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 7bdca7d2-c3da-426b-87ba-b75fa01d605a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 443,
+          "y": 1198
+        }
+      }
+  "197":
+    continueonerrortype: ""
+    id: "197"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      comment:
+        simple: 'The IOC rule was added by the playbook ''Suspicious Port Scan'' as
+          part of handling alert ID: ${alert.id}'
+      indicator:
+        complex:
+          accessor: cgoSha256
+          root: MaliciousCGOProcess
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: MaliciousOSActorProcess.actorSha256
+            operator: append
+          - operator: uniq
+      severity:
+        simple: HIGH
+      type:
+        simple: HASH
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Upload the IOC rules to XSIAM. When the ioc_object is defined,
+        disregard any other provided arguments, as the ioc_object takes precedence.
+        Validate the indicator parameters when ioc_object is used. If `vendor_name`,
+        `vendor_reputation`, and `vendor_reliability` are used, only a single vendor
+        is supported. For multiple vendors, utilize an `ioc_object` in JSON format.
+        Adding a rule with the same indicator, but with different parameters, will
+        update the existing rule.
+      id: 108d1c10-0893-4904-8b81-f1007f84d074
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Add an IOC rule for malicious processes
+      playbooktaskmissingcomponent: null
+      script: '|||core-add-indicator-rule'
+      type: regular
+      version: -1
+    taskid: 108d1c10-0893-4904-8b81-f1007f84d074
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -974,
+          "y": 3576
+        }
+      }
+  "198":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "198"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      external_enrichment:
+        simple: "true"
+      file_hash:
+        complex:
+          accessor: cgosha256
+          root: alert
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: alert.osparentsha256
+            operator: append
+          - args:
+              empty_values: {}
+              remove_keys:
+                value:
+                  simple: "true"
+            operator: RemoveEmpty
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: This script gathers file reputation data from multiple integrations
+        and returns a "FileEnrichment" object with consolidated information to the
+        context output.
+      id: 6a395957-07ea-45ad-9c9c-17d96ad7ee73
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check the processes reputation
+      playbooktaskmissingcomponent: null
+      script: file-enrichment
+      type: regular
+      version: -1
+    taskid: 6a395957-07ea-45ad-9c9c-17d96ad7ee73
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 421,
+          "y": 516
+        }
+      }
+  "199":
+    continueonerrortype: ""
+    form:
+      description: |+
+        A malicious port scan was detected. Blocking the source IP address is recommended to prevent potential lateral movement within the network.
+
+
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: Should the source IP ${Core.OriginalAlert.event.action_local_ip}
+            be blocked using the "Block IP - Generic v3" sub-playbook and the available
+            integrations?
+        options: []
+        optionsarg:
+        - simple: "No"
+        - simple: "Yes"
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: This approval will allow blocking the source IP address to prevent
+          the attacker from executing lateral movement.
+        type: singleSelect
+      sender: Your SOC team
+      syncid: ""
+      title: BlockIpApproval
+      totalanswers: 0
+    id: "199"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body: null
+      cc: null
+      format: ""
+      methods: []
+      replyOptions:
+      - "Yes"
+      - "No"
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      '#none#':
+      - "200"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |+
+        Blocking the source IP address requires analyst approval.
+
+      id: 688914bb-c9e2-41b4-83f9-0a40ed65515f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Approve Block IP
+      playbooktaskmissingcomponent: null
+      type: collection
+      version: -1
+    taskid: 688914bb-c9e2-41b4-83f9-0a40ed65515f
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": 940,
+          "y": 4006
+        }
+      }
+  "200":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: BlockIpApproval.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: "Yes"
+      label: "yes"
+    continueonerrortype: ""
+    id: "200"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "13"
+      "yes":
+      - "157"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks analyst’s decision on blocking the source IP address.
+      id: 62654364-f860-4c5d-be2f-1d6c476ab676
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Analyst Decision – Block IP
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 62654364-f860-4c5d-be2f-1d6c476ab676
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 940,
+          "y": 4126
+        }
+      }
+  "202":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: IsolateEndpoint.Result
+          operator: isEqualString
+          right:
+            value:
+              simple: Success
+      label: "yes"
+    continueonerrortype: ""
+    id: "202"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "159"
+      "yes":
+      - "13"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether endpoint isolation succeeded.
+      id: 5319712e-4ccc-44ce-b687-bf8e15cefc45
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Was the endpoint isolation successful?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 5319712e-4ccc-44ce-b687-bf8e15cefc45
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 504,
+          "y": 3764
+        }
+      }
+  "204":
+    continueonerrortype: ""
+    id: "204"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "205"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      endpoint_id:
+        complex:
+          accessor: AdditionalFields.endpoint_id
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: EndpointData.Brand
+              operator: isEqualString
+              right:
+                value:
+                  simple: Cortex Core - IR
+          root: EndpointData
+      file_hash:
+        complex:
+          accessor: cgoSha256
+          root: MaliciousCGOProcess
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: MaliciousOSActorProcess.actorSha256
+            operator: append
+          - args:
+              empty_values: {}
+              remove_keys:
+                value:
+                  simple: "true"
+            operator: RemoveEmpty
+          - operator: uniq
+      file_path:
+        complex:
+          accessor: cgoPath
+          root: MaliciousCGOProcess
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: MaliciousOSActorProcess.actorPath
+            operator: append
+          - args:
+              empty_values: {}
+              remove_keys:
+                value:
+                  simple: "true"
+            operator: RemoveEmpty
+          - operator: uniq
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This script executes the 'quarantine-file' command on a specified
+        file via the appropriate agent. This script is used to isolate files identified
+        as suspicious.
+      id: 121c3829-a422-44cb-b23f-48526b01caeb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Quarantine File
+      playbooktaskmissingcomponent: null
+      script: quarantine-file
+      type: regular
+      version: -1
+    taskid: 121c3829-a422-44cb-b23f-48526b01caeb
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -163,
+          "y": 3576
+        }
+      }
+  "205":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: QuarantineFile.Status
+          operator: isEqualString
+          right:
+            value:
+              simple: Success
+      label: "yes"
+    continueonerrortype: ""
+    id: "205"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "206"
+      "yes":
+      - "13"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Verifies if the files were successfully quarantined.
+      id: 2020cc6f-6638-4c34-89ba-e669cb03d86a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Was the quarantine successful?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 2020cc6f-6638-4c34-89ba-e669cb03d86a
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -163,
+          "y": 3713
+        }
+      }
+  "206":
+    continueonerrortype: ""
+    id: "206"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: '${QuarantineFile(val.Status == "Failed").FilePath=>"Note: During
+        the quarantine process, the following files could not be quarantined. Please
+        manually quarantine these files: \n - " + val.join("\n - ")}'
+      id: 16cc3a18-6574-494e-9604-32f7021dcac9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual Action – File Quarantine
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: 16cc3a18-6574-494e-9604-32f7021dcac9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -163,
+          "y": 3923
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "123_13_#default#": 0.2,
+      "123_94_yes": 0.39,
+      "141_165_#default#": 0.26,
+      "147_164_yes": 0.51,
+      "147_165_#default#": 0.22,
+      "149_163_yes": 0.48,
+      "149_165_#default#": 0.11,
+      "151_198_yes": 0.48,
+      "154_196_yes": 0.53,
+      "160_1_#default#": 0.11,
+      "166_159_#default#": 0.25,
+      "166_184_yes": 0.3,
+      "168_165_#default#": 0.19,
+      "168_169_Malicious": 0.51,
+      "168_171_Suspicious": 0.64,
+      "177_165_#default#": 0.24,
+      "177_178_yes": 0.45,
+      "179_165_#default#": 0.23,
+      "183_123_#default#": 0.89,
+      "183_158_yes": 0.36,
+      "186_159_#error#": 0.51,
+      "187_13_Already isolated": 0.19,
+      "187_159_#default#": 0.39,
+      "190_159_#default#": 0.54,
+      "190_186_yes": 0.42,
+      "200_13_#default#": 0.46,
+      "200_157_yes": 0.36,
+      "202_13_yes": 0.15,
+      "205_13_yes": 0.26,
+      "205_206_#default#": 0.56,
+      "2_145_#default#": 0.41,
+      "2_83_yes": 0.24,
+      "81_82_yes": 0.43,
+      "81_86_#default#": 0.55,
+      "84_85_yes": 0.38,
+      "84_86_#default#": 0.51,
+      "8_169_yes": 0.27
+    },
+    "paper": {
+      "dimensions": {
+        "height": 4763,
+        "width": 5458,
+        "x": -974,
+        "y": -22
+      }
+    }
+  }
