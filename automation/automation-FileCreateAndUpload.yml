@@ -1,0 +1,68 @@
+args:
+- default: true
+  description: The name of the file to be created.
+  name: filename
+  required: true
+  supportedModules: []
+- description: Input data to write to file.
+  name: data
+  supportedModules: []
+- description: Entry ID contents to write into file.
+  name: entryId
+  supportedModules: []
+comment: |
+  Deprecated. Use FileCreateAndUploadV2 instead. Will create a file (using the given data input or entry ID) and upload it to current investigation war room.
+commonfields:
+  id: FileCreateAndUpload
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: FileCreateAndUpload
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.28
+  if (!args.data && !args.entryId) {
+      return { ContentsFormat: formats.text, Type: entryTypes.error, Contents: 'Either data or entryId arguments need to be provided.' };
+  }
+  if (args.data && args.entryId) {
+      return { ContentsFormat: formats.text, Type: entryTypes.error, Contents: 'Cannot provide both data and entryId arguments.' };
+  }
+
+  var data = "";
+  if (args.data) {
+      data = args.data;
+  }
+  if (args.entryId) {
+      var res = executeCommand("getEntry", {"id":args.entryId});
+      if (res[0].Type === entryTypes.error) {
+          return res;
+      }
+      data = res[0].Contents;
+  }
+  var createdFileID = saveFile(data);
+  return {Type: 3, FileID: createdFileID, File: args.filename, Contents: args.filename};
+scripttarget: 0
+signature: C2nFOOuyPwueb3yEXWQkifl2OjntttA6+ibqZgxXBI2UyJe8ILsCo8MT+TZvUNUGSXy9+4hyZrkS8nT7/gzWAZu9FoYgbdCjy6IOP6nNJ5w0r1WCMEEnZxHawKn1JBleEy74L4SGrGoTbca/7zsG2kK1EXXOlPVZMf2hErf/nrOh/+C3BMjlnN86IEA9ZLc4/jXBgi/06V2gAgk7sGeEFIq/QgSrBbwQnOFc9FOU/Yt2me72y7UtdyN/Ba0GXgV0laD3OHjTKSu+0Yw9x5dZFpnldE/7Vz/clG0obnnnDQSYSJYnBP8sTWjOcfGTNsO9T01znpxiPtzXT0Vavt9cxw==
+system: true
+tags:
+- Utility
+type: javascript
