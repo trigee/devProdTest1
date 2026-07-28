@@ -1,0 +1,57 @@
+args:
+- default: true
+  defaultValue: Investigation Summary
+  description: Report name to generate (should correspond with report type)
+  name: name
+  supportedModules: []
+- defaultValue: pdf
+  description: Report type to generate (should correspond with report name)
+  name: type
+  supportedModules: []
+- description: Incident ID to generate report for
+  name: incidentId
+  supportedModules: []
+comment: |-
+  A script to generate investigation summary report in an automated way
+  Can be used in post-processing flow as well.
+commonfields:
+  id: GenerateInvestigationSummaryReport
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: GenerateInvestigationSummaryReport
+outputs:
+- contextPath: Report.Name
+  description: Report file name
+  type: string
+- contextPath: Report.FileID
+  description: File ID of the report
+  type: string
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.28
+  return executeCommand("generateSummaryReport", {name: args.name, type: args.type, incidentId: args.incidentId})
+scripttarget: 0
+signature: CCufidbSn9QsdEN/phTmWFJs1hIO8LTLeNoqWnVxjGttxnTyIl6bOkhsT1/Y+5CIqMWr0c7brYlLyFo0iqq+8zKBw29IDW7xgs3s+jHkCMdmdaSCqQo65goVZ8sQdVAkAIjn/S8PFxI+HUjLdCYIM1Y+sDTxNXFJwYwQwWHspDsLykrKMl9kbZSGDYFLeu/jYuZ9Pi4p584nNFXWYQN/6DsBVPOuR7XMLI2A8poJDP+p05GMXWGHJAEnE5NibVonVs4lXD5KFCYDrPAeAugb0i7my5kdaMGKmYp1/Vpy7zfKtMNl9MLZ87mHOwnf+QXBfLFAkgXoi7y5sf0fy24fTw==
+system: true
+tags:
+- post-processing
+type: javascript
