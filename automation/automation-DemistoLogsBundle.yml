@@ -1,0 +1,39 @@
+comment: Deprecated. No available replacement.
+commonfields:
+  id: DemistoLogsBundle
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.5.0
+    packID: DemistoRESTAPI
+    packName: Cortex REST API
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dependson:
+  must:
+  - core-api-download
+deprecated: true
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: DemistoLogsBundle
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.5.0
+  return executeCommand('core-api-download', {uri: '/log/bundle'});
+scripttarget: 0
+signature: aI5KNbVPGvQbcs5Sn372d779OcOMym0JxRM1wkIHw3DXMDz3w6q2AkadEZLMS70H31/yZy+4pqT+2LMNeT4kDXB0bqrKyaJ98RP0rK6kbOKo8eVFPVPAnw8PmyRe+liSYbyT3ZeNJa2Zot5Z2gytUZyvQzWdLzgHHNkcfZaOogzzDxg4O2IxhakixpJqdnNISgX+ff//HmIuM8NTOucphuzioOiGAMXtVNw1ZhHgltaIPmGIzQiF0ilDcfzMtC2rdPLwSyskdAY1w6H7ZQy+Rg+G5/du+jC8JqxwqGwkE2jeQ3d/0Bj3DPmncJ5bTJpZ+YYqLjCJEjKSM83UFn9qSw==
+system: true
+tags:
+- DemistoAPI
+type: javascript
