@@ -1,0 +1,63 @@
+args:
+- description: List name to check.
+  name: listName
+  supportedModules: []
+comment: Check if list exist in demisto lists.
+commonfields:
+  id: IsListExist
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: IsListExist
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('IsListExist', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+
+
+
+
+  def main():
+      list_name = demisto.args()["listName"]
+      res = demisto.executeCommand("getList", {"listName": list_name})
+      res = res[0]
+      if res["Type"] == entryTypes["error"] and "Item not found" in res["Contents"]:
+          demisto.results("no")
+      else:
+          demisto.results("yes")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('IsListExist', 'end', __line__())
+scripttarget: 0
+signature: K1XrUpF4iD4F1STjx1dDsK6ACCHUmgzh6dw8+Ur8SWtLRngruVbRnZj8GNbdtCWSiU0g2HQ6HdC0PBgGM8tz3dHw8SadEAN/WME2qhd5dhzRurN76k/uNI8mMVuo3wxHtSdLdVyb8bQEjftUQie1tjaiZ2HG59HIe5i3zVzBNzX/cFeR1CoUqZ7Xe5/zHxAUQmv6UJx4G1YmjHVYn6u97F/JwN1bGsTbMZ81PFzwQFiYEzszL0MY3SvU5SZJP4KgazZBNP6tfQ1p2Km03mYgYqQhFYI8Q32KrbxzVuy3edEqMLVAnvKWUWyJ9vYLkGGVvPoPN+P2COR891ZZSF90kw==
+subtype: python3
+system: true
+tags:
+- Condition
+type: python
