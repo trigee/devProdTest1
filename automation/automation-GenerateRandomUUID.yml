@@ -1,0 +1,88 @@
+comment: Generates a random UUID (UUID 4).
+commonfields:
+  id: GenerateRandomUUID
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.8428455
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: GenerateRandomUUID
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: GeneratedUUID
+  description: The generated UUID.
+  type: string
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('GenerateRandomUUID', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+
+
+
+
+  import uuid
+
+
+  """ STANDALONE FUNCTION """
+
+
+  def generate_random_uuid() -> str:
+      return str(uuid.uuid4())
+
+
+  """ COMMAND FUNCTION """
+
+
+  def generate_random_uuid_command() -> CommandResults:
+      outputs = {"GeneratedUUID": generate_random_uuid()}
+
+      return CommandResults(
+          readable_output=f'## Random UUID Generated: {outputs["GeneratedUUID"]}',
+          outputs=outputs,
+      )
+
+
+  """ MAIN FUNCTION """
+
+
+  def main():
+      try:
+          return_results(generate_random_uuid_command())
+      except Exception as ex:
+          demisto.error(traceback.format_exc())  # print the traceback
+          return_error(f"Failed to execute GenerateRandomUUID. Error: {ex!s}")
+
+
+  """ ENTRY POINT """
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('GenerateRandomUUID', 'end', __line__())
+scripttarget: 0
+signature: ABMUPD/D8ogTX2Tg2qJdNDVahtr5vRWCfwzw0Gmi45LO7e4O0yLirHE/+3FqEy7eSPA8JtTG8XUqiJjFgSQcQlItiX0dXzXPLcP0wcOEe3JMKKyX0WKTw97nKDJsaBVEFCyxDLwcfwcqWJMA//FPo+PzLqjvH0aiG2TuFae386PoYn336i6fKEV+qSNNv3UI8bOmhsZ2J35ESalmp5ScwHFeLQV3DHu7VfbTPmjVSzhnQ/imGyT5seGMOFM8NH+ygra8VbIyElaEF070PqG465TzXJ14icoYbL/SL+DvA71OYx9maechwZZNA/r+kYgYL3s09XoPD+hEd+hjELbFiw==
+subtype: python3
+system: true
+tags: []
+type: python
