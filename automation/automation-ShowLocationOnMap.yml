@@ -1,0 +1,65 @@
+comment: Show indicator geo location on map.
+commonfields:
+  id: ShowLocationOnMap
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ShowLocationOnMap
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('ShowLocationOnMap', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+
+
+  loc = demisto.get(demisto.args().get("indicator") or {}, "CustomFields.geolocation")
+  if isinstance(loc, str):
+      loc = loc.strip()
+      long_lat_regex = re.compile(
+          r"^\s*[-+]?([1-8]?\d(\.\d+)?|90(\.0+)?)\s*([,:])\s*[-+]?(180(\.0+)?|((1[0-7]\d)|([1-9]?\d))(\.\d+)?)\s*$"
+      )
+      if not loc:
+          return_error("No location data was available")
+      if not long_lat_regex.search(loc):
+          return_error(f"Given loc format: {loc} does not match the expected format")
+      try:
+          lat, lng = loc.split(",")
+      except ValueError:
+          # Try by : if , didn't work. Safe to not wrap with try catch because regex above is protecting us
+          lat, lng = loc.split(":")
+      demisto.results(
+          {"ContentsFormat": formats["json"], "Type": entryTypes["map"], "Contents": {"lat": float(lat), "lng": float(lng)}}
+      )
+  else:
+      return_error("Location does not have the right format")
+
+  register_module_line('ShowLocationOnMap', 'end', __line__())
+scripttarget: 0
+signature: XCVQChXInHPSpk9mcLe8bdDt6soZi8sJZGys/d96I3+Qyt9TdKsqBYmhG0OI0/kxkuvf0CH3KL1Xi3OtTDLLQM6shhcO5hbIe/qzUcUiF5TyPkyNHNC8/3t73GZvdPvmmQaKB9+ZRdul1U3zG6Hh5qoCpitoK64t/DO4i+ey+k6RdwWfzGzk+TbU2nkZ3DGvr64HZ8ZWXlg9BPXVqd3QjL91w/ynKwNmNnH5AIlwQFw2xJbJQQeSWzuSfwWjChpQuFll+Gxi+A2wAUFbeUO5VmGC9sFYk4ihgH+KgYd0J5a7XgcZHngKteHWv7FmjN8jbaoMa07vO/wmwweqKCKDLw==
+subtype: python3
+system: true
+tags:
+- dynamic-indicator-section
+type: python
