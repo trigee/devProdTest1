@@ -1,0 +1,89 @@
+args:
+- description: Incident ID to get the prediction of. If empty, predicts the current
+    incident ID.
+  name: incidentId
+  predefined:
+  - ""
+  supportedModules: []
+- defaultValue: "150"
+  description: The maximum number of incidents that an indicator can be associated
+    with to be retained. This helps to filter out indicators that appear in many incidents.
+  name: maxIncidentsInIndicatorsForWhiteList
+  supportedModules: []
+- defaultValue: "1"
+  description: The minimum number of indicators related to the incident required before
+    running the model.
+  name: minNumberOfIndicators
+  supportedModules: []
+- defaultValue: "0"
+  description: Threshold to similarity value which is between 0 and 1.
+  name: threshold
+  supportedModules: []
+- description: Type of indicators to take into account. If empty, uses all indicators
+    types.
+  name: indicatorsTypes
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "False"
+  description: Whether to show the incident you are investigating.
+  name: showActualIncident
+  predefined:
+  - "True"
+  - "False"
+  supportedModules: []
+- defaultValue: "50"
+  description: The maximum number of incidents to display.
+  name: maxIncidentsToDisplay
+  supportedModules: []
+- defaultValue: type, created, name
+  description: Fields to add in the table of incident.
+  name: fieldsIncidentToDisplay
+  supportedModules: []
+- defaultValue: 1 month ago
+  description: The start date by which we retrieve information on incidents.
+  name: fromDate
+  supportedModules: []
+- description: Argument for the query of similar incidents.
+  name: query
+  supportedModules: []
+comment: Finds similar incidents based on indicators' similarity. Indicators' contribution
+  to the final score is based on their scarcity.
+commonfields:
+  id: DBotFindSimilarIncidentsByIndicators
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.42.2
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+dockerimage: demisto/sklearn:1.0.0.8425368
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: DBotFindSimilarIncidentsByIndicators
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  register_module_line('DBotFindSimilarIncidentsByIndicators', 'start', __line__())
+
+  return_results(demisto.executeCommand('DBotFindSimilarAlertsByIndicators', demisto.args()))
+
+  register_module_line('DBotFindSimilarIncidentsByIndicators', 'end', __line__())
+scripttarget: 0
+signature: aLD+x9aZz5WnK+6ThtfCkfHYXipWxeGk5XXqMOZfVPIgSfLtB9QbVnJcqpirLPqt9CBjZwbVLEzSlZswjBqYImOq7OTjdJ9CW73FYmE5bIt9z7bf2QPVse4zfssDl9IN8e64swlDwXZVKiHj8Hkaz0713lZD01X4HAGx44FQy1SfuIqiCpgCGF7DgTOrpJXmpS/KdVYsW+fxYrym3AkqEixXXUGdd9AtFb8vKHZHkNxHzzLG/GLG34THzOdRqJua0d+SlKSG/PIKh7W5D7WmNTyVNK5KxKFH5/WgPTQKbjVGqbbczIC9/wnxyeXPkwckfLkZHfHOS7wLaxODPO5QZg==
+subtype: python3
+system: true
+tags: []
+type: python
