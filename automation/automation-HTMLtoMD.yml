@@ -1,0 +1,102 @@
+args:
+- default: true
+  description: HTML to convert to Markdown.
+  name: html
+  required: true
+  supportedModules: []
+- auto: PREDEFINED
+  default: true
+  description: When set to False, will skip escaping of miscellaneous punctuation
+    characters such as &, +, -.
+  name: escape_misc
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+comment: Converts HTML to Markdown.
+commonfields:
+  id: HTMLtoMD
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/btfl-soup:1.0.1.10120494
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: HTMLtoMD
+outputs:
+- contextPath: HTMLtoMD.Original
+  description: The original HTML that was converted to Markdown.
+  type: String
+- contextPath: HTMLtoMD.Result
+  description: The Markdown that was converted from the passed HTML.
+  type: String
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('HTMLtoMD', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+
+
+  from markdownify import markdownify as md
+
+
+  def html_to_md_command(args):
+      """
+      Converts HTML to MD formatted string.
+      :type args: ``dict``
+      :param args: Demisto args object.
+
+      :rtype: ``tuple``
+      :return: Tuple of Demisto response parts.
+      """
+      html = str(args.get("html", ""))
+      escape_misc = argToBoolean(args.get("escape_misc", True))
+      markdown = md(html, escape_misc=escape_misc)
+      result = {"Original": html, "Result": str(markdown)}
+      outputs = {"HTMLtoMD(val.Original == obj.Original)": result}
+      return result, markdown, outputs
+
+
+  def main():
+      try:
+          args = demisto.args()
+          result, markdown, outputs = html_to_md_command(args)
+          demisto.results(
+              {
+                  "Type": entryTypes["note"],
+                  "ContentsFormat": formats["markdown"],
+                  "Contents": result,
+                  "HumanReadable": markdown,
+                  "EntryContext": outputs,
+              }
+          )
+      except Exception as expt:
+          return_error(f"Failed to execute HTMLtoMD script. Error: {expt!s}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('HTMLtoMD', 'end', __line__())
+scripttarget: 0
+signature: 286Uz7D9HaMk9iY6FkkJq3VRn+ik1WSLkaT/M/dsa2gULiZR4JFz+3CYJQWFuQnLmglOlxTOXqE1RYWD6Tl/r579FLSSXZSx9iD7b8/fIkA1D5kJcQUcaEYHG7pzpx6xEhJR01KiTI4FLjI+VME5uhCUUsaW4TguyPB7fPuaOWUOnUnqc6XbjFA+surhqMb2/Ohy3RTXOq4jdCQyEvUsnlwatCRGchMG0XW8wHQMSNEIZFmOgpG3BLF94m5RbzmsMdlH7eY2tUp5d41fqspH6gYlc42wK9cEOYV6m5fYOoY1jWEbFftLed7buN3TEDJ5dAaPjZxG4fq+WICmNEqqfg==
+subtype: python3
+system: true
+tags: []
+type: python
