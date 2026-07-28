@@ -1,0 +1,88 @@
+args:
+- description: An array of email addresses to be filtered by domain.
+  isArray: true
+  name: value
+  required: true
+  supportedModules: []
+- description: An array of domains to block list.
+  isArray: true
+  name: domain_list
+  required: true
+  supportedModules: []
+comment: Accepts an array of domains as a block list, and a list of email addresses.
+  The script then filters out any email address whose domain is in the block list.  The
+  filtered list will be returned as an array.
+commonfields:
+  id: EmailDomainBlacklist
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.22
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.8428455
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: EmailDomainBlacklist
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('EmailDomainBlacklist', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.22'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+
+
+
+  def csv_string_to_list(v):
+      if type(v) is str:  # requires python3
+          return v.lower().replace(" ", "").replace("\n", "").split(",")
+      v = [val.lower() for val in v]
+      return v
+
+
+  def main():
+      DOMAIN_LIST = csv_string_to_list(demisto.args()["domain_list"])
+      EMAIL_ADDRESSES = csv_string_to_list(demisto.args()["value"])
+
+      filtered_addresses = []
+
+      for address in EMAIL_ADDRESSES:
+          [user, domain] = address.split("@")
+
+          if domain not in DOMAIN_LIST:
+              filtered_addresses.append(address)
+
+      if len(filtered_addresses) != 0:
+          demisto.results(filtered_addresses)
+      else:
+          demisto.results(None)
+
+
+  if __name__ == "__builtin__" or __name__ == "builtins":
+      main()
+
+  register_module_line('EmailDomainBlacklist', 'end', __line__())
+scripttarget: 0
+signature: 1TWr2nrFb1UzYfCnni/2LFen15NCkwBy5339Mb72uDll54VJDD4doxIue7vYf4Tfvmr0ms/MLxygPb5nPp/pNZqByx3CBJ4bnknFnaTZS3V7ApPP2evqjK4wnMMorSvTeZjz9BMrwmaaxlI8Xw5MccBnIhHrJSmG1Rw7xIZvLkoZPnmgsA8Xgd3zIevzophRpq+iSryNBnxkYFya+P8Dvv8qu+cnuqyqDFDsjdYAMesfqeGcbRFRPcrkEBM4yYkapvBKcDoaKxHuEVvZv1gTuQXObSUJ53z29Lk2Om57KOL4MvGf5CchuixqOuL44CgguhaBwd6gMEGO8i7a0K8w9Q==
+subtype: python3
+system: true
+tags:
+- transformer
+- general
+- entirelist
+type: python
