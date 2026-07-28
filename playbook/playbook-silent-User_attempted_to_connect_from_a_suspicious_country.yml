@@ -1,0 +1,3901 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.9.0
+    isoverridable: false
+    itemVersion: 1.3.54
+    packID: CortexResponseAndRemediation
+    packName: Cortex Response And Remediation
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  This playbook addresses the following alerts:
+  - User successfully connected from a suspicious country
+
+  Playbook Stages:
+
+  Triage:
+  - Retrieve detailed event information about the suspicious country connection attempt.
+
+  Investigation:
+  - Check source IP reputation and prevalence in the organization to determine if the IP is known malicious or rarely seen.
+  - Analyze user risk score and check for risky user detections in Azure AD or suspicious activity logs in Okta.
+  - Search for related alerts in the same case that may indicate user compromise (SSO abuse, unusual VPN connections, password reset attempts).
+  - Examine user agent strings for suspicious automation tools or non-standard browsers.
+  - Verify MFA usage during the authentication attempt by querying Azure Log Analytics or Okta System Log.
+  - Check for suspicious user activity patterns in authentication logs (account locks, bypass attempts, token abuse).
+  - Analyze connection history to determine if the country is unusual for the user or organization.
+
+  Containment:
+  - The playbook automatically clears active user sessions in Azure AD or Okta to prevent continued access from the suspicious location.
+  - For alerts determined to be true positives (based on evidence analysis), the playbook prompts analysts to suspend/disable the user account.
+  - Upon analyst approval: Suspend the user in Okta or disable the account in Azure AD.
+  - For unsupported authentication systems, provides manual remediation guidance including session termination, password reset, and conditional access policies.
+
+  Requirements:
+
+  For response actions, you need one of the following integrations:
+  - Okta v2 (for Okta-based authentication systems)
+  - Microsoft Graph User (for Azure AD-based authentication systems).
+id: silent-User attempted to connect from a suspicious country
+inputSections:
+- description: Generic group for inputs
+  inputs: []
+  name: General (Inputs group)
+inputs: []
+issilent: true
+name: silent-User attempted to connect from a suspicious country
+outlinetasks: {}
+outputSections:
+- description: Generic group for outputs
+  name: General (Outputs group)
+  outputs: []
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tags:
+- TA0006 - Credential Access
+- TA0042 - Resource Development
+- T1586 - Compromise Accounts
+- T1110.001 - Password Guessing
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e5a8100c-71a3-431d-8152-405f4a7c4308
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: e5a8100c-71a3-431d-8152-405f4a7c4308
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 26
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      alert_ids:
+        simple: ${alert.id}
+      filter_alert_fields:
+        simple: "false"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Retrieves the original cloud alert details for the suspicious country
+        connection event to gather logon event information.
+      id: 775fd2c6-7e70-4f35-8694-adbf3490fb0d
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get logon event information
+      playbooktaskmissingcomponent: null
+      script: '|||core-get-cloud-original-alerts'
+      type: regular
+      version: -1
+    taskid: 775fd2c6-7e70-4f35-8694-adbf3490fb0d
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 309
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+      - "5"
+      - "14"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9f9eee3b-9baa-479e-ae44-d07e9dc89e07
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Data Collection
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 9f9eee3b-9baa-479e-ae44-d07e9dc89e07
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 167
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "19"
+      - "17"
+      - "18"
+      - "23"
+      - "20"
+      - "70"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f1e09d67-7ab4-459e-8757-a4ed67eeb91d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: f1e09d67-7ab4-459e-8757-a4ed67eeb91d
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 820
+        }
+      }
+  "5":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "101"
+      '#none#':
+      - "102"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      additional_fields:
+        simple: "false"
+      external_enrichment:
+        simple: "true"
+      ip_list:
+        simple: ${alert.localip}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Enriches the source IP address from the suspicious connection alert
+        using multiple threat intelligence integrations to gather reputation and contextual
+        data.
+      id: 5d349683-3623-47e0-ba0f-fa947195bbd4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Enrich source IP
+      playbooktaskmissingcomponent: null
+      script: ip-enrichment
+      type: regular
+      version: -1
+    taskid: 5d349683-3623-47e0-ba0f-fa947195bbd4
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -20,
+          "y": 310
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "84"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      fromdate:
+        simple: 1 day ago
+      ignore-outputs:
+        simple: "false"
+      query:
+        complex:
+          accessor: parentXDRIncident
+          root: alert
+          transformers:
+          - args:
+              delimiter:
+                value:
+                  simple: '-'
+              fields:
+                value:
+                  simple: "2"
+            operator: Cut
+          - args:
+              prefix:
+                value:
+                  simple: 'caseid:'
+              suffix:
+                value:
+                  simple: ' and (name:"A user accessed multiple unusual resources
+                    via SSO" or name:"Abnormal first access to a resource via SSO
+                    in the organization" or name:"A user connected to a VPN from a
+                    suspicious country" or name:"Suspicious Okta account reset password
+                    attempt" or name:"Unusual Azure AD interactive sign-in using PowerShell")'
+            operator: concat
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Searches for related alerts in the same case that may indicate
+        user compromise, including SSO abuse, unusual VPN connections from suspicious
+        countries, Okta password reset attempts, and unusual Azure AD PowerShell sign-ins.
+      id: 64840378-eb0a-4ffe-b8ac-339328917e4f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search case for additional alerts indicating suspicious activity
+      playbooktaskmissingcomponent: null
+      script: SearchAlertsV2
+      type: regular
+      version: -1
+    taskid: 64840378-eb0a-4ffe-b8ac-339328917e4f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1127,
+          "y": 1142
+        }
+      }
+  "8":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "98"
+      '#none#':
+      - "10"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      detected_date_time_after:
+        simple: ${TimeNow}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Retrieves Azure AD risk detections from the past 2 days to identify
+        any active risk indicators associated with the user involved in the suspicious
+        connection.
+      id: 8bce4558-8429-49cf-ad74-fd27aa1159aa
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get risky user detections
+      playbooktaskmissingcomponent: null
+      script: '|||azure-risky-users-risk-detections-list'
+      type: regular
+      version: -1
+    taskid: 8bce4558-8429-49cf-ad74-fd27aa1159aa
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -2720.75,
+          "y": 1471
+        }
+      }
+  "9":
+    continueonerror: true
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      dateFormat:
+        simple: ISO
+      daysAgo:
+        simple: "2"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Retrieves the current date and time for use in the search.
+      id: 8fe08bc4-7fa4-40e3-8be5-2eb91ecc963d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Generate search timestamp
+      playbooktaskmissingcomponent: null
+      script: GetTime
+      type: regular
+      version: -1
+    taskid: 8fe08bc4-7fa4-40e3-8be5-2eb91ecc963d
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -2720.75,
+          "y": 1345
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "75"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: AzureRiskyUserDetections
+      value:
+        complex:
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: AzureRiskyUsers.RiskDetection.userPrincipalName
+              operator: isEqualString
+              right:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert.event.auth_identity
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: AzureRiskyUsers.RiskDetection.riskState
+              operator: isEqualString
+              right:
+                value:
+                  simple: atRisk
+            - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: AzureRiskyUsers.RiskDetection.riskState
+              operator: isEqualString
+              right:
+                value:
+                  simple: confirmedCompromised
+          root: AzureRiskyUsers.RiskDetection
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves a context key with a value of 1 if the user is risky in Azure
+        AD, 0 otherwise.
+      id: eadf8ea0-3090-4173-b46a-830685152b9f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save detection results
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: eadf8ea0-3090-4173-b46a-830685152b9f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -2720.75,
+          "y": 1621
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e6f585a3-7664-4b67-80ad-503639375874
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: User Risk Detections
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: e6f585a3-7664-4b67-80ad-503639375874
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -2720.75,
+          "y": 1230
+        }
+      }
+  "14":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "103"
+      '#none#':
+      - "104"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      user_name:
+        simple: ${alert.username}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Retrieves user data and risk score from multiple integrations to
+        assess the risk level of the user involved in the suspicious country connection.
+      id: aa9b5ffa-1ee2-4bef-b227-ce4af09bf2a0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get user risk score
+      playbooktaskmissingcomponent: null
+      script: get-user-data
+      type: regular
+      version: -1
+    taskid: aa9b5ffa-1ee2-4bef-b227-ce4af09bf2a0
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 867,
+          "y": 309
+        }
+      }
+  "17":
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "83"
+      - "82"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a304872a-0cfe-4987-8aa4-1b41b1aad484
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Source IP
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: a304872a-0cfe-4987-8aa4-1b41b1aad484
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 990
+        }
+      }
+  "18":
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "80"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: efcb46a1-7f3c-4a14-8f96-ace46398726d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: User Risk
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: efcb46a1-7f3c-4a14-8f96-ace46398726d
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -166.75,
+          "y": 1000
+        }
+      }
+  "19":
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: db99777e-8cb9-44ee-8e45-9ba9faa1cded
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Related Alerts
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: db99777e-8cb9-44ee-8e45-9ba9faa1cded
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1127,
+          "y": 1000
+        }
+      }
+  "20":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.raw_abioc.event.auth_server
+          operator: isEqualString
+          right:
+            value:
+              simple: Azure
+      label: Azure
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.raw_abioc.event.auth_server
+          operator: isEqualString
+          right:
+            value:
+              simple: Okta
+      label: Okta
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "95"
+      Azure:
+      - "21"
+      Okta:
+      - "22"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks the source vendor of the alert.
+      id: d6df5410-bbce-4349-a4fa-e0c59cf4e05a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: What is the source vendor for the alert?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: d6df5410-bbce-4349-a4fa-e0c59cf4e05a
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -1605,
+          "y": 952.5
+        }
+      }
+  "21":
+    continueonerrortype: ""
+    id: "21"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "36"
+      - "12"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: cbef603d-368c-4ac0-894d-ac1b7c0fd90b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Azure
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: cbef603d-368c-4ac0-894d-ac1b7c0fd90b
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -3139,
+          "y": 1099.5
+        }
+      }
+  "22":
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "27"
+      - "37"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: eddf65b9-3b08-4ee6-8b82-2193d34806b6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Okta
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: eddf65b9-3b08-4ee6-8b82-2193d34806b6
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -1299,
+          "y": 1099.5
+        }
+      }
+  "23":
+    continueonerrortype: ""
+    id: "23"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "24"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 0eb404e8-e6b8-4771-8281-95290dd2c073
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: User Agent
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 0eb404e8-e6b8-4771-8281-95290dd2c073
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1615,
+          "y": 1000
+        }
+      }
+  "24":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: Core.OriginalAlert.event.action_user_agent
+                    operator: match
+                    right:
+                      value:
+                        simple: \b(Python-urllib|libwww-perl|Scrapy|curl|Wget|sqlmap|Nikto|Xrumer|Hydra|JohnTheRipper|LOIC|HOIC|MJ12bot|Baiduspider|BlackWidow|HeadlessChrome|PhantomJS|Selenium|python-requests|node-fetch|PostmanRuntime|GuzzleHttp)\b
+                root: Core.OriginalAlert.event.action_user_agent
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: Suspicious
+    continueonerrortype: ""
+    id: "24"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "56"
+      Suspicious:
+      - "53"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks for known bad user agents.
+      id: a2bec579-5d18-42bf-af3f-d0dbc3e33bb2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is the user agent suspicious?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: a2bec579-5d18-42bf-af3f-d0dbc3e33bb2
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1615,
+          "y": 1142
+        }
+      }
+  "25":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "25"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "99"
+      '#none#':
+      - "43"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: OktaSuspiciousActivityLogs=
+      filter:
+        simple: (outcome.result eq "SUCCESS" AND (eventType eq "app.oauth2.client_id_rate_limit_warning"
+          OR eventType eq "user.mfa.attempt_bypass")) OR (outcome.result eq "FAILURE"
+          AND (eventType eq "user.account.lock" OR eventType eq "user.authentication.auth_via_social"
+          OR eventType eq "user.account.unlock" OR eventType eq "user.account.use_token"
+          OR eventType eq "app.oauth2.token.grant" OR eventType eq "app.oauth2.as.evaluate.claim"
+          OR eventType eq "app.oauth2.as.token.revoke")) AND actor.alternateId eq
+          "${Core.OriginalAlert.event.auth_normalized_user.upn}"
+      ignore-outputs:
+        simple: "true"
+      since:
+        complex:
+          accessor: created
+          root: alert
+          transformers:
+          - args:
+              variation:
+                value:
+                  simple: 5 hours ago
+            operator: ModifyDateTime
+      until:
+        simple: ${alert.created}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Queries Okta system logs for suspicious user activity patterns
+        within a 5-hour window before the alert, including account lockouts, MFA bypass
+        attempts, OAuth token abuse, and social authentication failures.
+      id: 9e00de20-77a1-49c7-b54d-81d835bc24ef
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Search Okta logs for suspicious user activity
+      playbooktaskmissingcomponent: null
+      script: '|||okta-get-logs'
+      type: regular
+      version: -1
+    taskid: 9e00de20-77a1-49c7-b54d-81d835bc24ef
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -1835,
+          "y": 1359
+        }
+      }
+  "27":
+    continueonerrortype: ""
+    id: "27"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "25"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 2785b8e5-7c3d-4bde-8977-5cd47feb85cb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Suspicious User Activity Logs
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 2785b8e5-7c3d-4bde-8977-5cd47feb85cb
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -1835,
+          "y": 1230
+        }
+      }
+  "28":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "100"
+      '#none#':
+      - "45"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: OktaMFALogs=
+      filter:
+        simple: outcome.result eq "SUCCESS" AND actor.alternateId eq "${Core.OriginalAlert.event.auth_normalized_user.upn}"
+          AND client.ipAddress eq  "${Core.OriginalAlert.event.action_local_ip}" AND
+          eventType eq "user.authentication.auth_via_mfa"
+      ignore-outputs:
+        simple: "true"
+      since:
+        complex:
+          accessor: created
+          root: alert
+          transformers:
+          - args:
+              variation:
+                value:
+                  simple: 30 min ago
+            operator: ModifyDateTime
+      until:
+        simple: ${alert.created}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Queries Okta system logs to check whether the user performed multi-factor
+        authentication during the suspicious sign-in attempt within a 30-minute window.
+      id: 4991f300-e94a-4609-a8cf-8c3f4a782e7c
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Search Okta Authentication logs for user MFA usage
+      playbooktaskmissingcomponent: null
+      script: '|||okta-get-logs'
+      type: regular
+      version: -1
+    taskid: 4991f300-e94a-4609-a8cf-8c3f4a782e7c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -899,
+          "y": 1481
+        }
+      }
+  "29":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "96"
+      '#none#':
+      - "46"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        simple: |
+          let targetUserUPN = "${Core.OriginalAlert.raw_abioc.event.auth_normalized_user.upn}";
+          let specificTimeISO = ${alert.created};
+
+          let endTime = todatetime(specificTimeISO);
+          let startTime = endTime - 30m;
+
+          SigninLogs
+          | where TimeGenerated between (startTime .. endTime)
+          | where ResultType == 0
+          | where AuthenticationRequirement == "multiFactorAuthentication"
+          | where UserPrincipalName =~ targetUserUPN
+          | where IPAddress == "${Core.OriginalAlert.event.action_local_ip}"
+      timeout:
+        simple: "20"
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: Azure Log Analytics
+      description: Queries Azure Log Analytics SigninLogs to check whether the user
+        performed multi-factor authentication during the suspicious sign-in attempt
+        within a 30-minute window before the alert creation time.
+      id: 2bb8b170-2745-4a46-ad58-07ff130b63cc
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Search for user MFA Sign-in Logs in Azure
+      playbooktaskmissingcomponent: null
+      script: Azure Log Analytics|||azure-log-analytics-execute-query
+      type: regular
+      version: -1
+    taskid: 2bb8b170-2745-4a46-ad58-07ff130b63cc
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -3559,
+          "y": 1471
+        }
+      }
+  "31":
+    continueonerrortype: ""
+    id: "31"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence
+      value:
+        simple: '{"Name": "user_signed_in_with_mfa", "Score": 0, "Comment": "The user
+          signed-in with multi-factor authentication. An account compromise is less
+          likely for such cases."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an informational Evidence key in the context indicating that
+        multi-factor authentication was used in the user's sign-in attempt. This reduces
+        the likelihood for an account compromise.
+      id: 61c80fbb-a608-482a-b136-51ec37e02e6b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Evidence: User performed MFA to connect (Azure AD)'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 61c80fbb-a608-482a-b136-51ec37e02e6b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -3980,
+          "y": 1752
+        }
+      }
+  "32":
+    continueonerrortype: ""
+    id: "32"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      "no":
+      - "56"
+      "yes":
+      - "29"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      brandname:
+        simple: Azure Log Analytics
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the Azure Log Analytics integration is available
+        and configured, which is required to query Azure sign-in logs for MFA verification.
+      id: e038b243-1233-4931-b71f-ba9454be0b3e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Azure Log Analytics available?
+      playbooktaskmissingcomponent: null
+      script: IsIntegrationAvailable
+      type: condition
+      version: -1
+    taskid: e038b243-1233-4931-b71f-ba9454be0b3e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -3559,
+          "y": 1345
+        }
+      }
+  "33":
+    continueonerrortype: ""
+    id: "33"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence
+      value:
+        simple: '{"Name": "azure_sign_in_without_mfa", "Score": 1, "Comment": "The
+          sign-in logs in Azure AD show that the user logged in without multi-factor
+          authentication. This increases the risk for account compromise."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves a new evidence context key indicating that sign-in logs for
+        the user in Azure AD were searched, and showed that a sign-in was performed
+        without the use of multi-factor authentication.
+      id: c2f1afd7-3811-49f9-9a51-086d92426723
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Evidence: User connected without MFA (Azure AD)'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: c2f1afd7-3811-49f9-9a51-086d92426723
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -3557,
+          "y": 1752
+        }
+      }
+  "36":
+    continueonerrortype: ""
+    id: "36"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "32"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 729e64c2-de9d-435a-8193-3425254c4c37
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: MFA Verification
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 729e64c2-de9d-435a-8193-3425254c4c37
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -3559,
+          "y": 1230
+        }
+      }
+  "37":
+    continueonerrortype: ""
+    id: "37"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "38"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: af65040e-ec9f-49e6-815a-cdd34b3a6e5c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: MFA Verification
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: af65040e-ec9f-49e6-815a-cdd34b3a6e5c
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -899,
+          "y": 1230
+        }
+      }
+  "38":
+    continueonerrortype: ""
+    id: "38"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      "no":
+      - "56"
+      "yes":
+      - "28"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      brandname:
+        simple: Okta v2
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the Okta v2 integration is available and configured,
+        which is required to query Okta logs for MFA verification.
+      id: 9d537878-ee5c-4136-985a-50878ad634ff
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Okta v2 available?
+      playbooktaskmissingcomponent: null
+      script: IsIntegrationAvailable
+      type: condition
+      version: -1
+    taskid: 9d537878-ee5c-4136-985a-50878ad634ff
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -899,
+          "y": 1343
+        }
+      }
+  "43":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: OktaSuspiciousActivityLogs
+          operator: isNotEmpty
+          right:
+            value: {}
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: OktaSuspiciousActivityLogs
+          operator: notContainsGeneral
+          right:
+            value:
+              simple: No logs found
+      label: "yes"
+    continueonerrortype: ""
+    id: "43"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "56"
+      "yes":
+      - "76"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if logs were returned from Okta.
+      id: c8f67ea6-9bad-4696-9856-43210a8f0bc7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Were suspicious activity logs found in Okta?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c8f67ea6-9bad-4696-9856-43210a8f0bc7
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -1835,
+          "y": 1511
+        }
+      }
+  "45":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: OktaMFALogs
+          operator: isNotEmpty
+          right:
+            value: {}
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: OktaMFALogs
+          operator: notContainsGeneral
+          right:
+            value:
+              simple: No logs found
+      label: "yes"
+    continueonerrortype: ""
+    id: "45"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "79"
+      "yes":
+      - "78"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether logs regarding usage of MFA by the user were found.
+      id: 444a81bf-ded1-4e1f-b655-d315c70f1f06
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Were logs indicating usage of MFA found in Okta?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 444a81bf-ded1-4e1f-b655-d315c70f1f06
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -899,
+          "y": 1621
+        }
+      }
+  "46":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: AzureLogAnalytics.Query.Data
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "46"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "33"
+      "yes":
+      - "31"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if logs indicating usage of MFA were returned.
+      id: 9a96aa09-ed71-4832-a35b-4a59a7cf658e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Were MFA logs returned from Azure?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 9a96aa09-ed71-4832-a35b-4a59a7cf658e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -3559,
+          "y": 1631
+        }
+      }
+  "47":
+    continueonerrortype: ""
+    id: "47"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: HighRiskUsername
+      value:
+        complex:
+          accessor: Username
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: UserData.RiskLevel
+              operator: isEqualString
+              right:
+                value:
+                  simple: HIGH
+          root: UserData
+          transformers:
+          - operator: LastArrayElement
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves the username to context under the key "HighRiskUsername"
+        if the user's risk level is HIGH, for use in subsequent investigation and
+        remediation decisions.
+      id: 660b02f7-8aba-4041-8fc7-5b5145e5d860
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save risky user result
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 660b02f7-8aba-4041-8fc7-5b5145e5d860
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 867,
+          "y": 655
+        }
+      }
+  "48":
+    continueonerrortype: ""
+    id: "48"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence
+      value:
+        simple: '{"Name": "core_ir_user_risk", "Score": 1, "Comment": "The user is
+          risky in Core Investigation and Response."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an evidence context key indicating that the user is flagged
+        as risky in Core Investigation and Response, contributing to the overall risk
+        assessment score.
+      id: 134ed95c-da29-46b9-85fa-ac60566197ee
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Evidence: User is risky (Core IR)'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 134ed95c-da29-46b9-85fa-ac60566197ee
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -166.75,
+          "y": 1315
+        }
+      }
+  "49":
+    continueonerrortype: ""
+    id: "49"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: IPNotPrevalent
+      value:
+        simple: '${.=val.Core && val.Core.AnalyticsPrevalence && val.Core.AnalyticsPrevalence.Ip
+          && val.Core.AnalyticsPrevalence.Ip[0].data && val.Core.AnalyticsPrevalence.Ip[0].data.local_prevalence
+          && val.Core.AnalyticsPrevalence.Ip[0].data.local_prevalence.value <= 0.5
+          ? "True" : "False"}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves a context key indicating whether the source IP has low local
+        prevalence (seen by 50% or fewer of the organization's assets), marking it
+        as "True" if not prevalent or "False" otherwise.
+      id: 6c7d90c8-a2c3-4106-9e98-f2095a762319
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save IP local prevalence
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 6c7d90c8-a2c3-4106-9e98-f2095a762319
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -235,
+          "y": 665
+        }
+      }
+  "50":
+    continueonerrortype: ""
+    id: "50"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: MaliciousIP
+      value:
+        complex:
+          accessor: Value
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: IPEnrichment.TIMScore
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "3"
+          root: IPEnrichment
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves a context key indicating 1 if the IP is malicious and 0 if
+        benign.
+      id: 4156468e-f407-4f0d-b417-0fe387f88bd4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Save IP reputation
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 4156468e-f407-4f0d-b417-0fe387f88bd4
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 200,
+          "y": 665
+        }
+      }
+  "51":
+    continueonerrortype: ""
+    id: "51"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence
+      value:
+        simple: '{"Name": "source_ip_reputation", "Score": 1, "Comment": "The source
+          IP is flagged as malicious by threat intelligence integrations."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an evidence context key indicating that the source IP address
+        is flagged as malicious by threat intelligence integrations, contributing
+        to the overall risk assessment score.
+      id: e7f646dc-17ad-4f6c-9acd-d03dc1ec900c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Evidence: The source IP is malicious'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: e7f646dc-17ad-4f6c-9acd-d03dc1ec900c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 659,
+          "y": 1296
+        }
+      }
+  "53":
+    continueonerrortype: ""
+    id: "53"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence
+      value:
+        simple: '{"Name": "suspicious_user_agent", "Score": 1, "Comment": "The User
+          Agent used by the user is suspicious: ${Core.OriginalAlert.event.action_user_agent}."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an evidence context key indicating that the user agent string
+        matches known suspicious automation tools or non-standard browsers, contributing
+        to the overall risk assessment score.
+      id: 86ad7300-bdf2-4fd5-8118-57daaf237c31
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Evidence: User agent is suspicious'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 86ad7300-bdf2-4fd5-8118-57daaf237c31
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1615,
+          "y": 1325
+        }
+      }
+  "56":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Score
+                root: Evidence
+                transformers:
+                - args:
+                    applyIfEmpty: {}
+                    defaultValue:
+                      value:
+                        simple: "0"
+                  operator: SetIfEmpty
+                - operator: SumList
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "3"
+      label: True Positive
+    continueonerrortype: ""
+    id: "56"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "58"
+      True Positive:
+      - "66"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Evaluates the total evidence score collected during the investigation
+        and determines whether the accumulated findings meet the threshold (score
+        >= 3) to classify the alert as a true positive requiring remediation.
+      id: 8cf1e96b-23a8-48c4-903f-615eb868ff58
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Any evidence found requiring remediation?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 8cf1e96b-23a8-48c4-903f-615eb868ff58
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 468,
+          "y": 2198
+        }
+      }
+  "57":
+    continueonerrortype: ""
+    id: "57"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "60"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 54d0bacd-8788-44ed-885a-04c01a549bcf
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Remediation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 54d0bacd-8788-44ed-885a-04c01a549bcf
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 468,
+          "y": 2513
+        }
+      }
+  "58":
+    continueonerrortype: ""
+    id: "58"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "89"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 429d647d-3bc3-41bd-994d-5596aa558aaf
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Inconclusive
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 429d647d-3bc3-41bd-994d-5596aa558aaf
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1017,
+          "y": 2406.5
+        }
+      }
+  "59":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "59"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "88"
+      '#none#':
+      - "91"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      brands:
+        simple: Okta v2
+      user_name:
+        simple: ${Core.OriginalAlert.event.auth_identity}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Clears the active sessions in Okta for the user involved in the
+        suspicious country connection to prevent continued access from the suspicious
+        location.
+      id: 93af12c2-23ef-4ba6-ba71-4cd6f8057c70
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Clear user session in Okta
+      playbooktaskmissingcomponent: null
+      script: clear-user-session
+      type: regular
+      version: -1
+    taskid: 93af12c2-23ef-4ba6-ba71-4cd6f8057c70
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 145,
+          "y": 2788
+        }
+      }
+  "60":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.raw_abioc.event.auth_server
+          operator: isEqualString
+          right:
+            value:
+              simple: Azure
+      label: Azure
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.raw_abioc.event.auth_server
+          operator: isEqualString
+          right:
+            value:
+              simple: Okta
+      label: Okta
+    continueonerrortype: ""
+    id: "60"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "69"
+      Azure:
+      - "64"
+      Okta:
+      - "59"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks the source vendor of the alert.
+      id: 956e56ad-7e04-4b79-8b60-5f2ccda3b861
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: What is the alert source vendor?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 956e56ad-7e04-4b79-8b60-5f2ccda3b861
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 470,
+          "y": 2630
+        }
+      }
+  "61":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "61"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "94"
+      '#none#':
+      - "67"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      username:
+        simple: ${Core.OriginalAlert.event.auth_identity}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Suspends the user account in Okta to prevent further access from
+        the suspicious location after analyst approval. This is performed as part
+        of the remediation for a confirmed true positive alert.
+      id: c976e9db-9138-48b4-84fc-5cfe4abcc503
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Suspend user in Okta
+      playbooktaskmissingcomponent: null
+      script: '|||okta-suspend-user'
+      type: regular
+      version: -1
+    taskid: c976e9db-9138-48b4-84fc-5cfe4abcc503
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -250,
+          "y": 3370
+        }
+      }
+  "63":
+    continueonerrortype: ""
+    id: "63"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body:
+        complex:
+          accessor: auth_identity
+          root: Core.OriginalAlert.event
+          transformers:
+          - args:
+              prefix:
+                value:
+                  simple: "Would you like to disable the following user? \n"
+              suffix: {}
+            operator: concat
+      cc: null
+      format: ""
+      methods: []
+      replyOptions:
+      - "Yes"
+      - "No"
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      "No":
+      - "67"
+      "Yes":
+      - "61"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        We found suspicious indicators related to the user's connection or behavior and have taken action automatically by clearing the user's current sessions in Okta.
+
+        Review the findings and decide if the user should also be suspended in Okta:
+
+        ### Identity Information
+        The identity that connected: `${Core.OriginalAlert.event.auth_identity}`
+
+
+        ---
+
+        ### Evidence found:
+        ${.=((function() { var e = val.Evidence ? [].concat(val.Evidence) : []; var f = e.filter(x => x.Comment && x.Comment.length > 0); return f.length > 0 ? f.map(item => "1. +" + item.Name.replace(/_/g, " ").replace(/\b\w+\b/g, (w) => ["IP", "DC", "CA", "DNS", "AI", "SMB", "XQL", "ID", "URL", "CVE", "MITRE", "OS", "RDP", "SSH", "WMI", "VNC", "TOR", "DLL", "MD5", "SHA1", "SHA256", "HTTP", "HTTPS", "TCP", "UDP", "ICMP", "URI", "AD", "SID", "GUID", "UUID", "MAC", "VM", "API", "JSON", "XML", "ISP", "AWS", "GCP", "EXE", "MSI", "BAT"].includes(w.toUpperCase()) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()) + "+ - " + item.Comment).join("\n") : "  No Evidence Found."; })())}
+      id: 230f230f-05a3-4eb5-9d51-46a8f8ef47b8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Analyst review - should the user be disabled in Okta?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 230f230f-05a3-4eb5-9d51-46a8f8ef47b8
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -250,
+          "y": 3216
+        }
+      }
+  "64":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "64"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "87"
+      '#none#':
+      - "90"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      brands:
+        simple: Microsoft Graph User
+      user_name:
+        simple: ${Core.OriginalAlert.event.auth_identity}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Clears the active sessions in Azure AD for the user involved in
+        the suspicious country connection to prevent continued access from the suspicious
+        location.
+      id: 3f7b8fd6-c43e-4ebb-bef8-31dbd7464db2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Clear user session in Azure AD
+      playbooktaskmissingcomponent: null
+      script: clear-user-session
+      type: regular
+      version: -1
+    taskid: 3f7b8fd6-c43e-4ebb-bef8-31dbd7464db2
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 786,
+          "y": 2788
+        }
+      }
+  "65":
+    continueonerrortype: ""
+    id: "65"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body:
+        complex:
+          accessor: auth_identity
+          root: Core.OriginalAlert.event
+          transformers:
+          - args:
+              prefix:
+                value:
+                  simple: "Would you like to disable the following user? \n"
+              suffix: {}
+            operator: concat
+      cc: null
+      format: ""
+      methods: []
+      replyOptions:
+      - "Yes"
+      - "No"
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      "No":
+      - "67"
+      "Yes":
+      - "68"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        We found suspicious indicators related to the user's connection or behavior and have taken action automatically by clearing the user's current sessions in Azure AD.
+
+        Review the findings and decide if the user should also be disabled in Azure AD:
+
+        ### Identity Information
+        The identity that connected: `${Core.OriginalAlert.event.auth_identity}`
+
+        ### Evidence found:
+        ${.=((function() { var e = val.Evidence ? [].concat(val.Evidence) : []; var f = e.filter(x => x.Comment && x.Comment.length > 0); return f.length > 0 ? f.map(item => "1. +" + item.Name.replace(/_/g, " ").replace(/\b\w+\b/g, (w) => ["IP", "DC", "CA", "DNS", "AI", "SMB", "XQL", "ID", "URL", "CVE", "MITRE", "OS", "RDP", "SSH", "WMI", "VNC", "TOR", "DLL", "MD5", "SHA1", "SHA256", "HTTP", "HTTPS", "TCP", "UDP", "ICMP", "URI", "AD", "SID", "GUID", "UUID", "MAC", "VM", "API", "JSON", "XML", "ISP", "AWS", "GCP", "EXE", "MSI", "BAT"].includes(w.toUpperCase()) ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()) + "+ - " + item.Comment).join("\n") : "  No Evidence Found."; })())}
+      id: 7fc0162e-421c-441b-a9e1-eca630d53bfb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Analyst review - should the user be disabled in Azure AD?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 7fc0162e-421c-441b-a9e1-eca630d53bfb
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1130,
+          "y": 3216
+        }
+      }
+  "66":
+    continueonerrortype: ""
+    id: "66"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "57"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      severity:
+        simple: Medium
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Increases the alert severity to Medium when the investigation evidence
+        score reaches the true positive threshold, indicating confirmed suspicious
+        activity from the connection attempt.
+      id: 3682d0a5-2537-4e0b-8c27-a0ce0ab8f67e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Increase alert severity
+      playbooktaskmissingcomponent: null
+      script: IncreaseAlertSeverity
+      type: regular
+      version: -1
+    taskid: 3682d0a5-2537-4e0b-8c27-a0ce0ab8f67e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 468,
+          "y": 2399
+        }
+      }
+  "67":
+    continueonerrortype: ""
+    id: "67"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      id: b6748552-ecc1-481e-8538-1fc01813c074
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: b6748552-ecc1-481e-8538-1fc01813c074
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 3930
+        }
+      }
+  "68":
+    continueonerror: true
+    continueonerrortype: errorPath
+    id: "68"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#error#':
+      - "92"
+      '#none#':
+      - "93"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      brands:
+        simple: Microsoft Graph User
+      user_email:
+        simple: ${Core.OriginalAlert.event.auth_identity}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Disables the user account in Azure AD via Microsoft Graph User
+        to prevent further access after analyst approval, as part of the remediation
+        for a confirmed true positive alert.
+      id: b3225665-1c07-49c8-b560-1afc28e78181
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Disable user in Azure AD
+      playbooktaskmissingcomponent: null
+      script: disable-user
+      type: regular
+      version: -1
+    taskid: b3225665-1c07-49c8-b560-1afc28e78181
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1130,
+          "y": 3337
+        }
+      }
+  "69":
+    continueonerrortype: ""
+    id: "69"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "67"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Manual remediation is required for one of the following reasons:\n1.
+        The alert requires remediation, but remediation was unsuccessful. Please ensure
+        the Okta/Azure AD integration is enabled and properly configured.\n\n2. Automated
+        remediation is not available for this authentication system (not Okta or Azure).\n\nPlease
+        review the investigation findings and remediate the alert as needed.\n\n**User:**
+        ${Core.OriginalAlert.event.auth_identity}\n\n**Authentication System:** ${Core.OriginalAlert.raw_abioc.event.auth_server}\n\n**Source
+        Country:** ${Core.OriginalAlert.event.action_country}\n\n\n### Evidence found:\n${.=((function()
+        { var e = val.Evidence ? [].concat(val.Evidence) : []; var f = e.filter(x
+        => x.Comment && x.Comment.length > 0); return f.length > 0 ? f.map(item =>
+        \"1. +\" + item.Name.replace(/_/g, \" \").replace(/\\b\\w+\\b/g, (w) => [\"IP\",
+        \"DC\", \"CA\", \"DNS\", \"AI\", \"SMB\", \"XQL\", \"ID\", \"URL\", \"CVE\",
+        \"MITRE\", \"OS\", \"RDP\", \"SSH\", \"WMI\", \"VNC\", \"TOR\", \"DLL\", \"MD5\",
+        \"SHA1\", \"SHA256\", \"HTTP\", \"HTTPS\", \"TCP\", \"UDP\", \"ICMP\", \"URI\",
+        \"AD\", \"SID\", \"GUID\", \"UUID\", \"MAC\", \"VM\", \"API\", \"JSON\", \"XML\",
+        \"ISP\", \"AWS\", \"GCP\", \"EXE\", \"MSI\", \"BAT\"].includes(w.toUpperCase())
+        ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        + \"+ - \" + item.Comment).join(\"\\n\") : \"  No Evidence Found.\"; })())}\n\n###
+        Investigation Errors:\n${.=((function() { var e = val.Errors? [].concat(val.Errors)
+        : []; var f = e.filter(x => x.Comment && x.Comment.length > 0); return f.length
+        > 0 ? f.map(item => \"1. +\" + item.Name.replace(/_/g, \" \").replace(/\\b\\w+\\b/g,
+        (w) => [\"IP\", \"DC\", \"CA\", \"DNS\", \"AI\", \"SMB\", \"XQL\", \"ID\",
+        \"URL\", \"CVE\", \"MITRE\", \"OS\", \"RDP\", \"SSH\", \"WMI\", \"VNC\", \"TOR\",
+        \"DLL\", \"MD5\", \"SHA1\", \"SHA256\", \"HTTP\", \"HTTPS\", \"TCP\", \"UDP\",
+        \"ICMP\", \"URI\", \"AD\", \"SID\", \"GUID\", \"UUID\", \"MAC\", \"VM\", \"API\",
+        \"JSON\", \"XML\", \"ISP\", \"AWS\", \"GCP\", \"EXE\", \"MSI\", \"BAT\"].includes(w.toUpperCase())
+        ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        + \"+ - \" + item.Comment).join(\"\\n\") : \"  No Errors Found.\"; })())}\n\n###
+        Manual Remediation Steps\n\n**Immediate Actions:** Terminate any active user
+        sessions in your authentication system to prevent continued access from the
+        suspicious location. Reset the user's password and invalidate any existing
+        authentication tokens or refresh tokens.\n        \n**Access Controls:** Temporarily
+        disable the user account or implement conditional access policies to block
+        connections from the suspicious country or IP range until the alert can be
+        fully investigated and verified.\n        \n**MFA Enforcement:** Ensure multi-factor
+        authentication is enabled and properly configured for the user. Consider requiring
+        re-enrollment of MFA devices if there are concerns about device compromise."
+      id: d3e0cee3-6629-40f3-8cc6-ad0095acfb28
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual remediation
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: d3e0cee3-6629-40f3-8cc6-ad0095acfb28
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 3750
+        }
+      }
+  "70":
+    continueonerrortype: ""
+    id: "70"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "71"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 39cf9c14-8beb-46f6-8c1b-5efd5226f6cb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Connection Commonality Check
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 39cf9c14-8beb-46f6-8c1b-5efd5226f6cb
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 2166,
+          "y": 1010
+        }
+      }
+  "71":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.norm_auth_user_identity_count_distinct_action_country_successful_sso
+          operator: lessThanOrEqual
+          right:
+            value:
+              simple: "1"
+      - - left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.event.action_country_count_distinct_users_sso_successful
+          operator: lessThanOrEqual
+          right:
+            value:
+              simple: "2"
+      label: Unusual
+    continueonerrortype: ""
+    id: "71"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "56"
+      Unusual:
+      - "86"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: RareConnection
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the number of users performing successful SSO in the
+        last month is 2 or lower, and if the number of distinct countries to which
+        this user has connected in the last month is 1 or lower.
+      id: 7db17255-3afc-4f3c-9c26-f41b7c21bbeb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is this behavior unusual for the user / org?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 7db17255-3afc-4f3c-9c26-f41b7c21bbeb
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 2166,
+          "y": 1142
+        }
+      }
+  "74":
+    continueonerrortype: ""
+    id: "74"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence
+      value:
+        simple: '{"Name": "azure_ad_risk_detections", "Score": 1, "Comment": "Risk
+          detections were found for the user in Azure AD: ${AzureRiskyUserDetections}"}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an evidence context key indicating that the risk detections
+        were found for the user in Azure AD.
+      id: f6604784-b11b-4a87-8453-7db50020d97d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Evidence: risk detections found for Azure AD user'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: f6604784-b11b-4a87-8453-7db50020d97d
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -2720.75,
+          "y": 1890
+        }
+      }
+  "75":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: AzureRiskyUserDetections
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "75"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "56"
+      "yes":
+      - "74"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the user's risk state in Azure Risky Users is "at risk"
+        or "confirmed compromised".
+      id: b3312023-78e6-4d87-9930-429bdd399662
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is the user risky or compromised?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: b3312023-78e6-4d87-9930-429bdd399662
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -2720.75,
+          "y": 1754
+        }
+      }
+  "76":
+    continueonerrortype: ""
+    id: "76"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence
+      value:
+        simple: '{"Name": "okta_suspicious_activity", "Score": 1, "Comment": "Suspicious
+          user activity logs were observed in Okta."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an evidence context key indicating that Suspicious Activity
+        logs were found in Okta for this user.
+      id: 4d5c9e65-7887-48e6-9b3d-95310cd31de8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Evidence: suspicious user activity found in Okta'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 4d5c9e65-7887-48e6-9b3d-95310cd31de8
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -1835,
+          "y": 1706
+        }
+      }
+  "78":
+    continueonerrortype: ""
+    id: "78"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence
+      value:
+        simple: '{"Name": "user_signed_in_with_mfa", "Score": 0, "Comment": "The user
+          signed-in with multi-factor authentication. An account compromise is less
+          likely for such cases."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an informational Evidence key in the context indicating that
+        multi-factor authentication was used in the user's Okta sign-in attempt. This
+        reduces the likelihood for an account compromise.
+      id: 4ef2af46-b377-49e7-8776-54f8b7e448cd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Evidence: User performed MFA to connect (Okta)'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 4ef2af46-b377-49e7-8776-54f8b7e448cd
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -505,
+          "y": 1774
+        }
+      }
+  "79":
+    continueonerrortype: ""
+    id: "79"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence
+      value:
+        simple: '{"Name": "okta_sign_in_without_mfa", "Score": 1, "Comment": "The
+          authentication logs in Okta indicate that the user logged in without multi-factor
+          authentication. This increases the risk for account compromise."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves a new evidence context key indicating that authentication
+        logs for the user in Okta were searched, and indicated that a sign-in was
+        performed without the use of multi-factor authentication.
+      id: ab42f7cb-4e91-492c-b1d3-da6f25b607ce
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Evidence: User connected without MFA (Okta)'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: ab42f7cb-4e91-492c-b1d3-da6f25b607ce
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -899,
+          "y": 1774
+        }
+      }
+  "80":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: HighRiskUsername
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "80"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "56"
+      "yes":
+      - "48"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the user is risky in Core IR.
+      id: 2ebb3214-eabf-466f-87c5-0cd0d5f1f324
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is the user risky in Core IR?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 2ebb3214-eabf-466f-87c5-0cd0d5f1f324
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -166.75,
+          "y": 1149
+        }
+      }
+  "81":
+    continueonerrortype: ""
+    id: "81"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence
+      value:
+        simple: '{"Name": "source_ip_prevalence", "Score": 0, "Comment": "The source
+          IP is not prevalent locally, meaning it is not seen often in your organization."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an informational evidence context key indicating that the
+        source IP is not commonly seen in the organization, which provides additional
+        context for the investigation.
+      id: da41da7a-87f1-47c4-b90a-4a452ec119cd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Evidence: The source IP is not prevalent locally'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: da41da7a-87f1-47c4-b90a-4a452ec119cd
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 1296
+        }
+      }
+  "82":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: IPNotPrevalent
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "82"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "56"
+      "yes":
+      - "81"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the source IP address has low local prevalence in
+        the organization based on the previously saved prevalence data.
+      id: 179dcaef-49eb-4c0d-afc7-33e3236c9c1c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is the IP not prevalent locally?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 179dcaef-49eb-4c0d-afc7-33e3236c9c1c
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 265,
+          "y": 1146
+        }
+      }
+  "83":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: MaliciousIP
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "83"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "56"
+      "yes":
+      - "51"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the source IP address was flagged as malicious based
+        on the previously saved threat intelligence reputation data.
+      id: 39eb1049-bade-48f5-a53e-e190fa253105
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Does the IP have malicious reputation?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 39eb1049-bade-48f5-a53e-e190fa253105
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 659,
+          "y": 1142
+        }
+      }
+  "84":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: foundIncidents.id
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "84"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "56"
+      "yes":
+      - "85"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if related alerts indicating suspicious user activity were
+        found.
+      id: 03d2bff3-13ab-4171-b908-02f3edf28c65
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Were related alerts found?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 03d2bff3-13ab-4171-b908-02f3edf28c65
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1127,
+          "y": 1270
+        }
+      }
+  "85":
+    continueonerrortype: ""
+    id: "85"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence
+      value:
+        simple: '{"Name": "related_alerts", "Score": 1, "Comment": "Related alerts
+          showing suspicious user activity were found in the case. The alerts: ${foundIncidents.name=>val.join(",")}."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an evidence context key indicating that related alerts showing
+        suspicious user activity (such as SSO abuse, VPN connections from suspicious
+        countries, or password reset attempts) were found in the same case, contributing
+        to the overall risk assessment score.
+      id: 76a2babf-5b3c-4154-92bf-e25c5c29e342
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Evidence: Related alerts were found'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 76a2babf-5b3c-4154-92bf-e25c5c29e342
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1127,
+          "y": 1406
+        }
+      }
+  "86":
+    continueonerrortype: ""
+    id: "86"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence
+      value:
+        simple: '{"Name": "unusual_connection_characteristics", "Score": 1, "Comment":
+          "The connection is unusual, because either this user does not usually connect
+          from other countries, or users do not usually connect with SSO successfully
+          in the organization."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an evidence context key indicating that the connection is
+        unusual because the user rarely connects from other countries or the destination
+        country is rarely used by other users in the organization.
+      id: 2e067af9-11b8-4e01-94ae-e9c8f4ca9e95
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Evidence: Connection is unusual'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 2e067af9-11b8-4e01-94ae-e9c8f4ca9e95
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2166,
+          "y": 1295
+        }
+      }
+  "87":
+    continueonerrortype: ""
+    id: "87"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "69"
+      - "65"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Errors
+      value:
+        simple: '{"Name": "azure_ad_session_revokation_error", "Comment": "Failed
+          to clear the user''s session in Azure AD. If the account is compromised,
+          it is necessary that you clear the session to ensure the user is logged
+          out of Azure."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an error context key indicating that the attempt to clear
+        the user's active session in Azure AD failed, requiring manual session termination.
+      id: 7658dfcf-486c-4878-bcd8-cbb22771cdf2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Error: Failed clearing user''s session in Azure AD'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 7658dfcf-486c-4878-bcd8-cbb22771cdf2
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 700,
+          "y": 3070
+        }
+      }
+  "88":
+    continueonerrortype: ""
+    id: "88"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "69"
+      - "63"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Errors
+      value:
+        simple: '{"Name": "okta_session_revokation_error", "Comment": "Failed to clear
+          the user''s session in Okta. If the account is compromised, it is necessary
+          that you clear the session to ensure the user is logged out of Okta."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an error context key indicating that the attempt to clear
+        the user's active session in Okta failed, requiring manual session termination.
+      id: f061e138-12ef-4622-9c5f-f73423f6c938
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Error: Failed clearing user''s session in Okta'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: f061e138-12ef-4622-9c5f-f73423f6c938
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 210,
+          "y": 3076
+        }
+      }
+  "89":
+    continueonerrortype: ""
+    id: "89"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "The evidence from the investigation is insufficient for an automatic
+        remediation. This may have been caused by errors and/or lack of evidence.\n\nReview
+        the alert's details, the evidence and errors gathered by the playbook. Then
+        take the appropriate actions to close this alert.\n\n\n**User:** ${Core.OriginalAlert.event.auth_identity}\n\n**Authentication
+        System:** ${Core.OriginalAlert.raw_abioc.event.auth_server}\n\n**Source Country:**
+        ${Core.OriginalAlert.event.action_country}\n\n### Evidence found:\n${.=((function()
+        { var e = val.Evidence ? [].concat(val.Evidence) : []; var f = e.filter(x
+        => x.Comment && x.Comment.length > 0); return f.length > 0 ? f.map(item =>
+        \"1. +\" + item.Name.replace(/_/g, \" \").replace(/\\b\\w+\\b/g, (w) => [\"IP\",
+        \"DC\", \"CA\", \"DNS\", \"AI\", \"SMB\", \"XQL\", \"ID\", \"URL\", \"CVE\",
+        \"MITRE\", \"OS\", \"RDP\", \"SSH\", \"WMI\", \"VNC\", \"TOR\", \"DLL\", \"MD5\",
+        \"SHA1\", \"SHA256\", \"HTTP\", \"HTTPS\", \"TCP\", \"UDP\", \"ICMP\", \"URI\",
+        \"AD\", \"SID\", \"GUID\", \"UUID\", \"MAC\", \"VM\", \"API\", \"JSON\", \"XML\",
+        \"ISP\", \"AWS\", \"GCP\", \"EXE\", \"MSI\", \"BAT\"].includes(w.toUpperCase())
+        ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        + \"+ - \" + item.Comment).join(\"\\n\") : \"  No Evidence Found.\"; })())}\n\n###
+        Investigation Errors:\n${.=((function() { var e = val.Errors? [].concat(val.Errors)
+        : []; var f = e.filter(x => x.Comment && x.Comment.length > 0); return f.length
+        > 0 ? f.map(item => \"1. +\" + item.Name.replace(/_/g, \" \").replace(/\\b\\w+\\b/g,
+        (w) => [\"IP\", \"DC\", \"CA\", \"DNS\", \"AI\", \"SMB\", \"XQL\", \"ID\",
+        \"URL\", \"CVE\", \"MITRE\", \"OS\", \"RDP\", \"SSH\", \"WMI\", \"VNC\", \"TOR\",
+        \"DLL\", \"MD5\", \"SHA1\", \"SHA256\", \"HTTP\", \"HTTPS\", \"TCP\", \"UDP\",
+        \"ICMP\", \"URI\", \"AD\", \"SID\", \"GUID\", \"UUID\", \"MAC\", \"VM\", \"API\",
+        \"JSON\", \"XML\", \"ISP\", \"AWS\", \"GCP\", \"EXE\", \"MSI\", \"BAT\"].includes(w.toUpperCase())
+        ? w.toUpperCase() : w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        + \"+ - \" + item.Comment).join(\"\\n\") : \"  No Errors Found.\"; })())}\n\n###
+        Manual Remediation Steps\nIf you find this alert malicious. we recommend taking
+        these steps to ensure full remediation:\n\n**Immediate Actions:** Terminate
+        any active user sessions in your authentication system to prevent continued
+        access from the suspicious location. Reset the user's password and invalidate
+        any existing authentication tokens or refresh tokens.\n        \n**Access
+        Controls:** Temporarily disable the user account or implement conditional
+        access policies to block connections from the suspicious country or IP range
+        until the alert can be fully investigated and verified.\n        \n**MFA Enforcement:**
+        Ensure multi-factor authentication is enabled and properly configured for
+        the user. Consider requiring re-enrollment of MFA devices if there are concerns
+        about device compromise."
+      id: 08f69ee6-c5c9-477e-aa10-3acb977fc834
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual analyst investigation
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: 08f69ee6-c5c9-477e-aa10-3acb977fc834
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1017,
+          "y": 2530
+        }
+      }
+  "90":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: SessionClearResults.Result
+          operator: isExists
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: SessionClearResults.Result
+          operator: isEqualString
+          right:
+            value:
+              simple: Success
+      label: "Yes"
+    continueonerrortype: ""
+    id: "90"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "87"
+      "Yes":
+      - "65"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the playbook succeeded in clearing the user's Azure session.
+      id: 153729aa-cd82-4578-aca6-9f7896f44578
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Was user session clearing in Azure AD successful?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 153729aa-cd82-4578-aca6-9f7896f44578
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1130,
+          "y": 2920
+        }
+      }
+  "91":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: SessionClearResults.Result
+          operator: isExists
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: SessionClearResults.Result
+          operator: isEqualString
+          right:
+            value:
+              simple: Success
+      label: "Yes"
+    continueonerrortype: ""
+    id: "91"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "88"
+      "Yes":
+      - "63"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the playbook succeeded in clearing the user's Okta session.
+      id: 49228b5c-7e30-4946-aa48-426438fcd264
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Was user session clearing in Okta successful?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 49228b5c-7e30-4946-aa48-426438fcd264
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -250,
+          "y": 2920
+        }
+      }
+  "92":
+    continueonerrortype: ""
+    id: "92"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "69"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Errors
+      value:
+        simple: '{"Name": "azure_ad_disable_user_error", "Comment": "Failed to disable
+          the user in Azure AD. Check if the integration is configured correctly,
+          if the user exists, and if the user is not already disabled."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an error context key indicating that the attempt to disable
+        the user account in Azure AD failed, requiring manual intervention to disable
+        the account.
+      id: c5d6edaa-3c3c-4e24-9710-e17b739ee934
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Error: Failed to disable Azure AD user'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: c5d6edaa-3c3c-4e24-9710-e17b739ee934
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 730,
+          "y": 3580
+        }
+      }
+  "93":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: DisableUser.Result
+          operator: isExists
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: DisableUser.Result
+          operator: isEqualString
+          right:
+            value:
+              simple: Success
+      label: "Yes"
+    continueonerrortype: ""
+    id: "93"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "92"
+      "Yes":
+      - "67"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the playbook succeeded in disabling the user account
+        in Azure AD by verifying the DisableUser result status.
+      id: ae444b87-9021-4368-b92c-1a708ec3fadb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Was the Azure AD user disabled successfully?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: ae444b87-9021-4368-b92c-1a708ec3fadb
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1130,
+          "y": 3470
+        }
+      }
+  "94":
+    continueonerrortype: ""
+    id: "94"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "69"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Errors
+      value:
+        simple: '{"Name": "okta_suspend_user_error", "Comment": "Failed to suspend
+          the user in Okta. Check if the integration is configured correctly, if the
+          user exists, and if the user is not already suspended."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an error context key indicating that the attempt to suspend
+        the user account in Okta failed, requiring manual intervention to suspend
+        the account.
+      id: 4f2274ca-3e7b-4aa5-b908-a42c114bc5fe
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Error: Failed to suspend Okta user'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 4f2274ca-3e7b-4aa5-b908-a42c114bc5fe
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 108,
+          "y": 3580
+        }
+      }
+  "95":
+    continueonerrortype: ""
+    id: "95"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Errors
+      value:
+        simple: '{"Name": "unsupported_authentication_system", "Comment": "The vendor
+          used to perform the authentication is currently unsupported: ${Core.OriginalAlert.raw_abioc.event.auth_server}.
+          The analyst should check the circumstances of this user login in the source
+          vendor system."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an error context key indicating that the authentication system
+        used for the alert is not Azure or Okta, and therefore automated investigation
+        steps (MFA verification, suspicious activity log checks, risk detections)
+        are not supported.
+      id: 0335831f-3b5e-475a-912f-0cd0b41e52dc
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Error: Unsupported authentication system'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 0335831f-3b5e-475a-912f-0cd0b41e52dc
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -5040,
+          "y": 1099.5
+        }
+      }
+  "96":
+    continueonerrortype: ""
+    id: "96"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Errors
+      value:
+        simple: '{"Name": "azure_signin_logs", "Comment": "Failed to retrieve sign-in
+          logs for the user from Azure. Check that the integration is configured with
+          the necessary permissions."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an error context key indicating that the query to Azure Log
+        Analytics for sign-in logs failed, which means MFA verification for the user
+        could not be completed.
+      id: 54da1b94-40d6-4978-b785-2947ca9fd4dd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Error: Azure sign-in logs search failed'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 54da1b94-40d6-4978-b785-2947ca9fd4dd
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -4420,
+          "y": 1631
+        }
+      }
+  "98":
+    continueonerrortype: ""
+    id: "98"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Errors
+      value:
+        simple: '{"Name": "azure_risky_users", "Comment": "Failed to retrieve Azure
+          risky users to check if the user is risky. Check that the Azure Risky Users
+          integration is enabled and configured with the necessary permissions."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an error context key indicating that the retrieval of risk
+        detections from Azure AD failed, which means the user's risk status could
+        not be verified.
+      id: 9a258a1f-6b64-4074-b59f-d63c4f38028f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Error: Failed to retrieve Azure risky users'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 9a258a1f-6b64-4074-b59f-d63c4f38028f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -3129,
+          "y": 1621
+        }
+      }
+  "99":
+    continueonerrortype: ""
+    id: "99"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Errors
+      value:
+        simple: '{"Name": "okta_suspicious_activity_logs", "Comment": "Failed to retrieve
+          Suspicious Activity Logs from Okta. Check that the integration is enabled
+          and configured with the necessary permissions."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an error context key indicating that the retrieval of suspicious
+        activity logs from Okta failed, which means suspicious user behavior patterns
+        could not be checked.
+      id: 35a9d220-094d-4d43-8dfc-704309dd3b2a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Error: Failed to retrieve Okta suspicious activity logs'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 35a9d220-094d-4d43-8dfc-704309dd3b2a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -2230,
+          "y": 1611
+        }
+      }
+  "100":
+    continueonerrortype: ""
+    id: "100"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "56"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Errors
+      value:
+        simple: '{"Name": "okta_authentication_logs", "Comment": "Failed to retrieve
+          Authentication logs from Okta. This is needed to check whether the user
+          authenticated via MFA. Check that the integration is enabled and configured
+          with the necessary permissions."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an error context key indicating that the retrieval of authentication
+        logs from Okta failed, which means MFA verification for the user could not
+        be completed.
+      id: 42d1b743-54a4-4f37-a933-86a2230793f0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Error: Failed to retrieve Okta Authentication logs'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 42d1b743-54a4-4f37-a933-86a2230793f0
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -1329,
+          "y": 1621
+        }
+      }
+  "101":
+    continueonerrortype: ""
+    id: "101"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Errors
+      value:
+        simple: '{"Name": "source_ip_enrichment", "Comment": "Failed to enrich the
+          source IP address from which the user connected, using threat intelligence
+          integrations. Ensure at least one integration that supports the ''ip-enrichment''
+          command is enabled."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an error context key indicating that the source IP address
+        enrichment using threat intelligence integrations failed, which means IP reputation
+        data is unavailable for the investigation.
+      id: 461f7a26-4974-4f6a-8aef-ef3d03d7e685
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Error: Could not enrich the source IP'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 461f7a26-4974-4f6a-8aef-ef3d03d7e685
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -650,
+          "y": 665
+        }
+      }
+  "102":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: TIMScore
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: IPEnrichment.Value
+                    operator: in
+                    right:
+                      iscontext: true
+                      value:
+                        simple: alert.localip
+                root: IPEnrichment
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "102"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "101"
+      "yes":
+      - "50"
+      - "49"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the source IP address was successfully enriched
+        with threat intelligence data by verifying that a TIM score was returned for
+        the IP.
+      id: 66b5c58c-a2a3-49a4-b0d7-58a6f690c911
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Was the source IP address enriched successfully?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 66b5c58c-a2a3-49a4-b0d7-58a6f690c911
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -20,
+          "y": 460
+        }
+      }
+  "103":
+    continueonerrortype: ""
+    id: "103"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Errors
+      value:
+        simple: '{"Name": "user_enrichment", "Comment": "Failed to enrich the user
+          that made the connection. Ensure that the Entra ID or Okta v2 integrations
+          are enabled and that the Identity Threat (ITDR) license is active on your
+          tenant."}'
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Saves an error context key indicating that the user enrichment
+        failed, which means the user's risk score and related data could not be retrieved
+        for the investigation.
+      id: 08a94e88-f9e7-4d55-9beb-e96fb5b9d9d5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Error: Could not enrich the user'
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 08a94e88-f9e7-4d55-9beb-e96fb5b9d9d5
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1340,
+          "y": 655
+        }
+      }
+  "104":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: UserData.Status
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Success
+                  - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: UserData.Status
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: Found
+                root: UserData
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "104"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "103"
+      "yes":
+      - "47"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the user data enrichment was successful by verifying
+        that the UserData status returned as "Success" or "Found".
+      id: 7e0b06fd-b6c6-4ce9-b17d-b0c5a9ec62bd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Was the user enriched successfully?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 7e0b06fd-b6c6-4ce9-b17d-b0c5a9ec62bd
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 867,
+          "y": 470
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "102_101_#default#": 0.55,
+      "102_49_yes": 0.64,
+      "104_103_#default#": 0.32,
+      "20_21_Azure": 0.44,
+      "20_22_Okta": 0.57,
+      "24_56_#default#": 0.16,
+      "29_96_#error#": 0.52,
+      "32_56_no": 0.1,
+      "38_28_yes": 0.52,
+      "38_56_no": 0.3,
+      "43_56_#default#": 0.15,
+      "56_66_True Positive": 0.54,
+      "60_59_Okta": 0.69,
+      "60_69_#default#": 0.1,
+      "63_61_Yes": 0.37,
+      "63_67_No": 0.46,
+      "65_67_No": 0.15,
+      "65_68_Yes": 0.36,
+      "68_92_#error#": 0.18,
+      "71_56_#default#": 0.17,
+      "75_56_#default#": 0.1,
+      "80_56_#default#": 0.1,
+      "82_56_#default#": 0.31,
+      "83_56_#default#": 0.22,
+      "84_56_#default#": 0.14,
+      "90_87_#default#": 0.27,
+      "91_88_#default#": 0.11
+    },
+    "paper": {
+      "dimensions": {
+        "height": 3964,
+        "width": 7586,
+        "x": -5040,
+        "y": 26
+      }
+    }
+  }
