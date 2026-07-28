@@ -1,0 +1,184 @@
+args:
+- default: true
+  description: The Emails to process.
+  isArray: true
+  name: input
+  supportedModules: []
+comment: Verifies that an email address is valid and only returns the address if it
+  is valid.
+commonfields:
+  id: ExtractEmailV2
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.5.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ExtractEmailV2
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('ExtractEmailV2', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  import re
+
+
+
+
+  # Negative lookahead - Verify the pattern does not end with the listed file extensions. Separated by |
+  COMMON_FILE_EXT = (
+      "zip",
+      "jpg",
+      "jpeg",
+      "csv",
+      "png",
+      "gif",
+      "bmp",
+      "txt",
+      "pdf",
+      "ppt",
+      "pptx",
+      "xls",
+      "xlsx",
+      "doc",
+      "docx",
+      "eml",
+      "msg",
+  )
+
+  # Regex pattern for extracting email addresses from URL queries
+  EMAIL_IN_URL_PATTERN = r"([\w.!#$%&'*+^_`{|}~-]+@[\w.-]+\.[A-Za-z]{2,})"
+
+
+  def extract_email(email_address: str) -> str:
+      """
+      Extracts a clean email address using group 1 of the regex.
+      Args:
+          email_address: the inputted email address
+
+      Returns:
+          String: A clean email address (might be defanged)
+
+      """
+      email_address = email_address.lower()
+
+      if "?" in email_address:
+          # If we find these chars in a string it means the regex caught it as part of a url query and needs pruning.
+          email_address = extract_email_from_url_query(email_address)
+
+      email_format = re.compile(
+          r"[<(\[{\"'.]*"
+          r"(?:(?:\\|\^{3})u[a-f\d]{4})?"
+          r"([\w.!#$%&'*+/=?^_`{|}~-]{1,64}"
+          r"\[?@]?[\w.-]{1,255}(?:\[?\.]?"
+          r"[A-Za-z]{2,}){1,2})"
+      )
+
+      match = email_format.match(email_address)
+      return match.group(1) if match else ""
+
+
+  def check_tld(email_address: str) -> bool:
+      """
+      Checks the email domain tld, if it's a common file extension it's a file
+      Args:
+          email_address: the inputted email address
+
+      Returns:
+          Boolean: True if it's not a common file extension
+
+      """
+      return email_address.split(".")[-1] not in COMMON_FILE_EXT
+
+
+  def refang_email(email_address: str) -> str:
+      """
+      Refangs an email address by removing square brackets surrounding "@" and ".".
+      Args:
+          email_address: the inputted email address
+
+      Returns:
+          String - Fanged email address
+
+      """
+      return email_address.replace("[@]", "@").replace("[.]", ".") if check_tld(email_address) else ""
+
+
+  def extract_email_from_url_query(email_address: str) -> str:
+      """
+      Extracts an email address from a URL query string.
+
+      Args:
+          email_address (str): The extracted raw email address (within a query).
+
+      Returns:
+          str: An email address.
+      """
+
+      # Try to extract email as a query parameter value, key, or directly from the URL
+      match = re.search(r"([?&])?" + EMAIL_IN_URL_PATTERN, email_address)
+      if match:
+          return match.group(2)
+
+      return ""
+
+
+  def main():
+      list_results = []
+
+      try:
+          emails = argToList(demisto.args().get("input"))
+
+          clean_emails = [extract_email(address) for address in emails]
+
+          list_results = [refang_email(email_address) for email_address in clean_emails]
+
+          output = [
+              {
+                  "Type": entryTypes["note"],
+                  "ContentsFormat": formats["json"],
+                  "Contents": [email_address] if email_address else [],
+                  "EntryContext": {"Email": email_address} if email_address else {},
+              }
+              for email_address in list_results
+          ]
+
+          if output:
+              return_results(output)
+          else:
+              return_results("")
+
+      except Exception as e:
+          return_error(f"Failed to execute the automation. Error: \n{e!s}")
+
+
+  if __name__ in ("__main__", "builtin", "builtins"):
+      main()
+
+  register_module_line('ExtractEmailV2', 'end', __line__())
+scripttarget: 0
+signature: sxldQ36IjMH+wRdp0a6lwS+fVy0aPa7UJCJTOrTUQQBQ6L4YR98IX3xITUOu6vEEmqIVkQ8AWJQTL3fkW5F6b6KyzioabIv0L6BkbdqGOexA6X0pXyjm3P/YpjW9++HA36oJIieEH2WxsEn+JQIMiuDavRxlXXqhiBNo8YMnGm8cerrgP1n82ohbDOaF+Yzu8wVbRG4PexAcN513xiBMSc7ykR0Yx4xUcUeBjVGpE2sEmdtQVriCDRR6qWUdFWxT+Rel8Vd6JVrp4yuPxNdht+0G05oBIBxDUhPbHIRPVKtLgA1hiZwC69I160rdnhW2BH/nHXrkSaehNWqbttzGug==
+subtype: python3
+system: true
+tags:
+- indicator-format
+type: python
