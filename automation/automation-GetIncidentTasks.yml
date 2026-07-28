@@ -1,0 +1,95 @@
+args:
+- default: true
+  description: Incident ID to get tasks from.
+  name: inc_id
+  required: true
+  supportedModules: []
+- description: 'Comma-separated list of states. Possible values: New, InProgress,
+    Completed, Waiting, Error, LoopError, Skipped, Blocked. (Leave empty to get all
+    tasks).'
+  isArray: true
+  name: states
+  supportedModules: []
+- description: The name of the task to search.
+  name: name
+  supportedModules: []
+- description: The tag to search.
+  name: tag
+  supportedModules: []
+- description: The Cortex REST API integration instance to use for the API request.
+    If not provided, the default instance is used.
+  name: using
+  supportedModules: []
+comment: Get all tasks for a specific incident by the given state, name and/or tag.
+commonfields:
+  id: GetIncidentTasks
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.10.0
+    isoverridable: false
+    itemVersion: 1.5.0
+    packID: DemistoRESTAPI
+    packName: Cortex REST API
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: GetIncidentTasks
+outputs:
+- contextPath: Tasks
+  description: The entire task object.
+- contextPath: Tasks.id
+  description: Task ID.
+  type: string
+- contextPath: Tasks.name
+  description: Task name.
+  type: string
+- contextPath: Tasks.type
+  description: The type of the task (regular, condition, title, playbook, start).
+  type: string
+- contextPath: Tasks.owner
+  description: Task owner.
+  type: string
+- contextPath: Tasks.state
+  description: Task state (inprogress, Completed, WillNotBeExecuted, Error, LoopError,
+    Waiting, Blocked, and empty string for not started).
+  type: string
+- contextPath: Tasks.scriptId
+  description: Task related script (empty if manual).
+  type: string
+- contextPath: Tasks.startDate
+  description: Task start date.
+  type: unknown
+- contextPath: Tasks.completedDate
+  description: Task completed date.
+  type: unknown
+- contextPath: Tasks.dueDate
+  description: Task due date (SLA).
+  type: unknown
+- contextPath: Tasks.parentPlaybookID
+  description: Task parent playbook ID (in case the task is part of a sub-playbook).
+  type: unknown
+- contextPath: Tasks.completedBy
+  description: Task completed by (username).
+  type: string
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  return executeCommand('GetAlertTasks', args)
+scripttarget: 0
+sensitive: true
+signature: gfd3X/Z3iwKFp9It7kd9hDW+pq2/7+Ht2C5ZIKf+SEmo2GpinBr0OzLHrrQJ68MylH4sj0UJJYWh18KHKODKfYmZdELsW74ij6uVURMNwkn292kRWNxEJLvuBsjZD5LWdonZ8hgS0dAHOg42OlS26YXIc46cpAdeFknvJIojgP/A6QSK7O7VSGEC7+bWazaSJHbxC4SGp22kpDhaK7UCFH5ozy4UgrtTMH88kk8QO+jF7I1Lks83ojHgf2QkC38L3IJlDQY/PkdLxp+82jL9EdWsE7CiHWDJiEtJHCTgUo+JkfkLMy56+UTVc8YTHXorRz1AHPchDLZ1YvBaljpW8Q==
+system: true
+tags:
+- Utility
+type: javascript
