@@ -1,0 +1,1660 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.6.0
+    isoverridable: false
+    itemVersion: 2.8.2
+    packID: CommonPlaybooks
+    packName: Common Playbooks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: This playbook checks prior alert closing reasons and performs enrichment
+  and prevalence checks on different IOC types. It then returns the information needed
+  to establish the alert's verdict.
+id: Enrichment for Verdict
+inputs:
+- description: The number of previous alerts that were closed as false positive alerts.
+    This threshold establishes whether the Previous Verdict key will be marked as
+    false positive.
+  key: threshold
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "2"
+- description: |-
+    A query for the previous alerts search.
+    Use free form query (Lucene syntax) as a filter. All other filters are ignored when this filter is used.
+  key: query
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: (initiatorsha256:${inputs.FileSHA256} or hostip:${inputs.IP}) and sourceBrand:"${alert.sourceBrand}"
+      and name:"${alert.name}"
+- description: |-
+    The closing reason of the previous alerts to search for.
+    Possible values are:
+    - Resolved - Threat Handled
+    - Resolved - True Positive
+    - Resolved - False Positive
+    - Resolved - Security Testing
+    - Resolved - Known Issue
+    - Resolved - Duplicate Incident
+    - Resolved - Other
+    - Resolved - Auto
+  key: CloseReason
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: Resolved - False Positive,Resolved - Duplicate Incident,Resolved - Known
+      Issue
+- description: File SHA256 to enrich and give verdict.
+  key: FileSHA256
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: initiatorsha256
+      root: alert
+- description: IP address to enrich and give verdict.
+  key: IP
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: hostip
+      root: alert
+- description: 'A list of internal IP ranges to check IP addresses against. The comma-separated
+    list should be provided in CIDR notation. For example, a list of ranges is: "172.16.0.0/12,10.0.0.0/8,192.168.0.0/16"
+    (without quotes).'
+  key: InternalRange
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: PrivateIPs
+      root: lists
+      transformers:
+      - args:
+          error_if_no_match: {}
+          ignore_case: {}
+          multi_line: {}
+          period_matches_newline: {}
+          regex:
+            value:
+              simple: (\b(?:\d{1,3}\.){3}\d{1,3}\b/\d{1,2})
+          unpack_matches: {}
+        operator: RegexExtractAll
+      - args:
+          separator:
+            value:
+              simple: ','
+        operator: join
+- description: Determines whether to convert the IP address to a hostname using a
+    DNS query (True/ False).
+  key: ResolveIP
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: URL to enrich and give verdict.
+  key: URL
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: url
+      root: alert
+- description: User to enrich and give verdict. (AWS IAM or Active Directory).
+  key: User
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: username
+      root: alert
+- description: Domain to enrich and give verdict.
+  key: Domain
+  playbookInputQuery: null
+  required: false
+  value:
+    complex:
+      accessor: domainname
+      root: alert
+- description: The CMD to run the prevalence check.
+  key: CommandLine
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The process name to run the prevalence check.
+  key: ProcessName
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The registry key to run the prevalence check. The input registry value
+    must be provided as well.
+  key: RegistryKey
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The registry value to run prevalence check. The input registry key
+    must be provided as well.
+  key: RegistryValue
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Set 'True' to use the reputation commands (!ip, !domain, !url) to enrich
+    the IP, URL, and domain.
+  key: UseReputationCommand
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+name: Enrichment for Verdict
+outlinetasks: {}
+outputs:
+- contextPath: PreviousVerdict
+  description: Suspected verdict for previous alerts.
+  type: string
+- contextPath: VTFileVerdict
+  description: Check for VirusTotal verdict.
+  type: unknown
+- contextPath: NSRLFileVerdict
+  description: Check for the file presence in NSRL DB.
+  type: unknown
+- contextPath: VTFileSigners
+  description: Check VirusTotal if the file is signed by a trusted publisher.
+  type: unknown
+- contextPath: XDRFileSigners
+  description: Check XDR alert if the file is signed by a trusted publisher.
+  type: unknown
+- contextPath: IP
+  description: The IP objects.
+  type: unknown
+- contextPath: DBotScore
+  description: Indicator's dbot Score, dbot Type and Vendor.
+  type: unknown
+- contextPath: Endpoint
+  description: The endpoint's object.
+  type: unknown
+- contextPath: URL
+  description: The URL object.
+  type: uknown
+- contextPath: AWS.IAM.Users
+  description: AWS IAM user information.
+  type: unknown
+- contextPath: AWS.IAM.Users.AccessKeys
+  description: AWS IAM user access keys information.
+  type: unknown
+- contextPath: Account
+  description: The account object.
+  type: unknown
+- contextPath: ActiveDirectory.Users
+  description: Active Directory user information.
+  type: unknown
+- contextPath: IPVerdict
+  description: Specifies whether the IP addresses were found as suspicious.
+  type: unknown
+- contextPath: URLVerdict
+  description: Specifies whether the URLs were found as suspicious.
+  type: unknown
+- contextPath: FileVerdict
+  description: Specifies whether the files were found as suspicious.
+  type: unknown
+- contextPath: WildFire.Report
+  description: WildFire report object.
+  type: unknown
+- contextPath: WildFire.Report.verdict
+  description: The verdict of the report.
+- contextPath: WildFire.Verdicts.Verdict
+  description: Verdict of the file.
+- contextPath: WildFire.Verdicts.VerdictDescription
+  description: Description of the file verdict.
+- contextPath: DomainVerdict
+  description: Domain verdict.
+  type: unknown
+- contextPath: Core.AnalyticsPrevalence.Ip.value
+  description: Whether the IP address is prevalent or not.
+- contextPath: Core.AnalyticsPrevalence.Ip.data.global_prevalence.value
+  description: The global prevalence of the IP.
+- contextPath: Core.AnalyticsPrevalence.Ip.data.local_prevalence.value
+  description: The local prevalence of the IP.
+- contextPath: Core.AnalyticsPrevalence.Hash.value
+  description: Whether the hash is prevalent or not.
+- contextPath: Core.AnalyticsPrevalence.Hash.data.global_prevalence.value
+  description: The global prevalence of the hash.
+- contextPath: Core.AnalyticsPrevalence.Hash.data.local_prevalence.value
+  description: The local prevalence of the hash.
+- contextPath: Core.AnalyticsPrevalence.Domain.value
+  description: Whether the domain is prevalent or not.
+- contextPath: Core.AnalyticsPrevalence.Domain.data.global_prevalence.value
+  description: The global prevalence of the domain.
+- contextPath: Core.AnalyticsPrevalence.Domain.data.local_prevalence.value
+  description: The local prevalence of the domain.
+- contextPath: Core.AnalyticsPrevalence.Process.value
+  description: Whether the process is prevalent or not.
+- contextPath: Core.AnalyticsPrevalence.Process.data.global_prevalence.value
+  description: The global prevalence of the process.
+- contextPath: Core.AnalyticsPrevalence.Process.data.local_prevalence.value
+  description: The local prevalence of the process.
+- contextPath: Core.AnalyticsPrevalence.Registry.value
+  description: Whether the registry is prevalent or not.
+- contextPath: Core.AnalyticsPrevalence.Registry.data.global_prevalence.value
+  description: The global prevalence of the registry.
+- contextPath: Core.AnalyticsPrevalence.Registry.data.local_prevalence.value
+  description: The local prevalence of the registry.
+- contextPath: Core.AnalyticsPrevalence.Cmd.value
+  description: Whether the CMD is prevalent or not.
+- contextPath: Core.AnalyticsPrevalence.Cmd.data.global_prevalence.value
+  description: The global prevalence of the CMD.
+- contextPath: Core.AnalyticsPrevalence.Cmd.data.local_prevalence.value
+  description: The local prevalence of the CDM.
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "50"
+      - "51"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9cc1d6e7-7346-438e-84cf-c5384eb9a00a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 9cc1d6e7-7346-438e-84cf-c5384eb9a00a
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 1530,
+          "y": -390
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        complex:
+          root: inputs.query
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Searches XSIAM alerts.\n\nThis automation runs using the default
+        Limited User role, unless you explicitly change the permissions.\nFor more
+        information, see the section about permissions here:\n- For Cortex XSOAR 6
+        see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: cf7fbd3d-5b7f-4b20-8196-e356bc3aaf46
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: 'Check previous alerts '
+      playbooktaskmissingcomponent: null
+      script: SearchAlertsV2
+      type: regular
+      version: -1
+    taskid: cf7fbd3d-5b7f-4b20-8196-e356bc3aaf46
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1080,
+          "y": -110
+        }
+      }
+  "9":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: foundIncidents.rawCloseReason
+          operator: containsGeneral
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.CloseReason
+                transformers:
+                - args:
+                    delimiter:
+                      value:
+                        simple: ','
+                  operator: split
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: id
+                root: foundIncidents
+                transformers:
+                - operator: count
+          operator: greaterThanOrEqual
+          right:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.threshold
+      label: "yes"
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "36"
+      "yes":
+      - "35"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Were previous alerts closed as false positive?
+      id: b3cad615-be42-4953-8f72-010f572ef0fd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Were previous alerts closed as false positive?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: b3cad615-be42-4953-8f72-010f572ef0fd
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1080,
+          "y": 60
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      forEach: true
+      iscommand: false
+      max: 100
+      wait: 5
+    nexttasks:
+      '#none#':
+      - "16"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      DetectionThreshold:
+        simple: "5"
+      FileSHA256:
+        complex:
+          root: inputs.FileSHA256
+      TrustedPublishers:
+        simple: |-
+          Microsoft Root Authority,Microsoft Timestamping Service,
+          Microsoft Code Signing PCA, Microsoft Corporation
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: "This playbook checks the file reputation and set the verdict as
+        a new context key.\n\nThe verdict is composed by 3 main components:\n\n* VirusTotal
+        detection rate\n* Digital certificate signers\n* NSRL DB\n\nNote: a user can
+        provide a list of trusted signers of his own using the playbook inputs\n "
+      id: 6825c22c-48d1-4f99-803f-1b6169565f9c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: File Reputation
+      playbookId: File Reputation
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 6825c22c-48d1-4f99-803f-1b6169565f9c
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 2100,
+          "y": 770
+        }
+      }
+  "16":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: NSRLFileVerdict
+          operator: isEqualString
+          right:
+            value:
+              simple: IsNSRL
+      - - left:
+            iscontext: true
+            value:
+              simple: VTFileVerdict
+          operator: isEqualString
+          right:
+            value:
+              simple: Benign
+      - - left:
+            iscontext: true
+            value:
+              simple: XDRFileSigners
+          operator: isEqualString
+          right:
+            value:
+              simple: Trusted
+      label: "yes"
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "29"
+      "yes":
+      - "54"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Was the file found as suspicious?
+      id: 5a797f7b-e0f2-46de-85c1-0d2165ce20a9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Was the file found as Benign?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 5a797f7b-e0f2-46de-85c1-0d2165ce20a9
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 2100,
+          "y": 960
+        }
+      }
+  "17":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: inputs.FileSHA256
+                    operator: stringHasLength
+                    right:
+                      value:
+                        simple: "64"
+                root: inputs.FileSHA256
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "25"
+      "yes":
+      - "15"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Is there a file?
+      id: 955d7432-cc8b-45d6-89c9-1ab23df18f9e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is there a file?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 955d7432-cc8b-45d6-89c9-1ab23df18f9e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 2100,
+          "y": 570
+        }
+      }
+  "18":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: inputs.IP
+                    operator: IsNotInCidrRanges
+                    right:
+                      value:
+                        simple: 10.0.0.0/8,172.16.0.0/12,192.168.0.0/16
+                root: inputs.IP
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "25"
+      "yes":
+      - "19"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Is there an IP address?
+      id: 0f1e5698-ef4e-4235-8788-8393074064f4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is there an IP address?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 0f1e5698-ef4e-4235-8788-8393074064f4
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -230,
+          "y": 570
+        }
+      }
+  "19":
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "20"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      IP:
+        complex:
+          root: inputs.IP
+          transformers:
+          - operator: uniq
+      InternalRange:
+        complex:
+          root: inputs.InternalRange
+          transformers:
+          - operator: uniq
+      ResolveIP:
+        complex:
+          root: inputs.ResolveIP
+      UseReputationCommand:
+        complex:
+          root: inputs.UseReputationCommand
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Enrich IP addresses using one or more integrations.
+
+        - Resolve IP addresses to hostnames (DNS)
+        - Provide threat information
+        - Separate internal and external IP addresses
+        - For internal IP addresses, get host information
+      id: 1aee9e4c-cf41-4bb4-8a63-960caf6fb8f4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: IP Enrichment - Generic v2
+      playbookId: IP Enrichment - Generic v2
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 1aee9e4c-cf41-4bb4-8a63-960caf6fb8f4
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": -230,
+          "y": 770
+        }
+      }
+  "20":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Score
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: inList
+                    right:
+                      iscontext: true
+                      value:
+                        simple: inputs.IP
+                root: DBotScore
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "2"
+      - - left:
+            iscontext: true
+            value:
+              simple: DBotScore
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "25"
+      "yes":
+      - "31"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Was the IP found as suspicious?
+      id: 5563f2a4-486e-4f81-8643-177d0e8b5771
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Was the IP found as Suspicious?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 5563f2a4-486e-4f81-8643-177d0e8b5771
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -230,
+          "y": 960
+        }
+      }
+  "25":
+    continueonerrortype: ""
+    id: "25"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: afcbc012-2435-4010-8296-9371a006f70b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: afcbc012-2435-4010-8296-9371a006f70b
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1530,
+          "y": 1620
+        }
+      }
+  "26":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.URL
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "26"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "25"
+      "yes":
+      - "27"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Is there a URL?
+      id: 6449a627-0408-4675-84d4-0d982602cfd2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is there a URL?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 6449a627-0408-4675-84d4-0d982602cfd2
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 420,
+          "y": 570
+        }
+      }
+  "27":
+    continueonerrortype: ""
+    id: "27"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "28"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      Rasterize:
+        simple: "True"
+      URL:
+        complex:
+          root: inputs.URL
+      UseReputationCommand:
+        complex:
+          root: inputs.UseReputationCommand
+      VerifyURL:
+        simple: "False"
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Enrich URLs using one or more integrations.
+
+        URL enrichment includes:
+        * SSL verification for URLs
+        * Threat information
+        * Providing of URL screenshots
+        * URL Reputation using !url
+      id: c7d07b53-36ad-4c6e-8677-ad4e7af2db77
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: URL Enrichment - Generic v2
+      playbookId: URL Enrichment - Generic v2
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: c7d07b53-36ad-4c6e-8677-ad4e7af2db77
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 420,
+          "y": 770
+        }
+      }
+  "28":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Score
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: inList
+                    right:
+                      iscontext: true
+                      value:
+                        simple: inputs.URL
+                root: DBotScore
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "2"
+      - - left:
+            iscontext: true
+            value:
+              simple: DBotScore
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "25"
+      "yes":
+      - "33"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Was the URL found as suspicious?
+      id: 7836c6c3-382f-4b12-87c7-2c913506c7dc
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Was the URL found as Suspicious?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 7836c6c3-382f-4b12-87c7-2c913506c7dc
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 420,
+          "y": 960
+        }
+      }
+  "29":
+    continueonerrortype: ""
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "25"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: FileVerdict
+      value:
+        simple: Suspicious
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set the SuspectedVerdict key in context to Suspicious File.
+      id: cbb20744-6ea2-4151-8575-3bbac0b2962e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set file verdict suspicious
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: cbb20744-6ea2-4151-8575-3bbac0b2962e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2320,
+          "y": 1190
+        }
+      }
+  "31":
+    continueonerrortype: ""
+    id: "31"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "25"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: IPVerdict
+      value:
+        simple: Suspicious
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set the SuspectedVerdict key in context to Suspicious IP.
+      id: 75caed90-bf85-43b3-86f3-417962547da8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set SuspectedVerdict to Suspicious IP
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 75caed90-bf85-43b3-86f3-417962547da8
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -230,
+          "y": 1190
+        }
+      }
+  "33":
+    continueonerrortype: ""
+    id: "33"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "25"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: URLVerdict
+      value:
+        simple: Suspicious
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set the SuspectedVerdict key in context to Suspicious URL.
+      id: f8752cf3-0514-4ab3-8c9a-3d863f727dc8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set SuspectedVerdict to Suspicious URL
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: f8752cf3-0514-4ab3-8c9a-3d863f727dc8
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 420,
+          "y": 1190
+        }
+      }
+  "35":
+    continueonerrortype: ""
+    id: "35"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "36"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: PreviousVerdict
+      value:
+        simple: False Positive
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set the PreviousVerdict key in context to closed as False Positive.
+      id: 94003992-1ec4-4053-80cc-3afb14bf2843
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set PreviousVerdict to Previously closed as False Positive
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 94003992-1ec4-4053-80cc-3afb14bf2843
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 850,
+          "y": 260
+        }
+      }
+  "36":
+    continueonerrortype: ""
+    id: "36"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "17"
+      - "18"
+      - "26"
+      - "37"
+      - "44"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 4ca36cfe-ae11-4c3b-8f9e-92aea2eec70d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Entity Enrichment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 4ca36cfe-ae11-4c3b-8f9e-92aea2eec70d
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1530,
+          "y": 430
+        }
+      }
+  "37":
+    continueonerrortype: ""
+    id: "37"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "48"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 55674d1e-079e-4675-8d61-14369fe12222
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: User Enrichment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 55674d1e-079e-4675-8d61-14369fe12222
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 3250,
+          "y": 570
+        }
+      }
+  "41":
+    continueonerrortype: ""
+    id: "41"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "25"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      Domain:
+        complex:
+          root: inputs.Domain
+      Username:
+        complex:
+          root: inputs.User
+    separatecontext: true
+    skipunavailable: true
+    task:
+      brand: ""
+      description: |-
+        Enrich accounts using one or more integrations.
+        Supported integrations:
+        - Active Directory
+        - SailPoint IdentityNow
+        - SailPoint IdentityIQ
+        - PingOne
+        - Okta
+        - AWS IAM
+
+        Also, the playbook supports the generic command 'iam-get-user' (implemented in IAM integrations. For more information, visit https://xsoar.pan.dev/docs/integrations/iam-integrations.
+      id: b4647d4e-c996-4f29-8948-f23c392d7733
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Account Enrichment - Generic v2.1
+      playbookId: Account Enrichment - Generic v2.1
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: b4647d4e-c996-4f29-8948-f23c392d7733
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 3440,
+          "y": 910
+        }
+      }
+  "43":
+    continueonerrortype: ""
+    id: "43"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "45"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      Domain:
+        complex:
+          root: inputs.Domain
+      UseReputationCommand:
+        complex:
+          root: inputs.UseReputationCommand
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Enrich domains using one or more integrations.
+        Domain enrichment includes:
+        * Threat information
+        * Domain reputation using !domain command
+      id: 30038490-f60a-4a8a-8edd-06bd7af8e182
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Domain Enrichment - Generic v2
+      playbookId: Domain Enrichment - Generic v2
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 30038490-f60a-4a8a-8edd-06bd7af8e182
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1280,
+          "y": 770
+        }
+      }
+  "44":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.Domain
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "44"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "25"
+      "yes":
+      - "43"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Is there a domain?
+      id: a7f19866-af4a-4e16-899f-5bbfbeae9f65
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is there a domain?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: a7f19866-af4a-4e16-899f-5bbfbeae9f65
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1280,
+          "y": 570
+        }
+      }
+  "45":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Score
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Indicator
+                    operator: inList
+                    right:
+                      iscontext: true
+                      value:
+                        simple: inputs.Domain
+                root: DBotScore
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "2"
+      - - left:
+            iscontext: true
+            value:
+              simple: DBotScore
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "45"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "25"
+      "yes":
+      - "46"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Was the domain found as suspicious?
+      id: c90ceb83-b4c8-488f-8c01-d452b2360c9f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Was the Domain found as Suspicious?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c90ceb83-b4c8-488f-8c01-d452b2360c9f
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1280,
+          "y": 960
+        }
+      }
+  "46":
+    continueonerrortype: ""
+    id: "46"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "25"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: DomainVerdict
+      value:
+        simple: Suspicious
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set the SuspectedVerdict key in context to Suspicious Domain.
+      id: 079c1a82-0c4f-4824-8578-8785da3dc423
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set SuspectedVerdict to Suspicious Domain
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 079c1a82-0c4f-4824-8578-8785da3dc423
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1280,
+          "y": 1190
+        }
+      }
+  "48":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.User
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "48"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "25"
+      "yes":
+      - "41"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Is there a user?
+      id: b3f5772e-2d82-4c85-86e5-c49de7849da4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is there a user?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: b3f5772e-2d82-4c85-86e5-c49de7849da4
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 3250,
+          "y": 740
+        }
+      }
+  "50":
+    continueonerrortype: ""
+    id: "50"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "52"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 20853c95-fc61-47cc-8c64-f5273410917e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Prevalence Check
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 20853c95-fc61-47cc-8c64-f5273410917e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1530,
+          "y": -240
+        }
+      }
+  "51":
+    continueonerrortype: ""
+    id: "51"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 13580bdc-aa7d-488b-8c01-91a4511454b8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Previous Alerts
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 13580bdc-aa7d-488b-8c01-91a4511454b8
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1080,
+          "y": -240
+        }
+      }
+  "52":
+    continueonerrortype: ""
+    id: "52"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "36"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      Commandline:
+        complex:
+          root: inputs.CommandLine
+      Domain:
+        complex:
+          root: inputs.Domain
+      Hash:
+        complex:
+          root: inputs.FileSHA256
+          transformers:
+          - operator: uniq
+      IP:
+        complex:
+          root: inputs.IP
+          transformers:
+          - operator: uniq
+      Process:
+        complex:
+          root: inputs.ProcessName
+      RegistryKey:
+        complex:
+          root: inputs.RegistryKey
+      RegistryValue:
+        complex:
+          root: inputs.RegistryValue
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 13d55c21-5ddb-47d4-8c25-ff3b969e5532
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get prevalence for IOCs
+      playbookId: Get prevalence for IOCs
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 13d55c21-5ddb-47d4-8c25-ff3b969e5532
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 1530,
+          "y": -110
+        }
+      }
+  "54":
+    continueonerrortype: ""
+    id: "54"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "25"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: FileVerdict
+      value:
+        simple: Benign
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set the SuspectedVerdict key in context to Suspicious File.
+      id: 22852879-29ee-4b24-8286-57c1d6f5f3ef
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set file verdict benign
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: 22852879-29ee-4b24-8286-57c1d6f5f3ef
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1880,
+          "y": 1190
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "17_25_#default#": 0.24,
+      "18_19_yes": 0.76,
+      "18_25_#default#": 0.19,
+      "20_25_#default#": 0.1,
+      "26_25_#default#": 0.2,
+      "28_25_#default#": 0.24,
+      "44_25_#default#": 0.1,
+      "45_25_#default#": 0.27,
+      "48_25_#default#": 0.1,
+      "48_41_yes": 0.64,
+      "9_35_yes": 0.3,
+      "9_36_#default#": 0.56
+    },
+    "paper": {
+      "dimensions": {
+        "height": 2075,
+        "width": 4050,
+        "x": -230,
+        "y": -390
+      }
+    }
+  }
