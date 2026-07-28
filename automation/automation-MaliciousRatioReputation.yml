@@ -1,0 +1,101 @@
+args:
+- description: Value of the indicator.
+  name: input
+  supportedModules: []
+- defaultValue: "0.3"
+  description: 'Malicious ratio threshold to set indicator as suspicious. '
+  name: threshold
+  supportedModules: []
+comment: |-
+  Set indicator reputation to "suspicious" when malicious ratio is above threshold.
+  Malicious ratio is the ration between number of "bad" incidents to total number of incidents the indicator appears in.
+commonfields:
+  id: MaliciousRatioReputation
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.5.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: MaliciousRatioReputation
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('MaliciousRatioReputation', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+
+
+
+
+  def get_indicator_from_value(indicator_value):
+      try:
+          res = demisto.executeCommand("findIndicators", {"value": indicator_value})
+          indicator = res[0]["Contents"][0]
+          return indicator
+      except Exception:
+          pass
+
+
+  def get_indicator_result(indicator):
+      res = demisto.executeCommand("maliciousRatio", {"value": indicator["value"]})
+
+      mr_score = res[0]["Contents"][0]["maliciousRatio"]
+      if mr_score > float(demisto.args()["threshold"]):  # noqa: RET503
+          ec = {}
+          ec["DBotScore"] = {
+              "Type": indicator["indicator_type"].lower(),
+              "Score": 2,  # suspicious
+              "Vendor": "DBot-MaliciousRatio",
+              "Indicator": indicator["value"],
+          }
+          entry = {
+              "Type": entryTypes["note"],
+              "EntryContext": ec,
+              "Contents": ec["DBotScore"]["Score"],
+              "ContentsFormat": formats["text"],
+              "HumanReadable": f"Malicious ratio for {indicator['value']} is {mr_score}",
+              "ReadableContentsFormat": formats["markdown"],
+          }
+          return entry
+
+
+  def main():
+      indicator_value = demisto.args().get("input")
+      indicator = get_indicator_from_value(indicator_value)
+      if indicator:
+          try:
+              demisto.results(get_indicator_result(indicator))
+          except Exception:
+              pass
+
+
+  if __name__ == "__builtin__" or __name__ == "builtins":
+      main()
+
+  register_module_line('MaliciousRatioReputation', 'end', __line__())
+scripttarget: 0
+signature: 0GR1zCNZ8WlNfyVWeFwZ9gHlO7C1JnfO98HJAI7bwAVCJhTWTMclCynHwcRwPFb4d/7dulpCBjCOi0IuFv5H9dZGy2PwEPm6UpZOxFZ+vfRFqVcSlUYbq19mC6/BI4SpRnlQejoSCvI3H+m85g1Iqne+VovfD9L4em3VrriDYSboVbihSn5U8Iucwzg1Jl0ZppChUI4auk9n/hO1m8qwIs4k6bgG55MP6BG/e+4drbN3zpKGzhPU60lA5MgyiWThAos4csbMqjk1NvX/F1q5YqV8olk6PFKjRDE1JpedgXc5l5UXS+cjCLEuKkdxqcA8jEOzp6q24g+TUy2qSbfFlw==
+subtype: python3
+system: true
+tags:
+- reputation
+type: python
