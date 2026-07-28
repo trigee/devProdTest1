@@ -1,0 +1,167 @@
+{
+	"author": "Cortex",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Utilities"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"integration",
+		"agentixaction"
+	],
+	"contentItems": {
+		"agentixaction": [
+			{
+				"category": "",
+				"description": "Extract rendered content from web pages using Chrome browser automation. Navigates to the specified URL, waits for full page rendering, and extracts clean text content while preserving structure and converting links to markdown format. Useful for summarization, enrichment, or analysis of external content within playbooks or investigations. Note: This action does not bypass Cloudflare or other anti-bot protections. If access is blocked, content extraction will fail.\n",
+				"fromversion": "8.12.0",
+				"id": "ExtractURLContent",
+				"name": "ExtractURLContent",
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			}
+		],
+		"agentixagent": null,
+		"agentixknowledgecollection": null,
+		"agentixknowledgesource": null,
+		"agentixskill": null,
+		"automation": null,
+		"casefield": null,
+		"classifier": null,
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": null,
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "Utilities",
+				"commands": [
+					{
+						"description": "Converts the contents of a URL to an image file or a PDF file.",
+						"hidden": false,
+						"name": "rasterize"
+					},
+					{
+						"description": "Converts the body of an email to an image file or a PDF file.",
+						"hidden": false,
+						"name": "rasterize-email"
+					},
+					{
+						"description": "Converts an image file to a PDF file.",
+						"hidden": false,
+						"name": "rasterize-image"
+					},
+					{
+						"description": "Converts a PDF file to an image file.",
+						"hidden": false,
+						"name": "rasterize-pdf"
+					},
+					{
+						"description": "Converts an HTML file to an image file or a PDF file.",
+						"hidden": false,
+						"name": "rasterize-html"
+					},
+					{
+						"description": "Extracts structured text content from web pages in markdown format.",
+						"hidden": true,
+						"name": "rasterize-extract"
+					}
+				],
+				"description": "Converts URLs, PDF files, and emails to an image file or PDF file.",
+				"fromversion": "8.15.0",
+				"id": "Rasterize",
+				"name": "Rasterize",
+				"toversion": ""
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"playbook": null,
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"created": "2025-03-29T09:29:51Z",
+	"currentVersion": "2.1.38",
+	"defaultDataSource": {
+		"id": "",
+		"name": ""
+	},
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.42.1",
+			"name": "Base"
+		}
+	},
+	"deprecated": false,
+	"description": "Converts URLs, PDF files, and emails to an image file or PDF file.",
+	"downloads": 0,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"firstCreated": "2025-03-29T09:29:51Z",
+	"fromServerVersion": "5.0.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldFree",
+		"generalFieldSupportIncluded",
+		"generalFieldSupportModule"
+	],
+	"hybrid": false,
+	"id": "rasterize",
+	"installMessage": "",
+	"integrations": [
+		{
+			"id": "Rasterize",
+			"imagePath": "content/packs/rasterize/Rasterize_image.png",
+			"name": "Rasterize"
+		}
+	],
+	"isOverridable": false,
+	"itemVersion": "2.1.38",
+	"keywords": [],
+	"legacy": true,
+	"modules": [],
+	"name": "Rasterize",
+	"packID": "rasterize",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"readme": "During incident investigation you can enhance the investigation with screenshots of URLS or with emails and other PDF files.  \n**Note:**  \nThis content pack is installed by default when Cortex is initially deployed.  \n\n## What Does This Pack Do?  \n\nConverts URLs, PDF files, and emails to an image file or a PDF file.\n",
+	"searchRank": 0,
+	"serverMaxVersion": "",
+	"serverMinVersion": "5.0.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"supportedModules": [
+		"agentix",
+		"edr",
+		"cloud",
+		"cloud_runtime_security",
+		"xsiam"
+	],
+	"tags": [],
+	"toServerVersion": "",
+	"updated": "2026-07-01T13:50:57Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "10639521",
+	"videos": []
+}
