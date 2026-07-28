@@ -1,0 +1,101 @@
+args:
+- description: A comma-separated list of domains.
+  isArray: true
+  name: domains
+  required: true
+  supportedModules: []
+- description: A comma-separated list of URLs.
+  isArray: true
+  name: urls
+  required: true
+  supportedModules: []
+comment: Checks if the supplied URLs are in the specified domains.
+commonfields:
+  id: IsUrlPartOfDomain
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10116658
+engineinfo: {}
+mainengineinfo: {}
+name: IsUrlPartOfDomain
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: IsUrlPartOfDomain.URL
+  description: The path of the URLs.
+  type: String
+- contextPath: IsUrlPartOfDomain.Domain
+  description: The domain checked with the URL.
+  type: String
+- contextPath: IsUrlPartOfDomain.IsInternal
+  description: Whether the URL is in the domain.
+  type: Boolean
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('IsUrlPartOfDomain', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+
+
+
+
+
+
+  def main(domains: str, urls: str) -> CommandResults:
+      """Checks that the urls are in the domain in the domain name.
+
+      Args:
+          domains: A comma separated list of domains.
+          urls: A comma separated list of urls.
+
+      Returns:
+          Results to display in CortexXSOAR
+      """
+      urls = argToList(urls)
+      domains = set(argToList(domains))
+
+      outputs: list[dict] = []
+      for url in urls:
+          results = demisto.executeCommand("ExtractDomainFromUrlAndEmail", {"input": url.lower()})
+          if is_error(results):
+              demisto.debug(f"Could not get domain from url {url}")
+              return_error(get_error(results))
+          else:
+              domain_from_url = results[0]["Contents"]
+              outputs.append(
+                  {
+                      "URL": url,
+                      "Domain": domain_from_url,
+                      "IsInternal": (domain_from_url in domains) or url.startswith(("https://localhost", "http://localhost")),
+                  }
+              )
+      return CommandResults("IsUrlPartOfDomain", outputs=outputs)
+
+
+  if __name__ in ("builtins", "__builtin__"):
+      return_results(main(**demisto.args()))
+
+  register_module_line('IsUrlPartOfDomain', 'end', __line__())
+scripttarget: 0
+signature: eFNufDzIaFju1tO8gRfDgcZDuweG4timv/GGByEPKENDLXdODwr9H0kg1jzT9YiiEpFGFVRCR9XjM6ajL2luVFyCXvITa/l15h+ImJDePc0YbMHT2kyzHNZ3NMt0Kbo2hqZHMDv3DQ7eQm7ABelrvB3+YUlrDKRVRCMqx8oGN7iizNxeCgARM11zbK0j7D2kDr5jxuGqR0oaZenUYmGFC3sU5KW9ndgs3zxfOKbBPc6kYklDK0q9KqXBOxOT2Jbzp3T2LItYkBzk0NplD94YAZGVol3aDJ4ImNRzMb92sUNsL4SofaqYapI+CKYwjkhKFKDVyNQmKVSb8faW5/bH/Q==
+subtype: python3
+system: true
+tags: []
+type: python
