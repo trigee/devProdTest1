@@ -1,0 +1,55 @@
+comment: This script is only meant to be used to disable the Enrich Excluded button
+  in an indicator. It should not be used otherwise.
+commonfields:
+  id: enrich_exclude_button
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.8.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: enrich_exclude_button
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('enrich_exclude_button', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+
+
+
+
+  def main():
+      return_error("\nThis indicator is enrich excluded")
+
+
+  """ ENTRY POINT """
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('enrich_exclude_button', 'end', __line__())
+scripttarget: 0
+signature: GqbdilPR0idsa1mLEqbkkoJxyXMebJQ5fBwzMPxfmKuZ2ov1dqXJlO8XN0N+WQEjpuMUftEETMUNx699a6WpHfo/eevgIqQa3leTEhthXimwS613XVe54v/FjVEJdXI9+PkVKC65TQ+YFaZ0V3OaFzfq79xxMKq1PwyPPfIYWciZFiYb0cRg/50yCOy7fedbwJ1NoUQWuj8EMRwnwjaOFFsVbY+kEkgOCFOxucMk2TezezLxUdpEVDZ7qiMGyMysK9jPnWkQTGYXmoTU/eowuNVmyKc41xF54qvC9rjVH74G+hRdzpI/OfCZK2JRpLDkXtjKYMOBZrtCe/iMZ3r47g==
+subtype: python3
+system: true
+tags:
+- indicator-action-button
+type: python
