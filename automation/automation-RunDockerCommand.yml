@@ -1,0 +1,108 @@
+args:
+- default: true
+  description: Enter Command.
+  name: cmd
+  supportedModules: []
+- description: enter sysargs.
+  name: sysargs
+  supportedModules: []
+comment: "This command will allow you to run commands against a local Docker Container.
+  You can run commands like wc for instance with word count, or other types of commands
+  that you want on the docker container. \n\nWe recommend for tools that you want
+  to use that are not part of the default Docker container, to cope this Automation
+  script and then create a customer docker container with /docker_image_create with
+  a custom docker container to add any command level tool to Demisto and output the
+  results directly to the context."
+commonfields:
+  id: RunDockerCommand
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: RunDockerCommand
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: CommandResults.Command
+  description: This will contain the command line tool name and arguments that were
+    ran.
+- contextPath: CommandResults.Results
+  description: This will have the full results as a single string of the results.
+    You will need to parse the results of the command into the format you want. Try
+    looking at commands like ExtractRegex or create your own follow on automation
+    script that will parse the results into the format you would like.
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('RunDockerCommand', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  import subprocess
+
+
+
+
+
+  def main():
+      ret = []
+      sysargs = None
+
+      cmdarg = demisto.args()["cmd"]
+      if "sysargs" in demisto.args():
+          sysargs = demisto.args()["sysargs"]
+
+      if sysargs is None:
+          output = None
+          try:
+              cmd_list = cmdarg.split()
+              output = subprocess.check_output(cmd_list, shell=False)
+          except subprocess.CalledProcessError as e:
+              output = e.output
+          ret.append(output)
+      else:
+          ret.append(subprocess.check_output([cmdarg, sysargs]))
+
+      ret = [r.decode("utf-8") for r in ret]  # type:ignore[union-attr]
+      ec = {"Command": cmdarg, "Results": ret[0]}
+
+      demisto.results(
+          {
+              "Type": entryTypes["note"],
+              "ContentsFormat": formats["json"],
+              "Contents": ret,
+              "HumanReadable": ret[0],
+              "EntryContext": {"CommandResults": ec},
+          }
+      )
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+      sys.exit(0)
+
+  register_module_line('RunDockerCommand', 'end', __line__())
+scripttarget: 0
+signature: GdsP46qnKcy+v+VN0admv+K58SPBrsw3hYqUqqy4936rJ1O0Mf86UGYBtkZZql56QFikRrg3QBYjSrzCpiZvTZ3riMoVg2JmqFEo2aCnl/rZphFJkwFmdpWcjbEADX/3vHCkRbOEl5swwI/fbLGDbm7+F3HQZ5rbovqa8H/ygcuR2xSOdq4qgGoiFhZRURb0kb1xHUqcWn9cxYyOQQ0bEXg2JzcEh1dIlJFPV5IBg6WvGJxltN2GwCsQJDSyvWxUUCOXSav0prWtQ7JneoVDKdcT9Z7Uw1oRBYj8YPK6LkhytVi0C23vNaAWhyRkXyuq75wMCvBdrdycFVjan8CBZQ==
+subtype: python3
+system: true
+tags:
+- Utilities
+type: python
