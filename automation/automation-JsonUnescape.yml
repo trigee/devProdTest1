@@ -1,0 +1,85 @@
+args:
+- description: JSON object
+  name: value
+  supportedModules: []
+comment: Recursively un-escapes JSON data if escaped JSON is found
+commonfields:
+  id: JsonUnescape
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3-deb:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: JsonUnescape
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: JsonUnescape
+  description: Unescaped JSON Data
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('JsonUnescape', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  import json
+  import traceback
+
+
+
+
+
+  def hook(obj: dict) -> dict:
+      """Hook to convert string to json if possible"""
+      new_obj = {}
+      for k, v in obj.items():
+          try:
+              new_obj[k] = json.loads(v)
+          except Exception:
+              new_obj[k] = v
+      return new_obj
+
+
+  def unescape(args: dict) -> dict | list:
+      """Unescape json string"""
+      json_str = json.dumps(args.get("value"))
+      return json.loads(json_str, object_hook=hook)
+
+
+  def main():  # pragma: no cover  # noqa: F841
+      args = demisto.args()
+      try:
+          return_results(unescape(args))
+      except Exception as ex:
+          demisto.error(traceback.format_exc())
+          return_error(f"Error: {ex!s}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('JsonUnescape', 'end', __line__())
+scripttarget: 0
+signature: cL+BNZPBYoV0WVN6wuEJJjf3kLB47vokAG8ltgxM72cq+LEIJNUa3g7DpDp979fdsTxaANt08zrMa/LsfSLw+mbIBhux2OP0E2GylqK+AOSJma/aeHUxk0R6kFK3IyrqXEwBncD5/fIw2wjjswDG60cheB0I9fEe7WetmWeDsk9+S9seDfLq2GMsnE1Ehx84+CYStmrL4YA1MkMJOvjubcneZ2FZ8YyuWfy0Q499Bobuhmdociz7dpDo3riiGlSaoTeb+j4zj2qL3pkQNldQzNSFRz9eqfwQnSfXJBwkIyPuRhzvNrgFmIf6leDrHe4e86RHcZOPEp2b85r3xsQTNw==
+subtype: python3
+system: true
+tags:
+- transformer
+type: python
