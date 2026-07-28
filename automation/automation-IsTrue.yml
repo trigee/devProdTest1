@@ -1,0 +1,57 @@
+args:
+- default: true
+  description: The value to check if exists - can handle arrays as well
+  isArray: true
+  name: value
+  supportedModules: []
+comment: Check if a given value is true. Will return 'no' otherwise
+commonfields:
+  id: IsTrue
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: IsTrue
+outputs:
+- contextPath: "yes"
+  description: if value is True (either has object or string True/true)
+- contextPath: "no"
+  description: if  value is not True (either has object or string True/true)
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.28
+  if (typeof args.value === 'string' || args.value instanceof String) {
+      if (args.value === 'true' || args.value === 'True') {
+          return 'yes';
+      }
+      return 'no';
+  }
+  var val = Boolean(args.value);
+  if (val) {
+      return 'yes';
+  }
+  return 'no';
+scripttarget: 0
+signature: jDSlbJ+pz/3UtcnYUX9pUJ+IP+wOOcSbge3wwMWh/VF3OnayCrn7w5U3t7/f1/cZ79R1ysRn27pVGRm2Z388AKfEhIMAfK91Si+M5wrNC3MeNFaQ52XgDOs1h+G2iAuAk1E9ZriCswQdrkjdJ/ymYWKZyts/zJ5s5AqFl9YyODBDrsouZ5cZ/J2TwPiYuEmuPuFNX/hy++FoOPfZs0uEHhKMyJ+TBZN0eCNa8/mERtRgQoLS4MxEidQB4zl7MbziN1GxtaIzEHoNcw5gR26f5xCvBsId4NaY9eNXoiOahiDNg3G68G6T98X8Lpc91cMuO3Qq9zxVAqvif4rqHUibBQ==
+system: true
+tags:
+- Utility
+- Condition
+type: javascript
