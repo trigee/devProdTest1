@@ -1,0 +1,68 @@
+args:
+- default: true
+  description: Input string to transform to JSON object.
+  name: input
+  required: true
+  supportedModules: []
+comment: Loads a json from string input, and returns a json object result.
+commonfields:
+  id: LoadJSON
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.8428455
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: LoadJSON
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: JsonObject
+  description: The JSON object loaded from input.
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('LoadJSON', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  import json
+
+
+
+
+
+  def load_json(args):
+      json_str = args["input"]
+      obj = json.loads(json_str, strict=False)
+
+      return {"EntryContext": {"JsonObject": obj}, "Type": entryTypes["note"], "ContentsFormat": formats["json"], "Contents": obj}
+
+
+  if __name__ in ("__builtin__", "builtins", "__main__"):
+      res = load_json(demisto.args())
+      demisto.results(res)
+
+  register_module_line('LoadJSON', 'end', __line__())
+scripttarget: 0
+signature: xcbnv+Ew5iBN3VAaiAhgjkF9qv1LrUkgp44xdm5GF06L4YPrS7Owh0fO+G+OxdFvInMqOW58hU0WSmK/lK7x3dKpfI/dfJwvxrDNl0rWuADrTYw4ZY35EToOYQZVRxG7tHXWxKWbTHXM1Bf7uYs1eLctxau8SWV09QO/NnvzxZihiV6fYS02X/lxZAe2CQIStShv5UYotodWrcoXiW/ZMpcKxxnWvOeC9QeMlJngxvCeC9vla1zhRXGnzY6W3ZaRa2vsFsViwpD1ukMM2zE3MuGSFp/NCD53fRvtpQLAL48xSL8NCp5OeDt7mXQV3Xz9qieZG2lW0GzgJkU3ck9WwA==
+subtype: python3
+system: true
+tags:
+- Utility
+type: python
