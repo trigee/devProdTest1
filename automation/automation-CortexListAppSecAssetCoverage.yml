@@ -1,0 +1,490 @@
+args:
+- description: The unique ID of the asset. Accepts a comma-separated list.
+  isArray: true
+  name: asset_id
+  supportedModules: []
+- description: The name of the asset. Accepts a comma-separated list.
+  isArray: true
+  name: asset_name
+  supportedModules: []
+- description: Business application names. Accepts a comma-separated list.
+  isArray: true
+  name: business_application_names
+  supportedModules: []
+- auto: PREDEFINED
+  description: The status coverage. Accepts a comma-separated list.
+  isArray: true
+  name: status_coverage
+  predefined:
+  - FULLY SCANNED
+  - NOT SCANNED
+  - PARTIALLY SCANNED
+  supportedModules: []
+- auto: PREDEFINED
+  description: Is scanned by vulnerabilities. Accepts a comma-separated list.
+  isArray: true
+  name: is_scanned_by_vulnerabilities
+  predefined:
+  - DISABLED
+  - ENABLED
+  - IRRELEVANT
+  supportedModules: []
+- auto: PREDEFINED
+  description: Is scanned by code weakness. Accepts a comma-separated list.
+  isArray: true
+  name: is_scanned_by_code_weakness
+  predefined:
+  - DISABLED
+  - ENABLED
+  - IRRELEVANT
+  supportedModules: []
+- auto: PREDEFINED
+  description: Is scanned by secrets. Accepts a comma-separated list.
+  isArray: true
+  name: is_scanned_by_secrets
+  predefined:
+  - DISABLED
+  - ENABLED
+  - IRRELEVANT
+  supportedModules: []
+- auto: PREDEFINED
+  description: Is scanned by IaC. Accepts a comma-separated list.
+  isArray: true
+  name: is_scanned_by_iac
+  predefined:
+  - DISABLED
+  - ENABLED
+  - IRRELEVANT
+  supportedModules: []
+- auto: PREDEFINED
+  description: Is scanned by malware. Accepts a comma-separated list.
+  isArray: true
+  name: is_scanned_by_malware
+  predefined:
+  - DISABLED
+  - ENABLED
+  - IRRELEVANT
+  supportedModules: []
+- auto: PREDEFINED
+  description: Is scanned by CICD. Accepts a comma-separated list.
+  isArray: true
+  name: is_scanned_by_cicd
+  predefined:
+  - DISABLED
+  - ENABLED
+  - IRRELEVANT
+  supportedModules: []
+- auto: PREDEFINED
+  description: The asset type. Accepts a comma-separated list.
+  isArray: true
+  name: asset_type
+  predefined:
+  - CICD PIPELINE
+  - CONTAINER IMAGE REPOSITORY
+  - REPOSITORY
+  supportedModules: []
+- auto: PREDEFINED
+  description: The asset provider. Accepts a comma-separated list.
+  isArray: true
+  name: asset_provider
+  predefined:
+  - AWS
+  - AWS_CODE_BUILD
+  - AWS_CODE_COMMIT
+  - AZURE
+  - AZURE_PIPELINES
+  - AZURE_REPOS
+  - BITBUCKET
+  - CIRCLE_CI
+  - DOCKER
+  - GCP
+  - GITHUB
+  - GITHUB_ACTIONS
+  - GITLAB
+  - GITLAB_CI
+  - HCP_TFC_RUN_TASKS
+  - JENKINS
+  - JFROG_ARTIFACTORY
+  - OCI
+  supportedModules: []
+- defaultValue: "50"
+  description: The maximum number of assets to return.
+  name: limit
+  supportedModules: []
+comment: Retrieves Application Security Posture Management (ASPM) coverage information
+  for assets, including scan status across different security scanning types (vulnerabilities,
+  secrets, code weakness, IaC, malware, CICD). Returns coverage statistics, histograms,
+  and detailed asset information. Filters can be provided to return a subset of the
+  results. Statistics are generated over the filtered set.
+commonfields:
+  id: CortexListAppSecAssetCoverage
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.1.0
+    isoverridable: false
+    itemVersion: 3.5.66
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.11.4819260
+enabled: true
+engineinfo: {}
+internal: true
+isInternal: true
+mainengineinfo: {}
+name: CortexListAppSecAssetCoverage
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: Core.Coverage.total_filtered_assets
+  description: The total number of assets matching the filter (before the limit is
+    applied).
+  type: Number
+- contextPath: Core.Coverage.number_returned_assets
+  description: The number of returned assets.
+  type: Number
+- contextPath: Core.Coverage.coverage_percentage
+  description: The ASPM coverage percentage calculated from the scanner coverage histogram.
+  type: Number
+- contextPath: Core.Coverage.Metrics.aspm_status_coverage.partially_scanned_count
+  description: The number of assets that are partially scanned according to ASPM coverage.
+  type: Number
+- contextPath: Core.Coverage.Metrics.aspm_status_coverage.fully_scanned_count
+  description: The number of assets that are fully scanned according to ASPM coverage.
+  type: Number
+- contextPath: Core.Coverage.Metrics.aspm_status_coverage.not_scanned_count
+  description: The number of assets that are not scanned according to ASPM coverage.
+  type: Number
+- contextPath: Core.Coverage.Metrics.aspm_status_coverage.partially_scanned_percentage
+  description: The percentage of assets that are partially scanned according to ASPM
+    coverage.
+  type: Number
+- contextPath: Core.Coverage.Metrics.aspm_status_coverage.fully_scanned_percentage
+  description: The percentage of assets that are fully scanned according to ASPM coverage.
+  type: Number
+- contextPath: Core.Coverage.Metrics.aspm_status_coverage.not_scanned_percentage
+  description: The percentage of assets that are not scanned according to ASPM coverage.
+  type: Number
+- contextPath: Core.Coverage.Metrics.is_scanned_by_vulnerabilities.coverage_percentage
+  description: The percentage of assets scanned for vulnerabilities.
+  type: Number
+- contextPath: Core.Coverage.Metrics.is_scanned_by_vulnerabilities.enabled
+  description: The number of assets where vulnerability scanning is enabled.
+  type: Number
+- contextPath: Core.Coverage.Metrics.is_scanned_by_vulnerabilities.disabled
+  description: The number of assets where vulnerability scanning is disabled.
+  type: Number
+- contextPath: Core.Coverage.Metrics.is_scanned_by_code_weakness.coverage_percentage
+  description: The percentage of assets scanned for code weaknesses.
+  type: Number
+- contextPath: Core.Coverage.Metrics.is_scanned_by_code_weakness.enabled
+  description: The number of assets where code weakness scanning is enabled.
+  type: Number
+- contextPath: Core.Coverage.Metrics.is_scanned_by_code_weakness.disabled
+  description: The number of assets where code weakness scanning is disabled.
+  type: Number
+- contextPath: Core.Coverage.Metrics.is_scanned_by_secrets.coverage_percentage
+  description: The percentage of assets scanned for secrets.
+  type: Number
+- contextPath: Core.Coverage.Metrics.is_scanned_by_secrets.enabled
+  description: The number of assets where secret scanning is enabled.
+  type: Number
+- contextPath: Core.Coverage.Metrics.is_scanned_by_secrets.disabled
+  description: The number of assets where secret scanning is disabled.
+  type: Number
+- contextPath: Core.Coverage.Metrics.is_scanned_by_iac.coverage_percentage
+  description: The percentage of assets scanned for infrastructure-as-code (IaC) issues.
+  type: Number
+- contextPath: Core.Coverage.Metrics.is_scanned_by_iac.enabled
+  description: The number of assets where infrastructure-as-code (IaC) scanning is
+    enabled.
+  type: Number
+- contextPath: Core.Coverage.Metrics.is_scanned_by_iac.disabled
+  description: The number of assets where infrastructure-as-code (IaC) scanning is
+    disabled.
+  type: Number
+- contextPath: Core.Coverage.Metrics.is_scanned_by_malware.coverage_percentage
+  description: The percentage of assets scanned for malware.
+  type: Number
+- contextPath: Core.Coverage.Metrics.is_scanned_by_malware.enabled
+  description: The number of assets where malware scanning is enabled.
+  type: Number
+- contextPath: Core.Coverage.Metrics.is_scanned_by_malware.disabled
+  description: The number of assets where malware scanning is disabled.
+  type: Number
+- contextPath: Core.Coverage.Asset.asset_id
+  description: The unique ID of the asset. Each asset is assigned a unique identifier
+    in the system.
+  type: String
+- contextPath: Core.Coverage.Asset.asset_name
+  description: The name of the asset. Typically corresponds to the repository, container
+    image, or pipeline name.
+  type: String
+- contextPath: Core.Coverage.Asset.asset_provider
+  description: 'The vendor or source platform of the asset. Indicates where the asset
+    originates from. Possible values: AWS, AWS_CODE_BUILD, AWS_CODE_COMMIT, AZURE,
+    AZURE_REPOS, BITBUCKET, BITBUCKET_DATACENTER, CIRCLE_CI, DOCKER, GCP, GITHUB,
+    GITHUB_ACTIONS, GITHUB_ENTERPRISE, GITLAB, GITLAB_SELF_MANAGED, HCP_TFC_RUN_TASKS,
+    HCP_TFE_RUN_TASKS, JENKINS, JFROG_ARTIFACTORY, OCI.'
+  type: String
+- contextPath: Core.Coverage.Asset.asset_type
+  description: 'The type or category of the asset. Determines the nature of the resource
+    being scanned. Possible values: CICD PIPELINE, CONTAINER IMAGE REPOSITORY, REPOSITORY.'
+  type: String
+- contextPath: Core.Coverage.Asset.business_application_names
+  description: A list of business applications associated with the asset. These applications
+    help map the asset to business context or ownership.
+  type: Array
+- contextPath: Core.Coverage.Asset.is_scanned_by_cicd
+  description: 'Indicates whether the asset is scanned within CI/CD pipelines. Possible
+    values: ENABLED, DISABLED, IRRELEVANT.'
+  type: String
+- contextPath: Core.Coverage.Asset.is_scanned_by_code_weakness
+  description: 'Indicates whether code weakness scanning is performed on the asset.
+    Possible values: ENABLED, DISABLED, IRRELEVANT.'
+  type: String
+- contextPath: Core.Coverage.Asset.is_scanned_by_iac
+  description: 'Indicates whether infrastructure-as-code (IaC) scanning is enabled
+    for the asset. Possible values: ENABLED, DISABLED, IRRELEVANT.'
+  type: String
+- contextPath: Core.Coverage.Asset.is_scanned_by_malware
+  description: 'Indicates whether malware scanning is enabled for the asset. Possible
+    values: ENABLED, DISABLED, IRRELEVANT.'
+  type: String
+- contextPath: Core.Coverage.Asset.is_scanned_by_secrets
+  description: 'Indicates whether the asset is scanned for hardcoded secrets or credentials.
+    Possible values: ENABLED, DISABLED, IRRELEVANT.'
+  type: String
+- contextPath: Core.Coverage.Asset.is_scanned_by_semgrep
+  description: 'Boolean flag indicating whether the asset is analyzed using Semgrep
+    for code issues or misconfigurations. Possible values: true, false.'
+  type: Boolean
+- contextPath: Core.Coverage.Asset.is_scanned_by_sonarqube
+  description: 'Boolean flag indicating whether the asset is analyzed using SonarQube
+    for code quality and security issues. Possible values: true, false.'
+  type: Boolean
+- contextPath: Core.Coverage.Asset.is_scanned_by_veracode
+  description: 'Boolean flag indicating whether the asset is scanned using Veracode
+    for security vulnerabilities. Possible values: true, false.'
+  type: Boolean
+- contextPath: Core.Coverage.Asset.is_scanned_by_vulnerabilities
+  description: 'Indicates whether vulnerability scanning is enabled for the asset.
+    Possible values: ENABLED, DISABLED, IRRELEVANT.'
+  type: String
+- contextPath: Core.Coverage.Asset.last_scan_status
+  description: 'The status of the most recent scan performed on the asset. Possible
+    values: NOT_SCANNED_YET, ERROR, COMPLETED.'
+  type: String
+- contextPath: Core.Coverage.Asset.scanners_data
+  description: An array containing detailed information from the scanners that evaluated
+    the asset, including scan results, timestamps, and metadata.
+  type: Array
+- contextPath: Core.Coverage.Asset.status_coverage
+  description: 'The overall scan coverage of the asset. Possible values: FULLY SCANNED,
+    PARTIALLY SCANNED, NOT SCANNED.'
+  type: String
+- contextPath: Core.Coverage.Asset.unified_provider
+  description: 'The unified provider name associated with the asset. Standardized
+    across different vendor integrations. Possible values: AWS, AWS_CODE_BUILD, AWS_CODE_COMMIT,
+    AZURE, AZURE_PIPELINES, AZURE_REPOS, BITBUCKET, CIRCLE_CI, DOCKER, GCP, GITHUB,
+    GITHUB_ACTIONS, GITLAB, GITLAB_CI, HCP_TFC_RUN_TASKS, JENKINS, JFROG_ARTIFACTORY,
+    OCI.'
+  type: String
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('CortexListAppSecAssetCoverage', 'start', __line__())
+  CONSTANT_PACK_VERSION = '3.5.66'
+  demisto.debug('pack id = Core, pack version = 3.5.66')
+  from typing import Any
+
+
+
+
+  # Columns representing different scanner coverage categories
+  SCANNER_COLUMNS: list[str] = [
+      "is_scanned_by_vulnerabilities",
+      "is_scanned_by_code_weakness",
+      "is_scanned_by_secrets",
+      "is_scanned_by_iac",
+      "is_scanned_by_malware",
+  ]
+
+  # Valid input arguments for this automation
+  VALID_ARGS: set[str] = {
+      "asset_id",
+      "asset_name",
+      "business_application_names",
+      "status_coverage",
+      "is_scanned_by_vulnerabilities",
+      "is_scanned_by_code_weakness",
+      "is_scanned_by_secrets",
+      "is_scanned_by_iac",
+      "is_scanned_by_malware",
+      "is_scanned_by_cicd",
+      "asset_type",
+      "asset_provider",
+      "limit",
+  }
+
+
+  def get_command_results(command: str, args: dict[str, Any]) -> dict[str, Any]:
+      """Execute a Cortex command and return the parsed result."""
+      demisto.debug(f"Executing command: {command} with args: {args}")
+
+      results = demisto.executeCommand(command, args)
+      demisto.debug(f"Raw results from {command}: {results}")
+
+      if not results or not isinstance(results, list):
+          demisto.debug(f"No valid results returned from {command}")
+          return {}
+
+      result = results[0]
+      if not isinstance(result, dict):
+          demisto.debug(f"First result from {command} is not a dict")
+          return {}
+
+      if result.get("Type") == EntryType.ERROR:
+          error_msg = result.get("Contents", "Unknown error occurred.")
+          demisto.error(f"Error returned from {command}: {error_msg}")
+          raise Exception(error_msg)
+
+      contents = result.get("Contents")
+      demisto.debug(f"Parsed contents from {command}: {contents}")
+
+      if isinstance(contents, dict):
+          return contents.get("reply", {})
+
+      return {}
+
+
+  def transform_scanner_histograms_outputs(asset_coverage_histograms: dict[str, Any]) -> tuple[dict[str, dict[str, float]], float]:
+      """Transform scanner histogram data into a summarized structure."""
+      demisto.debug(f"Transforming scanner histogram data: {asset_coverage_histograms}")
+
+      def get_count(data: list[dict[str, Any]], value: str) -> int:
+          count = next((item.get("count", 0) for item in data if item.get("value") == value), 0)
+          demisto.debug(f"Count for {value}: {count} in data: {data}")
+          return count
+
+      output: dict[str, dict[str, float]] = {}
+      total_enabled = total_relevant = 0
+
+      for column in SCANNER_COLUMNS:
+          data = asset_coverage_histograms.get(column, [])
+          demisto.debug(f"Processing column {column} with data: {data}")
+
+          enabled_count = get_count(data, "ENABLED")
+          disabled_count = get_count(data, "DISABLED")
+          relevant_count = enabled_count + disabled_count
+
+          coverage_pct = (enabled_count / relevant_count) if relevant_count else 0.0
+          output[column] = {
+              "enabled": enabled_count,
+              "disabled": disabled_count,
+              "coverage_percentage": coverage_pct,
+          }
+
+          total_enabled += enabled_count
+          total_relevant += relevant_count
+
+      overall_coverage = (total_enabled / total_relevant) if total_relevant else 0.0
+      demisto.debug(f"Scanner histogram transformation result: {output}, overall: {overall_coverage}")
+
+      return output, overall_coverage
+
+
+  def transform_status_coverage_histogram_output(data: dict[str, Any]) -> dict[str, dict[str, int | float]]:
+      """Transform the status coverage histogram into a flattened dictionary."""
+      demisto.debug(f"Transforming status coverage histogram: {data}")
+
+      mapping = {
+          "PARTIALLY SCANNED": "partially_scanned",
+          "FULLY SCANNED": "fully_scanned",
+          "NOT SCANNED": "not_scanned",
+      }
+
+      output: dict[str, int | float] = {}
+
+      for item in data.get("status_coverage", []):
+          label = mapping.get(item.get("value"), str(item.get("value", "")).lower().replace(" ", "_"))
+          output[f"{label}_count"] = item.get("count", 0)
+          output[f"{label}_percentage"] = item.get("percentage", 0.0)
+
+      demisto.debug(f"Status histogram output: {output}")
+      return {"aspm_status_coverage": output}
+
+
+  def main() -> None:
+      """Main execution entry point for the Cortex script."""
+      try:
+          args = demisto.args()
+          demisto.debug(f"Received script arguments: {args}")
+
+          extra_args = set(args.keys()) - VALID_ARGS
+          if extra_args:
+              demisto.error(f"Unexpected args found: {extra_args}")
+              raise ValueError(f"Unexpected args found: {extra_args}")
+
+          # Fetch asset coverage details
+          demisto.debug("Fetching asset coverage via core-get-asset-coverage")
+          asset_coverage = get_command_results("core-get-asset-coverage", args)
+          demisto.debug(f"Asset coverage received: {asset_coverage}")
+
+          assets = asset_coverage.get("DATA", [])
+
+          # Fetch coverage histogram data
+          args["columns"] = ", ".join(SCANNER_COLUMNS + ["status_coverage"])
+          demisto.debug(f"Fetching histogram using args: {args}")
+
+          asset_coverage_histograms = get_command_results("core-get-asset-coverage-histogram", args)
+          demisto.debug(f"Histogram result: {asset_coverage_histograms}")
+
+          scanner_histograms, coverage_percentage = transform_scanner_histograms_outputs(asset_coverage_histograms)
+          status_histogram = transform_status_coverage_histogram_output(asset_coverage_histograms)
+
+          outputs = {
+              "total_filtered_assets": asset_coverage.get("FILTER_COUNT"),
+              "number_returned_assets": len(assets),
+              "coverage_percentage": coverage_percentage,
+              "Metrics": {**scanner_histograms, **status_histogram},
+              "Asset": assets,
+          }
+
+          demisto.debug(f"Final output: {outputs}")
+
+          return_results(
+              CommandResults(
+                  outputs=outputs,
+                  outputs_prefix="Core.Coverage",
+                  raw_response=outputs,
+              )
+          )
+
+      except Exception as e:
+          demisto.error(f"Exception occurred: {str(e)}")
+          return_error(f"Failed to execute script.\nError:\n{str(e)}")
+
+
+  # Script entry point
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('CortexListAppSecAssetCoverage', 'end', __line__())
+scripttarget: 0
+signature: MIrO3NSfIqbZ5cwsPoaaO7U+8T8JNJPu2chm2AVrK1K+9w6g7S4yNvOzrRXnlV4T/oXoHGZzY2+3xfFr54CIE06nNJ4cwmUAvwztVHDgcjLUe/MTBpTnh4n40xeWcOcS80gpH53c6piiSn9kJoQrSQr92n0AX45yX0RrHh7tukcHuwNa+6693wJVmfBPtEWTnD5YjEjqmIZzTX29vtTrutW9dc+mHEyQ4+YFGdq0JTX1ZC5arlo18E6n4txBD0D6zmjX57prYd7L52ba0l72YwRzIRqSDDJ0HS5t75gv1wOBMCfu/KRBvTD9FXmJG2FWRKQgfjiBrXxRrk+8eRZzwQ==
+subtype: python3
+system: true
+tags:
+- Utilities
+type: python
