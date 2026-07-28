@@ -1,0 +1,63 @@
+args:
+- default: true
+  description: The value to pretty-print.
+  name: value
+  required: true
+  supportedModules: []
+comment: |-
+  Pretty-print data using Python's pprint library.  This is useful for seeing the structure of incident and context data.  Here's how to use it:
+
+  !PrettyPrint value=${incident}.
+commonfields:
+  id: PrettyPrint
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: PrettyPrint
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('PrettyPrint', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.28'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  from pprint import pformat
+
+
+
+
+  def main():
+      value = demisto.args()["value"]
+      demisto.results(pformat(value))
+
+
+  if __name__ in ["__builtin__", "builtins"]:
+      main()
+
+  register_module_line('PrettyPrint', 'end', __line__())
+scripttarget: 0
+signature: cHNcAgw2U2JzRqxAw/S8qtPQ7R9ANLQ/+Y2bO9Qwlh54PCP3hK93x5ubo/nxg6ssaFIL4exeNK5wVMIpTdcnDPy+qP6uzlIXTqqWJ8EI37I1XEDBvOcL3J1/jSmmCnrMxWtWMnRDA6q+gW6P+MSAJFOUKq9FUvcggqNyCBqLEaSnZKpysHTeDq6inXV3Kj8/rJjOPIIRPMvkciCfejTxOSec2Uyl2wefrK639ZvVpvjMYTIqyBYiQzV47BIn3xSc2WkFqrfEPlvLXKJyincKUqgbxvIh9NKGuxGPIRy2d5sL3FgkTcsU91Nlgre9yYO68iBBVW/h4reJE/Je2kt/5Q==
+subtype: python3
+system: true
+tags: []
+type: python
