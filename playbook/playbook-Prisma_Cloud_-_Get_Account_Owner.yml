@@ -1,0 +1,248 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.10.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: |-
+  Retrieves the details of the owner of a given cloud account from the following playbooks:
+    - Get Cloud Account Owner - Generic
+    - Prisma Cloud - Get Owner By Namespace
+id: Prisma Cloud - Get Account Owner
+inputs:
+- description: The account ID to search the owner for.
+  key: AccountID
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The namespace that the playbook would search associated users with.
+  key: Namespace
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: |-
+    The account CSP.
+    Available options:
+    - PrismaCloud
+    - GCP
+  key: Provider
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: Whether to enrich found users or not.
+  key: EnrichUsers
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+name: Prisma Cloud - Get Account Owner
+outlinetasks: {}
+outputs:
+- contextPath: PrismaCloud.Users
+  description: Prisma Cloud users.
+  type: unknown
+- contextPath: PrismaCloud.Users.email
+  description: Prisma Cloud user email.
+- contextPath: PrismaCloud.Users.firstName
+  description: User first name.
+- contextPath: PrismaCloud.Users.lastName
+  description: User last name.
+- contextPath: PrismaCloud.Users.enabled
+  description: User enabled.
+- contextPath: PrismaCloud.Users.username
+  description: User username.
+- contextPath: PrismaCloud.Users.type
+  description: User type.
+- contextPath: PrismaCloud.Users.displayName
+  description: User display name.
+- contextPath: CloudAccountOwner
+  description: The owner's email, if found.
+  type: unknown
+- contextPath: PrismaCloud.UserRoles.associatedUsers
+  description: User roles associated users.
+possibleresponses: []
+quiet: true
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 717f9709-b256-48eb-8bfd-c6ff9306a090
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 717f9709-b256-48eb-8bfd-c6ff9306a090
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": 100
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      EnrichUsers:
+        complex:
+          root: inputs.EnrichUsers
+      Namespace:
+        complex:
+          root: inputs.Namespace
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Retrieves the details of the owner of a given cloud account from the following playbooks:
+          - Get Cloud Account Owner - Generic
+          - Prisma Cloud - Get Owner By Namespace
+      id: b1a484c3-4cd3-4087-8d09-22bc9ecea5ba
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Prisma Cloud - Get Owner By Namespace
+      playbookId: Prisma Cloud - Get Owner By Namespace
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: b1a484c3-4cd3-4087-8d09-22bc9ecea5ba
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 650,
+          "y": 260
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AccountID:
+        complex:
+          root: inputs.AccountID
+      Provider:
+        complex:
+          root: inputs.Provider
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        Retrieves the owners of a cloud account based on account ID.
+        Current supported platforms:
+        - GCP
+        - Prisma Cloud.
+      id: f9872363-79c1-4e2f-8196-9756341bfdf0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get Cloud Account Owner - Generic
+      playbookId: Get Cloud Account Owner - Generic
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: f9872363-79c1-4e2f-8196-9756341bfdf0
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 210,
+          "y": 260
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 58237625-4320-46e4-86dd-d0b248ee521b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 58237625-4320-46e4-86dd-d0b248ee521b
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 430,
+          "y": 440
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 405,
+        "width": 820,
+        "x": 210,
+        "y": 100
+      }
+    }
+  }
