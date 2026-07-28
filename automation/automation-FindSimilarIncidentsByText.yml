@@ -1,0 +1,116 @@
+args:
+- defaultValue: name,details
+  description: 'Text fields to compare. Can be label name, incident fields or custom
+    fields. Comma separated value. '
+  name: textFields
+  required: true
+  supportedModules: []
+- defaultValue: "0.95"
+  description: TFIDF score threshold (to consider incident as similar).
+  name: threshold
+  supportedModules: []
+- defaultValue: "1000"
+  description: Maximum number of incidents to check.
+  name: maximumNumberOfIncidents
+  supportedModules: []
+- defaultValue: "72"
+  description: Check incidents in this time frame.
+  name: timeFrameHours
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "no"
+  description: Ignore close incidents.
+  name: ignoreClosedIncidents
+  predefined:
+  - "yes"
+  - "no"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: occurred
+  description: Time field to consider.
+  name: timeField
+  predefined:
+  - occurred
+  - created
+  - modified
+  supportedModules: []
+- defaultValue: "10"
+  description: Maximum number of similar candidates.
+  name: maxResults
+  supportedModules: []
+- defaultValue: "50"
+  description: Minimum required text length to compare.
+  name: minTextLength
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Whether to pre-process text (removing HTML, normilize words)
+  name: preProcessText
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+comment: "Deprecated. Use DBotFindSimilarIncidents instead.\nFind similar incidents
+  by text comparison - the algorithm based on TF-IDF method.\nTo read more about this
+  method: https://en.wikipedia.org/wiki/Tf%E2%80%93idf\n\nThis automation runs using
+  the default Limited User role, unless you explicitly\nchange the permissions.\nFor
+  more information, see the section about permissions here:\n- For Cortex XSOAR 6
+  see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+  \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+  For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+commonfields:
+  id: FindSimilarIncidentsByText
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.42.2
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+dockerimage: demisto/sklearn:1.0.0.49796
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: FindSimilarIncidentsByText
+outputs:
+- contextPath: similarIncident.rawId
+  description: Similar incident ID.
+  type: string
+- contextPath: isSimilarIncidentFound
+  description: Is similar incident found? (true\false)
+  type: boolean
+- contextPath: similarIncident
+  description: Similar incident.
+  type: Unknown
+- contextPath: similarIncident.name
+  description: Similar incident name.
+  type: string
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: true
+script: |-
+  register_module_line('FindSimilarIncidentsByText', 'start', __line__())
+
+  return_results(demisto.executeCommand('FindSimilarAlertsByText', demisto.args()))
+
+  register_module_line('FindSimilarIncidentsByText', 'end', __line__())
+scripttarget: 0
+signature: HLYQwz64rxQHAjMABvg/fERSh9n/x4G70FhdE53ggnyGRi4CTidRWg5h0bpPkEi/nTcAUH87anUDcNcQ0ZdXW7XR+sLts3DIzbqMN4MCvA+9liOdO6PwLg4xT7nmicwCd7O7V1BrCCc1Gp3CRx3mfyJek5U5v8cZd1h+3aK6SyBFn0psENgxUvAm/ZOCecFOrqA2Bm3bYGS82zQpiZSe0rLFIrOI7HhqAtKKNevvT0GGX0bs6wA19zn5PDX1zkVPoH3RBlvz5tGVwxS7WHQ1FEHHPioTa8J8OnGzxQ9sfi+lnjiPeRdcWP+RLHmPu6nf5WfeL4q/MKW8PfnvM0B0zg==
+subtype: python3
+system: true
+tags:
+- ml
+- dedup
+- duplicate
+- incidents
+type: python
