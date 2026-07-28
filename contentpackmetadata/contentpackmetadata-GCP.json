@@ -1,0 +1,385 @@
+{
+	"author": "Cortex",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Cloud Services"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"integration",
+		"agentixaction"
+	],
+	"contentItems": {
+		"agentixaction": [
+			{
+				"category": "",
+				"description": "Retrieves the IAM policy for a Google Cloud Storage bucket. Returns the policy version, ETag, and list of role bindings including members and their assigned roles. Use this action to check for public access by looking for allUsers or allAuthenticatedUsers members in the bindings, or to audit which principals have access to a specific bucket. REQUIRES: `project_id`, `bucket_name`. When these are not present in user input, resolve them first via `CortexListAssets` using the issue's asset_id or asset_name.",
+				"fromversion": "8.12.0",
+				"id": "CortexGCPStorageBucketPolicyList",
+				"name": "GCPListStorageBucketPolicy",
+				"supportedModules": [
+					"cloud_posture",
+					"agentix",
+					"xsiam"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Removes one or more entities from a GCP Cloud Storage bucket's Access Control List (ACL). Use this action to remediate publicly exposed buckets by removing the 'allUsers' entity (which makes the bucket accessible to anyone on the internet) or 'allAuthenticatedUsers' (which makes it accessible to any Google account holder). Can also revoke access for specific users or groups by removing user, group, or domain entities. This is a remediation action that modifies bucket access permissions. REQUIRES `project_id` and `resource_name`; if not in user input, resolve them first via `CortexListAssets` using the issue's asset_id or asset_name.",
+				"fromversion": "8.12.0",
+				"id": "CortexGCPStorageBucketPolicyDelete",
+				"name": "GCPDeleteStorageBucketPolicy",
+				"supportedModules": [
+					"cloud_posture",
+					"agentix",
+					"xsiam"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			}
+		],
+		"agentixagent": null,
+		"agentixknowledgecollection": null,
+		"agentixknowledgesource": null,
+		"agentixskill": null,
+		"automation": null,
+		"casefield": null,
+		"classifier": null,
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": null,
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "Cloud Services",
+				"commands": [
+					{
+						"description": "Updates a specific firewall rule with the data included in the request. Required permissions: compute.firewalls.update, compute.firewalls.get, compute.firewalls.list, compute.networks.updatePolicy, compute.networks.list.",
+						"hidden": false,
+						"name": "gcp-compute-firewall-patch"
+					},
+					{
+						"description": "Creates a new firewall rule in a specific project. Required permission: compute.firewalls.create.",
+						"hidden": false,
+						"name": "gcp-compute-firewall-insert"
+					},
+					{
+						"description": "Lists the firewall rules in a specific project. Required permission: compute.firewalls.list.",
+						"hidden": false,
+						"name": "gcp-compute-firewall-list"
+					},
+					{
+						"description": "Retrieves a specific firewall rule by name. Required permission: compute.firewalls.get.",
+						"hidden": false,
+						"name": "gcp-compute-firewall-get"
+					},
+					{
+						"description": "Lists snapshots in a specific project. Required permission: compute.snapshots.list.",
+						"hidden": false,
+						"name": "gcp-compute-snapshots-list"
+					},
+					{
+						"description": "Retrieves details for a specific snapshot. Required permission: compute.snapshots.get.",
+						"hidden": false,
+						"name": "gcp-compute-snapshot-get"
+					},
+					{
+						"description": "Returns an aggregated list of instances across all zones that can be filtered by internal or external IP. Required permission: cloudasset.assets.searchAllResources.",
+						"hidden": false,
+						"name": "gcp-compute-instances-aggregated-list-by-ip"
+					},
+					{
+						"description": "Adds a network tag to a VM instance (merges with existing tags). Required permission: compute.instances.setTags.",
+						"hidden": false,
+						"name": "gcp-compute-network-tag-set"
+					},
+					{
+						"description": "Disables a default GCP firewall rule that is overly permissive (except HTTP and HTTPS). Required permissions: compute.firewalls.update, compute.firewalls.get, compute.firewalls.list, compute.networks.updatePolicy, compute.networks.list.",
+						"hidden": true,
+						"name": "gcp-compute-firewall-patch-disable-gcp-default-firewall-rule-quick-action"
+					},
+					{
+						"description": "Removes an entity from a bucket's Access Control List. Required permissions: storage.buckets.getIamPolicy, storage.buckets.setIamPolicy.",
+						"hidden": false,
+						"name": "gcp-storage-bucket-policy-delete"
+					},
+					{
+						"description": "Revokes 'allUsers' permission access in GCP storage buckets. Required permissions: storage.buckets.getIamPolicy, storage.buckets.setIamPolicy.",
+						"hidden": true,
+						"name": "gcp-storage-bucket-policy-delete-remove-allusers-access-quick-action"
+					},
+					{
+						"description": "Revokes 'allAuthenticatedUsers' permission access in GCP storage buckets. Required permissions: storage.buckets.getIamPolicy, storage.buckets.setIamPolicy.",
+						"hidden": true,
+						"name": "gcp-storage-bucket-policy-delete-remove-AllAuthenticatedUser-access-quick-action"
+					},
+					{
+						"description": "Revokes 'allUsers' and 'allAuthenticatedUsers' permissions access in a GCP storage bucket. Required permissions: storage.buckets.getIamPolicy, storage.buckets.setIamPolicy.",
+						"hidden": true,
+						"name": "gcp-storage-bucket-policy-delete-make-gcp-bucket-private-quick-action"
+					},
+					{
+						"description": "Enables flow logs or Private Google Access on a subnet. Required permissions: compute.subnetworks.setPrivateIpGoogleAccess, compute.subnetworks.update, compute.subnetworks.get, compute.subnetworks.list.",
+						"hidden": false,
+						"name": "gcp-compute-subnet-update"
+					},
+					{
+						"description": "Enables VPC Flow Logs on a GCP subnet. Required permissions: compute.subnetworks.setPrivateIpGoogleAccess, compute.subnetworks.update, compute.subnetworks.get, compute.subnetworks.list.",
+						"hidden": true,
+						"name": "gcp-compute-subnet-update-enable-gcp-subnet-flow-logs-quick-action"
+					},
+					{
+						"description": "Enables Private Google Access on a GCP subnet. Required permissions: compute.subnetworks.setPrivateIpGoogleAccess, compute.subnetworks.update, compute.subnetworks.get, compute.subnetworks.list.",
+						"hidden": true,
+						"name": "gcp-compute-enable-private-ip-access-on-subnet-quick-action"
+					},
+					{
+						"description": "Configures security settings for GKE clusters, including access controls and visibility. Required permissions: container.clusters.update, container.clusters.get, container.clusters.list.",
+						"hidden": false,
+						"name": "gcp-container-cluster-security-update"
+					},
+					{
+						"description": "Enables intra-node visibility on a GKE cluster for enhanced network monitoring. Required permissions: container.clusters.update, container.clusters.get, container.clusters.list.",
+						"hidden": true,
+						"name": "gcp-container-cluster-security-update-enable-gke-cluster-intra-node-visibility-quick-action"
+					},
+					{
+						"description": "Enables Master Authorized Networks on a GKE cluster to restrict API server access. Required permissions: container.clusters.update, container.clusters.get, container.clusters.list.",
+						"hidden": true,
+						"name": "gcp-container-cluster-security-update-enable-master-authorized-networks-on-gke-quick-action"
+					},
+					{
+						"description": "Updates Google Cloud Storage (GCS) bucket metadata, including settings such as versioning and Uniform Bucket-Level Access (UBLA). Required permission: storage.buckets.update.",
+						"hidden": false,
+						"name": "gcp-storage-bucket-metadata-update"
+					},
+					{
+						"description": "Enables versioning on a GCP storage bucket to preserve object versions. Required permission: storage.buckets.update.",
+						"hidden": true,
+						"name": "gcp-storage-bucket-metadata-update-enable-GCP-bucket-versioning-quick-action"
+					},
+					{
+						"description": "Enables uniform bucket-level access on a GCP storage bucket for enhanced security. Required permission: storage.buckets.update.",
+						"hidden": true,
+						"name": "gcp-storage-bucket-metadata-update-set-GCP-bucket-access-to-uniform-quick-action"
+					},
+					{
+						"description": "Retrieves the list of buckets in the project associated with the client. Required permission: storage.buckets.list.",
+						"hidden": false,
+						"name": "gcp-storage-bucket-list"
+					},
+					{
+						"description": "Retrieves information about a specific bucket. Required permission: storage.buckets.get.",
+						"hidden": false,
+						"name": "gcp-storage-bucket-get"
+					},
+					{
+						"description": "Retrieves the list of objects in a bucket. Required permission: storage.objects.list.",
+						"hidden": false,
+						"name": "gcp-storage-bucket-objects-list"
+					},
+					{
+						"description": "Retrieves the IAM policy for a bucket. Required permissions: storage.buckets.getIamPolicy, storage.buckets.get.",
+						"hidden": false,
+						"name": "gcp-storage-bucket-policy-list"
+					},
+					{
+						"description": "Sets the IAM policy for a bucket. Required permission: storage.buckets.setIamPolicy.",
+						"hidden": false,
+						"name": "gcp-storage-bucket-policy-set"
+					},
+					{
+						"description": "Retrieves the IAM policy for a specific object in a bucket. Required permission: storage.objects.getIamPolicy.",
+						"hidden": false,
+						"name": "gcp-storage-bucket-object-policy-list"
+					},
+					{
+						"description": "Sets the IAM policy for a specific object in a bucket. Required permission: storage.objects.setIamPolicy.",
+						"hidden": false,
+						"name": "gcp-storage-bucket-object-policy-set"
+					},
+					{
+						"description": "Removes a specified IAM role binding from a GCP project. Required permissions: resourcemanager.projects.getIamPolicy, resourcemanager.projects.setIamPolicy.",
+						"hidden": false,
+						"name": "gcp-iam-project-policy-binding-remove"
+					},
+					{
+						"description": "Removes an email from the BigQuery dataset policy. Required Permissions: bigquery.datasets.update, bigquery.datasets.get, bigquery.datasets.getIamPolicy, bigquery.datasets.setIamPolicy.",
+						"hidden": false,
+						"name": "gcp-bq-dataset-policy-remove"
+					},
+					{
+						"description": "Sets the service account for a GCP Compute Engine VM instance. The instance must be stopped before the service account can be changed. Required permissions: compute.instances.setServiceAccount, compute.instances.get.\n",
+						"hidden": false,
+						"name": "gcp-compute-instance-service-account-set"
+					},
+					{
+						"description": "Removes the service account associated with a GCP Compute Engine VM instance. The instance must be stopped before the service account can be changed. Required permissions: compute.instances.setServiceAccount, compute.instances.get.\n",
+						"hidden": false,
+						"name": "gcp-compute-instance-service-account-remove"
+					},
+					{
+						"description": "Starts an instance that was stopped using the instances().stop method. Required permission: compute.instances.start.",
+						"hidden": false,
+						"name": "gcp-compute-instance-start"
+					},
+					{
+						"description": "Returns the specified network.",
+						"hidden": false,
+						"name": "gcp-compute-network-get"
+					},
+					{
+						"description": "Returns a specific image. Required permission: compute.images.get.",
+						"hidden": false,
+						"name": "gcp-compute-image-get"
+					},
+					{
+						"description": "Returns a specific region resource. Required permission: compute.regions.get.",
+						"hidden": false,
+						"name": "gcp-compute-region-get"
+					},
+					{
+						"description": "Returns a specific instance group. Required permission: compute.instanceGroups.get.",
+						"hidden": false,
+						"name": "gcp-compute-instance-group-get"
+					},
+					{
+						"description": "Returns a specific zone resource. Required permission: compute.zones.get.",
+						"hidden": false,
+						"name": "gcp-compute-zone-get"
+					},
+					{
+						"description": "Retrieves a list of networks available for the specified project. Required permission: compute.networks.list.",
+						"hidden": false,
+						"name": "gcp-compute-networks-list"
+					},
+					{
+						"description": "Creates a network in the specified project using the data included in the request. Required permission: compute.networks.create.",
+						"hidden": false,
+						"name": "gcp-compute-network-insert"
+					},
+					{
+						"description": "Stops and cleanly shuts down a running instance, allowing you to restart the instance at a later time. Stopped instances do not incur VM usage charges while they are stopped. However, resources that the VM is using such as persistent disks and static IP addresses will continue to be charged until they are deleted. Required permission: compute.instances.stop.",
+						"hidden": false,
+						"name": "gcp-compute-instance-stop"
+					},
+					{
+						"description": "Retrieves the list of instances in the specified zone. Required permission: compute.instances.list.",
+						"hidden": false,
+						"name": "gcp-compute-instances-list"
+					},
+					{
+						"description": "Returns a specific instance resource. To get a list of available instances, make a list() request. Required permission: compute.instances.get.",
+						"hidden": false,
+						"name": "gcp-compute-instance-get"
+					},
+					{
+						"description": "Sets labels on an instance. Required permission: compute.instances.setLabels.",
+						"hidden": false,
+						"name": "gcp-compute-instance-labels-set"
+					}
+				],
+				"description": "Manage and secure Google Cloud Platform resources. On Cortex Platform, authentication is handled automatically via the cloud connector. For Cortex and Cortex XSIAM (version \u003c 3.0), configure a GCP Service Account private key JSON and a default GCP Project ID.",
+				"fromversion": "8.11.0",
+				"id": "GCP",
+				"internal": true,
+				"name": "Google Cloud Platform",
+				"toversion": ""
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"playbook": null,
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"created": "2025-07-08T20:32:18Z",
+	"currentVersion": "1.2.2",
+	"defaultDataSource": {
+		"id": "",
+		"name": ""
+	},
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.42.1",
+			"name": "Base"
+		}
+	},
+	"deprecated": false,
+	"description": "Google Cloud Platform Services",
+	"downloads": 0,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"firstCreated": "2025-07-08T20:32:18Z",
+	"fromServerVersion": "8.11.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldFree",
+		"generalFieldSupportIncluded",
+		"generalFieldSupportModule"
+	],
+	"hybrid": false,
+	"id": "GCP",
+	"installMessage": "",
+	"integrations": [
+		{
+			"id": "GCP",
+			"imagePath": "content/packs/GCP/GCP_image.png",
+			"name": "Google Cloud Platform"
+		}
+	],
+	"isOverridable": false,
+	"itemVersion": "1.2.2",
+	"keywords": [
+		"Google",
+		"GCP",
+		"Google Cloud Platform"
+	],
+	"legacy": true,
+	"modules": [],
+	"name": "GCP",
+	"packID": "GCP",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"searchRank": 0,
+	"serverMaxVersion": "",
+	"serverMinVersion": "8.11.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"supportedModules": [
+		"cloud_posture",
+		"cloud",
+		"cloud_runtime_security",
+		"agentix",
+		"xsiam"
+	],
+	"tags": [],
+	"toServerVersion": "",
+	"updated": "2026-07-01T20:00:52Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "10654236",
+	"videos": []
+}
