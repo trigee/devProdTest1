@@ -1,0 +1,185 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.10.0
+    isoverridable: false
+    itemVersion: 3.8.7
+    packID: Slack
+    packName: Slack
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    toServerVersion: ""
+description: This is an example of how to use the SlackBlockBuilder within a playbook.
+id: SlackBlockBuilderResponseExample
+inputs: []
+name: SlackBlockBuilderResponseExample
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Entry point for the playbook
+      id: 06889c0c-6925-4cb0-8bcf-345e0c8010b9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 06889c0c-6925-4cb0-8bcf-345e0c8010b9
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      blocks_url:
+        simple: https://app.slack.com/block-kit-builder/TABQMPKP0#%7B%22blocks%22:%5B%7B%22type%22:%22header%22,%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22This%20is%20a%20test%20of%20the%20SlackBlockBuilder%20Automation%22,%22emoji%22:true%7D%7D,%7B%22type%22:%22input%22,%22element%22:%7B%22type%22:%22checkboxes%22,%22options%22:%5B%7B%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22*Option%201*%22,%22emoji%22:true%7D,%22value%22:%22value-0%22%7D,%7B%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22*Option%202*%22,%22emoji%22:true%7D,%22value%22:%22value-1%22%7D,%7B%22text%22:%7B%22type%22:%22plain_text%22,%22text%22:%22*Option%203*%22,%22emoji%22:true%7D,%22value%22:%22value-2%22%7D%5D,%22action_id%22:%22checkboxes-action%22%7D,%22label%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Please%20Select%20Some%20Option%22,%22emoji%22:true%7D%7D,%7B%22type%22:%22section%22,%22text%22:%7B%22type%22:%22mrkdwn%22,%22text%22:%22Also%20Pick%20a%20Time%22%7D,%22accessory%22:%7B%22type%22:%22timepicker%22,%22initial_time%22:%2213:37%22,%22placeholder%22:%7B%22type%22:%22plain_text%22,%22text%22:%22Select%20time%22,%22emoji%22:true%7D,%22action_id%22:%22timepicker-action%22%7D%7D%5D%7D
+      channel:
+        simple: general
+      reply:
+        simple: reply to ${alert.id}
+      task:
+        simple: "4"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: SlackBlockBuilder will format a given Slack block into a format
+        readable by the SlackV3 integration. The script will also send the block to
+        the given destination. Make sure to mark **Trust any certificate** and fill
+        the **XSOAR API Key integration** parameters if you want to get a response
+        to the alert context.
+      id: a9997f13-b0d9-41da-8310-8bf606a2ade8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Ask a question via SLACK
+      playbooktaskmissingcomponent: null
+      script: SlackBlockBuilder
+      type: regular
+      version: -1
+    taskid: a9997f13-b0d9-41da-8310-8bf606a2ade8
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 195
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      else:
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This task will be closed by a Slack response
+      id: 66b8c733-7a0f-4572-8aca-173ffa1485ee
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Conditional Task as a Pause
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 66b8c733-7a0f-4572-8aca-173ffa1485ee
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 370
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This task will parse the JSON from the response and update the
+        context.
+      id: 9ee18aaf-1fb7-4819-8c6a-dabc3b09b29f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Process the Reply
+      playbooktaskmissingcomponent: null
+      script: GetSlackBlockBuilderResponse
+      type: regular
+      version: -1
+    taskid: 9ee18aaf-1fb7-4819-8c6a-dabc3b09b29f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 545
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "4_5_else": 0.43
+    },
+    "paper": {
+      "dimensions": {
+        "height": 590,
+        "width": 380,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }
