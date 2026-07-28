@@ -1,0 +1,67 @@
+args:
+- default: true
+  description: Amount of seconds to sleep.
+  name: seconds
+  required: true
+  supportedModules: []
+comment: Sleep for X seconds.
+commonfields:
+  id: Sleep
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.28
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: Sleep
+polling: true
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.28
+  if (isDemistoVersionGE('8.0.0')) {
+      pollingThreshold = 300;
+      if (isDemistoVersionGE('8.4.0', 649563)) {
+          configThreshold = executeCommand('getServerConfig', {key: 'content.automation.sleep.threshold.seconds'});
+          if (configThreshold[0] && !isError(configThreshold[0])) {
+              pollingThreshold = parseInt(configThreshold[0].Contents);
+          }
+      }
+
+      if (parseInt(args.seconds) >= pollingThreshold) {
+          // Polling implementation
+          return {
+              Type: entryTypes.note,
+              Contents: 'Sleep will complete in ' + args.seconds + ' seconds',
+              PollingCommand: 'Print',
+              NextRun: args.seconds + '',
+              PollingArgs: {value: 'Sleep completed in ' + args.seconds + ' seconds'},
+              Timeout: String(parseInt(args.seconds) + 60)
+          }
+      }
+
+  }
+
+  // Sleep for the given number of seconds
+  wait(parseInt(args.seconds));
+scripttarget: 0
+signature: oY1gYnN8M38p1VNq3t97HVXWrukwaZZrT/254JDWFNwZGVwyTCkSZv4NUOJG/MyEfJe2EAJ12lePYYgNXPsZ8OWZB/FfNbqGRnrFirq1yKYD6Y3P/hm5YFt6/rsb+Co3+6JYOIxAuS6XttwzrUPC4XMlydNkN7+r1l3pWbFTqV1hEp8TU2AadqFC/XKeGPlVTXlIR1BxvOXkwMGIsRuMhi2Cz04lNPd+sTPNR0X9lJHrbjZcfVimKYJuB9uw8oktAOatarB1V62cdeVywmqyPFD7LV1MWlkTEPdN+NwXHTFa5G//l1HsxhOkycgjHHfm64SZR1Wfnl36QtSn+MWhsA==
+system: true
+tags:
+- Utility
+timeout: 1h40m0s
+type: javascript
