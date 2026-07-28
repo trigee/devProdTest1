@@ -1,0 +1,80 @@
+args:
+- description: Comment to be added to the Jira issue.
+  name: comment
+  required: true
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: comment tag
+  description: The comment tag. Use the comment entry tag (defined in your instance
+    configuration) to mirror the comment to Jira.
+  isArray: true
+  name: tags
+  predefined:
+  - comment tag
+  supportedModules: []
+comment: Use this script to add a comment with a tag (the "Comment tag to Jira" defined
+  in the instance configuration) as an entry in XSOAR, which will then be mirrored
+  as a comment to a Jira issue. This script should be run within an incident.
+commonfields:
+  id: JiraAddComment
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.8.0
+    isoverridable: false
+    itemVersion: 3.3.21
+    packID: Jira
+    packName: Atlassian Jira
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.12.5490952
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: JiraAddComment
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('JiraAddComment', 'start', __line__())
+  CONSTANT_PACK_VERSION = '3.3.21'
+  demisto.debug('pack id = Jira, pack version = 3.3.21')
+
+
+
+
+  def add_comment(args: Dict[str, Any]) -> CommandResults:
+      comment_body = args.get("comment", "")
+      tags = argToList(args.get("tags", ""))
+      return CommandResults(readable_output=comment_body, mark_as_note=True, tags=tags or None)
+
+
+  def main():  # pragma: no cover
+      try:
+          demisto.debug("JiraAddComment is being called")
+          res = add_comment(demisto.args())
+          return_results(res)
+
+      except Exception as ex:
+          return_error(f"Failed to execute JiraAddComment. Error: {ex!s}")
+
+
+  if __name__ in ["__builtin__", "builtins", "__main__"]:
+      main()
+
+  register_module_line('JiraAddComment', 'end', __line__())
+scripttarget: 0
+signature: ""
+subtype: python3
+system: true
+tags: []
+type: python
