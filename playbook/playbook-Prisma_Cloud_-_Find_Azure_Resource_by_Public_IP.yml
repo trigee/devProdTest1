@@ -1,0 +1,550 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    isoverridable: false
+    itemVersion: 4.4.30
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+description: |
+  Deprecated. Use Prisma Cloud - Find Azure Resource by Public IP v2 instead.
+  Find Azure resources by Public IP using Prisma Cloud inventory.
+  Supported services: Azure VM, Azure Load Balancer, Azure Application Gateway, Azure Web Apps.
+hidden: true
+id: Prisma Cloud - Find Azure Resource by Public IP
+inputs:
+- description: Public IP Address to look up
+  key: PublicIPAddress
+  playbookInputQuery: null
+  required: true
+  value: {}
+name: Prisma Cloud - Find Azure Resource by Public IP
+outlinetasks: {}
+outputs:
+- contextPath: PrismaCloud.Attribution
+  description: Prisma Cloud attributed asset information.
+  type: unknown
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "16"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: eea6468a-1ae8-4066-8c3b-d68ae31a0278
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: eea6468a-1ae8-4066-8c3b-d68ae31a0278
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 1710,
+          "y": -480
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c45dbc41-b306-40fb-8004-c91ca1fdf627
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check Results
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: c45dbc41-b306-40fb-8004-c91ca1fdf627
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 850,
+          "y": 320
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        complex:
+          root: inputs.PublicIPAddress
+          transformers:
+          - args:
+              prefix:
+                value:
+                  simple: '[''properties.networkProfile''].networkInterfaces[*].publicIpAddress
+                    equals '
+              suffix: {}
+            operator: concat
+          - args:
+              separator:
+                value:
+                  simple: ' OR '
+            operator: join
+          - args:
+              prefix:
+                value:
+                  simple: 'config from cloud.resource where cloud.type = ''azure''
+                    AND cloud.service = ''Azure Compute'' AND api.name = ''azure-vm-list''
+                    AND json.rule = ( '
+              suffix:
+                value:
+                  simple: ' )'
+            operator: concat
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: PrismaCloud v2
+      description: Search Azure VM instances in Prisma Cloud
+      id: 747967fa-f4f0-4afb-8d24-bfe451752cfd
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Search in Azure Compute
+      playbooktaskmissingcomponent: null
+      script: PrismaCloud v2|||redlock-search-config
+      type: regular
+      version: -1
+    taskid: 747967fa-f4f0-4afb-8d24-bfe451752cfd
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1280,
+          "y": 150
+        }
+      }
+  "11":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Config
+                root: PrismaCloud
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "13"
+      "yes":
+      - "12"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check whether results are found.
+      id: 385cc47e-55cb-47cb-82f6-7a6a6ffcee37
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Are Results Found?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 385cc47e-55cb-47cb-82f6-7a6a6ffcee37
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 850,
+          "y": 470
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      assets:
+        complex:
+          accessor: Config
+          root: PrismaCloud
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Prisma Cloud Attribution
+      id: 8e61f71b-1962-4af9-8dda-c868f1716764
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Transform Results
+      playbooktaskmissingcomponent: null
+      script: PrismaCloudAttribution
+      type: regular
+      version: -1
+    taskid: 8e61f71b-1962-4af9-8dda-c868f1716764
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 630,
+          "y": 640
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 32081987-a64a-4dc2-86cc-286562d974cf
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 32081987-a64a-4dc2-86cc-286562d974cf
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1710,
+          "y": 810
+        }
+      }
+  "14":
+    continueonerrortype: ""
+    id: "14"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "10"
+      - "17"
+      - "18"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 41fee779-d27a-4881-81df-eb903fa87a42
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search in Prisma Cloud
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 41fee779-d27a-4881-81df-eb903fa87a42
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 850,
+          "y": 10
+        }
+      }
+  "15":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                filters:
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.brand
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: PrismaCloud v2
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: modules.state
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: active
+                root: modules
+          operator: isExists
+      label: "yes"
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "13"
+      "yes":
+      - "14"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check whether Prisma Cloud integration is enabled.
+      id: 28701bd7-3772-4e66-8d50-e9438fd07044
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Prisma Cloud enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 28701bd7-3772-4e66-8d50-e9438fd07044
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1420,
+          "y": -160
+        }
+      }
+  "16":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.PublicIPAddress
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "13"
+      "yes":
+      - "15"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if there are any IP in the input.
+      id: 156f032a-0995-4ada-8ccd-06a9d6da3f16
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Are there IPs in input?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 156f032a-0995-4ada-8ccd-06a9d6da3f16
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1710,
+          "y": -330
+        }
+      }
+  "17":
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        complex:
+          root: inputs.PublicIPAddress
+          transformers:
+          - args:
+              prefix:
+                value:
+                  simple: 'properties.ipAddress equals '
+              suffix: {}
+            operator: concat
+          - args:
+              separator:
+                value:
+                  simple: ' OR '
+            operator: join
+          - args:
+              prefix:
+                value:
+                  simple: 'config from cloud.resource where cloud.type = ''azure''
+                    AND cloud.service = ''Azure Virtual Network'' AND api.name = ''azure-network-public-ip-address''
+                    AND json.rule = ( '
+              suffix:
+                value:
+                  simple: ' )'
+            operator: concat
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: PrismaCloud v2
+      description: Search Azure VM instances in Prisma Cloud
+      id: c6f7f040-449a-4734-8dce-733b84e70c14
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Search in Azure Public IP
+      playbooktaskmissingcomponent: null
+      script: PrismaCloud v2|||redlock-search-config
+      type: regular
+      version: -1
+    taskid: c6f7f040-449a-4734-8dce-733b84e70c14
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 850,
+          "y": 150
+        }
+      }
+  "18":
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        complex:
+          root: inputs.PublicIPAddress
+          transformers:
+          - args:
+              prefix:
+                value:
+                  simple: 'properties.outboundIpAddresses equals '
+              suffix: {}
+            operator: concat
+          - args:
+              separator:
+                value:
+                  simple: ' OR '
+            operator: join
+          - args:
+              prefix:
+                value:
+                  simple: 'config from cloud.resource where cloud.type = ''azure''
+                    AND cloud.service = ''Azure App Service'' AND api.name = ''azure-app-service''
+                    AND json.rule = ( '
+              suffix:
+                value:
+                  simple: ' )'
+            operator: concat
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: PrismaCloud v2
+      description: Search Azure VM instances in Prisma Cloud
+      id: 9da485c0-2441-424e-87e6-10ec95671e6e
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Search in Azure App Service
+      playbooktaskmissingcomponent: null
+      script: PrismaCloud v2|||redlock-search-config
+      type: regular
+      version: -1
+    taskid: 9da485c0-2441-424e-87e6-10ec95671e6e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 400,
+          "y": 150
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "11_13_#default#": 0.12,
+      "15_13_#default#": 0.19,
+      "16_13_#default#": 0.22
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1355,
+        "width": 1690,
+        "x": 400,
+        "y": -480
+      }
+    }
+  }
