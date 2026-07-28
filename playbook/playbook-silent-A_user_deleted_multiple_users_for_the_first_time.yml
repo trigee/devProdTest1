@@ -1,0 +1,1532 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.9.0
+    isoverridable: false
+    itemVersion: 1.3.54
+    packID: CortexResponseAndRemediation
+    packName: Cortex Response And Remediation
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+description: "This playbook addresses the following alerts:\n\n- A user deleted multiple
+  users for the first time\n\nPlaybook Stages:\n\nTriage:\n\n- Collect initial alert
+  data regarding the event.\n- Check the user type of the source user.\n- Host enrichment.
+  \n\nInvestigation:\n\n- Check if an admin user initiated the operation and whether
+  the deleted users are disabled. \n- Correlate recent user activity with related
+  security alerts.\n- Assess user's and host's risk level in Cortex XDR.\n- Check
+  the type of the user target. \n\nRemediation:\n\n- Evaluate investigation findings,
+  if TP, the playbook will display the findings to an analyst for review and suggest
+  user/host account disablement.\n\n\nRequirements:\n\nFor response actions, you need
+  the following integrations:\n\n- Cortex Core - Investigation and Response\n- Active
+  Directory Query v2."
+id: silent-A user deleted multiple users for the first time
+inputs: []
+issilent: true
+name: silent-A user deleted multiple users for the first time
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tags:
+- T1078 - Valid Accounts
+- TA0001 - Initial Access
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 983470ce-f1b2-4eac-8adb-35845fc4d515
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 983470ce-f1b2-4eac-8adb-35845fc4d515
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -29
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+      - "28"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 728ac4f4-74e6-427a-88ab-dfbf04e61d8b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Triage
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 728ac4f4-74e6-427a-88ab-dfbf04e61d8b
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 106
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      alert_ids:
+        simple: ${alert.id}
+      filter_alert_fields:
+        simple: "false"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Returns information about each alert ID.
+      id: ab5a58c3-1318-461e-a3a9-802d71f624c1
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get event information
+      playbooktaskmissingcomponent: null
+      script: '|||core-get-cloud-original-alerts'
+      type: regular
+      version: -1
+    taskid: ab5a58c3-1318-461e-a3a9-802d71f624c1
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 660,
+          "y": 240
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+      - "4"
+      - "13"
+      - "27"
+      - "19"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d74c0d36-56d4-429e-b27a-96c188a16e66
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: d74c0d36-56d4-429e-b27a-96c188a16e66
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 511
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      begin_time:
+        simple: "22:00:00"
+      end_time:
+        simple: "06:00:00"
+      value:
+        complex:
+          accessor: event_timestamp
+          root: Core.OriginalAlert.event
+          transformers:
+          - operator: TimeStampToDate
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the given value is within the specified time (hour)
+        range.
+      id: ee96e441-f7ec-465f-a037-6566bd26c3f7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check event time
+      playbooktaskmissingcomponent: null
+      script: BetweenHours
+      type: regular
+      version: -1
+    taskid: ee96e441-f7ec-465f-a037-6566bd26c3f7
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 660,
+          "y": 624
+        }
+      }
+  "7":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.raw_abioc.event.is_norm_evtlog_subject_user_administrator
+          operator: isTrue
+          right:
+            value: {}
+        - left:
+            iscontext: true
+            value:
+              simple: UserData.AdditionalFields.servicePrincipalName
+          operator: isNotEmpty
+      - - left:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.raw_abioc.event.is_norm_evtlog_target_user_disabled
+          operator: isTrue
+      label: "yes"
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      "yes":
+      - "36"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: cea5d54c-955a-4551-a5b1-b6c213424e7d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Source user an administrator and users are disabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: cea5d54c-955a-4551-a5b1-b6c213424e7d
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 363
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: eacbc745-45a8-4978-8390-24c632ab996d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: eacbc745-45a8-4978-8390-24c632ab996d
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 2222
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      closeNotes:
+        simple: Handled by the playbook "A user deleted multiple users for the first
+          time"
+      closeReason:
+        simple: Resolved - True Positive
+      id:
+        simple: ${alert.id}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.close.inv
+      id: f4f1edf5-eff9-4031-84c5-29105a923ebf
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Close alert as True Positive
+      playbooktaskmissingcomponent: null
+      script: Builtin|||closeInvestigation
+      type: regular
+      version: -1
+    taskid: f4f1edf5-eff9-4031-84c5-29105a923ebf
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1872,
+          "y": 2088
+        }
+      }
+  "10":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: EndpointData.AdditionalFields.endpoint_type
+          operator: containsString
+          right:
+            value:
+              simple: WORKSTATION
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: EndpointData.AdditionalFields.endpoint_status
+          operator: isEqualString
+          right:
+            value:
+              simple: CONNECTED
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: EndpointData.AdditionalFields.is_isolated
+          operator: isEqualString
+          right:
+            value:
+              simple: AGENT_UNISOLATED
+      label: Isolate
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      Isolate:
+      - "20"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: d2b88be0-914a-451d-ba68-3dd4892c2f82
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Verify endpoint isn't isolated, disconnected, or a server
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: d2b88be0-914a-451d-ba68-3dd4892c2f82
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 710,
+          "y": 1768
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "17"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 55da7b12-ac83-48df-bad7-e2942a327d6d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Remediation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 55da7b12-ac83-48df-bad7-e2942a327d6d
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 660,
+          "y": 919
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "25"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      query:
+        complex:
+          accessor: parentXDRIncident
+          root: alert
+          transformers:
+          - args:
+              delimiter:
+                value:
+                  simple: '-'
+              fields:
+                value:
+                  simple: "2"
+            operator: Cut
+          - args:
+              prefix:
+                value:
+                  simple: '(name:"Abnormal short-lived user account" or name:"Multiple
+                    suspicious user accounts were created" or name:"Double Base64
+                    Encoded PowerShell Command Execution" or name:"WildFire Malware"
+                    or name:"Excessive user account lockouts" or name:"Behavioral
+                    Threat" or name:"Successful External Login Password Spray on a
+                    Domain Controller") and caseid:'
+              suffix:
+                value:
+                  simple: ' and username:"'
+            operator: concat
+          - args:
+              prefix: {}
+              suffix:
+                iscontext: true
+                value:
+                  simple: alert.username.[0]
+            operator: concat
+          - args:
+              prefix: {}
+              suffix:
+                value:
+                  simple: '" and agentid:"'
+            operator: concat
+          - args:
+              prefix: {}
+              suffix:
+                iscontext: true
+                value:
+                  simple: alert.agentid
+            operator: concat
+          - args:
+              prefix: {}
+              suffix:
+                value:
+                  simple: '"'
+            operator: concat
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "This task searches for Cortex XSIAM suspicious alerts related
+        to the current alert by Mitre Technique, indicating that the alert is part
+        of an attack pattern.\n\nFocus on identifying alerts associated with the following
+        MITRE techniques:\n- T1055 - Process Injection \n- T1059 - Command and Scripting
+        Interpreter"
+      id: d4013791-a6e5-43b9-a808-f55c0b36d5e9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Search for suspicious-related alerts
+      playbooktaskmissingcomponent: null
+      script: SearchAlertsV2
+      type: regular
+      version: -1
+    taskid: d4013791-a6e5-43b9-a808-f55c0b36d5e9
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 245,
+          "y": 624
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence.SpecialTargetUser
+      value:
+        complex:
+          accessor: _all_events.normalized_evtlog_target_user
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert.stateful_raw_data.count_distinct_target_user_administrator
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "1"
+            - left:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert.stateful_raw_data.count_distinct_target_user_sensitive
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "1"
+            - left:
+                iscontext: true
+                value:
+                  simple: Core.OriginalAlert.stateful_raw_data.count_distinct_target_user_service_account
+              operator: greaterThanOrEqual
+              right:
+                value:
+                  simple: "1"
+          root: Core.OriginalAlert
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: 292117fc-eaa4-4a7f-9d30-17e532bbf501
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check the type of the target user
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 292117fc-eaa4-4a7f-9d30-17e532bbf501
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 660,
+          "y": 771
+        }
+      }
+  "17":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: Evidence
+                transformers:
+                - args:
+                    expression:
+                      value:
+                        simple: '*'
+                  operator: jmespath
+                - operator: count
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: "1"
+      label: True Positive
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "35"
+      True Positive:
+      - "29"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9b7484ec-8561-4f5c-8a6a-e447014bffbe
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Evaluate investigation findings
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 9b7484ec-8561-4f5c-8a6a-e447014bffbe
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 660,
+          "y": 1039
+        }
+      }
+  "18":
+    continueonerrortype: ""
+    id: "18"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence.RiskyHost
+      value:
+        complex:
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: EndpointData.RiskLevel
+              operator: containsGeneral
+              right:
+                value:
+                  simple: HIGH
+          root: EndpointData.RiskLevel
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: db53c176-f9d8-4677-ad2e-2107e9c24a69
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set risky host
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: db53c176-f9d8-4677-ad2e-2107e9c24a69
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1066,
+          "y": 771
+        }
+      }
+  "19":
+    continueonerrortype: ""
+    id: "19"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence.RiskyUser
+      value:
+        complex:
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: UserData.RiskLevel
+              operator: containsGeneral
+              right:
+                value:
+                  simple: HIGH
+          root: UserData.RiskLevel
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: 45c52b9c-5aaa-437d-8591-58456da410cc
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set risky user
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 45c52b9c-5aaa-437d-8591-58456da410cc
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -154,
+          "y": 624
+        }
+      }
+  "20":
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      brands:
+        simple: Cortex Core - IR
+      endpoint_id:
+        simple: ${EndpointData.AdditionalFields.endpoint_id}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: This script isolates endpoints using multiple integrations and
+        returns a success or failure message.
+      id: 49bef78d-075f-47f0-bcd3-662e5a33cbd8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Isolate the endpoint
+      playbooktaskmissingcomponent: null
+      script: isolate-endpoint
+      type: regular
+      version: -1
+    taskid: 49bef78d-075f-47f0-bcd3-662e5a33cbd8
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 710,
+          "y": 1936
+        }
+      }
+  "21":
+    continueonerrortype: ""
+    form:
+      description: Analyst Review
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: "The investigation shows a combination of suspicious indicators
+            that require your attention.\n\nReview the following findings and decide
+            whether you want to disable the user.\n\n#### User Information\nUsername:
+            `${alert.username.[0]}`\n\n---\n\n**Risky User:** \n### Risky Host\nDetected
+            (Core IR): `${.=val.Evidence && val.Evidence.RiskyUser ? \"Risky\" : \"Not
+            risky\"}`\n\n---\n\n### Risky Host\nDetected (Core IR): `${.=val.Evidence
+            && val.Evidence.RiskyHost? \"Risky\" : \"Not risky\"}`\n\n---\n\n### **Related
+            Alerts**\nDetected Related Alerts: `${.=val.Evidence && val. Evidence.RelatedAlerts
+            ? \"Alerts found for the user\" : \"Alerts not found\"}`\n\n---\n\n###
+            Deleted Users\n\n${Core.OriginalAlert=val._all_events.map(e => e.normalized_evtlog_target_user).filter((v,
+            i, a) => v && a.indexOf(v) === i).map(u => \"- \" + u).join(\"\\n\")}\n\n---\n###
+            User Type\n\nUser Type: `${.=val.Evidence && val.Evidence.SpecialTargetUser
+            ? \"User Type\" : \"User is not sensitive/administrator/service account\"}`\n\n---\n\n###
+            **\U0001F50D Analyst Action Required**   \n\n- **Review and take action
+            if needed:**  \n  - It is recommended to review the information displayed
+            in this task and if needed, disable the user/host by choosing `Disable
+            User`, `Isolate host` or `Disable Both` below. If no action is required,
+            choose `No Action`."
+        options: []
+        optionsarg:
+        - {}
+        - simple: No action
+        - simple: Disable user
+        - simple: Isolate host
+        - simple: Disable both
+        placeholder: ""
+        readonly: false
+        required: true
+        tooltip: ""
+        type: singleSelect
+      sender: ""
+      syncid: ""
+      title: Analyst Action
+      totalanswers: 0
+    id: "21"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body: null
+      cc: null
+      format: ""
+      methods: []
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      '#none#':
+      - "22"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 601a3c58-0064-4a0e-8cf3-472d00f1cac6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Manual Task - User Action Decision
+      playbooktaskmissingcomponent: null
+      type: collection
+      version: -1
+    taskid: 601a3c58-0064-4a0e-8cf3-472d00f1cac6
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": 736,
+          "y": 1342
+        }
+      }
+  "22":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Analyst Action.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: No Action
+      label: No Action
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Analyst Action.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: Disable Both
+      label: Both
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Analyst Action.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: Disable user
+      label: Disable user
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: Analyst Action.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: Isolate host
+      label: Isolate host
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      Both:
+      - "33"
+      Disable user:
+      - "37"
+      Isolate host:
+      - "10"
+      No Action:
+      - "9"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 95753c25-9a20-43b1-8975-e45351bb0771
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Evaluate Analyst Response
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 95753c25-9a20-43b1-8975-e45351bb0771
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 992,
+          "y": 1483
+        }
+      }
+  "25":
+    continueonerrortype: ""
+    id: "25"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence.RelatedAlerts
+      value:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: foundIncidents.id
+              operator: isNotEmpty
+          root: foundIncidents.id
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: 775ea220-61af-46ae-87e4-ea13dd0823a3
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set related alerts
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 775ea220-61af-46ae-87e4-ea13dd0823a3
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 245,
+          "y": 771
+        }
+      }
+  "26":
+    continueonerrortype: ""
+    id: "26"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: Evidence.SuspiciousOSType
+      value:
+        complex:
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: EndpointData.AdditionalFields.operating_system
+              operator: isEqualString
+              right:
+                value:
+                  simple: Windows 7
+          root: EndpointData.AdditionalFields.operating_system
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: 7458b0d2-e73a-458a-b856-cc8cfc4f3f35
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set OS type
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 7458b0d2-e73a-458a-b856-cc8cfc4f3f35
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1467,
+          "y": 771
+        }
+      }
+  "27":
+    continueonerrortype: ""
+    id: "27"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "26"
+      - "18"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      additional_fields:
+        simple: "true"
+      agent_hostname:
+        simple: ${alert.hostname}
+      agent_ip:
+        simple: ${Core.OriginalAlert.raw_abioc.event.agent_id}
+      endpoint_hostname:
+        simple: ${alert.hostname}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This script gathers endpoint data from multiple integrations and
+        returns an endpoint entity with consolidated information to the context.
+      id: 457a3480-fd43-435b-aef4-744223c373e0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get host data
+      playbooktaskmissingcomponent: null
+      script: get-endpoint-data
+      type: regular
+      version: -1
+    taskid: 457a3480-fd43-435b-aef4-744223c373e0
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1066,
+          "y": 624
+        }
+      }
+  "28":
+    continueonerrortype: ""
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "7"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      additional_fields:
+        simple: "true"
+      attributes:
+        simple: servicePrincipalName,objectSid
+      user_name:
+        simple: ${alert.username.[0]}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: This script gathers user data from multiple integrations and returns
+        an Account entity with consolidated information to the context.
+      id: 92e64b2f-1c29-42c9-bb65-522bc27dc95a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Get user data
+      playbooktaskmissingcomponent: null
+      script: get-user-data
+      type: regular
+      version: -1
+    taskid: 92e64b2f-1c29-42c9-bb65-522bc27dc95a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 245,
+          "y": 240
+        }
+      }
+  "29":
+    continueonerrortype: ""
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "21"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      severity:
+        simple: Medium
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Optionally increases the alert severity to the new value if it
+        is greater than the existing severity.
+      id: 365f8b4e-7021-4118-a126-070151da9091
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Increase alert severity
+      playbooktaskmissingcomponent: null
+      script: IncreaseAlertSeverity
+      type: regular
+      version: -1
+    taskid: 365f8b4e-7021-4118-a126-070151da9091
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 736,
+          "y": 1203
+        }
+      }
+  "31":
+    continueonerrortype: ""
+    id: "31"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      command:
+        simple: powershell -Command Disable-LocalUser -Name "${Core.OriginalAlert.raw_abioc.event.action_evtlog_data_fields.SubjectUserName}"
+      command_type:
+        simple: native
+      endpoint_ids:
+        complex:
+          accessor: ID
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: EndpointData.Brand
+              operator: isEqualString
+              right:
+                value:
+                  simple: Cortex Core - IR
+          root: EndpointData
+      is_raw_command:
+        simple: "true"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Run a shell command on a specific endpoint and return its result.
+      id: 8504a557-3b56-458f-a02e-f981d87b438e
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Disable local user account
+      playbooktaskmissingcomponent: null
+      script: '|||core-execute-command'
+      type: regular
+      version: -1
+    taskid: 8504a557-3b56-458f-a02e-f981d87b438e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1218,
+          "y": 1936
+        }
+      }
+  "33":
+    continueonerrortype: ""
+    id: "33"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "10"
+      - "37"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f42c7a72-d869-4680-9799-0454c67af0bc
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Both
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: f42c7a72-d869-4680-9799-0454c67af0bc
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 992,
+          "y": 1650
+        }
+      }
+  "34":
+    continueonerrortype: ""
+    id: "34"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Inconclusive
+      value:
+        simple: Source user an administrator and users are disabled
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      id: a812dea7-e319-4363-a78d-afb0e2dcada8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Inconclusive | Source user an administrator and users are disabled
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: a812dea7-e319-4363-a78d-afb0e2dcada8
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -253,
+          "y": 2088
+        }
+      }
+  "35":
+    continueonerrortype: ""
+    id: "35"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: Inconclusive
+      value:
+        simple: No suspicious evidence
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      id: 3b41da9c-d81f-45fc-ad11-0d9e55fc01d4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Inconclusive | No suspicious evidence
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 3b41da9c-d81f-45fc-ad11-0d9e55fc01d4
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 196,
+          "y": 2088
+        }
+      }
+  "36":
+    continueonerrortype: ""
+    id: "36"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "34"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1af4c362-7efb-4739-9b2d-9f4bca016eec
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Inconclusive
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 1af4c362-7efb-4739-9b2d-9f4bca016eec
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -580,
+          "y": 511
+        }
+      }
+  "37":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: UserData.AdditionalFields.objectSid
+          operator: isEqualString
+          right:
+            iscontext: true
+            value:
+              simple: Core.OriginalAlert.raw_abioc.event.action_evtlog_data_fields.SubjectUserSid
+      label: Domain
+    continueonerrortype: ""
+    id: "37"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "31"
+      Domain:
+      - "38"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the user is a domain user or a local user.
+      id: af316df0-807b-4d91-8ba4-0c0b78908098
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Check user type (Domain/Local)
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: af316df0-807b-4d91-8ba4-0c0b78908098
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1426,
+          "y": 1768
+        }
+      }
+  "38":
+    continueonerrortype: ""
+    id: "38"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      brands:
+        simple: Active Directory Query v2
+      user_name:
+        simple: ${Core.OriginalAlert.raw_abioc.event.action_evtlog_data_fields.SubjectUserName}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: This script disables users for multiple services.
+      id: 893e09a9-aa80-471c-88e9-f77aeb43b955
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Disable user account in AD
+      playbooktaskmissingcomponent: null
+      script: disable-user
+      type: regular
+      version: -1
+    taskid: 893e09a9-aa80-471c-88e9-f77aeb43b955
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1640,
+          "y": 1936
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "10_20_Isolate": 0.57,
+      "10_9_#default#": 0.24,
+      "17_35_#default#": 0.21,
+      "22_10_Isolate host": 0.83,
+      "22_33_Both": 0.56,
+      "22_37_Disable user": 0.87,
+      "22_9_No Action": 0.71
+    },
+    "paper": {
+      "dimensions": {
+        "height": 2311,
+        "width": 2833,
+        "x": -580,
+        "y": -29
+      }
+    }
+  }
