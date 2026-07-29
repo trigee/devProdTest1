@@ -30,7 +30,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -39,7 +39,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/readpdf:1.0.0.2034953
+dockerimage: demisto/readpdf:1.0.0.9067966
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -154,8 +154,8 @@ runas: DBotRole
 runonce: false
 script: |
   register_module_line('ReadPDFFileV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import contextlib
   import glob
   import html
@@ -849,7 +849,7 @@ script: |
 
   register_module_line('ReadPDFFileV2', 'end', __line__())
 scripttarget: 0
-signature: KI0xsPuaKjTksnZPlKaCya3kgqyyMBoSoZIA4N9Q8UczOVDDAgRNDZoAz/3gS1ce259XQdzWlzhAI9C+QshIkG6cR5nFV6GzgeyZslQd7KyTPm2wliMmwbnz3NG9EcH6Ba2QFnMs3s1HquS2aVk4hQAFAj3W1yymUSG0AcQQTHJyKR9H7eq6lMsxd2sLH+fu8SUwDSieWrLRt61wiC+Sj2+7h3CQeaysGUxcicv+bPMfiGxZI4opi41XH4Vr5IP7zKI6paVB9w1kmoyEXPx7hg6FWxLQCAAPWlwER3EAXPYVHR8oS5nWriK+E7SHKGON0p8lbeT/sgfg1/suSOI7Qw==
+signature: SYFTR1WzWn6WQ7kQhj7xCXcvf9+Am38SRnl6GL3I/WO1xhIhJqqTsPbOb2JluG4Y45yeXFT5349HBIKIDADFO2xYKjGevFX8QZP8GF2b++4SyJVJjlqbKhL4fCNSwyyv9W+2UARVgDXuGwPpk/c+GrgkqLHD2sD++i0059fEyJ53vJgQeHGG7t9BQyaXMKoQ0NdhHW7FDbBUQYLM8TpADyyVCstc2mIX9gFvyuVBtdiWdaKUHn5AlKdG9ruJt40xIb4ffnWTIlVipZGbl0YBWt1AkviEJFH7nC6nR4a3IzaCqi7dZ3Mxyw2WcQJvPKKYaPfNLhp3Fw8rRkfwfP+vdQ==
 subtype: python3
 system: true
 tags:
