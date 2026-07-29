@@ -44,7 +44,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -53,7 +53,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -90,8 +90,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ResolveShortenedURL', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   from abc import ABCMeta
   from typing import NamedTuple
 
@@ -389,7 +389,7 @@ script: |
 
   register_module_line('ResolveShortenedURL', 'end', __line__())
 scripttarget: 0
-signature: Z5Wbb0SNqoVP0frc/pKeCUeXpYwUitSHr1UTBO7IuCDenOzhKUxlvBbXTumnEaLWJIsxnrgHl9oVdNvB3AoG6Y3Sste6iADWhFDD47wi1qInsmbEs1D5YHKkq/dxXaWCez4E1V3VVppYn90qNOjzSkF4Dx0lDmKTuC2PoEnwfGBoL8yNOicKWMkbYuMp8MgFkfZqdIVGLUGpgTPENKomlxZAC2Q/UV/wB5bcFLp/KGaRdWJC6+OZhWJqSY7V7cpt3KkIDJ8XuzcHrV3l4fJH3xA+f7xv6XCntuMNNjGNX1yardwMVT53geX3N5qt9ruY8OIGfOvNmtcQiZn0r29Vng==
+signature: WnrCfj7mzD+F9dhIjyyU4O56qI+ycM3xleDYtsHAI90FiqoycSD3DxZtSIcEwo2srBoCREKABfqCSdS0CQAyXqlxZ1j9Byu0lNIpGv0vLNp/WBriZJ9DRQ+TQ2guA5ES8h0iJxRePqaJKsGlJGf2oYHHzQtLFOwpN30PIS9rTUDjM/MeoELO6xjArnJ+tDXYENHJm9yJ1VBpr0QjaeQQS/rP7F9zgT0zGm7VZJVmZrwgIz9dduoWX5ehmj2k7FMgEzPlO+nxWL01z17FH1YdLmz0+1B5Yn3+r7FKH1EdyAbLwQXhJAUQka1LreBTdgpFdPzwYP/yrh0PVrlnRQGnfA==
 subtype: python3
 system: true
 tags:
