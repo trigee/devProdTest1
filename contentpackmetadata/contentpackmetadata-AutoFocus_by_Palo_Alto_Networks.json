@@ -31,38 +31,6 @@
 				"category": "Data Enrichment \u0026 Threat Intelligence",
 				"commands": [
 					{
-						"description": "Gets indicators from AutoFocus.",
-						"hidden": false,
-						"name": "autofocus-daily-get-indicators"
-					}
-				],
-				"deprecated": true,
-				"description": "Deprecated. No available replacement.",
-				"fromversion": "5.5.0",
-				"id": "AutoFocus Daily Feed",
-				"name": "AutoFocus Daily Feed (Deprecated)",
-				"toversion": ""
-			},
-			{
-				"category": "Data Enrichment \u0026 Threat Intelligence",
-				"commands": [
-					{
-						"description": "Gets the indicators from AutoFocus.",
-						"hidden": false,
-						"name": "autofocus-get-indicators"
-					}
-				],
-				"deprecated": true,
-				"description": "Deprecated. Use Unit 42 Feed integration instead.",
-				"fromversion": "5.5.0",
-				"id": "AutoFocus Feed",
-				"name": "AutoFocus Feed (Deprecated)",
-				"toversion": ""
-			},
-			{
-				"category": "Data Enrichment \u0026 Threat Intelligence",
-				"commands": [
-					{
 						"description": "Search for samples on Autofocus",
 						"hidden": false,
 						"name": "autofocus-search-samples"
@@ -190,6 +158,47 @@
 				"fromversion": "6.5.0",
 				"id": "AutoFocusTagsFeed",
 				"name": "AutoFocus Tags Feed (Deprecated)",
+				"tags": [
+					"feed"
+				],
+				"toversion": ""
+			},
+			{
+				"category": "Data Enrichment \u0026 Threat Intelligence",
+				"commands": [
+					{
+						"description": "Gets indicators from AutoFocus.",
+						"hidden": false,
+						"name": "autofocus-daily-get-indicators"
+					}
+				],
+				"deprecated": true,
+				"description": "Deprecated. No available replacement.",
+				"fromversion": "5.5.0",
+				"id": "AutoFocus Daily Feed",
+				"name": "AutoFocus Daily Feed (Deprecated)",
+				"tags": [
+					"feed"
+				],
+				"toversion": ""
+			},
+			{
+				"category": "Data Enrichment \u0026 Threat Intelligence",
+				"commands": [
+					{
+						"description": "Gets the indicators from AutoFocus.",
+						"hidden": false,
+						"name": "autofocus-get-indicators"
+					}
+				],
+				"deprecated": true,
+				"description": "Deprecated. Use Unit 42 Feed integration instead.",
+				"fromversion": "5.5.0",
+				"id": "AutoFocus Feed",
+				"name": "AutoFocus Feed (Deprecated)",
+				"tags": [
+					"feed"
+				],
 				"toversion": ""
 			}
 		],
@@ -201,6 +210,28 @@
 				"fromversion": "6.5.0",
 				"id": "Autofocus - Traffic Indicators Hunting",
 				"name": "Autofocus - Traffic Indicators Hunting",
+				"supportedModules": [
+					"agentix",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "Deprecated. No available replacement. The playbook queries the PANW Autofocus session and samples log data for file and traffic indicators, such as SHA256, SHA1, MD5, IP addresses, URLs, and domains. \n\nA simple search mode queries Autofocus based on the indicators specified in the playbook inputs. Advanced queries can also use with multiple query parameters, but require all field names, parameters, and operators (JSON format) to be specified. \nWe recommended using the Autofocus UI to create an advanced query, exporting it, and pasting it into the relevant playbook inputs. \n\nNote that multiple search values should be separated by commas only (without spaces or any special characters).",
+				"fromversion": "6.5.0",
+				"id": "Autofocus - Hunting And Threat Detection",
+				"name": "Autofocus - Hunting And Threat Detection",
+				"supportedModules": [
+					"agentix",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "Deprecated. No available replacement. The playbook queries the PANW Autofocus session and samples log data for file indicators such as MD5, SHA256, and SHA1 hashes. \n\nA simple search mode is used to query Autofocus based on the file indicators specified in the playbook inputs. Advanced search mode queries can also be used with multiple query parameters, but require all field names, parameters, and operators (JSON format) to be specified. \nWe recommended using the Autofocus UI to create an advanced query, exporting it, and pasting it into the relevant playbook inputs. \n\nNote that multiple search values should be separated by commas only (without spaces or any special characters).",
+				"fromversion": "6.5.0",
+				"id": "Autofocus - File Indicators Hunting",
+				"name": "Autofocus - File Indicators Hunting",
 				"supportedModules": [
 					"agentix",
 					"xsiam"
@@ -228,28 +259,6 @@
 					"xsiam"
 				],
 				"tags": []
-			},
-			{
-				"description": "Deprecated. No available replacement. The playbook queries the PANW Autofocus session and samples log data for file indicators such as MD5, SHA256, and SHA1 hashes. \n\nA simple search mode is used to query Autofocus based on the file indicators specified in the playbook inputs. Advanced search mode queries can also be used with multiple query parameters, but require all field names, parameters, and operators (JSON format) to be specified. \nWe recommended using the Autofocus UI to create an advanced query, exporting it, and pasting it into the relevant playbook inputs. \n\nNote that multiple search values should be separated by commas only (without spaces or any special characters).",
-				"fromversion": "6.5.0",
-				"id": "Autofocus - File Indicators Hunting",
-				"name": "Autofocus - File Indicators Hunting",
-				"supportedModules": [
-					"agentix",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "Deprecated. No available replacement. The playbook queries the PANW Autofocus session and samples log data for file and traffic indicators, such as SHA256, SHA1, MD5, IP addresses, URLs, and domains. \n\nA simple search mode queries Autofocus based on the indicators specified in the playbook inputs. Advanced queries can also use with multiple query parameters, but require all field names, parameters, and operators (JSON format) to be specified. \nWe recommended using the Autofocus UI to create an advanced query, exporting it, and pasting it into the relevant playbook inputs. \n\nNote that multiple search values should be separated by commas only (without spaces or any special characters).",
-				"fromversion": "6.5.0",
-				"id": "Autofocus - Hunting And Threat Detection",
-				"name": "Autofocus - Hunting And Threat Detection",
-				"supportedModules": [
-					"agentix",
-					"xsiam"
-				],
-				"tags": []
 			}
 		],
 		"report": null,
@@ -258,7 +267,7 @@
 		"wizard": null
 	},
 	"created": "2025-03-29T09:26:48Z",
-	"currentVersion": "2.3.8",
+	"currentVersion": "2.3.9",
 	"defaultDataSource": {
 		"id": "",
 		"name": ""
@@ -269,14 +278,14 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.41.75",
+			"minVersion": "1.42.3",
 			"name": "Base"
 		},
 		"CommonScripts": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.22.0",
+			"minVersion": "1.22.29",
 			"name": "Common Scripts"
 		}
 	},
@@ -323,7 +332,7 @@
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "2.3.8",
+	"itemVersion": "2.3.9",
 	"keywords": [
 		"TIM",
 		"Palo Alto Networks"
@@ -360,14 +369,14 @@
 		"edr"
 	],
 	"tags": [
+		"Threat Intelligence Management",
 		"Palo Alto Networks Products",
-		"TIM",
-		"Threat Intelligence Management"
+		"TIM"
 	],
 	"toServerVersion": "",
-	"updated": "2026-04-27T20:23:37Z",
+	"updated": "2026-07-05T20:03:13Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "8515806",
+	"versionInfo": "10750492",
 	"videos": []
 }
