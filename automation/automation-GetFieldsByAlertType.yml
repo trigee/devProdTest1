@@ -49,7 +49,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -67,7 +67,7 @@ contentitemexportablefields:
 dependson:
   must:
   - '|||core-api-get'
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -81,8 +81,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetFieldsByAlertType', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   from pprint import pformat
 
 
@@ -144,7 +144,7 @@ script: |
 
   register_module_line('GetFieldsByAlertType', 'end', __line__())
 scripttarget: 0
-signature: dEB/BzbiwSXdWNqDLz0g/8YH31e/9J+R9oOI/GL+8v4jyf4F0ol6oP4clnmec7wiB3u03clwUC2AKgYH7w/KeWXCsK/BSHAsGMJVy54kiMelWapI2w76+7RxB4ace7KJMmDI7MgaUE12VODtiMZzHIuhtrIZ/2T2AjdY9ePdfPUmfSmz98EhMhdTGb63IyJlAI/TkxPfA6Gj6WBk/M+mFXevnMb2NfOpTzQAIaePHjA3JiIynA9EgqrA+ncYx8ZmiMRcy2C2ExPBnNi8he+u7ZIeLK5ygGKLDTdeOqPtJ5VTY1+L82JTrOarM9GUSUZOJq7vstWiZNnMTW5Kl5DIVQ==
+signature: 0PRNDH6LvvzehzVMptNd4sOFFuQY2/jTCMmgKOfAhcqSlHt1Ls2j7qd5KHGXPX8vp/ktF7DxXvM+lpoJFXVUsVVHcXm9NYJKL5aLWKEjL/ZeakJChlvUeCmewz/K7BXKwkPYCbYY6VOLT1I31bPFnD19tXyxg0JvbmV+zWJ+SddTzhVmdyOjQU3SzUyHlPLokhQHcv/0ycbuNqeYHEv3jbr3FiNdmofhhuo/dUlZ3nhLBokWa6Rt6tw/Sl7wITDBsDrgTA48lNDmqySwMtooZrzRXQAqOuOhyL78oT+rzel/aot+6NJz0k0+rlveDQFKnfd/O5QcRtLvRYS4jltXlg==
 subtype: python3
 system: true
 tags: []
