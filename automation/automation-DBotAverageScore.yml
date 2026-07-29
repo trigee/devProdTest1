@@ -7,7 +7,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -16,7 +16,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -37,8 +37,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DBotAverageScore', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   from collections import defaultdict
 
 
@@ -111,7 +111,7 @@ script: |
 
   register_module_line('DBotAverageScore', 'end', __line__())
 scripttarget: 0
-signature: lAiUAIS8EYVjjmw5L89/rSwKVTpoaEdo/t5PAt/MqqE6YxnqN0RDpGBcZ5dxBTAwhVszjU21hWo3Tkas3dlAO4SCR6ah/axhx8L9HMq6wkzI13kZQs8UB55KyIAzIE/3gl0XElhJ4VSrmUl193rQ/Wn8vh6+va6GW/se1qkBfiulrLPYeVWEu9ZfeGFdeGxSfJQqYj+G6xAlxc7E8CQ+zh3byIghpr8+5K6R2zTKSfO5dYVBtcFlPCqw6bxLcDotwr5F443/6yvEIUlcyfj3nshjsHSCn5wOrQ9tKVQxkaco4YWJlxATw27A11/uSywXBPlVLP7xuXWOS1FJYmf5xA==
+signature: tfdQ0ansQh26IjrFHBqoT4s4fKI9qzWXzDJN5BsX1jwwKoWo6v7v1MMHPHdLeByatoMqTWzs6P7br9ObLA5NI+WJOHdSO0lEJp2AUFfJoVP2ic9LY+heBVR65Ld+fZAwMAIud1yZSScaN1q+Hzao255D3uM+ZVsPTb6y9w3LOmOYNOxRPmy8c1sOp3+CmDrEmQfN6Rn0/k9yAuOSHyVrZbBBoxe8splwiOh3Tpr+6fTf54V3Kgg+TZfC16YBfMaQKssYt5cRKJO04tptKP1MVFaGFvFJtULg6fo+nBc1x+xOhNwgCLBiCRSdb4T1Bo56etOXGzpJwfM4gbpxc6n4AQ==
 subtype: python3
 system: true
 tags:
