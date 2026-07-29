@@ -55,7 +55,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.8.0
     isoverridable: false
-    itemVersion: 1.4.22
+    itemVersion: 1.4.24
     packID: FiltersAndTransformers
     packName: Filters And Transformers
     packPropagationLabels:
@@ -64,7 +64,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -78,8 +78,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('MakePair', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.22'
-  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  CONSTANT_PACK_VERSION = '1.4.24'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.24')
   from itertools import zip_longest
   from typing import Any
 
@@ -215,7 +215,7 @@ script: |
 
   register_module_line('MakePair', 'end', __line__())
 scripttarget: 0
-signature: utPJwwEsXppBZfoVi0lmqgxjwIWBs65MNwZfMI8z3StTea5PM6M6gnvNOCTswmXhZJs//GbO9e2zqoVizySAf2GpqCQTJ6pUqpre0bUdE2Yb+7o/5ZdNzywhM50zuBrwEBBml4nVacQYgjBzqcFA8Eose6vusgwfpEmkPlX56rK86vW8NbSxKg9mFyJp+jKYCc+2XoBQqFapivrO3qoB4sP+J9xmAoqgWqB1rghulg1JnUMPi3Xj8aO8aauf7YZIcaL5bSoP1ufigb/vPB4DIrad3K2GoK+IlUsdTic4KL6fo+wWPsJ5QUv0JmzHHyKKaG/0LeTKutWLuvdoJDLJyw==
+signature: 0EwlS+Tym60Ugp0988E242XLYhKddwTxFLqV05eSKPva0UB+PwQQvdYCTjYAb4E3/ZhMFX1Pbph/mT3R3/BDkMzatp1mlgcDYo1fOqRENyqr9D36tEezPCfJWLSwIoyHndv/fBJvAMAwZMjrLCtrCEBidbqGHG/9e9Cp9gb1m6Sm26DcWKuW60pRw0E8LbauS1/MAf2Ro90SXv2Kp/pXDQJ0dPB1JtYdQm8q5Vx02jO3WYGk2WDpUBiPeixne1/ymUc5ftSFxTetM45MZ6bvzxHrCvRGtIvOv+lqDDCxZbZ1xPrMT+EZi+T9sW0yCVubvEErXEpXmaSafxdBnisz7A==
 subtype: python3
 system: true
 tags:
