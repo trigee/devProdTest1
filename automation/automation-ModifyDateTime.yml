@@ -21,7 +21,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.4.22
+    itemVersion: 1.4.24
     packID: FiltersAndTransformers
     packName: Filters And Transformers
     packPropagationLabels:
@@ -30,7 +30,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -44,8 +44,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ModifyDateTime', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.22'
-  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  CONSTANT_PACK_VERSION = '1.4.24'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.24')
   import dateparser
 
 
@@ -85,7 +85,7 @@ script: |
 
   register_module_line('ModifyDateTime', 'end', __line__())
 scripttarget: 0
-signature: vFB4OGE9It0mf3ZYxFyuhTPB/aPCzpx0gpWlYU3Qi3TAQFcZGi8TfcaBUA3QDuVOjfIjJv86OQSjXEivXsk5tqtBWetGVXq3vPAwxa+qLOiQkheLPp1aG0rVSN36CRgM7JIDCnQDOUK1ffg1iIxNzCm/VqfzgwewY5RplbcR8Dubz4266sleIMwuWxalbgIKQCF+rAldFatDh9bkmbmVvv1j3PlRKuxcm0tcvSpnw+bSmNrgo1geSMuodWzPG4PVbYCulLGIMHqe2q6Bc+ltiv8ZqWC2svQevmxnk2IHTm1pg3GcVBN0JWICxjWC7Dq4+QzfVi4RFH1WnagbeQ66YA==
+signature: kfgyccPwh1Dn7bPgFl0vI7Xk/c1+mtsSH6u8GU3p62AfTDAbIie3pXhr5mUTK0KSg27Xyj8V0MxIdtB9PZF6uJYgec0WhWwbx6AqdRhavZSJFWqIO2Q9jYpEkTVWmaTWqF9/3jHClK9TyX4ZPVEN6lWVs0stOvpNg3MeLl/eovAyNsYpCwzWsf3gi5Zo1Cjc/8nUQMUqlfltQLVxW+ZzZ/z5PP/iqKAce6PYKeaT4nmhtsLUE9o2PSynMLNiTiUDnqHPK+rXX5Dp7vKDrmwSkA0KpCtbr8QW9BdUgH/n1xpFHIsX+3ecxjP7YA2MrKO1BZeG48BaLfEuN7+ZPs/e/g==
 subtype: python3
 system: true
 tags:
