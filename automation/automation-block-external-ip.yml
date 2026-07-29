@@ -74,7 +74,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.1.0
     isoverridable: false
-    itemVersion: 1.3.47
+    itemVersion: 1.3.52
     packID: AggregatedScripts
     packName: Aggregated Scripts
     packPropagationLabels:
@@ -83,7 +83,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.9059085
+dockerimage: demisto/python3:3.12.13.10116658
 engineinfo: {}
 mainengineinfo: {}
 name: block-external-ip
@@ -110,8 +110,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('block-external-ip', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.3.47'
-  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.47')
+  CONSTANT_PACK_VERSION = '1.3.52'
+  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.52')
   import ast
   import json
 
@@ -1021,7 +1021,7 @@ script: |
 
   register_module_line('block-external-ip', 'end', __line__())
 scripttarget: 0
-signature: jG8dx7c7z+3bB3i6JhjX76slHfsaZ2JTz8oh0gr+mbpEEWXCdSgx2TrNu0EL/j8zVinEWxgKx4xS0Y+nN2bodrp1yn502dh8GTAzDM++WP4ZE5CktCjVFst/nfWrw4/Hva+3j5T/lsvtNovOkXDcPEXiGM0jGUk4v2DAPJ2CW/vVU7xu8CkySIY0NnCbqOlFhQ7jKGp9SSiti9Aq6nDVcwb9IrK6BZtBO33tTyqCdbdStjGbDp7l9yD5GRoHqZRQTsvKZaPwhj9a6JEP+S9UmXND7/qUrg8nqV1p7vDG2lUMXBX0cX8P9BIhAMDAd4NpvXwJAwaAmuC82C9Z5MxzJg==
+signature: vpNm1XhpOBOPogcK72LoEUYOadOf3z1l40A+i/yhTAI4g2wndWGSn8beno57MpVyPq4/SNxjYh5HU3kUJhWRSjfT+/KMIqUO7r33qGp1hIDD9T/acciS7l+hiQd6R6yaKvKJZKr+1Pry1+h3cLgcAayJRWBCHIVonZ26jFF2xF/s6d4s4lSQRuTCFwMSdttpTbzzJNA1oQFkks4lQqvHa6EL5NCvL8rWh5ag7QSLPGYFeew3HyiFlSfSvPDIRhTRyVV4HEccbxIxYfbyCDIEbnrKgUylqoqwDY3362P8rca8ikxzL6g7qcR8WKqxzYv/adVCoVCWmKEYwC4sSxqxOA==
 subtype: python3
 system: true
 tags: []
