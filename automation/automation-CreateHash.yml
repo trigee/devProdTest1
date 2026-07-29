@@ -25,7 +25,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -34,7 +34,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -52,8 +52,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CreateHash', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import hashlib
   from hashlib import blake2b
 
@@ -106,7 +106,7 @@ script: |
 
   register_module_line('CreateHash', 'end', __line__())
 scripttarget: 0
-signature: po06pnbguh0zvr/6dcjHFd0rGTUN9VaMOeHUkfJzAMeyBlG8j7hhmDcVOmNlWYq7tZ2dndnwOP11PHHk9IS9NICiluQj9wFQaRqlSfYjCkzHRSdbHY/XNKHXfxab5QFpTZupr1E79wphpF0ZGZLz2uENjthQCTLq6tkhBoMDoReNK5Wr+wq7jMWqwmm8pQP0qgwbZ/e8W6M+YXnFIi32U41Z8aa1HnOZRqlhgwcefGxev/bmnCJHrENTR3YD8dxt9dKTlTJl2r655oACcxnr7DnEUc3KTIENQXke/d62zPZRosCSAaAYuYdii7p6GJWhY3nQixEzRjOS80M+m6YeoA==
+signature: MgVZ3bdN/+8w+kabdL6rOD+GQzheZ4xfPXJs3XBgAHuoTahtJjYadSomsEB/ZbEDXXakstWp4k1CglRYUSf+rnG9JATMZZOZKflI+k01YbErTRi0SCz+9oYegXmTLpbDT1XHVxtD3XwIQWITd/szJQP6Gdrr+/Fi5LOB28NujvkzZaEjiEHwupjfoMlJj3ceOm3Cn+DFc5GSWjG/FoPqrd/21JayVl/2Nu9eb0CmBbjZVwm4AnEO/P2xjsLrsq2lRnCc/T2KJkOrsOrxC9Y8Bli2EpGh0rOn5yCr/SlYJdBn23TU8yg5MPRfdxR+bhS77wJ8LGiPTuRwADqDJ32EDA==
 subtype: python3
 system: true
 tags:
