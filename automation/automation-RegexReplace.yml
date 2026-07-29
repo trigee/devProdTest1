@@ -61,7 +61,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.4.22
+    itemVersion: 1.4.24
     packID: FiltersAndTransformers
     packName: Filters And Transformers
     packPropagationLabels:
@@ -70,7 +70,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -84,8 +84,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('RegexReplace', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.22'
-  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  CONSTANT_PACK_VERSION = '1.4.24'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.24')
   import re
 
 
@@ -144,7 +144,7 @@ script: |
 
   register_module_line('RegexReplace', 'end', __line__())
 scripttarget: 0
-signature: ThbvWL9B7d3+GwRQw2tMBEGjoEPicBQjDsll/DsIOcfHR2pfGZhHDoLPWwUMEj8Dnhav0GglfQwRJERyxnx5r6oG9jaqLzOBVE404Ztl6rvLM7UiYYbtniVrCWNjWAMgHIbjW0qZM0YfnnQAr9BZTLrD0NfsQuPOu4kXOKj+udROWVoLJ5IC0Y8aQWDS9urwG8OKbZdH2trLkWNACwn+3NLaVH8UoOhRgIteZwGt6a5IqY8w6jK3kj76yKPJupV7Ich37hJ2G8yYorG/GPq+YjeYGcMkYRSKSPOACegshagFcNcoPZPld3hZ3B+pW4vR/rnoClnAs2q7Dpee7LX6xg==
+signature: MzM8WAbaRZ8/n/1PMCIijTTfk3GvRW8G7r3/AI/inuMdGUQ86LdImWVhu8IExv58X6+3XFypK1bM83LDoQSGveNgVUUL7vpStH8HbCoQMIY7QAVg1iXnlhuAsDNizHtHGtLSHJcsiCfCIMw6RmFzk844YhAigjyPGEht0NoXjnrVlkf/OsTY33lhNl0BHd9WwhqrNzF7yNh5XLb3iYrC20ySDFQ5VanDsGlyiuvHR945X4pMO8hSk7ARVilIQHKJv9d/rUF6XPdfr9Aa4kXWLtVzaT8OH6QT+VLmAK5aMbjNjgTfKrIHH3k2D8vWHmCxfeTNiAv8vDcaDttIWxga3A==
 subtype: python3
 system: true
 tags:
