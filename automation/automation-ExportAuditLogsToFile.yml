@@ -27,7 +27,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -45,7 +45,7 @@ contentitemexportablefields:
 dependson:
   must:
   - core-api-post
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -59,8 +59,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ExportAuditLogsToFile', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import csv
   import io
   import json
@@ -191,7 +191,7 @@ script: |
 
   register_module_line('ExportAuditLogsToFile', 'end', __line__())
 scripttarget: 0
-signature: STMYHs86qaY5eDla7bh+DYerbbnAYaWoW63gZXT/OcH5RxYanMrDbuGmyl7jjWJDFM18Q/oFoSgUTZE7SPNmP2QU5a1KRuzCkmSPAoYaytXr689h34fXgYup8KYvqW98exPP3qI7Nhgp3HVH9MXuSaUIQ7e5sXVRAik3HLR7qEoqZpHWXYEROazclksz+bqkS6JqB+8hWvNFcwpT4tDu7JVzl6HGRFqV60n33h7QBLyDqDjh1RmPrx14KAEgZ2rJKF1dla7xq9jYm9lY2Xa9zl3/stFPVaH6C2Qt39dGe0+QFbl72LCUMIFlMZ3W+oNVtD31EwggBhNfoZz/QjRf5Q==
+signature: LDu8UmbteXPXWN3DsOEXbO5o4xBFQ2jaVsYma3PasOXJAAPImLjn+leFUuyVENaHDzAo6CVrg5NDgkIVJiStVDGh84yHtcBx3YBOoyM3PNveqySxGaAKqNHVsLnMWktLLMfhrWB10UcexYEl5L12kesCo2WXH6Fa1px9Lk5SSbjp5x3k2Za/QXrOSVr3kOS89ih42gkFzyJcfdXTtbXoah49FiUKaB+P/TDeQMpihK6RhAi5ahYQBlYNiYuU1g5ibj8ke+aifOC8r6i3rgPfLhU1iGlx3Wq6DpJufavB34sc+oOsjEMXQFBa+8GCyhEPZdqHc6ZCzNpDDkZmjbGjYw==
 subtype: python3
 system: true
 tags:
