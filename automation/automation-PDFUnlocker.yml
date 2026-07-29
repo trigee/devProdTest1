@@ -19,7 +19,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -28,7 +28,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/readpdf:1.0.0.2034953
+dockerimage: demisto/readpdf:1.0.0.9067966
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -42,8 +42,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('PDFUnlocker', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
 
 
   from pikepdf import PasswordError, Pdf
@@ -72,7 +72,7 @@ script: |
 
   register_module_line('PDFUnlocker', 'end', __line__())
 scripttarget: 0
-signature: Gw1pivNc1VAd67+NoG9Va/03nqBd+0nhncW8MsiXIhVQLmuv/v9ZUijtP8g1uHAsVI+WlEeyecvgzlMBIu+aJHH90ysl7MXw1yVDa82XTSV6dGeZTvSbWz9Z+APNeNMV+Tf26qNNOM4QxSQOkmETp3H5oxeg96s69vrDUFAj94McsGOAWaLv2ncZBixMGZkLaZ837yg/0pn4EtUF8wBrXysnJ7Qmh9dJtinUaD4NGTMF5Ecw6fAYvWf0wBOmgniXUKMuKpTJabLXUBx6bY6VFYq/RlxIunD2/CSAr0NkJWjYMmw6lU9B+WOxNp7DfJ0rLOdAD0d08tqMmE3zm/rrKg==
+signature: KebmzL1+j2QavOU10uOQPvwPxLXVReHNcOybtyJ3cWtUp+MPreUMhXQvyTDfzfeehvWDdc8EW/TeE2vjaROUWh1Df4kL2FlQ73YjyGEd3Q3N+wmtEyHWLf86TlWIFXxDGaI5SMk6+le4+199jvPV7ZbNNVyrh9Y9TfIhnPTqug3TwBPWSlynBXa/FjtlgFfspRMxvOZJbjkjeaGgAdzFJrF33C7J3TERsdKr3+CHn83BHOfPtsMaVi8Pmb3kZSUgw6xR1z51SKu3fzAiMAwhVVRcGlfNv9sdp8Z9lxQkAz+d5sw3A1KbWilNfY2jji/omzm7vfcXZxvTufFCXyoB+w==
 subtype: python3
 system: true
 tags: []
