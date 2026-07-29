@@ -21,7 +21,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -30,7 +30,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -51,8 +51,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ConvertDatetoUTC', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
 
   import pytz
 
@@ -105,7 +105,7 @@ script: |
 
   register_module_line('ConvertDatetoUTC', 'end', __line__())
 scripttarget: 0
-signature: PV8VWvk67iddhPHAk+A5nTW6BWpZeIfUVlSvBm6PqBl4g9cxjWpnwBXVS6vFZCb5jUUEniSytJ4clc9HpBDcjzVslLPmkstaQV8+hy5YcupMtZtYm/oIq12K9PygUXldeBN6T/2EMyOUubA3y575cvScAPRs0Wt4pQnMRcvmuDUh+0AkvhpYqyGDvBDr1uzXSSPFmO1SvFMDbb9aymOpuT3vMZtjv9Du7lBPTrpofa/QVe+hkEm5wCel8iGJ2xUNO2vsgNnoOr3AEkMv5PnsTt1vBgXmhu26/YQzr/imhstNnY1kWuoMAZr0CWq7KEfP9hi8qKLEULJMTtViuOv8rw==
+signature: PJbIRw4Rwf0ydMhLUQbJAcClxAA6suKUTHHq5ScsrjUNqvWGaWKAa078k80Mc29cB3ZiRLtenevNvqA/UuPsnIYyHEVtyBTgXAySSADJsI3A9Mr0Zh9MQXYeKqKptzH1sZNs/UAFwb9if5KcYtRZY2Ea5s7KJtHGJkDu8UY40VpooyOE9QKajmT++KGZcRliuFzSrJ0uZ4wtUtDl3+5EUKUabbwfgBrrbWoLNPpdiW/k0Jabcl1jExSPrXNFbgMbLsDh5PtnXaXxCCjPw+qK5QNgVhTpJsKKCuHEoAy+7U1mVkDV2vnqBinvwykRg4yKXcW40DRQrjPzI+n2EHNyBA==
 subtype: python3
 system: true
 tags:
