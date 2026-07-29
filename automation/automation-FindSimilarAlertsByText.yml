@@ -65,7 +65,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.2
+    itemVersion: 1.42.13
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -75,7 +75,7 @@ contentitemexportablefields:
     supportedModules: []
     toServerVersion: ""
 deprecated: true
-dockerimage: demisto/sklearn:1.0.0.49796
+dockerimage: demisto/sklearn:1.0.0.10866354
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -99,8 +99,8 @@ runas: DBotWeakRole
 runonce: true
 script: |
   register_module_line('FindSimilarAlertsByText', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.2'
-  demisto.debug('pack id = Base, pack version = 1.42.2')
+  CONSTANT_PACK_VERSION = '1.42.13'
+  demisto.debug('pack id = Base, pack version = 1.42.13')
   import dateutil.parser
   from sklearn.feature_extraction.text import TfidfVectorizer
   from sklearn.metrics.pairwise import linear_kernel
@@ -283,7 +283,7 @@ script: |
 
   register_module_line('FindSimilarAlertsByText', 'end', __line__())
 scripttarget: 0
-signature: iSl7aE9SywHrQUyR7Y7++IONI2aoLIcJ57JjktB4h8rQ3sO/M2QSygIwS+E/BKzF/w4shRnxyLlQlwX2qj2gLB6GSm125RSM4tNv3KPJjHWoPusqBzdiO/hT89lFQFr/E4g9y3AkXBY//oK4Ca8X0bA+3OXZK0ZlvDJjsJ4cphVnEbsUIlRgBEkBWNrT1yvjY6n9uQpVrOPvWT1EozZs5KYCauQZSZRjM0Gjiukl+JXZ4V8V1VvBdFrRPR/Yyr3BK0xgHiMReFJU1/1Z97GDdnHrd0BXK3dDPzfxYp56rUj3AFoyd+byTl6wgEOtAcW9ZBdtPS47fLuM8BY13UYWIQ==
+signature: aohHMHqCbf7C5svhS7n3kPi6TtFuJLnHkMoSZwn187unr6wi7wmiks/lqB7OTBJO6yNY7tJRru0T9XlCIXj8kwNckbd/v+gWKkFWtN40fzmqOyhtxGWVqO0rjfYHkMlfnId08dhB2GSr2tOUK7UVMqNDugB7GauL5hD01rNx+iU5lXvBLsV08+1/g7boYH0kKLYbiiQqpkk7/IGR0LReTEjyMZCUMtNL4/Dyn+R5ywntmajCrP5zHC9dmC+kPn+UitBUmkNWlT6hjJZ3a2/ETHkYgEs15vG19a93SeuUf6r9pVCkenkWjYirymH85/vDPlHjm0CWKt9r/bCkoga/fQ==
 subtype: python3
 system: true
 tags:
