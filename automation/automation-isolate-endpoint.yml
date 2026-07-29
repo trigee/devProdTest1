@@ -29,7 +29,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.3.47
+    itemVersion: 1.3.52
     packID: AggregatedScripts
     packName: Aggregated Scripts
     packPropagationLabels:
@@ -43,7 +43,7 @@ contentitemexportablefields:
     - edr
     - xsiam
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: isolate-endpoint
@@ -72,8 +72,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('isolate-endpoint', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.3.47'
-  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.47')
+  CONSTANT_PACK_VERSION = '1.3.52'
+  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.52')
 
   from itertools import zip_longest
   from enum import StrEnum
@@ -90,6 +90,7 @@ script: |
       FIREEYE_HX_V2 = "FireEyeHX v2"
       CROWDSTRIKE_FALCON = "CrowdstrikeFalcon"
       CORTEX_CORE_IR = "Cortex Core - IR"
+      BUILTIN = "Builtin"
       MICROSOFT_DEFENDER_ADVANCED_THREAT_PROTECTION = "Microsoft Defender Advanced Threat Protection"
 
       @classmethod
@@ -131,9 +132,9 @@ script: |
       """
       commands = [
           Command(
-              # Can be used only in XSIAM
-              brand=Brands.CORTEX_CORE_IR,
-              name="core-isolate-endpoint",
+              # On platform, we use the built-in commands and brand Builtin
+              brand=Brands.BUILTIN if is_platform() else Brands.CORTEX_CORE_IR,
+              name="isolateEndpoint" if is_platform() else "core-isolate-endpoint",
               arg_mapping={"endpoint_id": "endpoint_id"},
           ),
           Command(
@@ -523,7 +524,7 @@ script: |
 
   register_module_line('isolate-endpoint', 'end', __line__())
 scripttarget: 0
-signature: h98LyEOFXAPgxk4o+ZT2cxXlm6NhxNm6+UV11+V0bHiMRZBkDVTYGurEdGZfkB8ywtiJAD8MIQM1O/1TZbXYrH7DY2Tl2GmrrcQpEaSQyVUe9/q0TpnfOtJzwUyPCEfUfKUVJwTzQ1PtPkTWaw38DMJFrmhAWwJK/MS1HnRypzCWuAg1zPOG7tjfnvVDIuQFVfaVlkHAVa3UjtlYPSbTYP/wdoKEicOblrQ4DvT0Nk2qWGV/MTo7L3ScMvB8+j9Y7bRUWggt30RED1BwC3IGU86motiO6srT/BBl92k9LDHjJbXks0pXYf8x/tMRJoh24V7qsg7r7VqQ+Znfp2aHKw==
+signature: i1yJoPHR6UmHN+3Y7vwoezY0rPk78P8DJoMygjQLAdOt1WOYWAvtJqBGH1R86RKZHcYfPHMAhHsnuvaiwfxbeCANqrrEuHqTLg1Q0JNliY0e5X7XHpc4Fvw18AGL5wGwd//ALYyktQr0I24JHXRadEqEq10abQto2HhmiraYFsbAoMThmrGADCd5k8TfHQfA7apK5RxOeVs/fyZk9/7yFXSSGfRJ+FXpKohAID7EkYbABmuV39U8DZk8lDRHvROm72ISI4AdKHy6xJK/h0CpGPS3ic+65TrMQiABkj5f/z9gQEDiL91veEmKvPgYSQpsMNOePXn+uJD9JX6BMxsLyg==
 subtype: python3
 system: true
 tags: []
