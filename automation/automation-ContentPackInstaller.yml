@@ -30,7 +30,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -45,7 +45,7 @@ contentitemexportablefields:
     - xsiam
     - edr
     toServerVersion: ""
-dockerimage: demisto/xsoar-tools:1.0.0.2974997
+dockerimage: demisto/xsoar-tools:1.0.0.8457987
 engineinfo: {}
 mainengineinfo: {}
 name: ContentPackInstaller
@@ -65,8 +65,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ContentPackInstaller', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
 
 
   from packaging.version import Version, parse
@@ -425,7 +425,7 @@ script: |
 
   register_module_line('ContentPackInstaller', 'end', __line__())
 scripttarget: 0
-signature: EtMr4O2BYzuOJVWyzFMCxG9CanE96sziPp59zIIRxqmPApSuCn2rX/cpLEpoPNsCDVrkE0+QIZrdve/+LyeUWWiwbA+4m02HIXQnUusAEgiSvuE6/Lt7hJC4870mGNJ6rVKOA8A4DCkpUckoF4hCsDEQrO0ceI2/dWWcjR5uzJyeWOGoL+rc8SiNwMVBfIjYOhFGzbk1xx2sfkEVakhvR1iEqd7oTTrSqDAMTsHCGgMhuIkRCa/q6Yd5TOeAIeqBUgmo/oqDXQMRw0putSGIcBH4DhM/3wkUsfIzFK5wsV97Vw58OpZR+wMx800LfkjibpoQW2lbWlescouG6PwgMw==
+signature: SopnAaa1V9j3rrijPtPwXmFN6i2wtTamVWuYLW8Zz6oAB4tkh/VzIZnPyUxN6b1qDU/9ipuIF1J8n96ve8CAou18U4geYsx0gG0Wn0Yh0ZF0lqT+OkVNlbO/sK/Iq4fhF9U4sTGU/Uh3Y0cTqsoodJmMbLJCQ6W103OqdkNFnSXzTMW1jVaV/zGYq0XhFXr8WnW4hq66UYt34COELVD9tbz6wMrs73h9vXClw3+3Dl5dCQ5yULVGbO+pNdugYkw6lLozVlY91oQnJObecOngW1Kpo8S4L2j6o4cSCjwWzaP/ssYp139j054tYVH6KpaoRxk02mPKXD4y/Qxjmm+uFw==
 subtype: python3
 system: true
 tags:
