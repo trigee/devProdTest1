@@ -19,7 +19,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.9.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -28,7 +28,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -45,8 +45,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('BMCTool', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   # This tool was developed by "https://github.com/ANSSI-FR/bmc-tools" - Thank you for your hardwork!
   from struct import pack, unpack
   from typing import AnyStr, Generic
@@ -1562,7 +1562,7 @@ script: |
 
   register_module_line('BMCTool', 'end', __line__())
 scripttarget: 0
-signature: gmDresd3o7tRDEAPPn9XK/i+EwfkA4aYNZ1mcDcCymKfKDfnzAzbPBLvaLabMDZMi01IBpc0ygNoM3RTQBurAPE/8QXqWhZgELU/+fukX5Bj4sbcxQPo5FMXECcLotEEvGbXA7TKL26AVhlaEqtnsOLyoHaOKJzdkvIR/isg5a5NPb4pgGU2sezk47sCyLCZp4IWMoobXgiK34Z8Hax6s+3uzR8ZH7keBjywpDJMklnhwOmnRtkpn1DUnc1scWCiGhC0b4hZDhVyrz8JJ5GjfOfbZ1qyae20B1b2ppE3oC9BceRDbkUIcjczjqGFhkY08ZvEsuiXB2ebZ4gpFRndqA==
+signature: NvsxvqSRh9AgjxLAY3e7oPkO7qgm2U4FmK1rnfR8tAtJMjegS7qkgAUyMBkzVUieAHO5uzNEwFe3iUUQ2rKPQrZjq/1u23RN2NnuWF2u6lFbFg9NWlIQk1n3Tu0ogKYIgF2j1klG56nmVDPvn4MZH9Xi6PCFNMsulXu08X/hVI9rs67RMDVjRXWQK4VyYjlDg2Vs3llWNqAqpgvCEoh4UJ4Wk/647menxPQR74iorJI22J83TEpbvC6Id+11ZnX1i8Aq0nlnB1QmzwgjzRo+DXoEw7RASwGzKIQUFCdQ3g38+tn/AtSDW9v2oTIs/xU87ff2FKl6r0f7mjhgM76x2w==
 subtype: python3
 system: true
 tags: []
