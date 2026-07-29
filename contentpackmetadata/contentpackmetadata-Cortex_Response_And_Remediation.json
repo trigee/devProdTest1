@@ -34,72 +34,13 @@
 		"list": null,
 		"playbook": [
 			{
-				"description": "This playbook is designed to handle the 'Unprivileged process opened a registry hive' alert.\n\nPlaybook Stages:\n\nInvestigation:\n\nDuring the alert investigation, the playbook will perform the following:\n\n- Checks the prevalence of the unprivileged process that triggered the alert.\n- Checks the prevalence of the command line used by the unprivileged process.\n- Searches for additional suspicious Cortex XSIAM alerts within the same alert in order to determine whether a remediation measure is required.\n\nRemediation:\n\n- To prevent malicious activity from continuing, the playbook terminates the causality processes that triggered the alert.",
+				"description": "This playbook addresses the following alerts:\n\n- SSO Brute Force Threat Detected\n- SSO Brute Force Activity Observed\n\nPlaybook Stages:\n\nTriage:\n\n- The playbook checks the IP reputation and fetches the events related to the brute force login attempts.\n\nEarly Containment:\n\n- The playbook checks if the IP is suspicious. If it is, the playbook suggests blocking the IP using PAN-OS. The investigation continues in parallel to this phase.\n\nInvestigation:\n\n- The playbook assesses the risk score of the user who successfully logged in after a brute force attempt, examines the legitimacy of the user agent and if the brute force attempt is likely automated based on the timestamp interval. It also verifies if the user has MFA configured when the alert source is Okta.\n\nContainment:\n- If there is a successful login attempt and the user's risk score is high, or if the user agent is detected as suspicious, or if the time intervals indicates that the login attempts is likely automated, the playbook clears the user's session. If the user doesn't have MFA configured, the playbook recommends expiring the user's password. If there is no successful login detected, no action is taken.\n\n\nRequirements:\n\nFor any response action, you need one of the following integrations:\n\n- Microsoft Graph User\n- Okta v2\n\nFor eradication step, you need the following integration:\n\n- Palo Alto Networks PAN-OS.",
 				"fromversion": "8.0.0",
-				"id": "Unprivileged process opened a registry hive",
-				"name": "Unprivileged process opened a registry hive",
+				"id": "SSO Brute Force",
+				"name": "SSO Brute Force",
 				"tags": [
 					"TA0006 - Credential Access",
-					"T1552 - Unsecured Credentials"
-				]
-			},
-			{
-				"description": "This playbook is designed to handle the following alerts:\n- Command-line arguments match Mimikatz execution\n- Mimikatz command-line arguments\n- Credential dumping via wce.exe\n- Credential dumping via gsecdump.exe\n- PowerShell runs with known Mimikatz arguments\n- Hash cracking using Hashcat tool\n- Credential dumping via fgdump.exe\n- Credential dumping via LaZagne\n- Credential dumping via pwdumpx.exe\n- Dumping lsass.exe memory for credential extraction\n- Memory dumping with comsvcs.dll\n\nThe playbook executes the following stages:\n\nEarly Containment:\n- Handles malicious alerts by terminating the causality process.\n\nRemediation:\n- Handles malicious alerts by suggesting the analyst to isolate the endpoint.",
-				"fromversion": "8.8.0",
-				"id": "Credential Dumping using a known tool",
-				"name": "Credential Dumping using a known tool",
-				"tags": [
-					"TA0006 - Credential Access",
-					"T1003 - OS Credential Dumping"
-				]
-			},
-			{
-				"description": "This playbook is designed to handle the alert \"Scheduled task created with HTTP or FTP reference\".\n\nThe playbook executes the following stages:\n\nAnalysis:\n- Extracts the Indicators from action command line\n- Checks the IP and the URL reputation.\n\nInvestigation:\nDuring the alert investigation, the playbook will perform the following:\n- Checks if the IP and the URL reputation is malicious.\n- Checks the CGO process is unsigned.\n- Searches for related alerts to determine if the creation of the scheduled task is part of an attack pattern.\n\nRemediation:\n- Remediation actions will be taken if the CGO process is unsigned, the IP or URL has a malicious reputation, or a related alert is detected. In these cases, the playbook will disable the scheduled task, block the malicious indicators, and close the alert.\n\nRequires: To block the malicious URL, configure 'Palo Alto Networks PAN-OS' integration.\n",
-				"fromversion": "6.10.0",
-				"id": "Scheduled task created with HTTP or FTP reference",
-				"name": "Scheduled task created with HTTP or FTP reference",
-				"tags": [
-					"TA0002 - Execution",
-					"T1053 - Scheduled Task/Job"
-				]
-			},
-			{
-				"description": "This playbook addresses the following alerts:\n\n- Azure AD PIM role settings change\n\nPlaybook Stages:\n\nTriage:\n\n- Collect initial alert data regarding the Azure AD role settings modification.\n\nInvestigation:\n\n- Analyze the impact of the role settings changes, categorizing them as high or moderate risk.\n- Determine if the changes affect privileged roles in Azure AD.\n- Correlate recent user activity with related security alerts.\n- Assess the user's risk status in Azure AD and Cortex XDR.\n- Evaluate the reputation of the IP address used for the changes.\n\nContainment:\n\n- Automatically revoke the user's active sessions across all applications.\n- Present findings to an analyst for review and potential user account disablement.\n\nRequirements:\n\nFor response actions, you need the following integrations:\n\n- Cortex Core - Investigation and Response\n- Microsoft Graph User.",
-				"fromversion": "8.9.0",
-				"id": "Azure AD PIM role settings change",
-				"name": "Azure AD PIM role settings change",
-				"tags": [
-					"T1548 - Abuse Elevation Control Mechanism"
-				]
-			},
-			{
-				"description": "This playbook handles \"Office process creates a scheduled task via file access\" alerts.\n\nPlaybook Stages:\n\nAnalysis:\nDuring the analysis, the playbook will perform the following:\n\n- Checks the Office file path for any suspicious locations.\n- Checks the initiator process prevalence.\n- Checks the initiator process reputation.\n- Extracts the local path of the Office file and runs a script to calculate the Office file hash.\n- Checks if the hash of the Office file identified as malicious.\n- Checks if the initiator process is non-prevalent with suspicious reputation or path.\n\nInvestigation:\nDuring the alert investigation, the playbook will perform the following:\n\n- Searches for related Cortex XSIAM alerts and insights on the endpoint by specific alert names or by the following MITRE techniques to identify malicious activity: T1055 - Process Injection, T1566 - Phishing. If related alerts are found, the playbook will automatically disable the malicious scheduled task.\n\n\n\nRemediation:\n\n- Automatically disable the malicious scheduled task.\n- Automatically terminate the causality process.\n- Quarantine the Office file (requires analyst approval).\n- Automatically close the alert.",
-				"fromversion": "8.8.0",
-				"id": "Office process creates a scheduled task via file access",
-				"name": "Office process creates a scheduled task via file access",
-				"tags": [
-					"TA0002 - Execution",
-					"T1053 - Scheduled Task/Job"
-				]
-			},
-			{
-				"description": "**This playbook addresses the following alert**:\n- Suspicious authentication method addition to Azure account\n\n**Playbook Stages**:\n\n**Triage**:\n- Gather initial information about the user.\n\n**Investigation**:\n- **Check IP Reputation**:\n  - Analyze the reputation of the IP address related to the alert.\n- **Check for Azure Alerts**:\n  - Extract recent Azure security alerts for the user.\n- **Check if User is Risky**:\n  - Assess the risk score of the user based on Core and Azure risk indicators.\n  - Investigate reasons behind any identified risks, including recent detections.\n\n**Containment**:\n- The playbook checks If hard remediation is needed, if yes, it will check if the integration \"Microsoft Graph User\" is enabled, the playbook will revoke the sessions of the user and provide a manual task for an analyst to review the findings and decide the next steps.\n- Possible actions:\n  - Disable the user.\n  - Take no action.\n\nIf the integration is not enabled, the playbook will recommend performing the same action but manually.\n- The playbook will check if soft remediation is needed, If yes, continue to revoke user's active sessions to ensure immediate containment.\n\n**Requirements**:\nFor the best results, it's recommended to ensure these integrations are configured and working:\n- `Cortex Core - Investigation and Response` for Core user risk evaluation.\n- `Azure Risky Users` for retrieving user risk scores.\n- `Microsoft 365 Defender` for advanced hunting queries and Azure security alerts.\n- `Microsoft Graph User` is used to disable user and revoke session.",
-				"fromversion": "8.9.0",
-				"id": "Authentication method added to an Azure account",
-				"name": "Authentication method added to an Azure account",
-				"tags": [
-					"T1078 - Valid Accounts",
-					"TA0003 - Persistence"
-				]
-			},
-			{
-				"description": "**This playbook addresses the following alerts**:\n- MFA was disabled for an Azure identity\n- MFA was disabled for an Azure identity from a new country\n\n**Playbook Stages**:\n\n**Triage**:\n- Gather initial information about the initiating user.\n**Investigation**:\n- **IP Enrichment**:\n  - Analyze the reputation of the initiating user IP addresses.\n- **Azure Detection Analysis**:\n  - Investigate recent Azure security alerts for the initiating user to detect additional suspicious activity.\n  - If any detections found, investigate the related user agent. \n- **User Risk Analysis**:\n  - Assess the risk level of the initiating user based on Cortex XSIAM Core and Azure risk score.\n  - Investigate reasons behind any identified risks, including recent detections.\n- **Attacker Geolocation Analysis:**:\n  - Investigate the initiating user connection geolocation.\n- **Insights Analysis**:\n  - Investigate the Cortex XSIAM insights that relate to the initiating user to detect additional suspicious activity.\n\n**Verdict \u0026 Containment**:\n- If any suspicious evidence is found during the investigation phase and the integration \"Microsoft Graph User\" integration is enabled, the playbook will revoke the sessions of the initiating user and the destination user. If the integration is not enabled, the playbook will recommend to perform the same action but manually.\n- If any suspicious evidence found during the Azure detection analysis, Attacker geolocation analysis and Insight analysis investigations, and the integration \"Microsoft Graph User\" is enabled, the playbook will revoke the sessions of the initiating user and the destination user and will recommend manually to disable either one of the users or both of the users. If the integration is not enabled, the playbook will recommend to perform the same action but manually.\n\n**Requirements:**:\n- `Azure Risky Users` for retrieving user risk scores.\n- `Microsoft 365 Defender` for advanced hunting queries and Azure security alerts.\n- `Microsoft Graph User` for disabling accounts and revoking sessions.",
-				"fromversion": "8.9.0",
-				"id": "MFA was disabled for an Azure identity",
-				"name": "MFA was disabled for an Azure identity",
-				"tags": [
-					"TA0003 - Persistence",
-					"T1078 - Valid Accounts"
+					"T1110 - Brute Force"
 				]
 			},
 			{
@@ -113,73 +54,61 @@
 				]
 			},
 			{
-				"description": "This playbook addresses the following alerts:\n\n- A user executed suspicious LDAP enumeration queries\n\nPlaybook Stages:\n\nTriage:\n\n- Get additional event information about the LDAP searches executed by the user\n- Ensure that a single client IP exists in the alert\n- Get endpoint information for the client IP\n- Check preconditions for continuing investigation based on the number of suspicious attributes, attack tool queries, and vulnerable certificate templates\n\n\nInvestigation:\n\n- Enrich the user that executed the queries\n- Check if the user was created recently\n- Search for additional discovery alerts in the alert\n- Check user groups and roles to determine if the user is unprivileged\n- Check user querying frequency to detect anomalies\n- Get host risk level\n- Search for recent malware alerts on client IP\n\nRemediation:\n\n- With analyst approval, disable the user in Active Directory if user-related anomalies are found and the alert is a True Positive.\n- With analyst approval, isolate the endpoint if host-related anomalies are found and the alert is a True Positive.\n- Logoff user from client host if an active session is detected and the alert is a True Positive.\n\nRequirements:\n\nFor any response action, you need the following integrations:\n\n- Core - IR\n- Active Directory Query v2.",
+				"description": "**This playbook addresses the following alert**:\n- Azure AD account unlock/successful password reset\n\n**Playbook Stages**:\n\n**Triage**:\n- Gather initial information about the user.\n\n**Investigation**:\n- **Check IP Reputation**:\n  - Analyze the reputation of the IP address related to the alert.\n- **Check for Azure Alerts**:\n  - Extract recent Azure security alerts for the user.\n- **Check if User is Risky**:\n  - Assess the risk score of the user based on Core and Azure risk indicators.\n  - Investigate reasons behind any identified risks, including recent detections.\n\n**Containment**:\n- Check if feature sum is greater than 2 (Possible features:new user agent/new asn/new country). If yes, continue to revoke user's active sessions to ensure immediate containment.\nIf no, continue to check investigation findings.\n- Provide a manual task for an analyst to review the findings and decide the next steps.\n- Possible actions:\n  - Disable the target user.\n  - Disable the resource user.\n  - Disable both users.\n  - Take no action.\n\n**Requirements**:\nFor the best results, it's recommended to ensure these integrations are configured and working:\n- `Cortex Core - Investigation and Response` for Core user risk evaluation.\n- `Azure Risky Users` for retrieving user risk scores.\n- `Microsoft 365 Defender` for advanced hunting queries and Azure security alerts.\n- `Microsoft Graph User` for disabling accounts and revoking sessions.",
 				"fromversion": "6.10.0",
-				"id": "A user executed multiple LDAP enumeration queries",
-				"name": "A user executed multiple LDAP enumeration queries",
-				"tags": [
-					"T1087 - Account Discovery"
-				]
-			},
-			{
-				"description": "This playbook is designed to handle the following alerts:\n \n- Netcat makes or gets connections\n\nThe playbook executes the following stages:\n\nAnalysis:\n\n- Investigate the IP and Domain reputation\n- Search previous similar alerts\n\nRemediation:\n \n- Handles malicious alerts by terminating the causality process.",
-				"fromversion": "8.9.0",
-				"id": "Netcat Makes or Gets Connections",
-				"name": "Netcat Makes or Gets Connections",
-				"tags": [
-					"T1090 - Proxy",
-					"TA0011 - Command and Control"
-				]
-			},
-			{
-				"description": "**This playbook addresses the following alerts**:\n- Exchange user mailbox forwarding.\n- Suspicious Exchange user mailbox forwarding.\n\n**Playbook Stages**:\n\n**Triage**:\n- Collect initial information about the internal user and the associated external forwarding address.\n\n**Investigation**:\n- **Check IOCs Reputation**:\n  - Analyze the reputation of IP addresses, email addresses, and domains associated with the alert.\n- **Get External Email Statistics**:\n  - Retrieve statistics of email interactions between the internal user and the external forwarding address over the last 2 days, including:\n    - Number of emails sent to and received from the external address.\n    - Number of users interacting with the external address.\n- **Check if User is Risky**:\n  - Assess the internal user's risk score using:\n    - **Core Risk Evaluation**: Identify high-risk users and extract reasons behind elevated risk levels.\n    - **Azure Risk Indicators**: Retrieve Azure risk scores, detections, and recent security alerts for the internal user.\n- **Check for Azure Alerts**:\n  - Perform an advanced hunting query in Microsoft 365 Defender to extract recent Azure alerts associated with the internal user.\n\n**Containment**:\n- Provide a manual task for an analyst to review the findings and determine the appropriate response.\n- Possible actions:\n  - Disable the user in Azure AD to prevent further unauthorized actions.\n  - Disable mailbox forwarding for the user in Exchange Online.\n  - Disable both user and forwarding.\n  - Take no action.\n- If the user is disabled, revoke active sessions to ensure immediate containment.\n\n**Requirements**:\nFor the best results, it's recommended to ensure these integrations are configured and working:\n- `Cortex Core - Investigation and Response` for Core user risk evaluation.\n- `Azure Risky Users` for retrieving Azure-based user risk scores and detections.\n- `Microsoft 365 Defender` for advanced hunting queries and extracting Azure alerts.\n- `Microsoft Graph User` for disabling user accounts and revoking active sessions.\n- `Exchange Online EWS` for disabling mailbox forwarding.\n- `Security And Compliance V2` for fetching email interaction statistics.",
-				"fromversion": "6.10.0",
-				"id": "Exchange User Mailbox Forwarding",
-				"name": "Exchange User Mailbox Forwarding",
-				"tags": [
-					"TA0009 - Collection",
-					"TA0010 - Exfiltration",
-					"T1114 - Email Collection",
-					"T1020 - Automated Exfiltration"
-				]
-			},
-			{
-				"description": "This playbook addresses the following alerts:\n\n- Unsigned and unpopular process performed injection into a commonly abused process\n- Unsigned and unpopular process performed process hollowing injection\n- Unsigned and unpopular process performed queue APC injection\n- Unsigned and unpopular process performed injection into a sensitive process\n- Unsigned and unpopular process performed injection into svchost.exe\n\n\nPlaybook Stages:\n\nTriage:\n\n- Checks the processes’ reputation.\n- Retrieve all alerts associated with the case for initial analysis.\n\nEarly Containment:\n\n- Identify whether an agent prevention rule was triggered for the same process ID. If so, there is high confidence that the alert is malicious.\n  - **If triggered in prevent mode**: This indicates a high-confidence verdict and the playbook proceeds with endpoint isolation.\n  - **If triggered in report mode**: This also indicates a high-confidence verdict. The playbook will notify the customer, advise an update to **prevent mode** for better protection in the future, and proceed with the investigation.\n  - **If no rule is triggered**: The playbook will continue with additional checks to ensure thorough assessment.\n\nInvestigation:\n\n- Checks for a malicious process by reputation and continues to containment if found.\n- Check for commonly triggered alerts that often precede process injection:\n  - If found, initiate containment.\n  - If not found, proceed with additional checks.\n- Analyze if any alerts align with MITRE ATT\u0026CK tactics **TA0004 (Privilege Escalation)** and **TA0005 (Defense Evasion)**:\n  - If matching tactics are found, initiate containment.\n  - If not, proceed with further investigation.\n- Determine if the causality (parent) process is signed:\n  - If signed by a trusted authority, close the alert.\n  - If unsigned, escalate for manual approval for containment.\n\nContainment:\n\n- For alerts validated as threats, execute the following actions:\n  - Terminate the causality process (CGO) if deemed malicious.\n  - Quarantine the malicious process.\n  - Adds the malicious process to the block list.\n  - Isolate the endpoint in high-risk scenarios to prevent further compromise.",
-				"fromversion": "8.0.0",
-				"id": "Unsigned and unpopular process performed an injection",
-				"name": "Unsigned and unpopular process performed an injection",
-				"tags": [
-					"T1055 - Process Injection"
-				]
-			},
-			{
-				"description": "This playbook addresses the following alerts:\n\n- SSO Brute Force Threat Detected\n- SSO Brute Force Activity Observed\n\nPlaybook Stages:\n\nTriage:\n\n- The playbook checks the IP reputation and fetches the events related to the brute force login attempts.\n\nEarly Containment:\n\n- The playbook checks if the IP is suspicious. If it is, the playbook suggests blocking the IP using PAN-OS. The investigation continues in parallel to this phase.\n\nInvestigation:\n\n- The playbook assesses the risk score of the user who successfully logged in after a brute force attempt, examines the legitimacy of the user agent and if the brute force attempt is likely automated based on the timestamp interval. It also verifies if the user has MFA configured when the alert source is Okta.\n\nContainment:\n- If there is a successful login attempt and the user's risk score is high, or if the user agent is detected as suspicious, or if the time intervals indicates that the login attempts is likely automated, the playbook clears the user's session. If the user doesn't have MFA configured, the playbook recommends expiring the user's password. If there is no successful login detected, no action is taken.\n\n\nRequirements:\n\nFor any response action, you need one of the following integrations:\n\n- Microsoft Graph User\n- Okta v2\n\nFor eradication step, you need the following integration:\n\n- Palo Alto Networks PAN-OS.",
-				"fromversion": "8.0.0",
-				"id": "SSO Brute Force",
-				"name": "SSO Brute Force",
-				"tags": [
-					"TA0006 - Credential Access",
-					"T1110 - Brute Force"
-				]
-			},
-			{
-				"description": "This playbook is designed to handle the following alerts: \n- Windows Event Log was cleared using wevtutil.exe\n- Security Event Log was cleared using wevtutil.exe\n- A Sensitive Windows Event Log was cleared using wevtutil.exe\n- Windows event logs were cleared with PowerShell\n- Suspicious clear or delete security provider event logs with PowerShell\n- Suspicious clear or delete default providers event logs with PowerShell\n- Windows event logs cleared using wmic.exe\n\nThe playbook executes the following stages:\n\nInvestigation:\nCheck the following parameters to determine if remediation actions are needed:\n- Cortex XSIAM alerts related to the hostname by MITRE tactics indicating malicious activity.\n- Whether the CGO or the OSParent process is unsigned.\n- The prevalence of the OSParent process.\n\nRemediation:\n- Handles malicious alerts by terminating the relevant processes.\n- Handles non-malicious alerts identified during the investigation.",
-				"fromversion": "8.8.0",
-				"id": "Event Log Was Cleared",
-				"name": "Event Log Was Cleared",
-				"tags": [
-					"T1070 - Indicator Removal",
-					"T1490 - Inhibit System Recovery"
-				]
-			},
-			{
-				"description": "**This playbook addresses the following alert**:\n- First Azure AD PowerShell operation for a user\n\n**Playbook Stages**:\n\n**Triage**:\n- Gather initial information about the user.\n- Check IP Reputation.\n- Check the User Agent.\n\n**Investigation**:\n- **Check for Azure Alerts**:\n  - Extract recent Azure security alerts for the user.\n- **Check if User is Risky**:\n  - Assess the user's risk score based on Core and Azure risk indicators.\n  - Investigate reasons behind any identified risks, including recent detections.\n- **Investigate user data**:\n  - Check the user creation date to asses if the user is new.\n  - Check the role of the user.\n\n**Containment**:\n- The playbook checks if soft remediation is needed, if yes, it will check if the integration \"Microsoft Graph User\" is enabled, the playbook will revoke the sessions of the user.\n- The playbook checks if hard remediation is needed, if yes, \na manual task will be displayed for an analyst to review the findings and decide the next steps.\n- Possible actions:\n  - Disable the user.\n  - Take no action.\n\n**Requirements**:\nFor the best results, it's recommended to ensure these integrations are configured and working:\n- `Cortex Core - Investigation and Response` for Core user risk evaluation.\n- `Azure Risky Users` for retrieving user risk scores.\n- `Microsoft 365 Defender` for advanced hunting queries and Azure security alerts.\n- `Microsoft Graph User` is used to disable user and revoke session.",
-				"fromversion": "8.9.0",
-				"id": "First Azure AD PowerShell operation for a user",
-				"name": "First Azure AD PowerShell operation for a user",
+				"id": "Azure AD account unlock or password reset",
+				"name": "Azure AD account unlock or password reset",
 				"tags": [
 					"T1078 - Valid Accounts",
 					"TA0003 - Persistence"
+				]
+			},
+			{
+				"description": "This playbook addresses the following alerts:\n\n- SPNs cleared from a machine account\n- SPNs cleared from a machine account for the first time\n\nPlaybook Stages:\n\nTriage:\n\n- Retrieve additional data about the Account Changed event, including the Machine Account whose SPNs were cleared and the number of times the user cleared SPNs in the last 30 days.\nInvestigation:\n\n- Search for creation of suspicious account on the Domain Controller.\n- Search for suspicious TGT/Service ticket requests.\n- Search for user insights associated with malicious tools related to Kerberos ticket manipulation.\n- Search for suspicious account renames, particularly to mimic DC name.\n- Search for additional alerts in the alert that could indicate attempts to find controlled accounts or create accounts.\n\nContainment:\n\n- For alerts determined to be true positives, prompt the analyst to decide whether to disable the user account.\n- Upon analyst approval: Disable the suspicious user account in Active Directory.\n\nRequirements:\n\nFor response actions, you need the following integrations:\n\n- Active Directory Query v2.",
+				"fromversion": "8.9.0",
+				"id": "SPNs cleared from a machine account",
+				"name": "SPNs cleared from a machine account",
+				"tags": [
+					"T1078 - Valid Accounts"
+				]
+			},
+			{
+				"description": "This playbook is designed to handle the 'Unprivileged process opened a registry hive' alert.\n\nPlaybook Stages:\n\nInvestigation:\n\nDuring the alert investigation, the playbook will perform the following:\n\n- Checks the prevalence of the unprivileged process that triggered the alert.\n- Checks the prevalence of the command line used by the unprivileged process.\n- Searches for additional suspicious Cortex XSIAM alerts within the same alert in order to determine whether a remediation measure is required.\n\nRemediation:\n\n- To prevent malicious activity from continuing, the playbook terminates the causality processes that triggered the alert.",
+				"fromversion": "8.0.0",
+				"id": "Unprivileged process opened a registry hive",
+				"name": "Unprivileged process opened a registry hive",
+				"tags": [
+					"TA0006 - Credential Access",
+					"T1552 - Unsecured Credentials"
+				]
+			},
+			{
+				"description": "This playbook is designed to handle the following alerts:\n- A successful SSO sign-in from TOR\n- A successful SSO sign-in from TOR via a mobile device\n\nThe playbook executes the following stages:\n\nEarly Containment:\n- The playbooks will perform early containment actions by clearing\\revoking user sessions and enforcing re-authentication to terminate the connection from the Tor exit node and verify the user's identity. \nDepending on the alert source, the playbook will use either\nAzure Active Directory Users or Okta v2 integrations to clear the user sessions.\n\nInvestigation:\nDuring the alert investigation, the playbook will perform the following:\n- Checks the user's risk score.\n- Search for suspicious user agent usage within the alert.\n- Search for related XDR alerts using the following MITRE techniques to identify any malicious activity:\nT1566 - Phishing \nT1621 - Multi-Factor Authentication Request Generation\n T1110 - Brute Force\n T1556 - Modify Authentication Process\n\nRemediation:\n- Remediation actions will be taken if the user’s risk score is high, a suspicious user agent is detected, or a related alert is found. In such cases, the playbook will disable the account.\nBy default, account disabling requires analyst approval.\n\nRequires: \nFor any response action, you will need one of the following integrations: Azure Active Directory Users / Okta v2.",
+				"fromversion": "6.10.0",
+				"id": "A successful SSO sign-in from TOR",
+				"name": "A successful SSO sign-in from TOR",
+				"tags": [
+					"TA0011 - Command and Control",
+					"T1090 - Proxy",
+					"TA0001 - Initial Access",
+					"T1078 - Valid Accounts"
+				]
+			},
+			{
+				"description": "This playbook addresses the following alerts:\n\n- Abnormal Azure Temporary Access Pass (TAP) account registration\n\nPlaybook Stages:\n\nTriage:\n\n- Retrieve additional data about the TAP registration including start/end times, usage type, and user details\n\nInvestigation:\n\n- Analyze the reputation of the caller IP address\n- Examine alerts from Microsoft Defender 365 related to the TAP assigner\n- Check Azure AD risky user status and risk detections\n- Review Cortex Core risk level for the user\n- Verify creation date of the user account in Azure AD to identify recently created accounts\n- Correlate evidence across multiple sources to determine potential compromise\n\nContainment:\n\n- For alerts determined to be true positives, automatically revoke the user's session in Microsoft applications\n- Upon analyst approval, disable the user account that granted the TAP\n\nRequirements: For response actions, you need the following integrations:\n\n- Microsoft Graph User.",
+				"fromversion": "8.9.0",
+				"id": "Azure Temporary Access Pass (TAP) registered to an account",
+				"name": "Azure Temporary Access Pass (TAP) registered to an account",
+				"tags": []
+			},
+			{
+				"description": "This playbook addresses the following alerts:\n\n- Excessive user account lockouts\n- Excessive account lockouts on suspicious users\n- Excessive user account lockouts from a suspicious source\n\nThe playbook investigates and responds to excessive user account lockout alerts. It gathers information about the alert, enriches relevant host data, and analyzes event patterns. This analysis helps distinguish between benign lockouts and lockouts caused by brute-force or password spray attacks.\n\nPlaybook Stages:\n\nTriage:\n\n- The playbook enriches the alert with details about the lockout events.\n\nInvestigation:\n\n- Analyzes the lockout event timestamps to detect patterns.\n- Checks for related medium severity brute-force alerts in the alert.\n- Retrieves the Risk Score for the Caller Computer that caused the lockouts.\n\nContainment:\n\n- With analyst approval, the playbook can isolate the endpoint (either the Caller Computer or the target host) if it's determined to be a true positive and not a server.\n\nRequirements:\n\n- For response actions, the following integration is required: Core - IR.",
+				"fromversion": "8.8.0",
+				"id": "Excessive User Account Lockouts",
+				"name": "Excessive User Account Lockouts",
+				"tags": [
+					"T1110 - Brute Force",
+					"TA0006 - Credential Access"
 				]
 			},
 			{
@@ -193,78 +122,160 @@
 				]
 			},
 			{
-				"description": "This playbook addresses the following alerts:\n\n- A user deleted multiple users for the first time\n\nPlaybook Stages:\n\nTriage:\n\n- Collect initial alert data regarding the event.\n- Check the user type of the source user.\n- Host enrichment. \n\nInvestigation:\n\n- Check if an admin user initiated the operation and whether the deleted users are disabled. \n- Correlate recent user activity with related security alerts.\n- Assess user's and host's risk level in Cortex XDR.\n- Check the type of the user target. \n\nRemediation:\n\n- Evaluate investigation findings, if TP, the playbook will display the findings to an analyst for review and suggest user/host account disablement.\n\n\nRequirements:\n\nFor response actions, you need the following integrations:\n\n- Cortex Core - Investigation and Response\n- Active Directory Query v2.",
+				"description": "This playbook addresses the following alerts:\n\n- Azure AD PIM role settings change\n\nPlaybook Stages:\n\nTriage:\n\n- Collect initial alert data regarding the Azure AD role settings modification.\n\nInvestigation:\n\n- Analyze the impact of the role settings changes, categorizing them as high or moderate risk.\n- Determine if the changes affect privileged roles in Azure AD.\n- Correlate recent user activity with related security alerts.\n- Assess the user's risk status in Azure AD and Cortex XDR.\n- Evaluate the reputation of the IP address used for the changes.\n\nContainment:\n\n- Automatically revoke the user's active sessions across all applications.\n- Present findings to an analyst for review and potential user account disablement.\n\nRequirements:\n\nFor response actions, you need the following integrations:\n\n- Cortex Core - Investigation and Response\n- Microsoft Graph User.",
 				"fromversion": "8.9.0",
-				"id": "A user deleted multiple users for the first time",
-				"name": "A user deleted multiple users for the first time",
+				"id": "Azure AD PIM role settings change",
+				"name": "Azure AD PIM role settings change",
+				"tags": [
+					"T1548 - Abuse Elevation Control Mechanism"
+				]
+			},
+			{
+				"description": "**This playbook addresses the following alert**:\n- Suspicious authentication method addition to Azure account\n\n**Playbook Stages**:\n\n**Triage**:\n- Gather initial information about the user.\n\n**Investigation**:\n- **Check IP Reputation**:\n  - Analyze the reputation of the IP address related to the alert.\n- **Check for Azure Alerts**:\n  - Extract recent Azure security alerts for the user.\n- **Check if User is Risky**:\n  - Assess the risk score of the user based on Core and Azure risk indicators.\n  - Investigate reasons behind any identified risks, including recent detections.\n\n**Containment**:\n- The playbook checks If hard remediation is needed, if yes, it will check if the integration \"Microsoft Graph User\" is enabled, the playbook will revoke the sessions of the user and provide a manual task for an analyst to review the findings and decide the next steps.\n- Possible actions:\n  - Disable the user.\n  - Take no action.\n\nIf the integration is not enabled, the playbook will recommend performing the same action but manually.\n- The playbook will check if soft remediation is needed, If yes, continue to revoke user's active sessions to ensure immediate containment.\n\n**Requirements**:\nFor the best results, it's recommended to ensure these integrations are configured and working:\n- `Cortex Core - Investigation and Response` for Core user risk evaluation.\n- `Azure Risky Users` for retrieving user risk scores.\n- `Microsoft 365 Defender` for advanced hunting queries and Azure security alerts.\n- `Microsoft Graph User` is used to disable user and revoke session.",
+				"fromversion": "8.9.0",
+				"id": "Authentication method added to an Azure account",
+				"name": "Authentication method added to an Azure account",
 				"tags": [
 					"T1078 - Valid Accounts",
-					"TA0001 - Initial Access"
+					"TA0003 - Persistence"
 				]
 			},
 			{
-				"description": "**This playbook addresses the following alert**:\n- Rare successful guest invitation in the organization\n\n**Playbook Stages**:\n\n**Triage**:\n- Gather initial information about the invited user and associated alerts.\n\n**Investigation**:\n- **Check IOCs Reputation**:\n  - Analyze the reputation of IP addresses, email addresses, and domains related to the alert.\n- **Check for Azure Alerts**:\n  - Retrieve user Principal Name (UPN).\n  - Extract recent Azure security alerts for the inviting user.\n- **Check if User is Risky**:\n  - Assess the risk score of the inviting user based on Core and Azure risk indicators.\n  - Investigate reasons behind any identified risks, including recent detections.\n\n**Containment**:\n- Provide a manual task for an analyst to review the findings and decide the next steps.\n- Possible actions:\n  - Disable the invited user.\n  - Disable the inviting user.\n  - Disable both users.\n  - Take no action.\n- If users are disabled, revoke their active sessions to ensure immediate containment.\n\n**Requirements**:\nFor the best results, it's recommended to ensure these integrations are configured and working:\n- `Cortex Core - Investigation and Response` for Core user risk evaluation.\n- `Azure Risky Users` for retrieving user risk scores.\n- `Microsoft 365 Defender` for advanced hunting queries and Azure security alerts.\n- `Microsoft Graph User` for disabling accounts and revoking sessions.",
-				"fromversion": "6.10.0",
-				"id": "Successful guest user invitation",
-				"name": "Successful guest user invitation",
-				"tags": [
-					"TA0003 - Persistence",
-					"T1078 - Valid Accounts"
-				]
-			},
-			{
-				"description": "This playbook handles \"Suspicious certutil command line\" alerts.\n\nPlaybook Stages:\n\nAnalysis:\n\nDuring the alert analysis, the playbook will perform the following actions:\n\n- Extracts and enriches the URL from the command line.\n- Checks if the URL reputation is suspicious.\n- Checks if any process in the causality chain is unsigned.\n- Checks if any process in the causality chain is non-prevalent.\n- Searches for Cortex XDR agent alerts related to file drops using certutil.\n- Checks for any suspicious parameters in the command line (if the command line risk score is medium or higher).\n\nIf the playbook detects any of these conditions, it will proceed to the early containment stage; otherwise, it will close the alert.\n\nEarly Containment:\n\n- Identify if an agent prevention rule was triggered. If triggered in **block mode**, proceed with the URL reputation check; otherwise, terminate the causality process tree.\n\nVerdict:\n\n- Based on the URL's reputation, if found to be malicious, the playbook will perform remediation actions; otherwise, it will close the alert.\n\nRemediation:\n\nIf the URL is found to have a malicious reputation, the playbook will perform the following actions:\n\n- Block the malicious URL using PAN-OS (requires analyst approval).\n- Isolate the endpoint (requires analyst approval).\n- Execute an XQL query to check for file creation events by the certutil process, and if a file is found, quarantine it (requires analyst approval).\n- Automatically close the alert.\n\nRequired Integrations:\n\nFor response actions, you need the following integrations:\n\n- Palo Alto Networks PAN-OS\n- XQL Query Engine.",
+				"description": "This playbook handles \"Office process creates a scheduled task via file access\" alerts.\n\nPlaybook Stages:\n\nAnalysis:\nDuring the analysis, the playbook will perform the following:\n\n- Checks the Office file path for any suspicious locations.\n- Checks the initiator process prevalence.\n- Checks the initiator process reputation.\n- Extracts the local path of the Office file and runs a script to calculate the Office file hash.\n- Checks if the hash of the Office file identified as malicious.\n- Checks if the initiator process is non-prevalent with suspicious reputation or path.\n\nInvestigation:\nDuring the alert investigation, the playbook will perform the following:\n\n- Searches for related Cortex XSIAM alerts and insights on the endpoint by specific alert names or by the following MITRE techniques to identify malicious activity: T1055 - Process Injection, T1566 - Phishing. If related alerts are found, the playbook will automatically disable the malicious scheduled task.\n\n\n\nRemediation:\n\n- Automatically disable the malicious scheduled task.\n- Automatically terminate the causality process.\n- Quarantine the Office file (requires analyst approval).\n- Automatically close the alert.",
 				"fromversion": "8.8.0",
-				"id": "Suspicious certutil command line",
-				"name": "Suspicious certutil command line",
-				"tags": [
-					"TA0005 - Defense Evasion",
-					"T1218 - System Binary Proxy Execution",
-					"TA0011 - Command and Control",
-					"T1105 - Ingress Tool Transfer"
-				]
-			},
-			{
-				"description": "This playbook is designed to handle the following alerts:\n\n- Suspicious SaaS API call from a Tor exit node\n- Suspicious SaaS API call from a Tor exit node via a mobile device\n- Suspicious API call from a Tor exit node\n- Suspicious Kubernetes API call from a Tor exit node\n\nPlaybook Stages:\n\nEarly Containment:\n- To terminate the connection from the Tor exit node, the playbook will clear/revoke the user's sessions and force re-authentication. Depending on the alert source, the playbook will use either MS-Graph or G-Suite to clear the user sessions.\n\nInvestigation:\n- The playbook will assess the risk score of the user connected from the Tor exit node and examine the legitimacy of the user agent.\n\nContainment:\n- If the user's risk score is high or the user agent is detected as suspicious, the playbook will recommend blocking the account connected from the Tor exit node. The playbook will use MS-Graph, G-Suite, or AWS-IAM, depending on the alert source.\n\nEradication:\n- For users with PAN-OS enabled, the playbook will recommend blocking all IPs from the Palo Alto Intelligence-based external dynamic list that contains Tor exit nodes. The goal is to prevent the use of Tor within the organization.\n\nRequirements:\n\nFor any response action, you will need one of the following integrations: \n- Microsoft Graph User\n- G-Suite Admin\n- AWS-IAM.",
-				"fromversion": "6.10.0",
-				"id": "Suspicious SaaS Access From a TOR Exit Node",
-				"name": "Suspicious SaaS Access From a TOR Exit Node",
-				"tags": [
-					"T1090 - Proxy",
-					"TA0011 - Command and Control"
-				]
-			},
-			{
-				"description": "This playbook handles \"Uncommon remote scheduled task creation\" alert, which is generated on the source host that created the remote scheduled task.\n\nPlaybook Stages:\n\nAnalysis:\n\n- The playbook verifies whether the causality process is signed and prevalent. If the process is not signed and not prevalent, it proceeds with remediation actions; otherwise, it continues investigating the alert.\n\nInvestigation:\n\nDuring the alert investigation, the playbook will perform the following:\n\n- Searches for related Cortex XSIAM alerts on the endpoint that use the following MITRE techniques to identify malicious activity: T1202 - Indirect Command Execution, T1021 - Remote Services.\n- Searches for related Cortex XSIAM agent alerts on the remote endpoint, to determine if the creation of the scheduled task is part of an attack pattern.\n- Searches for suspicious command-line parameters indicating a malicious scheduled task.\n\nRemediation:\n\n- Automatically disable the malicious scheduled task on the remote host.\n- Automatically terminate the causality process.\n- Automatically close the alert.",
-				"fromversion": "8.8.0",
-				"id": "Endpoint initiated uncommon remote scheduled task creation",
-				"name": "Endpoint initiated uncommon remote scheduled task creation",
+				"id": "Office process creates a scheduled task via file access",
+				"name": "Office process creates a scheduled task via file access",
 				"tags": [
 					"TA0002 - Execution",
 					"T1053 - Scheduled Task/Job"
 				]
 			},
 			{
-				"description": "**This playbook addresses the following alert**:\n- Intense SSO failures with suspicious characteristics.\n\n**Playbook Stages**:\n\n**Triage**:\n- Collect additional alert data.\n- Retrieve IP reputation.\n- Analyze identity count and IP reputation:\n  - If failures involve many users and the IP is not malicious, the alert is likely a false positive and will be closed automatically.\n\n**Investigation**:\n- Identify users with successful logins.\n- Check risk indicators for affected users.\n- Search for related alerts.\n- Analyze authentication patterns for automation.\n- Retrieve Azure and Core risk scores.\n- Extract security alerts linked to affected users.\n- **Check for Suspicious Evidence**, including:\n  - Blocked sign-ins from a malicious IP.\n  - Related security alerts and high-risk IP reputation.\n  - Risk detections from Azure and Core.\n  - Suspicious authentication targeting admin portals (e.g., Azure Portal, Exchange Admin, Microsoft 365 Admin).\n  - The number of distinct identities involved.\n\n**Containment**:\n- **Automatic Actions**:\n  - If strong indicators of compromise exist, clear active user sessions.\n- **Analyst Review**:\n  - Findings are presented for review.\n  - **If user disablement is required**, the analyst can select users to disable in Azure AD.\n  - If a user is disabled, the playbook will also **clear their active sessions**.\n\n**Requirements**:\nEnsure the following integrations are configured:\n- **Microsoft Graph Identity** for Conditional Access and risk scores.\n- **Microsoft Defender for Identity** for authentication analysis.\n- **Core** for user risk evaluation and alert correlation.\n- **Threat Intelligence Integrations** for IP reputation analysis.",
-				"fromversion": "8.9.0",
-				"id": "Intense SSO failures with suspicious characteristics",
-				"name": "Intense SSO failures with suspicious characteristics",
+				"description": "This playbook is designed to handle the following alerts: \n- Windows Event Log was cleared using wevtutil.exe\n- Security Event Log was cleared using wevtutil.exe\n- A Sensitive Windows Event Log was cleared using wevtutil.exe\n- Windows event logs were cleared with PowerShell\n- Suspicious clear or delete security provider event logs with PowerShell\n- Suspicious clear or delete default providers event logs with PowerShell\n- Windows event logs cleared using wmic.exe\n\nThe playbook executes the following stages:\n\nInvestigation:\nCheck the following parameters to determine if remediation actions are needed:\n- Cortex XSIAM alerts related to the hostname by MITRE tactics indicating malicious activity.\n- Whether the CGO or the OSParent process is unsigned.\n- The prevalence of the OSParent process.\n\nRemediation:\n- Handles malicious alerts by terminating the relevant processes.\n- Handles non-malicious alerts identified during the investigation.",
+				"fromversion": "8.8.0",
+				"id": "Event Log Was Cleared",
+				"name": "Event Log Was Cleared",
+				"tags": [
+					"T1070 - Indicator Removal",
+					"T1490 - Inhibit System Recovery"
+				]
+			},
+			{
+				"description": "This playbook handles \"Uncommon execution of ODBCConf\" alerts.\n\nPlaybook Stages:\n\nAnalysis:\nDuring the analysis, the playbook will perform the following:\n\n- Checks if the causality process (CGO) is signed and prevalent.\n- Checks for the host's risk score.\n\nIf the CGO process is not signed and not prevalent, or if either of these conditions is met in addition to having a high-risk score, the playbook proceeds with remediation actions. Otherwise, it will continue to the investigation phase.\n\nInvestigation:\nDuring the alert investigation, the playbook will perform the following:\n\nSearches for related Cortex XSIAM alerts and insights on the same causalities chains by specific alert names :\n- Evasion Technique - 3048798454\n- Evasion Technique - 474958459\n- An uncommon LOLBIN added to startup-related Registry keys\n- Behavioral Threat\n- An uncommon file was created in the startup folder\n- Unsigned process running from a temporary directory\n- Execution From a Restricted Location\n- Execution of an uncommon process with a local/domain user SID at an early startup stage by Windows system binary - Explorer CGO\n\nThe playbook determines the appropriate verdict. If related alerts are found, it proceeds to remediation actions. In case of related insights are found ,and one of the following is met: the host score is listed as high or the CGO process is not prevalent, it will proceed to remediation actions. Otherwise, it closes the alert with the following message: \"No indication of malicious activity was found\".\n\n\nRemediation:\n\n- Automatically terminate the causality process.\n- Automatically Close the alert.",
+				"fromversion": "8.8.0",
+				"id": "Uncommon execution of ODBCConf",
+				"name": "Uncommon execution of ODBCConf",
+				"tags": [
+					"T1218.008 - System Binary Proxy Execution: Odbcconf",
+					"TA0005 - Defense Evasion"
+				]
+			},
+			{
+				"description": "This playbook addresses the following alerts:\n\n  - Suspicious Hidden User Created\n\n  Playbook Stages:\n\n  Triage:\n  - Retrieve event information about the created user\n\n  Investigation:\n  - Check whether the user account is local or domain-based.\n  - For domain users: Retrieve AD attributes, including password expiration.\n  - For local users: Run a Powershell command to get \"Password Expires\" attribute of the local user.\n  - Retrieve the risk level for the affected host.\n  - Search for related Script Engine Activity alerts in the alert.\n  - Check for suspicious command lines executed on the host.\n  - Search for privileged group membership changes.\n  - Check for authentication logs of the hidden user.\n  - Monitor for suspicious share access or service installations.\n  - Search for RDP sessions related to the hidden user.\n\n  Containment:\n  - For risky hosts with suspicious users that have non-expiring passwords, perform soft remediation by terminating causality processes.\n  - For alerts showing clear malicious behavior patterns, perform hard remediation.\n  - For alerts confirmed as true positives, ask the analyst to disable the user.\n  - Upon receiving the analyst's approval, disable the suspicious user account (domain or local).\n  - If a related alert about malicious activity exists, kill the Causality Group Owner (CGO) process that created the suspicious user.\n\n  Requirements:\n  For response actions, you need the following integrations:\n  - Cortex Core - Investigation and Response\n  - Active Directory Query v2 (for domain user actions)\n  - XQL Query Engine (for enhanced investigation)\n  - SlackV3 or Microsoft Teams (optional, for user verification).",
+				"fromversion": "8.8.0",
+				"id": "Suspicious Hidden User Created",
+				"name": "Suspicious Hidden User Created",
+				"tags": [
+					"T1136 - Create Account",
+					"T1564.002 - Hide Artifacts: Hidden Users"
+				]
+			},
+			{
+				"description": "This playbook addresses the following alerts:\n\n- Unsigned and unpopular process performed injection into a commonly abused process\n- Unsigned and unpopular process performed process hollowing injection\n- Unsigned and unpopular process performed queue APC injection\n- Unsigned and unpopular process performed injection into a sensitive process\n- Unsigned and unpopular process performed injection into svchost.exe\n\n\nPlaybook Stages:\n\nTriage:\n\n- Checks the processes’ reputation.\n- Retrieve all alerts associated with the case for initial analysis.\n\nEarly Containment:\n\n- Identify whether an agent prevention rule was triggered for the same process ID. If so, there is high confidence that the alert is malicious.\n  - **If triggered in prevent mode**: This indicates a high-confidence verdict and the playbook proceeds with endpoint isolation.\n  - **If triggered in report mode**: This also indicates a high-confidence verdict. The playbook will notify the customer, advise an update to **prevent mode** for better protection in the future, and proceed with the investigation.\n  - **If no rule is triggered**: The playbook will continue with additional checks to ensure thorough assessment.\n\nInvestigation:\n\n- Checks for a malicious process by reputation and continues to containment if found.\n- Check for commonly triggered alerts that often precede process injection:\n  - If found, initiate containment.\n  - If not found, proceed with additional checks.\n- Analyze if any alerts align with MITRE ATT\u0026CK tactics **TA0004 (Privilege Escalation)** and **TA0005 (Defense Evasion)**:\n  - If matching tactics are found, initiate containment.\n  - If not, proceed with further investigation.\n- Determine if the causality (parent) process is signed:\n  - If signed by a trusted authority, close the alert.\n  - If unsigned, escalate for manual approval for containment.\n\nContainment:\n\n- For alerts validated as threats, execute the following actions:\n  - Terminate the causality process (CGO) if deemed malicious.\n  - Quarantine the malicious process.\n  - Adds the malicious process to the block list.\n  - Isolate the endpoint in high-risk scenarios to prevent further compromise.",
+				"fromversion": "8.0.0",
+				"id": "Unsigned and unpopular process performed an injection",
+				"name": "Unsigned and unpopular process performed an injection",
+				"tags": [
+					"T1055 - Process Injection"
+				]
+			},
+			{
+				"description": "This playbook addresses the following alerts for linux os:\n\n- Suspicious process execution from tmp folder\n- Suspicious interactive execution of a binary from the tmp folder\n- Suspicious cron job task execution of a binary from the tmp folder\n- A web server process executed an unpopular application from the tmp folder\n\nPlaybook Stages:\n\nAnalysis:\n\n- Check target process hash reputation\n- Check commandline extracted indicators reputation\n\nThe playbook will proceed directly to remediation if suspicious/Suspicious reputation is found during the analysis stage.\n\nInvestigation:\n\n- Search for the following suspicious insights/related alerts:\n  - Suspicious access to shadow file\n  - UNIX LOLBIN process connected to a rare external host\n  - Persistence through service registration\n  - Adding execution privileges \n  - Modification of systemd service files\n  - Adding execution privileges\n  - Local account discovery\n\nIf no suspicious reputation is found in the analysis stage, but suspicious insights/related alerts are discovered during investigation, the playbook will then proceed to remediation.\n\nRemediation:\n\n- Terminate causality process\n- Quarantine the Suspicious process image file (requires manual approval).\n- Disable the suspicious cron job task (requires manual action).",
+				"fromversion": "8.8.0",
+				"id": "Suspicious execution from tmp folder",
+				"name": "Suspicious execution from tmp folder",
+				"tags": [
+					"T1564 - Hide Artifacts",
+					"TA0005 - Defense Evasion"
+				]
+			},
+			{
+				"description": "This playbook is designed to handle the alert\n'User added to local administrator group using a PowerShell command'\n\nThe playbook executes the following stages:\n\nInvestigation:\nCheck the following parameters to determine if remediation actions are needed:\n- Cortex XSIAM alerts related to the hostname by MITRE tactics indicating malicious activity.\n- Whether the process is unsigned.\n\nRemediation:\nHandles malicious alerts by terminating the relevant processes and requesting the analyst's approval to remove the user from the local Administrators group.\nHandles non-malicious alerts identified during the investigation.",
+				"fromversion": "8.8.0",
+				"id": "User added to local administrator group using a PowerShell command",
+				"name": "User added to local administrator group using a PowerShell command",
+				"tags": [
+					"TA0003 - Persistence",
+					"T1098 - Account Manipulation"
+				]
+			},
+			{
+				"description": "This playbook handles \"AppleScript Process Executed With Rare Command Line\" alerts.\n\nPlaybook Stages:\n\nInvestigation:\nDuring the alert investigation, the playbook will perform the following:\n\n- Searches for XSIAM prevention alerts with the same causality process ID.\n- Checks if the causality|actor image has bad reputation or is not signed.\n- Checks if malicious|suspicious patterns found in the command line.\n- Searches for XSIAM insights alerts indicating a suspicious activity.\n\n\nRemediation:\n\n- Automatically terminate the causality process.\n- Quarantine the causality|actor image (requires analyst approval).\n- Automatically Close the alert.",
+				"fromversion": "8.8.0",
+				"id": "AppleScript Process Executed With Rare Command Line",
+				"name": "AppleScript Process Executed With Rare Command Line",
+				"tags": [
+					"T1059 - Command and Scripting Interpreter",
+					"TA0002 - Execution"
+				]
+			},
+			{
+				"description": "This playbook addresses the following alerts:\n \n- Suspicious local administrator login\n \nPlaybook Stages:\n \nInvestigation:\n \n- Retrieves the name of the process image involved in the alert.\n- Checks for related Powershell/Command and Scripting/WMI alerts in the alert.\n- Retrieves the host risk score.\n \nContainment:\n \n- Provide a manual task for an analyst to review the findings and decide the next steps.\n- Possible actions:\n - Disable User.\n - Take no action.\n \nRequirements: \n\n- For response actions, the following integration is required: Core - IR.",
+				"fromversion": "6.10.0",
+				"id": "Suspicious Local Administrator Login",
+				"name": "Suspicious Local Administrator Login",
 				"tags": [
 					"T1078 - Valid Accounts",
-					"T1110.003 - Password Spraying",
-					"T1110.001 - Password Guessing",
-					"TA0006 - Credential Access",
 					"TA0001 - Initial Access"
 				]
 			},
 			{
-				"description": "This playbook is designed to handle the following alert:\n\n- A successful login from TOR\n\nThe playbook executes the following stages:\n\nTriage:\n\n- The playbook will fetch the user identity details.\n\nRemediation \u0026 Eradication:\n\n- The playbooks will suggest several actions for the analyst to take: disabling the user account using Active Directory or Azure Active Directory, expiring the user password using Active Directory, or blocking traffic from TOR exit nodes using PAN-OS and Palo Alto Networks' predefined EDL.\n\nThe analyst can select multiple actions, which will then be executed by the playbook based on the analyst's choices.\n\nRequirements: \nFor any response action, you will need one of the following integrations: Azure Active Directory Users / Active Directory Users.",
-				"fromversion": "6.10.0",
-				"id": "A Successful login from TOR",
-				"name": "A Successful login from TOR",
+				"description": "This playbook is designed to handle the following alerts: \n- Possible LDAP enumeration by unsigned process.\n- Suspicious LDAP search query executed.\n\nThe playbook executes the following stages:\n\nInvestigation:\nCheck the following parameters to determine if remediation actions are needed:\n- Cortex XSIAM alerts related to the hostname by MITRE tactics indicating malicious activity.\n- Whether the Actor Process Command line contains suspicious arguments.\n- Checks for the prevalence of the Actor Process Name.\n- Host risk score is \"Medium\" or \"High\".\n- User risk score is \"High\".\n\nRemediation:\n- Handles malicious alerts by terminating the causality process.\n- Handles non-malicious alerts identified during the investigation.",
+				"fromversion": "8.8.0",
+				"id": "Suspicious LDAP search query",
+				"name": "Suspicious LDAP search query",
 				"tags": [
-					"TA0001 - Initial Access",
-					"T1090 - Proxy"
+					"T1087 - Account Discovery"
+				]
+			},
+			{
+				"description": "This playbook is designed to handle the alert \"Scheduled task created with HTTP or FTP reference\".\n\nThe playbook executes the following stages:\n\nAnalysis:\n- Extracts the Indicators from action command line\n- Checks the IP and the URL reputation.\n\nInvestigation:\nDuring the alert investigation, the playbook will perform the following:\n- Checks if the IP and the URL reputation is malicious.\n- Checks the CGO process is unsigned.\n- Searches for related alerts to determine if the creation of the scheduled task is part of an attack pattern.\n\nRemediation:\n- Remediation actions will be taken if the CGO process is unsigned, the IP or URL has a malicious reputation, or a related alert is detected. In these cases, the playbook will disable the scheduled task, block the malicious indicators, and close the alert.\n\nRequires: To block the malicious URL, configure 'Palo Alto Networks PAN-OS' integration.\n",
+				"fromversion": "6.10.0",
+				"id": "Scheduled task created with HTTP or FTP reference",
+				"name": "Scheduled task created with HTTP or FTP reference",
+				"tags": [
+					"TA0002 - Execution",
+					"T1053 - Scheduled Task/Job"
+				]
+			},
+			{
+				"description": "This playbook handles \"Suspicious process execution by scheduled task on a sensitive server\" alerts.\n\nPlaybook Stages:\n\nAnalysis:\n\n- Checks the suspicious process reputation.\n\nInvestigation:\n\n- Searches for related XSIAM agent alerts to identify any malicious activity on the server.\n\nRemediation:\n\nIf the suspicious process reputation is malicious, or if a related alert is found, the following remediation actions will be taken:\n\n- Disable the scheduled task responsible for executing the process.\n- Terminate the malicious process.\n- Quarantine the malicious process.\n- Automatically Close the alert.",
+				"fromversion": "8.8.0",
+				"id": "Suspicious process execution by scheduled task on a sensitive server",
+				"name": "Suspicious process execution by scheduled task on a sensitive server",
+				"tags": [
+					"TA0002 - Execution",
+					"T1053 - Scheduled Task/Job"
+				]
+			},
+			{
+				"description": "**This playbook addresses the following alert**:\n- First Azure AD PowerShell operation for a user\n\n**Playbook Stages**:\n\n**Triage**:\n- Gather initial information about the user.\n- Check IP Reputation.\n- Check the User Agent.\n\n**Investigation**:\n- **Check for Azure Alerts**:\n  - Extract recent Azure security alerts for the user.\n- **Check if User is Risky**:\n  - Assess the user's risk score based on Core and Azure risk indicators.\n  - Investigate reasons behind any identified risks, including recent detections.\n- **Investigate user data**:\n  - Check the user creation date to asses if the user is new.\n  - Check the role of the user.\n\n**Containment**:\n- The playbook checks if soft remediation is needed, if yes, it will check if the integration \"Microsoft Graph User\" is enabled, the playbook will revoke the sessions of the user.\n- The playbook checks if hard remediation is needed, if yes, \na manual task will be displayed for an analyst to review the findings and decide the next steps.\n- Possible actions:\n  - Disable the user.\n  - Take no action.\n\n**Requirements**:\nFor the best results, it's recommended to ensure these integrations are configured and working:\n- `Cortex Core - Investigation and Response` for Core user risk evaluation.\n- `Azure Risky Users` for retrieving user risk scores.\n- `Microsoft 365 Defender` for advanced hunting queries and Azure security alerts.\n- `Microsoft Graph User` is used to disable user and revoke session.",
+				"fromversion": "8.9.0",
+				"id": "First Azure AD PowerShell operation for a user",
+				"name": "First Azure AD PowerShell operation for a user",
+				"tags": [
+					"T1078 - Valid Accounts",
+					"TA0003 - Persistence"
+				]
+			},
+			{
+				"description": "This playbook handles \"Script file added to startup-related Registry keys\" alerts.\n\nPlaybook Stages:\n\nAnalysis:\n\n- Extract the script path from the registry key value.\n- Check the reputation of the associated processes.\n\nInvestigation:\n\n- Searches for related Cortex XSIAM alerts to identify potential attack patterns.\n- Retrieves the script file and relevant details for investigation.\n- Analyzes the script for malicious or suspicious parameters:\n  - If malicious parameters are found, proceed to remediation.\n  - If suspicious parameters are found, detonate and analyze the script using WildFire Sandbox.\n- Checks the script file reputation.\n- Detonates and analyzes the script using WildFire Sandbox.\n\nRemediation:\n\n- Terminates the malicious process.\n- Quarantines the malicious process.\n- Adds the malicious process hash to the blocklist.\n- Calculates the script file’s SHA256 hash if not already available.\n- Deletes the Registry key value (Requires analyst approval).\n- Adds the script file hash to the blocklist (Requires analyst approval).\n- Automatically close the alert.",
+				"fromversion": "8.9.0",
+				"id": "Script file added to startup-related Registry keys",
+				"name": "Script file added to startup-related Registry keys",
+				"tags": [
+					"TA0003 - Persistence",
+					"T1547 - Boot or Logon Autostart Execution"
 				]
 			},
 			{
@@ -282,16 +293,6 @@
 				]
 			},
 			{
-				"description": "This playbook addresses the following alerts:\n \n- Uncommon creation or access operation of sensitive shadow copy by a high-risk process\n \nPlaybook Stages:\n  \nTriage: \n \n- Check if the causality process image (CGO) is signed or not\n \nInvestigation:\n \n- If CGO is unsigned:\n  - Check the CGO process prevalence\n  - Check if the process image path is common\n  - Check the CGO process hash reputation\n  - Check the CGO commandline risk score\n- If CGO is signed:\n  - Check process image name\n  - Check initiating process image name\n  - Check if username is SYSTEM\n  - Check if host is a server\n  - Check for previous similar alert closed as False Positive\n \nContainment:\n \n- Terminate causality process (CGO) process - when a signed high-risk process or an unsigned process from an uncommon path attempting to create or access sensitive shadow copy data.",
-				"fromversion": "8.8.0",
-				"id": "Uncommon creation or access operation of sensitive shadow copy by a high-risk process",
-				"name": "Uncommon creation or access operation of sensitive shadow copy by a high-risk process",
-				"tags": [
-					"T1003 - OS Credential Dumping",
-					"TA0006 - Credential Access"
-				]
-			},
-			{
 				"description": "CVE-2025-59287 - Microsoft WSUS Remote Code Execution\n\n\n## Vulnerability Overview\n\n- **Vulnerability Name**: Microsoft Windows Server Update Service (WSUS) Deserialization of Untrusted Data Vulnerability\n- **CVE ID**: CVE-2025-59287 \n- **CVSS Score**: 9.8 (Critical) \n\n\nAn unauthenticated remote code execution (RCE) vulnerability has been identified in Microsoft Windows Server Update Services (WSUS).\n[Source: Unit42 - Palo Alto Networks](https://unit42.paloaltonetworks.com/microsoft-cve-2025-59287/)\n\n\n## Mitigation and Recommendations\n\n- **Apply Patch**\n- **Restrict Access** to the vulnerable serves \n- **Monitor for IoCs and suspicious traffic** \n\n## Conclusion\n\nCVE‑2025‑59287 is a critical, remotely exploitable vulnerability in WSUS that allows unauthenticated attackers to execute arbitrary code with SYSTEM privileges.\n\n[View official CVE details on NIST](https://nvd.nist.gov/vuln/detail/CVE-2025-59287)\n\n## Playbook Triggers\n- Manually\n- \"CVE Exploitation - 2037164431\" or \"CVE Exploitation - 3823999562\" Agents rules\n\n## Playbook Flow\n1. Uses XQL to identify WSUS servers in your environment.\n2. Collects IOCs from the Unit42 blog.\n3. Uses XQL to detect any suspicious command lines indicative of exploitation of this vulnerability.\n4. Investigates the command lines to identify malicious indicators related to the vulnerability.\n5. Uses XQL to hunt for malicious IOCs.\n6. Isolates compromised WSUS servers.\n7. Blocks malicious indicators using the \"Containment Plan – Block Indicators\" playbook.\n8. Provides mitigation recommendations.",
 				"fromversion": "8.9.0",
 				"id": "CVE-2025-59287 - Microsoft WSUS Remote Code Execution",
@@ -302,23 +303,127 @@
 				]
 			},
 			{
-				"description": "This playbook handles \"Unusual process accessed web browser credentials and executed by a terminal process\" alerts.\n\nPlaybook Stages:\n\nAnalysis:\nDuring the analysis, the playbook will perform the following:\n\n- Checks the initiator file path for any suspicious locations.\n- Checks the initiator process reputation.\n\nIf the file is malicious, it proceeds to remediation actions; otherwise, it continues to the investigation phase.\n\nInvestigation:\nDuring the alert investigation, the playbook will perform the following:\n\n- Searches for related Cortex XSIAM alerts and insights on the endpoint by specific alert names or by the following MITRE technique to identify malicious activity: T1555.001 - Credentials from Password Stores: Keychain.\n\nThe playbook determines the appropriate verdict. If related alerts or insights are found, it proceeds to remediation actions; otherwise, it closes the alert with the message \"No indication of malicious activity was found\".\n\nRemediation:\n\n- Automatically terminate the causality process.\n- Quarantine the initiator file if its reputation is malicious, if medium- to high-severity alerts indicating malicious activity are found, or if related insights are found and the initiator is running from a suspicious path. (This action requires analyst approval).\n- Automatically Close the alert.",
-				"fromversion": "8.8.0",
-				"id": "Unusual process accessed web browser credentials and executed by a terminal process",
-				"name": "Unusual process accessed web browser credentials and executed by a terminal process",
+				"description": "This playbook is designed to handle the following alerts:\n\n- Suspicious SaaS API call from a Tor exit node\n- Suspicious SaaS API call from a Tor exit node via a mobile device\n- Suspicious API call from a Tor exit node\n- Suspicious Kubernetes API call from a Tor exit node\n\nPlaybook Stages:\n\nEarly Containment:\n- To terminate the connection from the Tor exit node, the playbook will clear/revoke the user's sessions and force re-authentication. Depending on the alert source, the playbook will use either MS-Graph or G-Suite to clear the user sessions.\n\nInvestigation:\n- The playbook will assess the risk score of the user connected from the Tor exit node and examine the legitimacy of the user agent.\n\nContainment:\n- If the user's risk score is high or the user agent is detected as suspicious, the playbook will recommend blocking the account connected from the Tor exit node. The playbook will use MS-Graph, G-Suite, or AWS-IAM, depending on the alert source.\n\nEradication:\n- For users with PAN-OS enabled, the playbook will recommend blocking all IPs from the Palo Alto Intelligence-based external dynamic list that contains Tor exit nodes. The goal is to prevent the use of Tor within the organization.\n\nRequirements:\n\nFor any response action, you will need one of the following integrations: \n- Microsoft Graph User\n- G-Suite Admin\n- AWS-IAM.",
+				"fromversion": "6.10.0",
+				"id": "Suspicious SaaS Access From a TOR Exit Node",
+				"name": "Suspicious SaaS Access From a TOR Exit Node",
 				"tags": [
-					"TA0006 - Credential Access",
-					"T1555 - Credentials from Password Stores"
+					"T1090 - Proxy",
+					"TA0011 - Command and Control"
 				]
 			},
 			{
-				"description": "This playbook addresses the following alerts:\n \n- Suspicious local administrator login\n \nPlaybook Stages:\n \nInvestigation:\n \n- Retrieves the name of the process image involved in the alert.\n- Checks for related Powershell/Command and Scripting/WMI alerts in the alert.\n- Retrieves the host risk score.\n \nContainment:\n \n- Provide a manual task for an analyst to review the findings and decide the next steps.\n- Possible actions:\n - Disable User.\n - Take no action.\n \nRequirements: \n\n- For response actions, the following integration is required: Core - IR.",
-				"fromversion": "6.10.0",
-				"id": "Suspicious Local Administrator Login",
-				"name": "Suspicious Local Administrator Login",
+				"description": "**This playbook addresses the following alerts**:\n- MFA was disabled for an Azure identity\n- MFA was disabled for an Azure identity from a new country\n\n**Playbook Stages**:\n\n**Triage**:\n- Gather initial information about the initiating user.\n**Investigation**:\n- **IP Enrichment**:\n  - Analyze the reputation of the initiating user IP addresses.\n- **Azure Detection Analysis**:\n  - Investigate recent Azure security alerts for the initiating user to detect additional suspicious activity.\n  - If any detections found, investigate the related user agent. \n- **User Risk Analysis**:\n  - Assess the risk level of the initiating user based on Cortex XSIAM Core and Azure risk score.\n  - Investigate reasons behind any identified risks, including recent detections.\n- **Attacker Geolocation Analysis:**:\n  - Investigate the initiating user connection geolocation.\n- **Insights Analysis**:\n  - Investigate the Cortex XSIAM insights that relate to the initiating user to detect additional suspicious activity.\n\n**Verdict \u0026 Containment**:\n- If any suspicious evidence is found during the investigation phase and the integration \"Microsoft Graph User\" integration is enabled, the playbook will revoke the sessions of the initiating user and the destination user. If the integration is not enabled, the playbook will recommend to perform the same action but manually.\n- If any suspicious evidence found during the Azure detection analysis, Attacker geolocation analysis and Insight analysis investigations, and the integration \"Microsoft Graph User\" is enabled, the playbook will revoke the sessions of the initiating user and the destination user and will recommend manually to disable either one of the users or both of the users. If the integration is not enabled, the playbook will recommend to perform the same action but manually.\n\n**Requirements:**:\n- `Azure Risky Users` for retrieving user risk scores.\n- `Microsoft 365 Defender` for advanced hunting queries and Azure security alerts.\n- `Microsoft Graph User` for disabling accounts and revoking sessions.",
+				"fromversion": "8.9.0",
+				"id": "MFA was disabled for an Azure identity",
+				"name": "MFA was disabled for an Azure identity",
 				"tags": [
-					"T1078 - Valid Accounts",
-					"TA0001 - Initial Access"
+					"TA0003 - Persistence",
+					"T1078 - Valid Accounts"
+				]
+			},
+			{
+				"description": "This playbook addresses the following alerts:\n \n- Uncommon creation or access operation of sensitive shadow copy by a high-risk process\n \nPlaybook Stages:\n  \nTriage: \n \n- Check if the causality process image (CGO) is signed or not\n \nInvestigation:\n \n- If CGO is unsigned:\n  - Check the CGO process prevalence\n  - Check if the process image path is common\n  - Check the CGO process hash reputation\n  - Check the CGO commandline risk score\n- If CGO is signed:\n  - Check process image name\n  - Check initiating process image name\n  - Check if username is SYSTEM\n  - Check if host is a server\n  - Check for previous similar alert closed as False Positive\n \nContainment:\n \n- Terminate causality process (CGO) process - when a signed high-risk process or an unsigned process from an uncommon path attempting to create or access sensitive shadow copy data.",
+				"fromversion": "8.8.0",
+				"id": "Uncommon creation or access operation of sensitive shadow copy by a high-risk process",
+				"name": "Uncommon creation or access operation of sensitive shadow copy by a high-risk process",
+				"tags": [
+					"T1003 - OS Credential Dumping",
+					"TA0006 - Credential Access"
+				]
+			},
+			{
+				"description": "**This playbook addresses the following alert**:\n- Rare successful guest invitation in the organization\n\n**Playbook Stages**:\n\n**Triage**:\n- Gather initial information about the invited user and associated alerts.\n\n**Investigation**:\n- **Check IOCs Reputation**:\n  - Analyze the reputation of IP addresses, email addresses, and domains related to the alert.\n- **Check for Azure Alerts**:\n  - Retrieve user Principal Name (UPN).\n  - Extract recent Azure security alerts for the inviting user.\n- **Check if User is Risky**:\n  - Assess the risk score of the inviting user based on Core and Azure risk indicators.\n  - Investigate reasons behind any identified risks, including recent detections.\n\n**Containment**:\n- Provide a manual task for an analyst to review the findings and decide the next steps.\n- Possible actions:\n  - Disable the invited user.\n  - Disable the inviting user.\n  - Disable both users.\n  - Take no action.\n- If users are disabled, revoke their active sessions to ensure immediate containment.\n\n**Requirements**:\nFor the best results, it's recommended to ensure these integrations are configured and working:\n- `Cortex Core - Investigation and Response` for Core user risk evaluation.\n- `Azure Risky Users` for retrieving user risk scores.\n- `Microsoft 365 Defender` for advanced hunting queries and Azure security alerts.\n- `Microsoft Graph User` for disabling accounts and revoking sessions.",
+				"fromversion": "6.10.0",
+				"id": "Successful guest user invitation",
+				"name": "Successful guest user invitation",
+				"tags": [
+					"TA0003 - Persistence",
+					"T1078 - Valid Accounts"
+				]
+			},
+			{
+				"description": "**This playbook addresses the following alerts**:\n- Exchange user mailbox forwarding.\n- Suspicious Exchange user mailbox forwarding.\n\n**Playbook Stages**:\n\n**Triage**:\n- Collect initial information about the internal user and the associated external forwarding address.\n\n**Investigation**:\n- **Check IOCs Reputation**:\n  - Analyze the reputation of IP addresses, email addresses, and domains associated with the alert.\n- **Get External Email Statistics**:\n  - Retrieve statistics of email interactions between the internal user and the external forwarding address over the last 2 days, including:\n    - Number of emails sent to and received from the external address.\n    - Number of users interacting with the external address.\n- **Check if User is Risky**:\n  - Assess the internal user's risk score using:\n    - **Core Risk Evaluation**: Identify high-risk users and extract reasons behind elevated risk levels.\n    - **Azure Risk Indicators**: Retrieve Azure risk scores, detections, and recent security alerts for the internal user.\n- **Check for Azure Alerts**:\n  - Perform an advanced hunting query in Microsoft 365 Defender to extract recent Azure alerts associated with the internal user.\n\n**Containment**:\n- Provide a manual task for an analyst to review the findings and determine the appropriate response.\n- Possible actions:\n  - Disable the user in Azure AD to prevent further unauthorized actions.\n  - Disable mailbox forwarding for the user in Exchange Online.\n  - Disable both user and forwarding.\n  - Take no action.\n- If the user is disabled, revoke active sessions to ensure immediate containment.\n\n**Requirements**:\nFor the best results, it's recommended to ensure these integrations are configured and working:\n- `Cortex Core - Investigation and Response` for Core user risk evaluation.\n- `Azure Risky Users` for retrieving Azure-based user risk scores and detections.\n- `Microsoft 365 Defender` for advanced hunting queries and extracting Azure alerts.\n- `Microsoft Graph User` for disabling user accounts and revoking active sessions.\n- `Exchange Online EWS` for disabling mailbox forwarding.\n- `Security And Compliance V2` for fetching email interaction statistics.",
+				"fromversion": "6.10.0",
+				"id": "Exchange User Mailbox Forwarding",
+				"name": "Exchange User Mailbox Forwarding",
+				"tags": [
+					"TA0009 - Collection",
+					"TA0010 - Exfiltration",
+					"T1114 - Email Collection",
+					"T1020 - Automated Exfiltration"
+				]
+			},
+			{
+				"description": "This playbook is designed to handle the following alerts:\n- Command-line arguments match Mimikatz execution\n- Mimikatz command-line arguments\n- Credential dumping via wce.exe\n- Credential dumping via gsecdump.exe\n- PowerShell runs with known Mimikatz arguments\n- Hash cracking using Hashcat tool\n- Credential dumping via fgdump.exe\n- Credential dumping via LaZagne\n- Credential dumping via pwdumpx.exe\n- Dumping lsass.exe memory for credential extraction\n- Memory dumping with comsvcs.dll\n\nThe playbook executes the following stages:\n\nEarly Containment:\n- Handles malicious alerts by terminating the causality process.\n\nRemediation:\n- Handles malicious alerts by suggesting the analyst to isolate the endpoint.",
+				"fromversion": "8.8.0",
+				"id": "Credential Dumping using a known tool",
+				"name": "Credential Dumping using a known tool",
+				"tags": [
+					"TA0006 - Credential Access",
+					"T1003 - OS Credential Dumping"
+				]
+			},
+			{
+				"description": "This playbook is designed to handle the following alert:\n\n- A successful login from TOR\n\nThe playbook executes the following stages:\n\nTriage:\n\n- The playbook will fetch the user identity details.\n\nRemediation \u0026 Eradication:\n\n- The playbooks will suggest several actions for the analyst to take: disabling the user account using Active Directory or Azure Active Directory, expiring the user password using Active Directory, or blocking traffic from TOR exit nodes using PAN-OS and Palo Alto Networks' predefined EDL.\n\nThe analyst can select multiple actions, which will then be executed by the playbook based on the analyst's choices.\n\nRequirements: \nFor any response action, you will need one of the following integrations: Azure Active Directory Users / Active Directory Users.",
+				"fromversion": "6.10.0",
+				"id": "A Successful login from TOR",
+				"name": "A Successful login from TOR",
+				"tags": [
+					"TA0001 - Initial Access",
+					"T1090 - Proxy"
+				]
+			},
+			{
+				"description": "## CVE-2025-55182 and CVE-2025-66478 - React and Next.js Remote Code Execution\n\n## Vulnerability Overview\n\n- **Vulnerability Name**: Insecure Deserialization in React Server Components (RSC) \"Flight\" Protocol (Also referred to as React2Shell)\n- **CVE ID**: CVE-2025-55182 (Primary React RCE) and CVE-2025-66478 (Next.js RCE, affecting downstream implementations).\n- **CVSS Score**: 10 (Critical) \n\n\nAn unauthenticated Remote Code Execution (RCE) vulnerability exists in the core packages used by React Server Components (RSC), which are primarily exposed via the Next.js App Router. The flaw is an insecure deserialization issue in the RSC \"Flight\" protocol that allows an attacker to execute arbitrary code on the server by sending a single, crafted HTTP request. The vulnerability is present in default configurations of affected applications.\n[Source: Unit42 - Palo Alto Networks](https://unit42.paloaltonetworks.com/cve-2025-55182-react-and-cve-2025-66478-next/)\n\n\n## Mitigation and Recommendations\n\n- **Apply Patch**\n- **Restrict Access** to the vulnerable serves \n- **Monitor for IoCs and suspicious traffic** \n\n## Conclusion\n\nCVE‑2025‑55182 is a critical, highly reliable, and unauthenticated RCE vulnerability in the modern React ecosystem. Due to its remote exploitability without user interaction or authentication, immediate patching is required to prevent server compromise.\n\n[View official CVE details on NIST](https://nvd.nist.gov/vuln/detail/CVE-2025-55182)\n\n## Vulnerable Versions\n\n**React**: Versions 19.0, 19.1, and 19.2\n**Next.js**: Versions 15.x and 16.x (App Router), as well as Canary builds starting from 14.3.0\n**Other frameworks**: Any library bundling the react-server implementation, including React Router, Waku, RedwoodSDK, Parcel and Vite RSC plugins\n\n\n## Playbook Triggers\n- Manually - Create a new alert and select this playbook from the dropdown menu.\n\n## Playbook Flow\n1. Collects IOCs from the Unit42 blog.\n2. Uses XQL to detect any suspicious command lines indicative of exploitation of this vulnerability.\n3. Investigates the command lines to identify malicious indicators related to the vulnerability.\n4. Uses XQL to hunt for malicious IOCs.\n5. Isolates possible compromised servers.\n6. Blocks malicious indicators using the \"Containment Plan – Block Indicators\" playbook.\n7. Provides mitigation recommendations.\n\nNote: This is a beta playbook, which lets you implement and test pre-release software. Since the playbook is beta, it might contain bugs. Updates to the pack during the beta phase might include non-backward compatible features. We appreciate your feedback on the quality and usability of the pack to help us identify issues, fix them, and continually improve.\n",
+				"fromversion": "6.10.0",
+				"id": "CVE-2025-55182 and CVE-2025-66478 - React and Next js Remote Code Execution",
+				"name": "CVE-2025-55182 and CVE-2025-66478 - React and Next js Remote Code Execution",
+				"tags": [
+					"Rapid Breach Response",
+					"CVE-2025-55182",
+					"CVE-2025-66478"
+				]
+			},
+			{
+				"description": "**This playbook addresses the following alerts**:\n- SSO authentication attempt with suspicious characteristics.\n- Successful SSO authentication with suspicious characteristics.\n\n**Playbook Stages**:\n\n**Triage**:\n- Collect initial information about the user and the SSO authentication event.\n- Validate whether the authentication proxy is linked to iCloud Relay.\n\n**Investigation**:\n- **Check IOCs Reputation**:\n  - Analyze the reputation of IP addresses associated with the alert.\n- **Search Related Alerts**:\n  - Look for alerts related to the same user within the system to identify suspicious activity trends.\n- **Check If User Is Risky**:\n  - Retrieve the user's risk score and evaluate high-risk indicators for suspicious activities.\n- **Check User Agent**:\n  - Identify suspicious user agents used during the authentication attempts.\n- **Check Okta Logs**:\n  - Retrieve Okta authentication logs for failed login attempts and suspicious authentication activities within the last day.\n\n**Containment**:\n- **Automatic Actions**:\n  - Clear user sessions if any suspicious evidence is found during the investigation.\n- **Analyst Review**:\n  - Provide an analyst with findings for review and determine the appropriate action:\n    - No action required.\n    - Suspend the user in Okta.\n  - If the analyst chooses to suspend the user, their active sessions are cleared in Okta.\n\n**Requirements**:\nFor the best results, it's recommended to ensure these integrations are configured and working:\n- **Core** integration for user risk evaluation and suspicious activity checks.\n- **Okta v2** integration for analyzing authentication logs, clearing sessions, and user suspension.\n- Any IP reputation integration that supports the `!ip` command for checking IP address reputation.",
+				"fromversion": "6.10.0",
+				"id": "SSO Authentication With Suspicious Characteristics",
+				"name": "SSO Authentication With Suspicious Characteristics",
+				"tags": [
+					"TA0001 - Initial Access",
+					"T1078 - Valid Accounts"
+				]
+			},
+			{
+				"description": "This playbook addresses the following alerts:\n\n- A user executed suspicious LDAP enumeration queries\n\nPlaybook Stages:\n\nTriage:\n\n- Get additional event information about the LDAP searches executed by the user\n- Ensure that a single client IP exists in the alert\n- Get endpoint information for the client IP\n- Check preconditions for continuing investigation based on the number of suspicious attributes, attack tool queries, and vulnerable certificate templates\n\n\nInvestigation:\n\n- Enrich the user that executed the queries\n- Check if the user was created recently\n- Search for additional discovery alerts in the alert\n- Check user groups and roles to determine if the user is unprivileged\n- Check user querying frequency to detect anomalies\n- Get host risk level\n- Search for recent malware alerts on client IP\n\nRemediation:\n\n- With analyst approval, disable the user in Active Directory if user-related anomalies are found and the alert is a True Positive.\n- With analyst approval, isolate the endpoint if host-related anomalies are found and the alert is a True Positive.\n- Logoff user from client host if an active session is detected and the alert is a True Positive.\n\nRequirements:\n\nFor any response action, you need the following integrations:\n\n- Core - IR\n- Active Directory Query v2.",
+				"fromversion": "6.10.0",
+				"id": "A user executed multiple LDAP enumeration queries",
+				"name": "A user executed multiple LDAP enumeration queries",
+				"tags": [
+					"T1087 - Account Discovery"
+				]
+			},
+			{
+				"description": "This playbook addresses the following alerts:\n\n* Remote WMI process execution\n* Suspicious remote WMI process execution\n\n**Playbook Stages:**\n\n**Analysis:**\n\n* Enrich the attacker’s IP address to identify any known malicious activity.\n\n* Retrieve all alert-related alerts to consolidate context for further analysis.\n\n**Investigation:**\n\n* Analyze command-line activity to assess risks based on suspicious patterns.\n\n* Check for high-confidence evidence, such as malicious IP addresses or suspicious command-line activity, to determine the next course of action.\n\n* Evaluate medium-confidence detections and request analyst approval for further containment if required.\n\n**Containment:**\n\n* Attempt to terminate the malicious process tree using its causality ID.\n\n* Provide guidance for manual process termination if the automated action fails.\n\n* Propose endpoint isolation to prevent further compromise if malicious activity is confirmed.",
+				"fromversion": "8.0.0",
+				"id": "Remote WMI Process Execution",
+				"name": "Remote WMI Process Execution",
+				"tags": [
+					"T1021 - Remote Services",
+					"TA0008 - Lateral Movement"
+				]
+			},
+			{
+				"description": "This playbook handles \"Suspicious certutil command line\" alerts.\n\nPlaybook Stages:\n\nAnalysis:\n\nDuring the alert analysis, the playbook will perform the following actions:\n\n- Extracts and enriches the URL from the command line.\n- Checks if the URL reputation is suspicious.\n- Checks if any process in the causality chain is unsigned.\n- Checks if any process in the causality chain is non-prevalent.\n- Searches for Cortex XDR agent alerts related to file drops using certutil.\n- Checks for any suspicious parameters in the command line (if the command line risk score is medium or higher).\n\nIf the playbook detects any of these conditions, it will proceed to the early containment stage; otherwise, it will close the alert.\n\nEarly Containment:\n\n- Identify if an agent prevention rule was triggered. If triggered in **block mode**, proceed with the URL reputation check; otherwise, terminate the causality process tree.\n\nVerdict:\n\n- Based on the URL's reputation, if found to be malicious, the playbook will perform remediation actions; otherwise, it will close the alert.\n\nRemediation:\n\nIf the URL is found to have a malicious reputation, the playbook will perform the following actions:\n\n- Block the malicious URL using PAN-OS (requires analyst approval).\n- Isolate the endpoint (requires analyst approval).\n- Execute an XQL query to check for file creation events by the certutil process, and if a file is found, quarantine it (requires analyst approval).\n- Automatically close the alert.\n\nRequired Integrations:\n\nFor response actions, you need the following integrations:\n\n- Palo Alto Networks PAN-OS\n- XQL Query Engine.",
+				"fromversion": "8.8.0",
+				"id": "Suspicious certutil command line",
+				"name": "Suspicious certutil command line",
+				"tags": [
+					"TA0005 - Defense Evasion",
+					"T1218 - System Binary Proxy Execution",
+					"TA0011 - Command and Control",
+					"T1105 - Ingress Tool Transfer"
 				]
 			},
 			{
@@ -335,53 +440,23 @@
 				]
 			},
 			{
-				"description": "This playbook handles \"Script file added to startup-related Registry keys\" alerts.\n\nPlaybook Stages:\n\nAnalysis:\n\n- Extract the script path from the registry key value.\n- Check the reputation of the associated processes.\n\nInvestigation:\n\n- Searches for related Cortex XSIAM alerts to identify potential attack patterns.\n- Retrieves the script file and relevant details for investigation.\n- Analyzes the script for malicious or suspicious parameters:\n  - If malicious parameters are found, proceed to remediation.\n  - If suspicious parameters are found, detonate and analyze the script using WildFire Sandbox.\n- Checks the script file reputation.\n- Detonates and analyzes the script using WildFire Sandbox.\n\nRemediation:\n\n- Terminates the malicious process.\n- Quarantines the malicious process.\n- Adds the malicious process hash to the blocklist.\n- Calculates the script file’s SHA256 hash if not already available.\n- Deletes the Registry key value (Requires analyst approval).\n- Adds the script file hash to the blocklist (Requires analyst approval).\n- Automatically close the alert.",
-				"fromversion": "8.9.0",
-				"id": "Script file added to startup-related Registry keys",
-				"name": "Script file added to startup-related Registry keys",
-				"tags": [
-					"TA0003 - Persistence",
-					"T1547 - Boot or Logon Autostart Execution"
-				]
-			},
-			{
-				"description": "This playbook addresses the following alerts:\n\n- Abnormal Azure Temporary Access Pass (TAP) account registration\n\nPlaybook Stages:\n\nTriage:\n\n- Retrieve additional data about the TAP registration including start/end times, usage type, and user details\n\nInvestigation:\n\n- Analyze the reputation of the caller IP address\n- Examine alerts from Microsoft Defender 365 related to the TAP assigner\n- Check Azure AD risky user status and risk detections\n- Review Cortex Core risk level for the user\n- Verify creation date of the user account in Azure AD to identify recently created accounts\n- Correlate evidence across multiple sources to determine potential compromise\n\nContainment:\n\n- For alerts determined to be true positives, automatically revoke the user's session in Microsoft applications\n- Upon analyst approval, disable the user account that granted the TAP\n\nRequirements: For response actions, you need the following integrations:\n\n- Microsoft Graph User.",
-				"fromversion": "8.9.0",
-				"id": "Azure Temporary Access Pass (TAP) registered to an account",
-				"name": "Azure Temporary Access Pass (TAP) registered to an account",
-				"tags": []
-			},
-			{
-				"description": "This playbook is designed to handle the following alerts:\n\n- Successful External Login Password Spray\n- External Login Password Spray on a Domain Controller\n- External Login Password Spray Involving a Honey User\n- Successful External Login Password Spray on a Domain Controller\n- Successful External Login Password Spray on a sensitive server\n\nThe playbook is designed to investigate and respond to external login password sprays. It enriches the external IP to enable early containment, retrieves event information, and determines how the attack was carried out and whether it was successful.\n\nPlaybook Stages:\n\nEarly Containment:\n\n- With analyst approval, the playbook will block the malicious external IP address involved in the password spray attack, limiting the attacker's ability to continue their actions.\n\nInvestigation:\n\n- The playbook analyzes the timestamps of the login attempts to detect patterns, checks whether any logons were successful, and retrieves the Risk Score for users who successfully logged in as part of the attack.\n\nContainment:\n\n- Based on the user’s risk level, the playbook will expire the user’s password to prevent further unauthorized access and terminate any active RDP sessions for the affected user.\n\nRequirements:\n\n- For response actions, the following integrations are required: Active Directory (AD), PAN-OS, Core - IR.",
-				"fromversion": "8.0.0",
-				"id": "External Login Password Spray",
-				"name": "External Login Password Spray",
-				"tags": [
-					"T1110.003 - Password Spraying",
-					"T1110 - Brute Force",
-					"TA0006 - Credential Access"
-				]
-			},
-			{
-				"description": "This playbook addresses the following alerts for linux os:\n\n- Suspicious process execution from tmp folder\n- Suspicious interactive execution of a binary from the tmp folder\n- Suspicious cron job task execution of a binary from the tmp folder\n- A web server process executed an unpopular application from the tmp folder\n\nPlaybook Stages:\n\nAnalysis:\n\n- Check target process hash reputation\n- Check commandline extracted indicators reputation\n\nThe playbook will proceed directly to remediation if suspicious/Suspicious reputation is found during the analysis stage.\n\nInvestigation:\n\n- Search for the following suspicious insights/related alerts:\n  - Suspicious access to shadow file\n  - UNIX LOLBIN process connected to a rare external host\n  - Persistence through service registration\n  - Adding execution privileges \n  - Modification of systemd service files\n  - Adding execution privileges\n  - Local account discovery\n\nIf no suspicious reputation is found in the analysis stage, but suspicious insights/related alerts are discovered during investigation, the playbook will then proceed to remediation.\n\nRemediation:\n\n- Terminate causality process\n- Quarantine the Suspicious process image file (requires manual approval).\n- Disable the suspicious cron job task (requires manual action).",
+				"description": "This playbook handles \"Unusual process accessed web browser credentials and executed by a terminal process\" alerts.\n\nPlaybook Stages:\n\nAnalysis:\nDuring the analysis, the playbook will perform the following:\n\n- Checks the initiator file path for any suspicious locations.\n- Checks the initiator process reputation.\n\nIf the file is malicious, it proceeds to remediation actions; otherwise, it continues to the investigation phase.\n\nInvestigation:\nDuring the alert investigation, the playbook will perform the following:\n\n- Searches for related Cortex XSIAM alerts and insights on the endpoint by specific alert names or by the following MITRE technique to identify malicious activity: T1555.001 - Credentials from Password Stores: Keychain.\n\nThe playbook determines the appropriate verdict. If related alerts or insights are found, it proceeds to remediation actions; otherwise, it closes the alert with the message \"No indication of malicious activity was found\".\n\nRemediation:\n\n- Automatically terminate the causality process.\n- Quarantine the initiator file if its reputation is malicious, if medium- to high-severity alerts indicating malicious activity are found, or if related insights are found and the initiator is running from a suspicious path. (This action requires analyst approval).\n- Automatically Close the alert.",
 				"fromversion": "8.8.0",
-				"id": "Suspicious execution from tmp folder",
-				"name": "Suspicious execution from tmp folder",
+				"id": "Unusual process accessed web browser credentials and executed by a terminal process",
+				"name": "Unusual process accessed web browser credentials and executed by a terminal process",
 				"tags": [
-					"T1564 - Hide Artifacts",
-					"TA0005 - Defense Evasion"
+					"TA0006 - Credential Access",
+					"T1555 - Credentials from Password Stores"
 				]
 			},
 			{
-				"description": "This playbook is designed to handle the following alerts:\n- A successful SSO sign-in from TOR\n- A successful SSO sign-in from TOR via a mobile device\n\nThe playbook executes the following stages:\n\nEarly Containment:\n- The playbooks will perform early containment actions by clearing\\revoking user sessions and enforcing re-authentication to terminate the connection from the Tor exit node and verify the user's identity. \nDepending on the alert source, the playbook will use either\nAzure Active Directory Users or Okta v2 integrations to clear the user sessions.\n\nInvestigation:\nDuring the alert investigation, the playbook will perform the following:\n- Checks the user's risk score.\n- Search for suspicious user agent usage within the alert.\n- Search for related XDR alerts using the following MITRE techniques to identify any malicious activity:\nT1566 - Phishing \nT1621 - Multi-Factor Authentication Request Generation\n T1110 - Brute Force\n T1556 - Modify Authentication Process\n\nRemediation:\n- Remediation actions will be taken if the user’s risk score is high, a suspicious user agent is detected, or a related alert is found. In such cases, the playbook will disable the account.\nBy default, account disabling requires analyst approval.\n\nRequires: \nFor any response action, you will need one of the following integrations: Azure Active Directory Users / Okta v2.",
-				"fromversion": "6.10.0",
-				"id": "A successful SSO sign-in from TOR",
-				"name": "A successful SSO sign-in from TOR",
+				"description": "This playbook handles \"Uncommon remote scheduled task creation\" alert, which is generated on the source host that created the remote scheduled task.\n\nPlaybook Stages:\n\nAnalysis:\n\n- The playbook verifies whether the causality process is signed and prevalent. If the process is not signed and not prevalent, it proceeds with remediation actions; otherwise, it continues investigating the alert.\n\nInvestigation:\n\nDuring the alert investigation, the playbook will perform the following:\n\n- Searches for related Cortex XSIAM alerts on the endpoint that use the following MITRE techniques to identify malicious activity: T1202 - Indirect Command Execution, T1021 - Remote Services.\n- Searches for related Cortex XSIAM agent alerts on the remote endpoint, to determine if the creation of the scheduled task is part of an attack pattern.\n- Searches for suspicious command-line parameters indicating a malicious scheduled task.\n\nRemediation:\n\n- Automatically disable the malicious scheduled task on the remote host.\n- Automatically terminate the causality process.\n- Automatically close the alert.",
+				"fromversion": "8.8.0",
+				"id": "Endpoint initiated uncommon remote scheduled task creation",
+				"name": "Endpoint initiated uncommon remote scheduled task creation",
 				"tags": [
-					"TA0011 - Command and Control",
-					"T1090 - Proxy",
-					"TA0001 - Initial Access",
-					"T1078 - Valid Accounts"
+					"TA0002 - Execution",
+					"T1053 - Scheduled Task/Job"
 				]
 			},
 			{
@@ -395,80 +470,14 @@
 				]
 			},
 			{
-				"description": "This playbook handles \"Uncommon execution of ODBCConf\" alerts.\n\nPlaybook Stages:\n\nAnalysis:\nDuring the analysis, the playbook will perform the following:\n\n- Checks if the causality process (CGO) is signed and prevalent.\n- Checks for the host's risk score.\n\nIf the CGO process is not signed and not prevalent, or if either of these conditions is met in addition to having a high-risk score, the playbook proceeds with remediation actions. Otherwise, it will continue to the investigation phase.\n\nInvestigation:\nDuring the alert investigation, the playbook will perform the following:\n\nSearches for related Cortex XSIAM alerts and insights on the same causalities chains by specific alert names :\n- Evasion Technique - 3048798454\n- Evasion Technique - 474958459\n- An uncommon LOLBIN added to startup-related Registry keys\n- Behavioral Threat\n- An uncommon file was created in the startup folder\n- Unsigned process running from a temporary directory\n- Execution From a Restricted Location\n- Execution of an uncommon process with a local/domain user SID at an early startup stage by Windows system binary - Explorer CGO\n\nThe playbook determines the appropriate verdict. If related alerts are found, it proceeds to remediation actions. In case of related insights are found ,and one of the following is met: the host score is listed as high or the CGO process is not prevalent, it will proceed to remediation actions. Otherwise, it closes the alert with the following message: \"No indication of malicious activity was found\".\n\n\nRemediation:\n\n- Automatically terminate the causality process.\n- Automatically Close the alert.",
-				"fromversion": "8.8.0",
-				"id": "Uncommon execution of ODBCConf",
-				"name": "Uncommon execution of ODBCConf",
-				"tags": [
-					"T1218.008 - System Binary Proxy Execution: Odbcconf",
-					"TA0005 - Defense Evasion"
-				]
-			},
-			{
-				"description": "**This playbook addresses the following alerts**:\n- SSO authentication attempt with suspicious characteristics.\n- Successful SSO authentication with suspicious characteristics.\n\n**Playbook Stages**:\n\n**Triage**:\n- Collect initial information about the user and the SSO authentication event.\n- Validate whether the authentication proxy is linked to iCloud Relay.\n\n**Investigation**:\n- **Check IOCs Reputation**:\n  - Analyze the reputation of IP addresses associated with the alert.\n- **Search Related Alerts**:\n  - Look for alerts related to the same user within the system to identify suspicious activity trends.\n- **Check If User Is Risky**:\n  - Retrieve the user's risk score and evaluate high-risk indicators for suspicious activities.\n- **Check User Agent**:\n  - Identify suspicious user agents used during the authentication attempts.\n- **Check Okta Logs**:\n  - Retrieve Okta authentication logs for failed login attempts and suspicious authentication activities within the last day.\n\n**Containment**:\n- **Automatic Actions**:\n  - Clear user sessions if any suspicious evidence is found during the investigation.\n- **Analyst Review**:\n  - Provide an analyst with findings for review and determine the appropriate action:\n    - No action required.\n    - Suspend the user in Okta.\n  - If the analyst chooses to suspend the user, their active sessions are cleared in Okta.\n\n**Requirements**:\nFor the best results, it's recommended to ensure these integrations are configured and working:\n- **Core** integration for user risk evaluation and suspicious activity checks.\n- **Okta v2** integration for analyzing authentication logs, clearing sessions, and user suspension.\n- Any IP reputation integration that supports the `!ip` command for checking IP address reputation.",
-				"fromversion": "6.10.0",
-				"id": "SSO Authentication With Suspicious Characteristics",
-				"name": "SSO Authentication With Suspicious Characteristics",
-				"tags": [
-					"TA0001 - Initial Access",
-					"T1078 - Valid Accounts"
-				]
-			},
-			{
-				"description": "**This playbook addresses the following alert**:\n- Suspicious Conditional Access operation for an identity\n\n**Playbook Stages**:\n\n**Triage**:\n- Gather initial information about the initiating user.\n**User Investigation**:\n- **IP Enrichment**:\n  - Analyze the reputation of the initiating user IP addresses.\n- **Azure Detection Analysis**:\n  - Investigate recent Azure security alerts for the initiating user to detect additional suspicious activity.\n  - If any detections found, investigate the related user agent. \n- **User Risk Analysis**:\n  - Assess the risk level of the initiating user based on XSIAM Core and Azure risk score.\n  - Investigate reasons behind any identified risks, including recent detections.\n- **Attacker Geolocation Analysis**:\n  - Investigate the initiating user connection geolocation.\n- **Insights Analysis**:\n  - Investigate the XSIAM insights that related to the initiating user to detect additional suspicious activity.\n\n**User Investigation**:\n- **Search for suspicious MFA activity**:\n  - Search for a policy change that indicates on disabling the need in MFA\n- **Search for suspicious guest user activity**:\n  - Search for a policy change that indicates on allowing \n**Verdict \u0026 Containment**:\n- If any suspicious evidence found during the user investigation phase and the integration \"Microsoft Graph User\" integration is enabled, the playbook will revoke the sessions of the initiating user and the destination user. If the integration is not enabled, the playbook will recommend to perform the same action but manually.\n- If the initiating user IP is malicious, or the initiating user risk is HIGH, or more than one suspicious evidence found during the Azure detection analysis and the CA policy investigation phase, and the integration \"Microsoft Graph User\" is enabled, the playbook will revoke the sessions of the initiating user and the destination user and will recommend manually to disable either one of the users or both of the users. If the integration is not enabled, the playbook will recommend to perform the same action but manually.\n\n**Requirements**:\n- `Azure Risky Users` for retrieving user risk scores.\n- `Microsoft 365 Defender` for advanced hunting queries and Azure security alerts.\n- `Microsoft Graph User` for disabling accounts and revoking sessions.",
-				"fromversion": "8.9.0",
-				"id": "Suspicious Conditional Access operation for an identity",
-				"name": "Suspicious Conditional Access operation for an identity",
-				"tags": [
-					"T1548 - Abuse Elevation Control Mechanism"
-				]
-			},
-			{
-				"description": "This playbook handles \"AppleScript Process Executed With Rare Command Line\" alerts.\n\nPlaybook Stages:\n\nInvestigation:\nDuring the alert investigation, the playbook will perform the following:\n\n- Searches for XSIAM prevention alerts with the same causality process ID.\n- Checks if the causality|actor image has bad reputation or is not signed.\n- Checks if malicious|suspicious patterns found in the command line.\n- Searches for XSIAM insights alerts indicating a suspicious activity.\n\n\nRemediation:\n\n- Automatically terminate the causality process.\n- Quarantine the causality|actor image (requires analyst approval).\n- Automatically Close the alert.",
-				"fromversion": "8.8.0",
-				"id": "AppleScript Process Executed With Rare Command Line",
-				"name": "AppleScript Process Executed With Rare Command Line",
-				"tags": [
-					"T1059 - Command and Scripting Interpreter",
-					"TA0002 - Execution"
-				]
-			},
-			{
-				"description": "This playbook addresses the following alerts:\n\n- SPNs cleared from a machine account\n- SPNs cleared from a machine account for the first time\n\nPlaybook Stages:\n\nTriage:\n\n- Retrieve additional data about the Account Changed event, including the Machine Account whose SPNs were cleared and the number of times the user cleared SPNs in the last 30 days.\nInvestigation:\n\n- Search for creation of suspicious account on the Domain Controller.\n- Search for suspicious TGT/Service ticket requests.\n- Search for user insights associated with malicious tools related to Kerberos ticket manipulation.\n- Search for suspicious account renames, particularly to mimic DC name.\n- Search for additional alerts in the alert that could indicate attempts to find controlled accounts or create accounts.\n\nContainment:\n\n- For alerts determined to be true positives, prompt the analyst to decide whether to disable the user account.\n- Upon analyst approval: Disable the suspicious user account in Active Directory.\n\nRequirements:\n\nFor response actions, you need the following integrations:\n\n- Active Directory Query v2.",
-				"fromversion": "8.9.0",
-				"id": "SPNs cleared from a machine account",
-				"name": "SPNs cleared from a machine account",
-				"tags": [
-					"T1078 - Valid Accounts"
-				]
-			},
-			{
-				"description": "This playbook is designed to handle the following alerts: \n- Possible LDAP enumeration by unsigned process.\n- Suspicious LDAP search query executed.\n\nThe playbook executes the following stages:\n\nInvestigation:\nCheck the following parameters to determine if remediation actions are needed:\n- Cortex XSIAM alerts related to the hostname by MITRE tactics indicating malicious activity.\n- Whether the Actor Process Command line contains suspicious arguments.\n- Checks for the prevalence of the Actor Process Name.\n- Host risk score is \"Medium\" or \"High\".\n- User risk score is \"High\".\n\nRemediation:\n- Handles malicious alerts by terminating the causality process.\n- Handles non-malicious alerts identified during the investigation.",
-				"fromversion": "8.8.0",
-				"id": "Suspicious LDAP search query",
-				"name": "Suspicious LDAP search query",
-				"tags": [
-					"T1087 - Account Discovery"
-				]
-			},
-			{
-				"description": "This playbook handles \"Uncommon remote scheduled task created\" alerts.\n\nPlaybook Stages:\n\nAnalysis:\n\n- The playbook checks if the remote IP is external or has a bad reputation.\n- The playbook checks the host risk score.\n\nInvestigation:\nDuring the alert investigation, the playbook will perform the following:\n\n- Searches for related XSIAM alerts on the endpoint that use the following MITRE techniques to identify malicious activity: T1202 - Indirect Command Execution, T1021 - Remote Services.\n- Searches for related XSIAM agent alerts on the remote endpoint, to determine if the creation of the scheduled task is part of an attack pattern.\n- Searches for suspicious command-line parameters indicating a malicious scheduled task.\n\nRemediation:\n\n- Automatically disable the malicious scheduled task.\n- Block the malicious IP (requires analyst approval).\n- Automatically Close the alert.",
-				"fromversion": "6.10.0",
-				"id": "Uncommon remote scheduled task created",
-				"name": "Uncommon remote scheduled task created",
-				"tags": [
-					"TA0002 - Execution",
-					"T1053 - Scheduled Task/Job"
-				]
-			},
-			{
-				"description": "This playbook addresses the following alerts:\n\n* Remote WMI process execution\n* Suspicious remote WMI process execution\n\n**Playbook Stages:**\n\n**Analysis:**\n\n* Enrich the attacker’s IP address to identify any known malicious activity.\n\n* Retrieve all alert-related alerts to consolidate context for further analysis.\n\n**Investigation:**\n\n* Analyze command-line activity to assess risks based on suspicious patterns.\n\n* Check for high-confidence evidence, such as malicious IP addresses or suspicious command-line activity, to determine the next course of action.\n\n* Evaluate medium-confidence detections and request analyst approval for further containment if required.\n\n**Containment:**\n\n* Attempt to terminate the malicious process tree using its causality ID.\n\n* Provide guidance for manual process termination if the automated action fails.\n\n* Propose endpoint isolation to prevent further compromise if malicious activity is confirmed.",
+				"description": "This playbook is designed to handle the following alerts:\n\n- Successful External Login Password Spray\n- External Login Password Spray on a Domain Controller\n- External Login Password Spray Involving a Honey User\n- Successful External Login Password Spray on a Domain Controller\n- Successful External Login Password Spray on a sensitive server\n\nThe playbook is designed to investigate and respond to external login password sprays. It enriches the external IP to enable early containment, retrieves event information, and determines how the attack was carried out and whether it was successful.\n\nPlaybook Stages:\n\nEarly Containment:\n\n- With analyst approval, the playbook will block the malicious external IP address involved in the password spray attack, limiting the attacker's ability to continue their actions.\n\nInvestigation:\n\n- The playbook analyzes the timestamps of the login attempts to detect patterns, checks whether any logons were successful, and retrieves the Risk Score for users who successfully logged in as part of the attack.\n\nContainment:\n\n- Based on the user’s risk level, the playbook will expire the user’s password to prevent further unauthorized access and terminate any active RDP sessions for the affected user.\n\nRequirements:\n\n- For response actions, the following integrations are required: Active Directory (AD), PAN-OS, Core - IR.",
 				"fromversion": "8.0.0",
-				"id": "Remote WMI Process Execution",
-				"name": "Remote WMI Process Execution",
+				"id": "External Login Password Spray",
+				"name": "External Login Password Spray",
 				"tags": [
-					"T1021 - Remote Services",
-					"TA0008 - Lateral Movement"
+					"T1110.003 - Password Spraying",
+					"T1110 - Brute Force",
+					"TA0006 - Credential Access"
 				]
 			},
 			{
@@ -482,34 +491,35 @@
 				]
 			},
 			{
-				"description": "This playbook addresses the following alerts:\n\n  - Suspicious Hidden User Created\n\n  Playbook Stages:\n\n  Triage:\n  - Retrieve event information about the created user\n\n  Investigation:\n  - Check whether the user account is local or domain-based.\n  - For domain users: Retrieve AD attributes, including password expiration.\n  - For local users: Run a Powershell command to get \"Password Expires\" attribute of the local user.\n  - Retrieve the risk level for the affected host.\n  - Search for related Script Engine Activity alerts in the alert.\n  - Check for suspicious command lines executed on the host.\n  - Search for privileged group membership changes.\n  - Check for authentication logs of the hidden user.\n  - Monitor for suspicious share access or service installations.\n  - Search for RDP sessions related to the hidden user.\n\n  Containment:\n  - For risky hosts with suspicious users that have non-expiring passwords, perform soft remediation by terminating causality processes.\n  - For alerts showing clear malicious behavior patterns, perform hard remediation.\n  - For alerts confirmed as true positives, ask the analyst to disable the user.\n  - Upon receiving the analyst's approval, disable the suspicious user account (domain or local).\n  - If a related alert about malicious activity exists, kill the Causality Group Owner (CGO) process that created the suspicious user.\n\n  Requirements:\n  For response actions, you need the following integrations:\n  - Cortex Core - Investigation and Response\n  - Active Directory Query v2 (for domain user actions)\n  - XQL Query Engine (for enhanced investigation)\n  - SlackV3 or Microsoft Teams (optional, for user verification).",
-				"fromversion": "8.8.0",
-				"id": "Suspicious Hidden User Created",
-				"name": "Suspicious Hidden User Created",
+				"description": "**This playbook addresses the following alert**:\n- Suspicious Conditional Access operation for an identity\n\n**Playbook Stages**:\n\n**Triage**:\n- Gather initial information about the initiating user.\n**User Investigation**:\n- **IP Enrichment**:\n  - Analyze the reputation of the initiating user IP addresses.\n- **Azure Detection Analysis**:\n  - Investigate recent Azure security alerts for the initiating user to detect additional suspicious activity.\n  - If any detections found, investigate the related user agent. \n- **User Risk Analysis**:\n  - Assess the risk level of the initiating user based on XSIAM Core and Azure risk score.\n  - Investigate reasons behind any identified risks, including recent detections.\n- **Attacker Geolocation Analysis**:\n  - Investigate the initiating user connection geolocation.\n- **Insights Analysis**:\n  - Investigate the XSIAM insights that related to the initiating user to detect additional suspicious activity.\n\n**User Investigation**:\n- **Search for suspicious MFA activity**:\n  - Search for a policy change that indicates on disabling the need in MFA\n- **Search for suspicious guest user activity**:\n  - Search for a policy change that indicates on allowing \n**Verdict \u0026 Containment**:\n- If any suspicious evidence found during the user investigation phase and the integration \"Microsoft Graph User\" integration is enabled, the playbook will revoke the sessions of the initiating user and the destination user. If the integration is not enabled, the playbook will recommend to perform the same action but manually.\n- If the initiating user IP is malicious, or the initiating user risk is HIGH, or more than one suspicious evidence found during the Azure detection analysis and the CA policy investigation phase, and the integration \"Microsoft Graph User\" is enabled, the playbook will revoke the sessions of the initiating user and the destination user and will recommend manually to disable either one of the users or both of the users. If the integration is not enabled, the playbook will recommend to perform the same action but manually.\n\n**Requirements**:\n- `Azure Risky Users` for retrieving user risk scores.\n- `Microsoft 365 Defender` for advanced hunting queries and Azure security alerts.\n- `Microsoft Graph User` for disabling accounts and revoking sessions.",
+				"fromversion": "8.9.0",
+				"id": "Suspicious Conditional Access operation for an identity",
+				"name": "Suspicious Conditional Access operation for an identity",
 				"tags": [
-					"T1136 - Create Account",
-					"T1564.002 - Hide Artifacts: Hidden Users"
+					"T1548 - Abuse Elevation Control Mechanism"
 				]
 			},
 			{
-				"description": "## CVE-2025-55182 and CVE-2025-66478 - React and Next.js Remote Code Execution\n\n## Vulnerability Overview\n\n- **Vulnerability Name**: Insecure Deserialization in React Server Components (RSC) \"Flight\" Protocol (Also referred to as React2Shell)\n- **CVE ID**: CVE-2025-55182 (Primary React RCE) and CVE-2025-66478 (Next.js RCE, affecting downstream implementations).\n- **CVSS Score**: 10 (Critical) \n\n\nAn unauthenticated Remote Code Execution (RCE) vulnerability exists in the core packages used by React Server Components (RSC), which are primarily exposed via the Next.js App Router. The flaw is an insecure deserialization issue in the RSC \"Flight\" protocol that allows an attacker to execute arbitrary code on the server by sending a single, crafted HTTP request. The vulnerability is present in default configurations of affected applications.\n[Source: Unit42 - Palo Alto Networks](https://unit42.paloaltonetworks.com/cve-2025-55182-react-and-cve-2025-66478-next/)\n\n\n## Mitigation and Recommendations\n\n- **Apply Patch**\n- **Restrict Access** to the vulnerable serves \n- **Monitor for IoCs and suspicious traffic** \n\n## Conclusion\n\nCVE‑2025‑55182 is a critical, highly reliable, and unauthenticated RCE vulnerability in the modern React ecosystem. Due to its remote exploitability without user interaction or authentication, immediate patching is required to prevent server compromise.\n\n[View official CVE details on NIST](https://nvd.nist.gov/vuln/detail/CVE-2025-55182)\n\n## Vulnerable Versions\n\n**React**: Versions 19.0, 19.1, and 19.2\n**Next.js**: Versions 15.x and 16.x (App Router), as well as Canary builds starting from 14.3.0\n**Other frameworks**: Any library bundling the react-server implementation, including React Router, Waku, RedwoodSDK, Parcel and Vite RSC plugins\n\n\n## Playbook Triggers\n- Manually - Create a new alert and select this playbook from the dropdown menu.\n\n## Playbook Flow\n1. Collects IOCs from the Unit42 blog.\n2. Uses XQL to detect any suspicious command lines indicative of exploitation of this vulnerability.\n3. Investigates the command lines to identify malicious indicators related to the vulnerability.\n4. Uses XQL to hunt for malicious IOCs.\n5. Isolates possible compromised servers.\n6. Blocks malicious indicators using the \"Containment Plan – Block Indicators\" playbook.\n7. Provides mitigation recommendations.\n\nNote: This is a beta playbook, which lets you implement and test pre-release software. Since the playbook is beta, it might contain bugs. Updates to the pack during the beta phase might include non-backward compatible features. We appreciate your feedback on the quality and usability of the pack to help us identify issues, fix them, and continually improve.\n",
-				"fromversion": "6.10.0",
-				"id": "CVE-2025-55182 and CVE-2025-66478 - React and Next js Remote Code Execution",
-				"name": "CVE-2025-55182 and CVE-2025-66478 - React and Next js Remote Code Execution",
+				"description": "**This playbook addresses the following alert**:\n- Intense SSO failures with suspicious characteristics.\n\n**Playbook Stages**:\n\n**Triage**:\n- Collect additional alert data.\n- Retrieve IP reputation.\n- Analyze identity count and IP reputation:\n  - If failures involve many users and the IP is not malicious, the alert is likely a false positive and will be closed automatically.\n\n**Investigation**:\n- Identify users with successful logins.\n- Check risk indicators for affected users.\n- Search for related alerts.\n- Analyze authentication patterns for automation.\n- Retrieve Azure and Core risk scores.\n- Extract security alerts linked to affected users.\n- **Check for Suspicious Evidence**, including:\n  - Blocked sign-ins from a malicious IP.\n  - Related security alerts and high-risk IP reputation.\n  - Risk detections from Azure and Core.\n  - Suspicious authentication targeting admin portals (e.g., Azure Portal, Exchange Admin, Microsoft 365 Admin).\n  - The number of distinct identities involved.\n\n**Containment**:\n- **Automatic Actions**:\n  - If strong indicators of compromise exist, clear active user sessions.\n- **Analyst Review**:\n  - Findings are presented for review.\n  - **If user disablement is required**, the analyst can select users to disable in Azure AD.\n  - If a user is disabled, the playbook will also **clear their active sessions**.\n\n**Requirements**:\nEnsure the following integrations are configured:\n- **Microsoft Graph Identity** for Conditional Access and risk scores.\n- **Microsoft Defender for Identity** for authentication analysis.\n- **Core** for user risk evaluation and alert correlation.\n- **Threat Intelligence Integrations** for IP reputation analysis.",
+				"fromversion": "8.9.0",
+				"id": "Intense SSO failures with suspicious characteristics",
+				"name": "Intense SSO failures with suspicious characteristics",
 				"tags": [
-					"Rapid Breach Response",
-					"CVE-2025-55182",
-					"CVE-2025-66478"
+					"T1078 - Valid Accounts",
+					"T1110.003 - Password Spraying",
+					"T1110.001 - Password Guessing",
+					"TA0006 - Credential Access",
+					"TA0001 - Initial Access"
 				]
 			},
 			{
-				"description": "This playbook handles \"Suspicious process execution by scheduled task on a sensitive server\" alerts.\n\nPlaybook Stages:\n\nAnalysis:\n\n- Checks the suspicious process reputation.\n\nInvestigation:\n\n- Searches for related XSIAM agent alerts to identify any malicious activity on the server.\n\nRemediation:\n\nIf the suspicious process reputation is malicious, or if a related alert is found, the following remediation actions will be taken:\n\n- Disable the scheduled task responsible for executing the process.\n- Terminate the malicious process.\n- Quarantine the malicious process.\n- Automatically Close the alert.",
-				"fromversion": "8.8.0",
-				"id": "Suspicious process execution by scheduled task on a sensitive server",
-				"name": "Suspicious process execution by scheduled task on a sensitive server",
+				"description": "This playbook is designed to handle the following alerts:\n \n- Netcat makes or gets connections\n\nThe playbook executes the following stages:\n\nAnalysis:\n\n- Investigate the IP and Domain reputation\n- Search previous similar alerts\n\nRemediation:\n \n- Handles malicious alerts by terminating the causality process.",
+				"fromversion": "8.9.0",
+				"id": "Netcat Makes or Gets Connections",
+				"name": "Netcat Makes or Gets Connections",
 				"tags": [
-					"TA0002 - Execution",
-					"T1053 - Scheduled Task/Job"
+					"T1090 - Proxy",
+					"TA0011 - Command and Control"
 				]
 			},
 			{
@@ -523,6 +533,26 @@
 				]
 			},
 			{
+				"description": "This playbook handles \"Uncommon remote scheduled task created\" alerts.\n\nPlaybook Stages:\n\nAnalysis:\n\n- The playbook checks if the remote IP is external or has a bad reputation.\n- The playbook checks the host risk score.\n\nInvestigation:\nDuring the alert investigation, the playbook will perform the following:\n\n- Searches for related XSIAM alerts on the endpoint that use the following MITRE techniques to identify malicious activity: T1202 - Indirect Command Execution, T1021 - Remote Services.\n- Searches for related XSIAM agent alerts on the remote endpoint, to determine if the creation of the scheduled task is part of an attack pattern.\n- Searches for suspicious command-line parameters indicating a malicious scheduled task.\n\nRemediation:\n\n- Automatically disable the malicious scheduled task.\n- Block the malicious IP (requires analyst approval).\n- Automatically Close the alert.",
+				"fromversion": "6.10.0",
+				"id": "Uncommon remote scheduled task created",
+				"name": "Uncommon remote scheduled task created",
+				"tags": [
+					"TA0002 - Execution",
+					"T1053 - Scheduled Task/Job"
+				]
+			},
+			{
+				"description": "This playbook addresses the following alerts:\n\n- A user deleted multiple users for the first time\n\nPlaybook Stages:\n\nTriage:\n\n- Collect initial alert data regarding the event.\n- Check the user type of the source user.\n- Host enrichment. \n\nInvestigation:\n\n- Check if an admin user initiated the operation and whether the deleted users are disabled. \n- Correlate recent user activity with related security alerts.\n- Assess user's and host's risk level in Cortex XDR.\n- Check the type of the user target. \n\nRemediation:\n\n- Evaluate investigation findings, if TP, the playbook will display the findings to an analyst for review and suggest user/host account disablement.\n\n\nRequirements:\n\nFor response actions, you need the following integrations:\n\n- Cortex Core - Investigation and Response\n- Active Directory Query v2.",
+				"fromversion": "8.9.0",
+				"id": "A user deleted multiple users for the first time",
+				"name": "A user deleted multiple users for the first time",
+				"tags": [
+					"T1078 - Valid Accounts",
+					"TA0001 - Initial Access"
+				]
+			},
+			{
 				"description": "This playbook is designed to handle the following alerts:\n\n- SSO Password Spray Threat Detected\n- SSO Password Spray Activity Observed\n- SSO Password Spray Involving a Honey User\n\nPlaybook Stages:\n\nTriage:\n\n- The playbook checks the IP reputation and fetches the events related to the SSO login attempts.\n\nEarly Containment:\n\n- The playbook checks if the IP is suspicious. If it is, the playbook suggests blocking the IP.\n\nInvestigation:\n\n- The playbook assess the risk score of the user who successfully logged in and examines the legitimacy of the user agent. It verifies if the user has MFA configured and analyzes the timestamps of the login attempts to detect potential malicious automated patterns.\n\nContainment:\n- If there is a successful login attempt and the user's risk score is high, or if the user agent is detected as suspicious, or if the time intervals were automated, the playbook clears the user's session. If the user doesn't have MFA, the playbook recommends expiring the user's password.\n\nRequirements:\n\nFor any response action, you need one of the following integrations:\n\n- Microsoft Graph User\n- Okta.",
 				"fromversion": "6.10.0",
 				"id": "SSO Password Spray",
@@ -533,36 +563,6 @@
 					"T1110.001 - Password Guessing",
 					"T1586 - Compromise Accounts"
 				]
-			},
-			{
-				"description": "This playbook is designed to handle the alert\n'User added to local administrator group using a PowerShell command'\n\nThe playbook executes the following stages:\n\nInvestigation:\nCheck the following parameters to determine if remediation actions are needed:\n- Cortex XSIAM alerts related to the hostname by MITRE tactics indicating malicious activity.\n- Whether the process is unsigned.\n\nRemediation:\nHandles malicious alerts by terminating the relevant processes and requesting the analyst's approval to remove the user from the local Administrators group.\nHandles non-malicious alerts identified during the investigation.",
-				"fromversion": "8.8.0",
-				"id": "User added to local administrator group using a PowerShell command",
-				"name": "User added to local administrator group using a PowerShell command",
-				"tags": [
-					"TA0003 - Persistence",
-					"T1098 - Account Manipulation"
-				]
-			},
-			{
-				"description": "This playbook addresses the following alerts:\n\n- Excessive user account lockouts\n- Excessive account lockouts on suspicious users\n- Excessive user account lockouts from a suspicious source\n\nThe playbook investigates and responds to excessive user account lockout alerts. It gathers information about the alert, enriches relevant host data, and analyzes event patterns. This analysis helps distinguish between benign lockouts and lockouts caused by brute-force or password spray attacks.\n\nPlaybook Stages:\n\nTriage:\n\n- The playbook enriches the alert with details about the lockout events.\n\nInvestigation:\n\n- Analyzes the lockout event timestamps to detect patterns.\n- Checks for related medium severity brute-force alerts in the alert.\n- Retrieves the Risk Score for the Caller Computer that caused the lockouts.\n\nContainment:\n\n- With analyst approval, the playbook can isolate the endpoint (either the Caller Computer or the target host) if it's determined to be a true positive and not a server.\n\nRequirements:\n\n- For response actions, the following integration is required: Core - IR.",
-				"fromversion": "8.8.0",
-				"id": "Excessive User Account Lockouts",
-				"name": "Excessive User Account Lockouts",
-				"tags": [
-					"T1110 - Brute Force",
-					"TA0006 - Credential Access"
-				]
-			},
-			{
-				"description": "**This playbook addresses the following alert**:\n- Azure AD account unlock/successful password reset\n\n**Playbook Stages**:\n\n**Triage**:\n- Gather initial information about the user.\n\n**Investigation**:\n- **Check IP Reputation**:\n  - Analyze the reputation of the IP address related to the alert.\n- **Check for Azure Alerts**:\n  - Extract recent Azure security alerts for the user.\n- **Check if User is Risky**:\n  - Assess the risk score of the user based on Core and Azure risk indicators.\n  - Investigate reasons behind any identified risks, including recent detections.\n\n**Containment**:\n- Check if feature sum is greater than 2 (Possible features:new user agent/new asn/new country). If yes, continue to revoke user's active sessions to ensure immediate containment.\nIf no, continue to check investigation findings.\n- Provide a manual task for an analyst to review the findings and decide the next steps.\n- Possible actions:\n  - Disable the target user.\n  - Disable the resource user.\n  - Disable both users.\n  - Take no action.\n\n**Requirements**:\nFor the best results, it's recommended to ensure these integrations are configured and working:\n- `Cortex Core - Investigation and Response` for Core user risk evaluation.\n- `Azure Risky Users` for retrieving user risk scores.\n- `Microsoft 365 Defender` for advanced hunting queries and Azure security alerts.\n- `Microsoft Graph User` for disabling accounts and revoking sessions.",
-				"fromversion": "6.10.0",
-				"id": "Azure AD account unlock or password reset",
-				"name": "Azure AD account unlock or password reset",
-				"tags": [
-					"T1078 - Valid Accounts",
-					"TA0003 - Persistence"
-				]
 			}
 		],
 		"report": null,
@@ -570,170 +570,10 @@
 		"trigger": [
 			{
 				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'Unprivileged process opened a registry hive' alert",
-				"fromversion": "8.0.0",
-				"id": "a8782c70ecf48029bd6c6634f1b5beb5",
-				"name": "Unprivileged process opened a registry hive",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'Suspicious interactive execution of a binary from the tmp folder', 'Suspicious cron job task execution of a binary from the tmp folder' and 'A web server process executed an unpopular application from the tmp folder' alerts via the 'Suspicious execution from tmp folder' playbook",
-				"fromversion": "8.8.0",
-				"id": "a69c1c4b366ed567ee21a788e0146b21",
-				"name": "Suspicious execution from tmp folder",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling alerts where the Service Principal Names (SPNs) are cleared from a domain machine account.",
+				"description": "This trigger is responsible for handling the 'CVE Exploitation - 685768089' , 'CVE Exploitation - 818854253', and 'CVE Exploitation - 903162508' alerts alerts.",
 				"fromversion": "8.9.0",
-				"id": "1cd448c4fd80325a570d3fb806ee8313",
-				"name": "SPNs cleared from a machine account",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling Exchange User Mailbox Forwarding alerts.",
-				"fromversion": "8.0.0",
-				"id": "77c352f11994a9c17008e7e0354a2c96",
-				"name": "Exchange User Mailbox Forwarding",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling Suspicious SaaS Access From a TOR Exit Node",
-				"fromversion": "8.0.0",
-				"id": "e316852d358f8de8192842f6a7156142",
-				"name": "Suspicious SaaS Access From a TOR Exit Node",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling Remote WMI Process Execution alerts",
-				"fromversion": "8.0.0",
-				"id": "edbc729e3551d463dc2e16d3838c9af3",
-				"name": "Remote WMI Process Execution",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling Compromise Accounts alerts where user rejected MFA attempts.",
-				"fromversion": "8.8.0",
-				"id": "2120c09a8de842f4aae8506487b01e8c",
-				"name": "Compromise Accounts - User has rejected numerous SSO MFA attempts",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling alerts for Suspicious local administrator login.",
-				"fromversion": "8.0.0",
-				"id": "1dd58cf4145efadf6f4d34f53ef5d034",
-				"name": "Suspicious local administrator login",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling alerts where role settings inside Azure AD Privileged Identity Management (PIM) have been changed.",
-				"fromversion": "8.9.0",
-				"id": "131fb92f3a07d20cfc2caff5ce9616cf",
-				"name": "Azure AD PIM role settings change",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling several the 'AppleScript Process Executed With Rare Command Line' alerts",
-				"fromversion": "8.8.0",
-				"id": "66c14136957cd342e560cedb6e29d3c6",
-				"name": "AppleScript Process Executed With Rare Command Line",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger runs the Suspicious Conditional Access operation for an identity playbook, which handles the Suspicious Conditional Access operation for an identity alert.",
-				"fromversion": "8.9.0",
-				"id": "3a347780e43332295aad0ac01b34d6d8",
-				"name": "Suspicious Conditional Access operation for an identity",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling 'Uncommon creation or access operation of sensitive shadow copy by a high-risk process",
-				"fromversion": "8.8.0",
-				"id": "41f9310c50c55b761fdc0aa5c48d6459",
-				"name": "Uncommon creation or access operation of sensitive shadow copy by a high-risk process",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling 'Suspicious process execution by scheduled task on a sensitive server' alert",
-				"fromversion": "8.8.0",
-				"id": "f7f6758a6905f037fec8a37308f1739a",
-				"name": "Suspicious process execution by scheduled task on a sensitive server",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling 'Suspicious certutil command line' alerts",
-				"fromversion": "8.8.0",
-				"id": "d30b757218c4a36e4b94d8033cf55785",
-				"name": "Suspicious certutil command line",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling External Login Password Spray attacks.",
-				"fromversion": "8.0.0",
-				"id": "1b588f67109cf13c3da42a9e163f3e09",
-				"name": "External Login Password Spray",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling Valid Accounts alerts related to successful guest user invitations.",
-				"fromversion": "8.8.0",
-				"id": "06fd5112c09b4312c1a8e92bcb5aa30f",
-				"name": "Successful guest user invitation",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling Abnormal Azure Temporary Access Pass (TAP) account registration alerts.",
-				"fromversion": "8.9.0",
-				"id": "1f89bd9eae3f34c7dfbcb8cc944c4a33",
-				"name": "Azure Temporary Access Pass (TAP) registered to an account",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'Msiexec execution of an executable from an uncommon remote location with a specific port' and 'Msiexec execution of an executable from an uncommon remote location without properties' alerts via the 'Msiexec_execution_of_an_executable_from_an_uncommon_remote_location' playbook",
-				"fromversion": "8.8.0",
-				"id": "c3f1be30a61c743ffb869c7dbb0c51f9",
-				"name": "Msiexec execution of an executable from an uncommon remote location",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'First Azure AD PowerShell operation for a user' alert",
-				"fromversion": "8.9.0",
-				"id": "bcf29aac2aec3afa6e8870b5876e74c1",
-				"name": "First Azure AD PowerShell operation for a user",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling SSO Authentication With Suspicious Characteristics alerts",
-				"fromversion": "8.0.0",
-				"id": "44d98a2e42036c1d90a3d45c23bb3282",
-				"name": "SSO Authentication With Suspicious Characteristics",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger runs the A mail forwarding rule was configured in Google Workspace playbook, which handles the A mail forwarding rule was configured in Google Workspace and A mail forwarding rule was configured in Google Workspace to an uncommon domain alerts.",
-				"fromversion": "8.0.0",
-				"id": "49f4f8a7a81eebadfe694353481fda1d",
-				"name": "A mail forwarding rule was configured in Google Workspace",
+				"id": "881f1715f4cbf2f9c166942009c54147",
+				"name": "CVE-2025-49704 and CVE-2025-49706 and CVE-2025-53770 and CVE-2025-53771 - Microsoft SharePoint ToolShell vulnerability chain",
 				"toversion": ""
 			},
 			{
@@ -746,74 +586,34 @@
 			},
 			{
 				"deprecated": false,
-				"description": "This trigger is responsible for handling alerts where a user executes suspicious LDAP enumeration queries.",
+				"description": "This trigger runs the Exchange forwarding rule alerts playbook, which handles the External Exchange inbox forwarding rule configured, Suspicious Exchange inbox forwarding rule configured and Suspicious Exchange email-hiding inbox rule alerts.",
 				"fromversion": "8.8.0",
-				"id": "52c5358feb546561b409817ba1f129d2",
-				"name": "A user executed multiple LDAP enumeration queries",
+				"id": "4402083915accc60f72e10bb59224606",
+				"name": "Exchange forwarding rule configured",
 				"toversion": ""
 			},
 			{
 				"deprecated": false,
-				"description": "This trigger is responsible for handling A user deleted multiple users for the first time alert.",
-				"fromversion": "8.9.0",
-				"id": "8f6bcff88d1c470d8c5af8b8b27cda07",
-				"name": "A user deleted multiple users for the first time",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'Intense SSO failures with suspicious characteristics' alert",
-				"fromversion": "8.9.0",
-				"id": "274ea382e50cb02c3d1ae7b5858b98c5",
-				"name": "Intense SSO failures with suspicious characteristics",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'SSO Brute Force Threat Detected' and 'SSO Brute Force Activity Observed' alerts",
+				"description": "This trigger is responsible for handling Exchange User Mailbox Forwarding alerts.",
 				"fromversion": "8.0.0",
-				"id": "ba97ad9acb4c7d7a428ff876d71e0b38",
-				"name": "SSO Brute Force",
+				"id": "77c352f11994a9c17008e7e0354a2c96",
+				"name": "Exchange User Mailbox Forwarding",
 				"toversion": ""
 			},
 			{
 				"deprecated": false,
-				"description": "This trigger runs the SAP NetWeaver Visual Composer playbook for 'CVE Exploitation - 986328356' alerts.",
-				"fromversion": "8.8.0",
-				"id": "dcc14135064351f5c62e090fe0784636",
-				"name": "CVE-2025-31324 - SAP NetWeaver Visual Composer",
+				"description": "This trigger is responsible for handling alerts where role settings inside Azure AD Privileged Identity Management (PIM) have been changed.",
+				"fromversion": "8.9.0",
+				"id": "131fb92f3a07d20cfc2caff5ce9616cf",
+				"name": "Azure AD PIM role settings change",
 				"toversion": ""
 			},
 			{
 				"deprecated": false,
-				"description": "This trigger is responsible for handling alerts where a suspicious hidden user is created.",
-				"fromversion": "8.8.0",
-				"id": "4ce60e9949d518fdc734c3151e2cfe4a",
-				"name": "Alert Trigger - Suspicious Hidden User Created",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling 'Uncommon remote scheduled task creation' alerts",
-				"fromversion": "8.8.0",
-				"id": "a7ca7229e794c8345cea0ec9827ac9f9",
-				"name": "Endpoint initiated uncommon remote scheduled task creation",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'Windows Event Log Was Cleared' alerts",
-				"fromversion": "8.8.0",
-				"id": "1f4a5afb3a984d8d6eaec744d04a1a78",
-				"name": "Event Log Was Cleared",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling several the 'Unsigned and unpopular process performed an injection' alerts",
-				"fromversion": "8.8.0",
-				"id": "934cafcebab59e0ca332603850b0e2e5",
-				"name": "Unsigned and unpopular process performed an injection",
+				"description": "This trigger is responsible for handling SSO Password Spray alerts",
+				"fromversion": "8.0.0",
+				"id": "461746d489017d070d0ac7ffc7fec57d",
+				"name": "SSO Password Spray",
 				"toversion": ""
 			},
 			{
@@ -826,6 +626,94 @@
 			},
 			{
 				"deprecated": false,
+				"description": "This trigger is responsible for handling A user deleted multiple users for the first time alert.",
+				"fromversion": "8.9.0",
+				"id": "8f6bcff88d1c470d8c5af8b8b27cda07",
+				"name": "A user deleted multiple users for the first time",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'Suspicious interactive execution of a binary from the tmp folder', 'Suspicious cron job task execution of a binary from the tmp folder' and 'A web server process executed an unpopular application from the tmp folder' alerts via the 'Suspicious execution from tmp folder' playbook",
+				"fromversion": "8.8.0",
+				"id": "a69c1c4b366ed567ee21a788e0146b21",
+				"name": "Suspicious execution from tmp folder",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling 'Unusual process accessed web browser credentials and executed by a terminal process' alerts",
+				"fromversion": "8.8.0",
+				"id": "da8d34ff22661f1bddb0fa372aee9cca",
+				"name": "Unusual process accessed web browser credentials and executed by a terminal process",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'Azure AD account unlock/successful password reset' alert",
+				"fromversion": "8.0.0",
+				"id": "0e8741d5fbc51b22a796898b77c3a21d",
+				"name": "Azure AD account unlock or password reset",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling 'Office process creates a scheduled task via file access' alerts",
+				"fromversion": "8.8.0",
+				"id": "5a18cefb3601f01ef4201962af6ae475",
+				"name": "Office process creates a scheduled task via file access",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling External Login Password Spray attacks.",
+				"fromversion": "8.0.0",
+				"id": "1b588f67109cf13c3da42a9e163f3e09",
+				"name": "External Login Password Spray",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'A successful SSO sign-in from TOR' and the 'A successful SSO sign-in from TOR via a mobile device' alerts",
+				"fromversion": "8.0.0",
+				"id": "4a90702e6a1e31ff82c4a5b8e27360cd",
+				"name": "A successful SSO sign-in from TOR",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'Script file added to startup-related Registry keys' alerts",
+				"fromversion": "8.9.0",
+				"id": "5e65b1043ec813f6e7cfd06c2585476e",
+				"name": "Script file added to startup-related Registry keys",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling 'Uncommon creation or access operation of sensitive shadow copy by a high-risk process",
+				"fromversion": "8.8.0",
+				"id": "41f9310c50c55b761fdc0aa5c48d6459",
+				"name": "Uncommon creation or access operation of sensitive shadow copy by a high-risk process",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling Suspicious SaaS Access From a TOR Exit Node",
+				"fromversion": "8.0.0",
+				"id": "e316852d358f8de8192842f6a7156142",
+				"name": "Suspicious SaaS Access From a TOR Exit Node",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'First Azure AD PowerShell operation for a user' alert",
+				"fromversion": "8.9.0",
+				"id": "bcf29aac2aec3afa6e8870b5876e74c1",
+				"name": "First Azure AD PowerShell operation for a user",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
 				"description": "This trigger is responsible for handling 'Uncommon execution of ODBCConf' alerts.",
 				"fromversion": "8.8.0",
 				"id": "214d2812b0ffe67e5459f0ee54049d3a",
@@ -834,10 +722,258 @@
 			},
 			{
 				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'Credential Dumping using a known tool' alerts",
+				"fromversion": "8.8.0",
+				"id": "07b3d02109c59c627caf03a46a877d4e",
+				"name": "Credential Dumping using a known tool",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling alerts where a user executes suspicious LDAP enumeration queries.",
+				"fromversion": "8.8.0",
+				"id": "52c5358feb546561b409817ba1f129d2",
+				"name": "A user executed multiple LDAP enumeration queries",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'Windows Event Log Was Cleared' alerts",
+				"fromversion": "8.8.0",
+				"id": "1f4a5afb3a984d8d6eaec744d04a1a78",
+				"name": "Event Log Was Cleared",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling 'Uncommon remote scheduled task created",
+				"fromversion": "8.0.0",
+				"id": "b0becdc3d9a6a5636191dd23bf5998b1",
+				"name": "Uncommon remote scheduled task created",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling SSO Authentication With Suspicious Characteristics alerts",
+				"fromversion": "8.0.0",
+				"id": "44d98a2e42036c1d90a3d45c23bb3282",
+				"name": "SSO Authentication With Suspicious Characteristics",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling 'Uncommon remote scheduled task creation' alerts",
+				"fromversion": "8.8.0",
+				"id": "a7ca7229e794c8345cea0ec9827ac9f9",
+				"name": "Endpoint initiated uncommon remote scheduled task creation",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'SSO Brute Force Threat Detected' and 'SSO Brute Force Activity Observed' alerts",
+				"fromversion": "8.0.0",
+				"id": "ba97ad9acb4c7d7a428ff876d71e0b38",
+				"name": "SSO Brute Force",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling alerts for Suspicious local administrator login.",
+				"fromversion": "8.0.0",
+				"id": "1dd58cf4145efadf6f4d34f53ef5d034",
+				"name": "Suspicious local administrator login",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling alerts where the Service Principal Names (SPNs) are cleared from a domain machine account.",
+				"fromversion": "8.9.0",
+				"id": "1cd448c4fd80325a570d3fb806ee8313",
+				"name": "SPNs cleared from a machine account",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'Suspicious authentication method addition to Azure account' alert",
+				"fromversion": "8.9.0",
+				"id": "adebb4b10ded975f41ee4caaddbdd145",
+				"name": "Authentication method added to an Azure account",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'Msiexec execution of an executable from an uncommon remote location with a specific port' and 'Msiexec execution of an executable from an uncommon remote location without properties' alerts via the 'Msiexec_execution_of_an_executable_from_an_uncommon_remote_location' playbook",
+				"fromversion": "8.8.0",
+				"id": "c3f1be30a61c743ffb869c7dbb0c51f9",
+				"name": "Msiexec execution of an executable from an uncommon remote location",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger runs the Suspicious Conditional Access operation for an identity playbook, which handles the Suspicious Conditional Access operation for an identity alert.",
+				"fromversion": "8.9.0",
+				"id": "3a347780e43332295aad0ac01b34d6d8",
+				"name": "Suspicious Conditional Access operation for an identity",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger runs the SAP NetWeaver Visual Composer playbook for 'CVE Exploitation - 986328356' alerts.",
+				"fromversion": "8.8.0",
+				"id": "dcc14135064351f5c62e090fe0784636",
+				"name": "CVE-2025-31324 - SAP NetWeaver Visual Composer",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling 'Suspicious process execution by scheduled task on a sensitive server' alert",
+				"fromversion": "8.8.0",
+				"id": "f7f6758a6905f037fec8a37308f1739a",
+				"name": "Suspicious process execution by scheduled task on a sensitive server",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'Suspicious LDAP search query executed' and 'Possible LDAP enumeration by unsigned process' alerts via the 'Suspicious LDAP search query' playbook",
+				"fromversion": "8.8.0",
+				"id": "c028aba32791548292993fec8cec5af4",
+				"name": "Suspicious LDAP search query",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'A Successful login from TOR' alert",
+				"fromversion": "8.0.0",
+				"id": "47cae2955f760d5ed08bf3c0b922887a",
+				"name": "A Successful login from TOR",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling Remote WMI Process Execution alerts",
+				"fromversion": "8.0.0",
+				"id": "edbc729e3551d463dc2e16d3838c9af3",
+				"name": "Remote WMI Process Execution",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling several the 'Unsigned and unpopular process performed an injection' alerts",
+				"fromversion": "8.8.0",
+				"id": "934cafcebab59e0ca332603850b0e2e5",
+				"name": "Unsigned and unpopular process performed an injection",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'Execution of an uncommon process at an early startup stage with suspicious characteristics' and the 'Execution of an uncommon process with a local/domain user SID at an early startup stage with suspicious characteristics' alerts",
+				"fromversion": "8.9.0",
+				"id": "7f2f88e5e8e929f8d3d01d234c3b9f41",
+				"name": "Execution of an uncommon process at an early startup stage",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling Abnormal Azure Temporary Access Pass (TAP) account registration alerts.",
+				"fromversion": "8.9.0",
+				"id": "1f89bd9eae3f34c7dfbcb8cc944c4a33",
+				"name": "Azure Temporary Access Pass (TAP) registered to an account",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling several the 'AppleScript Process Executed With Rare Command Line' alerts",
+				"fromversion": "8.8.0",
+				"id": "66c14136957cd342e560cedb6e29d3c6",
+				"name": "AppleScript Process Executed With Rare Command Line",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling Compromise Accounts alerts where user rejected MFA attempts.",
+				"fromversion": "8.8.0",
+				"id": "2120c09a8de842f4aae8506487b01e8c",
+				"name": "Compromise Accounts - User has rejected numerous SSO MFA attempts",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger runs the A MFA was disabled for an Azure identity playbook, which handles the 'MFA was disabled for an Azure identity' and 'MFA was disabled for an Azure identity from a new country' alerts.",
+				"fromversion": "8.9.0",
+				"id": "159eeaa4dfd198e11af883e4ecc8ab5f",
+				"name": "MFA was disabled for an Azure identity",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'Unprivileged process opened a registry hive' alert",
+				"fromversion": "8.0.0",
+				"id": "a8782c70ecf48029bd6c6634f1b5beb5",
+				"name": "Unprivileged process opened a registry hive",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'SSO Brute Force Threat Detected' and 'SSO Brute Force Activity Observed' alerts",
+				"fromversion": "8.0.0",
+				"id": "4c039023b3a5216ba6774484bf1859ea",
+				"name": "SSO Brute Force Activity",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling 'Suspicious certutil command line' alerts",
+				"fromversion": "8.8.0",
+				"id": "d30b757218c4a36e4b94d8033cf55785",
+				"name": "Suspicious certutil command line",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger runs the A mail forwarding rule was configured in Google Workspace playbook, which handles the A mail forwarding rule was configured in Google Workspace and A mail forwarding rule was configured in Google Workspace to an uncommon domain alerts.",
+				"fromversion": "8.0.0",
+				"id": "49f4f8a7a81eebadfe694353481fda1d",
+				"name": "A mail forwarding rule was configured in Google Workspace",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
 				"description": "This trigger is responsible for handling excessive user account lockouts.",
 				"fromversion": "8.8.0",
 				"id": "16b8fde623a06edcc92b4f6aa7b52db2",
 				"name": "Excessive User Account Lockouts",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling Valid Accounts alerts related to successful guest user invitations.",
+				"fromversion": "8.8.0",
+				"id": "06fd5112c09b4312c1a8e92bcb5aa30f",
+				"name": "Successful guest user invitation",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling alerts where a suspicious hidden user is created.",
+				"fromversion": "8.8.0",
+				"id": "4ce60e9949d518fdc734c3151e2cfe4a",
+				"name": "Alert Trigger - Suspicious Hidden User Created",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger runs the SAP NetWeaver Visual Composer playbook for 'CVE Exploitation - 2037164431' and 'CVE Exploitation - 3823999562' alerts",
+				"fromversion": "8.9.0",
+				"id": "40dbfd7a6d7c4126196fb155b717d60a",
+				"name": "CVE-2025-59287 - Microsoft WSUS Remote Code Execution",
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling the 'Intense SSO failures with suspicious characteristics' alert",
+				"fromversion": "8.9.0",
+				"id": "274ea382e50cb02c3d1ae7b5858b98c5",
+				"name": "Intense SSO failures with suspicious characteristics",
 				"toversion": ""
 			},
 			{
@@ -851,149 +987,13 @@
 					"agentix"
 				],
 				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling 'Unusual process accessed web browser credentials and executed by a terminal process' alerts",
-				"fromversion": "8.8.0",
-				"id": "da8d34ff22661f1bddb0fa372aee9cca",
-				"name": "Unusual process accessed web browser credentials and executed by a terminal process",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'Suspicious authentication method addition to Azure account' alert",
-				"fromversion": "8.9.0",
-				"id": "adebb4b10ded975f41ee4caaddbdd145",
-				"name": "Authentication method added to an Azure account",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'SSO Brute Force Threat Detected' and 'SSO Brute Force Activity Observed' alerts",
-				"fromversion": "8.0.0",
-				"id": "4c039023b3a5216ba6774484bf1859ea",
-				"name": "SSO Brute Force Activity",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'A successful SSO sign-in from TOR' and the 'A successful SSO sign-in from TOR via a mobile device' alerts",
-				"fromversion": "8.0.0",
-				"id": "4a90702e6a1e31ff82c4a5b8e27360cd",
-				"name": "A successful SSO sign-in from TOR",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'Execution of an uncommon process at an early startup stage with suspicious characteristics' and the 'Execution of an uncommon process with a local/domain user SID at an early startup stage with suspicious characteristics' alerts",
-				"fromversion": "8.9.0",
-				"id": "7f2f88e5e8e929f8d3d01d234c3b9f41",
-				"name": "Execution of an uncommon process at an early startup stage",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger runs the SAP NetWeaver Visual Composer playbook for 'CVE Exploitation - 2037164431' and 'CVE Exploitation - 3823999562' alerts",
-				"fromversion": "8.9.0",
-				"id": "40dbfd7a6d7c4126196fb155b717d60a",
-				"name": "CVE-2025-59287 - Microsoft WSUS Remote Code Execution",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'Script file added to startup-related Registry keys' alerts",
-				"fromversion": "8.9.0",
-				"id": "5e65b1043ec813f6e7cfd06c2585476e",
-				"name": "Script file added to startup-related Registry keys",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'Azure AD account unlock/successful password reset' alert",
-				"fromversion": "8.0.0",
-				"id": "0e8741d5fbc51b22a796898b77c3a21d",
-				"name": "Azure AD account unlock or password reset",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling 'Uncommon remote scheduled task created",
-				"fromversion": "8.0.0",
-				"id": "b0becdc3d9a6a5636191dd23bf5998b1",
-				"name": "Uncommon remote scheduled task created",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling 'Office process creates a scheduled task via file access' alerts",
-				"fromversion": "8.8.0",
-				"id": "5a18cefb3601f01ef4201962af6ae475",
-				"name": "Office process creates a scheduled task via file access",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'Credential Dumping using a known tool' alerts",
-				"fromversion": "8.8.0",
-				"id": "07b3d02109c59c627caf03a46a877d4e",
-				"name": "Credential Dumping using a known tool",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling SSO Password Spray alerts",
-				"fromversion": "8.0.0",
-				"id": "461746d489017d070d0ac7ffc7fec57d",
-				"name": "SSO Password Spray",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'Suspicious LDAP search query executed' and 'Possible LDAP enumeration by unsigned process' alerts via the 'Suspicious LDAP search query' playbook",
-				"fromversion": "8.8.0",
-				"id": "c028aba32791548292993fec8cec5af4",
-				"name": "Suspicious LDAP search query",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger runs the Exchange forwarding rule alerts playbook, which handles the External Exchange inbox forwarding rule configured, Suspicious Exchange inbox forwarding rule configured and Suspicious Exchange email-hiding inbox rule alerts.",
-				"fromversion": "8.8.0",
-				"id": "4402083915accc60f72e10bb59224606",
-				"name": "Exchange forwarding rule configured",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'CVE Exploitation - 685768089' , 'CVE Exploitation - 818854253', and 'CVE Exploitation - 903162508' alerts alerts.",
-				"fromversion": "8.9.0",
-				"id": "881f1715f4cbf2f9c166942009c54147",
-				"name": "CVE-2025-49704 and CVE-2025-49706 and CVE-2025-53770 and CVE-2025-53771 - Microsoft SharePoint ToolShell vulnerability chain",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling the 'A Successful login from TOR' alert",
-				"fromversion": "8.0.0",
-				"id": "47cae2955f760d5ed08bf3c0b922887a",
-				"name": "A Successful login from TOR",
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger runs the A MFA was disabled for an Azure identity playbook, which handles the 'MFA was disabled for an Azure identity' and 'MFA was disabled for an Azure identity from a new country' alerts.",
-				"fromversion": "8.9.0",
-				"id": "159eeaa4dfd198e11af883e4ecc8ab5f",
-				"name": "MFA was disabled for an Azure identity",
-				"toversion": ""
 			}
 		],
 		"widget": null,
 		"wizard": null
 	},
 	"created": "2025-03-29T09:30:43Z",
-	"currentVersion": "1.3.54",
+	"currentVersion": "1.3.55",
 	"defaultDataSource": {
 		"id": "",
 		"name": ""
@@ -1004,77 +1004,77 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "1.7.0",
+			"minVersion": "1.7.2",
 			"name": "Active Directory Query"
 		},
 		"AggregatedScripts": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.3.43",
+			"minVersion": "1.3.48",
 			"name": "Aggregated Scripts"
 		},
 		"AzureLogAnalytics": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "1.1.57",
+			"minVersion": "1.1.58",
 			"name": "Azure Log Analytics"
 		},
 		"AzureRiskyUsers": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "1.1.52",
+			"minVersion": "1.1.53",
 			"name": "Azure Risky Users"
 		},
 		"Base": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.41.91",
+			"minVersion": "1.42.3",
 			"name": "Base"
 		},
 		"CommonPlaybooks": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "2.8.2",
+			"minVersion": "2.8.3",
 			"name": "Common Playbooks"
 		},
 		"CommonScripts": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.22.20",
+			"minVersion": "1.22.29",
 			"name": "Common Scripts"
 		},
 		"Core": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "3.5.55",
+			"minVersion": "3.5.67",
 			"name": "Core"
 		},
 		"CortexXDR": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "6.3.21",
+			"minVersion": "6.3.30",
 			"name": "Cortex XDR by Palo Alto Networks"
 		},
 		"FiltersAndTransformers": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.4.22",
+			"minVersion": "1.4.23",
 			"name": "Filters And Transformers"
 		},
 		"GSuiteAdmin": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "1.2.13",
+			"minVersion": "1.2.14",
 			"name": "G Suite Admin"
 		},
 		"Gmail": {
@@ -1088,70 +1088,70 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "1.5.0",
+			"minVersion": "1.5.1",
 			"name": "Google Drive"
 		},
 		"Microsoft365Defender": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "4.6.34",
+			"minVersion": "4.6.35",
 			"name": "Microsoft 365 Defender"
 		},
 		"MicrosoftExchangeOnline": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "1.9.1",
+			"minVersion": "1.10.2",
 			"name": "Microsoft Exchange Online"
 		},
 		"MicrosoftGraphFiles": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "1.3.1",
+			"minVersion": "1.3.2",
 			"name": "Microsoft Graph Files"
 		},
 		"MicrosoftGraphIdentityandAccess": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "1.4.7",
+			"minVersion": "1.4.10",
 			"name": "Microsoft Graph Identity and Access"
 		},
 		"MicrosoftGraphUser": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "1.7.4",
+			"minVersion": "1.7.7",
 			"name": "Microsoft Graph User"
 		},
 		"Okta": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "3.3.41",
+			"minVersion": "3.3.42",
 			"name": "Okta"
 		},
 		"PAN-OS": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "2.6.34",
+			"minVersion": "2.6.40",
 			"name": "PAN-OS by Palo Alto Networks"
 		},
 		"Palo_Alto_Networks_WildFire": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "2.1.79",
+			"minVersion": "2.1.83",
 			"name": "WildFire by Palo Alto Networks"
 		},
 		"Slack": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "3.8.3",
+			"minVersion": "3.8.8",
 			"name": "Slack"
 		}
 	},
@@ -1172,44 +1172,9 @@
 	"installMessage": "",
 	"integrations": [
 		{
-			"id": "AzureRiskyUsers",
-			"imagePath": "content/packs/AzureRiskyUsers/AzureRiskyUsers_image.png",
-			"name": "Azure Risky Users"
-		},
-		{
-			"id": "Microsoft Graph User",
-			"imagePath": "content/packs/MicrosoftGraphUser/MicrosoftGraphUser_image.png",
-			"name": "Entra ID Users"
-		},
-		{
 			"id": "Microsoft_Graph_Files",
 			"imagePath": "content/packs/MicrosoftGraphFiles/Microsoft_Graph_Files_image.png",
 			"name": "O365 File Management (Onedrive/Sharepoint/Teams)"
-		},
-		{
-			"id": "Active Directory Query v2",
-			"imagePath": "content/packs/Active_Directory_Query/ActiveDirectoryQueryv2_image.png",
-			"name": "Active Directory Query v2"
-		},
-		{
-			"id": "GSuiteAdmin",
-			"imagePath": "content/packs/GSuiteAdmin/GSuiteAdmin_image.png",
-			"name": "Google Workspace Admin"
-		},
-		{
-			"id": "GoogleDrive",
-			"imagePath": "content/packs/GoogleDrive/GoogleDrive_image.png",
-			"name": "Google Drive"
-		},
-		{
-			"id": "MicrosoftGraphIdentityandAccess",
-			"imagePath": "content/packs/MicrosoftGraphIdentityandAccess/MicrosoftGraphIdentityandAccess_image.png",
-			"name": "Entra ID Identity And Access"
-		},
-		{
-			"id": "Panorama",
-			"imagePath": "content/packs/PAN-OS/Panorama_image.png",
-			"name": "Palo Alto Networks PAN-OS"
 		},
 		{
 			"id": "EWS Extension Online Powershell v2",
@@ -1242,6 +1207,21 @@
 			"name": "O365 - Security And Compliance - Content Search v2 (Deprecated)"
 		},
 		{
+			"id": "O365 Message Trace",
+			"imagePath": "content/packs/MicrosoftExchangeOnline/O365MessageTrace_image.png",
+			"name": "O365 Message Trace"
+		},
+		{
+			"id": "Microsoft Graph User",
+			"imagePath": "content/packs/MicrosoftGraphUser/MicrosoftGraphUser_image.png",
+			"name": "Entra ID Users"
+		},
+		{
+			"id": "AzureRiskyUsers",
+			"imagePath": "content/packs/AzureRiskyUsers/AzureRiskyUsers_image.png",
+			"name": "Azure Risky Users"
+		},
+		{
 			"id": "WildFire-Reports",
 			"imagePath": "content/packs/Palo_Alto_Networks_WildFire/WildFire-Reports_image.png",
 			"name": "Palo Alto Networks WildFire Reports"
@@ -1252,49 +1232,19 @@
 			"name": "Palo Alto Networks WildFire v2"
 		},
 		{
-			"id": "Azure Log Analytics",
-			"imagePath": "content/packs/AzureLogAnalytics/AzureLogAnalytics_image.png",
-			"name": "Azure Log Analytics"
+			"id": "Cortex XDR - IOC",
+			"imagePath": "content/packs/CortexXDR/CortexXDR-IOC_image.png",
+			"name": "Cortex XDR - IOC"
 		},
 		{
-			"id": "Slack Event Collector",
-			"imagePath": "content/packs/Slack/SlackEventCollector_image.png",
-			"name": "Slack Event Collector"
+			"id": "Cortex XDR - XQL Query Engine",
+			"imagePath": "content/packs/CortexXDR/CortexXDR-XQLQueryEngine_image.png",
+			"name": "Cortex XDR - XQL Query Engine"
 		},
 		{
-			"id": "Slack IAM",
-			"imagePath": "content/packs/Slack/SlackIAM_image.png",
-			"name": "Slack IAM"
-		},
-		{
-			"id": "SlackV2",
-			"imagePath": "content/packs/Slack/SlackV2_image.png",
-			"name": "Slack v2 (Deprecated)"
-		},
-		{
-			"id": "SlackV3",
-			"imagePath": "content/packs/Slack/SlackV3_image.png",
-			"name": "Slack v3"
-		},
-		{
-			"id": "Cortex Core - Platform",
-			"imagePath": "content/packs/Core/CortexCore-Platform_image.png",
-			"name": "Cortex Platform - Core"
-		},
-		{
-			"id": "Cortex Core - IOC",
-			"imagePath": "content/packs/Core/CortexCore-IOC_image.png",
-			"name": "Indicators detection"
-		},
-		{
-			"id": "Cortex Core - IR",
-			"imagePath": "content/packs/Core/CortexCore-IR_image.png",
-			"name": "Investigation \u0026 Response"
-		},
-		{
-			"id": "XQL Query Engine",
-			"imagePath": "content/packs/Core/XQLQueryEngine_image.png",
-			"name": "XQL Query Engine"
+			"id": "Cortex XDR - IR",
+			"imagePath": "content/packs/CortexXDR/CortexXDR-IR_image.png",
+			"name": "Palo Alto Networks Cortex XDR - Investigation and Response"
 		},
 		{
 			"id": "Okta Event Collector",
@@ -1317,6 +1267,56 @@
 			"name": "okta (Deprecated)"
 		},
 		{
+			"id": "Azure Log Analytics",
+			"imagePath": "content/packs/AzureLogAnalytics/AzureLogAnalytics_image.png",
+			"name": "Azure Log Analytics"
+		},
+		{
+			"id": "Active Directory Query v2",
+			"imagePath": "content/packs/Active_Directory_Query/ActiveDirectoryQueryv2_image.png",
+			"name": "Active Directory Query v2"
+		},
+		{
+			"id": "GoogleDrive",
+			"imagePath": "content/packs/GoogleDrive/GoogleDrive_image.png",
+			"name": "Google Drive"
+		},
+		{
+			"id": "Cortex Core - Platform",
+			"imagePath": "content/packs/Core/CortexCore-Platform_image.png",
+			"name": "Cortex Platform - Core"
+		},
+		{
+			"id": "Cortex Core - IOC",
+			"imagePath": "content/packs/Core/CortexCore-IOC_image.png",
+			"name": "Indicators detection"
+		},
+		{
+			"id": "Cortex Core - IR",
+			"imagePath": "content/packs/Core/CortexCore-IR_image.png",
+			"name": "Investigation \u0026 Response"
+		},
+		{
+			"id": "XQL Query Engine",
+			"imagePath": "content/packs/Core/XQLQueryEngine_image.png",
+			"name": "XQL Query Engine"
+		},
+		{
+			"id": "Gmail",
+			"imagePath": "content/packs/Gmail/Gmail_image.png",
+			"name": "Gmail"
+		},
+		{
+			"id": "MicrosoftGraphIdentityandAccess",
+			"imagePath": "content/packs/MicrosoftGraphIdentityandAccess/MicrosoftGraphIdentityandAccess_image.png",
+			"name": "Entra ID Identity And Access"
+		},
+		{
+			"id": "Panorama",
+			"imagePath": "content/packs/PAN-OS/Panorama_image.png",
+			"name": "Palo Alto Networks PAN-OS"
+		},
+		{
 			"id": "Microsoft 365 Defender",
 			"imagePath": "content/packs/Microsoft365Defender/Microsoft365Defender_image.png",
 			"name": "Microsoft 365 Defender"
@@ -1332,28 +1332,33 @@
 			"name": "O365 Defender SafeLinks - Single User (Deprecated)"
 		},
 		{
-			"id": "Gmail",
-			"imagePath": "content/packs/Gmail/Gmail_image.png",
-			"name": "Gmail"
+			"id": "GSuiteAdmin",
+			"imagePath": "content/packs/GSuiteAdmin/GSuiteAdmin_image.png",
+			"name": "Google Workspace Admin"
 		},
 		{
-			"id": "Cortex XDR - IOC",
-			"imagePath": "content/packs/CortexXDR/CortexXDR-IOC_image.png",
-			"name": "Cortex XDR - IOC"
+			"id": "Slack Event Collector",
+			"imagePath": "content/packs/Slack/SlackEventCollector_image.png",
+			"name": "Slack Event Collector"
 		},
 		{
-			"id": "Cortex XDR - XQL Query Engine",
-			"imagePath": "content/packs/CortexXDR/CortexXDR-XQLQueryEngine_image.png",
-			"name": "Cortex XDR - XQL Query Engine"
+			"id": "Slack IAM",
+			"imagePath": "content/packs/Slack/SlackIAM_image.png",
+			"name": "Slack IAM"
 		},
 		{
-			"id": "Cortex XDR - IR",
-			"imagePath": "content/packs/CortexXDR/CortexXDR-IR_image.png",
-			"name": "Palo Alto Networks Cortex XDR - Investigation and Response"
+			"id": "SlackV2",
+			"imagePath": "content/packs/Slack/SlackV2_image.png",
+			"name": "Slack v2 (Deprecated)"
+		},
+		{
+			"id": "SlackV3",
+			"imagePath": "content/packs/Slack/SlackV3_image.png",
+			"name": "Slack v3"
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "1.3.54",
+	"itemVersion": "1.3.55",
 	"keywords": [],
 	"legacy": true,
 	"modules": [],
@@ -1389,9 +1394,9 @@
 		"Palo Alto Networks Products"
 	],
 	"toServerVersion": "",
-	"updated": "2026-06-10T20:22:15Z",
+	"updated": "2026-07-05T20:10:57Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "10040983",
+	"versionInfo": "10750492",
 	"videos": []
 }
