@@ -94,7 +94,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 3.8.7
+    itemVersion: 3.8.11
     packID: Slack
     packName: Slack
     packPropagationLabels:
@@ -440,15 +440,15 @@ script:
       description: Reason why the API failed.
       type: String
     supportedModules: []
-  dockerimage: demisto/python3:3.12.8.3296088
+  dockerimage: demisto/python3:3.12.13.10116658
   nativeimage:
   - "8.8"
   - "8.6"
   runonce: false
   script: |
     register_module_line('Slack IAM', 'start', __line__())
-    CONSTANT_PACK_VERSION = '3.8.7'
-    demisto.debug('pack id = Slack, pack version = 3.8.7')
+    CONSTANT_PACK_VERSION = '3.8.11'
+    demisto.debug('pack id = Slack, pack version = 3.8.11')
     import traceback
 
 
@@ -1639,5 +1639,5 @@ script:
 sectionorder:
 - Connect
 - Collect
-signature: K5xIc1NiTD8sRskFb+zuqPeryvB/gp/hXYuF+daoI4K7bMNyTyMElCbgj7vwzeGT9PjFTOiUCPkBgyNSKxm4CqjUJYhifoWJ+e+VXugsrErWR3g7/2V83EofPqZB6p9mticQ3+HPjtdiQaSNAcOf0vnfdJ6mXUw7rAEoN6uxn2971o5yZg9XZVez27HKZAhyXqwWmrFWjtsKq+++bqQenfGtHBtnZOcmjOO2HVGx9RHLe60ubBmVn1HjJ2GzmIfCCAihL5aXC/4V6V4pRLJdxR24ZaD96St9p/9wnh5zfmyvF5EBurjRqKwLFqlDXe2HOBIUWpM10H+cK32P1NM4eA==
+signature: RDHdue90eUXZ63EHd+Ho9zkOjSLgB//uOMre8L4eP62IrkYgqyNr2S8kXJhPNpZPQqLS/NIH+VD2ELBt29Oe6KjcrFuq70aRo3ctLGjFrUZkmsNSyvUzj+a7H0uoE/YF8CASkyj1FWIX19DpTmMQXYchqSE5FbW8COEhcC90dZCgxgSSvupaQhLkoAtS/vPmFbdOr8wgWRU4U34HzK37waPh/ryY+ohFzbL4K+xqS8+aVD9cO4Xa1lrwdiQW8ttFzWaadU8zlITb/qu4QLaZ2owPu7+REDqNX3Q7ZuBpcegNnU2cT5pyugN6DPIdgHcsiYw0EUZxe4Fh+A0sR3/S3Q==
 system: true
