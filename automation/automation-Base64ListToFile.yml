@@ -23,7 +23,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -32,7 +32,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -61,8 +61,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('Base64ListToFile', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import base64
   import zlib
 
@@ -105,7 +105,7 @@ script: |
 
   register_module_line('Base64ListToFile', 'end', __line__())
 scripttarget: 0
-signature: xvODqZRri1yA1wD0zD5zjLWchczALePapIXOANWHGCGKOzTBEi3P6fQejOyLiwZedicTcGTGnBlwRnhcr6i/zLgO1+gnRK4OMpHJdb6j21xcoUCnYPl793hSN6tFck7VGJZ9HxfA5jIzybO6pJ+lLEHn0BXAUL3GgHJxm0BLc9+zd0UEgs4fStxgSsBhDTRZ89pYqkVMmqqHFeVtYA4xx3RtjIPR5GMw65YOdMqefU0IbLioF7bWXhqibf7Qjd/vpxZkRsGbXli/Q618fVG28BGagw6s3NeLzA4yG/4NV4hw7EwC2lJ4T2uXRNu5xIsoK77VkpyBNCvzOSrQ7CRpVw==
+signature: MrraAepVUt90rAuU1tR0ndmNzxPPI01QwYjkWkssEMqsTkGbO3d/s4XLFR4NX7OagnY9gYdhxRNqJEAvx6jlgMMUobVsUWBS3et5kLZ01/De3PS0c9JOmGk+9lU2uCPUIXUmWG+bw6JRys1YzoYzFJqd5B2q/d+jigrvmmxZ5qyxMw/3Fh6NUUfupf2aJDgG7X8XMKsFyRSqP/IkBLP8dxLlwmy72ldHNXt54dwHA6X2soVGSAOKAV6QFNWqE4k6t0YYv9yHTIk7IswYpq73oAw/w1rNgz2cg0ZP52zqLeCo0aK7HLe8algDQbCz1SEH7g9DOGmsS2twZyKjBhEH+A==
 subtype: python3
 system: true
 tags:
