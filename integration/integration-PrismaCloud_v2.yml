@@ -144,7 +144,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 4.4.30
+    itemVersion: 4.4.33
     packID: PrismaCloud
     packName: Prisma Cloud by Palo Alto Networks
     packPropagationLabels:
@@ -4418,7 +4418,7 @@ script:
       description: The priority of the asset network.
       type: Number
     supportedModules: []
-  dockerimage: demisto/python3:3.12.13.8428455
+  dockerimage: demisto/python3:3.12.13.10116658
   isfetch: true
   nativeimage:
   - "8.8"
@@ -4426,8 +4426,8 @@ script:
   runonce: false
   script: |
     register_module_line('PrismaCloud v2', 'start', __line__())
-    CONSTANT_PACK_VERSION = '4.4.30'
-    demisto.debug('pack id = PrismaCloud, pack version = 4.4.30')
+    CONSTANT_PACK_VERSION = '4.4.33'
+    demisto.debug('pack id = PrismaCloud, pack version = 4.4.33')
     import json
     from copy import deepcopy
 
@@ -8321,5 +8321,5 @@ script:
 sectionorder:
 - Connect
 - Collect
-signature: aAgZ3l82JjFysvUjJlOjk38gz+Q/2rgtLhrg1Z5i+Y8uAsE9MX60MqMMLSLryLbq9TwSt2Rt2NaG5sZseMDpZKivBC9qa0jRWNBsVzEXkZXQ7XZliz+0GEB2igOTiyy9sl+rf2FBHYONuAIcJi8xw1ePSAYmhmz77HygP+h3UIY/gJ133s3SGbuNPptBY5hwMAE5hk7fl/9wBJB08Q5Cqg4gGpko/dffb8NGAqKlCwTYTANbPLp0JqmDk7BUmmX7njTEG6rT68WnWLsAmu89mIKz3Gj8BDeq1A/uF+coRZf+ewnJjVpeBcj29ACLBJzl/RJbxw4Hny1a61K3SZNHfg==
+signature: k2oCGZsy1yBz2uTX9mmLLnRU4pQRw8RHolULVut0PsBC5cmVu94yJEBZY90VQ6RZH+qMhYB1RLrAHniXgaDEgooi/FYnj02y+yFm1jXYGzDXfTK47cWytkDPIaeL805kCc7zzFWyUvEFPLNo6FCmH1oVkIenPbxizScLvzFMellcskeFzxCt1GRboRoBqxv22k0FK1tqm9qGDPsagEhHHKqouTyZSLKPoUBiXfxTQiOUL43igTYnK5BReYTSA6ELMiMSLp0a13Tb2JXUVKP5Ik82uEYKFThWpy/OgszdKB3v63/u7lS44JI1V6lUFzxhpC1oP8OMnrMp4UoYFuuRGQ==
 system: true
