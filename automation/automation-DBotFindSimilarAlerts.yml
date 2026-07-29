@@ -125,7 +125,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.2
+    itemVersion: 1.42.13
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -134,7 +134,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/sklearn:1.0.0.8425368
+dockerimage: demisto/sklearn:1.0.0.10866354
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -165,8 +165,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DBotFindSimilarAlerts', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.2'
-  demisto.debug('pack id = Base, pack version = 1.42.2')
+  CONSTANT_PACK_VERSION = '1.42.13'
+  demisto.debug('pack id = Base, pack version = 1.42.13')
   import json
   import re
   import warnings
@@ -1461,7 +1461,7 @@ script: |
 
   register_module_line('DBotFindSimilarAlerts', 'end', __line__())
 scripttarget: 0
-signature: enmrRLnEZvEvTwgWuemGljOoOCcSMO53KUmkwjWeXkPgG7caoioIOQHTGVfhSYr52oH3oa+NykBJWDGezzakaeZFVahrOfZ3IwnbIuGTs6Wp1lJHZshKAqdwsvIAB+4a1slbcTYzJa2XedoalNhEDAcNmDpIBVSoV5iarZNgT4o58m2H3mHmhY0ZXpLnbBK70x95aecU56L2xkLXVvNUT9RPGa84dAaxuj7HbAHPxGIVdLIdCcuBly4mvnXDmmZ13ojtTsJEyS70P6C1guaEGTTSQ6XiD1wlz4J6JH7if9kcUXrIutqULaJ8+QVlJniMxq8Diro+vJk9gFHaAJX58A==
+signature: DIg2relwUnCmjCMcislnWqBXToyqQU7GDX5nA+aY/PP0DWSdljlTsTPVQOxvxnfvHeupq2WuMh+gxTZENJDlUk+dXdNx1jg3JG8F6odhzDZ69aD59ZwdpICtEdDqN13kyDPkpAtoxgdUvFWQ6JBmK3xnbjwavWGRvnRq13015tOgp4x9RBkA2+kXY11sxaDjcifblR+D+xsAoPIG5LrwyeUlYHXTgXCWneu6CEWLh+9kXKTOdqrUInyLIjjaPmgRpe3DPXpAcQMRQOUz38WDgxSXjhwVYOWM7y/h7HbwWPb4KgKd6dcW4Rah7AaHNiuySumGVpuFlMsqo+nuitP7xg==
 subtype: python3
 system: true
 tags: []
