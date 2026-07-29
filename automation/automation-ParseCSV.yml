@@ -43,7 +43,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -52,7 +52,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -85,8 +85,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ParseCSV', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import csv
 
 
@@ -371,7 +371,7 @@ script: |
 
   register_module_line('ParseCSV', 'end', __line__())
 scripttarget: 0
-signature: NoF+pAc8GW5XQfYcBKbVYK6D5TS93kcWqn6gfBEs/IW7zFC1b6kJIiIy/xRWfYJyKtGCszp62W5RDxVVEm+0q2A0GkAqKwJy9WR93R4GfcR3rDd/FZI1em/lMg6nI1PS2/LtYxeWWKOHqrVGircDJQhqSvJCUcFOHDJ5NcfdGaQlEqJQwl/55uk0v1LFASQbtVO/i0cInv96PxkI0GdXrJB2WuP3DqI03CGuVRH7g3YzUwJs4XqHAPuqNodgFTkJCNs1aoMJqOJwXbdE56otC/gf3txdmS8rbNFRcGe0naaRUUP4yAlNBAAm0E8G5+w//vcUBQ3eoPIZkdFLdpS4vQ==
+signature: igpn5c6c98JwLt3MC4A9noqa5ZxefIKGvJ6uCopd+HhMzrImHbdu/RDkyDRZz5vWRJ1vlavtWO4rY0uhT+epUakBHf8moDSiWTvETezc6wdatfVL8K52I7wNxR+850hn4TrxandIqC/IPOdOJFcC/i7mbebWI/FItXaJXCEys+wFTGGC82FPap5X/qWf8nCexScNgBa2PF6Onvk6JPAlwFRyQ+e9nqVyJ0hdT7/Ucgx67+Ka9INudngaueH02wLZbekyHY0PmyLS+/IGclkR6Q0+toNFZ/9OdjxawtOUGq/3Wt6mz0AJ644VUuqwWigA1OEQxiVbFmEMqLm2Hve+mA==
 subtype: python3
 system: true
 tags:
