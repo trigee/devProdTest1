@@ -48,7 +48,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -60,7 +60,7 @@ contentitemexportablefields:
 dependson:
   must:
   - send-notification
-dockerimage: demisto/python3:3.12.12.6663663
+dockerimage: demisto/python3:3.12.13.10116658
 enabled: true
 engineinfo: {}
 internal: true
@@ -83,8 +83,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SendNotificationAgentix', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
 
 
 
@@ -148,7 +148,7 @@ script: |
 
   register_module_line('SendNotificationAgentix', 'end', __line__())
 scripttarget: 0
-signature: LomuJWmw6oS4iZBV35KHSO2EqmMCDbgCIka5aE5IJ+tw6yxAovb1BTgG3K4n+m7Jyfe9vNQg6jTlgcx1fRnQeW3pMbEp/pCYYqF11+AB2BMA/jhaZ0EyO6EoSsmHbDKuGp0qx0RRRJ9kpNQG4XjO/eE6JEGRiCiQBt5xrVTMhm22r12f1J0E0xfUctVhyFzoThiWxhKBh6lrCcoMqt0gDWVn19mgvosOwISCkCRTnpyto2sAeRSzONaoo7ldICn/183L08Flj9sN3d6hoKeMKn+m+sZnEm2KSBU8lAfC8LDUmvODY+7M8B6EBXs4odtxEGk2/t8TPF9hhI6XsccGBQ==
+signature: Hhx0WJzsUoK55Lp0LPyEj14feGEnuqKR0CXtOMUvMk911aTFDm9qwwIu1DCDmn7gMUpZie5GkUiMXfVBqAIBZjx4epgfJwX/t44n3iVf9VKxhPvTojqYckHo8SerC4SQl4Vq0qlYIy0R02GHZFuhB2hmnwRxz9E3vceIUaDUs3w0ipaak0f/joec41ggj88UR6QDmz2LggQ4x+fEA0qF36qDeBDgoXsaTdE2rueXk6MYDxE+/htBC2AyIwm8NKxR8+wokSwA2l4Orx5a08OCFqOD++1DTSo/tYJWxcufr1GXt8Wg0oid2pc5OOQWN/HPGaYZFX7M7RO41YVPFbvimg==
 subtype: python3
 system: true
 tags:
