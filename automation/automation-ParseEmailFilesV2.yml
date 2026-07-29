@@ -57,7 +57,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -66,7 +66,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/parse-emails:0.1.48.8921488
+dockerimage: demisto/parse-emails:0.1.48.10120494
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -163,8 +163,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ParseEmailFilesV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import html
   import mimetypes
   from pathlib import Path
@@ -431,7 +431,7 @@ script: |
 
   register_module_line('ParseEmailFilesV2', 'end', __line__())
 scripttarget: 0
-signature: sGJI0Gzlu1nXKW7HxbabHa7/XlxF2aSMR9DDdrue06hje/wo9TY6fEMNvc74j9blQOlogVs2e82XX4VkvbvyRDVM8jYrCSK4j+ANe08QmPxa5E50ZV5TfndC5UPHzjo8UlHl4wiqNSQpsYhqpfJLDcY9RQkScb3d4ubo0rp4APySNeKnls5sa+1MwQ42vnKG5UcduKeusvSD2YGG8MFA6qYmlumtxbiaxUhGJ3rZPv2+qeLfqzzM7Yg9754eiwI/By6wuGWdd71pqlMjnGZAuAfgF4JRW/cR48i6yHjRPtZeE7yLHwM3Crg0Pr0eT67F2eWGsEwBVe+bNpO3HgaKog==
+signature: oQY6+2cGaHdP1z0AzqnQhjRpyW58IIxD+jJY+RRq7Bo9MHPDxLlsgTtOSe+9PMKx5qohRugSR4B/yWjIeEiVMd3cFMLP0AZH62tpGOrO2DbksE4m7sU7yBPnza9gsL3eQTE1wG5RO4W519Not/u31baAdf/5MEwt90uLGBKK9VIgE9hZnpG85LDEb67Konp65STcHoUdwk3MmbRhohsVbJp+LhHQbTbnf/Bh1ZgXLhGupCyj+cjzdcsjlgOaVvC3JPHI3gk53vaxa2y0hfRkStC9XWB9j2uEEHLaOeYRupJR2ePnIpxfk4+ibjkEmKkxtJgEHlPdR2wpIFunTDZDgA==
 subtype: python3
 system: true
 tags:
