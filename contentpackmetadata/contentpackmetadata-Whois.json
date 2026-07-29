@@ -57,6 +57,13 @@
 		"list": null,
 		"playbook": [
 			{
+				"description": "This playbook compares the domain registrant against the Cortex list of approved registrants provided in the inputs. A registrant is the company or entity that owns the domain.",
+				"fromversion": "5.5.0",
+				"id": "TIM - Process Domain Registrant With Whois",
+				"name": "TIM - Process Domain Registrant With Whois",
+				"tags": []
+			},
+			{
 				"description": "This playbook uses several sub playbooks to process and tag indicators based on the results of the Whois tool.",
 				"fromversion": "5.5.0",
 				"id": "TIM - Process Domains With Whois",
@@ -69,13 +76,6 @@
 				"id": "TIM - Process Domain Age With Whois",
 				"name": "TIM - Process Domain Age With Whois",
 				"tags": []
-			},
-			{
-				"description": "This playbook compares the domain registrant against the Cortex list of approved registrants provided in the inputs. A registrant is the company or entity that owns the domain.",
-				"fromversion": "5.5.0",
-				"id": "TIM - Process Domain Registrant With Whois",
-				"name": "TIM - Process Domain Registrant With Whois",
-				"tags": []
 			}
 		],
 		"report": null,
@@ -84,7 +84,7 @@
 		"wizard": null
 	},
 	"created": "2025-03-29T09:34:18Z",
-	"currentVersion": "1.5.42",
+	"currentVersion": "1.5.43",
 	"defaultDataSource": {
 		"id": "",
 		"name": ""
@@ -95,14 +95,14 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.41.91",
+			"minVersion": "1.42.3",
 			"name": "Base"
 		},
 		"CommonScripts": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.22.20",
+			"minVersion": "1.22.29",
 			"name": "Common Scripts"
 		},
 		"DomainTools": {
@@ -154,18 +154,18 @@
 			"name": "DomainTools (Deprecated)"
 		},
 		{
-			"id": "DomainTools Iris",
-			"imagePath": "content/packs/DomainTools_Iris/DomainToolsIris_image.png",
-			"name": "DomainTools Iris"
-		},
-		{
 			"id": "JsonWhoIs",
 			"imagePath": "content/packs/JsonWhoIs/JsonWhoIs_image.png",
 			"name": "JsonWhoIs"
+		},
+		{
+			"id": "DomainTools Iris",
+			"imagePath": "content/packs/DomainTools_Iris/DomainToolsIris_image.png",
+			"name": "DomainTools Iris"
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "1.5.42",
+	"itemVersion": "1.5.43",
 	"keywords": [],
 	"legacy": true,
 	"modules": [],
@@ -195,15 +195,15 @@
 		"xsiam"
 	],
 	"tags": [
-		"Plug \u0026 Enrich",
-		"Free Enricher",
+		"Getting Started",
 		"TIM",
-		"Getting Started"
+		"Plug \u0026 Enrich",
+		"Free Enricher"
 	],
 	"toServerVersion": "",
-	"updated": "2026-06-10T10:22:00Z",
+	"updated": "2026-07-05T20:05:16Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "10019815",
+	"versionInfo": "10750492",
 	"videos": []
 }
