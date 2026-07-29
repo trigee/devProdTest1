@@ -59,7 +59,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.0.20
+    itemVersion: 1.0.23
     packID: Unit42ThreatIntelligencebyPaloAltoNetworks
     packName: Unit 42 Threat Intelligence by Palo Alto Networks
     packPropagationLabels:
@@ -355,15 +355,15 @@ script:
       description: Enriched threat object association.
       type: Unknown
     supportedModules: []
-  dockerimage: demisto/python3:3.12.13.7444307
+  dockerimage: demisto/python3:3.12.13.10404775
   nativeimage:
   - "8.8"
   - "8.6"
   runonce: false
   script: |
     register_module_line('Unit 42 Intelligence', 'start', __line__())
-    CONSTANT_PACK_VERSION = '1.0.20'
-    demisto.debug('pack id = Unit42ThreatIntelligencebyPaloAltoNetworks, pack version = 1.0.20')
+    CONSTANT_PACK_VERSION = '1.0.23'
+    demisto.debug('pack id = Unit42ThreatIntelligencebyPaloAltoNetworks, pack version = 1.0.23')
 
 
     import urllib3
@@ -1748,5 +1748,5 @@ script:
 sectionorder:
 - Connect
 - Collect
-signature: B/HGZH2ACp2dhMFCaRdYIxV18nendyKRBKw5YY2E7M5iCyWNIN13FcbIqB0dO9S5xfoyuabZ+qC7lYaxfpsyK7FQuS1PhJqzUjFVhondHPKnxsDZbKKtJeWEkpZZ5YPagY1ryLrqhc524UuOSFcfDD6KH8YxWZiNVRSB277BvngoiMG2QJejaFzcVRGwlwoEEx59qX8P1MuMjGy+7JXZwmRmMF6o3D2IAfYK4ISTKyBNi1Nqu+F7JFhOG79L3gLuS/T+qxybyfyT4NNX9i6zZqIaR2EmZcpG08oGgBwS2KdfH6Av6/WCU7rskUuTIIbWyTXXVaIKUkDgXp9CnuYmAA==
+signature: HwXH+nwtupdIvwQwVQGHkqPZ6TJ5TEmkgdipcavNQXCAlYTEOb7pQosUc+i68+JhcansVP8tIGqVyW+k6S3OOKr5t8WUNJKZVoRsF1PU59DD4/nipuVoJ9TZcLmE5inIPvT/rU5wT5dMohuocsMPgooThG0BvflpgQII5XqStuBJv8INdPKDDD3/1rAVEMh1DhT7DobbamyBTZKUpQYjOku3+5CESUxIZ4Np0I6Srr+31RZRmRvrVM0B7pIljCp8j5HzbKaediwrb2ChQ4FfXOIaznnLtAK5GWLKYntXebypQinhD/TixxDQOwEV8L+MM+bDzHibP5+V0XmCVS5MnQ==
 system: true
