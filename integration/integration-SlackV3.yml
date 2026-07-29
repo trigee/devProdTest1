@@ -248,7 +248,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 3.8.7
+    itemVersion: 3.8.11
     packID: Slack
     packName: Slack
     packPropagationLabels:
@@ -780,7 +780,7 @@ script:
   - "8.6"
   runonce: false
   script: "register_module_line('SlackV3', 'start', __line__())\nCONSTANT_PACK_VERSION
-    = '3.8.7'\ndemisto.debug('pack id = Slack, pack version = 3.8.7')\nimport asyncio\nimport
+    = '3.8.11'\ndemisto.debug('pack id = Slack, pack version = 3.8.11')\nimport asyncio\nimport
     concurrent\nimport logging.handlers\nimport ssl\nimport re\nimport json\nimport
     threading\nfrom typing import Literal, TypedDict, get_args\nfrom urllib.parse
     import urlparse\nfrom datetime import UTC, datetime\nimport dateparser\nimport
@@ -2108,8 +2108,13 @@ script:
     'end', __line__(), wrapper=1)\n### END GENERATED CODE ###\n\n\"\"\" CONSTANTS
     \"\"\"\nALLOWED_HTTP_VERBS = Literal[\"POST\", \"GET\"]\nSEVERITY_DICT = {\"Unknown\":
     0, \"Low\": 1, \"Medium\": 2, \"High\": 3, \"Critical\": 4}\n\nUSER_TAG_EXPRESSION
-    = \"<@(.*?)>\"\nCHANNEL_TAG_EXPRESSION = \"<#(.*?)>\"\nURL_EXPRESSION = r\"<(https?://.+?)(?:\\|.+)?>\"\nGUID_REGEX
-    = r\"(\\{){0,1}[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}(\\}){0,1}\"\nENTITLEMENT_REGEX
+    = \"<@(.*?)>\"\nCHANNEL_TAG_EXPRESSION = \"<#(.*?)>\"\n# Matches an already-resolved
+    Slack user/bot ID (e.g. U012A3CDE, W01AB2CD3, B0123ABCD).\n# Slack IDs are uppercase,
+    start with U/W/B and are followed by uppercase letters/digits.\n# Real IDs are
+    currently ~9-11 chars; the generous upper bound (8-15 total) leaves room\n# for
+    future ID-length growth while keeping the match tight enough to avoid treating\n#
+    human display names as IDs.\nSLACK_USER_ID_EXPRESSION = re.compile(r\"^[UWB][A-Z0-9]{7,14}$\")\nURL_EXPRESSION
+    = r\"<(https?://.+?)(?:\\|.+)?>\"\nGUID_REGEX = r\"(\\{){0,1}[0-9a-fA-F]{8}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{4}\\-[0-9a-fA-F]{12}(\\}){0,1}\"\nENTITLEMENT_REGEX
     = rf\"{GUID_REGEX}@(({GUID_REGEX})|(?:[\\d_]+))_*(\\|\\S+)?\\b\"\nCOMMAND_REGEX
     = r\"command.*?(?=;)\"\nMESSAGE_FOOTER = \"\\n**From Slack**\"\nMIRROR_TYPE =
     \"mirrorEntry\"\nINCIDENT_OPENED = \"incidentOpened\"\nINCIDENT_NOTIFICATION_CHANNEL
@@ -3357,31 +3362,37 @@ script:
     handle_tags_in_message_sync(message: str) -> str:\n    \"\"\"\n    Handles user
     tags in a slack send message\n\n    Args:\n        message: The slack message\n\n
     \   Returns:\n        The tagged slack message\n    \"\"\"\n    matches = re.finditer(USER_TAG_EXPRESSION,
-    message)\n    for match in matches:\n        slack_user = get_user_by_name(match.group(1))\n
-    \       if slack_user:\n            message = message.replace(match.group(0),
-    f\"<@{slack_user.get('id')}>\")\n        else:\n            message = re.sub(USER_TAG_EXPRESSION,
-    r\"\\1\", message)\n    return message\n\n\ndef send_message(\n    destinations:
-    list, entry: str, ignore_add_url: bool, integration_context: dict, message: str,
-    thread_id: str, blocks: str\n):\n    \"\"\"\n    Sends a message to Slack.\n    Args:\n
-    \       destinations: The destinations to send to.\n        entry: A WarRoom entry
-    to send.\n        ignore_add_url: Do not add a XSOAR URL to the message.\n        integration_context:
-    Current integration context.\n        message: The message to send.\n        thread_id:
-    The Slack thread ID to send the message to.\n        blocks: Message blocks to
-    send\n\n    Returns:\n        The Slack send response.\n    \"\"\"\n    if not
-    message:\n        if blocks:\n            message = \"New message from SOC Bot\"\n
-    \           # This is shown in the notification bubble from Slack\n        else:\n
-    \           message = \"\\n\"\n\n    if message and not blocks:\n        if ignore_add_url
-    and isinstance(ignore_add_url, str):\n            ignore_add_url = argToBoolean(ignore_add_url)\n
-    \       if not ignore_add_url:\n            investigation = demisto.investigation()\n
-    \           server_links = demisto.demistoUrls()\n            if investigation:\n
-    \               if investigation.get(\"type\") != PLAYGROUND_INVESTIGATION_TYPE:\n
-    \                   link = server_links.get(\"warRoom\")\n                    if
-    link:\n                        link = get_war_room_url(link)\n                        if
-    entry:\n                            link += \"/\" + entry\n                        message
-    += f\"\\nView it on: {link}\"\n                else:\n                    link
-    = server_links.get(\"server\", \"\")\n                    if link:\n                        message
-    += f\"\\nView it on: {link}#/home\"\n    try:\n        response = send_message_to_destinations(destinations,
-    message, thread_id, blocks)\n    except SlackApiError as e:\n        if str(e).find(\"not_in_channel\")
+    message)\n    for match in matches:\n        tag = match.group(1)\n        # If
+    the tag is already a resolved Slack user/bot ID (e.g. \"<@U12345678>\"),\n        #
+    skip the expensive get_user_by_name lookup — the mention is already valid.\n        if
+    SLACK_USER_ID_EXPRESSION.match(tag):\n            continue\n        slack_user
+    = get_user_by_name(tag)\n        if slack_user:\n            message = message.replace(match.group(0),
+    f\"<@{slack_user.get('id')}>\")\n        else:\n            # Only strip the brackets
+    of this specific unresolved tag, not every tag in the\n            # message (a
+    blanket re.sub would also break already-valid ID mentions we skipped).\n            message
+    = message.replace(match.group(0), tag)\n    return message\n\n\ndef send_message(\n
+    \   destinations: list, entry: str, ignore_add_url: bool, integration_context:
+    dict, message: str, thread_id: str, blocks: str\n):\n    \"\"\"\n    Sends a message
+    to Slack.\n    Args:\n        destinations: The destinations to send to.\n        entry:
+    A WarRoom entry to send.\n        ignore_add_url: Do not add a XSOAR URL to the
+    message.\n        integration_context: Current integration context.\n        message:
+    The message to send.\n        thread_id: The Slack thread ID to send the message
+    to.\n        blocks: Message blocks to send\n\n    Returns:\n        The Slack
+    send response.\n    \"\"\"\n    if not message:\n        if blocks:\n            message
+    = \"New message from SOC Bot\"\n            # This is shown in the notification
+    bubble from Slack\n        else:\n            message = \"\\n\"\n\n    if message
+    and not blocks:\n        if ignore_add_url and isinstance(ignore_add_url, str):\n
+    \           ignore_add_url = argToBoolean(ignore_add_url)\n        if not ignore_add_url:\n
+    \           investigation = demisto.investigation()\n            server_links
+    = demisto.demistoUrls()\n            if investigation:\n                if investigation.get(\"type\")
+    != PLAYGROUND_INVESTIGATION_TYPE:\n                    link = server_links.get(\"warRoom\")\n
+    \                   if link:\n                        link = get_war_room_url(link)\n
+    \                       if entry:\n                            link += \"/\" +
+    entry\n                        message += f\"\\nView it on: {link}\"\n                else:\n
+    \                   link = server_links.get(\"server\", \"\")\n                    if
+    link:\n                        message += f\"\\nView it on: {link}#/home\"\n    try:\n
+    \       response = send_message_to_destinations(destinations, message, thread_id,
+    blocks)\n    except SlackApiError as e:\n        if str(e).find(\"not_in_channel\")
     == -1 and str(e).find(\"channel_not_found\") == -1:\n            raise\n        bot_id
     = integration_context.get(\"bot_id\")\n        if not bot_id:\n            bot_id
     = get_bot_id()\n        for dest in destinations:\n            invite_users_to_conversation(dest,
@@ -3911,6 +3922,6 @@ sectionorder:
 - Connect
 - Collect
 - Agentic Assistant
-signature: 25Rb6MkGmSayW38Vg1vdpJLU6km+YHjqXbjB/uoBcMqxCd8Esv5Ap1H3HNcqOZh9h8NVMCj/wnFq/XoexPJemFY0Wwl8Hi4heQqYUEfHuBf1Y92roLoU9zjyzjj4O+lYItBzO4DyjXjiB/Cy57OEhjaCsXg7+9mWjqT77ckJux8WOVNTqYLtPUlhyOqKlsTmvEnUGpnYMlzHQlMoPDtWeipRWTwjbTWbJcMHPLoBD5NAlbnb5Jvs6LqRfNBSN3D0h1bl8umg4NEOjGjdiANUohD0sZyBMWfT9utbtAFAapdpAzKRm3ibsPCzrIXtei6S5Ps8H1lsMHO2XHH0ANCT9w==
+signature: RRuBvdBYd5nW9LcCQETHbohHbveWcIeWDuilOCDLM0eiDmQaqvk9NJfY+nQd2F0PizBE9uYwp+kMcu1Rg4EmdttAaa/lmps6wZOj/48Inunun7NuBnDqegRNPkgwo3Jtfmdy4v7pSzy5PwyhXNEw7FcsZ+UWV+KtpAxjm4hb/QbcBbcBPq2Z5a2Ng2GldKU9BcfXOg88RX23fk/7ys8+u8mcT5UZ75tBfUAAMel+q0pYyGFpAixzqJl2GHyL7kOkHeg8FDk01w12/t/YDQrYZXHtXDC0V/789+hB2WLneKkCcxdr2h4yxHOmUznXvqCJO7P9dTVzbG5wlcVRtamsFQ==
 supportsquickactions: true
 system: true
