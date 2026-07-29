@@ -13,7 +13,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -22,7 +22,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/py3-tools:1.0.0.8544956
+dockerimage: demisto/py3-tools:1.0.0.10120494
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -41,8 +41,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('LanguageDetect', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
 
 
   from langdetect import detect_langs
@@ -81,7 +81,7 @@ script: |
 
   register_module_line('LanguageDetect', 'end', __line__())
 scripttarget: 0
-signature: vkJ5kiGs2cza5mDtHWKLYZp7vOpLDsPv4oolv/DOoL6Tn5FaD8tiKOusQR6CZGrJYpdQi7nlJpIzlzMU2Zp0S7qUnTS1OQrlheWgPE5JNrq7TBsxVku0UZKndCM5/YmxuYOLCgnltTqyALRMfDp4N2u7++ZETvre7THyxC8EsLdwHI3XPnNx7/8F5BnerX8SkELQgHF73CaVbaWKLt0Q3NeN3euiA6Ps6faCF4FCS6XMdJE3v0/N2PDTM2+G3uKlUUnneXUxl76wY5Y19PLz7tbkAtA5Uu3zRElVFTbloTozkfYHjbz/EvD1HhP9c4RDYj7aatKcw9br025fNA0odA==
+signature: 0EOnrs6XJjbiavmU8y7+2BK2PpKZwV6C8tilUsKD26c3MqkIdcZzK27ThjscuSsQTke/NLk/oSrD7PKiBh2amWki3d4rPNEj4dYoKn+VIO7pG0miv0OIzZdCFOMmfgyiJV4CzW3eSxGwuhxVJU+z+EdUF9IGXqj4U8PUPrd8ZRsH9yyUb5AcwVGJOkOO0wAEN6uRHUxDnS4UYv/RlEj+79tN0n7ei7lYScS2SbKFlMxxUtQHE4XDKwEg3Vc348nwi/jdTvAZgzW4G57kL7rDwetQXvbUgomKDXISOteX+tNroeC8mmee6/RPYGoyIAwUcwhdmD68dRfXdnkSGVLwUg==
 subtype: python3
 system: true
 tags:
