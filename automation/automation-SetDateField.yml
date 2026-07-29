@@ -12,7 +12,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -21,7 +21,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -35,8 +35,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SetDateField', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   from time import strftime
 
 
@@ -56,7 +56,7 @@ script: |
 
   register_module_line('SetDateField', 'end', __line__())
 scripttarget: 0
-signature: LRepSFGm9uhx+meO/PGeOJ89PX9pHSN2EXjUjy/g0OdsrHqYcmUVJ3VRGAENC9JJNe8NUhcO+1hlPHzqcLUqX/eEO6rrVUmsBR/yEq0DJN5JHXso9zwSO/v5EW46XMG7tn5ilz7XGBPPESS2AYTmwwNt4+DJ6RTnnxUZ8Qr829kFfTpgNtKMNFeW409aUWbIsA6uAsQiazy05ZnJgFl3Wy+5XR4PzVCb74Z+5qPROwyyW3nipsb8rfSnGCk6dLEBTMxrcpUAF74khzz4y7/TfBj+1XwFPx5ad9v+GuG52hpj26mso+74mAqrzrV1jv6dJs2b6vZ5ssOJWL5h3MqYDw==
+signature: WMcJNsepq6csMaN8XLweUKiNsO63jDeWRu2qYTmLQYiaGiyLtF9KK8c0nb+ref3lUNLE+bE7WqM2iXyQemg18bSK+Kc3DpEiJI/sZGuEGcjvflTLJtMpJLZ3VIMj+uPEQ4P5cw3LWNaH02k4de03As04ELgDjLLeAJEFkRXTnZ1R33FOTfg/3DA2G0DV9vQAeG9GkcScduU6jrUWft9T797hXxW/G42+aKThHEJ3tY26sseCioITDckzvdJ7UGgorje7F+QZM52FD8CmQiFT2o2Bx8zSj0xy58JmM+kvYpUnF8BDXHh0IMKaKX3HX6FINSVfWDfuJGc3Jotf8wt/sg==
 subtype: python3
 system: true
 tags:
