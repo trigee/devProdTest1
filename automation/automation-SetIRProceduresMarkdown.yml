@@ -8,7 +8,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.5.0
+    itemVersion: 1.5.2
     packID: DemistoRESTAPI
     packName: Cortex REST API
     packPropagationLabels:
@@ -17,7 +17,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: SetIRProceduresMarkdown
@@ -30,8 +30,8 @@ runas: DBotRole
 runonce: false
 script: |
   register_module_line('SetIRProceduresMarkdown', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.5.0'
-  demisto.debug('pack id = DemistoRESTAPI, pack version = 1.5.0')
+  CONSTANT_PACK_VERSION = '1.5.2'
+  demisto.debug('pack id = DemistoRESTAPI, pack version = 1.5.2')
 
 
   SECTIONS_TO_KEEP = ("Threat Hunting", "Mitigation", "Remediation", "Eradication")
@@ -153,7 +153,7 @@ script: |
 
   register_module_line('SetIRProceduresMarkdown', 'end', __line__())
 scripttarget: 0
-signature: K7nSZFxcjg/bvVV/1pWe5poX55ubllk4T7exPQMMhFEvS6VvH6OGO2ey5sBhfNWg0/9CKcjvzibnKnuWGMqtXDd7351x6Ds06rBCiJWNeJGxrBG59Ly6Pn7jl0KLemgxFMvt6YXnbIRlEnELOKI4uFt27nta6vUH3rPvuXQ5JXt9a4P3VSGqwRy352jnffjLBXEUKS0eNaINYs3h+rvX8EY8xNwImbvFaIOadjPVT2Ri0Ezk2jPSEUF7D7icuOsnOQYOuY4HlgCjloqXX2hsGaw4WTti1V2JsBjANNydaa1e0yg4hE2D/liL2VabpBiSKY2IUXAhYZyqCp0ySWiR/A==
+signature: kFYWo8VNruVC/wdlM4H4zqdcaFEXKAbEUNBQR13KLD6dmrpzXFQbZ6e/FSlCwQBKZG1pV7SVRGQJsgP2ZoNJhAtviGNmFTI6In0F4f7/eNOGjC1QWO7D8zRZKRtkfMGXVcHxjooriUm8Kmm/9nfysALbM3ac2S8QWORT3B2Ip+bz8Ml8Ey6jJOBjEeBgERqEdYh4GIW87oYlsKCa8AaPHeNyrKuEm18bT4advlH0Nz9NxzepqqUSmdukIQIcnxIKg0NOnT8OwszqT+gCcK22m/rJY3Qgu/T9B0jwzsTuKRvlQ6I40TE1yZPgIGUEJ6HWCSg0HeVjqRM4rV7ZHEZ3Rg==
 subtype: python3
 system: true
 tags:
