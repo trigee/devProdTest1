@@ -31,6 +31,21 @@
 				"category": "Forensics \u0026 Malware Analysis",
 				"commands": [
 					{
+						"description": "Retrieves results for a file hash using WildFire.",
+						"hidden": false,
+						"name": "internal-wildfire-get-report"
+					}
+				],
+				"description": "Generates a Palo Alto Networks WildFire PDF report. For internal use with the TIM Sample Analysis feature.",
+				"fromversion": "6.5.0",
+				"id": "WildFire-Reports",
+				"name": "Palo Alto Networks WildFire Reports",
+				"toversion": ""
+			},
+			{
+				"category": "Forensics \u0026 Malware Analysis",
+				"commands": [
+					{
 						"description": "Retrieve results for a file hash using WildFire.",
 						"hidden": false,
 						"name": "file"
@@ -81,60 +96,20 @@
 				"id": "WildFire-v2",
 				"name": "Palo Alto Networks WildFire v2",
 				"toversion": ""
-			},
-			{
-				"category": "Forensics \u0026 Malware Analysis",
-				"commands": [
-					{
-						"description": "Retrieves results for a file hash using WildFire.",
-						"hidden": false,
-						"name": "internal-wildfire-get-report"
-					}
-				],
-				"description": "Generates a Palo Alto Networks WildFire PDF report. For internal use with the TIM Sample Analysis feature.",
-				"fromversion": "6.5.0",
-				"id": "WildFire-Reports",
-				"name": "Palo Alto Networks WildFire Reports",
-				"toversion": ""
 			}
 		],
 		"layoutscontainer": null,
 		"list": null,
 		"playbook": [
 			{
-				"description": "Deprecated. Use WildFire - Detonate file v2 instead.",
-				"fromversion": "5.0.0",
-				"id": "WildFire - Detonate file",
-				"name": "WildFire - Detonate file",
-				"supportedModules": [
-					"agentix",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "This playbook uploads, detonates, and analyzes files for the Wildfire sandbox.\n",
-				"fromversion": "6.5.0",
-				"id": "Wildfire Detonate and Analyze File",
-				"name": "Wildfire Detonate and Analyze File",
-				"tags": []
-			},
-			{
 				"description": "Deprecated. Use Detonate URL - WildFire v2.2 instead.",
 				"fromversion": "5.0.0",
-				"id": "Detonate URL - WildFire v2.1",
-				"name": "Detonate URL - WildFire v2.1",
+				"id": "Detonate URL - WildFire-v2",
+				"name": "Detonate URL - WildFire-v2",
 				"supportedModules": [
 					"agentix",
 					"xsiam"
 				],
-				"tags": []
-			},
-			{
-				"description": "Detonate a webpage or remote file using the WildFire v2 integration. This playbook returns relevant reports to the War Room and file reputations to the context data.\nThe detonation supports the following file types:\nAPK, JAR, DOC, DOCX, RTF, OOXLS, XLSX, PPT, PPTX, XML, PE32, PDF, DMG, PKG, RAR, 7Z, JS.",
-				"fromversion": "6.10.0",
-				"id": "Detonate URL - WildFire v2.2",
-				"name": "Detonate URL - WildFire v2.2",
 				"tags": []
 			},
 			{
@@ -156,14 +131,39 @@
 				"tags": []
 			},
 			{
+				"description": "This playbook uploads, detonates, and analyzes files for the Wildfire sandbox.\n",
+				"fromversion": "6.5.0",
+				"id": "Wildfire Detonate and Analyze File",
+				"name": "Wildfire Detonate and Analyze File",
+				"tags": []
+			},
+			{
 				"description": "Deprecated. Use Detonate URL - WildFire v2.2 instead.",
 				"fromversion": "5.0.0",
-				"id": "Detonate URL - WildFire-v2",
-				"name": "Detonate URL - WildFire-v2",
+				"id": "Detonate URL - WildFire v2.1",
+				"name": "Detonate URL - WildFire v2.1",
 				"supportedModules": [
 					"agentix",
 					"xsiam"
 				],
+				"tags": []
+			},
+			{
+				"description": "Deprecated. Use WildFire - Detonate file v2 instead.",
+				"fromversion": "5.0.0",
+				"id": "WildFire - Detonate file",
+				"name": "WildFire - Detonate file",
+				"supportedModules": [
+					"agentix",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "Detonate a webpage or remote file using the WildFire v2 integration. This playbook returns relevant reports to the War Room and file reputations to the context data.\nThe detonation supports the following file types:\nAPK, JAR, DOC, DOCX, RTF, OOXLS, XLSX, PPT, PPTX, XML, PE32, PDF, DMG, PKG, RAR, 7Z, JS.",
+				"fromversion": "6.10.0",
+				"id": "Detonate URL - WildFire v2.2",
+				"name": "Detonate URL - WildFire v2.2",
 				"tags": []
 			},
 			{
@@ -184,7 +184,7 @@
 		"wizard": null
 	},
 	"created": "2025-03-29T09:35:34Z",
-	"currentVersion": "2.1.82",
+	"currentVersion": "2.1.83",
 	"defaultDataSource": {
 		"id": "",
 		"name": ""
@@ -195,28 +195,28 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.42.1",
+			"minVersion": "1.42.3",
 			"name": "Base"
 		},
 		"CommonPlaybooks": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "2.8.2",
+			"minVersion": "2.8.3",
 			"name": "Common Playbooks"
 		},
 		"CommonScripts": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.22.28",
+			"minVersion": "1.22.29",
 			"name": "Common Scripts"
 		},
 		"FiltersAndTransformers": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.4.22",
+			"minVersion": "1.4.23",
 			"name": "Filters And Transformers"
 		}
 	},
@@ -248,7 +248,7 @@
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "2.1.82",
+	"itemVersion": "2.1.83",
 	"keywords": [],
 	"legacy": true,
 	"modules": [],
@@ -284,9 +284,9 @@
 		"Palo Alto Networks Products"
 	],
 	"toServerVersion": "",
-	"updated": "2026-06-30T20:01:59Z",
+	"updated": "2026-07-05T20:04:27Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "10610743",
+	"versionInfo": "10750492",
 	"videos": []
 }
