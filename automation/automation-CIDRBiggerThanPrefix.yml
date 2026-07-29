@@ -17,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.4.22
+    itemVersion: 1.4.24
     packID: FiltersAndTransformers
     packName: Filters And Transformers
     packPropagationLabels:
@@ -26,7 +26,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -40,8 +40,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CIDRBiggerThanPrefix', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.22'
-  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  CONSTANT_PACK_VERSION = '1.4.24'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.24')
   import ipaddress
 
 
@@ -91,7 +91,7 @@ script: |
 
   register_module_line('CIDRBiggerThanPrefix', 'end', __line__())
 scripttarget: 0
-signature: 0tOsQITWvvdFblzH+skYokBWJ5fCgHqa+h2J2RYcVBeaXM9Ap+eYKvwdifETJqbMrlXeQppN/geE5BcWAhszDyBiZ6atyf06ORBWI2becmTokI7uGbbti50DjRvQiQivdde9Th4gUvQk4GfI76vOVTpIrgUU1+6JRB8YyCL1gC49ketNszLuP+YXFIT9TANnyvNKDCYivv1XzeFYVZe+ulJHexpNyceMqqXEEhUZEKkXgOGCjsAnsdfNPXBSWdAoZGbVhaOSwMGnIPDdPHXEymtAm4d2jL5Ascn2O9m3B+x8luMzQYx/HZdffMPrieifGtf8rTA7V7Gm+YvC3wyvcw==
+signature: kXXNr8UrGT2LyeWn5waIo5excw/p6mVJQGU1sh9EqBI3nr2NF6f/fJ4PVwB8jADd3yMS7OPpgzOgzEpN1uKYbnkFWUOISy5gwc9Y+Yg9qAUYcFCny6nbAXd4PoChmwQXlHd6WGRiUK/Gd8bkjwGJjGJo8iUUhNCx8KIl8Wj5tcJhUmKGNeodl2jni+D1ZWxqkn31JKsdaQ7gm+vW7KmLzXLC0nAOSDpSfSzbfueLEbPCLWGDFkZm3KeYMkHTjbuibFwBc5b60aXHM6oxTXmfW0JCCnQ9D6xrUpPWBPZkPjTagRULbkQ/W/RYCZi69J1hFGD8I5crRaLxGgfqmTJJzw==
 subtype: python3
 system: true
 tags:
