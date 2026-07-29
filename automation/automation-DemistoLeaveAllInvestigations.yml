@@ -7,7 +7,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.5.0
+    itemVersion: 1.5.2
     packID: DemistoRESTAPI
     packName: Cortex REST API
     packPropagationLabels:
@@ -29,7 +29,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.5.0
+  // pack version: 1.5.2
   function addEntry(text) {
       entry =  [{ContentsFormat: formats.markdown, Type: entryTypes.note, Contents: text}];
       executeCommand("addEntries", {"entries":JSON.stringify(entry)});
@@ -64,7 +64,7 @@ script: |
   }
   return (errors.length === 0) ? 'Done' : errors;
 scripttarget: 0
-signature: DyMRbw5/2N8fEbwPQd/fz81cTrhGm0eo//w8++2C9NA8OFu/8oOOW/ZsTg3NE4dO16yUwVflDdUJvY8eGMlIPEgV/z+U53MJPKtcwj90VRl0KNUcbWS1ffSIXL5lneH0IM3GYGbLDk0eOooHMW/EgtR306lu1u9x/trpd/rdOv0uN/vUJhOxIvOs434QWxLXtlc3rfyibmJSAeuupGlaD9+MLKVszriY61eOrYhe0Q+6KGAvYHjy2itKt4Mnw5kJS5mwlO+Vnu7uEN2wc6NLGkBnGjG/MkTOej+PTrFSE06nMu0LzBjBYbLQUTmBEjbr7f/3uAdHNpOy9hhlOqrLDA==
+signature: vL/PvjjwtscqZScQXNOKkVljbWVDJFTT+2jis8xdHzAnuYmDzDvX05dA/8ILZPA6d4B1j/x+yao1zuuYjqrR9tWDTNfbnqAlqRYyLAIid0NtdAWMT2Io0/7FwdGB5+C3CADiIkwSGQ9niU/btpdeS9tQMC+wwPekJWh6yfkKZ37e+/GTWKYG4b5Br9S3auOrGzpicy8C5FsdrMkeuGZE3s7nWkZ4Lh30Wg1kbU2ZW5qWW7whMFdi23QqTy+sE6XEmZXXtxK9kkOvOw2rIHwVbb1FXIQ2d1NvnlnXqePbv7V5ZhiZ5+LVcnmjGJwiZY8wvW9Y8um87l4j3qzgOnDPZw==
 system: true
 tags:
 - DemistoAPI
