@@ -21,7 +21,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -30,7 +30,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -66,8 +66,8 @@ runas: DBotRole
 runonce: false
 script: |
   register_module_line('ExtractIndicatorsFromTextFile', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import json
 
 
@@ -155,7 +155,7 @@ script: |
 
   register_module_line('ExtractIndicatorsFromTextFile', 'end', __line__())
 scripttarget: 0
-signature: yHZVRilAcYx5dGQlYAuQdFkq+rnGguI0ZGWaxbQ1BMc7LhC3CuRp/8IEYu+mOQ3TjBkSO1u/6LMQdCB5ylath4FjqgvGQSamPep0HTucwVa4x3H5MoRF9NKlHArkv6Wq5J0yLpMwalodKQOhUisUkDUq5GBv+klPWn/v1cUhitR03DpsuHXIXUDBjoOlJ4i1VpTkWMK4SMni1uF8RDKMQkDhME0q2QhOdDG1MUfTduzeAq2peIvMeh6adTEvo6y56oJtHIgF7/LVHTmzCqiinoZ6Eiz8BVk57qmTtb9FL0VdMhsiqS2AgUjG7VnVrY1biBupcqMYXfZ4cdkzaE0frg==
+signature: puefMMWgv7072Z0E0u+geOlw+qvwTXAtsIlI3tB4C6kGdSHOaNRNcutB343hqZ7NJqhhyX+52+oMWtwIN/fkaAj3ILGu7eeapwFKrCb2GYx7RA4v8tOjexqhWv3zd/fsZQytWWOj2WjUUSLFgm6Vj5QKytpGgzIMNPHruQcYSFx91JbqGmLUN/zddDotUtyLhSQgdkr19XewqCTmr1dHU9XqEJpcDF2/gEzeS3FNLUWrg08q85g/y821JiS/rgQQOnigBjD4JAhn07Vk1ZUDltxo5tC//Q7OkWpkF/tp0RyrEOJxUTyK4tAo4IsQmQd5HBeswQR/4MpqTok3D8Tv7w==
 subtype: python3
 system: true
 tags: []
