@@ -22,7 +22,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -31,7 +31,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: URLSSLVerification
@@ -66,8 +66,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('URLSSLVerification', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
 
   import requests
 
@@ -228,7 +228,7 @@ script: |
 
   register_module_line('URLSSLVerification', 'end', __line__())
 scripttarget: 0
-signature: 3MMYA6aXKU1oS+zARF2aCteo6JhFjdmG/qo6reeStvwVR4sLJnHfSMHCSAq9z/SfKnr2+ESbIzPSKhePqp/RgC2jHhrd3vzEkFuOAs5/raMVBvdw09ZLJRPe6on4WyJoMtS2fqh59S7Cb0+XZjVMnGWv7N6cF+y6j2jQ0DV6Qgro8dgzh9UnjM3CgFISI13J4Qnh1+O3W3hzELpUrwfdI1Y/cvGnQuW6B+ucW/1XvvyS6j/IhZeAYxQjqe3iTpFqHV4toFP1BKzs5cWWIoq8gaQ8RpHaXAH6SBnjf7Oxd0P1sksp60zvQXeq7T6ShoCb5d/mjzfCAQ2lzRVSg5h5ng==
+signature: 2K8Zq04RUf95ZunGgh6Kv1ZVEJkqnw6qChgdiLdKiHr7dNMnryMLu/XDHA7OBKEpziVQ+cXMMeHsnGRwfQ28AEQLuSh6OcRezdCrZjncvJHxhVIJjSVevz/hQbiXB6iMXG1OV4dHKp33DNKEmM4TeK+2tGsg54NzJ8Y6cTo+sZI8Z+x5xK5DajudPMskGAxK7xU9JGPoWCySaYnzFoBnNSAZ05xyCQvAAb59tcSlnsxy9SnB4U3fQyn+A80F2s9hXSFruq9gms4NlnuJ5uHKZXeSG+PnBlja5BKHuiBlIdXaMP2N3w9XwAwlG7tddOx+8jWdPoV6frwpQ7Q3Dy+sVw==
 subtype: python3
 system: true
 tags:
