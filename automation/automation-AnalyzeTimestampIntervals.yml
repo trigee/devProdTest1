@@ -28,7 +28,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -37,7 +37,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -78,8 +78,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('AnalyzeTimestampIntervals', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import statistics
 
 
@@ -217,7 +217,7 @@ script: |
 
   register_module_line('AnalyzeTimestampIntervals', 'end', __line__())
 scripttarget: 0
-signature: CwimuaiFbwpZCHhwfDIF18H4wL2AXn66M/duvUa6BYAkKY74W2A67VUZu6ly2FOZrlHCzabaIXHplwXavHIdC5nva8a/gK+97P9NBlbeGEelvW88aFEpUCin4STTUQ4ZHQmp1NyPmjQx3DQ7EfBLnu6vlD65tU9WFpbc1QIu5lC1GEzz3j/32YeTTcwutTQsZybzcTqsjpAvXyrvBrrg+CdpBI6eZ7zaEBV3A11wSqr8nDH0gspiUe8h0Po4BQmTiKNZ2VtpBoGXJGrGN9hbO0ep5kS1m8DA4Mrw+dqz4dBb02MKmMCm+R1wyK0N2vXeLyTeYE0Fu+e1OapCKs8akA==
+signature: RoXSAx5rey3Ge+++nLAsCSmHlE7xTG47vuBrImEIF0dT2X3xp6Eacxs9qHCBCBDqq5PQpIN73HqqfUgEgm24vDJ7fbIXEiKWJFb0hSOkJZgMg+1mWeTxq8CD/n8oQlJs0dxGjqW4VR8TleNMHIRCsW38iSb+gIozOAhM6fLSZOCDFPiXGqk1OQ5yF9z7I2+QJ2bRlR6Tjz3ajNQcRzm7HQRYmaVWmFYjixWsZg0kAFojtFLikoml0JNxhpgWe5c4YRh+LAqFY7mchENtQ0jq03qQj+8eMgxpHN5u2B46NYRKEBB9lT1ptcGKYO5J37znORbM+j7qWQpmGtzjBqCALQ==
 subtype: python3
 system: true
 tags: []
