@@ -45,7 +45,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -54,7 +54,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -68,8 +68,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('IndicatorMaliciousRatioCalculation', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import hashlib
   import json
   import traceback
@@ -229,7 +229,7 @@ script: |
 
   register_module_line('IndicatorMaliciousRatioCalculation', 'end', __line__())
 scripttarget: 0
-signature: cBAjv4+/U0VbBB9mf3wrYDFKLeBw4AdkxKx1kIOVHf7gHaHO9I7x7G9kgvg4l49cjEGQdIWd9Qc9PD27v3j1owdUznoziKGpNxWfUCY7XsjF76Ncf4YJOc4uk2Yvhgr7YvDlOdAUPl3nubDY8ZP8zFWlHYz6upQOfr2HzOrPzkDKGyGlMNRvhnNR31gvPwREWYZe/9pB3oUCvqvx81e+ToF81mBiH7NLRkhtpZgyp/INMsB5reIWb1YW/XW9kKI+AxGntCuKrjYTU6oMryIBIChoMc+5fHoaKDdUeMpJ9ZzvIkeVs3U/RqRGgiwX2tP3at8pUzD1JnKSPeZ7khlFdA==
+signature: DNfKoCbO950FcwOlaxWWjHjjA+jrfXYoLPKssg8ow8TuSq3DNOwQ2pEIL7mN/1R0KMI4QFjp6UwFyefI8CndJe9g0qqWOy2w/TgZfHxWWM3+vEdYbaleglHGTMnTZzp/nRAhW5EmEwz3Q0k4u/W2DJVGMoW7b8wkkwTy6bzTjmEIpT8TCfhVC29dk3X4anfNeA6d4PYMIv9FFR7+r4CRxOOvS4DfUr9xOgG72R5rEOF++y3h+6D52rzW5krmXWLUg5vSkFl1N17huzDk35XRE4ErOvyhSfKD9nJSlsDCF8LuyyEAnoC35qfYa9Xx2ut5GvNJjic4rr1oTS52QLNdIQ==
 subtype: python3
 system: true
 tags:
