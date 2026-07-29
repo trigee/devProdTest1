@@ -39,7 +39,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.5.0
+    itemVersion: 1.5.2
     packID: DemistoRESTAPI
     packName: Cortex REST API
     packPropagationLabels:
@@ -51,7 +51,7 @@ contentitemexportablefields:
 dependson:
   must:
   - core-api-multipart
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -65,8 +65,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('UploadFile', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.5.0'
-  demisto.debug('pack id = DemistoRESTAPI, pack version = 1.5.0')
+  CONSTANT_PACK_VERSION = '1.5.2'
+  demisto.debug('pack id = DemistoRESTAPI, pack version = 1.5.2')
 
 
 
@@ -112,7 +112,7 @@ script: |
 
   register_module_line('UploadFile', 'end', __line__())
 scripttarget: 0
-signature: uWAMAQbY5JkP1OFnc1RCtE10rNc0Zc907JEsFB9N+I4uKhFah3/o/nDJfGKnthgu0Cdq/+sROX576VnQAIPGxR9ORTr/+BIeZpt1WhzbejaBP3WBuTAYjs9S68ZW6vElj/s72drHP+aN+J8XqZQUgbT+M76QjTFz2e3LjahjDSh766UcAlCuxLtYhojkKIFyNulyQ31S5epY25oOnYb2C6uqyBV0sLSVp5Z2WOnmF3INnSeLSwK+FvgCZw/n0NXlSw/okzNk8ftTPh+Fsdx6EvsdCfiKk2cDzTtuBfdO0PlHvcowyKNPD52JbmSPxFqsKdVIj15anx9iVJga//iuHw==
+signature: r7bVGicH9MFgRqJHfLYDT7DJbnwvDSPClNNIcsj5DU2BwrNoC6wnckmZGR+mLz45R+KpA/JGe8h1d0fm4bR6kFMB4IpKI6yUl4cE6Xzh+57R4LV94x/ggf9Ds1jFovZyLjhXnFQigrCK4jUsXadqtlyZ0TvpMQKrZlwBwr6bk9GB26noi9PinaQk7Fxh5OYO4X0GMmM21tzF6zivyKOlPArHRtaMGc/2Sss3qCPLLZpyjRcW0FWT1He8xt28dsKszQ60+7n0bfN1QT2OeqdmX5enn2Es5eRGjq8fubYnOpBBkZ8y8RMk4MjwA/2VHgJXnL3QEtZm6IU10/u0x1csYQ==
 subtype: python3
 system: true
 tags:
