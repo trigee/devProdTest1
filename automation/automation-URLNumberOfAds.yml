@@ -17,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -26,7 +26,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -49,8 +49,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('URLNumberOfAds', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import re
   from functools import reduce
 
@@ -100,7 +100,7 @@ script: |
 
   register_module_line('URLNumberOfAds', 'end', __line__())
 scripttarget: 0
-signature: j/VEMi27gDFIPp7KoS9Yh9zy7IMBN5Kn3xX99RufjM8fTo9aOxq006uuje40LM8SVaCr+Q5ObhJkAkXpCzJuxyMGNXoS8nNuJHOiQm/cUarwu5wjGBeGW0JMLNSrcTN5rz7nRQ+y/nmZYTLd3R3rW+xtrz1ft9yBrS70YGlYQvS/76PWYlmSquq8hdm8tnOFZNf18AzXt6nNNs2doFadFs+L5O7nHU7qX50RO9gDNbpU18+xqu5yhjNgGF1JrGlPeYGUVFVoGF7AUix3GgvGVIKr9dg+hs/yfjupRus3sD9KYqMsndFq1d2hdomL8cSEyofBWy3ly4LjuLpNbkDIRg==
+signature: u0eJnkPlbLSlK5koOLZJqTsKr49augP+8OSUEVFX6OzNf7NtrWdsOo59SicsiWyMp6SR1pujFbdQ6zAfDULSCJLMIhBxAIMQHkp9HnTC6euJD6URLBY9GyxoS9B5m46EEdwX9WM0DyBltuoF4YYNeel+F6eYnwmwlR4f/UZ5/eSScpJ5q7cdcTf3VpEkr7s0QSH5sjVh3Rkq+LXryOJ7YO2wPNnNi4A5btjK6qGwVufTJTLUpoQxsBXWQMD3tPV212gB+B1GxmdFPit0OEEsFGFRFBCHYlpUDDO0bCH2ynHobocegxCP1Nr2UtrscLI7reNXUIZk5aGoSLTw/eV4JQ==
 subtype: python3
 system: true
 tags:
