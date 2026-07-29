@@ -99,7 +99,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 4.4.30
+    itemVersion: 4.4.33
     packID: PrismaCloud
     packName: Prisma Cloud by Palo Alto Networks
     packPropagationLabels:
@@ -313,15 +313,15 @@ script:
       description: The employee's username in the app.
       type: String
     supportedModules: []
-  dockerimage: demisto/python3:3.12.8.3296088
+  dockerimage: demisto/python3:3.12.13.10116658
   nativeimage:
   - "8.8"
   - "8.6"
   runonce: false
   script: |
     register_module_line('PrismaCloud IAM', 'start', __line__())
-    CONSTANT_PACK_VERSION = '4.4.30'
-    demisto.debug('pack id = PrismaCloud, pack version = 4.4.30')
+    CONSTANT_PACK_VERSION = '4.4.33'
+    demisto.debug('pack id = PrismaCloud, pack version = 4.4.33')
     import traceback
 
 
@@ -1297,5 +1297,5 @@ script:
 sectionorder:
 - Connect
 - Collect
-signature: tzfpTbpojX9lCC+G2+stJB16oBus61E5C0zcHJuj9GjhobhfWCzMFzeExxzbALafBLoGmgT7nexx9aMxNT8s0hsGdH21yO9w3h7YvPSSylAWr0k+IYLHx2gXgcpcQULX1vz0CpfrSTvzFn+RYpFg83VlzzwBXfxTZC3EUen0x4Df/Pq6sWo/vxy9Obv0+Qalglz9Qy0fRsJhHnMKXNM1tNjmiEqDwI2E9fYnh7kzZaxzoZGPtwHGY4Zat+J3pR/GnqZ2IIXCrXCIZXwA63eb0sJq66ECJKNgcSWXG0w3pH/yXXcqQmngA5m7rvevSNwoqySJR5nmpb1jSRRI0msAwg==
+signature: ALiqRdQwbUOZPVfS78EwTLyzUORuybafxFYFsVD74s/VPML8Ey3ts80zRrlhWi2AqUX2dTicQyDd02APIfKLb1PJ882tKR45Hif2PdFeYN84+KblS72AfSitjCNKDT7IUJloirohESXMXFpz3IBqGBcTs8MtzzGgljePUHWqpCDPo9Sl1z7RPG+drNEv0/h27w2x1DLxDvSlsulF9y5JGwrejGaYKEUt51EbP3TVSy8AjrwYOLrs5oDbjdcC+BWUdtQjZjhe/Zjyd8Fb2FfsRmEDWItmb+TjVYTsx3X2Niu/j8F3AlG9oB+LcBdXitOLS/xwoNKyw6ClypC+4slOaw==
 system: true
