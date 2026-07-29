@@ -7,7 +7,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.2
+    itemVersion: 1.42.13
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -25,8 +25,8 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  CONSTANT_PACK_VERSION = '1.42.2'
-  demisto.debug('pack id = Base, pack version = 1.42.2')
+  CONSTANT_PACK_VERSION = '1.42.13'
+  demisto.debug('pack id = Base, pack version = 1.42.13')
   """Common functions script
   This script will be appended to each server script before being executed.
   Please notice that to add custom common code, add it to the CommonServerUserPython script.
@@ -10382,21 +10382,23 @@ script: |
               """
               try:
                   method_whitelist = "allowed_methods" if hasattr(
-                      Retry.DEFAULT, "allowed_methods") else "method_whitelist"  # type: ignore[attr-defined]
-                  whitelist_kawargs = {
+                      Retry.DEFAULT, "allowed_methods"
+                  ) else "method_whitelist"  # type: ignore[attr-defined]
+                  dynamic_kwargs = {
                       method_whitelist: frozenset(['GET', 'POST', 'PUT', 'PATCH', 'DELETE'])
                   }
+                  if hasattr(Retry.DEFAULT, "backoff_jitter"):
+                      dynamic_kwargs["backoff_jitter"] = backoff_jitter
                   retry = Retry(
                       total=retries,
                       read=retries,
                       connect=retries,
                       backoff_factor=backoff_factor,
-                      backoff_jitter=backoff_jitter,
                       status=retries,
                       status_forcelist=status_list_to_retry,
                       raise_on_status=raise_on_status,
                       raise_on_redirect=raise_on_redirect,
-                      **whitelist_kawargs  # type: ignore[arg-type]
+                      **dynamic_kwargs  # type: ignore[arg-type]
                   )
                   http_adapter = HTTPAdapter(max_retries=retry)
 
@@ -15690,7 +15692,7 @@ script: |
   register_module_line('CommonServerPython', 'end', __line__())
   register_module_line('CustomScriptIntegration', 'start', __line__())
 scripttarget: 0
-signature: zd1aHS1MTk+TCYLOMP/hEC1ND1eZ5fyID8NrQYRegI3aujRctCgMGk36sgZIGQWsEjM7WbpubQrMi0fEseFv2sb3WySVcnQ+BJkxJ8h7yxuRv2eVeKrxnQIFgN8893hjLyISL6pf0ho1yfWNkQONfWZxXR4qh58480cK/CFgofIw/Yd8a6jYvnDaHG1Y6wpqEfKFdqdQ5MhKq1pMLURqjM9HZi2Lh51SRXX4ZUcGGfbLQofr3YXh23S/IOctMLRxHibyhrt/XTEZrvUy9l0Rdx/ppJ1wyRA1nIdclQG+t1CdiGjtuZm2G1IfkF4POwIqtPS224yrYrabcon4UO7VHg==
+signature: 3uVkkJU34ssSdjoZG57bHUz1w5QjFwd/dlioCQDxrSZ8OHag9nc65dVglOc/sJfyjkZ5BsrAcIeRlKhLL2oVheEoeCO7tdKXD9rfoTLt8N4+34fiUuW6NFBSEhnvI90/XXMrnw0pr97ssWCKkmEECo2PkVGFf0fzssqecqCctQ4hFjfy4ZGXL64eIbmmspGbpkOtVcosHy+b3Ty+iXP0pOYMS/S5JPpA4HxR/fQCbuuLOsmWyfos7NrIYWXwROCDPuYgT8N5o+o1YbkKbDoM+2RQU7WOvmyDFImDvbECEfj0umC77g7QWNfoeeWnnkmvaF/xggSA4hiXMc3kjlHnyA==
 subtype: python2
 system: true
 tags:
