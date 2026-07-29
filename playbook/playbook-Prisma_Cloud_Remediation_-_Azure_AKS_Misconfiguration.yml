@@ -3,7 +3,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 4.4.30
+    itemVersion: 4.4.33
     packID: PrismaCloud
     packName: Prisma Cloud by Palo Alto Networks
     packPropagationLabels:
@@ -182,7 +182,7 @@ tasks:
     skipunavailable: false
     task:
       brand: ""
-      description: Checks for a Prisma Cloud policy Id.
+      description: Checks for a Prisma Cloud policy ID.
       id: 7b8af710-d3f1-47db-8ed0-13cd281e5fcf
       iscommand: false
       istaskmissingcomponenterrordismissed: false
@@ -341,7 +341,7 @@ tasks:
     task:
       brand: ""
       description: Execute the appropriate remediation sub-playbook based on the Prisma
-        Cloud policy Id.
+        Cloud policy ID.
       id: 7fda9780-599c-4ed2-81ab-6a595e1f285c
       iscommand: false
       istaskmissingcomponenterrordismissed: false
@@ -376,7 +376,7 @@ tasks:
       brand: ""
       description: |-
         1. Sign in to the Azure portal.
-        2. Goto the Kubernetes Service and select your cluster.
+        2. Go to the Kubernetes Service and select your cluster.
         3. Click Insights in the left window pane.
         4. If you have an existing Log Analytics workspace in the same subscription as the cluster, select it in the drop-down list.
         5. Select Enable.
@@ -528,14 +528,16 @@ tasks:
     skipunavailable: true
     task:
       brand: PrismaCloud v2
-      description: Dismiss the alerts matching the given filter. Must provide either
-        policy IDs or alert IDs.
+      description: Dismiss or snooze the alerts matching the given filter. Either
+        policy IDs or alert IDs must be provided. When no absolute time nor relative
+        time arguments are provided, the default time range is all times. For snoozing,
+        provide "snooze_unit" and "snooze_value" arguments.
       id: 5eb90a78-eb8e-4c19-8e15-d4fbacae6996
       iscommand: true
       istaskmissingcomponenterrordismissed: false
       name: Dismiss Prisma Cloud alert
       playbooktaskmissingcomponent: null
-      script: PrismaCloud v2|||redlock-dismiss-alerts
+      script: PrismaCloud v2|||prisma-cloud-alert-dismiss
       type: regular
       version: -1
     taskid: 5eb90a78-eb8e-4c19-8e15-d4fbacae6996
