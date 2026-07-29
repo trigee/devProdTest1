@@ -28,7 +28,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -37,7 +37,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -85,8 +85,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('FileCreateAndUploadV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import base64
   from pathlib import Path
   from typing import Any
@@ -154,7 +154,7 @@ script: |
 
   register_module_line('FileCreateAndUploadV2', 'end', __line__())
 scripttarget: 0
-signature: JFhvl1R5LV7Y7igy+gW42Xu1FEaS5Vk3m7uFfw5m83iPZ1Yv0FwOPIB0m6KjIut4ZP9+Af0PbYwipCNy/YQCd3Ce4zeRT4+B17As2GnZ2hO3UlnLYEH0TMOWkPJwxYmxRYpvY0IbgiQtzR6SA3dUKoazeXtwl8Xfim4xAfYAtLGmODKEcidfYSAoMAsTgAj3rBrPsCNLpUOwtbXCCrkY66jO2tvmCftqYUng45O12PuHPomF1CxPP4pXAn20Kmb8CVoteUrob5QgOaXsQ7EUTrX3GPRqWZBo/9rS7ilivj4nY+Gcpd3Y8G+UJh4KlBartCUkPTOMwnjEjRa6YbWphQ==
+signature: cFntK7Bey8ZKfC70S0oY4IvGCCOhNbnJwNeBh42mSu7r6EG3nUG7QdLm0W0YH0uGwv7qe7PZpnsc4lI9KUd25pzx1phgAl/1FtRzzaifZubJVlWTf/xtbCG7h6A7JQZ288p+DaXq7ngFj+DhDfiVRXZi5e8rkJ9iSSYITvWF08OsAfcPwIWxMGtbwpaYQfgHpEFWc3G40eMf40OakfX/+1JoiCK428OiOimet96iXCSlXlt7ZaCw0C9cuF4jqn3j/VQWUzFi/4LgCoNKlZkyd5quQYElzL2NFClYHUAea3wChD/kbifoUZTAE2/VevHHRSN4yv7/tyAnOHjwljn9Xg==
 subtype: python3
 system: true
 tags:
