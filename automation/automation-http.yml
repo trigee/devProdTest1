@@ -1,6 +1,6 @@
 args:
 - auto: PREDEFINED
-  description: The method for the http request
+  description: The method for the http request.
   name: method
   predefined:
   - GET
@@ -9,10 +9,10 @@ args:
   - PUT
   required: true
   supportedModules: []
-- description: The body for the http request
+- description: The body for the http request.
   name: body
   supportedModules: []
-- description: The url for the http request
+- description: The url for the http request.
   name: url
   required: true
   supportedModules: []
@@ -22,12 +22,12 @@ args:
   supportedModules: []
 - auto: PREDEFINED
   deprecated: true
-  description: Trust any certificate (not secure)
+  description: Trust any certificate (not secure).
   name: insecure
   supportedModules: []
 - auto: PREDEFINED
   defaultValue: "true"
-  description: Trust any certificate (not secure)
+  description: Trust any certificate (not secure).
   name: unsecure
   predefined:
   - "true"
@@ -35,24 +35,24 @@ args:
   supportedModules: []
 - auto: PREDEFINED
   defaultValue: "false"
-  description: Use system proxy settings
+  description: Use system proxy settings.
   name: proxy
   predefined:
   - "true"
   - "false"
   supportedModules: []
-- description: The user for the http request
+- description: The user for the http request.
   name: username
   supportedModules: []
-- description: The password for the http request
+- description: The password for the http request.
   name: password
   secret: true
   supportedModules: []
 - defaultValue: "no"
-  description: yes to save file, else no. Default is no
+  description: yes to save file, else no. Default is no.
   name: saveAsFile
   supportedModules: []
-- description: Using filename from headers if filename is not given. Default is http-file
+- description: Using filename from headers if filename is not given. Default is http-file.
   name: filename
   supportedModules: []
 comment: Sends http request. Returns the response as json.
@@ -64,7 +64,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -79,13 +79,13 @@ mainengineinfo: {}
 name: http
 outputs:
 - contextPath: HttpRequest.Response
-  description: The response for the http request
+  description: The response for the http request.
 pswd: ""
 restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |+
-  // pack version: 1.22.28
+  // pack version: 1.22.39
   var requestObj = {
       Method: args.method,
   };
@@ -134,7 +134,7 @@ script: |+
   var fileName;
   if (args.filename) {
       fileName = args.filename;
-  } else if (res.Headers['Content-disposition']) {
+  } else if (res && res.Headers && res.Headers['Content-disposition'] && res.Headers['Content-disposition'].length > 0) {
       fileName = res.Headers['Content-disposition'][0];
   } else {
       fileName = 'http-file';
@@ -161,7 +161,7 @@ script: |+
 
 
 scripttarget: 0
-signature: LXMS/FC0xS6NZLNvZog1dR7rQhdqVQUE6hKO3L6Fivlrp+qJBnUaIa1SKu+pjfVvJAEmb4f0VCwtYD9mCgug9E6CY5vGPalv14LLUKuZhgv2Hku/ouipkkE0N1OXyOCDw6e4YMbV1itFKII5rC0h62SkECxh45orURKETOSlQehNUSMxdNOQMKP8b9gmaXbKMXK16L/hh4zr8Lx1pve1VMWTtHcO7TerxExZYxW1s9kRBWkShQ9Q1rZNHeyQn1HQKcfnpCbVIqG/p36rrDZy3CUDDoyQwdNg/ZLoXHKgVECTln0iqnXp2MrwnZzQBMOK6m/d1Q9AIlNKQy5OBUOSRA==
+signature: FZNTpYBi861DDG5yWpfsu5jv6Bdqp4XBuhiMuap1B2ZWBu2sHuKGtn4MK7TdKQwrIfp+DATcoaiWzDk6fY3cbkqsRP18N+k4x6rQKiMRXHs1+YCGp1bS51S1M0XjQ0JGFYDH9v8JNSnhe+CQxdhJbFWDjg933g30djtK4OeNGKgayXXMbdIf6zEnRHUs4/1WKSybW3CadsJG5tYOnBBNE/sgHABVqM2/ONa2s8t08u2bFGkOEpRIjIWiw8CSAa/1yH5Ev0yVL3SLHIR+lFgs4d6XaS8hRCy0GOmkvaBxBWeEyz16MDs57254p9+P+B23Uoca6pHoTyfLoiA5ge55XA==
 system: true
 tags:
 - Utility
