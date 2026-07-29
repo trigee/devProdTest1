@@ -85,25 +85,25 @@ configuration:
   section: Connect
   supportedModules: []
   type: 14
-- additionalinfo: How long a concurrent request waits for an in-flight upstream response
-    before bypassing the cache lock. Should be greater than or equal to the Request
-    Timeout; smaller values will be automatically raised to the Request Timeout to
-    prevent upstream stampedes when responses take longer than this value.
+- additionalinfo: The parameter is deprecated and no longer used. Cache locking was
+    replaced by a two-tier fail-fast design that rejects excess concurrent cache-building
+    requests instead of queuing them.
   advanced: true
   defaultvalue: 1h
-  display: Cache Lock Timeout
+  display: Cache Lock Timeout (Deprecated)
+  hidden: true
   name: cache_lock_timeout
   required: false
   section: Connect
   supportedModules: []
   type: 0
-- additionalinfo: How long the cache lock holder is allowed to populate the cache
-    before another request is permitted to retry. Should be greater than or equal
-    to the Request Timeout; smaller values will be automatically raised to the Request
-    Timeout.
+- additionalinfo: The parameter is deprecated and no longer used. Cache locking was
+    replaced by a two-tier fail-fast design that rejects excess concurrent cache-building
+    requests instead of queuing them.
   advanced: true
   defaultvalue: 1h
-  display: Cache Lock Age
+  display: Cache Lock Age (Deprecated)
+  hidden: true
   name: cache_lock_age
   required: false
   section: Connect
@@ -392,7 +392,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 3.3.33
+    itemVersion: 3.4.0
     packID: EDL
     packName: Generic Export Indicators Service
     packPropagationLabels:
@@ -422,10 +422,12 @@ detaileddescription: "## How to Access the Generic Export Indicators Service\n\n
   access the **Generic Export Indicators Service** by instance name, set up the **username**
   and **password** values in the **External Dynamic List Integration** page (**Settings**
   > **Configurations** > **Integrations** > **External Dynamic List Integration**).\n2.
-  You can access the External Dynamic List at the following url: `https://edl-<cortex-xsiam-address>/xsoar/instance/execute/<instance-name>`.\n3.
+  You can access the External Dynamic List at the following url: `https://ext-<cortex-xsiam-address>/xsoar/instance/execute/<instance-name>`.
+  You must replace the `xdr` in the URL with `crtx`. For example, if the tenant URL
+  is `https://platform-test.xdr-qa2-uat.us.example.com/`, use `https://ext-platform-test.crtx-qa2-uat.us.example.com/`.\n3.
   For example to test via curl with an instance with instance name: `EDL_instance_1`,
-  XSIAM address `my-xsiam-subdomain.us.paloaltonetworks.com` and credentials test/password:\n```\ncurl
-  -v -u test:password https://edl-my-xsiam-subdomain.us.paloaltonetworks.com/xsoar/instance/execute/EDL_instance_1\n```\n\n\n\n\n\n\n\n\n####
+  XSIAM tenant URL `https://my-xsiam-subdomain.xdr.us.paloaltonetworks.com/` and credentials
+  test/password:\n```\ncurl -v -u test:password https://ext-my-xsiam-subdomain.crtx.us.paloaltonetworks.com/xsoar/instance/execute/EDL_instance_1\n```\n\n\n\n\n\n\n\n\n####
   Note:\nWhen using more than one server in High Availability (HA) mode, the External
   Dynamic List (EDL) should be configured to listen on a route, not on a port.\n\nIn
   \"route\" listen mode, a request received by any of the app servers will be redirected
@@ -473,8 +475,8 @@ detaileddescription: "## How to Access the Generic Export Indicators Service\n\n
   list on demand only***, the indicator list refreshes based on the value set in the
   ***Refresh Rate*** parameter.\n\n## Troubleshoot\n\nTo view logs concerning the
   creation of the indicator list and its current status add the `/log` suffix to the
-  list URL.\n\n\n\n\n`https://edl-<cortex-xsiam-address>/xsoar/instance/execute/<instance-name>/log`\n\n\n---\n[View
-  Integration Documentation](https://xsoar.pan.dev/docs/reference/integrations/edl)"
+  list URL.\n\n\n\n\n`https://ext-<cortex-xsiam-address>/xsoar/instance/execute/<instance-name>/log`
+  and replace the `xdr` in the URL with `crtx`.\n\n\n---\n[View Integration Documentation](https://xsoar.pan.dev/docs/reference/integrations/edl)"
 display: Generic Export Indicators Service
 image: data:image/png;base64,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
 imagepath: content/packs/EDL/EDL_image.png
@@ -696,20 +698,21 @@ script:
     description: Updates values stored in the List (only available On-Demand).
     name: export-indicators-list-update
     supportedModules: []
-  dockerimage: demisto/flask-nginx:1.0.0.8240011
+  dockerimage: demisto/flask-nginx:1.0.0.11047721
   longRunning: true
   longRunningPort: true
   runonce: false
   script: |
     register_module_line('EDL', 'start', __line__())
-    CONSTANT_PACK_VERSION = '3.3.33'
-    demisto.debug('pack id = EDL, pack version = 3.3.33')
+    CONSTANT_PACK_VERSION = '3.4.0'
+    demisto.debug('pack id = EDL, pack version = 3.4.0')
     import glob
     import hashlib
     import ipaddress
     import os
     import re
     import tempfile
+    import uuid
     import zipfile
     from base64 import b64decode
     from collections.abc import Callable, Iterable
@@ -1076,7 +1079,22 @@ script:
         headers_was_written = False
         files_by_category = {}  # type:Dict
         ioc_counter = 0
+        # While iterating over a large number of indicators, the main thread can hold the stdout lock longer than
+        # the default 60s timeout, causing the heartbeat thread to fail with "Timeout acquiring stdout lock".
+        # Instead of disabling the heartbeat thread (which can make the server consider the container unresponsive),
+        # we temporarily raise the stdout lock timeout to 10 minutes so the heartbeat keeps running safely, and
+        # restore the original value afterwards. This attribute is dynamically injected by the server runtime; when
+        # it is not present (e.g. older servers or unit tests) we skip the tweak entirely so this stays a true no-op.
+        # It is not part of the demistomock type stub, so mypy's attr-defined check is suppressed on the assignments.
+        stdout_lock_timeout_supported = hasattr(demisto, "_stdout_lock_timeout")
+        original_stdout_lock_timeout = getattr(demisto, "_stdout_lock_timeout", 60)
         try:
+            if stdout_lock_timeout_supported:
+                demisto._stdout_lock_timeout = 600  # type: ignore[attr-defined]  # 10 minutes
+                demisto.debug(
+                    f"Temporarily set demisto._stdout_lock_timeout to 600 seconds "
+                    f"(was {original_stdout_lock_timeout}) for the indicators iteration."
+                )
             for ioc_res in indicator_searcher:
                 fetched_iocs = ioc_res.get("iocs") or []
                 for ioc in fetched_iocs:
@@ -1113,6 +1131,10 @@ script:
                 # NG + XSIAM can recover from a shutdown
                 if version.get("platform") == "x2" or is_demisto_version_ge("8") or version.get("platform") == "unified_platform":
                     raise SystemExit("Encountered issue in Elastic Search query. Restarting container and trying again.")
+        finally:
+            if stdout_lock_timeout_supported:
+                demisto._stdout_lock_timeout = original_stdout_lock_timeout  # type: ignore[attr-defined]
+                demisto.debug(f"Restored demisto._stdout_lock_timeout to {original_stdout_lock_timeout} seconds.")
         demisto.debug(f"Completed IOC search & format, found {ioc_counter} IOCs.")
         if request_args.out_format == FORMAT_JSON:
             f.write("]")
@@ -1874,24 +1896,43 @@ script:
         return data
 
 
+    def get_request_id() -> str:
+        """Return the per-request correlation id for log lines.
+
+        Reuses the ``X-Request-ID`` header that nginx forwards (the SAME id appears in
+        the nginx access log and the WSGI ``wsgi request:``/``wsgi access:`` lines), so
+        a single id can be grepped across NGINX -> WSGI -> EDL. Falls back to a fresh
+        short uuid if the header is missing (e.g. a direct hit that bypassed nginx).
+        """
+        try:
+            forwarded = request.headers.get("X-Request-ID")
+        except RuntimeError:
+            # No active Flask request context (e.g. called outside a route).
+            demisto.debug("get_request_id called without an active Flask request context; generating a fresh id.")
+            forwarded = None
+        return forwarded if forwarded else uuid.uuid4().hex[:12]
+
+
     @APP.route("/", methods=["GET"])
     def route_edl() -> Response:
         """
         Main handler for values saved in the integration context
         """
         params = demisto.params()
+        rid = get_request_id()
         cache_refresh_rate: str = params.get("cache_refresh_rate")
-        if EXTENSIVE_LOGGING:
-            demisto.debug("edl: Starting EDL route handler")
+        start = datetime.now(timezone.utc)
+        demisto.info(f"edl: rid={rid} route=/ start handling request")
         auth_resp = authenticate_app(params, request.headers)
         if auth_resp:
+            demisto.info(f"edl: rid={rid} authentication failed; returning auth response")
             return auth_resp
         if EXTENSIVE_LOGGING:
-            demisto.debug("edl: authentication successful")
+            demisto.debug(f"edl: rid={rid} authentication successful")
         request_args = get_request_args(request.args, params)
         on_demand = params.get("on_demand")
         if EXTENSIVE_LOGGING:
-            demisto.debug(f"{'Using' if on_demand else 'Not using'} on-demand cache to serve EDL.")
+            demisto.debug(f"edl: rid={rid} {'Using' if on_demand else 'Not using'} on-demand cache to serve EDL.")
 
         created = datetime.now(timezone.utc)
         if on_demand:
@@ -1916,7 +1957,7 @@ script:
                 data=edl_data, append_str=params.get("append_string"), prepend_str=params.get("prepend_string")
             )
         if EXTENSIVE_LOGGING:
-            demisto.debug(f"Final EDL size: {len(edl_data)} characters, {edl_size} lines")
+            demisto.debug(f"edl: rid={rid} Final EDL size: {len(edl_data)} characters, {edl_size} lines")
 
         mimetype = get_outbound_mimetype(request_args)
         max_age = ceil((datetime.now() - dateparser.parse(cache_refresh_rate)).total_seconds())  # type: ignore[operator]
@@ -1927,14 +1968,26 @@ script:
             ("X-EDL-Size", str(edl_size)),
             ("X-EDL-Origin-Size", original_indicators_count),
             ("ETag", etag),
+            # Echo the correlation id back so the client and nginx ($sent_http_x_request_id)
+            # observe the same id that EDL/WSGI logged.
+            ("X-Request-ID", rid),
         ]  # type: ignore[assignment]
 
-        demisto.debug(f'edl: Returning response with the following headers:\n{[f"{header[0]}: {header[1]}" for header in headers]}')
+        demisto.debug(
+            f'edl: rid={rid} Returning response with the following headers:\n'
+            f'{[f"{header[0]}: {header[1]}" for header in headers]}'
+        )
 
         resp = Response(edl_data, status=200, mimetype=mimetype, headers=headers)
         resp.cache_control.max_age = max_age
         # number of seconds we are willing to serve stale content when there is an error
         resp.cache_control["stale-if-error"] = "600"
+
+        total_time = (datetime.now(timezone.utc) - start).total_seconds()
+        demisto.info(
+            f"edl: rid={rid} route=/ done status=200 edl_size={edl_size} "
+            f"chars={len(edl_data)} query_time_secs={query_time:.3f} total_secs={total_time:.3f}"
+        )
 
         return resp
 
@@ -1948,14 +2001,15 @@ script:
             Response: A Flask Response object that sends a ZIP file containing the full log.
         """
         params = demisto.params()
-        demisto.debug("edl: Starting EDL route/log_download handler")
+        rid = get_request_id()
+        demisto.debug(f"edl: rid={rid} Starting EDL route/log_download handler")
         auth_resp = authenticate_app(params, request.headers)
         if EXTENSIVE_LOGGING:
-            demisto.debug("edl: authentication successful")
+            demisto.debug(f"edl: rid={rid} authentication successful")
         if auth_resp:
             return auth_resp
 
-        demisto.debug("edl: Getting log file to show")
+        demisto.debug(f"edl: rid={rid} Getting log file to show")
 
         created = datetime.now(timezone.utc)
 
@@ -1979,12 +2033,13 @@ script:
                 - A ZIP file download containing the log, if the log is too large to display.
         """
         params = demisto.params()
+        rid = get_request_id()
 
         cache_refresh_rate: str = params.get("cache_refresh_rate")
-        demisto.debug("edl: Starting EDL route/log handler")
+        demisto.debug(f"edl: rid={rid} Starting EDL route/log handler")
         auth_resp = authenticate_app(params, request.headers)
         if EXTENSIVE_LOGGING:
-            demisto.debug("edl: authentication successful")
+            demisto.debug(f"edl: rid={rid} authentication successful")
         if auth_resp:
             return auth_resp
 
@@ -2380,8 +2435,9 @@ script:
     import os
     import subprocess
     import traceback
+    import uuid
+    from itertools import count
     from math import ceil
-    from multiprocessing import Process
     from pathlib import Path
     from signal import SIGUSR1
     from string import Template
@@ -2392,7 +2448,7 @@ script:
     import requests
 
     from flask.logging import default_handler
-    from gevent.pywsgi import WSGIServer
+    from gevent.pywsgi import WSGIHandler, WSGIServer
 
 
 
@@ -2400,17 +2456,371 @@ script:
     class Handler:
         @staticmethod
         def write(msg: str):
-            demisto.info(msg)
+            # gevent's pywsgi writes one Common-Log-Format access line per request here.
+            # Tag it so it is easy to grep for and correlate with the nginx access log.
+            # Kept at debug: the structured "wsgi request:".
+            demisto.debug(f"wsgi access: {msg.rstrip()}")
 
 
     class ErrorHandler:
         @staticmethod
         def write(msg: str):
-            demisto.error(f"wsgi error: {msg}")
+            demisto.error(f"wsgi error: {msg.rstrip()}")
 
 
     DEMISTO_LOGGER: Handler = Handler()
     ERROR_LOGGER: ErrorHandler = ErrorHandler()
+
+
+    # --- Request lifecycle / concurrency instrumentation -------------------------
+    # Monotonic sequence so every request can be correlated across the start line,
+    # the end line and the gevent access line.
+    _REQUEST_SEQ = count(1)
+    # The environ key under which we stash the per-request id so DemistoWSGIHandler
+    # can print the same id on the "wsgi access:" line.
+    REQUEST_ID_ENVIRON_KEY = "nginxapimodule.request_id"
+    # The environ key under which the middleware stashes the number of body bytes the
+    # APP produced, so the gevent handler can compare it against the bytes actually
+    # written to the socket and flag a discrepancy on the "wsgi access:" line.
+    APP_BYTES_ENVIRON_KEY = "nginxapimodule.app_bytes"
+    # When the app-produced bytes and the socket-sent bytes differ by MORE than this
+    # many bytes, the access line includes a short body_diff note (a 1-byte trailing
+    # newline difference is normal and must not be reported).
+    BODY_DIFF_THRESHOLD_BYTES = 1000
+
+
+    def _new_request_id(environ: dict) -> str:
+        """Return a correlation id for the request.
+
+        Prefers nginx's ``X-Request-ID`` (propagated via ``proxy_set_header``) so the
+        same id appears in the nginx access log, the ``wsgi request:`` line and the
+        ``wsgi access:`` line. Falls back to a fresh short uuid when nginx did not
+        forward one (e.g. direct upstream hit during tests).
+        """
+        forwarded = environ.get(_header_env_key("X-Request-ID"))
+        return forwarded if forwarded else uuid.uuid4().hex[:12]
+
+
+    def _next_request_seq() -> int:
+        """Return the next monotonic per-request sequence number."""
+        return next(_REQUEST_SEQ)
+
+
+    def _iso_now() -> str:
+        """Human-readable UTC timestamp for absolute received/responded times in logs."""
+        return datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%S.%f")[:-3] + "Z"
+
+
+    # Request headers worth capturing for client/cache/conditional diagnostics.
+    # Shared by both the gevent access log (DemistoWSGIHandler) and the per-request
+    # RequestLoggingMiddleware so the two log lines stay consistent.
+    LOGGED_REQUEST_HEADERS = (
+        "X-Forwarded-For",
+        "X-Real-IP",
+        "X-Forwarded-Proto",
+        "X-Original-URI",
+        "Host",
+        "User-Agent",
+        "Range",
+        "If-None-Match",
+        "If-Modified-Since",
+        "Authorization",
+    )
+
+
+    def _header_env_key(header_name: str) -> str:
+        # WSGI exposes request headers as HTTP_<UPPER_SNAKE> in the environ.
+        return "HTTP_" + header_name.upper().replace("-", "_")
+
+
+    def format_request_headers(environ: dict) -> str:
+        """Render the allow-listed request headers from a WSGI ``environ`` into a log string.
+
+        Produces a space-separated ``Name="value"`` sequence for every header in
+        ``LOGGED_REQUEST_HEADERS`` that is present. The ``Authorization`` header is
+        reduced to ``present`` so credentials are never written to the logs.
+
+        Args:
+            environ (dict): The WSGI request environment.
+
+        Returns:
+            str: e.g. ``X-Forwarded-For="1.2.3.4" Host="server" Authorization="present"``.
+        """
+        header_parts = []
+        for header_name in LOGGED_REQUEST_HEADERS:
+            value = environ.get(_header_env_key(header_name))
+            if value is None:
+                continue
+            if header_name == "Authorization":
+                value = "present"
+            header_parts.append(f'{header_name}="{value}"')
+        return " ".join(header_parts)
+
+
+    class DemistoWSGIHandler(WSGIHandler):
+        """gevent WSGI handler that enriches the access line with transfer diagnostics + headers.
+
+        gevent's ``WSGIServer`` formats one Common-Log-Format access line per request
+        via ``WSGIHandler.format_request()`` and writes it to the configured ``log``
+        (our :class:`Handler`, which prefixes it with ``wsgi access:``). The default
+        line only reports the body bytes gevent sent, which - when compared with the
+        ``content_length`` the app declared in :class:`RequestLoggingMiddleware` - can
+        silently hide truncated/aborted transfers (client disconnects mid-stream).
+
+        To make that gap explicit on a single line, ``format_request`` appends data
+        that only gevent's handler knows:
+          * ``sent_bytes``      - bytes actually written to the socket (``self.response_length``).
+          * ``content_length``  - the ``Content-Length`` the app declared (``-`` if chunked/unset).
+          * ``truncated``       - ``true`` when a numeric ``Content-Length`` was declared but
+                                  fewer bytes reached the socket (i.e. the transfer was cut short).
+          * ``connection``      - ``close`` or ``keep-alive``, derived from ``self.close_connection``.
+        It also appends the allow-listed request headers (via :func:`format_request_headers`)
+        so the real client/conditional headers are visible alongside the byte accounting.
+        """
+
+        @staticmethod
+        def _coerce_int(value: Any) -> int | None:
+            try:
+                return int(value)
+            except (TypeError, ValueError):
+                return None
+
+        def _transfer_diagnostics(self, environ: dict) -> str:
+            # Bytes gevent actually wrote to the socket for the response body.
+            sent_bytes = getattr(self, "response_length", None)
+            sent_bytes_str = str(sent_bytes) if sent_bytes is not None else "-"
+
+            # The Content-Length the app declared, if any (chunked responses won't have one).
+            declared_length: int | None = None
+            for header_key, header_value in getattr(self, "response_headers", None) or []:
+                if header_key.lower() == "content-length":
+                    declared_length = self._coerce_int(header_value)
+                    break
+            content_length_str = str(declared_length) if declared_length is not None else "-"
+
+            # The number of body bytes the APP produced (counted by RequestLoggingMiddleware
+            # and stashed in environ), so we can compare the two independent counts.
+            app_bytes = self._coerce_int(environ.get(APP_BYTES_ENVIRON_KEY))
+            app_bytes_str = str(app_bytes) if app_bytes is not None else "-"
+
+            # truncated=true only when we can prove fewer bytes reached the socket than promised.
+            if declared_length is not None and isinstance(sent_bytes, int):
+                truncated = "true" if sent_bytes < declared_length else "false"
+            else:
+                truncated = "unknown"
+
+            # Whether the connection is being closed (vs reused for keep-alive).
+            connection = "close" if getattr(self, "close_connection", True) else "keep-alive"
+
+            # client_disconnected mirrors the truncated detection but phrased from the
+            # connection's point of view: a proven short write means the peer went away
+            # (or nginx/the firewall dropped) before the full body was sent.
+            client_disconnected = "true" if truncated == "true" else "false"
+
+            # Number of requests served on this (keep-alive) connection, if gevent tracks it.
+            requests_on_conn = getattr(self, "_requests_on_connection", None)
+            requests_on_conn_str = str(requests_on_conn) if requests_on_conn is not None else "-"
+
+            diagnostics = (
+                f"sent_bytes={sent_bytes_str} app_bytes={app_bytes_str} content_length={content_length_str} "
+                f"truncated={truncated} client_disconnected={client_disconnected} "
+                f"connection={connection} requests_on_conn={requests_on_conn_str}"
+            )
+
+            # When the app produced N bytes but a meaningfully different number reached
+            # the socket, surface a short, human-readable explanation right on the line.
+            diff_note = self._body_diff_note(app_bytes, sent_bytes, declared_length)
+            if diff_note:
+                diagnostics = f"{diagnostics} {diff_note}"
+            return diagnostics
+
+        @staticmethod
+        def _body_diff_note(app_bytes: int | None, sent_bytes: Any, declared_length: int | None) -> str:
+            """Return a short 'body_diff=...' note when app vs socket bytes diverge.
+
+            Only emitted when both counts are known and differ by MORE than
+            ``BODY_DIFF_THRESHOLD_BYTES`` (a normal trailing-newline 1-byte delta is
+            ignored). The note names the likely cause so a reader instantly knows
+            whether the body was truncated on the wire or grew/shrank unexpectedly.
+            """
+            if app_bytes is None or not isinstance(sent_bytes, int):
+                return ""
+            delta = sent_bytes - app_bytes
+            if abs(delta) <= BODY_DIFF_THRESHOLD_BYTES:
+                return ""
+            if delta < 0:
+                # Fewer bytes on the wire than the app produced -> cut short.
+                missing = -delta
+                pct = (missing / app_bytes * 100) if app_bytes else 0.0
+                cause = (
+                    "client/proxy closed the connection before the full body was sent"
+                    if (declared_length is not None and sent_bytes < declared_length)
+                    else "write stopped before the app finished streaming"
+                )
+                detail = (
+                    f'body_diff="app produced {app_bytes} body bytes but only {sent_bytes} '
+                    f"reached the socket; {missing} bytes ({pct:.1f}%) were not sent - "
+                    f'likely {cause}"'
+                )
+            else:
+                extra = delta
+                detail = (
+                    f'body_diff="socket sent {sent_bytes} bytes, {extra} MORE than the '
+                    f"{app_bytes} body bytes the app counted - extra bytes are likely "
+                    f'response framing/headers or a double-write"'
+                )
+            return detail
+
+        def format_request(self):
+            environ = self.environ or {}
+            base_line = super().format_request()
+            rid = environ.get(REQUEST_ID_ENVIRON_KEY, "-")
+            parts = [base_line, f"rid={rid}", self._transfer_diagnostics(environ)]
+            headers_str = format_request_headers(environ)
+            if headers_str:
+                parts.append(headers_str)
+            return " ".join(parts)
+
+
+    class RequestLoggingMiddleware:
+        """WSGI middleware that emits a detailed, structured log line per request.
+
+        This is the Python-side counterpart to the nginx ``edl_detailed`` access log.
+        Because nginx serves cache HITs without ever reaching this upstream, a request
+        that appears in the nginx log with ``cache=HIT`` but is absent here was served
+        entirely from cache - making the cache-vs-upstream distinction explicit.
+
+        For every request it logs: the real client (X-Forwarded-For / X-Real-IP) as
+        forwarded by nginx, the original URI, conditional/range headers, user-agent,
+        the cache status nginx attached (X-Proxy-Cache), the response status, the
+        number of body bytes written, and the wall-clock time spent in the app.
+        """
+
+        def __init__(self, app):
+            self.app = app
+
+        def __call__(self, environ, start_response):
+            # --- request received ------------------------------------------------
+            # Wall-clock for absolute timestamps; perf_counter for accurate durations.
+            t_received = time.time()
+            received_iso = _iso_now()
+            start_perf = time.perf_counter()
+
+            # Correlation id: reuse nginx's X-Request-ID when present, else generate.
+            # Stash it in environ so DemistoWSGIHandler prints the SAME id on the
+            # "wsgi access:" line, tying the two python log lines together.
+            rid = _new_request_id(environ)
+            environ[REQUEST_ID_ENVIRON_KEY] = rid
+
+            method = environ.get("REQUEST_METHOD", "-")
+            path = environ.get("PATH_INFO", "-")
+            query = environ.get("QUERY_STRING", "")
+            full_path = f"{path}?{query}" if query else path
+            remote_addr = environ.get("REMOTE_ADDR", "-")
+
+            # How long the request waited inside nginx (queueing / cache-lock / connect)
+            # BEFORE this app handler started. nginx forwards its forward-time as the
+            # X-Request-Start epoch header; the difference vs our receive time is the
+            # gap that explains why nginx's time_total_secs >> the app's elapsed time.
+            nginx_wait_str = "-"
+            request_start_header = environ.get(_header_env_key("X-Request-Start"))
+            if request_start_header:
+                try:
+                    nginx_wait = t_received - float(request_start_header)
+                    # Clamp tiny negative values from clock skew to 0.
+                    nginx_wait_str = f"{max(0.0, nginx_wait):.3f}s"
+                except (TypeError, ValueError):
+                    nginx_wait_str = "-"
+
+            # Collect the interesting request headers (auth is reduced to presence only).
+            headers_str = format_request_headers(environ)
+
+            # Monotonic sequence per request for correlation across log lines.
+            seq = _next_request_seq()
+
+            # Emit a START line. A request that then hangs for 125s (or never finishes
+            # because the client vanished) is visible here when debug logging is on,
+            # even though its END line would only appear much later (or not at all).
+            # Kept at debug to reduce steady-state volume; the END line is authoritative.
+            demisto.debug(
+                f"wsgi request-start: rid={rid} seq={seq} received={received_iso} "
+                f"nginx_wait={nginx_wait_str} "
+                f'client={remote_addr} method={method} uri="{full_path}" {headers_str}'
+            )
+
+            # Capture the response status/headers via a wrapped start_response.
+            response_info: dict = {"status": "-", "cache": "-", "edl_size": "-", "content_length": "-"}
+            # When start_response is invoked = app produced its response headers
+            # (time-to-headers). Captured via closure so we can log it below.
+            timings: dict = {"t_headers": None, "t_first_byte": None}
+
+            def logging_start_response(status, response_headers, exc_info=None):
+                if timings["t_headers"] is None:
+                    timings["t_headers"] = time.perf_counter()
+                response_info["status"] = status.split(" ", 1)[0] if status else "-"
+                for header_key, header_value in response_headers:
+                    lowered = header_key.lower()
+                    if lowered == "x-proxy-cache":
+                        response_info["cache"] = header_value
+                    elif lowered == "x-edl-size":
+                        response_info["edl_size"] = header_value
+                    elif lowered == "content-length":
+                        response_info["content_length"] = header_value
+                return start_response(status, response_headers, exc_info)
+
+            bytes_sent = 0
+            error_str = "-"
+            t_app_start = time.perf_counter()
+            try:
+                result = self.app(environ, logging_start_response)
+                # Count the bytes actually produced by the app so we can detect
+                # size-vs-bytes mismatches / truncated bodies on the Python side.
+                for chunk in result:
+                    if chunk:
+                        if timings["t_first_byte"] is None:
+                            timings["t_first_byte"] = time.perf_counter()
+                        bytes_sent += len(chunk)
+                        # Continuously expose the app-produced byte count so the gevent
+                        # handler (DemistoWSGIHandler) can compare it with the bytes that
+                        # actually reached the socket - even if we are cut off mid-stream.
+                        environ[APP_BYTES_ENVIRON_KEY] = bytes_sent
+                    yield chunk
+                if hasattr(result, "close"):
+                    result.close()
+            except Exception as exc:  # noqa: BLE001 - we re-raise after logging
+                # A client disconnect / write error surfaces here; record it so the
+                # END line explains why a transfer stopped short.
+                error_str = type(exc).__name__
+                demisto.debug(f"WSGI app raised {error_str} while streaming response; re-raising.\n{traceback.format_exc()}")
+                raise
+            finally:
+                end_perf = time.perf_counter()
+                responded_iso = _iso_now()
+
+                # Phase breakdown so it's obvious WHERE the time went:
+                #   time_to_headers : app entry -> start_response (the "thinking" time).
+                #   ttfb            : request received -> first body byte.
+                #   stream_time     : first byte -> last byte (the streaming cost).
+                #   elapsed         : total time inside the app.
+                elapsed = end_perf - start_perf
+                time_to_headers = (timings["t_headers"] - t_app_start) if timings["t_headers"] else None
+                ttfb = (timings["t_first_byte"] - start_perf) if timings["t_first_byte"] else None
+                stream_time = end_perf - timings["t_first_byte"] if timings["t_first_byte"] else None
+
+                def _fmt(value):
+                    return f"{value:.3f}s" if value is not None else "-"
+
+                demisto.info(
+                    f"wsgi request: rid={rid} seq={seq} "
+                    f"received={received_iso} responded={responded_iso} "
+                    f"client={remote_addr} method={method} uri=\"{full_path}\" "
+                    f"status={response_info['status']} "
+                    f"app_bytes={bytes_sent} content_length={response_info['content_length']} "
+                    f'cache="{response_info["cache"]}" edl_size={response_info["edl_size"]} '
+                    f"nginx_wait={nginx_wait_str} time_to_headers={_fmt(time_to_headers)} ttfb={_fmt(ttfb)} "
+                    f"stream_time={_fmt(stream_time)} elapsed={_fmt(elapsed)} "
+                    f"error={error_str} {headers_str}"
+                )
 
 
     # nginx server params
@@ -2423,32 +2833,158 @@ script:
         ssl_certificate {NGINX_SSL_CRT_FILE};
         ssl_certificate_key {NGINX_SSL_KEY_FILE};
     """
+    # Detailed access log format with self-explanatory key names, grouped so the line
+    # reads top-to-bottom like the life of one request. Fields are ordered:
+    #
+    #   1. IDENTITY (first, so every line starts with "who/when/which request"):
+    #        when_finished         - ISO8601 timestamp of when nginx FINISHED the request
+    #                                and wrote this log line (i.e. request end). NOTE: stock
+    #                                nginx evaluates ALL log variables at write-time, so there
+    #                                is no built-in variable for the absolute arrival time.
+    #                                Derive it from the durations below:
+    #                                  arrival       = when_finished - time_total_secs
+    #                                  sent_upstream = arrival + time_to_upstream_connect_secs
+    #        request_id            - unique id for THIS request; the SAME id is sent to
+    #                                the Python upstream (X-Request-ID) and printed on the
+    #                                "wsgi request:"/"wsgi access:" lines, so one request
+    #                                can be followed across nginx and Python.
+    #        connection_id         - id of the TCP connection (many requests can share one).
+    #        requests_on_connection- how many requests have used this keep-alive connection
+    #                                (rising numbers = reuse; helps spot CLOSE_WAIT buildup).
+    #
+    #   2. WHO CONNECTED (client identity through the proxy chain):
+    #        client_real_ip        - the true client (the firewall), via X-Real-IP.
+    #        client_forwarded_chain- full X-Forwarded-For chain of proxies in between.
+    #        client_nearest_peer   - the immediate TCP peer nginx saw (usually localhost/edge).
+    #        client_user_agent     - the client's User-Agent string.
+    #
+    #   3. WHAT WAS ASKED (the request itself):
+    #        request_method        - GET/HEAD/...
+    #        request_uri           - the full requested URI.
+    #        request_host          - the Host header.
+    #        request_range         - Range header (partial-content requests).
+    #        request_if_none_match - ETag the client already has (conditional GET).
+    #        request_if_modified_since - date the client already has (conditional GET).
+
+    #
+    #   4. WHAT HAPPENED (response outcome + cache decision):
+    #        response_status       - HTTP status code returned.
+    #        cache_status          - HIT/MISS/BYPASS/EXPIRED/STALE/UPDATING/REVALIDATED.
+    #        upstream_address      - which upstream served it (empty on a cache HIT).
+    #        response_etag         - ETag we returned.
+    #
+    #   5. HOW BIG (payload accounting; mismatch = truncated/aborted transfer):
+    #        response_body_bytes   - body bytes sent to the client.
+    #        response_total_bytes  - total bytes sent (headers + body).
+    #        edl_indicator_count   - number of indicators in the EDL response.
+    #        edl_origin_count      - number of origin indicators before filtering.
+    #
+    #   6. HOW LONG (ALL timings grouped together at the end, in seconds). These are the
+    #      source of truth for the timeline - use them to reconstruct WHEN nginx received
+    #      the request from the client and WHEN it forwarded it to the upstream:
+    #        time_total_secs            - total time to serve the request (from when nginx
+    #                                     read the first client bytes until the last byte was
+    #                                     sent to the client). The client request therefore
+    #                                     ARRIVED at: when_finished - time_total_secs.
+    #        time_to_upstream_connect_secs - seconds AFTER arrival that nginx established the
+    #                                     upstream connection. This marks WHEN nginx forwarded
+    #                                     the request to the upstream:
+    #                                       sent_to_upstream = (when_finished - time_total_secs)
+    #                                                          + time_to_upstream_connect_secs
+    #                                     ("-" on a cache HIT, because no upstream request was made.)
+    #        time_upstream_headers_secs - seconds after the upstream request until the upstream
+    #                                     returned its response headers.
+    #        time_upstream_response_secs- seconds after the upstream request until the upstream
+    #                                     finished sending its response.
+    #        time_edl_query_secs        - time the EDL spent building the list (app side).
+    NGINX_LOG_FORMAT = """
+    log_format edl_detailed
+        'when_finished=$time_iso8601 request_id=$request_id '
+        'connection_id=$connection requests_on_connection=$connection_requests '
+        'client_real_ip="$http_x_real_ip" client_forwarded_chain="$http_x_forwarded_for" '
+        'client_nearest_peer=$remote_addr client_user_agent="$http_user_agent" '
+        'request_method=$request_method request_uri="$request_uri" request_host="$host" '
+        'request_range="$http_range" request_if_none_match="$http_if_none_match" '
+        'request_if_modified_since="$http_if_modified_since" '
+        'response_status=$status cache_status=$upstream_cache_status upstream_address="$upstream_addr" '
+        'response_etag="$sent_http_etag" '
+        'response_body_bytes=$body_bytes_sent response_total_bytes=$bytes_sent '
+        'edl_indicator_count="$sent_http_x_edl_size" edl_origin_count="$sent_http_x_edl_origin_size" '
+        'time_total_secs=$request_time time_to_upstream_connect_secs="$upstream_connect_time" '
+        'time_upstream_headers_secs="$upstream_header_time" time_upstream_response_secs="$upstream_response_time" '
+        'time_edl_query_secs="$sent_http_x_edl_query_time_secs"';
+    """
     NGINX_SERVER_CONF = """
+    $log_format
+
+    # Per-URI concurrency zone used to FAIL (not queue) concurrent cold-MISS requests
+    # for the same URI. Keyed on $request_uri so the limit is per-resource, not per-client.
+    limit_conn_zone $request_uri zone=concurrent_conn_zone:1m;
     server {
 
         listen $port default_server $ssl;
 
         $sslcerts
 
+        # Per-request detailed access log + verbose error log so cache decisions,
+        # real client IPs, timings and upstream warnings are all captured.
+        access_log $access_log_path edl_detailed;
+        error_log $error_log_path info;
+
+
         proxy_cache_key $scheme$proxy_host$request_uri$extra_cache_key;
         $proxy_set_range_header
         $extra_headers
-    # Thundering-herd protection
-    proxy_cache_lock on;
-    proxy_cache_lock_timeout $cache_lock_timeout;
-    proxy_cache_lock_age $cache_lock_age;
+    # Cache-vs-fetch policy (TWO-TIER, HIT-safe fail-fast on cold MISS)
+    # ---------------------------------------------------------------------------
+    # We want two behaviors that plain `proxy_cache_lock` cannot give together:
+    #   * On a TRUE cold MISS (nothing cached to fall back on), concurrent requests
+    #     for the SAME URI must FAIL FAST (429) instead of queueing behind a lock.
+    #   * On STALE / UPDATING (a cached copy exists but is expired/being refreshed)
+    #     clients must be served the STALE copy and must NEVER be rejected.
+    #
+    # `limit_conn` is the only mechanism that REJECTS (proxy_cache_lock only WAITS),
+    # but it runs in the preaccess phase - before the cache status is known - so
+    # applying it on the public cache location would ALSO count cache HITs and could
+    # 429 two simultaneous HITs of the same URI. nginx's `proxy_cache` cannot route
+    # "only on miss" to a different location within one server, so we use TWO server
+    # blocks:
+    #   Tier 1 = public server on $port : does the cache read. HIT / STALE / UPDATING
+    #            are answered here from the cache (see proxy_cache_use_stale +
+    #            proxy_cache_background_update) and, on a MISS, proxy_pass to Tier 2.
+    #            HIT/STALE/UPDATING never leave Tier 1, so they are never counted and
+    #            never rejected.
+    #   Tier 2 = internal server on localhost:$fetchport : reached ONLY when Tier 1's
+    #            cache must populate a new entry (true MISS / expired-with-no-stale).
+    #            It carries `limit_conn ... 1`, so the first fetch for a URI proceeds
+    #            and every concurrent same-URI fetch is rejected immediately with 429.
 
     # Cache validity by status
     proxy_cache_valid 200 301 302 $cache_refresh_rate;
 
     # Optional: cache other responses briefly (helps absorb spikes)
     proxy_cache_valid 404 $cache_404_ttl;
+    # NEVER cache the fail-fast rejection: a 429 from the Tier-2 limiter is a
+    # transient "someone else is already building this" signal. Caching it (via the
+    # `any` rule below) would poison the URI and serve 429s even after the real
+    # content is ready. `0s` = do not cache; being status-specific it overrides `any`.
+    proxy_cache_valid 429 0s;
+    # NEVER cache upstream errors / timeouts either. A 504 means the build exceeded
+    # proxy_read_timeout and a 5xx is a transient upstream failure - caching them via
+    # the `any` rule below would poison the URI and keep serving the error (as a
+    # cache HIT) even after a later build would succeed, blocking recovery. `0s` = do
+    # not cache; being status-specific these override `any`. Note: this does NOT stop
+    # `proxy_cache_use_stale timeout http_50x` from serving a previously-cached GOOD
+    # copy on timeout - that stale-serving is desirable and is what we keep.
+    proxy_cache_valid 500 502 503 504 0s;
     proxy_cache_valid any $cache_default_ttl;
 
     # Revalidation (use conditional requests when expired)
     proxy_cache_revalidate on;
 
-    # Serve stale content in failure/update scenarios
+    # Serve stale content in failure/update scenarios. `updating` is what lets a
+    # STALE entry be served immediately to every waiting client while a single
+    # background refresh runs - so STALE/UPDATING never reach the Tier-2 limiter.
     proxy_cache_use_stale
         updating
         error
@@ -2459,7 +2995,8 @@ script:
         http_503
         http_504;
 
-    # Background refresh of expired cache
+    # Background refresh of expired cache: the refresh runs as a detached subrequest,
+    # so serving stale is always allowed and never fails.
     proxy_cache_background_update on;
 
         # Static test file
@@ -2468,13 +3005,88 @@ script:
             default_type text/html;
         }
 
-        # Proxy everything to python
+        # ---- Tier 1: public cache front --------------------------------------
+        # Serves HIT / STALE / UPDATING from the cache. On a MISS, the cache module
+        # fetches from Tier 2 (the internal fetch server) where the fail-fast limiter
+        # lives. HITs/STALE/UPDATING are served straight from cache and never reach
+        # Tier 2, so they are never counted by limit_conn and never rejected.
         location / {
-            proxy_pass http://localhost:$serverport/;
-            add_header X-Proxy-Cache $upstream_cache_status;
+            proxy_pass http://localhost:$fetchport/;
+
+            # CRITICAL: the base flask-nginx image ENABLES the cache lock in the
+            # http{} block, and that setting is inherited here. While enabled,
+            # concurrent cold-MISS requests for the same URI WAIT for the first
+            # request to populate the cache (then get served HIT) - they never fall
+            # through to Tier 2, so the fail-fast limit_conn never fires. We MUST turn
+            # the inherited lock OFF here so misses proceed to Tier 2 and the 2nd+
+            # concurrent miss is rejected with 429 instead of queued.
+            proxy_cache_lock off;
+
+            # Surface the cache decision both to the client and (via the access log
+            # variable) to our logging: HIT/MISS/BYPASS/EXPIRED/STALE/UPDATING/REVALIDATED.
+            add_header X-Proxy-Cache $upstream_cache_status always;
             $extra_headers
             # allow bypassing the cache with an arg of nocache=1 ie http://server:7000/?nocache=1
             proxy_cache_bypass $arg_nocache;
+            proxy_read_timeout $timeout;
+            proxy_connect_timeout 3600;
+            proxy_send_timeout 3600;
+            send_timeout 3600;
+
+            # Forward the real client identity through the chain so the Python (gevent)
+            # upstream's WSGI middleware can log the actual firewall/client instead of
+            # 127.0.0.1. Tier 2 forwards these on to the app.
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header X-Original-URI $request_uri;
+            # Propagate nginx's per-request id to the upstream so the same request_id
+            # appears in the nginx access log AND the wsgi request/access lines,
+            # giving a single correlation id end-to-end.
+            proxy_set_header X-Request-ID $request_id;
+            # Forward, as an epoch (seconds.ms), the moment nginx is about to hand the
+            # request to the upstream. The WSGI middleware compares this with its own
+            # receive time and logs "nginx_wait" - the time the request spent inside
+            # nginx (queueing / cache-lock / connect) BEFORE the app started working.
+            proxy_set_header X-Request-Start $msec;
+        }
+
+    }
+
+    # ---- Tier 2: internal fetch server (cold-MISS path only) -----------------
+    # Reached ONLY via Tier 1's cache fetch on a MISS. Because Tier 1 answers
+    # HIT/STALE/UPDATING from cache, only requests that actually need the upstream
+    # arrive here, so `limit_conn ... 1` counts ONLY cold-miss fetches: the first
+    # request for a URI builds the cache entry, and every concurrent same-URI fetch
+    # is rejected immediately with 429. Listens on loopback only, so it is never
+    # reachable directly by external clients.
+    server {
+        listen localhost:$fetchport;
+
+        access_log $access_log_path edl_detailed;
+        error_log $error_log_path info;
+
+        location / {
+            limit_conn concurrent_conn_zone 1;
+            limit_conn_status 429;
+
+            # Tier 2 must NOT cache: caching is owned entirely by Tier 1 (the public
+            # server). If proxy_cache is inherited from the http{} block, disable it
+            # here so this tier is purely the rate-limited cold-MISS fetch path.
+            proxy_cache off;
+
+            proxy_pass http://localhost:$serverport/;
+
+            # Preserve the forwarded client identity headers set by Tier 1.
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $http_x_real_ip;
+            proxy_set_header X-Forwarded-For $http_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
+            proxy_set_header X-Original-URI $http_x_original_uri;
+            proxy_set_header X-Request-ID $http_x_request_id;
+            proxy_set_header X-Request-Start $http_x_request_start;
+
             proxy_read_timeout $timeout;
             proxy_connect_timeout 3600;
             proxy_send_timeout 3600;
@@ -2506,28 +3118,21 @@ script:
         timeout = _normalize_nginx_time(params.get("timeout"), default="3600", param_name="timeout")
         cache_refresh_rate = _normalize_nginx_time(params.get("cache_refresh_rate"), default=timeout, param_name="cache_refresh_rate")
 
-        # Ensure cache lock directives are at least as large as the upstream timeout. Otherwise, when an
-        # upstream request takes longer than the lock timeout/age, waiting clients bypass the cache lock
-        # and stampede the upstream (each waiter then produces an uncached response), defeating the purpose
-        # of `proxy_cache_lock on`. Defaults match `timeout`; explicit smaller values are bumped up.
-        cache_lock_timeout = _normalize_nginx_time(params.get("cache_lock_timeout"), default=timeout, param_name="cache_lock_timeout")
-        cache_lock_age = _normalize_nginx_time(params.get("cache_lock_age"), default=timeout, param_name="cache_lock_age")
         cache_404_ttl = _normalize_nginx_time(params.get("cache_404_ttl"), default="1m", param_name="cache_404_ttl")
         cache_default_ttl = _normalize_nginx_time(params.get("cache_default_ttl"), default="1m", param_name="cache_default_ttl")
 
-        # Ensure cache_refresh_rate is at least as large as timeout, and apply the same anti-stampede
-        # floor to the cache lock directives. All values are now guaranteed to end in "s" (the helper
-        # always returns `<int>s`), so an O(1) integer compare on the prefix is safe.
+        # Ensure cache_refresh_rate is at least as large as timeout. All values are now guaranteed to
+        # end in "s" (the helper always returns `<int>s`), so an O(1) integer compare on the prefix is safe.
         timeout_seconds = int(timeout[:-1])
         if int(cache_refresh_rate[:-1]) < timeout_seconds:
             cache_refresh_rate = timeout
-        if int(cache_lock_timeout[:-1]) < timeout_seconds:
-            cache_lock_timeout = timeout
-        if int(cache_lock_age[:-1]) < timeout_seconds:
-            cache_lock_age = timeout
 
         ssl, extra_headers, sslcerts, proxy_set_range_header = "", "", "", ""
         serverport = port + 1
+        # Internal loopback port for the Tier-2 cold-MISS fetch server. Tier 1 (public,
+        # $port) proxies cache misses to localhost:$fetchport, which applies the
+        # fail-fast `limit_conn` and then proxies on to the gevent app on $serverport.
+        fetchport = serverport + 1
         extra_cache_keys = []
         if (certificate and not private_key) or (private_key and not certificate):
             raise DemistoException("If using HTTPS connection, both certificate and private key should be provided.")
@@ -2552,19 +3157,31 @@ script:
 
         extra_cache_keys_str = "".join(extra_cache_keys)
         server_conf = Template(template_str).safe_substitute(
+            log_format=NGINX_LOG_FORMAT,
             port=port,
             serverport=serverport,
+            fetchport=fetchport,
             ssl=ssl,
             sslcerts=sslcerts,
             extra_cache_key=extra_cache_keys_str,
             proxy_set_range_header=proxy_set_range_header,
             timeout=timeout,
             cache_refresh_rate=cache_refresh_rate,
-            cache_lock_timeout=cache_lock_timeout,
-            cache_lock_age=cache_lock_age,
             cache_404_ttl=cache_404_ttl,
             cache_default_ttl=cache_default_ttl,
             extra_headers=extra_headers,
+            access_log_path=NGINX_SERVER_ACCESS_LOG,
+            error_log_path=NGINX_SERVER_ERROR_LOG,
+        )
+        # Log the effective cache / timeout settings so each (re)start records exactly
+        # which values are active - essential for interpreting cache=HIT/STALE/UPDATING
+        # decisions and the upstream timing fields in the access logs. Kept at debug.
+        demisto.debug(
+            "edl: nginx effective settings -> "
+            f"listen_port={port} upstream_port={serverport} fetch_tier_port={fetchport} ssl={'on' if ssl else 'off'} "
+            f"timeout={timeout} cache_refresh_rate={cache_refresh_rate} "
+            f"cache_404_ttl={cache_404_ttl} cache_default_ttl={cache_default_ttl} "
+            f"extra_cache_keys=[{extra_cache_keys_str}]"
         )
         with open(file_path, mode="w+") as f:
             f.write(server_conf)
@@ -2584,7 +3201,9 @@ script:
             nginx_test_command.extend(directive_args)
             test_output = subprocess.check_output(nginx_test_command, stderr=subprocess.STDOUT, text=True)
             demisto.info(f"ngnix test passed. command: [{nginx_test_command}]")
-            demisto.debug(f"nginx test ouput:\n{test_output}")
+            # Promote the fully rendered config to info so the active log_format, cache,
+            # timeout and proxy_set_header directives are recorded on every (re)start.
+            demisto.info(f"nginx effective rendered config (nginx -T):\n{test_output}")
         except subprocess.CalledProcessError as err:
             raise ValueError(f"Failed testing nginx conf. Return code: {err.returncode}. Output: {err.output}")
         nginx_command = ["nginx"]
@@ -2630,7 +3249,7 @@ script:
                 start = 1
                 for lines in batch(f.readlines(), 100):
                     end = start + len(lines)
-                    demisto.info(f"nginx access log ({start}-{end-1}): " + "".join(lines))
+                    demisto.debug(f"nginx access log ({start}-{end-1}): " + "".join(lines))
                     start = end
             Path(old_access).unlink()
         if log_error:
@@ -2901,27 +3520,32 @@ script:
             log_handler.setFormatter(logging.Formatter("flask log: [%(asctime)s] %(levelname)s in %(module)s: %(message)s"))
             APP.logger.addHandler(log_handler)  # type: ignore[name-defined] # pylint: disable=E0602
             demisto.debug("done setting demisto handler for logging")
-            server = WSGIServer(
-                ("0.0.0.0", server_port),
-                APP,  # type: ignore[name-defined]    # pylint: disable=E0602
-                log=DEMISTO_LOGGER,  # type: ignore[name-defined] # pylint: disable=E0602
-                error_log=ERROR_LOGGER,
-            )
+            demisto.info(f"edl: starting server on 0.0.0.0:{server_port}; nginx proxy on port {nginx_port}.")
+
             if is_test:
                 test_nginx_server(nginx_port, params)
-                server_process = Process(target=server.serve_forever)
-                server_process.start()
+                server = WSGIServer(
+                    ("0.0.0.0", server_port),
+                    APP,  # type: ignore[name-defined] # pylint: disable=E0602
+                    log=DEMISTO_LOGGER,
+                    error_log=ERROR_LOGGER,
+                )
+                server.start()
                 time.sleep(5)
-                try:
-                    server_process.terminate()
-                    server_process.join(1.0)
-                except Exception as ex:
-                    demisto.error(f"failed stopping test wsgi server process: {ex}")
+                server.stop()
 
             else:
                 nginx_process = start_nginx_server(nginx_port, params)
                 test_nginx_web_server(nginx_port, params)
                 nginx_log_monitor = gevent.spawn(nginx_log_monitor_loop, nginx_process)
+                wsgi_app = RequestLoggingMiddleware(APP)  # type: ignore[name-defined] # pylint: disable=E0602
+                server = WSGIServer(
+                    ("0.0.0.0", server_port),
+                    wsgi_app,
+                    log=DEMISTO_LOGGER,  # type: ignore[name-defined] # pylint: disable=E0602
+                    error_log=ERROR_LOGGER,
+                    handler_class=DemistoWSGIHandler,
+                )
                 demisto.updateModuleHealth("")
                 server.serve_forever()
         except Exception as e:
@@ -2959,7 +3583,7 @@ script:
 sectionorder:
 - Connect
 - Collect
-signature: srHkAlQ+GMbMyAliT9FgeJ35E4I3gUrHJjuMP8XBukGW75zNokG53m5ZHrLUspS2YXJAx8LEmDXMwds2CRw/fw2Uiiw2c4Xxr3B1pquBVU/ly35Aar8Qqw+TjeOSXpYNAWbMnOEjNNXacXbEffx9Z6mvaCLITNxcSIB+dcM7sbRauSdpHFYT/hhQnbdAH3EyEAJyU/FH0JRvLe84T1+1Y8IfUV339NF/o0kY0InXOMRVRsC7iGE4uJltNNYBxQ9NEzpBmEHYhTJ7IxDqAbKWqHV9bgqiV0TThwzv3OmrqcPyWxO/o1NNEpXfyl3j/zWU1E1c9a7fzCcqfqVQpbVYHw==
+signature: cSlT9k7kNAGlsmmEm/dPYrhAtBDfzf1IILgQnl3f+FUzQXrumva7+kjMDoSy953ZS7SG8fQ0hvUM+p9osg+q3y5yWgNYGa0y5kRPeqmLNrYGAFuBV/8QTbcjZC1Dtx9UPolz6HooPucyhwQPw4OtbxZRLun21twV4AuEClRX8Warw7x3woeWV88Cl72eSyLEPokjkfdy//WXm2M6pf6vR9FhMdS9s6VinYA2XecAVsvMUqEeHLyRVWR0qAtda5vsceuwEhbGQbSWnW2CV2qgV4vBvqPUkoZZpiIFGLOowaQlnlpfPRvvR0MtYtSxIlVyJwIDuRBHyCS+EXE+jjzbJw==
 system: true
 triggers:
 - conditions:
