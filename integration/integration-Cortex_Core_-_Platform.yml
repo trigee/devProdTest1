@@ -16,7 +16,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.2.0
     isoverridable: false
-    itemVersion: 3.5.66
+    itemVersion: 3.5.76
     packID: Core
     packName: Core
     packPropagationLabels:
@@ -4586,8 +4586,8 @@ script:
   runonce: false
   script: |
     register_module_line('Cortex Core - Platform', 'start', __line__())
-    CONSTANT_PACK_VERSION = '3.5.66'
-    demisto.debug('pack id = Core, pack version = 3.5.66')
+    CONSTANT_PACK_VERSION = '3.5.76'
+    demisto.debug('pack id = Core, pack version = 3.5.76')
     import traceback
     from typing import Any
 
@@ -9083,7 +9083,12 @@ script:
                 custom_filter = json.loads(fixed_json_str)
 
             except Exception as e:
-                raise DemistoException(f"custom_filter format is not valid. got: {str(e)}")
+                raise CortexInvalidArgError(
+                    "custom_filter",
+                    value=custom_filter_str,
+                    reason=str(e),
+                    override_message=f"custom_filter format is not valid. got: {str(e)}",
+                )
 
         if custom_filter:  # if exists, add custom filter to the built filter
             if not filter_dict:
@@ -12028,7 +12033,13 @@ script:
 
     def get_cases_sort_order(sort_by_creation_time, sort_by_modification_time):
         if sort_by_creation_time and sort_by_modification_time:
-            raise ValueError("Should be provide either sort_by_creation_time or sort_by_modification_time. Can't provide both")
+            raise CortexConflictingArgsError(
+                override_message="Should be provide either sort_by_creation_time or sort_by_modification_time. Can't provide both",
+                arguments=["sort_by_creation_time", "sort_by_modification_time"],
+                reason="Only one sort field can be specified at a time.",
+                resolution="Provide either sort_by_creation_time or sort_by_modification_time, not both.",
+                mutually_exclusive=True,
+            )
 
         if sort_by_creation_time:
             sort_field = "CREATION_TIME"
@@ -12276,7 +12287,12 @@ script:
         if page_size is None:
             page_size = SEARCH_ASSETS_DEFAULT_LIMIT
         if page_size > SEARCH_ASSETS_MAX_LIMIT:
-            raise ValueError(f"page_size cannot exceed {SEARCH_ASSETS_MAX_LIMIT}")
+            raise CortexInvalidArgError(
+                "page_size",
+                value=page_size,
+                reason=f"must not exceed {SEARCH_ASSETS_MAX_LIMIT}",
+                override_message=f"page_size cannot exceed {SEARCH_ASSETS_MAX_LIMIT}",
+            )
 
         if page_size == 0:  # 0 Maps to max in the API, we will maintain this behavior with our max value instead
             page_size = SEARCH_ASSETS_MAX_LIMIT
@@ -13362,21 +13378,40 @@ script:
         custom_fields = parse_custom_fields(args.get("custom_fields", []))
 
         if status == "resolved" and (not resolve_reason or not CaseManagement.STATUS_RESOLVED_REASON.get(resolve_reason, False)):
-            raise ValueError("In order to set the case to resolved, you must provide a resolve reason.")
+            raise CortexMissingArgError(
+                "resolve_reason",
+                override_message="In order to set the case to resolved, you must provide a resolve reason.",
+            )
 
-        if (resolve_reason or resolve_all_alerts or resolved_comment) and not status == "resolved":
-            raise ValueError(
-                "In order to use resolve_reason, resolve_all_alerts, or resolved_comment, the case status must be set to "
-                "'resolved'."
+        if (resolve_reason or resolve_all_alerts or resolved_comment) and status != "resolved":
+            conflicting = [arg for arg in ("resolve_reason", "resolve_all_alerts", "resolved_comment") if args.get(arg)]
+            raise CortexConflictingArgsError(
+                override_message=(
+                    "In order to use resolve_reason, resolve_all_alerts, or resolved_comment, the case status must be set to "
+                    "'resolved'."
+                ),
+                arguments=conflicting + ["status"],
+                reason="resolve_reason, resolve_all_alerts, and resolved_comment can only be used when status is 'resolved'.",
+                resolution="Set status to 'resolved' or remove the resolution-specific arguments.",
             )
 
         if status and not CaseManagement.STATUS.get(status):
-            raise ValueError(f"Invalid status '{status}'. Valid statuses are: {list(CaseManagement.STATUS.keys())}")
+            raise CortexInvalidArgError(
+                "status",
+                value=status,
+                allowed_values=list(CaseManagement.STATUS.keys()),
+                override_message=f"Invalid status '{status}'. Valid statuses are: {list(CaseManagement.STATUS.keys())}",
+            )
 
         if user_defined_severity and not CaseManagement.SEVERITY.get(user_defined_severity, False):
-            raise ValueError(
-                f"Invalid user_defined_severity '{user_defined_severity}'. Valid severities are: "
-                f"{list(CaseManagement.SEVERITY.keys())}"
+            raise CortexInvalidArgError(
+                "user_defined_severity",
+                value=user_defined_severity,
+                allowed_values=list(CaseManagement.SEVERITY.keys()),
+                override_message=(
+                    f"Invalid user_defined_severity '{user_defined_severity}'. Valid severities are: "
+                    f"{list(CaseManagement.SEVERITY.keys())}"
+                ),
             )
 
         valid_fields_to_update, error_messages = validate_custom_fields(custom_fields, client)
@@ -13398,7 +13433,23 @@ script:
         remove_nulls_from_dictionary(case_update_payload)
 
         if not case_update_payload:
-            raise ValueError(f"No valid update parameters provided.\n{error_messages}")
+            raise CortexMissingArgError(
+                [
+                    "case_name",
+                    "description",
+                    "assignee",
+                    "status",
+                    "notes",
+                    "starred",
+                    "user_defined_severity",
+                    "resolve_reason",
+                    "resolved_comment",
+                    "resolve_all_alerts",
+                    "custom_fields",
+                ],
+                require_one=True,
+                override_message=f"No valid update parameters provided.\n{error_messages}",
+            )
 
         def is_bulk_update_allowed(case_update_payload: dict) -> bool:
             # Bulk update supports only those fields
@@ -13531,7 +13582,15 @@ script:
 
         if error_messages:
             return_results(command_results)
-            return_error(f"The following fields could not be updated:\n{error_messages}")
+            # The fields failed validation (unknown field, invalid value/type, system field),
+            # so surface a standardized INVALID_ARGUMENT error_code while keeping the
+            # original human-readable message for backward compatibility.
+            error = CortexInvalidArgError(
+                "custom_fields",
+                reason=error_messages,
+                override_message=f"The following fields could not be updated:\n{error_messages}",
+            )
+            return_error(error.build_message(), error=error)
 
         return command_results
 
@@ -14966,7 +15025,7 @@ script:
         categories = ["done", "inProgress", "pending", "recommended"]
 
         for category in categories:
-            tasks = response.get(category, {}).get("caseTasks", [])
+            tasks = (response.get(category) or {}).get("caseTasks", [])
             for task in tasks:
                 # Add category field to identify which list this came from
                 task["category"] = category
@@ -14978,8 +15037,11 @@ script:
                 if category in ["done", "inProgress"]:
                     enhance_with_pb_details(pb_id_to_data, task)
                 elif category == "pending":
-                    enhance_with_pb_details(pb_id_to_data, task.get("parentdetails"))
-                    task["parentPlaybook"] = task.pop("parentdetails")
+                    # A pending task's parent playbook may not be resolved yet, so parentdetails
+                    # can be null (seen in prod). Only enhance when it's an actual dict.
+                    if parent_details := task.get("parentdetails"):
+                        enhance_with_pb_details(pb_id_to_data, parent_details)
+                    task["parentPlaybook"] = task.pop("parentdetails", None)
 
                 all_items.append(task)
 
@@ -16380,5 +16442,5 @@ script:
 sectionorder:
 - Connect
 - Collect
-signature: qLa4+MqL6ispkIsP+BmXIqmh/oGx+bs3yFDHMOLWKSVRoQe4mLrmt2zsThOaHEz+1sa35H2iAEO5mlv2XQRup2ohQLuU6FaUuswAkyavwjAGe2EB5/0AcnfeYXmVKLQsNt43suZkLp9/YKT4fI9nIY6z+Kv+2/bc+03oiWs1ESn9qpbNRZihylMdvEiT1bXYFoY+NuM+t7mKvrxhTTue0/Y5fFW/WVZDv5QZZJngNw4bPEaJGJf/1uFD2nGyYbm6LjkCPmN+Ncq277yGwmIiT0FGLbClkKksJXqIIFpCgwCtbnrHnW/ZOsFqKZotT8gPV8osQ/eXxjP/m1aS/vBk+g==
+signature: fyS5qDZI/hhldRQbHS5sf891h+oqkmI/6T9thWEY2BhxfmQ9ccxnfGKy2uvGNBYXEnCyGt8L/4JRM/WBovMYVb1Iq6mTDC7FcGvR7FFcdDMne6P9lIIMVYgxmtF7xrOMiKJ4yR1sVwiwEu9vYJFTsc1q/Pi5vj720nVSBQqNw4XmqWud1fMmqsVY9oNkHPdn5Knf9yz7Q4jRcOKVBBjkWTQBspADE1L8zV38IMB/uVpkNhuiJpIDuBwfGHOShdg/JPe5aItsTO493m5IBI8W+8yDmQzurNR9Dh1VwEwSE6aevERz0uM4XD5Bwf7MEcCbgSh0u21w+XgkIKlVdlAdZA==
 system: true
