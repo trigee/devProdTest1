@@ -43,7 +43,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.4.22
+    itemVersion: 1.4.24
     packID: FiltersAndTransformers
     packName: Filters And Transformers
     packPropagationLabels:
@@ -52,7 +52,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -66,8 +66,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ConcatFormat', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.22'
-  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  CONSTANT_PACK_VERSION = '1.4.24'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.24')
   from collections.abc import Callable
   from typing import Any
 
@@ -267,7 +267,7 @@ script: |
 
   register_module_line('ConcatFormat', 'end', __line__())
 scripttarget: 0
-signature: I1OfX/4JRgLDRlprepWOq60YHijVMWK+t/7cL8kvG9Mh/4vghziPTxdQbTlB3BbGNPM3/ZLlbcCgLPxRGEpNyroBX6Upy/kxoI2cWWyKnfWUzy2fLPjMAMC4KPAVD2S8V1nb7y3YJ6dHP/tYznIBafYxqQ4N3r0pYCK5OHXjNC/SZzF9G+W8e00x/4RT6dvx1qL7LQbRuqxzLRjNddnUeNKGPJHd2FCpYE/kcTcyIadYbg8JSJY5GkocdUHsJNyn2UNPXVkrI2ut2eSbyj93Q2U6pc5c+JPtYlz9NtR2Xh3NlHDvaKCQu03YAuop1HyadbHudbQIN0HTq3fAhYszRg==
+signature: b60/ywP0jl6Pd8fORqt94NA14pj9Wxgar8kNw0QlCa2JUH0kzJI8BkciLN+OFjC705Ib4/uJA1Y1qGfarljN+CgP2cmWbntmsJh7Bij1VmcaPC7kkccbzq9AOzT7uqdhDC1pOM3Oe3Ua10ebd+YketJKQLJeTEXQ68hoXCT8TcxzJ5zicC5CBMwrOQRSsIAYIhV65nto48xTs9o8Mh8FivzkriIzmd6AfPewAQuYM+eNuoUX+QC2Yb7DsINV34/Ka4CsPUzCIUAPPSzRZlfWSGjG2uLK0tXnv8f9MqHkL8oR/E0qzRVgzkNzrSdiQ1MVp6kXtLHEb+g54+Y/T/MzTw==
 subtype: python3
 system: true
 tags:
