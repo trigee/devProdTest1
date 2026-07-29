@@ -57,7 +57,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.42.2
+    itemVersion: 1.42.13
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -66,7 +66,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/sane-pdf-reports:1.0.0.9988134
+dockerimage: demisto/sane-pdf-reports:1.0.0.10737051
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -77,8 +77,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SanePdfReports', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.2'
-  demisto.debug('pack id = Base, pack version = 1.42.2')
+  CONSTANT_PACK_VERSION = '1.42.13'
+  demisto.debug('pack id = Base, pack version = 1.42.13')
   import base64
   import http
   import os
@@ -337,7 +337,7 @@ script: |
 
   register_module_line('SanePdfReports', 'end', __line__())
 scripttarget: 0
-signature: yf/ej+1nirfhQomXw3bdqLNRqWP2csWQ+qEej5H5aBs3n7lEN2fnt9HAFHan+Y4uIPWni2RljNgSB5C3LCBWawjkM9IAhCByNjiFwhSxnY4C9azG/XnJ4cv3UtD7eQvr0rcpZoovZqiVaEW/bpz/0pcbIu7831OLdranoXqvUB5J8P5s6StXGLZo6io3FT0FnTCpG2NOLINUV7cWtE47RLSfPaO3bRSaG5tDFJg4c/SVLX7wblwBNZOCWpTeOgN/9IdFF6bUveb/zCvaK8uCV9emWsenp+TM+ahO3DUvyZEOOGe1/K8jpBwr6eoXhXYUVZEB5gutrWdewWY8HJWbVQ==
+signature: PG1eXgNyD0LqUVTEelBtna2Pk8dAgz8/mQBqkwKfovFmbNdiF64CQ12mINeDkmTzXEYb1o+sZmlnMnTofBZ189L7dg+gwyYCX3hHv9PCq2cyuYuCa7iDk3LOWJQbx12JY6Y063ohQcCO4vEw/ZOkd/s6Clx4kQS6VAW6/3VLoK6F566aKDwoKKho5VTDUCId4ilKFwUrVG4DV3Df+9gZCHcpXZgGgqDdXCKCkAxs+zndl6hreaqU3HQ7StUQOOFX6GDSsCUggvy/+RnBhhne13isx4gZpTrw6LGytZH0SnysJ8KjBB4iAHBtVxEMZyEpaT/alKyNXGxPNjN50UnSdA==
 subtype: python3
 system: true
 tags:
