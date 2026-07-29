@@ -41,6 +41,15 @@
 				]
 			},
 			{
+				"description": "SlackBlockBuilder will format a given Slack block into a format readable by the SlackV3 integration. The script will also send the block to the given destination. Make sure to mark **Trust any certificate** and fill the **XSOAR API Key integration** parameters if you want to get a response to the incident context.",
+				"fromversion": "6.2.0",
+				"id": "SlackBlockBuilder",
+				"name": "SlackBlockBuilder",
+				"tags": [
+					"slack"
+				]
+			},
+			{
 				"description": "Sends a message (question) to either user (in a direct message) or to a channel. The message includes predefined reply options. The response can also close a task (might be conditional) in a playbook. Note: a message maximum length is 3000 characters enforced by Slack API.",
 				"fromversion": "5.5.0",
 				"id": "SlackAskV2",
@@ -54,15 +63,6 @@
 				"fromversion": "5.0.0",
 				"id": "SlackAsk",
 				"name": "SlackAsk",
-				"tags": [
-					"slack"
-				]
-			},
-			{
-				"description": "SlackBlockBuilder will format a given Slack block into a format readable by the SlackV3 integration. The script will also send the block to the given destination. Make sure to mark **Trust any certificate** and fill the **XSOAR API Key integration** parameters if you want to get a response to the incident context.",
-				"fromversion": "6.2.0",
-				"id": "SlackBlockBuilder",
-				"name": "SlackBlockBuilder",
 				"tags": [
 					"slack"
 				]
@@ -98,6 +98,63 @@
 		"incidenttype": null,
 		"indicatorfield": null,
 		"integration": [
+			{
+				"category": "Identity and Access Management",
+				"commands": [
+					{
+						"description": "Creates a user.",
+						"hidden": false,
+						"name": "iam-create-user"
+					},
+					{
+						"description": "Updates an existing user with the data passed in the user-profile argument.",
+						"hidden": false,
+						"name": "iam-update-user"
+					},
+					{
+						"description": "Retrieves a single user resource.",
+						"hidden": false,
+						"name": "iam-get-user"
+					},
+					{
+						"description": "Disable an active user.",
+						"hidden": false,
+						"name": "iam-disable-user"
+					},
+					{
+						"description": "Creates an empty group.",
+						"hidden": false,
+						"name": "iam-create-group"
+					},
+					{
+						"description": "Retrieves the group information including members.",
+						"hidden": false,
+						"name": "iam-get-group"
+					},
+					{
+						"description": "Permanently removes a group.",
+						"hidden": false,
+						"name": "iam-delete-group"
+					},
+					{
+						"description": "Updates an existing group resource. This command allows individual (or groups of) users to be added or removed from the group with a single operation. A max of 15,000 users can be modified in 1 call.",
+						"hidden": false,
+						"name": "iam-update-group"
+					}
+				],
+				"description": "Integrate with Slack's services to execute CRUD operations for employee lifecycle processes.",
+				"fromversion": "6.0.0",
+				"id": "Slack IAM",
+				"name": "Slack IAM",
+				"supportedModules": [
+					"xsiam",
+					"agentix",
+					"edr",
+					"cloud",
+					"cloud_runtime_security"
+				],
+				"toversion": ""
+			},
 			{
 				"category": "Messaging and Conferencing",
 				"commands": [
@@ -199,63 +256,6 @@
 				"toversion": ""
 			},
 			{
-				"category": "Identity and Access Management",
-				"commands": [
-					{
-						"description": "Creates a user.",
-						"hidden": false,
-						"name": "iam-create-user"
-					},
-					{
-						"description": "Updates an existing user with the data passed in the user-profile argument.",
-						"hidden": false,
-						"name": "iam-update-user"
-					},
-					{
-						"description": "Retrieves a single user resource.",
-						"hidden": false,
-						"name": "iam-get-user"
-					},
-					{
-						"description": "Disable an active user.",
-						"hidden": false,
-						"name": "iam-disable-user"
-					},
-					{
-						"description": "Creates an empty group.",
-						"hidden": false,
-						"name": "iam-create-group"
-					},
-					{
-						"description": "Retrieves the group information including members.",
-						"hidden": false,
-						"name": "iam-get-group"
-					},
-					{
-						"description": "Permanently removes a group.",
-						"hidden": false,
-						"name": "iam-delete-group"
-					},
-					{
-						"description": "Updates an existing group resource. This command allows individual (or groups of) users to be added or removed from the group with a single operation. A max of 15,000 users can be modified in 1 call.",
-						"hidden": false,
-						"name": "iam-update-group"
-					}
-				],
-				"description": "Integrate with Slack's services to execute CRUD operations for employee lifecycle processes.",
-				"fromversion": "6.0.0",
-				"id": "Slack IAM",
-				"name": "Slack IAM",
-				"supportedModules": [
-					"xsiam",
-					"agentix",
-					"edr",
-					"cloud",
-					"cloud_runtime_security"
-				],
-				"toversion": ""
-			},
-			{
 				"category": "Messaging and Conferencing",
 				"commands": [
 					{
@@ -352,10 +352,10 @@
 		"parsingrule": [],
 		"playbook": [
 			{
-				"description": "This is an example of how to use the SlackBlockBuilder within a playbook.",
-				"fromversion": "6.10.0",
-				"id": "SlackBlockBuilderResponseExample",
-				"name": "SlackBlockBuilderResponseExample",
+				"description": "Investigates a failed login event. The playbook interacts with the user via the Slack integration, checks whether the logins were a result of the user's attempts or an attack, raises the severity, and expires the user's password according to the user's replies.",
+				"fromversion": "5.0.0",
+				"id": "Slack - General Failed Logins v2.1",
+				"name": "Slack - General Failed Logins v2.1",
 				"supportedModules": [
 					"agentix",
 					"xsiam"
@@ -363,10 +363,10 @@
 				"tags": []
 			},
 			{
-				"description": "Investigates a failed login event. The playbook interacts with the user via the Slack integration, checks whether the logins were a result of the user's attempts or an attack, raises the severity, and expires the user's password according to the user's replies.",
-				"fromversion": "5.0.0",
-				"id": "Slack - General Failed Logins v2.1",
-				"name": "Slack - General Failed Logins v2.1",
+				"description": "This is an example of how to use the SlackBlockBuilder within a playbook.",
+				"fromversion": "6.10.0",
+				"id": "SlackBlockBuilderResponseExample",
+				"name": "SlackBlockBuilderResponseExample",
 				"supportedModules": [
 					"agentix",
 					"xsiam"
@@ -380,7 +380,7 @@
 		"wizard": null
 	},
 	"created": "2025-03-29T09:23:34Z",
-	"currentVersion": "3.8.7",
+	"currentVersion": "3.8.11",
 	"defaultDataSource": {
 		"id": "Slack Event Collector",
 		"name": "Slack Event Collector"
@@ -391,35 +391,35 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "1.7.1",
+			"minVersion": "1.7.5",
 			"name": "Active Directory Query"
 		},
 		"Base": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.42.2",
+			"minVersion": "1.42.12",
 			"name": "Base"
 		},
 		"CommonTypes": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "3.10.12",
+			"minVersion": "3.10.13",
 			"name": "Common Types"
 		},
 		"FiltersAndTransformers": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.4.22",
+			"minVersion": "1.4.24",
 			"name": "Filters And Transformers"
 		},
 		"MicrosoftTeams": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "1.5.58",
+			"minVersion": "1.5.61",
 			"name": "Microsoft Teams"
 		},
 		"PasswordResetViaChatbot": {
@@ -433,7 +433,7 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "2.0.28",
+			"minVersion": "2.0.30",
 			"name": "Syslog"
 		}
 	},
@@ -474,11 +474,6 @@
 			"name": "Slack v3"
 		},
 		{
-			"id": "Active Directory Query v2",
-			"imagePath": "content/packs/Active_Directory_Query/ActiveDirectoryQueryv2_image.png",
-			"name": "Active Directory Query v2"
-		},
-		{
 			"id": "Microsoft Teams",
 			"imagePath": "content/packs/MicrosoftTeams/MicrosoftTeams_image.png",
 			"name": "Microsoft Teams"
@@ -494,13 +489,18 @@
 			"name": "Microsoft Teams via Webhook"
 		},
 		{
+			"id": "Active Directory Query v2",
+			"imagePath": "content/packs/Active_Directory_Query/ActiveDirectoryQueryv2_image.png",
+			"name": "Active Directory Query v2"
+		},
+		{
 			"id": "Syslog Sender",
 			"imagePath": "content/packs/Syslog/SyslogSender_image.png",
 			"name": "Syslog Sender"
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "3.8.7",
+	"itemVersion": "3.8.11",
 	"keywords": [
 		"Slack"
 	],
@@ -536,14 +536,14 @@
 		"edr"
 	],
 	"tags": [
-		"Collection",
-		"Data Source"
+		"Data Source",
+		"Collection"
 	],
 	"toServerVersion": "",
-	"updated": "2026-07-05T15:47:00Z",
+	"updated": "2026-07-24T01:41:03Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "10744796",
+	"versionInfo": "11291149",
 	"videos": [
 		"https://www.youtube.com/watch?v=rt3lvsI_0-4"
 	]
