@@ -20,7 +20,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -29,7 +29,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: CertificateReputation
@@ -156,8 +156,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CertificateReputation', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   from datetime import timedelta
   from enum import Enum
   from typing import Any
@@ -502,7 +502,7 @@ script: |
 
   register_module_line('CertificateReputation', 'end', __line__())
 scripttarget: 0
-signature: 2aVpL05Erl4fdew/6++bb1bLdXhXwIV/6xmgeeuQB4v0/PwKBUrzn0mA3OaAKY88EWh/zjphpjichMK0SqCOjbjbiqmO8VILdtnRCzAZVOnR2K7suHnSzjfdCAoVt7GzpWyHC/s69N0hBSP2hCLATH4VA4mGdGJ1B0VnRRbBsd4OJ9e+L+eUEYOGlsXwKjWBFlNZpQnT47kt3hT/no/K6jfCtZXL62Ln3WDZVfwDwbLHNbGKA8/cEFX4+oXiGDSOj8/e0+rXf4ycSmDb0XH8K92rGGo7Ic+lvSWaVhB0OwgeKC15JVCkMp+6+c4RtLCPueNmUL33n15/ptMpaw1Ybg==
+signature: feN0MDU3kExtqZB6jaYMVB3kOfOUma+RA5kWM4Z+T2nIKuyzsqonIhlu9VccH6sEEICqLf/3/bHGb2+caLYjp5wl7KV1AVJOrY3etVXcUeVVfQzfb+QBjccQB7umNrgOkzYXJDpIL5UFHBF/uD6LNDy86FjSi6lK7aw3F/+uCmPdh7hORGGdy9bdqqIDSFDq3sU4S0DgqJg+K+Sj14cIu0RiaZY0UNJW/j24j8huHR9yGggaAS+GO3tgiPdz9v6ATjGS9BwX+q3KxlQRK/m30NVNOHP8JIy+pbCcKmLqCOEVFKxfZeAp4mkMbtqqqTIpxI9+wt8DVVszC9Ev11JRMw==
 subtype: python3
 system: true
 tags:
