@@ -11,7 +11,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -20,7 +20,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -38,8 +38,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DecodeMimeHeader', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   from email.header import decode_header
 
 
@@ -85,7 +85,7 @@ script: |
 
   register_module_line('DecodeMimeHeader', 'end', __line__())
 scripttarget: 0
-signature: AHUd15QkfV25AI9ny1aG3T1yqQxhEmxl58yZdhFFP9Q/wV4qq60Rpp02DafHbnK3KKYK3eTvW6kGxC0Ts9K6NPbsdFsgp8GzBm8kV1A3nPCbTK540lrRe/CnDh7stJlf0635tPofpNmXZ93F8s+ChBnoF5Z0T54tQNnT5kMtQPVz+4qW+IczO5C7VfFC97fCsHgMpAgTQCe9um2GDH9FAww1fYVvQdH/2/qDW4pC5nk0Zae0WKkLGzADpDD7v5aufFYNV/5TErDdkDVZ1vs/rINH67pmv4HIC0YO24yOm+wI90ZeFVLecwUc8D60R1o5kqUeqdfTljvedz6dX/YIvA==
+signature: sD8bzYXXL/k8usk4GjA+EEw8nk46quj8zuu2fEi5ohUMnzQYKldV6nzFM72ZuD2ZIFmScwhzSQip5HkjKMvLjVAyeiUbIsdDp15QldTA6CkARbhy/Rn2OQowTI9BEMjGbuGdwrb1Z0cGVcPm0wdRKJsecVJCmPE0CQ0CVB3SQ7XUEyXgnjtOGg3BBoAnMLWy0h90t5R5wg7yFSNFKt1uT/6OfqYMH2VO/Qfu4jqozzx4a5D0H5HT3CAwk0dnyAIzFat8F5T6XQgTaEy3hU8JuquYcETJtRVsdB0GNSt8TAEK+AnSpEbn1vKusqqxC/ziIrHGByoZKcLSIDFzoEp5WQ==
 subtype: python3
 system: true
 tags: []
