@@ -22,7 +22,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.4.22
+    itemVersion: 1.4.24
     packID: FiltersAndTransformers
     packName: Filters And Transformers
     packPropagationLabels:
@@ -31,7 +31,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/netutils:1.0.0.3562043
+dockerimage: demisto/netutils:1.0.0.10187688
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -45,8 +45,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('IPv4Whitelist', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.22'
-  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  CONSTANT_PACK_VERSION = '1.4.24'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.24')
 
 
   from netaddr import IPAddress, IPNetwork
@@ -76,7 +76,7 @@ script: |
 
   register_module_line('IPv4Whitelist', 'end', __line__())
 scripttarget: 0
-signature: o6Oa7+o+GREwj7ulPiwV6asQTEgrhYakcHjZbIcXK/KR7YvNLqe6y8Y7kkmT4WazYE7Pl5Cnjtdl6i2kOjvHfW7UgidMqc9uzqB4AqDBxpYv4kt7JBLEVnoKCf6hLhsvkZcqDcuXT5UfqsoYmfZ5COmPO5okBj462Tyxc4xRon/j0Hsa6CfYNNOt94dBVpKYXleT9lvypQV8Xx0bpBte8DXH3QfuCMCPhUJGAiTWooyCVWBdbmYLO01pN+klCgd2n4P5Aoxv+QO9tH5BzkoRB5KHyyDTlpVMmzWgxT+q+dO3MXCY7gIak8f9r0hslUU3mFEJscrrdqJajSWTtADl4w==
+signature: w+AuiTdGh38UUD4fDXlk88nw/gb7ekw0Sivp551rpoOXoexcHGmzHuynQBWKHsz7OXMXml+a1yLHeEeK//7nYR01wTBvWCcfiA85+BGpd14bZ8HSBIj0LRrCSgD7s+rRBHkFoGLAMilTmJWd5wmTWUgLKF4IRXBewFqUfqo6+h2Huc13bLqiF54ga7e4ODRqYs+vC6K9hkQW3e8b6zHyt7ebvvCDiDPwPM4Xnue0yLA/lqdUQel/o0n/Qp8i6A9+4P3mfN7uEaUEPYZ8xJvJs1M0f9wqOjpfPSLJaBPjST/gA9Ovr4tIi6e9ZqzSR5yq40j3QpJgKydZxLntsW0cXQ==
 subtype: python3
 system: true
 tags:
