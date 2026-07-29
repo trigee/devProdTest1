@@ -37,12 +37,14 @@
 			{
 				"description": "Classifies Hello World alerts.",
 				"id": "HelloWorld",
-				"name": "Hello World - Classification"
+				"name": "Hello World - Classification",
+				"type": "classification"
 			},
 			{
 				"description": "Maps incoming Hello World alert fields.",
 				"id": "HelloWorld-mapper",
-				"name": "Hello World - Incoming Mapper"
+				"name": "Hello World - Incoming Mapper",
+				"type": "mapping-incoming"
 			}
 		],
 		"dashboard": null,
@@ -51,7 +53,7 @@
 		"incidentfield": [
 			{
 				"description": "",
-				"name": "Hello World Type",
+				"name": "Hello World Status",
 				"type": "shortText"
 			},
 			{
@@ -61,7 +63,7 @@
 			},
 			{
 				"description": "",
-				"name": "Hello World Status",
+				"name": "Hello World Type",
 				"type": "shortText"
 			}
 		],
@@ -105,6 +107,9 @@
 				"fromversion": "6.8.0",
 				"id": "HelloWorld",
 				"name": "HelloWorld (Community Contribution)",
+				"tags": [
+					"fetch-incidents"
+				],
 				"toversion": ""
 			},
 			{
@@ -120,6 +125,9 @@
 				"fromversion": "5.5.0",
 				"id": "HelloWorld Feed",
 				"name": "HelloWorld Feed (Community Contribution)",
+				"tags": [
+					"feed"
+				],
 				"toversion": ""
 			},
 			{
@@ -175,6 +183,10 @@
 				"fromversion": "6.8.0",
 				"id": "HelloWorldV2",
 				"name": "Hello World v2 (Community Contribution)",
+				"tags": [
+					"fetch-events",
+					"fetch-assets"
+				],
 				"toversion": ""
 			}
 		],
@@ -204,7 +216,7 @@
 		"wizard": null
 	},
 	"created": "2025-03-29T09:38:42Z",
-	"currentVersion": "4.0.9",
+	"currentVersion": "4.0.12",
 	"defaultDataSource": {
 		"id": "HelloWorldEventCollector",
 		"name": "HelloWorld Event Collector"
@@ -215,28 +227,28 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.41.85",
+			"minVersion": "1.42.6",
 			"name": "Base"
 		},
 		"CommonPlaybooks": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "2.7.36",
+			"minVersion": "2.8.4",
 			"name": "Common Playbooks"
 		},
 		"CommonScripts": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.22.13",
+			"minVersion": "1.22.33",
 			"name": "Common Scripts"
 		},
 		"CommonTypes": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "3.10.10",
+			"minVersion": "3.10.13",
 			"name": "Common Types"
 		}
 	},
@@ -276,7 +288,7 @@
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "4.0.9",
+	"itemVersion": "4.0.12",
 	"keywords": [],
 	"legacy": true,
 	"modules": [],
@@ -306,15 +318,15 @@
 		"xsiam"
 	],
 	"tags": [
-		"Data Source",
-		"TIM",
+		"Collection",
 		"Getting Started",
-		"Collection"
+		"Data Source",
+		"TIM"
 	],
 	"toServerVersion": "",
-	"updated": "2026-05-19T20:22:08Z",
+	"updated": "2026-07-12T10:22:52Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "9153993",
+	"versionInfo": "10935523",
 	"videos": []
 }
