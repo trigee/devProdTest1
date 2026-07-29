@@ -17,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.4.22
+    itemVersion: 1.4.24
     packID: FiltersAndTransformers
     packName: Filters And Transformers
     packPropagationLabels:
@@ -26,7 +26,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -40,8 +40,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GreaterCidrNumAddresses', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.22'
-  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  CONSTANT_PACK_VERSION = '1.4.24'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.24')
   # STD packages
   import ipaddress
 
@@ -78,7 +78,7 @@ script: |
 
   register_module_line('GreaterCidrNumAddresses', 'end', __line__())
 scripttarget: 0
-signature: Np8UULoShjnX3OeI99/vR2MzYd0uah1KuE3yuue0RBMpMVfO6d6vtv045+mbOLVIGI2ZHRwv7XoCYs6XPuNgnU/oIRFRBrcKvcaGspRhPStejKi2uCmNh8yAQ2eaKIG4vlt1Gbixvg4JeC9zyI2mJjL5rYqQq5K4PzWmEdeOlXP9/T3bzpcVV27E9gMf3nk6irTzW6eYkBMTADUEt5QxlvJ0sriTqR3W2nkwloNi0FIN2IFOzBcI7k0FnxwyUT1yss3b5uHKBJPH1jCDm7eoQRf9gri6xn5i7AaehDGvOTGaHQitL9QvfnhgVA+BTeknuxaSqEZWrxu3eXcf5CVUJg==
+signature: O7cjA/CVy2gZYEPEp4cowCrzoJlx1hdsHeY9xgyeWyhosnklaqwxvPQWF1utiXh+kID/sCx33iMMUDeAN8WJFHoJ6Yx7vlPAeIkBbZ/Mlc4dKFiGEGAnhHXmfiiHB7zRbwsjBF0r5PB7rrrgk5FGYTmGCBdIgwkc5La9eGAQP9kNqNqVCgc0mxE+zASpN52ZNSEgG00TxRAOSuJc9vKP2ZHLYZh1XbHjd3QusiJPcpMtQGDVwWKjOHL7X/dfw7X7XGxqyaK2zCTxF9kY+Qhj+9gVo3c46eD9nznNLErgaTEkNM3ssPZ6jkbtEEthHGjHmkxz2gUFCtVWKg0/8EM4Og==
 subtype: python3
 system: true
 tags:
