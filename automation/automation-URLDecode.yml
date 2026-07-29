@@ -16,7 +16,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.4.22
+    itemVersion: 1.4.24
     packID: FiltersAndTransformers
     packName: Filters And Transformers
     packPropagationLabels:
@@ -25,7 +25,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -43,8 +43,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('URLDecode', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.22'
-  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  CONSTANT_PACK_VERSION = '1.4.24'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.24')
   from urllib.parse import unquote
 
 
@@ -75,7 +75,7 @@ script: |
 
   register_module_line('URLDecode', 'end', __line__())
 scripttarget: 0
-signature: E4lWNU0bMsG6fzy9wdA/BFqDV4LapEu3YzNpLnKLtT1kt0OAFeJj4XQsKlX0SsTCunDEUoWIytP58OAD8N4NT7waVN5aukYakk5aWcEzbcmoJGbuSRsSnaHodREh3Rd8Kkwgx+pewoLt9p6uwxFwY5dR33157ClP2XmUzqWpi7fvlQ3te3Fui7v8o8xZeewviHSWRMmonOTcXmIf9ETOaswctQreJMKX71veoF7+ak065AqCJ0PRxaEspoMI80Z0uXPwMf3NoTJ4xdgiQcA3fQgMLaKbikYBRpWc9snDU2Lp1bzkx8eRMqsk2o53rT0tRpYT8QwakU6Vglfv3QYGOg==
+signature: s+fdV3yo0pyLIHnEjJs1VauUnJDmm5Eo4UNjS6veDaFl80lTK53+wks0BfRW1aueqYxBAKEcy/wtJ4h7hNMVrLWRFc3H5i4tVeD/hH92pH3S/Lu3fSUCmQsxNS4Lxu487/5vJ3oywxAxEdVox56KDfiFEpCl+aYSopquIPJxOLX9jwtsZjt5+N0LM3y2EbXSN9I8QRKYyg7JvacqasOc77qxDw+nUYiva58aL7T53FyV6W8Q1tNC7UUbz1asDVTWqA2EIZZ7KJsHtgGbqdCSGbEwmiXMpXnwkuKaSWZ5iU8t1M8C6aJYpggVBDnQ2+3Ugsr2mCg6TCpnNJqSORiRkg==
 subtype: python3
 system: true
 tags:
