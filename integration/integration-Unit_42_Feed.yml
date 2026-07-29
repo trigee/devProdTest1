@@ -180,7 +180,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.0.20
+    itemVersion: 1.0.23
     packID: Unit42ThreatIntelligencebyPaloAltoNetworks
     packName: Unit 42 Threat Intelligence by Palo Alto Networks
     packPropagationLabels:
@@ -244,7 +244,7 @@ script:
     description: Gets threat objects from the feed.
     name: unit42-get-threat-objects
     supportedModules: []
-  dockerimage: demisto/python3:3.12.13.10325753
+  dockerimage: demisto/python3:3.12.13.10404775
   feed: true
   nativeimage:
   - "8.8"
@@ -252,8 +252,8 @@ script:
   runonce: false
   script: |
     register_module_line('Unit 42 Feed', 'start', __line__())
-    CONSTANT_PACK_VERSION = '1.0.20'
-    demisto.debug('pack id = Unit42ThreatIntelligencebyPaloAltoNetworks, pack version = 1.0.20')
+    CONSTANT_PACK_VERSION = '1.0.23'
+    demisto.debug('pack id = Unit42ThreatIntelligencebyPaloAltoNetworks, pack version = 1.0.23')
 
 
     import urllib3
@@ -1118,11 +1118,33 @@ script:
         return int(limit)
 
 
+    def push_indicators_in_batches(indicators: list, batch_size: int = 2000) -> None:
+        """
+        Push indicators to the server immediately in fixed-size batches.
+
+        This avoids holding large lists of already-fetched indicators in memory:
+        each page fetched from the API is pushed to the server right away instead
+        of being accumulated together with all other pages/types until the end
+        of the fetch cycle.
+
+        Args:
+            indicators: List of indicators (or threat objects) to push
+            batch_size: Maximum number of indicators to send in a single createIndicators call
+        """
+        for indicators_batch in batch(indicators, batch_size=batch_size):
+            demisto.createIndicators(indicators_batch)
+
+
     def fetch_indicator_type(
         client: Client, indicator_type: str, limit: int, start_time: str, feed_tags: list, tlp_color: str | None
-    ) -> list:
+    ) -> int:
         """
         Fetch indicators for a specific type with pagination and limit enforcement.
+
+        Each fetched page (up to API_LIMIT indicators) is parsed and immediately pushed
+        to the server in batches of 2000, instead of being accumulated in memory until
+        the entire fetch cycle completes. This prevents out-of-memory issues when large
+        numbers of indicators are fetched.
 
         Args:
             client: Client object
@@ -1133,17 +1155,17 @@ script:
             tlp_color: TLP color
 
         Returns:
-            List of indicators (count <= limit)
+            Number of indicators fetched and pushed (count <= limit)
         """
-        indicators: list[dict[str, Any]] = []
+        total_fetched = 0
         next_page_token = None
 
-        while len(indicators) < limit:
+        while total_fetched < limit:
             # Calculate how many more we need
-            remaining = limit - len(indicators)
+            remaining = limit - total_fetched
             page_limit = min(API_LIMIT, remaining)
 
-            demisto.debug(f"UNIT42FEED: Fetching {indicator_type} page " f"(page_limit={page_limit}, total_so_far={len(indicators)})")
+            demisto.debug(f"UNIT42FEED: Fetching {indicator_type} page " f"(page_limit={page_limit}, total_so_far={total_fetched})")
 
             # Make API call
             response = client.get_indicators(
@@ -1160,11 +1182,21 @@ script:
                 demisto.debug(f"UNIT42FEED: No more data for {indicator_type}, stopping")
                 break
 
-            # Parse and add indicators
+            # Parse indicators for this page
             page_indicators = parse_indicators(data, feed_tags, tlp_color)
-            indicators.extend(page_indicators)
 
-            demisto.debug(f"UNIT42FEED: Parsed {len(page_indicators)} {indicator_type} indicators " f"(total: {len(indicators)})")
+            # Ensure we don't exceed the limit (safety check, in case the API returns more than requested)
+            if total_fetched + len(page_indicators) > limit:
+                page_indicators = page_indicators[: limit - total_fetched]
+
+            # Push this page to the server immediately, in batches of 2000
+            push_indicators_in_batches(page_indicators)
+
+            total_fetched += len(page_indicators)
+
+            demisto.debug(
+                f"UNIT42FEED: Parsed and pushed {len(page_indicators)} {indicator_type} indicators (total: {total_fetched})"
+            )
 
             # Check for next page
             metadata = response.get("metadata", {})
@@ -1174,13 +1206,17 @@ script:
                 demisto.debug(f"UNIT42FEED: No more pages for {indicator_type}")
                 break
 
-        # Ensure we don't exceed the limit (safety check)
-        return indicators[:limit]
+        return total_fetched
 
 
-    def fetch_threat_objects_with_limit(client: Client, limit: int, feed_tags: list, tlp_color: str | None) -> list:
+    def fetch_threat_objects_with_limit(client: Client, limit: int, feed_tags: list, tlp_color: str | None) -> int:
         """
         Fetch threat objects with pagination and limit enforcement.
+
+        Each fetched page (up to API_LIMIT threat objects) is parsed and immediately pushed
+        to the server in batches of 2000, instead of being accumulated in memory until
+        the entire fetch cycle completes. This prevents out-of-memory issues when large
+        numbers of threat objects are fetched.
 
         Args:
             client: Client object
@@ -1189,19 +1225,17 @@ script:
             tlp_color: TLP color
 
         Returns:
-            List of threat objects (count <= limit)
+            Number of threat objects fetched and pushed (count <= limit)
         """
-        threat_objects: list[dict[str, Any]] = []
+        total_fetched = 0
         next_page_token = None
 
-        while len(threat_objects) < limit:
+        while total_fetched < limit:
             # Calculate how many more we need
-            remaining = limit - len(threat_objects)
+            remaining = limit - total_fetched
             page_limit = min(API_LIMIT, remaining)
 
-            demisto.debug(
-                f"UNIT42FEED: Fetching threat objects page " f"(page_limit={page_limit}, total_so_far={len(threat_objects)})"
-            )
+            demisto.debug(f"UNIT42FEED: Fetching threat objects page " f"(page_limit={page_limit}, total_so_far={total_fetched})")
 
             # Make API call
             response = client.get_threat_objects(limit=page_limit, next_page_token=next_page_token)
@@ -1216,11 +1250,20 @@ script:
                 demisto.debug("UNIT42FEED: No more threat objects data, stopping")
                 break
 
-            # Parse and add threat objects
+            # Parse threat objects for this page (note: this may include extra location
+            # indicators derived from a single threat object, so it can exceed len(data))
             page_objects = parse_threat_objects(data, feed_tags, tlp_color)
-            threat_objects.extend(page_objects)
 
-            demisto.debug(f"UNIT42FEED: Parsed {len(page_objects)} threat objects " f"(total: {len(threat_objects)})")
+            # Ensure we don't exceed the limit (safety check, in case the API returns more than requested)
+            if total_fetched + len(page_objects) > limit:
+                page_objects = page_objects[: limit - total_fetched]
+
+            # Push this page to the server immediately, in batches of 2000
+            push_indicators_in_batches(page_objects)
+
+            total_fetched += len(page_objects)
+
+            demisto.debug(f"UNIT42FEED: Parsed and pushed {len(page_objects)} threat objects (total: {total_fetched})")
 
             # Check for next page
             metadata = response.get("metadata", {})
@@ -1230,8 +1273,7 @@ script:
                 demisto.debug("UNIT42FEED: No more pages for threat objects")
                 break
 
-        # Ensure we don't exceed the limit
-        return threat_objects[:limit]
+        return total_fetched
 
 
     def test_module(client: Client) -> str:
@@ -1250,17 +1292,23 @@ script:
             return f"Failed to connect to Unit 42 API. Check your Server URL and License. Error: {str(e)}"
 
 
-    def fetch_indicators(client: Client, params: dict, current_time: datetime) -> list:
+    def fetch_indicators(client: Client, params: dict, current_time: datetime) -> int:
         """Retrieves indicators from the feed with per-type limit enforcement.
+
+        Indicators/threat objects are pushed to the server as soon as each page is
+        fetched and parsed (see fetch_indicator_type and fetch_threat_objects_with_limit),
+        instead of being accumulated in memory for the entire fetch cycle. This function
+        only tracks and returns the total count fetched, to avoid holding all indicators
+        in memory at once and causing out-of-memory issues.
 
         Args:
             client: Client object with request
             params: demisto.params()
             current_time: The current fetch time.
         Returns:
-            List. Processed indicators from feed.
+            int. Total number of indicators/threat objects fetched and pushed to the server.
         """
-        all_indicators = []
+        total_fetched = 0
 
         # Get configuration
         feed_types = argToList(params.get("feed_types"))
@@ -1295,12 +1343,11 @@ script:
         if "Threat Objects" in feed_types:
             demisto.debug(f"UNIT42FEED: Fetching Threat Objects (limit: {limit_per_type})")
 
-            threat_objs = fetch_threat_objects_with_limit(
+            fetched_count = fetch_threat_objects_with_limit(
                 client=client, limit=limit_per_type, feed_tags=feed_tags, tlp_color=tlp_color
             )
 
-            fetched_count = len(threat_objs)
-            all_indicators.extend(threat_objs)
+            total_fetched += fetched_count
 
             # Track unused quota
             if fetched_count < limit_per_type:
@@ -1308,7 +1355,7 @@ script:
 
             demisto.debug(
                 f"UNIT42FEED: Fetched {fetched_count}/{limit_per_type} threat objects. "
-                f"Total: {len(all_indicators)}, Unused quota: {remaining_quota}"
+                f"Total: {total_fetched}, Unused quota: {remaining_quota}"
             )
 
         # FETCH INDICATORS (if enabled) - After Threat Objects
@@ -1331,7 +1378,7 @@ script:
                 )
 
                 # Fetch this indicator type
-                type_indicators = fetch_indicator_type(
+                fetched_count = fetch_indicator_type(
                     client=client,
                     indicator_type=ind_type,
                     limit=type_limit,
@@ -1340,8 +1387,7 @@ script:
                     tlp_color=tlp_color,
                 )
 
-                fetched_count = len(type_indicators)
-                all_indicators.extend(type_indicators)
+                total_fetched += fetched_count
 
                 # Track unused quota for non-last types
                 if not is_last_type and fetched_count < limit_per_type:
@@ -1349,12 +1395,12 @@ script:
 
                 demisto.debug(
                     f"UNIT42FEED: Fetched {fetched_count}/{type_limit} {ind_type} indicators. "
-                    f"Total: {len(all_indicators)}, Unused quota: {remaining_quota}"
+                    f"Total: {total_fetched}, Unused quota: {remaining_quota}"
                 )
 
-        demisto.info(f"UNIT42FEED: Fetch complete. Total indicators: {len(all_indicators)} (limit per type: {limit_per_type})")
+        demisto.info(f"UNIT42FEED: Fetch complete. Total indicators: {total_fetched} (limit per type: {limit_per_type})")
 
-        return all_indicators
+        return total_fetched
 
 
     def get_indicators_command(client: Client, args: dict, feed_tags: list = [], tlp_color: str | None = None) -> CommandResults:
@@ -1457,18 +1503,13 @@ script:
                 demisto.debug("UNIT42FEED_DEBUG: Starting fetch-indicators command")
                 now = datetime.now()
                 demisto.debug(f"UNIT42FEED_DEBUG: Fetch start time: {now.strftime(DATE_FORMAT)}")
-                indicators = fetch_indicators(client, params, now)
-                demisto.debug(f"UNIT42FEED_DEBUG: fetch_indicators returned {len(indicators)} indicators")
 
-                batch_count = 0
-                for b in batch(indicators, batch_size=2000):
-                    batch_count += 1
-                    batch_size = len(b)
-                    demisto.debug(f"UNIT42FEED_DEBUG: Creating batch {batch_count} with {batch_size} indicators")
-                    demisto.createIndicators(b)
-                    demisto.debug(f"UNIT42FEED_DEBUG: Successfully created batch {batch_count}")
+                # Indicators/threat objects are pushed to the server incrementally, page by page,
+                # inside fetch_indicators (see fetch_indicator_type / fetch_threat_objects_with_limit)
+                # to avoid holding the entire fetched dataset in memory at once.
+                total_fetched = fetch_indicators(client, params, now)
+                demisto.debug(f"UNIT42FEED_DEBUG: fetch_indicators fetched and pushed {total_fetched} indicators")
 
-                demisto.debug(f"UNIT42FEED_DEBUG: Total batches created: {batch_count}")
                 demisto.setLastRun({"last_successful_run": now.strftime(DATE_FORMAT)})
                 demisto.info(
                     f"The fetch-indicators command completed successfully. Next run will fetch from: {now.strftime(DATE_FORMAT)}"
@@ -1493,5 +1534,5 @@ script:
 sectionorder:
 - Connect
 - Collect
-signature: PDOF8lFF8m95Jc6qaitZYwkrEioVaaaljRAYuBy0vnTpPtHud5uMTj1MxxrCdqyI87U3jONvY4AcDEevyB2OR1ngKf7E006T2f59B2VhD++ZgnxlWzq2WSa/9+uo5z15t4fEUNi3QkIYcgzluBWtx5RbgotpSgerhuA0X8wBnJGW5fwmsmy3S1IPZEwrl2erJM/dhpSGAVVk3aWI4sN9XFdcZmHt0gAqFc4G18EDKmX6197YfA34ypsybg5Vxi/yzgp/dbyJga2Ai5QHQStRJ07nfPrk9jX/SUyhLcnMywuyR5UCMRJdHpgqAsArUXG06OQT5TZwrY4SpTwx98PBCw==
+signature: ar4WNJv/qOx41My3HEbyk7UFzY8q4cUf+RquKaW336Thv2ycrFbPSpFgkZzIca824aPxBn52+F1F5QCUWw/LjTq3Ov0Pd6TzrqEDnRy7L/H3pA/8DXW+Vs49/SlfeH7Oz+XisgeJsXRelDPM6nmMak0Hq9QaQ9xi4St8LSmNqBs3c9aGLiqXgf/og1OwO5gdYs4j8rFoNH+br03kJWAXtVfbWfPi0R5WcpqrG/OtO4aRWQ844lUXLCJ8N0orVxPg4gwnTarS8C8pBM17QHz0crjrJ+Qgj+2iMkcrFHoWz6Pw41HZkuoB/125t8zerpj9jVPkrba8HGRtr32E3rmF7Q==
 system: true
