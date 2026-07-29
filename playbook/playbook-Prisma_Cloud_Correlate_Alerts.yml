@@ -3,7 +3,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 4.4.30
+    itemVersion: 4.4.33
     packID: PrismaCloud
     packName: Prisma Cloud by Palo Alto Networks
     packPropagationLabels:
@@ -134,7 +134,7 @@ tasks:
     skipunavailable: false
     task:
       brand: ""
-      description: Check if Prisma Cloud assets are present
+      description: Check if Prisma Cloud assets are present.
       id: a8c93e03-4367-44d4-88f4-1c778a392639
       iscommand: false
       istaskmissingcomponenterrordismissed: false
@@ -201,14 +201,15 @@ tasks:
     skipunavailable: false
     task:
       brand: PrismaCloud v2
-      description: Search alerts on the Prisma Cloud platform. If no time-range arguments
-        are given, the search will filter only alerts from the last 7 days.
+      description: Search alerts on the Prisma Cloud platform. When no absolute time
+        nor relative time arguments are provided, the search will show alerts from
+        the last 7 days.
       id: 6dc73a58-59f7-4511-8884-1358d318e01f
       iscommand: true
       istaskmissingcomponenterrordismissed: false
       name: Find Prisma Cloud Alerts for detected assets
       playbooktaskmissingcomponent: null
-      script: PrismaCloud v2|||redlock-search-alerts
+      script: PrismaCloud v2|||prisma-cloud-alert-search
       type: regular
       version: -1
     taskid: 6dc73a58-59f7-4511-8884-1358d318e01f
@@ -256,7 +257,7 @@ tasks:
     skipunavailable: false
     task:
       brand: ""
-      description: Convert an array to a nice table display. Usually, from the context.
+      description: Convert an array to a nice table display, usually from the context.
       id: b6b02f01-2db2-4859-8756-3e7ad37c9072
       iscommand: false
       istaskmissingcomponenterrordismissed: false
@@ -304,7 +305,7 @@ tasks:
     skipunavailable: false
     task:
       brand: ""
-      description: Searches Demisto alerts
+      description: Searches Cortex alerts.
       id: f8fef3ac-24cc-4da8-808c-f528da2e4018
       iscommand: false
       istaskmissingcomponenterrordismissed: false
@@ -391,7 +392,7 @@ tasks:
     skipunavailable: false
     task:
       brand: ""
-      description: Check if Prisma Cloud alerts were found
+      description: Check if Prisma Cloud alerts were found.
       id: 9fe334d8-188b-4bf0-83a1-2d82effa470e
       iscommand: false
       istaskmissingcomponenterrordismissed: false
@@ -506,7 +507,7 @@ tasks:
     skipunavailable: false
     task:
       brand: ""
-      description: Check if the Prisma Cloud integration is enabled
+      description: Check if the Prisma Cloud integration is enabled.
       id: e44f2a90-27f4-4584-8548-e285eac679a5
       iscommand: false
       istaskmissingcomponenterrordismissed: false
@@ -551,7 +552,7 @@ tasks:
     skipunavailable: false
     task:
       brand: ""
-      description: Check if any linkable alerts are found in XSOAR.
+      description: Check if any linkable alerts are found in Cortex.
       id: ff612a87-2f7a-4742-8630-ef241e51577e
       iscommand: false
       istaskmissingcomponenterrordismissed: false
