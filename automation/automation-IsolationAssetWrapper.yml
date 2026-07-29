@@ -22,7 +22,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -31,7 +31,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: IsolationAssetWrapper
@@ -88,8 +88,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('IsolationAssetWrapper', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
 
 
   """ STANDALONE FUNCTION """
@@ -171,7 +171,7 @@ script: |
 
   register_module_line('IsolationAssetWrapper', 'end', __line__())
 scripttarget: 0
-signature: 2Ft3XyPehB6msVCROEqFe/T3//NaAAdJokbbKOwdEr9swv+g0R8eOC8I5oWR2XUnGi7oyIC+xc/SOSyZazBuCfvUbsPvilqQ5Oud8mgBwhuCqGw2gYD6N8wvIz15m82I6bGWMR3CoukTuP722vTD/jU6YqY8Q9qmH8OXkiJCznAW4FztUS0oWHABHd0/mop601OqVBHWyOFcLiNeI1NXZJNvKDNcQdls/yFeqs7ItPbp96qmAtc6ZGBLF5s/8alt6PXLH84gHaiA69/RreJJ6qWay7fKy8/ZF/Dlg7e6sLPYZlZABJCqTpMFft/zjBExuumhdb7sTBRG7h1NtTaXcA==
+signature: bVWYKUwvgNAPnxm1ZaWeEXoXd2xxN44oXGuChchEZUvEpmJ8190avVnDQ07aqF+JOMyg45+m/p1I3ofIzw9TIUBD1g2l9kOTQIdh7M/BNuH7AY5SWMK6nP4MwKxScUvznSC2jkigju0MDM71KSrHoec978Z1vXTqSdQ7gyTbHtwYmRWsARfE8MFoQ7Yp0/xvlSFkHc5NgQtw1yuqxvexjEmBmWhJa6zj0txwfgZTSy32BQ2Z4FRnuTI66HvOdzEJ8v1fw8ajb7Y5osZkKDaSUIIYXHcFn7JHvg++XzuYZ8RObfioIDER4mLFv+eb4O9AnpWu1AKHnnnbCgIwtr7eeA==
 subtype: python3
 system: true
 tags:
