@@ -16,7 +16,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -25,7 +25,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -43,8 +43,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('PortListenCheck', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import socket
 
 
@@ -96,7 +96,7 @@ script: |
 
   register_module_line('PortListenCheck', 'end', __line__())
 scripttarget: 0
-signature: UeuZ3PnqJr5I1vwCthWFVVGt41SuWduvLu+eLlnEKqMcwKoOAlYwYxrwgC1DYlJ+AV5/g0J6N1SStngTbj0bYvQkJyOfV59rWIBsWTFxfHXF41KFP4Ncnm3bnlk2kn2e+uStprcuHgDNCl/AfDNwUxNMfpmkLSOcyfO8GVSlNNO4XglpVbVD+VkXLiwDZDK+PccyB4F5Ii5bUmQczkxuKBJCIx/n8dWq9BvLPSuaeziPfBEmdcYBS4+NE7BfQd88vMW05qR4aek5OkdCDMl0w024izJw3bC3ZIMK9vVbcG75QvGcXiDnjaeerLSIMHhgcKfRgDrqVknfaw3N4MPikw==
+signature: TmE+rvUgVfNbVst9xvA06kyQ0siadBUfNOuFiPMaCkXsUIcXmfx/sYymGrgn6dimMS3Lnp5+rnktEqAbrD3ATpyeKHHPWaG8GJL96PjXoJ1lXAWFOEKUFxfw3etw1KdtunQEwUCJmQnWK9L994kOnD1FitBcYKVib3/gYornnRjQFgwJDI2Hq4hX9p9L8wAAnYBt0hVppvObo8Fi6JKWJPHkc8IAcZScI0aDhsIoD1F457xhKKAyqqYtWIQLX8qDISkr6nrH6N4WYzcDbvFbhDveNQ8ABx8prnkOVlh1TeOBqZKP6yPu2Wh9yPrAeM4miq9Ub+LQ6lT4iLWC6huMVw==
 subtype: python3
 system: true
 tags: []
