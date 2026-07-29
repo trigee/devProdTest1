@@ -16,7 +16,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.4.22
+    itemVersion: 1.4.24
     packID: FiltersAndTransformers
     packName: Filters And Transformers
     packPropagationLabels:
@@ -25,7 +25,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/py3-tools:1.0.0.8544956
+dockerimage: demisto/py3-tools:1.0.0.10120494
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -39,8 +39,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('jmespath', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.22'
-  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  CONSTANT_PACK_VERSION = '1.4.24'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.24')
 
   import jmespath
 
@@ -73,7 +73,7 @@ script: |
 
   register_module_line('jmespath', 'end', __line__())
 scripttarget: 0
-signature: fS0w26doNgFgx63dESMYNM5PlMxjIR/ngcQWnEHDAkls9WKJ1n6EYV2oD0v66v1BKLgxr4TDxJZOihPW9EUIuVQHuYAqCK9th8lCpnBIjPjWYcPqmxD6SMBzyRRyU22/XDJeFKfebbypCMmb7ZK8FL7YAX9eUQpswYs5Ue708aazqY/3jjY7uMrYqElBx4L/qdQd8GHokiwNO0AlUM17BnnTAw/qBny5+8eHjZKPVlGST/hfyPzyp24elmFlESZJ1SMrO7gDu7h5FDKfViuvlTGMqjrfFUdMOLZFWJ6Y6phTjOAwRQANXY6n6cRUdYA3Sf6nRfRMuXwUdOw5zIEcgQ==
+signature: BfdtJFEBU70tB9AFjdHGwHS3ir1MO9q8VmB5LOUy9/EV4Ob77HkMM5+mi5VMyrrQcM6S70mg8vjCtyzfSnanhNElMgyAEVbYxuolKy5PF6Mpi9xklblCGhknexyTI8oiPhwlVplBZvsxgvv8YR1FE/YtS+39TFE4aq/Lhz8MdfQbAWdg2SrnEkIODpLKAIOOpRWEPvAIY+REi3DpCk8Htk0t6VOk+gNrDILUTeSb3g+ZI0m54Hre7MYj4xxaqHkr63ngKI2zaLMS2h+bsVFors4pkQ3Ky/ws8ZM363hOR3trhCc/MGg2qaferdiO+w0P9hLh2KqTYyJPoAc9rgCR9w==
 subtype: python3
 system: true
 tags:
