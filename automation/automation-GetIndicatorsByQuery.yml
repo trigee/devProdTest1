@@ -38,7 +38,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.42.2
+    itemVersion: 1.42.13
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -47,7 +47,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10116658
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -61,8 +61,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetIndicatorsByQuery', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.2'
-  demisto.debug('pack id = Base, pack version = 1.42.2')
+  CONSTANT_PACK_VERSION = '1.42.13'
+  demisto.debug('pack id = Base, pack version = 1.42.13')
   import hashlib
 
 
@@ -216,7 +216,7 @@ script: |
 
   register_module_line('GetIndicatorsByQuery', 'end', __line__())
 scripttarget: 0
-signature: y84kJrgnYW5CY32dXtR5/1XCVj2Aq6eskvOhGYlS6OpmV9ByoP1+KJpPAUis6y/0ghupUog56EoZLkQzXmpSt5fwcbGbn/MUYiThYFi2BLhRS8+8N4y5eLH0S1xbsyCyPdd2+bmesWTv+nrrGzk5OealvuYm7jVqJMrRQ+kff+ubf1uEESApXdCJmZ9X6k7RDe/0q/IBNYf+H3hFxsynEltuyE9dVPNXSv6UTqqrgd+HvVDHcNZQJS4m9RYWQTRCBU02l1iPXMYPe1ugGLu86ySiQH4NwR5/GgFyeKu/S/qdC5YOCVq13MxYG3gi+Aj+wbfvFzhu6+Fqah/VcOBBFA==
+signature: tc6lJC5f0Zm6wqYAyWVWpIMWpH4z0rmUwJ3to4DGBKo4UYyBFrQF+2rjjwDzZqb9c2l2Y0VkxUclHUlv7+v+GuVJPOaxr5b9WFmn66gZiKeQFFLwfYUI+Y37yBUe7hdJhLU96DR4YTBFU+UtXoF58XAq9Rssb+akzne3iDwNxnAA61xEW9DS0YN+NpU186dtDOpsLKx/NJVoJsljuAJUOrcXEY1XUnRbZVY4hUhKbb7k3XwHdhK+f3//XIIfK7sDMeQr++5nj3ba1QVds/XAr2e230P4aoEyekUfQCFr9bLtgAFL8tTSXyDleGttLzVYQSE6BrsEh7dXpiJJKWOvaQ==
 subtype: python3
 system: true
 tags:
