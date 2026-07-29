@@ -36,7 +36,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.3.47
+    itemVersion: 1.3.52
     packID: AggregatedScripts
     packName: Aggregated Scripts
     packPropagationLabels:
@@ -45,7 +45,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: clear-user-session
@@ -77,8 +77,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('clear-user-session', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.3.47'
-  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.47')
+  CONSTANT_PACK_VERSION = '1.3.52'
+  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.52')
 
 
   from collections import defaultdict
@@ -657,7 +657,7 @@ script: |
 
   register_module_line('clear-user-session', 'end', __line__())
 scripttarget: 0
-signature: T8/8ZMtRCym/1tyDYeRK77uZMyInLNedBSsmtKbJhjmi5pfLRsB6Rn/ChM8eKAhuPZ0yiSGIqGFDIPGAuk1css7dqSvuobtuxgkIei6mJJca1eCOZbHDv8V0xkNi2Xme8mYjMoKed0QCumWC4hIs6FsYne8y2lEiVURSbBNwSlC8yjEaOBpfRgxQQbUf5vbVoc+PWBLcA7ocq2kK/UVlD2RxfvfyhJ6khEFfXGLRqIO1rt0trBwsU7+apgBUOFDfp0sHRRXCnrsKNlcVOr7XsynM09vyfyAyc554Th3o9moft7O7HkdERGAAG5A/8Ii3H/z6lcC2SLamBgMUE9xhCQ==
+signature: v1WGii86HCx6Sk3jTO3KwZJc397t1kleqREzEBqLalHEAFjhX/Z//kQvCMFDyq2WcpzEjIt5PMViwqMLDTgJOmmJOVfyUuVHj/amvXjmZ+fS51tUL+p14CiZgQ6DUNPTrzUuBkS4o39FCR+EocEeTsOYnuserRDQBkR2xpl1qqVkUHEss5V6xIuE+M8iw5EYhIRW1APGWD1Hq4re69+YdrH8Y/pO5UyA2ITaZJMdZtIQRGNuF781KSXPB3KTsbVdbLbHuMJ9EMzLVbOh+qwMmrwV5hr5P2n8acUkkyTUrTZMH/XYgq+puTrx9rX3Vi2xEi6XeQIh1dnqjFcGG7apBw==
 subtype: python3
 system: true
 tags: []
