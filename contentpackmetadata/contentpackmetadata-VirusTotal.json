@@ -30,7 +30,8 @@
 				"supportedModules": [
 					"agentix",
 					"xsiam"
-				]
+				],
+				"type": "mapping-incoming"
 			}
 		],
 		"dashboard": null,
@@ -63,21 +64,21 @@
 			},
 			{
 				"description": "",
-				"name": "VT Engine Detections",
-				"supportedModules": [
-					"agentix",
-					"xsiam"
-				],
-				"type": "number"
-			},
-			{
-				"description": "",
 				"name": "VT Engine Vendors",
 				"supportedModules": [
 					"agentix",
 					"xsiam"
 				],
 				"type": "tagsSelect"
+			},
+			{
+				"description": "",
+				"name": "VT Engine Detections",
+				"supportedModules": [
+					"agentix",
+					"xsiam"
+				],
+				"type": "number"
 			}
 		],
 		"integration": [
@@ -194,26 +195,32 @@
 				"fromversion": "5.5.0",
 				"id": "VirusTotal - Premium (API v3)",
 				"name": "VirusTotal - Premium (API v3) (Partner Contribution)",
+				"tags": [
+					"fetch-incidents"
+				],
 				"toversion": ""
 			},
 			{
 				"category": "Data Enrichment \u0026 Threat Intelligence",
 				"commands": [
 					{
-						"description": "Gets the indicators from VirusTotal Livehunt.",
+						"description": "Gets the matches from a given retrohunt job's id or the latest by default.",
 						"hidden": false,
-						"name": "vt-livehunt-get-indicators"
+						"name": "vt-retrohunt-get-indicators"
 					},
 					{
 						"description": "This command will reset your fetch history.",
 						"hidden": false,
-						"name": "vt-reset-fetch-indicators"
+						"name": "vt-retrohunt-reset-fetch-indicators"
 					}
 				],
-				"description": "Use this feed integration to fetch VirusTotal Livehunt notifications as indicators.",
+				"description": "Use this feed integration to fetch VirusTotal Retrohunt matches.",
 				"fromversion": "5.5.0",
-				"id": "VirusTotal Livehunt Feed",
-				"name": "VirusTotal Livehunt Feed (Partner Contribution)",
+				"id": "VirusTotal Retrohunt Feed",
+				"name": "VirusTotal Retrohunt Feed (Partner Contribution)",
+				"tags": [
+					"feed"
+				],
 				"toversion": ""
 			},
 			{
@@ -401,20 +408,23 @@
 				"category": "Data Enrichment \u0026 Threat Intelligence",
 				"commands": [
 					{
-						"description": "Gets the matches from a given retrohunt job's id or the latest by default.",
+						"description": "Gets the indicators from VirusTotal Livehunt.",
 						"hidden": false,
-						"name": "vt-retrohunt-get-indicators"
+						"name": "vt-livehunt-get-indicators"
 					},
 					{
 						"description": "This command will reset your fetch history.",
 						"hidden": false,
-						"name": "vt-retrohunt-reset-fetch-indicators"
+						"name": "vt-reset-fetch-indicators"
 					}
 				],
-				"description": "Use this feed integration to fetch VirusTotal Retrohunt matches.",
+				"description": "Use this feed integration to fetch VirusTotal Livehunt notifications as indicators.",
 				"fromversion": "5.5.0",
-				"id": "VirusTotal Retrohunt Feed",
-				"name": "VirusTotal Retrohunt Feed (Partner Contribution)",
+				"id": "VirusTotal Livehunt Feed",
+				"name": "VirusTotal Livehunt Feed (Partner Contribution)",
+				"tags": [
+					"feed"
+				],
 				"toversion": ""
 			}
 		],
@@ -422,10 +432,10 @@
 		"list": null,
 		"playbook": [
 			{
-				"description": "Detonate URL through VirusTotal (API v3) integration.",
-				"fromversion": "5.5.0",
-				"id": "Detonate URL - VirusTotal (API v3)",
-				"name": "Detonate URL - VirusTotal (API v3)",
+				"description": "Get file information using the Virus Total API integration.",
+				"fromversion": "6.0.0",
+				"id": "File Enrichment - Virus Total (API v3)",
+				"name": "File Enrichment - Virus Total (API v3)",
 				"tags": []
 			},
 			{
@@ -443,13 +453,6 @@
 				"tags": []
 			},
 			{
-				"description": "Get file information using the Virus Total API integration.",
-				"fromversion": "6.0.0",
-				"id": "File Enrichment - Virus Total (API v3)",
-				"name": "File Enrichment - Virus Total (API v3)",
-				"tags": []
-			},
-			{
 				"description": "Detonate a private file through VirusTotal Private Scanning service",
 				"fromversion": "5.5.0",
 				"id": "Detonate Private File - VirusTotal Private Scanning",
@@ -462,6 +465,13 @@
 				"id": "Detonate File - VirusTotal",
 				"name": "Detonate File - VirusTotal",
 				"tags": []
+			},
+			{
+				"description": "Detonate URL through VirusTotal (API v3) integration.",
+				"fromversion": "5.5.0",
+				"id": "Detonate URL - VirusTotal (API v3)",
+				"name": "Detonate URL - VirusTotal (API v3)",
+				"tags": []
 			}
 		],
 		"report": null,
@@ -470,7 +480,7 @@
 		"wizard": null
 	},
 	"created": "2025-03-29T09:35:07Z",
-	"currentVersion": "2.7.21",
+	"currentVersion": "2.7.22",
 	"defaultDataSource": {
 		"id": "VirusTotal - Premium (API v3)",
 		"name": "VirusTotal - Premium (API v3)"
@@ -481,35 +491,35 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.41.83",
+			"minVersion": "1.42.3",
 			"name": "Base"
 		},
 		"CommonPlaybooks": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "2.7.34",
+			"minVersion": "2.8.3",
 			"name": "Common Playbooks"
 		},
 		"CommonScripts": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.22.11",
+			"minVersion": "1.22.29",
 			"name": "Common Scripts"
 		},
 		"CommonTypes": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "3.10.10",
+			"minVersion": "3.10.13",
 			"name": "Common Types"
 		},
 		"CoreAlertFields": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "1.0.47",
+			"minVersion": "1.0.51",
 			"name": "Core Alert Fields"
 		}
 	},
@@ -557,7 +567,7 @@
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "2.7.21",
+	"itemVersion": "2.7.22",
 	"keywords": [],
 	"legacy": true,
 	"modules": [],
@@ -590,15 +600,15 @@
 		"cloud_runtime_security"
 	],
 	"tags": [
-		"Featured",
 		"Data Source",
+		"Featured",
 		"Free Enricher",
 		"TIM"
 	],
 	"toServerVersion": "",
-	"updated": "2026-05-13T19:54:31Z",
+	"updated": "2026-07-05T20:10:12Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "8994397",
+	"versionInfo": "10750492",
 	"videos": []
 }
