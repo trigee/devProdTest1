@@ -13,7 +13,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -25,7 +25,7 @@ contentitemexportablefields:
 dependson:
   must:
   - cve
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -39,8 +39,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('cveReputationV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
 
 
 
@@ -108,7 +108,7 @@ script: |
 
   register_module_line('cveReputationV2', 'end', __line__())
 scripttarget: 0
-signature: kSk5fLafnTYDrDM5DG+qFqI+RMW1+CrNIFdM+AkKScj9oOmmncSEBt6PR9QiGpQYd6IlPtjKOOVwj0AuMevWJfEl1BdRwRGELdesJbETpEwSIxqvyn70PRj7uNsesh9z1frXq7BOo79TPqxLyQRUMBsFTGIE5LwVblZw7+vwf1BEioD7Mmkp9kECS5+ru+i2WP2lWAG2mOdq4IO8AHlyOPxApHwX8W3CcAcNlgrtlYSyVRsBhzpV2BqOO/8vz7DLFYFmsVnk79kc7TVFvJ/js4sUKDp+MsG3pMnxxmzjjAr7pXLlf5A0eV0cMQ3eiJ7Am2Cm7cSsWfhWRkfZEHCJYA==
+signature: iYYNwjIhgyCblR8rIvnA9qfHZw+se9sHn69iMvgz5Q04xQLeejjm+ddY1FUOUPh/iEnSjPVpP48iVH7SP0c7iPAMuozTHb6AVn1FGfKc8udBaBDRgd4k8A3z4CpWYH1bW1p2R0UqO1jIbadY4j9NCIAR0jAV3AxzQ6lsfa3oJEZ/4nJzryajbNrrMYtsU4FCqRzVLW/h7ExtqLj2y0c6ABF1L5ZOG0GxZqDrrU0V2922/IW2arIpOlpV3PCsTZrqtP0r+YOU7pbZ8bGFeQJiJayo3W3zdyT22XhPWbkzj34AGRVWcI7jjbAJgOlrjrcxIiYlXCZZrV+ijDeOLVht+A==
 subtype: python3
 system: true
 tags:
