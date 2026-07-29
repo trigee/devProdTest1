@@ -62,7 +62,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 8.0.0
     isoverridable: false
-    itemVersion: 1.3.47
+    itemVersion: 1.3.52
     packID: AggregatedScripts
     packName: Aggregated Scripts
     packPropagationLabels:
@@ -349,8 +349,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('domain-enrichment', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.3.47'
-  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.47')
+  CONSTANT_PACK_VERSION = '1.3.52'
+  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.52')
 
 
 
@@ -2352,15 +2352,28 @@ script: |
       command_batch2: list[Command] = []
       if is_xsiam():
           demisto.debug("Command Batch 2: Internal commands (for XSIAM)")
-          command_batch2.append(
-              Command(
-                  name="core-get-domain-analytics-prevalence",
-                  args={"domain_name": valid_inputs},
-                  command_type=CommandType.INTERNAL,
-                  brand="Cortex Core - IR",  # keep the brand you use elsewhere
-                  context_output_mapping={"Core.AnalyticsPrevalence.Domain": "Core.AnalyticsPrevalence.Domain"},
+          # On platform, we use the built-in commands and brand Builtin
+          if is_platform():
+              command_batch2.append(
+                  Command(
+                      name="getDomainAnalyticsPrevalence",
+                      args={"domain_name": valid_inputs},
+                      command_type=CommandType.BUILTIN,
+                      brand="Builtin",
+                      context_output_mapping={"Core.AnalyticsPrevalence.Domain": "Core.AnalyticsPrevalence.Domain"},
+                      ignore_using_brand=True,
+                  )
               )
-          )
+          else:
+              command_batch2.append(
+                  Command(
+                      name="core-get-domain-analytics-prevalence",
+                      args={"domain_name": valid_inputs},
+                      command_type=CommandType.INTERNAL,
+                      brand="Cortex Core - IR",  # keep the brand you use elsewhere
+                      context_output_mapping={"Core.AnalyticsPrevalence.Domain": "Core.AnalyticsPrevalence.Domain"},
+                  )
+              )
       demisto.debug("Command Batch 2: Enriching indicators")
       command_batch2.append(
           Command(
@@ -2433,7 +2446,7 @@ script: |
 
   register_module_line('domain-enrichment', 'end', __line__())
 scripttarget: 0
-signature: Y4ZIW5qYCoRO1WmmXaRkdYMMbbU8gqPK+2o4S1XONo8inImPVA9MLToJnxrpM3Zptiu2YaMepOIarOrPOtRFJp0O3i7ABsXqnTo1gfDVtqg/btfgslHg1sb+o871URx4tBys3XDw7Y3/q3rsUjIIqg7nbrcTJv8Edo7QfiKuii+VZtPiqTRtdOQcfewfUuYXlHtfyruGk5kq2P48lYuAgJhIhgZJ/aEl9aNMY9HGMmIJqvP5OI2+++XnGhVCKcznjfat+dW2zJKvHHeiHA2Gpa7vqaFzHvr3Tv622aoxOihpph9Zxtqfu4B6gx7OkJQ41PT3vqYKKZa57A1TQBUWew==
+signature: douErCv/Js/a3YUZZJ7PubKBeDuLJX5WsirdxDe86iSU/zmxh6VpSsxkFr5f549rohFMN7ewYyYtl/xKG3/llBcr9E97vCW4of7tGN8rDGMF6xPjrdOdGakMNVTGrK7PNf4K//2AnBnMqRQmlZ9lU0LY+CsTeMzAEdFGCBVyP3KDg6/XbnGJwr111qWhIv9sqp4r9Pm1+CyEeKiAe2xfPx15uUw8dJQpd0SDdLC9leY8r95JEYfMCmaTFq29jlJ5KGEdhgt6QvP3+5L+8qO4xno6deiStS7NdKfmaM9OCXaU+ZhdQ29EK9LAedOqusA8s8oVGzvGDm57zIRTIV2vkA==
 subtype: python3
 system: true
 tags:
