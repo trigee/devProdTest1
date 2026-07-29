@@ -30,7 +30,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.2
+    itemVersion: 1.42.13
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -39,7 +39,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.9059085
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -53,8 +53,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CheckDockerImageAvailable', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.2'
-  demisto.debug('pack id = Base, pack version = 1.42.2')
+  CONSTANT_PACK_VERSION = '1.42.13'
+  demisto.debug('pack id = Base, pack version = 1.42.13')
   import re
 
 
@@ -213,7 +213,7 @@ script: |
 
   register_module_line('CheckDockerImageAvailable', 'end', __line__())
 scripttarget: 0
-signature: xVAOVCz/4n/qNgeyjjYPD3/h5Z7Ra3kZQYcMTN6fAvGHqCuVfz7uZJT6tIGXK6En+zm6dGXXx9iOl9pgBJWT0SWt6NoD7cb6tIdCr7+1EKWYjX5PTzl46BIOYTyLCeAFUXDdduhNSexFgB9fBLnVgOn6hKXkV60E0e/knJC0WuQJFkK7i0i1wcIT/HQFIgbA8uItakz464Vn5LOleDgtFes/lY+L1Jj+kYhQNQMzKCqhREbsd5S+q6/SwvEjXDbPaFvexda+9Cq7JPN+rYYOZ/3OnLHheIP+YNSIYQWdm69iL/S1+9xunyTht6fycyyBbH8fQrJ0a+lAFQTh7VA3rQ==
+signature: YDVnXqtHRzRQceHwfcEpxoCxZ6roPF0AzvPuN8gpTDZ5XPBM0K3E4IIOxLF+0dOdrZjWMaDPEUsxGXhgvGRwH+V1B1Sbd6ScjN0dn84Wg1lVGatyjZXox7zh2Vts1wXiDH7TBRixRWSlgP+fPA09f7mGcasWopQXNxUYvAwoAD7/JXnkWmqP4qD/kN8W9sUN0oGly43mq3gwQvcMphk9GVdDgR4FldSN9SN7q4libJpYnJGOvT5w0XcNYPEF9iKhn+cjAPuARWhGKl/NQ7AjMU58uEyuDnnbPftLHPpfv1H+5rBzhPOz5N9zlAmdrw0OiRxroQhgPi0D3IUZxMNnnQ==
 subtype: python3
 system: true
 tags: []
