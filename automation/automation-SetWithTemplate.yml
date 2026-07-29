@@ -67,7 +67,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -76,7 +76,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -90,8 +90,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SetWithTemplate', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   from collections.abc import Callable
   from typing import Any
 
@@ -362,7 +362,7 @@ script: |
 
   register_module_line('SetWithTemplate', 'end', __line__())
 scripttarget: 0
-signature: ah/QkLvxT8PsdSMEG7SGTkZ+EyMsrs0oj3UOrFVdR8tBsYDa1aryS5jxoFjFYfvuBD3K03GOWPaLBfvdVkddyR+ZqXnmaC09WqGLq3AeMu1lJCgrtNjmxTgsztdauPF1gnKViWt8cW+j8G08z4lHbNG8I/227Bj2ZWSAET9RqC+Wj4LE5QP7Y7asM/8y+UfnB+sEsRm5AeI1Bw2I65Crlp/oqPfcbG9i6TU0Aj7VfchM/1rfeYDiLRI6c6J0e+wpD3WMFHfkMjfly/bsgMRiiMOOTsqKoXfnFx8BG7BV3IAQM/0RthmGvOoausvkJ7Ki1z+HP/6mSee1NXLl4cFGXA==
+signature: 2YdiMH9eTJu12CE9csBtmA8tZD7pH8kRA5Ui8xkCnuAybGI3YYOKsI1UPAPt+3DMwnHs2KdrksbsCIXzC2ICVnZkcQF63aKzHaVLpVlgawPvf3duU14WeyLpi4SNDXvebJaMfNV/YZnkDTtopFscPTfQ+QoA+WCAocdjZSHDGeK4UyAj11DW7iNi/sbFyv8RkZrlU7ecY3Jd+7LmLKj+uq56px3kXIVOy3bhk60cUT+/C1/UEsGLdYZxs37AlnthbUb8Ug7tNLA2XssoFM5EYlqqa92/Ay09Q4pDuaZ54euuI3Wdqh9m1/jHt3yJXEEXpOqLzbCI8hFixDazwksvZA==
 subtype: python3
 system: true
 tags:
