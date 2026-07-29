@@ -60,7 +60,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.3.47
+    itemVersion: 1.3.52
     packID: AggregatedScripts
     packName: Aggregated Scripts
     packPropagationLabels:
@@ -74,7 +74,7 @@ contentitemexportablefields:
     - edr
     - xsiam
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: quarantine-file
@@ -108,8 +108,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('quarantine-file', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.3.47'
-  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.47')
+  CONSTANT_PACK_VERSION = '1.3.52'
+  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.52')
   from dataclasses import dataclass, asdict
   from enum import StrEnum
   from abc import ABC, abstractmethod
@@ -138,6 +138,10 @@ script: |
       def normalize(cls, value: str):
           _ALIASES = {
               "Microsoft Defender ATP": "Microsoft Defender Advanced Threat Protection",
+              # On the unified platform, get-endpoint-data reports Core endpoints under the
+              # built-in brand "Builtin". Map it to "Cortex Core - IR" so the correct handler
+              # is selected and the legacy Core quarantine commands are used.
+              "Builtin": cls.CORTEX_CORE_IR.value,
           }
           """Normalize a brand string (alias → canonical enum)."""
           canonical = _ALIASES.get(value, value)
@@ -1410,7 +1414,7 @@ script: |
 
   register_module_line('quarantine-file', 'end', __line__())
 scripttarget: 0
-signature: SIWqgXmNxI7WhQDCWWPEYiw+1ukPX0hVqMrhJ1lvBHu/rd3VBDaNDrj6lW8edYric5P1PV2DykijYUtYko6tE2TIXSS4Bm9x8JG4WGk12rRtWF4Dr2k5G9AFsFqv6NupfpafNz3Xonnn8H9okbGX9F0Mr58h/EiMEJKLC+NibhPl7SoDfxmnYmn0nxmFiSEsFa4wGHQz3mjfIGuw6hM7YUcFLqiDnnbOqtycvwN7UFXEVoya6wzXVm59Wc50PCYdd5rXPnhdIiKDS010sNJcZ2dwA1XEjHDQMs7hN8Y6eD+pvMSAKyMjIiwps3tTll00eenWzuWScQ2I9ZQGwiwUYA==
+signature: UPDVqckzkRd51EKi2xrS5FtWINtuezpdzRDz0m2D3RDP/Nqet04QL2P6pNSR3UwGs7OYVZHi/YdF/HElwjDTevEE4C9d/71oRRCUIeT4Pdr7P1CsqD5NRO+JOLnYOZjtO+uoPNTChbgRYsPPLlAbBc5w0QJ9sjUiEIAheEKzSUlQUVNXeRo0KVFv+Ncq3EGIdMB+U/7vv9GiHQeBMpP6b4+6tqQj7pQegnub7+VeOZAvRAoA/hd5L/cwcE6aQAvKJ2GRI8+hgkS38+HzNxi91S2fGAsFfTIUxf54ClwCoZfFpcNSd26Pf40I0WgaDwAmIEMo+dfK+aI83BpnU6VzYw==
 subtype: python3
 system: true
 tags: []
