@@ -21,7 +21,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -30,7 +30,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/bs4-py3:1.0.0.2129847
+dockerimage: demisto/bs4-py3:1.0.0.10120494
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -44,8 +44,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ExtractHTMLTables', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
 
   from bs4 import BeautifulSoup
 
@@ -57,7 +57,7 @@ script: |
       for index, tab in enumerate(soup.find_all("table")):
           if len(indexes) > 0 and index not in indexes and str(index) not in indexes:
               continue
-          table = []
+          table: Union[list, dict] = []
           headers = []
           # Check if there are headers and use them
           try:
@@ -69,13 +69,13 @@ script: |
                   if len(tds) > 0:
                       # Single value in a table - just create an array of strings ignoring header
                       if len(tds) == 1:
-                          table.append(tds[0].text)
+                          table.append(tds[0].text)  # type: ignore[union-attr]
                       # If there are 2 columns and no headers,
                       # treat as key-value (might override values if same key in first column)
                       elif len(tds) == 2 and len(headers) == 0:
                           if type(table) is list:
                               table = {}  # type: ignore
-                          table[tds[0].text] = tds[1].text
+                          table[tds[0].text] = tds[1].text  # type: ignore[call-overload]
                       else:
                           row = {}
                           if len(headers) > 0:
@@ -84,7 +84,8 @@ script: |
                           else:
                               for i, td in enumerate(tds):
                                   row["cell" + str(i)] = td.text
-                          table.append(row)
+                          if isinstance(table, list):  # type: ignore[arg-type]
+                              table.append(row)
           except Exception as e:
               demisto.debug(f"Failed to extract table: {e}")
           if len(table) > 0:
@@ -111,7 +112,7 @@ script: |
 
   register_module_line('ExtractHTMLTables', 'end', __line__())
 scripttarget: 0
-signature: 1hRZKAH3LRS3DIszjrg7HKPPK31ZzRnyDYJLuO3LyYTek4YdmUA0TeWn1BPj1glL/T18df1GgUTnX5t+/u4337SaaL6ZzJ1hJwgSdxGqDUJthS4HFNp869fN8GCKIirN4gKFBGPHTh3qEbPwrjHVY30GEGtiRJH187srtr56dQ9qSTIBc97+PC3QXe11+VKUSPYqDfpUcJJOFModlX9FLks0Q8Nky60LXjG3JKrh5RE5mfZl/AwbPhKUxzfkbd4lsFjbphlLRpmlT08SGsbRkjXXgFF/B9mkYV8pq7Cg5pQGY29ZrkiMtNRffOUaDE3tlvwOxBkUjBagAAORFfbdEg==
+signature: RDQD8pR7JmAW32u+UG/WlZSQ9t8r3su0nI8gWcjm8vMF/Lg0PwFq46aYuk8JCTgYlHT/+bjPwQ8zyt0i4skvy9lCTGuVCmreCG6cLOtmcyL4q6xy+LNPJsTS4GunqgGRecUXjA0vPvEGuYMm3szeusd1VPr0VvtdA4HgevlAnZQCAmeGA+ULi4v+ag2In86Vpg8xiWHUdaO0bDbNprHHqEukiiIXsmLoXSnEtgdItlwRCT6RkEzck8aLKOXw/ppVkpvuw2mS6QoOPI+QphR0pb4Up6NpCzwA93FmzvT7BzPz9exA843H4dvKBxOs1xA8Kif77ktfzJj8zgyZ8ZX06A==
 subtype: python3
 system: true
 tags:
