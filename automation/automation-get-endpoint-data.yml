@@ -52,7 +52,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.3.47
+    itemVersion: 1.3.52
     packID: AggregatedScripts
     packName: Aggregated Scripts
     packPropagationLabels:
@@ -61,7 +61,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.12.6391686
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: get-endpoint-data
@@ -99,8 +99,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('get-endpoint-data', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.3.47'
-  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.47')
+  CONSTANT_PACK_VERSION = '1.3.52'
+  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.52')
   from collections.abc import Callable
   from itertools import zip_longest
   from typing import Any
@@ -128,6 +128,7 @@ script: |
       CORTEX_CORE_IR = "Cortex Core - IR"
       FIREEYE_HX_V2 = "FireEyeHX v2"
       GENERIC_COMMAND = "Generic Command"
+      BUILTIN = "Builtin"
 
       @classmethod
       def get_all_values(cls) -> list[str]:
@@ -237,6 +238,10 @@ script: |
               bool: True if the brand is in both the list of brands to run and the set of enabled brands;
                     False otherwise.
           """
+          # Builtin commands are injected by the server on the unified platform,
+          # so they are always available there and are not tied to an installed integration brand.
+          if command.brand == Brands.BUILTIN:
+              return is_platform()
           return False if not self.is_brand_in_brands_to_run(command) else command.brand in self._enabled_brands
 
       def get_enabled_brands(self):
@@ -449,7 +454,10 @@ script: |
                   continue
 
               if entry_type == EntryType.ERROR or entry_type == EntryType.WARNING:
-                  command_error_outputs.append(hr_to_command_results(command, args, contents, entry_type=entry_type))  # type: ignore[arg-type]
+                  # Built-in commands may return no entries (None) on a not-found result
+                  # guard against 'NoneType' object is not iterable
+                  if error_result := hr_to_command_results(command, args, contents, entry_type=entry_type):  # type: ignore[arg-type]
+                      command_error_outputs.append(error_result)
               elif entry_type == EntryType.NOTE:
                   command_context_outputs.append(entry.get("EntryContext", {}))
                   human_readable_outputs.append(entry.get("HumanReadable") or "")
@@ -612,8 +620,8 @@ script: |
               not_found_checker="was not found",
           ),
           Command(
-              brand=Brands.CORTEX_CORE_IR,
-              name="core-list-risky-hosts",
+              brand=Brands.BUILTIN if is_platform() else Brands.CORTEX_CORE_IR,
+              name="getRiskyHosts" if is_platform() else "core-list-risky-hosts",
               output_keys=["Core.RiskyHost"],
               args_mapping={"host_id": "endpoint_hostname"},
               output_mapping={"id": "Hostname", "risk_level": "RiskLevel"},
@@ -635,8 +643,8 @@ script: |
 
       list_args_commands = [
           Command(
-              brand=Brands.CORTEX_CORE_IR,
-              name="core-get-endpoints",
+              brand=Brands.BUILTIN if is_platform() else Brands.CORTEX_CORE_IR,
+              name="getEndpoints" if is_platform() else "core-get-endpoints",
               output_keys=["Core.Endpoint"],
               args_mapping={"endpoint_id_list": "endpoint_id", "ip_list": "endpoint_ip", "hostname": "endpoint_hostname"},
               output_mapping={
@@ -717,7 +725,7 @@ script: |
               )
 
               if endpoint_output:
-                  if command.brand in [Brands.CORTEX_XDR_IR, Brands.CORTEX_CORE_IR]:
+                  if command.brand in [Brands.CORTEX_XDR_IR, Brands.CORTEX_CORE_IR, Brands.BUILTIN]:
                       update_endpoint_in_mapping(endpoint_output, ir_mapping)
                   else:
                       endpoint_outputs_list.extend(endpoint_output)
@@ -770,7 +778,7 @@ script: |
           )
 
           if endpoint_output:
-              if command.brand in [Brands.CORTEX_XDR_IR, Brands.CORTEX_CORE_IR]:
+              if command.brand in [Brands.CORTEX_XDR_IR, Brands.CORTEX_CORE_IR, Brands.BUILTIN]:
                   add_endpoint_to_mapping(endpoint_output, ir_mapping)
               else:
                   multiple_endpoint_outputs.extend(endpoint_output)
@@ -1315,7 +1323,7 @@ script: |
 
   register_module_line('get-endpoint-data', 'end', __line__())
 scripttarget: 0
-signature: blafOj2BHSTumYPijYrtx+QvCRLZY22qp0ixdG0JJBVr+WnDcSm6blSp3sphet0LuHk/JTzdJKl0doFmRn3ygk9VkcnG5oHCM2NPpLQ0r1KPakVuGumaeXbjrXiCVVuEkYVVMdyyQghTx9bF9hq7y1QzibddeaNw7QrOXscOfypxtFNncK0xgU8/mXsrMG8WFyyIp9JeQxQUqnyjsGtex6xr3wpE87Re1POfwZJ7KX4K/kwDbY4Jh0Nc8wMLreAOJ1E9fF565u6PiRFw8e+S9ro/kqTvms5icZC48jRQJMLdbcJF7fSYncFQmK8ep0BLhLuTIPI88ND6fqvB+KsVaw==
+signature: NL8ffXQ5ZOfSAdD7qpfpeuhiDjlzmBp/bkbnKcknedp+s79aQKqJiYfLBYd5KYCSEhOKqcV9BOO9T1yU8aj3yKYWLsPL9ss2DRZuUg3vm82Mf71Fb+ZRTkgG4Pb6dnNGd+zQF+ncaP/cOIGw5rntD6eL4oUBQulp+nPIBpST1RCp8B8RlWQmmdiyhBqKm6dHXDB43beT0dIELqPL04tJxjTRa+7ZvsanQkvtzpTcMvtVpVIej6uR9vZt7A2WAV01zVJXZ2JAH1m2YDqRljPmLyDVgm6KJ5A4Bt4UOw/XqfEIHumHWpYYpFIJNX368JjHgTfF6JGz+mbgIlWed/zdvA==
 subtype: python3
 system: true
 tags: []
