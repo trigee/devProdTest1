@@ -3,7 +3,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 2.8.2
+    itemVersion: 2.8.5
     packID: CommonPlaybooks
     packName: Common Playbooks
     packPropagationLabels:
@@ -720,7 +720,15 @@ tasks:
               operator: notContainsString
               right:
                 value:
-                  simple: news or mail
+                  simple: news
+            - left:
+                iscontext: true
+                value:
+                  simple: inputs.File.Type
+              operator: notContainsString
+              right:
+                value:
+                  simple: mail
           - - left:
                 iscontext: true
                 value:
@@ -1973,6 +1981,7 @@ tasks:
       iscommand: false
       istaskmissingcomponenterrordismissed: false
       name: Microsoft Office File Enrichment - Oletools
+      playbookId: Microsoft Office File Enrichment - Oletools
       playbookName: Microsoft Office File Enrichment - Oletools
       playbooktaskmissingcomponent: null
       type: playbook
