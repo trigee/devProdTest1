@@ -57,7 +57,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -66,7 +66,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -80,8 +80,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ScheduleGenericPolling', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import uuid
 
 
@@ -268,7 +268,7 @@ script: |
 
   register_module_line('ScheduleGenericPolling', 'end', __line__())
 scripttarget: 0
-signature: H7U9uf+NvkKE1lCHqWyr67V+6tj1qroaH7VH5qpySF5+07Fj2QuTF8el7K0fmuPOUfwCpfGpP/LiRMQ/wBoxiuVX91a2pcHa/wIvSk5ku7thISlCMOglRUIu78B2wK2CmHGvKcOlGQQ9GnwOvK8CEUr2OdYLVc6U3g9u4rWh+FDqA8A5PyAW98pABQf7nI5uHaZUEyd7uX1UsuD1XTnTNluIv947hYMxf+7xjte67dH6yg+Tfgry/bWXvnKzdEuYlyKoT38fXa8QpWfVkSHOtOByZ0vA3wg0DN0RV1reUh9LmN94PYhDRGNlTlNsWlKcb2XvFA+SA6DVQLSuvbrCkA==
+signature: JGFOFbvzKbmavSnBdWdbgb4pm63pNOUo1IaTiAi622RlGPy8qbb1EqxpPOGfZI0TKzedtuQETzuGObSGbX8AllEv9GBUagvqqEczpPl+lvbgBJeIjRWrRTecU4pzoKRRgADyJ2eTlYmmpNKeagJIyDvPEPC/eYCrAw6qqAXv1IVl1sRU1vZC1wzoprlFStKpg4NLv0W7ATJ+Q13J0hdrsz7EcDWf9++gKf9MVDUu80upPBwlAGDPFWKkX/d0UhL7fVj8AGUXmb7XLFhMYGCHS2i0wCjUVtIJH8cphBjokePIiEHprceBIZfdJUQv6sNI5i7wAoZsgWmSyKm9WXRLrQ==
 subtype: python3
 system: true
 tags: []
