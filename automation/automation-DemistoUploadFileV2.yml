@@ -34,7 +34,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.5.0
+    itemVersion: 1.5.2
     packID: DemistoRESTAPI
     packName: Cortex REST API
     packPropagationLabels:
@@ -61,8 +61,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DemistoUploadFileV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.5.0'
-  demisto.debug('pack id = DemistoRESTAPI, pack version = 1.5.0')
+  CONSTANT_PACK_VERSION = '1.5.2'
+  demisto.debug('pack id = DemistoRESTAPI, pack version = 1.5.2')
   from typing import Tuple
 
 
@@ -107,7 +107,7 @@ script: |
 
   register_module_line('DemistoUploadFileV2', 'end', __line__())
 scripttarget: 0
-signature: m6TZ/Bc3CIesgKwPL0iRAhtyJ74lZgy0zMT6C8FmvmepAinvbBZJVsdnT2nuN072khcMdHAozVeJ9AdEUjs6srlWkJW/6A5/UcfQ7+pyRQF3VguGLq1w8t55HGCJlKgsv95Drse7jebfWwZV1x9fX3rH2i4dXJvQjURbeRuJvZx6qNibqUF4u2v29e3EZC6foxjsU0tMH5MU89a+o/tQXHGDygc0hJDOt+D5xqdx/MnWST5XX2UhakwUTxlEYb0eZSOjnPsSYev7X5m7KjKhrbliKShTHRTqqUz0y9g+VIDE5VRz7vaVOJRytcA1rPhe3A4jcYsjQb2xyT/0odzW9w==
+signature: eEkXDFDd7Or7u14uY5IaJK6S5jV+4IvECQ1O9bSg1K5RQ0/fBWB5TnvrS5jLVJPPtO2a9/2eaLSK56YYkhpjyPlq1kykeiMFglFIZpiBcYvvxxju6QJPUy7M5bf1aDDQjH2M7kltbPqV/zOPRRzqWJhsui2G+Wk43nqP3ILlWTmPZRDkMz3YdZDhDv0RNCLk4gaJ76J7IN/QmTvZ608iASGV7a49gD9QTRTkQg/1YbgcO9p55F56r1TOm00MO57CEQyjpUbWiQJW34BIXeORPPR9sQdxY//2204CYmVVZmeBqwLfV9AM9EaT5zTk714ZLY/wmipdGKPcJQ4iiV8dMQ==
 subtype: python3
 system: true
 tags:
