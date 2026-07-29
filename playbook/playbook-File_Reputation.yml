@@ -3,7 +3,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.6.0
     isoverridable: false
-    itemVersion: 2.8.2
+    itemVersion: 2.8.5
     packID: CommonPlaybooks
     packName: Common Playbooks
     packPropagationLabels:
@@ -278,6 +278,7 @@ tasks:
         }
       }
   "10":
+    continueonerror: true
     continueonerrortype: ""
     id: "10"
     ignoreworker: false
@@ -321,6 +322,7 @@ tasks:
         }
       }
   "11":
+    continueonerror: true
     continueonerrortype: ""
     id: "11"
     ignoreworker: false
@@ -380,6 +382,12 @@ tasks:
           right:
             value:
               simple: Non existing SHA-256
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: NSRLCheckResults
+          operator: isNotEmpty
       label: Found Results
     continueonerrortype: ""
     id: "12"
