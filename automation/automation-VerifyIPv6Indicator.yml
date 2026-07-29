@@ -13,7 +13,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -22,7 +22,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -36,8 +36,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('VerifyIPv6Indicator', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   from ipaddress import IPv6Address
 
 
@@ -86,7 +86,7 @@ script: |
 
   register_module_line('VerifyIPv6Indicator', 'end', __line__())
 scripttarget: 0
-signature: xNslCseyhV3CD0upiWtyvyxKfHTcuw1Mvm3ddP503b/VIruZ0Q0kTFnUAqtEe7esUKLckxY5S4UtMxwd2DJ7bH11+1+IqHtO6yRYj4MiPKKD0l2d/v1gzjsfDliZwBfpC9mIOZgPGSeP/iku7hBijGJ+IivmcjnJn4LmRjGwNOxsy46gfxBYYoZCDIW+sU2bXh05ebQECkTgFkRuJUQoS7ZMY2Qfm6kkcjOhjhDRH6SX4Pj8KplVACKerKCsnenkimk9DQTYq8OEC+q7RLjRQ3OSpZ5MLNJg+/tqchPBtG3JUujZm1gWjSEA2XdNO19uNJGp2EfnD6+7/IaExNMiTQ==
+signature: OWXU5hd+Ery8RoWOYpUkLpNu2By1O/nNahDwkAnyB+yNfeuLF9C611qf534JjLfmoC4p1b4lCveMEkMu4XCGeHyJMZQo3ur/TkcL71mGTLIRiogw1s6y9FR4eMsLzJYR6gCC4MjSv1VFZIq4rvuLGvz0Hw4kJvc+HXFT2EbcGubHizO8V7ow1rLYuCodTNOQnAsK0T0oK12dHi4p4KGB+Hue78b2gg7Itt0OeCkKG4vfyp4E+YLV5FDXbkipkhE961m+bvEI+xq6qho3UcLcYbtfs6KgrBLnT9LUMeI42N/Ez/NFmd77cbW/FCaynXR/KZxbW/J4e/X8F0yO1Of/vw==
 subtype: python3
 system: true
 tags:
