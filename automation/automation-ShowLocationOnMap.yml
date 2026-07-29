@@ -7,7 +7,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -16,7 +16,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -30,8 +30,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ShowLocationOnMap', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
 
 
   loc = demisto.get(demisto.args().get("indicator") or {}, "CustomFields.geolocation")
@@ -57,7 +57,7 @@ script: |
 
   register_module_line('ShowLocationOnMap', 'end', __line__())
 scripttarget: 0
-signature: XCVQChXInHPSpk9mcLe8bdDt6soZi8sJZGys/d96I3+Qyt9TdKsqBYmhG0OI0/kxkuvf0CH3KL1Xi3OtTDLLQM6shhcO5hbIe/qzUcUiF5TyPkyNHNC8/3t73GZvdPvmmQaKB9+ZRdul1U3zG6Hh5qoCpitoK64t/DO4i+ey+k6RdwWfzGzk+TbU2nkZ3DGvr64HZ8ZWXlg9BPXVqd3QjL91w/ynKwNmNnH5AIlwQFw2xJbJQQeSWzuSfwWjChpQuFll+Gxi+A2wAUFbeUO5VmGC9sFYk4ihgH+KgYd0J5a7XgcZHngKteHWv7FmjN8jbaoMa07vO/wmwweqKCKDLw==
+signature: mLrnRLtyKTwxo7EEN3YbbDgBgagqiL2PzUBuxIhlg77edd+84r7zlNhzljKjyw+q7wtBE7ksTmxduTfmtAQtEnCicHXjG9/XVSX0O7pLenx/f7G+1YXRcfurrCFtqHrxzQADs0a4KdvyZ+LHP3WGbWL77pP/v6E+P/KJlaQgo3yCfSPp1h47FCCzCRwL4X0140R04eaJYIwMX0FTUt51HhlNL+TSfGSMGgt3UcjxdY/IFCHOCHvj0EvO62jqC6aVebG1v5nC7YyX5/apN45yMoJ9dJCL0jUiElmTl0T/aW1lE2sLxaHy0HG4HxzeEn0eCbB9ib5p0orMT7TbPSGtOg==
 subtype: python3
 system: true
 tags:
