@@ -22,7 +22,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -31,7 +31,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -55,8 +55,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CheckIndicatorValue', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import base64
   import urllib.parse
   from typing import Any
@@ -127,7 +127,7 @@ script: |
 
   register_module_line('CheckIndicatorValue', 'end', __line__())
 scripttarget: 0
-signature: C6s9K0rA8DEQDBrUkeFLLGq77fnk8A8wLqD/Zi9ObIpIfEgGr09bgQlrfa3RC2yOJYTirLoRfRi/rErB2TUE/81WjSJKeCTt2Y/y336E9LXkle2742kANIqNoFYNqCAV/fZFVFib39hvZ0u/+F/DuUT7ZMoztN0l2eylDkfbp5IKYWVAkqcaYcIxGSnVbCjyrA5nvwJtRvaEMRXKB1iFxGbu6TYaSdRn7aJBTkO1PzRHpyyqxcOtMb8HWGoHxYGiYpo9vFxCXcZ/S/qhJjoVIZK0ag6PYFBySRMODwHZmkaqx6j2Sl1PLxiFBGjjnc19FCM3tmr03RvVs2zL2CBDMA==
+signature: GXdD2MHysNJiVjeMB7p2Gj0nubt6LdD5cY0gvQLPRuyTO+E/QXqijgnuwsmD3sat8x/BH5FskmB21Nf2PF+zK/8jVHcj9W0GS+XFz+xvWNFCf2uHBIEq03Yq9oWAElT9IBasAojYrDpNgTubbA8UQ1uAmLT7erC27xeF6QmyKVxF/jWP5sGjEtax/hYzmZs4YgjLGBvTHTyebPTTf67tUtvKPrucHn5/IArwzxgv9l79dhlZ7ikYbdlLNGsFdyLabV6qcNBbUpiTLDHrLKc61mQ7T4r4pUIYjN86CqmQpAcFkUu/iQNrNh+pHN+5j6xdWhCJX5tWcwvQHHKx1IlzKA==
 subtype: python3
 system: true
 tags:
