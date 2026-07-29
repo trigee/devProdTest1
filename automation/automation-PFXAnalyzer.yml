@@ -18,7 +18,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -27,7 +27,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/crypto:1.0.0.8187750
+dockerimage: demisto/crypto:1.0.0.10120494
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -78,8 +78,8 @@ runas: DBotWeakRole
 runonce: true
 script: |
   register_module_line('PFXAnalyzer', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
 
 
   from cryptography.hazmat.primitives.serialization import pkcs12
@@ -417,7 +417,7 @@ script: |
 
   register_module_line('PFXAnalyzer', 'end', __line__())
 scripttarget: 0
-signature: a0BEvnZBxy7X8HAtI7MFqlCcvNA0TPgKT0jej4LBCNKTHWtzECBLzQFWdp/6wvK9wPDGfjPmppQQLgsalDRUoLr25OohEjnv1I9d1dVYl/bJQcXSXVba/9OEeBHW3SPh0yr5h/yO+Zk2L26gu9h0eCuH4lk3q0/EASZC90rISryjgBC2B3UVKL3Gc8Ma9+8Gl/pS4NvW3Lhp+S8w7DqmhABknE2n/gewdh2+FoJi7CWOCs9UvZxE6W0oYGPmzpAezDtULBOL6fJdXH2qpjGOaWjWTXYXLXENeLYtkYXKe3Tz5zVml9Sova/vvU1hi7VSwYVx2celkoBzocEwayeu7Q==
+signature: RP+vy0BCob3hKNPTqC+su51Ee3vNwOPtgRkxW5FZsEAJyZNrYDd89G+Hm30OjGzZTobXC1sitm7U3em0JvqXw2vOW6oKFkeTVzVrL8uTLMnVifSOfRW6UUCh7uVSFKpgiIUhnu9Rc2Ga9XJ8hVsUMsY8r9F2KYO66PcJSZvsh9fra1iZFUaFtU8gYTQ0/zurNHNmTKOd3Tv8SEsrLK1qWFkRnLsJvBWiTYA682Enwz4IDbqs9uYfNR/xGKBSytwdjd5pqc6vSUMG77taRu3LBV3XqUBXUG+l2hLclAljORS6adVlZxdMWGoQHCJAW4i44jt/Xop2dWadfWxo1B210A==
 subtype: python3
 system: true
 tags: []
