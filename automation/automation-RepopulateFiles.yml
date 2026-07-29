@@ -8,7 +8,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -17,7 +17,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -86,8 +86,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('RepopulateFiles', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import hashlib
   import os
   from typing import Any
@@ -206,7 +206,7 @@ script: |
 
   register_module_line('RepopulateFiles', 'end', __line__())
 scripttarget: 0
-signature: ZYTiEoa2o+SBm+wvO7C+pgAWq5++puB9s6kxRVy50eSHOVZRViUgesEVtRxtilMzJECwNAjNQtN+k3m+UO+loZpexBP1Ch19GxfA+HJPphEd2ivwvjNp0K9Hoa8gVY2bjmKZ1qk54c+PUx0iS4qwgz26pQeptSJS8aLfv2GX09ea9wBa5h5ROkK6u6xCfIr/KqZEYWOIh4Asebk1hme9U1eCzBEMBnQR1GUYlLqcamQGfJJOoN+1qKqzvpb5a1GCZl5CaMDK7RYzTUvyjCwxXuAat8DkYaN50Bc6x6Hd37NvyNpsNlPLBY9gdHWz/04GhQzNUSJv7bpF4PArLIlVZw==
+signature: P+4SdPVhX/jcBRMJgiIZDCLZvsNgzQ2XrqhdwyUxQY0KBYDpfSYp1As7VlPosBWZo3x8qdGkcgJzlvtA1Jvq4xikdinP0j6PLA0Xn8P6yNsnfZjCMTCKlYma6XH/Guyo/AjOKzrLjrOWoOTTF5rJS6dTo4UB0mvArxMwrS8L7nBTv5e7eODsc+QkZukJMJ/3J7Wf2tZYxxDz2UAVpN5vLbQbtsWENakeh3rNuk4JT/lITJ7t1G1qdUcfptNwiXLsSVN9CcNi/fGz3KGFJNpWCNLjgYOVkZv1+iFy8gYbkgZIBpq54Fts1FuSKhewNLBUWJQ3C+2GsAVl280fM2Nzrw==
 subtype: python3
 system: true
 tags:
