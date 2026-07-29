@@ -115,7 +115,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.8.0
     isoverridable: false
-    itemVersion: 4.0.9
+    itemVersion: 4.0.12
     packID: HelloWorld
     packName: HelloWorld
     packPropagationLabels:
@@ -468,14 +468,14 @@ script:
     description: Retrieves vulnerabilities found in the HelloWorld environment.
     name: helloworld-get-vulnerabilities
     supportedModules: []
-  dockerimage: demisto/fastapi:0.125.0.9094740
+  dockerimage: demisto/fastapi:0.125.0.10158186
   isfetchassets: true
   isfetchevents: true
   runonce: false
   script: |
     register_module_line('HelloWorldV2', 'start', __line__())
-    CONSTANT_PACK_VERSION = '4.0.9'
-    demisto.debug('pack id = HelloWorld, pack version = 4.0.9')
+    CONSTANT_PACK_VERSION = '4.0.12'
+    demisto.debug('pack id = HelloWorld, pack version = 4.0.12')
     # ruff: noqa: F401,N805
     import asyncio
     import json
@@ -1863,6 +1863,10 @@ script:
                 rate_limiter: Optional rate limiting policy.
                 circuit_breaker: Optional circuit breaker policy.
                 diagnostic_mode: Whether to enable diagnostic logging.
+                    WARNING: intended for short, supervised debugging sessions only.
+                    Request traces retain full response bodies in memory, so leaving
+                    this enabled on high-volume or long-running integrations may
+                    exhaust container memory.
                 client_name: Name for logging identification.
                 is_multithreaded: Whether to enable multithreading support.
                 reuse_client: Whether to reuse the HTTP client across sync requests (default: True).
@@ -4866,5 +4870,5 @@ script:
 sectionorder:
 - Connect
 - Collect
-signature: Z5Mp9Wx6YIXiSTX5nU9Fp3SPYSr4WOWXAq/dcCbyfd0grGP/+3P4vv/72wFq9bLQlOSwk6hWc7xZsEEyI956c1h8Od2+Sme3y9qwG0ssERgSGwgMb+FmGfDlpO3lZqRXhb28/rGlRc/AfEIQBHOUlHEhIbPTJtq/36g1MguJ6i7uvWVQGUlwqmVlY6/ru4kp55/db2JVKdUmIStwilNlRlkmdzD8+TBdt003FiqivRSks1TPXEdXdK5ZNu3B0NkRHOX6VIuhS+0vS6LpNZEhs3dA6WVhFudIuX1B43dLj7Ti9f/Q/rYB+6bnNs4OS6Gjzfqw0Ss0zXh8ln/u9TO93A==
+signature: T7kpxO6id6QMGo3VvyddUZ68H2NcF99ed8QrOivWD/SS8Vrv1POZo5IjBiUbJATgB1SUbyMbtAu0uDGpHfoQAalVacYOMxJGm7kYN2eglik33cM87Pdcq9KNlUAejMGVAh3nKMBaOvD9bXvicDrcLaInsMWrrokgoxv4cdmBnji4fVGMCuKi3BPlC7f6gG9eM9c+/hDw4EH2ZnPHAQIcw4uGVEX5hi566ghMw8iykuU/geKv1anL7tp3Uqr2tLYqzuKdu/fWyy/fr5rDs7I/XUJmJ2rQPvg2yaNhMRnjL9VpTcid5wYlR1kzmRGSnqIE+WP3EM8nXIOjrPZdCD09ag==
 system: true
