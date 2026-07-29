@@ -56,7 +56,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.2
+    itemVersion: 1.42.13
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -65,7 +65,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/sklearn:1.0.0.8425368
+dockerimage: demisto/sklearn:1.0.0.10866354
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -76,8 +76,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DBotFindSimilarAlertsByIndicators', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.2'
-  demisto.debug('pack id = Base, pack version = 1.42.2')
+  CONSTANT_PACK_VERSION = '1.42.13'
+  demisto.debug('pack id = Base, pack version = 1.42.13')
   import math
   import re
   from collections import Counter
@@ -848,7 +848,7 @@ script: |
 
   register_module_line('DBotFindSimilarAlertsByIndicators', 'end', __line__())
 scripttarget: 0
-signature: eajlGpbcNCbYCRqAIFS65Ta5jL9qbik81ig8xQ3oEvo/YLyHFlkGwNRF79+PTGy+tWp4s/oj9NbwqBndoBSX7t4kcpAUxGhHmwUTmQOxzstySCCtjxj5yfvg5XjoOvmhEsG3xH9YMpPTcQtWvMmox8bM/2kNGr1TotE+CiA1jbiHqKl4szKjdMXbbYjkzX6ygx5+Y0MdB0slMHjHvto/Fw2Op0m6iVk6x6BCk/4jS9xcgwTMgcBWNoCPFAuIRYPpASJmgELYK6ELlNmLNFwedqA4R+rI7cI+NgaE2Va1SUZS31Vs7ErjJI2LZhyWEKl3WSOFeexiXX+qhIkS+rKvkg==
+signature: TejbTcGwcdHrUn4Ar7H3FY0ouS6px5m4LqGq4M6Swp0ASudlKAStuhGqPmKs4Pq+mFV4b3MQdUTE9eLCnci3qtP3IQjXnGBj1QaWvkTEwUMb+OzCktDoLHMewbVCbaeQSdh5EZmfJ9g6p4XmGRFfWWYQ+yUQrlvCVmSJpj00+VSkO0yALTWhIyrhpHarEL8xX/i5bfngjs9XHPqhNeQmuyCfVE8G/59OmTvv3igligRrwqcxHlExMLa86mpf8x/zd6+JRhUhSQpJ5yOATcfGCgsGRpHjXWmk9vjQro0ty0DnjoggtuqZkuQ9i8cCJke7iZAG+7CmYbY/Sw4Mdl801g==
 subtype: python3
 system: true
 tags: []
