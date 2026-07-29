@@ -13,7 +13,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -22,7 +22,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: VerifyCIDR
@@ -35,8 +35,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('VerifyCIDR', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import ipaddress
 
 
@@ -86,7 +86,7 @@ script: |
 
   register_module_line('VerifyCIDR', 'end', __line__())
 scripttarget: 0
-signature: VRhXx6QPUnCQDQ/HiyDhJO65RHW6kChK8svS9q8jfFL0NMOF41MJadtsx4tTRzp6azOxK/9OCUbwJ8PV43ag3Wum2hUdXECys0qWJ8gR/zYJQfb9kS9MHBCs/UbA3kDJlMoKB+0QihCkAja0ahXeLmLJdCzuu+YKnPHld4/+eKxegZaRRPu7JlJsfvnjl/KeA2gkrkPlZU1X52vfgeOGhBg3sruij5pGckBtlYMdvEoyop3N5FG3leFvtO6GziUX3X/9jw4YC7AmdHJvBncYjsrRidHYD3ZKFhnUHpu0175MJbzQs56LlllpRwq/3AY9ONJdI5F7fQJVx5ikLQeQ6Q==
+signature: d7qOCnvAyKcqug2qmfi7vIdP1TQhEJDPV1n9o42l5cnh3DxL31U1bEpWb33gpwq23aEKrSzYQal7HTNh2TAwdKPCG0CcX87+TWawOMQW0fOdNUguaNuTBnL3ln4QkxOnK0VaIBgKDk2d5+1bRZmOx8KAtjU4Ja6ibJ7ZMxCGmklMm9aYijobjndBUk0hhn6EqFzFyd6e8OH7KyPpXS4tWpyRwUmNzDn6PcVsBirbBcLWvmpGH7wYyE79Xn51bTw+Y0WphC5d+73HySxN13sgLVyILe+0KjwfnQeucWiqjzfTNRbclbuVHHItbQDjLOVP+tMKz2zL9CWn8ZrcnmhLww==
 subtype: python3
 system: true
 tags:
