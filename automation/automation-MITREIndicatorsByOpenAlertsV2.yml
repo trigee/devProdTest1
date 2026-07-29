@@ -15,7 +15,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.2.30
+    itemVersion: 1.2.32
     packID: FeedMitreAttackv2
     packName: MITRE ATT&CK
     packPropagationLabels:
@@ -24,7 +24,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -38,8 +38,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('MITREIndicatorsByOpenAlertsV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.2.30'
-  demisto.debug('pack id = FeedMitreAttackv2, pack version = 1.2.30')
+  CONSTANT_PACK_VERSION = '1.2.32'
+  demisto.debug('pack id = FeedMitreAttackv2, pack version = 1.2.32')
   import traceback
 
 
@@ -82,7 +82,7 @@ script: |
 
   register_module_line('MITREIndicatorsByOpenAlertsV2', 'end', __line__())
 scripttarget: 0
-signature: DugCRRGZJECtD6YiExtcxmUJXwI//mrIZvN9f8jnfeLZfrvRFfYUBNjUxuZIAaeqOSedBCHsdCRk/J+myQ9BAJHJUsZkUZrtyjaw/9Ol3mS3FJQRfn2tAdIqQP2gvbxIp2Cwv9SMZaCGPB1A2M/sVjaDGd+CCQGYavoUVc41etvXWj66mqkpE+BBiB/jbNH7PuYWptNS5UiuGLHCzvCCXoZAw9yJenDZUVMVMQe0x2Lm6Mg0jWuYb6eaQhFJkeUUoxkSjaz+95QafyrZWSh07uKvfVd+pz6WqKqDgnS7pCJME47KtuqvLaXrb+5xaW0CAj+adJQzienun1fcJhMKPg==
+signature: wPSldQ3LO8+SVg6qUn/iqDiaBbXdRZpD8P8H00+GEMdMeOB0sf1uJtUX/WfgkXartHWLkQxbzJEz4HV91SPDha1JkfHl4nLfSzewIUQhOWx2aIEzSNla8lyWvIykYFpAHgd0Nn8cfShOdoxEE8w1OCuVZcT7O7UzWegaVB+eNMusM76niAL/mqTK1HLstOe+yZrd+V2M/jyKcSIqa8JNjU0A7plZSlgsoJ9JQoO2NYe/E02hsBHuf+lIFxH2JO6omLO5N2hrrjBhE5/kjr02aOSLSvHF3vLvuYncY2hGGkSwAKF8tYeJAqk9i0RtkxLo8pbVCKtAYCvwydRDVkmaYA==
 subtype: python3
 system: true
 tags:
