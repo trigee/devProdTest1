@@ -23,7 +23,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -42,7 +42,7 @@ dependson:
   must:
   - core-api-post
   - core-api-get
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -56,8 +56,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ExportIndicatorsToCSV', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
 
 
 
@@ -108,7 +108,7 @@ script: |
 
   register_module_line('ExportIndicatorsToCSV', 'end', __line__())
 scripttarget: 0
-signature: njiCzOFOTrb+xERiV+z/uMXimnItRT5RccborfL6n+Y4YNaRt/2+BCaUjWN1qKe3DoSWsU8Z5am/GCuX0DLaPMqaDa1Hh59YQaEgvPL02g6L5qrvGGtMB6RyyCvIiRmn2TovK+9BklHP3sl208Jc4effcLmXtZigVEnRLIaEAXSv7ykmJF8nbfxX5Q0eJL63jASNI3IDdx5yla2T/FYK5GJOJoOaiTWc3ziVSrYu/iCg5LXciAG3SHYJamaWjDcEvvSgCjYAU1AeA+fMJyldfXxJSZNn+SaqU4+tlCmr+Ur+i5pLiwmvU79w9w8g4XNN6qxHBw0GepEiOoUKnW8/gA==
+signature: 10E4KRK2xifm6LYgy/Pk1S24IyYm2nBtvI2ehfITwnxQPeFYjD+k7YdyYMvioAnafnS5Hj5QAuDbTadZK1HHbdKs+R5DAQjMAlF4bCoyOwZIDOUECXxyaXa711WclQuYVVP3lyXIOPqym3FEz4RIBVIBnCF+KMjaH5Z+LANCN2y29UVi6LEXYvufEa+p1KD8N9UftiO/9/h7YkvvXIklG3c4tkR1oIhNByid31sICjtCipe9xPHBBDGn8EUWCgMVYumc++TOI2sAC5TsSR+bDor6HHif1AzoSCNlxsHw1/B66s7f2UMobCHQt3Tlchw8XqrNmnA7rQiYwD9BgRygtw==
 subtype: python3
 system: true
 tags:
