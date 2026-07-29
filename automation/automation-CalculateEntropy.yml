@@ -17,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -26,7 +26,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: CalculateEntropy
@@ -46,8 +46,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CalculateEntropy', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import math
   import string
 
@@ -98,7 +98,7 @@ script: |
 
   register_module_line('CalculateEntropy', 'end', __line__())
 scripttarget: 0
-signature: AvqaUyhz2cV/B3jnAtsYmaQMti5VwQtaC0pTTZUZktPUncBEP8dB0y7BT+R2mEPGEvvMcPw5M/ZykzkY4CMfBN9cB7j64PF0GP0v8bgkJmXU+Tcay7OU6RX59nklXKrayQ4YJP0LR84lRIeNEcRJMv23pGuwuIxRDeGDnAJZLhvmU4yR8qkZcFbhpoZHZxpUWHAqUErtBQ4NUrQZnD68Fx59VY+tnWBbITJHg0aW4fBaEGV4m0PMIBpBwlTGsZu0QDJEC9uzwVi74Qh42YdCxm6MSJJymBvSKIRWsE8LaSrHWv6BecuN0lzHuWrk/gRDVlbVd+CVepWKAn/h6xGWcQ==
+signature: QjvhEARIzpDTbwxCu8a2FWXu9SMAe/VUaZTFfxNGECuhsH/qnzYKDJtujpXDEvepMuRkG9W6IEUQo7BNpoROouAJDLziACAgCFHeP9lqnOhvHSbLRBGtVnoCCAFD/W5U7sr5I/BVA/QIcW8fIkCpO6t9o3Uhins5JAobPPRF5KzMleou734HOO262SxNdv3byfxj8sD8wPl8/l8irlvUnociWELN3Ng4p3n7yVOMi/TpY0KAhAeMcd6RuIMauh3iwNKfxjSE33XJdMDO+Sv/IjJhBRuINDntVovrP3gLSc66NQCWE4ELK8xYyYaT0Jq38CO5GIcWefpRKJvh8tO41g==
 subtype: python3
 system: true
 tags:
