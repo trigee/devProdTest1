@@ -31,7 +31,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.9.0
     isoverridable: false
-    itemVersion: 1.4.22
+    itemVersion: 1.4.24
     packID: FiltersAndTransformers
     packName: Filters And Transformers
     packPropagationLabels:
@@ -40,7 +40,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -54,8 +54,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('If-Elif', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.22'
-  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  CONSTANT_PACK_VERSION = '1.4.24'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.24')
   import ast
   from collections.abc import Callable
   from functools import partial, reduce
@@ -213,7 +213,7 @@ script: |
 
   register_module_line('If-Elif', 'end', __line__())
 scripttarget: 0
-signature: nMsBTl0DoI2u9hREFGee2C+G5d0PEwds7oP3h3IFuh6J4l97rGeSnPdM0fgCAtdQWjMGBPN8aU+f0Q1o3M/I9ZcYIcsd/GhFPpYSX0xEcqFIxRUnOryokOyA+aqOnbChlysQXUh6qxzOMWpVuFjx72bbW5rwuzgKpBKLQfgiVIaR6kC9UnQ5wSHUc62xuOO/T8Biz7/WiUJ2WE85GLGmmxdGf3yQBzaIe9s1E1g2mvrxXzRIf45gt2XwC4KAbcLtzhLgttetdW1R9J/mbaxZ1/4Y81GuFYucGEGaXiQ9wWMES/+Lue335HLIJ+axo4w+dSBBQWy5lnMbyJKVepO8Jg==
+signature: mfI23YCrhTNA5dUyPc6SYJOjLwRLoEolH4d04vzObMgCk1sME8JviGGo8O26J2aHpABs/KXyeKFgMyR7B4owwS1WnWQFpWGgyTIuoxI1Mb50VDTXYQyoAnFlQcuQOUarQIiHZRgofDHPKpgETiA/HxFmJPmBSlWKAd0wUgi0IVQPrxkiFhpQ1HboadTxDdRND3h35iLcpCyajm4VEzO9CyCtA+x2qci/oRmz8FsXRxRSHnIB4lM+X5SOz0ANIcxXcYlQKsQ3VcejXOp+G/Y8KnrTAPtZ8bhXWhvjCD9XbnXGAdprfTzc+TdP72scCke1LXt0UiZAxhEvBY3NZKxH+g==
 subtype: python3
 system: true
 tags:
