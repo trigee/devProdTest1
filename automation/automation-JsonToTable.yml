@@ -31,7 +31,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.4.22
+    itemVersion: 1.4.24
     packID: FiltersAndTransformers
     packName: Filters And Transformers
     packPropagationLabels:
@@ -40,7 +40,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -54,8 +54,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('JsonToTable', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.22'
-  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  CONSTANT_PACK_VERSION = '1.4.24'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.24')
   import json
 
 
@@ -118,7 +118,7 @@ script: |
 
   register_module_line('JsonToTable', 'end', __line__())
 scripttarget: 0
-signature: MsU5aG+8s3FnwB2NBrg+IgERwjpMlZlmhHxy05R9a7MqqA7o7BVQa1qhxuXhLz0X5guHjCltSkjnEyRBAxOIQ0TclsJ/Y1BuQzRW0+pO2CfcuJjKLgriw88rNeMUiGjCXS9gBbOFr86jxCZ0qhYGA8ddiR/jyUuBLO4dLIJ8FAC6rTRLWYoN92eol9W1PAsffbL3y2qo/Z0k0WrAJaZCYxJXITkaeVwuzZ7vkYPVhHIl8epb1cHUlOoQw7AB7fX1Ju9BncnSg1eVOEUpO3TLezsZl5nqcrC+0vu7cme1xYm2Qgbc7FmPKrd9aLl8Cphmrnqs1NMGkPgVs8LIWdWbQA==
+signature: e6WjAFxS/iFf5LK5TDk5+hIlb/tCo0LGUkJtDfer3tdpLdSTWvjJZ1gSZX+N26Ga1yPfaLZZ+wgDPDJ3MdGSaCiHf0Q+pkcp2WqjlAbUjyI7Is1x/nqKDcfUwrPUl4A9z9Hg8zkdC2Jt5ZUSXRr8b9WJ5yaLrYBLjoCisWasI54vy2lRe3ER+z7b0SVngu6XT6HbTW+dTZPmNKBbo5PzeoiQXAO500GdXHDrzh90S8UrXR/S+fzTFlmyenZGSBVObdkjEAB/C3rnmRqo5K8bwinPGB/lPGQXYEqhRMYkincTP6SZfUSDfLkNFzkV8sykuHgbO6G6mkeI4d3hF7e4jA==
 subtype: python3
 system: true
 tags:
