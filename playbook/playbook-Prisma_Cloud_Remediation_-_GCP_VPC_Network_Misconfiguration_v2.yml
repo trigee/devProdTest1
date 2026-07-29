@@ -3,7 +3,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 4.4.30
+    itemVersion: 4.4.33
     packID: PrismaCloud
     packName: Prisma Cloud by Palo Alto Networks
     packPropagationLabels:
@@ -215,7 +215,7 @@ tasks:
     skipunavailable: false
     task:
       brand: ""
-      description: Checks for a Prisma Cloud policy ID.
+      description: Checks for a Prisma Cloud policy Id.
       id: bc9f2552-58c3-402a-8951-ede4d027509c
       iscommand: false
       istaskmissingcomponenterrordismissed: false
@@ -513,7 +513,7 @@ tasks:
     task:
       brand: ""
       description: Execute the appropriate remediation sub-playbook based on the Prisma
-        Cloud policy ID.
+        Cloud policy Id.
       id: 5ed221c5-a729-4e5d-8b23-b970b2cf1d90
       iscommand: false
       istaskmissingcomponenterrordismissed: false
@@ -779,16 +779,14 @@ tasks:
     skipunavailable: false
     task:
       brand: PrismaCloud v2
-      description: Dismiss or snooze the alerts matching the given filter. Either
-        policy IDs or alert IDs must be provided. When no absolute time nor relative
-        time arguments are provided, the default time range is all times. For snoozing,
-        provide "snooze_unit" and "snooze_value" arguments.
+      description: Dismiss the alerts matching the given filter. Must provide either
+        policy IDs or alert IDs.
       id: cdf5e218-c21c-40e0-8a90-ea03bada73ac
       iscommand: true
       istaskmissingcomponenterrordismissed: false
       name: Dismiss Prisma Cloud alert
       playbooktaskmissingcomponent: null
-      script: PrismaCloud v2|||prisma-cloud-alert-dismiss
+      script: PrismaCloud v2|||redlock-dismiss-alerts
       type: regular
       version: -1
     taskid: cdf5e218-c21c-40e0-8a90-ea03bada73ac
