@@ -3,7 +3,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 4.4.30
+    itemVersion: 4.4.33
     packID: PrismaCloud
     packName: Prisma Cloud by Palo Alto Networks
     packPropagationLabels:
@@ -629,16 +629,14 @@ tasks:
     skipunavailable: false
     task:
       brand: PrismaCloud v2
-      description: Dismiss or snooze the alerts matching the given filter. Either
-        policy IDs or alert IDs must be provided. When no absolute time nor relative
-        time arguments are provided, the default time range is all times. For snoozing,
-        provide "snooze_unit" and "snooze_value" arguments.
+      description: Dismiss the alerts matching the given filter. You must provide
+        either the policy IDs or alert IDs.
       id: f8385099-65e3-47ef-818d-0131c61c0d6f
       iscommand: true
       istaskmissingcomponenterrordismissed: false
       name: Dismiss Prisma Cloud alert
       playbooktaskmissingcomponent: null
-      script: PrismaCloud v2|||prisma-cloud-alert-dismiss
+      script: PrismaCloud v2|||redlock-dismiss-alerts
       type: regular
       version: -1
     taskid: f8385099-65e3-47ef-818d-0131c61c0d6f
