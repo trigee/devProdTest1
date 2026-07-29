@@ -25,7 +25,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -34,7 +34,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: CreateIndicatorsFromSTIX
@@ -54,8 +54,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CreateIndicatorsFromSTIX', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import json
 
 
@@ -158,7 +158,7 @@ script: |
 
   register_module_line('CreateIndicatorsFromSTIX', 'end', __line__())
 scripttarget: 0
-signature: EvDhtco30D7Z9/HVwvVDzg61U2e+CRrExtpmmBMfzSO7k21BIAMjM7vvo+XEx6vvjQ3lDWXEIsSdkPezxp4V7Ujx2lF2WdiD6lCxvHnNeMxjdxiTAVEblv8R6bSHS3kRz0K9NcJQndUG31O8S4GDBizQaDIJd/ENUahSNsvi/elvaGVIY4vRFPIKcVop68e4wSvWcOpn5CpB0C9G1MxCtQsKZhD4rJPfCCh2QHYdkh8fP8+Q6C2Xbm4UcAcEn/nYRu/F8yqKHQRRnkGWPInBNn3ROCrIvCBO1JTmHAxAuNZK2Y6sU9xW2L+KBqQLSRkZKJ7/ECMBMbpDDJF6gRRobQ==
+signature: tKltmSD0vqiV6AM+bWjUFNwLZn9iE/SVKSnNfo7QUd5QyqHaqj4gO+rvNDbaTXWhM58RJRY2WthgWaI+a3O5aerGWggm22fIge5WKTzNaPINfWosyGj7R5BJkDlHlGa6hTB2uNTcpQKv0pxidHL23Ykc3NO3vhdofn9L34b89OLJgaiO+cSaOA03uYea6u9jnEs3f3klEU5Xbr9WFGNIS4EIl2DiM+3IleK38ZGB0+DiHqEXXAyjJ4jjXym/qXWiwD+LTqN0vTW1/jMwn63OKa7AA9WLDBPZjNp4brt1qkpdC3Xw2Gxepwk5OkyYMKgg9guIVwfiJSW7aJ4TIfKE8g==
 subtype: python3
 system: true
 tags:
