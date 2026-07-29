@@ -61,7 +61,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 8.0.0
     isoverridable: false
-    itemVersion: 1.3.47
+    itemVersion: 1.3.52
     packID: AggregatedScripts
     packName: Aggregated Scripts
     packPropagationLabels:
@@ -70,7 +70,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.7444307
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: ip-enrichment
@@ -401,8 +401,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ip-enrichment', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.3.47'
-  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.47')
+  CONSTANT_PACK_VERSION = '1.3.52'
+  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.52')
 
 
 
@@ -2429,15 +2429,26 @@ script: |
 
       if is_xsiam():
           demisto.debug("Command Batch 2: Internal commands (for XSIAM)")
-          command_batch2.append(
-              Command(
+          # On platform, we use the built-in commands and brand Builtin, which is always enabled
+          # and does not require enabling the integration.
+          if is_platform():
+              prevalence_command = Command(
+                  name="getIPAnalyticsPrevalence",
+                  args={"ip_address": valid_inputs},
+                  command_type=CommandType.BUILTIN,
+                  brand="Builtin",
+                  context_output_mapping={"Core.AnalyticsPrevalence.Ip": "Core.AnalyticsPrevalence.Ip"},
+                  ignore_using_brand=True,
+              )
+          else:
+              prevalence_command = Command(
                   name="core-get-IP-analytics-prevalence",
                   args={"ip_address": valid_inputs},
                   command_type=CommandType.INTERNAL,
                   brand="Cortex Core - IR",
                   context_output_mapping={"Core.AnalyticsPrevalence.Ip": "Core.AnalyticsPrevalence.Ip"},
               )
-          )
+          command_batch2.append(prevalence_command)
 
       demisto.debug("Command Batch 2: Enriching indicators")
       command_batch2.append(
@@ -2500,7 +2511,7 @@ script: |
 
   register_module_line('ip-enrichment', 'end', __line__())
 scripttarget: 0
-signature: cM/2QsPhm1fDveJ7htWLWqHt1JhP7LW7sJVlMMOBfbp0USUy2VtEh6c/+5GQJVJuzguWofn1tNJ+KXn0lqEiV5lpFVTkayUiivUwFiD/p7A3QAibsCiwr2992LB+xcxwgG9h40BopN375Qy71XqAZDR59RAsFFAP78FUyJkLf9TnTsbohGFDuI+srp+3VAT2jKSBJCX9sOGkXdg3Tt1DTSz3As7qkUq5Udq0gmP81dWjGTdbAtQ7xQ0y/j/pwhyLUbThZoP17nnc1xReZbr5JwTMSKNTVxgAs3hzLaGECrS0y4wOUEEamBKArreGrADeK00dnJy1Bqb5aRvswYx5Fw==
+signature: QSbsRs5cjILc/txQw/+jQ7izCz5TrWGFuvmQFmzYKFi1ep6sJtvgusgqctucQFgfPayF1vqe08P1Jr5aAcvaiOAb5B8WgQh8G1ol+H6g7lLhPbR4Avl1SRozhj8kbNhZoPbh7uft6eCops0yte9XmUZyKGbWzifOKoTCm42DfbWSr+GMprFk9AD8/Vp9eY05KPx/T9GerzJf9sZe1b7joJWyMPVnMb4Dm1njm/RB1XBVq9i4qQ+awecnFYXuXMg7IWAqtcVGfmuuG3sNGSBHoo1mf2otIsji1B3jtJ/Sv4mj63b0Oc8xawc+KOoAJnUYQJ4uTBVaHw0sYwfy3bXIdw==
 subtype: python3
 system: true
 tags:
