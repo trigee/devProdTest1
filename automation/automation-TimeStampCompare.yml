@@ -23,7 +23,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -32,7 +32,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: TimeStampCompare
@@ -56,8 +56,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('TimeStampCompare', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   import dateparser
 
 
@@ -128,7 +128,7 @@ script: |
 
   register_module_line('TimeStampCompare', 'end', __line__())
 scripttarget: 0
-signature: g9STvZ3EfgzEzkK3LjBcopXy7WN6URqdeZrYaYie5hF+ZjS8PrCHNcsOh89oYHt3HGDeZq+rxlVUv5fNAAmNEMb0V3NGkdpbRncvyKGW5dpkXX1EQM/W82TfugE4bUesixvhALQvzLRbJOMGFrhrB7fYv3iHuOhD/b9CjFywJrfLfZADWNZXID5VFuQLBU8CBRXWRfz5U1vnm1eAyVdB1KSXwkd7Oc0x1NLhymhJNdBCZ8/Isl+3IfQka5g9qQ1q9uumXfea5w2KBTyHbIha0Cr5O35ZoEoFB68rU2mGk/Tccgeesp5qC8wNKDERejziqYON0m3bJRXbjshB4DVerQ==
+signature: lh3SSrdTWvdWxf63rd1S81f3YOBZPmW1cEzruYPDIu8q88VcAyEjDe7nHs8F1FBEYu7Fz3pbbY9CuiPAN0D5JQFMpCMqvoUnm7u5ShyzzzWQsFWl10V/eJHNdRGbfITrVIzCaAlmIWSDe2mmPXDwFJ2nuSrL7+NgFRiI3AFRvwm3YDWrPceDdPRn4FJNKR+MxQiiel5uHQDyV40K+fhEi3yR6H/uEe8UQu73oGFXe8sppsSkt2lcXXIzMikF7LChmRIXW4s6uzzeh6chHzBDgc8lbiPJycuEj/zVi+S0OfhFJIqTRX3SuGrJeqRsnkWOgrXklbPg4M9UItpuNWXQSA==
 subtype: python3
 system: true
 tags: []
