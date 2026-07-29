@@ -15,7 +15,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -24,7 +24,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -38,8 +38,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ExtractAttackPattern', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
 
   import urllib3
 
@@ -89,7 +89,7 @@ script: |
 
   register_module_line('ExtractAttackPattern', 'end', __line__())
 scripttarget: 0
-signature: gPUOLKBkNhs7OoDmAGnIaEFRiNCHgvMmE+a810+43g4uizQYRR9pEyrOQJy4CueuFmRKchPo4kllQym804V2zI0+h041XvB9Dioo9T76FNhCEhv/Nf2jj73982NwQ963LznPrXf54+e3XIve+XTgDFlrNZYILwX+WH73f/m4JtKOFmiU2S6B2WLyqrklv1SArjZmlfBDHYFL7mkE10CRxpsHh7fmWlUOtgosAsALew1qaF9gw1isJ7GhqpIwAJA6KrKAaUiUBE9wPDDEWbrUkLGipIg5fz3QnnpXWNAGo7r3/267cKzx+Rb2TKknSNyq0vJoiszHbh4LPRm3j2ZGMQ==
+signature: zrqzkrh4EgY6nWpmi6FUlMb5t105SMtn1he6rhu86yMSqy04s6QjNN3/nqkMa8nkqqykz6MhCRs3gK1I2FIwjtvjAKOzpih19hvbOhJ39NkQJYwnZR+sXUxIaQ5W7tX0ydpqpe3yqZW3gQaA59d628NhbsSOJUSgXWu9711/lCjluVLSc+rHMUQo3ImcT+9EusEBRnD8FxHMLPcltRSMZnIT+JZRvE3L3Rfa7S58bE9NE2xAFqOzHNpfLdZk4TGGls2pEy/MyA26L4sEUwkOxxj4+Af+mTggGaX2XK9+bEHPwDy5UuHH+zGEv6FMQRhfvtkZVdaPAWGfJ/L6MsKnYw==
 subtype: python3
 system: true
 tags:
