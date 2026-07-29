@@ -11,7 +11,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.5.0
+    itemVersion: 1.5.2
     packID: DemistoRESTAPI
     packName: Cortex REST API
     packPropagationLabels:
@@ -20,7 +20,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -74,8 +74,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetTasksWithSections', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.5.0'
-  demisto.debug('pack id = DemistoRESTAPI, pack version = 1.5.0')
+  CONSTANT_PACK_VERSION = '1.5.2'
+  demisto.debug('pack id = DemistoRESTAPI, pack version = 1.5.2')
   import copy
   from itertools import chain
 
@@ -240,7 +240,7 @@ script: |
   register_module_line('GetTasksWithSections', 'end', __line__())
 scripttarget: 0
 sensitive: true
-signature: JicY2+WuVfN++dptoVSRpLuozH9D8CuUV0mt7UZw+4NE4DoBY0ROD5xMGQzARnEEaxfCpDoYmIUD8VOsq/vVhctmh7EOap3k0TVcBSjmDjp/3TOTrFzoussKmI7Q2eiinQO4akS5Fqrq8TOakRwgpPOE3iha88SCiIfC93KJMEdPu8/CTorUBB0BPR3BOzuZVxTaIDFGxYwh2e/WagOf7n9oXkPeYZQSnpyg4sqxgENrOCCCzP3UIWRgsGA8Gs7JHkY1ZnRiaZC/nuAXEzpqOeBj9aqj7xsRD30s6IKJ6mq7VbeebWwmhOd8FuWXrlbEnr0I/0EgLrxlxjsHMGwUaw==
+signature: a3aAab/GKznrVhttK+874yLTh7Kiu2ygcKo17x+qgOPHxVC87MQw+zU1joNsNCfISrHg55C/9gv4NWyOkX3xi2N7eepAHxWREqmNVjFLR8KO9Zljygv+2dj67+c+FYBFl+bK134lhw063mQ9WtcuO0BDUSLe8S7+eyj0jKeX9ZUKQhJMN4XqQRKyz/k8vBrWSJsurHREhD9AHbdMaqK6mMg5Nb3ZmLMZc0z4eKyS6jfge1h0flS3h0hk3cOZe6EDpI/PAxoFC5Wg3zm5jyvGOSlTrYJ3SGtMfJH9B1wVfBo26/TTgCCnU9CQPIhD1eANap/M/mwQ6I/WxDUE7C7KcQ==
 subtype: python3
 system: true
 tags:
