@@ -21,7 +21,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -30,7 +30,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: IPNetwork
@@ -68,8 +68,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('IPNetwork', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   # STD imports
   import ipaddress
 
@@ -132,7 +132,7 @@ script: |
 
   register_module_line('IPNetwork', 'end', __line__())
 scripttarget: 0
-signature: n8p5ahuKCOw7pP9Wx0ClX9VHLsgA0q4OBFVvS4FfCJnTBaf7INFOsgAkj013rN7x+Z72T11I/R23i0vVkqaOy6W4MToKUxy4jJoCorZMYjqxkO5mNBYBSXPYGF2zvhtryRIX+g6vSpi6/XHKnzDjDxDtiE5HzyJMgXG2FaVDHRMTPspTJE1VoZWCTuDohPr2ngtdgm5pudj+GuS5+T12xvS5DH4qBTDWjCmXvGLB8oJ9sPFQGXqSkXxXTsOiIEIIfd5zv8sEa3Gp1UKS2C8aV/lczE00XT461iDh68+v1HJu3OduA//9sEHHxCDAdnHVK+5O+ka6lwZwVmeClEPs7w==
+signature: TmZoh5Ypz3y9QXAqq3a7Bmy3cCCUu5WRLcEjovq6UAeKYiRH5U0XDbTHrgCFbBqDAv2EwKHQ47a4apqVarcO03wdhOFcVJ6W3CzXeVTyA22TaK07AtkK2K1H7wrYG9aRxXUTqSuPy9+kmRIiS2c+Vfe2a64cRRza8aeeV0DG7P/fbsaBMebQCZPr+FtGKD4dnGZ2+LapoPIBmRw5NorX93RrQz56nXa5a3w6xX1INMWR9JYgXlR2z4MS68HwOV/EO4fiNQpsQraWJ/LOxPUbujA+dORk37FzsWUdVx+9xXYnUfIejrVvlMHb4u+ahRtBFX0MBytw/ogp7bMuSRidLA==
 subtype: python3
 system: true
 tags:
