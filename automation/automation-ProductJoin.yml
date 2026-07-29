@@ -24,7 +24,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.4.22
+    itemVersion: 1.4.24
     packID: FiltersAndTransformers
     packName: Filters And Transformers
     packPropagationLabels:
@@ -33,7 +33,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.8428455
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -47,8 +47,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ProductJoin', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.22'
-  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  CONSTANT_PACK_VERSION = '1.4.24'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.24')
   from itertools import product
 
 
@@ -85,7 +85,7 @@ script: |
 
   register_module_line('ProductJoin', 'end', __line__())
 scripttarget: 0
-signature: KXGM5emLcRwRwsO4zvGHc3L/dbMZVupFNr5DEPGVQh9db/2vkmpK3vvaw8nydS/TectBO1zIhtUbLZubPvsi9EsoV8msLYm4AQ2zO6oWaFU8YQtjXYjc07x3VL8Kk42QsLDPINpg1c025+1m8pINrUkVZX/eelKEhZlZYjVxfGJVPQ0dwpkXL0az4beIbVImUVL7xhqokYUNnlgyIrr1VrRj/XbciJCkCAW3TFcw6oIeAzdEr4yNPUTn95y2a3ytLRSR7cz3pszpGneCfDykpaHXE8z9/4wtVHKUai3rZUxkqDOdVOXVx9Fki7mkoa3dbLV67C91QOkF5gQnXiQ70Q==
+signature: wJBKekGltoppk44ZOOy0QdosBLxjrzFxWGpObII/ayL6OuLfAUSt2xE8bkmJzibdnSU+KBOvcroKzZNuQl2b78jefs9+3lmMfkMQCOOfkMnIXkO3WTTSqLCkDsf845yvvQEN3Jn5guGbMI+bNE3KMU7B71GjlV+0zTT9FYbDhbBTLnW3N2EsEWspPt9VEONfreJ4D6Td+zi8CiLttd4R38HBrhEBdm06aJAzgeyT/lceo+g28zHjCSKcXJ5apcS4urCldFd5AF8xlsC4pJdVWXVIRvWWDrH7bDvkMlGCc4EuNVmrUF0nDt32x+Q3lUYCPsi9ApirD87UhNGJlvDaHg==
 subtype: python3
 system: true
 tags:
