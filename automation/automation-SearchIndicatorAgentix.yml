@@ -37,7 +37,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -83,8 +83,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SearchIndicatorAgentix', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
 
 
 
@@ -145,7 +145,12 @@ script: |
       try:
           values_as_list = json.loads(values)
       except (json.JSONDecodeError, TypeError) as e:
-          raise DemistoException(f"JSON decode failed for values {values}: {str(e)}.")
+          raise CortexInvalidArgError(
+              "value",
+              value=values,
+              reason=str(e),
+              override_message=f"JSON decode failed for values {values}: {str(e)}.",
+          )
 
       if not values_as_list:
           return []
@@ -346,7 +351,7 @@ script: |
 
   register_module_line('SearchIndicatorAgentix', 'end', __line__())
 scripttarget: 0
-signature: ofmoien7mbZbSsQ5ZYd7N0WUP5TtEK6FPVoXQopDlH3kiAOTz/orz+IuiDJ3eox3wkGP/D36H/ebjrcyGf7k0v6OVxNpNJQgLBmtC+BIwYHk8e3sbb+XaVXQF2qvcyowX4tKDKML18QZzSVN8pTb+45Bndnqy6dj6VN+nsa7dUQkOd4xwmTWv4jmVHyrZ/TziddwngTGfRLvVpLkRVCiNseD6J2I+H4rYH6+VSeKCEH+PiqFNinoO/J864BKhFBxr/DxFHRu8LyB2kUkSRs3AepUNvXnw2eQHbDLmu3ZQ1g0QySO2c6e0RKUvcwdStGTcgqSnBR7rqxuw7YEEcYTSg==
+signature: y9effPtEoeqbib/V6CYaUlkDuf+jQqFAxSjjlvNrlYMlNigpH6AD4uaLApQM/1BXPW+/khahRea11QafX5fAgINFb+wdiruKpTdsPnu47+ZnGbYumehvgpr4AKndFlKPWdJ4C18AeDXoypgKQR+gK5SFjWKwFKcP6oMjLYQ2DZ2G9WuylVy7EWY07bpmtIwNmvH/jMkdPzu6hifgedgbupfgUCLDvkKKuFw5ZUGnWJWFCxjpb2mI1XofHdTEVRt5ytwvO8e7/HQ9huCuW9hOJ/Z48WWoMM6SLg5ouZkr8LUhtdA5J+Y3WZffMg6D7u8XqtSriau06m/CTqQQrpqynw==
 subtype: python3
 system: true
 tags:
