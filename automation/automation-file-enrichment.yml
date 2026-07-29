@@ -61,7 +61,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 8.0.0
     isoverridable: false
-    itemVersion: 1.3.47
+    itemVersion: 1.3.52
     packID: AggregatedScripts
     packName: Aggregated Scripts
     packPropagationLabels:
@@ -342,8 +342,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('file-enrichment', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.3.47'
-  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.47')
+  CONSTANT_PACK_VERSION = '1.3.52'
+  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.52')
 
 
 
@@ -2376,15 +2376,28 @@ script: |
       # Add the prevalence command only when at least one SHA256 hash is present.
       sha256_inputs = [file for file in valid_inputs if get_hash_type(file) == "sha256"]
       if sha256_inputs:
-          command_batch2.append(
-              Command(
-                  name="core-get-hash-analytics-prevalence",
-                  args={"sha256": sha256_inputs},
-                  brand="Cortex Core - IR",
-                  command_type=CommandType.INTERNAL,
-                  context_output_mapping={},
+          # On platform, we use the built-in commands and brand Builtin
+          if is_platform():
+              command_batch2.append(
+                  Command(
+                      name="getHashAnalyticsPrevalence",
+                      args={"sha256": sha256_inputs},
+                      brand="Builtin",
+                      command_type=CommandType.BUILTIN,
+                      context_output_mapping={},
+                      ignore_using_brand=True,
+                  )
               )
-          )
+          else:
+              command_batch2.append(
+                  Command(
+                      name="core-get-hash-analytics-prevalence",
+                      args={"sha256": sha256_inputs},
+                      brand="Cortex Core - IR",
+                      command_type=CommandType.INTERNAL,
+                      context_output_mapping={},
+                  )
+              )
 
       commands = [command_batch1, command_batch2]
       demisto.debug("Commands Batches")
@@ -2433,7 +2446,7 @@ script: |
 
   register_module_line('file-enrichment', 'end', __line__())
 scripttarget: 0
-signature: 4Ye+MEL4gUJ1AiWk1WU6g20Dr4Cr6oMwf5tEDhdQi0pYQ41rjNaNXuSj82RGIlEwIkCkto+Ksn2uSxLHR5ouBkugr+hd6Dga1Gkzkhv013Ix9kpgak5FwCTttw6497vxJjFhPFB8IcOQNetmOE83LSqsLiU9Lh3fuWy3dVAlmXezLxNc0Ui5yd4eFRlLixIF4sq4FcZd5wNKaGNS3JRTo1N27LoEon5NVZeUyjfb4JIvZDV28eNB8S3FMNi2tHmZh0WfVTTopGW5Yl8DGzMUgZ1tz+CGhd3HLKdhgABjhjm57xbwSccbhNbFZCvpUpJ+i9ZJ71omtNZmOGAbEARSMw==
+signature: aM5/BWw2/zgLFKp41V3VcizyUtzglfLfeKM8BuewjVx8NORtNPKiNJLHIO7LRzQFZt1yZgyclF1euYtt+9ZZHpmFEjjKc0GggzEHU1DLVHKn4fHkeVU9BtFCwjJsbmWptx9WQ6cZhc2LDw0SSa77RMJFSF5DJSg+3tRE37W5bQLSNKgmbqMVb3G1zIP7WeVBX1MrB3RqwhJhFIijUZIE/0NfFtD0E9bEc0Iu+VFXNQ4js3sSPd3aamZQqhXHd2BukynK8s3VeIf8soYtkgM/MvwJBD/WIkLqz7A3h1aTf645DFBa8mW9jj5e+S04zGyGMNRI3SXvOqPvqKttritX+g==
 subtype: python3
 system: true
 tags:
