@@ -18,7 +18,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.4.22
+    itemVersion: 1.4.24
     packID: FiltersAndTransformers
     packName: Filters And Transformers
     packPropagationLabels:
@@ -27,7 +27,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.12.7090913
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -41,8 +41,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CheckIfSubdomain', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.22'
-  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.22')
+  CONSTANT_PACK_VERSION = '1.4.24'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.24')
 
   import tldextract
 
@@ -89,7 +89,7 @@ script: |
 
   register_module_line('CheckIfSubdomain', 'end', __line__())
 scripttarget: 0
-signature: j6aC+3PUJOzgzAvMUJjozzDMuxz4OYNzhfcvlG/lOxYvVje8pE1GtkR8FporhdtbzmUHpX7uTg3Q3cvM+ZGmQBuBIrn81C0ZoBtBzhdmZ6/inehmAk2Qr8rYeLElANsKNVOBRX/fSzEhvM9Jm2NMbdLxpoBKcY+s0SPDxwtrKuAUhiIwxjaN2MoNv4KGPt+QgylA3fgMyeA/u5ppwJQIeRcu7sinuQAo3vUKxn7SVW7B4HnTcvs8dFK/d8w4i4OslyI0gqQ3x+oDRI2QkKkO9AoDJt713K/Nkiz8loZ++TaKtFMaLJFhBSjc4U24wiQWizNKYNMxia8iDUnbA5kgqw==
+signature: zmikHyiBpRVpl6WxWM/RXgSbV6HHn4sNx+40eBgXuly3W1N+JdGi0N4HsiJ+xynbZN9bElcBkIWAi4GarNHytnL7jXl57+/0W6TJZdrZTT8lDIg2v1TgZq5KttpoSKZrr/GAcX+XLvOlsEDS8w0R3wFHeWmKBuMUAtsPGklp1xz2tYAC24siNmfqt41O6KNGl1YVTuxvmcRbM55HJYqBG3z3CZqeUar/Om9ML7AdppUXE0fQzICBgScgEcneGqHNAqCGvuZlKnjFg8QOA5yo9Zp6dcWDy4igCRD/yvHuzyAveP6OMxRvmbN5F4n8OVS5i91Ksce2K4gw8Fr+6626NQ==
 subtype: python3
 system: true
 tags:
