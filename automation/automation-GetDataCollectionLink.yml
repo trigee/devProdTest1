@@ -21,7 +21,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -30,7 +30,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -52,8 +52,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetDataCollectionLink', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   from base64 import b64encode
 
 
@@ -133,7 +133,7 @@ script: |
 
   register_module_line('GetDataCollectionLink', 'end', __line__())
 scripttarget: 0
-signature: 3RKAsTBdNUku/qUeHbw9IvrPzEu7uWYMkhbZSvjmm8L+LthD07pF+z6jCEKJx5JzFag2DAuqXlKXJo2vZ6bbR5QZEYg523i+4fEV9AqhD3M/xjGhkbA2j7fY3Xjl5+tBmyHurT/VeUs/5hY8sjUO7RGSA3T13y0YoEFvSG8Ck7hO0ohfp1HmtGW/VegEMVtj6z+0auPMBn/5rjQXlsefX/I88uTLdFTuPVmiHV42fbM6xsCCaqEA62Ch9joEtMwI3kdJwu11XDdlBV7CPSvXJUXt/M1dmPwyB17IxzkQx7wb5JZe0Y9aljA2k/24gCPscp0Oen9YjTlv7Eb5XFW0Xw==
+signature: dJnlbNbdOKYQy5Vscfi3Oq6PE2qvW+fY9ZpXciGABhKDgxcYQvZJuKdO9r0luJMu9ML4IQwMVlzt8cAlqNlzY/tFkj38vPAd2DCDyc9AaiOhZfNe/IHb4tImyH8MaLTdsLcaeLTjyOG92pi85OL5SXOnz1/5AT3EOVg6mTc1Prcp6fixDdRQ79e/rhYhpnEVb/AaMSGaKR4No3Qoq9c+rK47kfHs+UCj87rmqFe8C/8MYuwsw0j2pHuwgiSrImuzBEfNT0+vePmUqPHVnZVhZU1YPqkLIUGHhvG+eMGAz8cGCRgfmH06/jaNJLoa+rGbJkchpFPkQvabC6g7lG7U2Q==
 subtype: python3
 system: true
 tags:
