@@ -13,7 +13,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -22,7 +22,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: SetTime
@@ -35,8 +35,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SetTime', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   from datetime import datetime
 
 
@@ -66,7 +66,7 @@ script: |
 
   register_module_line('SetTime', 'end', __line__())
 scripttarget: 0
-signature: OI38LGrhMqbGt6cObrzgpZBDpIXb9VrOWDMrl+Buv8JMiK0SbW4wlU7QvG5e5hRupZ5rhIzGyEQswWcew855WyTwtbHdtL1Bj9sEq2/NtNPBte2G9CjXRIKbvPhH9rRnc6B22qbh9ZsYTk2i3oVj5eQWTwvYO/W/Z/J17RTBYqVw0FXmR2EzibcqBkRRMyl/0EvIwjPH9+vFKpimRATMwE0GmuPkyHHccdya9ePR7QW4fqQH2IGNqXvQv0qPIheRzEUmlylD6mFYktf61V9ubsj/U8lu863KF6z/uu6ZuEs2QtYD+Ad7k6LKNK6JJD4uqMkYXCSg+h/tu2/ulm9g3A==
+signature: l/zO+gR3WdM2IRKLuEC/7Gi+/AdTqsqOSlXtZQyiTvvP234g87KuJ3lD6CuXynCwQcw5QtKsjI9U9fKYqR7J9/8lDEdkTh5XV0f4Q6mNutz85NyuYoAuefn/glMTH9yMfGMxxK5BWI5cX410UoHXlGAlcFZj4D9GS6JjmAjT0yElm9mRkccVd6fO3yPrLluc08xGL6CEdgo/1xwb6z8HHSa4nkhysiD/3P5durEhVUB/GcQjQoMfMNwoTDwjzUW3O4XBVfLn4hhE/yFcBE33LnJCD87qXL5PKragOSaCEDgle02D19NfTFHOuLenOLIssstt6BttnCYBVRFFRifFOA==
 subtype: python3
 system: true
 tags: []
