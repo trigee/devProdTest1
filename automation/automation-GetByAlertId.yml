@@ -20,7 +20,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.28
+    itemVersion: 1.22.39
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -29,7 +29,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -43,8 +43,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetByAlertId', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.28'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.28')
+  CONSTANT_PACK_VERSION = '1.22.39'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
   from functools import reduce
 
 
@@ -86,7 +86,7 @@ script: |
 
   register_module_line('GetByAlertId', 'end', __line__())
 scripttarget: 0
-signature: kgRBgNum4oLsQk7BImD3GlLEyIZlxmvoRboKc0psPvlPY1IpHjfxTwHE8zIlhbXW5gaZIrgPerlXzUKJ1jcK23E1HzLbM8XQcnEEj66HV5INTCUC7Kmrm8e9zJSeCPeDIdLFtcSEzZVZ/jT5LVUFx8s8qdySBV2YhNuXsTLnFLFDWWpFEj0MzLV1poZPeiXoO4GBX7GPwwPxLmvXkEdVYv4fHz7e8X9fqR62TApe/QzMVVpHbS4iifMG62FD/gzLAgj0HL+k3CWbn/QC957YNbEurgARM8vH6WtO/xbEqI92ByzRdFthljJ97LrMUFXTxaVfBbq+s64+8H5lmB5QDQ==
+signature: wLgGsidMV3J7wNE81v7xFN1M6n2KwCjvk98WfA21th2C5zKSg85fjV385eV1zdu+tzKiUi24Wc7QLD5QJ0gwTYHTiLwqQMcgrd3UP9LdOFTG7VWH/055eYNDDqJl+gt4/0BqTKSDGYeCNK2wpK1oSw/0GbTZaRssmp609Nec3+2AlHL1wCrCE3yzoCwvzy8LjlpZS61ezALURAJIa/KC78L/kLZM+wFvkXLOqY4SBZ2gv4o0Yyood4BoKB55RzZn2Cg9qj1SQjewCrj3i0vU56+zig3usisuUtsD7YsIqAjVmYJ/x0n7TthlERv2QlSZNYzvxGuMdi6V6/zEfwoN6Q==
 subtype: python3
 system: true
 tags: []
