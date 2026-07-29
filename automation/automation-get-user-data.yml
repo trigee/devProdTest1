@@ -85,7 +85,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.3.47
+    itemVersion: 1.3.52
     packID: AggregatedScripts
     packName: Aggregated Scripts
     packPropagationLabels:
@@ -94,7 +94,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.10404775
 engineinfo: {}
 mainengineinfo: {}
 name: get-user-data
@@ -134,8 +134,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('get-user-data', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.3.47'
-  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.47')
+  CONSTANT_PACK_VERSION = '1.3.52'
+  demisto.debug('pack id = AggregatedScripts, pack version = 1.3.52')
   from typing import Any
   from collections.abc import Callable
 
@@ -207,6 +207,10 @@ script: |
           Returns:
               bool: True if the brand is available and in the list of brands to run, False otherwise.
           """
+          # Builtin commands are injected by the server on the unified platform,
+          # so they are always available there and are not tied to an installed integration brand.
+          if command.brand == "Builtin":
+              return is_platform()
           is_available = command.brand in self._enabled_brands
           if not is_available:
               demisto.debug(f"Skipping command '{command.name}' since the brand '{command.brand}' is not available.")
@@ -430,7 +434,8 @@ script: |
       errors_command_results = []
       human_readable_list = []
       entry_context_list = []
-      for entry in res:
+      # Built-in commands may return no entries (None) on a not-found result, guard against 'NoneType' object is not iterable
+      for entry in res or []:
           entry_context_list.append((entry.get("EntryContext") or {}) | {"instance": entry.get("ModuleName")})
           if is_error(entry):
               errors_command_results.extend(prepare_human_readable(command_name, args, get_error(entry), is_error=True))
@@ -1432,9 +1437,9 @@ script: |
           #################################
           readable_output, outputs = get_core_and_xdr_data(  # type: ignore[assignment]
               modules=modules,
-              brand_name="Cortex Core - IR",
-              first_command="core-list-risky-users",
-              second_command="core-list-users",
+              brand_name="Builtin" if is_platform() else "Cortex Core - IR",
+              first_command="getRiskyUsers" if is_platform() else "core-list-risky-users",
+              second_command="getSystemUsers" if is_platform() else "core-list-users",
               user_names=users_names,
               additional_fields=additional_fields,
               list_non_risky_users=list_non_risky_users,
@@ -1473,7 +1478,7 @@ script: |
 
   register_module_line('get-user-data', 'end', __line__())
 scripttarget: 0
-signature: T+FoLiKw2mZwOKbQQUayrJBljOp1n48LDe/9e5cDZ3ItPAuSM8xTdYEj74EaArzRFSst1m71u0DdDreIimH0M1kx1CmxVKK6L1R/kwe0cZ4Gh5xmsSYasmUmGSwfBE4A2NmghL9CiGg6LBNWRIBp8HiTt9Lj5zqR3CWYk88i+TgvngdM/vDfjepmuAELeqemORERh+weOTwwWrOf+II+pZHUym4J4KkWg4yfUUOoVYoyfDaiVbsp/A3PqMDvdYdHSIyMxekT8NI+YVbzhdclRpT9OUMJRmx/akwfRc7+T56/0xWe5IIyETTdZtqIBcTOXm23fbYAA0ifLxQUrlS8wA==
+signature: npkxTq4BFCAsWCGo7TOgrSKLPTEIs8inxmETskDmZIXEns0/ExBdnDh2htR/LjYjI8TK98CDibyiM07si152xif0p7DOeS0OwxilBzI774DPMA9e8JpoHJGP0hXnjpAUkJXFXDfjeooqEVZwfn8AJ9fUexNIwjgp1boMmnXRy5YjWhtWAJH80Gja05YikW1j3GU52FA+NWSnMNqf6oqp9NMaeJfmVjHbHscj9L++TP3tE0PNmp4GLYGy6oM/K//O9eKwtCsrJRmlvHTieUpasaH6E/yI9z3v0nIakxnpPBMPpAU+F6yMx3FEJ8t4PxQzdyPn71btujQnkhu9nFMEeg==
 subtype: python3
 system: true
 tags: []
