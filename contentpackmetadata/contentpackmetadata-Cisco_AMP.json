@@ -1,0 +1,434 @@
+{
+	"author": "Cortex",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Endpoint"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"integration"
+	],
+	"contentItems": {
+		"agentixaction": null,
+		"agentixagent": null,
+		"agentixknowledgecollection": null,
+		"agentixknowledgesource": null,
+		"agentixskill": null,
+		"automation": null,
+		"casefield": null,
+		"classifier": null,
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": null,
+		"incidenttype": null,
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "Endpoint",
+				"commands": [
+					{
+						"description": "Fetch computers to show information about them. Can be filtered by a variety of criteria.",
+						"hidden": false,
+						"name": "cisco-amp-computer-list"
+					},
+					{
+						"description": "Provides a list of all activities associated with a particular computer. This is analogous to the Device Trajectory on the FireAMP console.",
+						"hidden": false,
+						"name": "cisco-amp-computer-trajectory-list"
+					},
+					{
+						"description": "Fetch a list of computers that have observed activity by the given username.",
+						"hidden": false,
+						"name": "cisco-amp-computer-user-activity-list"
+					},
+					{
+						"description": "Fetch a specific computer's trajectory with a given connector GUID and filter for events with user name activity.",
+						"hidden": false,
+						"name": "cisco-amp-computer-user-trajectory-list"
+					},
+					{
+						"description": "Provides a list of vulnerabilities observed on a specific computer. The vulnerabilities can be filtered to show only vulnerable applications observed for a specific time range.",
+						"hidden": false,
+						"name": "cisco-amp-computer-vulnerabilities-list"
+					},
+					{
+						"description": "Moves a computer to a group with the given connector_guid and group_guid.",
+						"hidden": false,
+						"name": "cisco-amp-computer-move"
+					},
+					{
+						"description": "Deletes a specific computer with given connector_guid.",
+						"hidden": false,
+						"name": "cisco-amp-computer-delete"
+					},
+					{
+						"description": "Fetch a list of computers that have observed files with a given file name. Provides the ability to search all computers across an organization for any events or activities associated with a file or network operation, and returns computers matching those criteria. There is a hard limit of 5000 historical entries searched.",
+						"hidden": false,
+						"name": "cisco-amp-computer-activity-list"
+					},
+					{
+						"description": "Performs a feature availability request on a computer. Isolation must be enabled within the computer's policy. This can be done through the instance. Log in to your account -\u003e Management -\u003e Policies -\u003e Choose the relevant policy -\u003e Edit -\u003e Advanced Settings -\u003e Endpoint Isolation -\u003e Allow Endpoint Isolation.",
+						"hidden": false,
+						"name": "cisco-amp-computer-isolation-feature-availability-get"
+					},
+					{
+						"description": "Returns a fine-grained isolation status for a computer. The available flag is set to true if isolation can be performed on the computer. Status will be set to one of - not_isolated, pending_start, isolated and pending_stop. Isolation must be enabled within the computer's policy. This can be done through the instance. Log in to your account -\u003e Management -\u003e Policies -\u003e Choose the relevant policy -\u003e Edit -\u003e Advanced Settings -\u003e Endpoint Isolation -\u003e Allow Endpoint Isolation.",
+						"hidden": false,
+						"name": "cisco-amp-computer-isolation-get"
+					},
+					{
+						"description": "Request isolation for a computer. Supports polling. Isolation must be enabled within the computer's policy. This can be done through the instance. Log in to your account -\u003e Management -\u003e Policies -\u003e Choose the relevant policy -\u003e Edit -\u003e Advanced Settings -\u003e Endpoint Isolation -\u003e Allow Endpoint Isolation.",
+						"hidden": false,
+						"name": "cisco-amp-computer-isolation-create"
+					},
+					{
+						"description": "Request isolation stop for a computer. Supports polling. Isolation must be enabled within the computer's policy. This can be done through the instance. Log in to your account -\u003e Management -\u003e Policies -\u003e Choose the relevant policy -\u003e Edit -\u003e Advanced Settings -\u003e Endpoint Isolation -\u003e Allow Endpoint Isolation.",
+						"hidden": false,
+						"name": "cisco-amp-computer-isolation-delete"
+					},
+					{
+						"description": "Fetch a list of events that can be filtered by a variety of criteria. Each criteria type is logically ANDed with the other criteria, and each selection of a criteria is logically ORed. This is analogous to the Events view on the FireAMP Console.",
+						"hidden": false,
+						"name": "cisco-amp-event-list"
+					},
+					{
+						"description": "Fetches a list of event types. Events are identified and filtered by a unique ID.",
+						"hidden": false,
+						"name": "cisco-amp-event-type-list"
+					},
+					{
+						"description": "Returns a particular file list for application blocking or simple custom detection. file_list_guid must be provided to retrieve information about a particular file_list. Can fetch an application_blocking or simple_custom_detection file list. Defaults to application_blocking.",
+						"hidden": false,
+						"name": "cisco-amp-file-list-list"
+					},
+					{
+						"description": "Returns a list of items for a particular file_list. file_list_guid must be provided to retrieve these items. A particular item can be returned by providing a SHA-256.",
+						"hidden": false,
+						"name": "cisco-amp-file-list-item-list"
+					},
+					{
+						"description": "Creates a file list item with a given SHA-256 for a specific file list with a given file_list_guid.",
+						"hidden": false,
+						"name": "cisco-amp-file-list-item-create"
+					},
+					{
+						"description": "Deletes a file list item with a given SHA-256 and associated to a file list with a given file_list_guid.",
+						"hidden": false,
+						"name": "cisco-amp-file-list-item-delete"
+					},
+					{
+						"description": "Provides information about groups in an organization.",
+						"hidden": false,
+						"name": "cisco-amp-group-list"
+					},
+					{
+						"description": "Updates a group to a given policy and returns all the policies in that group.",
+						"hidden": false,
+						"name": "cisco-amp-group-policy-update"
+					},
+					{
+						"description": "Converts an existing group to a child of another group or an existing child group to a root group (that is, one with no parent groups).",
+						"hidden": false,
+						"name": "cisco-amp-group-parent-update"
+					},
+					{
+						"description": "Creates a new group along with a group name or description.",
+						"hidden": false,
+						"name": "cisco-amp-group-create"
+					},
+					{
+						"description": "Destroys a group with a given GUID.",
+						"hidden": false,
+						"name": "cisco-amp-group-delete"
+					},
+					{
+						"description": "Show information about indicators.",
+						"hidden": false,
+						"name": "cisco-amp-indicator-list"
+					},
+					{
+						"description": "Gets information about policies by filtering with a product and name of a specific policy with a policy_guid.",
+						"hidden": false,
+						"name": "cisco-amp-policy-list"
+					},
+					{
+						"description": "Retrieve app_trajectory queries for a given IOS bundle ID.",
+						"hidden": false,
+						"name": "cisco-amp-app-trajectory-query-list"
+					},
+					{
+						"description": "Get API version.",
+						"hidden": false,
+						"name": "cisco-amp-version-get"
+					},
+					{
+						"description": "Fetch a list of vulnerabilities. This is analogous to the Vulnerable Software view on the AMP for Endpoints Console. The list can be filtered to show only the vulnerable programs detected for a specific time range. Provide a list of computers on which the vulnerability has been observed with given SHA-256. The list item contains a summary of information on the vulnerability, including: application name and version, SHA-256 value for the executable file, connectors on which the vulnerable application was observed and the most recent CVSS score. IMPORTANT: computers key returns information about the last 1000 Connectors on which the vulnerable application was observed.",
+						"hidden": false,
+						"name": "cisco-amp-vulnerability-list"
+					},
+					{
+						"description": "Returns information about an endpoint.",
+						"hidden": false,
+						"name": "endpoint"
+					},
+					{
+						"description": "Runs reputation on files.",
+						"hidden": false,
+						"name": "file"
+					},
+					{
+						"description": "Get license information about the tenant such as number of connectors registered, tier level, licensed seats count etc.",
+						"hidden": false,
+						"name": "cisco-amp-license-get"
+					}
+				],
+				"description": "Cisco Advanced Malware Protection software is designed to prevent, detect, and help remove threats in an efficient manner from computer systems. Threats can take the form of software viruses and other malware such as ransomware, worms, Trojans, spyware, adware, and fileless malware.",
+				"fromversion": "6.5.0",
+				"id": "AMPv2",
+				"name": "Cisco AMP v2",
+				"tags": [
+					"fetch-incidents"
+				],
+				"toversion": ""
+			},
+			{
+				"category": "Endpoint",
+				"commands": [
+					{
+						"description": "Returns a list of computers on which agents are deployed. You can use filters (arguments) to narrow the search.",
+						"hidden": false,
+						"name": "amp_get_computers"
+					},
+					{
+						"description": "Returns information for the specified computer.",
+						"hidden": false,
+						"name": "amp_get_computer_by_connector"
+					},
+					{
+						"description": "Returns a list of all activities associated with a particular computer. This is analogous to the Device Trajectory on the FireAMP Console. Use the Q argument to search for an IP address, SHA256 hash, or URL.",
+						"hidden": false,
+						"name": "amp_get_computer_trajectory"
+					},
+					{
+						"description": "Returns a list of all activities associated with a particular computer. This is analogous to the Device Trajectory on the FireAMP Console. Use the Q argument to search for an IP address, SHA256 hash, or URL.",
+						"hidden": false,
+						"name": "amp_get_computer_trajctory"
+					},
+					{
+						"description": "Moves a computer to a group with the corresponding connector_guid and group_guid, respectively.",
+						"hidden": false,
+						"name": "amp_move_computer"
+					},
+					{
+						"description": "This endpoint enables you to search all computers across your organization for any events or activities associated with a file or network operation, and returns computers that match the specified criteria. You can then query the /computers/{connector-guid}/trajectory endpoint for specific details.",
+						"hidden": false,
+						"name": "amp_get_computer_activity"
+					},
+					{
+						"description": "This endpoint enables you to search all computers across your organization for any events or activities associated with a file or network operation, and returns computers that match the specified criteria. You can then query the /computers/{connector-guid}/trajectory endpoint for specific details.",
+						"hidden": false,
+						"name": "amp_get_computer_actvity"
+					},
+					{
+						"description": "A general query interface for events. This is analogous to the Events view on the FireAMP Console.",
+						"hidden": false,
+						"name": "amp_get_events"
+					},
+					{
+						"description": "Events are identified and filtered by a unique ID. This endpoint provides a human readable name and short description of each event (by ID).",
+						"hidden": false,
+						"name": "amp_get_event_types"
+					},
+					{
+						"description": "Returns a list of application blocking file lists. You can filter this list by name",
+						"hidden": false,
+						"name": "amp_get_application_blocking"
+					},
+					{
+						"description": "Returns a particular file list for application blocking or simple custom detection. You need to specify the file_list_guid argument to retrieve information about a particular file_list.",
+						"hidden": false,
+						"name": "amp_get_file_list_by_guid"
+					},
+					{
+						"description": "Returns a list of simple custom detection file lists. You can filter this list by detection name.",
+						"hidden": false,
+						"name": "amp_get_simple_custom_detections"
+					},
+					{
+						"description": "Returns a list of items for a particular file_list. You need to specify the file_list_guid argument to retrieve these items.",
+						"hidden": false,
+						"name": "amp_get_file_list_files"
+					},
+					{
+						"description": "Returns a particular item for a given file_list. You need to specify the sha256 argument and the file_list_guid argument to retrieve an item.",
+						"hidden": false,
+						"name": "amp_get_file_list_files_by_sha"
+					},
+					{
+						"description": "Adds a SHA256 hash to a file list, using file_list_guid.",
+						"hidden": false,
+						"name": "amp_set_file_list_files_by_sha"
+					},
+					{
+						"description": "Deletes an item from a file_list using the SHA256 hash and file_list_guid.",
+						"hidden": false,
+						"name": "amp_delete_file_list_files_by_sha"
+					},
+					{
+						"description": "Returns basic information about groups in your organization. You can map group names to GUIDs for filtering on the events endpoint.",
+						"hidden": false,
+						"name": "amp_get_groups"
+					},
+					{
+						"description": "Returns a particular group",
+						"hidden": false,
+						"name": "amp_get_group"
+					},
+					{
+						"description": "Sets a security policy to a group of endpoints.",
+						"hidden": false,
+						"name": "amp_set_group_policy"
+					},
+					{
+						"description": "Returns a list of policies. You can filter this list by name and product.",
+						"hidden": false,
+						"name": "amp_get_policies"
+					},
+					{
+						"description": "Retrieves information about a particular policy, based on policy_guid.",
+						"hidden": false,
+						"name": "amp_get_policy"
+					},
+					{
+						"description": "Fetches a list of versions.",
+						"hidden": false,
+						"name": "amp_get_version"
+					},
+					{
+						"description": "Performs a feature availability request on a computer. Can also be used as a course-grained isolation status request.",
+						"hidden": false,
+						"name": "amp_delete_computers_isolation"
+					},
+					{
+						"description": "Request Isolation for a Computer.  If a computer is already isolated a 409 Conflict error status will be sent. Returns the same result of a GET request on the /isolation endpoint.",
+						"hidden": false,
+						"name": "amp_put_computers_isolation"
+					},
+					{
+						"description": "Returns a fine grained isolation status for a computer.  The available flag is set to true if isolation can be performed on the computer.  status will be set to one of:  not_isolated pending_start isolated pending_stop",
+						"hidden": false,
+						"name": "amp_get_computers_isolation"
+					}
+				],
+				"description": "Uses CISCO AMP Endpoint.",
+				"fromversion": "5.0.0",
+				"id": "AMP",
+				"name": "AMP",
+				"toversion": ""
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"modelingrule": [],
+		"playbook": null,
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"created": "2025-03-29T09:38:02Z",
+	"currentVersion": "2.1.17",
+	"defaultDataSource": {
+		"id": "CiscoAMPEventCollector",
+		"name": "Cisco AMP Event Collector"
+	},
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.42.14",
+			"name": "Base"
+		}
+	},
+	"deprecated": false,
+	"description": "Uses CISCO AMP Endpoint",
+	"downloads": 0,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"firstCreated": "2025-03-29T09:38:02Z",
+	"fromServerVersion": "5.0.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldFree",
+		"generalFieldSupportIncluded",
+		"generalFieldSupportModule"
+	],
+	"hybrid": false,
+	"id": "AMP",
+	"installMessage": "",
+	"integrations": [
+		{
+			"id": "CiscoAMPEventCollector",
+			"imagePath": "content/packs/AMP/CiscoAMPEventCollector_image.png",
+			"name": "Cisco AMP Event Collector"
+		},
+		{
+			"id": "AMP",
+			"imagePath": "content/packs/AMP/AMP_image.png",
+			"name": "AMP"
+		},
+		{
+			"id": "AMPv2",
+			"imagePath": "content/packs/AMP/AMPv2_image.png",
+			"name": "Cisco AMP v2"
+		}
+	],
+	"isOverridable": false,
+	"itemVersion": "2.1.17",
+	"keywords": [
+		"Cisco",
+		"AMP",
+		"Secure Endpoint"
+	],
+	"legacy": true,
+	"modules": [],
+	"name": "Cisco AMP",
+	"packID": "AMP",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"readme": "\n### Pack Contributors:\n\n---\n - Maximilian Lehrbaum\n\nContributions are welcome and appreciated. For more info, visit our [Contribution Guide](https://xsoar.pan.dev/docs/contributing/contributing).",
+	"searchRank": 0,
+	"serverMaxVersion": "",
+	"serverMinVersion": "5.0.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"supportedModules": [
+		"agentix",
+		"xsiam"
+	],
+	"tags": [
+		"Data Source",
+		"Collection"
+	],
+	"toServerVersion": "",
+	"updated": "2026-08-02T10:22:49Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "11535554",
+	"videos": []
+}
