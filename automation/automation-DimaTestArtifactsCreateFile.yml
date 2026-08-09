@@ -1,0 +1,68 @@
+args:
+- name: filename
+  required: true
+  supportedModules: []
+- name: content
+  supportedModules: []
+commonfields:
+  id: 8b5e1200-d2ac-499d-8db6-6277cf3b1ad8
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.11.9.103842
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: DimaTestArtifactsCreateFile
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |+
+  import random
+  import string
+
+  # Global Vars
+  RANDOM_STR_MIN_LENGTH = 10
+  RANDOM_STR_MAX_LENGTH = 256
+
+  # Methods
+
+  def create_random_string() -> str:
+      random_string = "Randomly generated:\n\n"
+      letters = string.ascii_lowercase
+      random_string += ''.join(random.choice(letters) for _ in range(random.randint(RANDOM_STR_MIN_LENGTH, RANDOM_STR_MAX_LENGTH)))
+
+      return random_string
+
+  #######  Create File  #######
+
+  def main():
+      file_name = demisto.args().get("filename")
+      user_content = demisto.args().get("content")
+      file_content = user_content if user_content is not None else create_random_string()
+
+      try:
+          return_results(fileResult(file_name, file_content))
+      except Exception as exc:
+          demisto_error(f"Fie was not created:\n{exc}")
+
+  if __name__ in ('__main__', '__builtin__', 'builtins'):
+      main()
+
+scripttarget: 0
+signature: ""
+subtype: python3
+tags: []
+type: python
