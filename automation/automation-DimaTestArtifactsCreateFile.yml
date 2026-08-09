@@ -1,7 +1,3 @@
-aclowner:
-  id: dorlov@paloaltonetworks.com
-  name: Dmitry Orlov
-  type: USER
 args:
 - name: filename
   required: true
@@ -37,9 +33,9 @@ script: |+
   import random
   import string
 
-  # Consts
-  RANDOM_STR_MIN_LENGTH = 32
-  RANDOM_STR_MAX_LENGTH = 512
+  # Global Vars
+  RANDOM_STR_MIN_LENGTH = 10
+  RANDOM_STR_MAX_LENGTH = 256
 
   # Methods
 
