@@ -1,0 +1,51 @@
+args:
+- default: true
+  description: Indicator to search for.
+  name: indicator
+  required: true
+  supportedModules: []
+comment: "Lookup incidents with specified indicator. Use currentIncidentId to omit
+  the existing incident from output.\n\nThis automation runs using the default Limited
+  User role, unless you explicitly change the permissions.\nFor more information,
+  see the section about permissions here:\n- For Cortex XSOAR 6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+  \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+  For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+commonfields:
+  id: findIncidentsWithIndicator
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: findIncidentsWithIndicator
+outputs:
+- contextPath: IncidentsWithIndicator.Indicator
+  description: Indicator that was found in other incidents.
+- contextPath: IncidentsWithIndicator.incidentIDs
+  description: Incident IDs that the indicator was found in.
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  return executeCommand('findAlertsWithIndicator', args)
+scripttarget: 0
+signature: axBB/bp7dm7rWTeKT3WHHetfDy9l8Y1ilnC1adXcaP5lkI55T8s6+KH1UJiSb3ILqf6H8wJwsSHluuvaEgmDKFvPUeIT54Ojat+24i4+ZIsimDLvlHjXlh8PqPvomUwDWvuO142Dqyzb03TTwbyO29OUKRBozN93Mcpcu+DbkwTGKpPXwyx9EH3KnozogVf5j378lD4ueAEHW8a8vVJySME3mlBGdWcyczzQBXzXgnXjo/ZasTc7ixghu5g/duc3qmwPLxTTJgWhohDB4WOSiGZZcL1Bd53VgTKwnlwONMqGaUN8MsfFX0/VFtFv9nkVjFR9C/xsA6MIsfnCth8O2Q==
+system: true
+tags:
+- Utility
+type: javascript
