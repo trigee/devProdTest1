@@ -1,0 +1,103 @@
+args:
+- description: Hostname to check.
+  name: host
+  required: true
+  supportedModules: []
+- description: Port to check.
+  name: port
+  required: true
+  supportedModules: []
+comment: Checks whether a port was open on given host.
+commonfields:
+  id: PortListenCheck
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: PortListenCheck
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: portOpen
+  description: Returns true if given port on host was open.
+  type: boolean
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('PortListenCheck', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+  import socket
+
+
+
+
+
+  def port_listen_check(port: int, host: str) -> CommandResults:
+      """
+      When given a port and host, this function will attempt to connect to the host on the given port and if successful,
+      return a CommandResults object indicating success
+
+      :type port: ``int``
+      :param port: The port of which to connect on.
+
+      :type host: ``str``
+      :param host: The host to test the connection on.
+
+      :rtype CommandResults: ``CommandResults``
+      :return: CommandResults object with the result of the connection test.
+      """
+      sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+      result = sock.connect_ex((host, port))
+      open_port = False
+      if result == 0:
+          resp = f"Port {port} is open on host: {host}"
+          open_port = True
+      else:
+          resp = f"Port {port} is not open on host: {host}"
+      outputs = {"portOpen": open_port}
+      return CommandResults(outputs=outputs, readable_output=resp)
+
+
+  def main():
+      """
+      Main entry point for the script.
+      """
+      port = int(demisto.args().get("port"))
+      host = demisto.args().get("host")
+      try:
+          results = port_listen_check(port=port, host=host)
+          return_results(results=results)
+      except Exception as e:
+          return_error(message=f"An error has occurred: {e}")
+
+
+  # python2 uses __builtin__ python3 uses builtins
+  if __name__ == "__builtin__" or __name__ == "builtins":
+      main()
+
+  register_module_line('PortListenCheck', 'end', __line__())
+scripttarget: 0
+signature: QYSih8vdk18GU58SuDVdMWpzR8SbjAmDQApI+Q09hp9GuggiC3gWFykEfe1E/zz9BR5oHfCXhu6TmFguAGWWH8LvG7NfYujV3NBGv0x0OrlY7VJIWDJr2mTzrPBHI1tGslu/EC4JCHbkhpmEfpRPpn3JzcMAtJtZAObw/6trfr3gPV51Zkp7nKpjkbBPQTCVI6LxA7aj73e+MbwcZK3QgNWxt+XAXRSrjrOdsa6dyXGKeiCYCkqYCpJWoLQlYxwdb22F0OLh9vZtADn/J61ir50KJ4DWBdp30MmU9a3i3XwjRepymyXxmtHZle1ox9xgBJ0pLv/IXLjYX/SpHNseaA==
+subtype: python3
+system: true
+tags: []
+type: python
