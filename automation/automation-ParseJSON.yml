@@ -1,0 +1,49 @@
+args:
+- default: true
+  description: The string value to convert to JSON.
+  name: value
+  required: true
+  supportedModules: []
+comment: 'Parse a given JSON string "value" to a representative object. Example: ''{"a":
+  "value"}'' => {"a": "value"}.'
+commonfields:
+  id: ParseJSON
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.28
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ParseJSON
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.4.28
+  var value = args.value;
+  try {
+    return JSON.parse(value);
+  } catch(err) {
+    return err;
+  }
+  return null;
+scripttarget: 0
+signature: kaYYoRC2fQs3ENRXyEOsHVApqLj/4hqr9A9dOZ3JB+bkfyQohUT3BFVsy3tViMBzdMUXZeaHAzUX7PpuU//assCM4SpBavl0W7Vg5KnJkjykSaU3qMDJkPIDnvoPOxpoYCV5Q8v1Hyu3Me6aC9Z0gDibL14dUQEByTu43Kbs26yokSzErhzMkS/JMvE8Ht3qboYvRCbT+zBwBJX16o9kIjm9Tb9EgNbf43+Vhn0ETByAAkLGc25nJ+8FA5S0n7iaxv8+Mya7EB2MatV9uN631wNoJDYyJcnepwn7JqfhvJ97Lo4QWYtc6pJm5iJQhiaFZidw9eQFFB0Ek9g7wWL0BQ==
+system: true
+tags:
+- transformer
+- string
+type: javascript
