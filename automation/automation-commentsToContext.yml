@@ -1,0 +1,66 @@
+args:
+- default: true
+  description: Entry ID to get the comments from
+  name: entryId
+  required: true
+  supportedModules: []
+- description: Context key to store comments into
+  name: contextKey
+  required: true
+  supportedModules: []
+- description: If value is list - provide list seperator
+  name: listSeperator
+  supportedModules: []
+comment: "Takes the comments of a given entry ID and stores them in the incident context,
+  under a provided context key. \nFor accessing the last executed task's comments,
+  provide ${lastCompletedTaskEntries.[0]} as the value for the entryId input parameter."
+commonfields:
+  id: commentsToContext
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: commentsToContext
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.44
+  var entry = executeCommand("getEntry", {"id":args.entryId});
+  var key=args.contextKey;
+  var comments=entry[0].Contents;
+
+  var md =  'Comments set to context - '+key+':' + comments + '\n';
+  var ec={};
+  if (args.listSeperator) {
+      ec[key]=[];
+      var list = comments.split(args.listSeperator);
+      for (var i=0;i<list.length;i++) {
+          ec[key].push(list[i].trim());
+      }
+  } else {
+      ec[key]=comments;
+  }
+
+  return {Type: entryTypes.note, Contents: entry, ContentsFormat: formats.json, HumanReadable: md, EntryContext: ec};
+scripttarget: 0
+signature: KS86LXuMQvgFq4T2845KgHmCw3IqkFuqe3nle7Q7Otonktmgvv6vq+JJIF1h22e/kYiZheHpaWJrO9CgKowuw/n9LydLa767c7X7yj6v0at3TuljmdBRbiUvv3XdyS0UqgLUBxpqsbA/3T7xZHUyi9YBWa2GX5edOZrR/C/WjaR6kW0iVp+2qEHT5U0Q0UB1fJUpU6k7v8+ekArSGPAFMaxwKbNe1uUW71mbpMr5blzj1JHRvambISXE/7HKi5Au0jds5Sz7bDo5XGk4Mn/Z8e0DTdEEbj6rCCLslguUsCWU8/w3WacjMV9i8UVx6lKPNJz293rgxftTOmLnE0nUFw==
+system: true
+tags:
+- Utility
+type: javascript
