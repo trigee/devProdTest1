@@ -1,0 +1,303 @@
+args:
+- description: A comma-separated list of IPv4 addresses to enrich.
+  isArray: true
+  name: ip_list
+  required: true
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: |-
+    Whether to call external integrations for enrichment:
+      - 'true': enrich using enabled external integrations (e.g., VirusTotal (API v3), AlienVault OTX v2) and run internal commands.
+      - 'false': use only existing Threat Intel data and run internal commands; skip external integrations.
+      If the 'brands' argument is provided, this flag is ignored and enrichment/internal commands will run only on the brands provided.
+  name: external_enrichment
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Retrieve a human-readable entry for each command; if false, only the
+    final result is summarized and errors are suppressed.
+  name: verbose
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- description: |
+    A list of integration brands to run enrichment against.
+    Example: `"VirusTotal (API v3), AlienVault OTX v2"`.
+    - If provided, only the selected brands are used.
+    - If left empty, the script runs enrichment on all enabled integrations,
+      depending on the `external_enrichment` flag.
+    - In order to run core-get-IP-analytics-prevalence, add Cortex Core - IR to the brands list.
+    To see the available brands for the `ip` command, run: `!ProvidesCommand command=ip`.
+  isArray: true
+  name: brands
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: |
+    When set to true, the output includes an `AdditionalFields` object
+    for each of the indicator result.
+    `AdditionalFields` contains all fields returned by Threat Intel or the integrations
+    that are not part of the standard output keys: `Address`, `DetectionEngines`,
+    `PositiveDetections`, `Score`, and `Brand`.
+    When set to false, only the standard keys are returned.
+  name: additional_fields
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+comment: Script that dynamically calls the EnrichIP managed script to avoid dependency
+  conflicts between Base pack and managed content packs.
+commonfields:
+  id: EnrichIPV2
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.14.0
+    isoverridable: false
+    itemVersion: 1.42.16
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.9059085
+engineinfo: {}
+internal: true
+mainengineinfo: {}
+name: EnrichIPV2
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: IPEnrichment.Value
+  description: The IP address.
+  type: string
+- contextPath: IPEnrichment.MaxScore
+  description: The max score of all the indicators found.
+  type: number
+- contextPath: IPEnrichment.MaxVerdict
+  description: The max verdict of all the indicators found.
+  type: string
+- contextPath: IPEnrichment.TIMScore
+  description: The Threat Intel score of the IP address.
+  type: number
+- contextPath: IPEnrichment.Results
+  description: A list of all indicators found for the IP address.
+  type: array
+- contextPath: IPEnrichment.Status
+  description: 'The status of the indicator: "Manual" if the score was changed manually,
+    "Fresh" if modified within the last week, "Stale" if modified more than a week
+    ago, "Error" if enrichment Failed, and "None" if never modified.'
+  type: string
+- contextPath: IPEnrichment.Message
+  description: The error message explaining the reason for the failure (e.g., "Invalid",
+    "createIndicator failed", etc.).
+  type: string
+- contextPath: IPEnrichment.ModifiedTime
+  description: The time the indicator was last modified.
+  type: Date
+- contextPath: IPEnrichment.Results.Source
+  description: The source of the indicator.
+  type: string
+- contextPath: IPEnrichment.Results.Brand
+  description: The brand of the indicator.
+  type: string
+- contextPath: IPEnrichment.Results.DetectionEngines
+  description: The detection engines of the indicator.
+  type: number
+- contextPath: IPEnrichment.Results.PositiveDetections
+  description: The positive detections of the indicator.
+  type: number
+- contextPath: IPEnrichment.Results.ASOwner
+  description: Registered owner of the Autonomous System announcing the IP prefix.
+  type: string
+- contextPath: IPEnrichment.Results.Score
+  description: The score of the indicator.
+  type: number
+- contextPath: IPEnrichment.Results.Verdict
+  description: The verdict of the indicator.
+  type: string
+- contextPath: IPEnrichment.Results.Address
+  description: The IP address of the indicator.
+  type: string
+- contextPath: IPEnrichment.Results.Reliability
+  description: The reliability of the Brand.
+  type: string
+- contextPath: IPEnrichment.Results.AdditionalFields
+  description: All fields extracted from the indicator other then the main keys ("Brand",
+    "Score", "Verdict", "DetectionEngines", "PositiveDetections", "Address").
+  type: list
+- contextPath: IPEnrichment.Results.AdditionalFields.Relationships.EntityA
+  description: The source of the relationship.
+  type: string
+- contextPath: IPEnrichment.Results.AdditionalFields.Relationships.EntityB
+  description: The destination of the relationship.
+  type: string
+- contextPath: IPEnrichment.Results.AdditionalFields.Relationships.Relationship
+  description: The name of the relationship.
+  type: string
+- contextPath: IPEnrichment.Results.AdditionalFields.Relationships.EntityAType
+  description: The type of the source of the relationship.
+  type: string
+- contextPath: IPEnrichment.Results.AdditionalFields.Relationships.EntityBType
+  description: The type of the destination of the relationship.
+  type: string
+- contextPath: IPEnrichment.Results.AdditionalFields.ASN
+  description: 'The autonomous system name for the IP address, for example: "AS8948".'
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Hostname
+  description: The hostname that is mapped to this IP address.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Geo.Location
+  description: 'The geolocation where the IP address is located, in the format: latitude:longitude.'
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Geo.Country
+  description: The country in which the IP address is located.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Geo.Description
+  description: Additional information about the location.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Malicious.Vendor
+  description: The vendor reporting the IP address as malicious.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Malicious.Description
+  description: A description explaining why the IP address was reported as malicious.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Tags
+  description: (List) Tags of the IP.
+  type: Unknown
+- contextPath: IPEnrichment.Results.AdditionalFields.FeedRelatedIndicators.value
+  description: Indicators that are associated with the IP.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.FeedRelatedIndicators.type
+  description: The type of the indicators that are associated with the IP.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.FeedRelatedIndicators.description
+  description: The description of the indicators that are associated with the IP.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.MalwareFamily
+  description: The malware family associated with the IP.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Organization.Name
+  description: The organization of the IP.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Organization.Type
+  description: The organization type of the IP.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Region
+  description: The region in which the IP is located.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Port
+  description: Ports that are associated with the IP.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Internal
+  description: Whether or not the IP is internal or external.
+  type: Bool
+- contextPath: IPEnrichment.Results.AdditionalFields.UpdatedDate
+  description: The date that the IP was last updated.
+  type: Date
+- contextPath: IPEnrichment.Results.AdditionalFields.Registrar.Abuse.Name
+  description: The name of the contact for reporting abuse.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Registrar.Abuse.Address
+  description: The address of the contact for reporting abuse.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Registrar.Abuse.Country
+  description: The country of the contact for reporting abuse.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Registrar.Abuse.Network
+  description: The network of the contact for reporting abuse.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Registrar.Abuse.Phone
+  description: The phone number of the contact for reporting abuse.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Registrar.Abuse.Email
+  description: The email address of the contact for reporting abuse.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Campaign
+  description: The campaign associated with the IP.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.TrafficLightProtocol
+  description: The Traffic Light Protocol (TLP) color that is suitable for the IP.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.CommunityNotes.note
+  description: Notes on the IP that were given by the community.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.CommunityNotes.timestamp
+  description: The time in which the note was published.
+  type: Date
+- contextPath: IPEnrichment.Results.AdditionalFields.Publications.source
+  description: The source in which the article was published.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Publications.title
+  description: The name of the article.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Publications.link
+  description: A link to the original article.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.Publications.timestamp
+  description: The time in which the article was published.
+  type: Date
+- contextPath: IPEnrichment.Results.AdditionalFields.ThreatTypes.threatcategory
+  description: The threat category associated to this indicator by the source vendor,
+    for example, Phishing, Control, TOR, etc.
+  type: String
+- contextPath: IPEnrichment.Results.AdditionalFields.ThreatTypes.threatcategoryconfidence
+  description: Threat Category Confidence is the confidence level provided by the
+    vendor for the threat type category. For example, a confidence level of 90 for
+    the 'malware' threat type category means that the vendor is confident that its
+    90% malware.
+  type: String
+- contextPath: Core.AnalyticsPrevalence.Ip.value
+  description: Whether the IP address is prevalent or not.
+  type: Boolean
+- contextPath: Core.AnalyticsPrevalence.Ip.data.global_prevalence.value
+  description: The global prevalence of the IP.
+  type: Number
+- contextPath: Core.AnalyticsPrevalence.Ip.data.local_prevalence.value
+  description: The local prevalence of the IP.
+  type: Number
+- contextPath: Core.AnalyticsPrevalence.Ip.data.prevalence.value
+  description: The prevalence of the IP.
+  type: Number
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('EnrichIPV2', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.42.16'
+  demisto.debug('pack id = Base, pack version = 1.42.16')
+
+
+
+
+  def main():
+      """Main entry point for the script."""
+      args = demisto.args()
+      command_name = "EnrichIP"  # Variable assignment - avoids hardcoded dependency
+      results = execute_command(command_name, args, extract_contents=False)
+      return_results(results)
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('EnrichIPV2', 'end', __line__())
+scripttarget: 0
+signature: YN9KxS2cQvjqirs0Sqjb8MHtM5pdtvBoiXS90BZEgJycSqPi0pMSTdvttTNo3gXyzkGCeV1viZBrtQHkbsysC3fDsHymP32soSGuENBl+sD1lqperOGAvSG0sOiqukPtF93g072xnQwCWE6ZlLep6W5LacJrLFrmZ49K/4sBkGxJKA63Rcf1uQ+j9H+0BiZoi7fclvuIBDqCaYPuudeW+lZsOTVBblzdkbXd5BdLW0CvPx8avO20spcQzlNKfnOJRsqJ8W5tRlsdAJWUhSYDGB+8AT/+8df9WP/a9tR+225Nt36BWYJFh6I2M+eU0YaXf92xD8WlYndc5f/1jHImSw==
+source: agentix
+subtype: python3
+system: true
+tags:
+- basescript
+type: python
