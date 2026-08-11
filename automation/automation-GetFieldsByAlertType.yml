@@ -1,0 +1,151 @@
+args:
+- description: The alert type for which to return alert field names.
+  name: incident_type
+  required: true
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Whether to shorten the alert field names. If "true", will cause output
+    to use shortened field names. The default value is "false".
+  name: short_names
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Whether to only return non-system fields. If "true", will only output
+    non-system fields. The default value is "false".
+  name: exclude_system
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Whether to only include fields that are explicitly associated to the
+    alert type. If "true", only fields which are explicitly associated to the alert
+    type will be included (i.e., excludes fields for which the "associate to any"
+    checkbox is selected). The default value is "false".
+  name: explicit_only
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "true"
+  description: Pretty-prints the output.
+  name: pprint
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+comment: Returns the alert field names associated to the specified alert type.
+commonfields:
+  id: GetFieldsByAlertType
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - cloud
+    - cloud_runtime_security
+    - cloud_posture
+    - xsiam
+    - edr
+    toServerVersion: ""
+dependson:
+  must:
+  - '|||core-api-get'
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: GetFieldsByAlertType
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('GetFieldsByAlertType', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+  from pprint import pformat
+
+
+
+
+
+  def main():
+      # get incident fields
+      res = demisto.executeCommand("core-api-get", {"uri": "/incidentfields"})
+      if is_error(res):
+          return_error(res[0]["Contents"])
+
+      fields = res[0]["Contents"]["response"]
+
+      # 'fields' contains non-incident fields (evidence and indicator), as well, so let's make a version
+      #  containing only incident fields
+      incident_fields = [field for field in fields if field["id"].startswith("incident_")]
+
+      # get arguments
+      args = demisto.args()
+
+      incident_type = args["incident_type"]
+
+      exclude_system = False
+      if "exclude_system" in args and argToBoolean(args["exclude_system"]):
+          exclude_system = True
+
+      name_key = "name"
+      if "short_names" in args and argToBoolean(args["short_names"]):
+          name_key = "cliName"
+
+      explicit_only = False
+      if "explicit_only" in args and argToBoolean(args["explicit_only"]):
+          explicit_only = True
+
+      # generate results
+
+      matched_fields = []
+      for field in incident_fields:  # using multiple if statements for readability
+          if exclude_system and not field["system"]:
+              # skip non-system fields if exclude_system is true
+              continue
+          elif field["associatedToAll"] and not explicit_only:
+              # if explicit_only is false, include fields associated to all incident types
+              matched_fields.append(field[name_key])
+          elif field["associatedTypes"] is not None and incident_type in field["associatedTypes"]:
+              # include fields where incident type is in associatedTypes
+              matched_fields.append(field[name_key])
+
+      # output results
+      if "pprint" in args and argToBoolean(args["pprint"]):
+          demisto.results(pformat(matched_fields))
+      else:
+          demisto.results(matched_fields)
+
+
+  if __name__ in ["__builtin__", "builtins"]:
+      main()
+
+  register_module_line('GetFieldsByAlertType', 'end', __line__())
+scripttarget: 0
+signature: AU+31JzsCrT+iLIJVTfjmFj6ptS9muyCM8JK/dngi3/ztj6h0Uf4zr7CgFysioTRFB2QtTHj42N3J9RKGVmtP60xH+nYLxYBJJIG/PTvffkVmPsNK6nV+6XYFOQgpuIyxVV48XYmQ7o7dOg9rkkp4hwhjTPPvLaDuTnOwU8G5POaASTNYb+yhyH8mipUoperx1XbD8ZFE5/mMlswGr2WLK9Ij5FlUgfw+sB6rTET0FXcbP8iXE1AU6GkSmxrUZICDsc66o4DHr1aw5EV3fia12IfgREDnA98ZMdQvjGhdU66T1EWEWU5egZqj9ylhgV3anDDV8fEU4T8GZV3PyCclQ==
+subtype: python3
+system: true
+tags: []
+type: python
