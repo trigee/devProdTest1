@@ -1,0 +1,195 @@
+args:
+- description: Indicator value to set.
+  name: value
+  required: true
+  supportedModules: []
+- description: Indicator type to set.
+  name: type
+  supportedModules: []
+- auto: PREDEFINED
+  description: Sets indicator reputation.
+  name: verdict
+  predefined:
+  - Unknown
+  - Benign
+  - Suspicious
+  - Malicious
+  supportedModules: []
+- description: A Comma-separated list of tags to set for the indicator.
+  isArray: true
+  name: tags
+  supportedModules: []
+- description: A Comma-separated list of issues IDs to associate the indicator with.
+  isArray: true
+  name: related_issues
+  supportedModules: []
+comment: Updates the properties of an existing indicator and associates the indicator
+  with related issues if they exist.
+commonfields:
+  id: SetIndicatorAgentix
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.1.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    toServerVersion: ""
+dependson:
+  must:
+  - findIndicators
+  - associateIndicatorsToAlert
+  - core-get-issues
+  - setIndicator
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+internal: true
+mainengineinfo: {}
+name: SetIndicatorAgentix
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: SetIndicator.Value
+  description: The indicator value that was processed.
+  type: String
+- contextPath: SetIndicator.Result
+  description: The result of the indicator setting operation, including success messages
+    and any error information.
+  type: String
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('SetIndicatorAgentix', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+
+
+
+
+
+  def set_indicator_if_exist(args: dict):
+      """
+      Sets an indicator in the system only if it already exists.
+      Args:
+          args (dict): Args of the script.
+
+      Returns:
+          str: The result of setting the indicator or an error message.
+      """
+      # Check if indicator exists
+      indicator_value = args.get("value")
+
+      if not any(key in args for key in ["type", "verdict", "tags", "related_issues"]):
+          outputs = {
+              "Value": indicator_value,
+              "Result": "Please provide at least one argument to update: type, verdict, tags, or related_issues.",
+          }
+          return CommandResults(outputs=outputs, outputs_key_field="Value", outputs_prefix="SetIndicator")
+
+      demisto.debug(f"Checking if {indicator_value} exists by running findIndicators.")
+      exists = execute_command("findIndicators", {"value": indicator_value})
+
+      if not exists:
+          outputs = {"Value": indicator_value, "Result": "Indicator does not exist."}
+          return CommandResults(outputs=outputs, outputs_key_field="Value", outputs_prefix="SetIndicator")
+
+      success_results = ""
+      error_result = ""
+
+      related_issues = argToList(args.pop("related_issues", ""))
+
+      # Set indicator with provided properties
+      if any(key in args for key in ["type", "verdict", "tags"]):
+          demisto.debug("running setIndicator command.")
+          execute_command("setIndicator", args)
+          success_results += "Successfully set indicator properties.\n"
+
+      # Associate the indicator to the provided related issues and alert if don't exist.
+      if related_issues:
+          raw_issues_found = execute_command("core-get-issues", {"issue_id": related_issues})
+          if not isinstance(raw_issues_found, list) or not raw_issues_found:
+              issues_found: list[dict] = []
+          else:
+              # Structure: [[issue_dict1, issue_dict2, ...], {'filtered_count': int, 'returned_count': int}]
+              first = raw_issues_found[0]
+              issues_found = first if isinstance(first, list) else []
+          existing_issues_ids = []
+          for existing_issue in issues_found:
+              demisto.debug(f"Processing issue: {existing_issue}.")
+              issue_id = existing_issue.get("internal_id")
+
+              if issue_id:
+                  existing_issues_ids.append(issue_id)
+
+          demisto.debug(f"Found the following issues: {existing_issues_ids}.")
+          existing_set = set(existing_issues_ids)
+          related_issues = set(related_issues)
+          diff_issues = related_issues - existing_set
+          demisto.debug(f"The following issues were provided as related issues but don't exist: {diff_issues}.")
+
+          if diff_issues:
+              error_result = f"The following issues were provided as related issues but don't exist: {diff_issues}."
+
+          issues_associated = []
+          for issue in existing_issues_ids:
+              demisto.debug(f"running associateIndicatorsToIssue command with issue id {issue}.")
+              execute_command(
+                  "associateIndicatorsToAlert",
+                  {"issueId": issue, "indicatorsValues": indicator_value},
+              )
+              issues_associated.append(issue)
+
+          if issues_associated:
+              success_results += f"Successfully associated indicator to the following issues {issues_associated}. "
+
+      final_outputs = success_results + error_result
+      outputs = {"Value": indicator_value, "Result": final_outputs}
+      final_results = []
+
+      if success_results:
+          final_results.append(
+              CommandResults(
+                  readable_output=success_results,
+                  outputs=outputs,
+                  outputs_key_field="Value",
+                  outputs_prefix="SetIndicator",
+              )
+          )
+
+      if error_result:
+          final_results.append(CommandResults(readable_output=error_result, entry_type=4))
+
+      return final_results
+
+
+  def main():
+      try:
+          return_results(set_indicator_if_exist(demisto.args()))
+      except Exception as ex:
+          return_error(f"Failed to execute SetIndicator. Error: {str(ex)}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):  # pragma: no cover
+      main()
+
+  register_module_line('SetIndicatorAgentix', 'end', __line__())
+scripttarget: 0
+signature: MXW1H6+v0HFqEHXPAK+SAl+sZsjqM7SMxmMcGpw6Q6bADC1lN1WVQ6oVUQ+oulM+V3FM5Fis+GPKWzl+3goqoQTm2zny4qBuO6Id3NSOBR35FeoRPVhLRhke40vb/7j+fNjexYJIRFp++iU+Rf68L4UqRHkZ5qAwWuJhhRq6OS6G4eSf89ZXN65BIM1vUkA+U/EcLafhYW/4L6HnAjDAfnUG1FZocL+1WFifV6pn5z7UPmKMk6SLC1//sAR4ZC+fIxnH8WOTdDD4dYCwDRsOqduXUMqxyDS9YiQOpq1RUYd4wfx+GJ5Tf9b6FGVfOLFI0WEn3h/S3iZY9jU7lcLgDg==
+subtype: python3
+system: true
+tags: []
+type: python
