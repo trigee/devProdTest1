@@ -1,0 +1,86 @@
+args:
+- default: true
+  description: Indicator to search for.
+  name: indicator
+  required: true
+  supportedModules: []
+comment: "Lookup alerts with specified indicator. Use currentAlertId to omit the existing
+  alert from output.\n\nThis automation runs using the default Limited User role,
+  unless you explicitly change the permissions.\nFor more information, see the section
+  about permissions here:\n- For Cortex XSOAR 6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+  \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+  For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+commonfields:
+  id: findAlertsWithIndicator
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: findAlertsWithIndicator
+outputs:
+- contextPath: IncidentsWithIndicator.Indicator
+  description: Indicator that was found in other alerts.
+- contextPath: IncidentsWithIndicator.incidentIDs
+  description: Alert IDs that the indicator was found in.
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.44
+  var res = executeCommand("getIncidents", {"query": 'indicator.value:"'+args.indicator+'"'});
+  var incidentsIDs=[];
+  var foundIncidents = [];
+  var currIncidentID = incidents[0].id;
+  var ec = {};
+
+  var dict={
+      'severity':{0:'Informational',1:'Low',2:'Medium',3:'High',4:'Critical'},
+      'status':{0:'Not-assigned',1:'Assigned',2:'Closed'}};
+
+  if (res && res[0].Contents && res[0].Contents.data) {
+      res[0].Contents.data.forEach(function (incident) {
+          if (!incident.isPlayground && incident.id != currIncidentID) {
+              foundIncidents.push(incident);
+          }
+      });
+  }
+
+  var md="#### Searching for incidents with indicator: *" + args.indicator + "*\n";
+
+
+  if (foundIncidents.length > 0) {
+      ec = {"IncidentsWithIndicator":{"Indicator": args.indicator,"incidentIDs":[]}};
+
+      md += "Found " + foundIncidents.length + " incidents:\n";
+      md += "ID|Name|Severity|Owner|Status\n-|-|-|-|-\n"
+
+      foundIncidents.forEach(function (incident) {
+          md += "[#"+incident.id+"](/#/WarRoom/"+incident.id+")|" + incident.name + "|" + dict.severity[incident.severity] + "|" +incident.owner+"|"+
+                  dict.status[incident.status]   +"\n";
+          ec.IncidentsWithIndicator.incidentIDs.push(incident.id);
+      });
+  } else {
+      md += "No incidents found"
+  }
+  return {Type: entryTypes.note, Contents: foundIncidents, ContentsFormat: formats.json, HumanReadable: md, EntryContext: ec};
+scripttarget: 0
+signature: I9JvvS/Re9pchnrKU0ZLrDSTf0Qk7O/h/s4AkFizpEZ5OKLPXU4BsGQp09ddse+lem6wSFaWk+DyZdFYczm0mX7hEEPqBQbI74mz9RI9B+2YtjPfbuphI8BSKNSLNWZTI8KIPF9h9Je1d677fKbU6ttY5OZxAJikXk8Wmo1IK23wlD5CEAUR4XqKn1UsQMXwX5vumjxJlUJlRpeX0FNpIS/RKrnUE8icObBJ3VZ3g31IxlBGiDtMvhRqGERwCdG/1PDdSUsitMrtsZtYyVJPN0gJCgPw/R5NIFqMNievzdBl++aUONOO2qi5MAXdfeQFm0FhCHR24pdqPqLIxlPKJg==
+system: true
+tags:
+- Utility
+type: javascript
