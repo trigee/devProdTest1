@@ -1,0 +1,83 @@
+args:
+- description: The Entry ID of the JSON file to load into context.
+  name: entryID
+  required: true
+  supportedModules: []
+- defaultValue: JSON
+  description: The context key to put the loaded JSON under, default is JSON.
+  name: contextKey
+  supportedModules: []
+comment: Loads a JSON file from the war room to context.
+commonfields:
+  id: LoadJSONFileToContext
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.5.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: LoadJSONFileToContext
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('LoadJSONFileToContext', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+
+
+
+  file_id = demisto.args().get("entryID")
+  context_key = demisto.args().get("contextKey")
+
+  # get the file path, for the above file.
+  res = demisto.getFilePath(file_id)
+  if not res:
+      return_error(f"Entry {file_id} not found")
+
+  file_path = res.get("path")
+
+  # open the file, and try and load the JSON, error if it's invalid.
+  with open(file_path) as f:
+      try:
+          data = json.load(f)
+      except ValueError as e:
+          return_error(f"File is not valid JSON: {e}")
+      except Exception:
+          return_error("Something else went wrong...")
+
+  # return the results to context
+  results = CommandResults(
+      readable_output=f"Loaded JSON to context key: {context_key} from file.",
+      outputs_prefix=context_key,
+      outputs=data,
+      ignore_auto_extract=True,
+  )
+
+  return_results(results)
+
+  register_module_line('LoadJSONFileToContext', 'end', __line__())
+scripttarget: 0
+signature: JaXHqAP3Id5fyG6dSUgMHq/QeyEnr7OtJTy4ND05+O7XYs9hq+V58XATChM9L3LtQcB6bBtFigApf5ynAhYHV5rUydgrhDAF81Cp2w1S3/5DZ23JsfW2ai30+lg7ESQIxRKu+FgC66tO0ioLe1ZbY+B1EKjcodP0ETHgESPACHf7RPcx/hwhMqywVSO+uE+8naCdqY4eOkhZImxqXe4kn3cZWHH77FkDJKyjO7lTVKIgS9LH46bxczwitO0/pLl2SNnptC4f0x6JiiPv2Q8Ei+4+w0eIkaWN61YrYtuqopWvP6h1S8ub1axV6QeU8q65XEJj07sddDw5JWwGWDJiBw==
+subtype: python3
+system: true
+tags:
+- Utility
+type: python
