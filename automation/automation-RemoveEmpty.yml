@@ -1,0 +1,100 @@
+args:
+- description: The value to be filtered
+  isArray: true
+  name: value
+  required: true
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Set to true to remove keys with empty values from objects, false otherwise.
+  name: remove_keys
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- description: The list of particular tokens to be considerd as empty
+  name: empty_values
+  supportedModules: []
+comment: Remove empty items, entries or nodes from the array.
+commonfields:
+  id: RemoveEmpty
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    isoverridable: false
+    itemVersion: 1.4.28
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: RemoveEmpty
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.4.28
+  const EMPTY_TOKENS = argToList(args.empty_values);
+
+  function toBoolean(value) {
+      if (typeof(value) === 'string') {
+          if (['yes', 'true'].indexOf(value.toLowerCase()) != -1) {
+              return true;
+          } else if (['no', 'false'].indexOf(value.toLowerCase()) != -1) {
+              return false;
+          }
+          throw 'Argument does not contain a valid boolean-like value';
+      }
+      return value ? true : false;
+  }
+
+  function isObject(o) {
+      return o instanceof Object && !(o instanceof Array);
+  }
+
+  function isEmpty(v) {
+      return (v === undefined) ||
+             (v === null) ||
+             (typeof(v) == 'string' && (!v || EMPTY_TOKENS.indexOf(v) !== -1)) ||
+             (Array.isArray(v) && v.filter(x => !isEmpty(x)).length === 0) ||
+             (isObject(v) && Object.keys(v).length === 0);
+  }
+
+  function removeEmptyProperties(obj) {
+      Object.keys(obj).forEach(k => {
+          var ov = obj[k];
+          if (isObject(ov)) {
+              removeEmptyProperties(ov);
+          } else if (Array.isArray(ov)) {
+              ov.forEach(av => isObject(av) && removeEmptyProperties(av));
+              obj[k] = ov.filter(x => !isEmpty(x));
+          }
+          if (isEmpty(ov)) {
+              delete obj[k];
+          }
+      });
+  }
+
+  var vals = Array.isArray(args.value) ? args.value : [args.value];
+
+  if (toBoolean(args.remove_keys)) {
+      vals.forEach(v => isObject(v) && removeEmptyProperties(v));
+  }
+  return vals.filter(x => !isEmpty(x));
+scripttarget: 0
+signature: F1Kkh8arfAQCSt6KMaABcQyhxFfskBSmGrlbeHz9JZRQgjaS3DjP0fWExvCDpbh1REZ07zYi5AfAmZIcwz6Ri0eGSWQIxE4i2u77TCpupqCARTEBjx7n2LFEMwpwlWWNOxW2VB/i3lNJhJwmYSnBPfK/eSy4/VNiGsxlngt4DBr5aOiTPAQo1vKB5leBQjkD8k4NgWm0fr7YE18EBl6B+s0RnXECYmkCM3pkjiy4Ej7jCmnntXVXkgcLW9q06/zKl9vV8bDy0djwV+DW+imI15ySIwn1I+FzlJzBz9acY0PIofbPp30NioqkK9RmUpyq06eHBSrT29WdG6D2eZUvkg==
+system: true
+tags:
+- transformer
+- entirelist
+- general
+type: javascript
