@@ -1,0 +1,88 @@
+args:
+- default: true
+  description: Entries with the given tag will be marked as notes.
+  name: tag
+  required: true
+  supportedModules: []
+comment: Mark entries as notes if they are tagged with given tag.
+commonfields:
+  id: MarkAsNoteByTag
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: MarkAsNoteByTag
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('MarkAsNoteByTag', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+
+
+
+
+  def mark_as_note(entries):
+      if isError(entries[0]):
+          demisto.results(
+              {"Type": entryTypes["error"], "ContentsFormat": formats["text"], "Contents": "Unable to retrieve entries"}
+          )
+      else:
+          ids = ""
+          for e in entries:
+              tags = e.get("Metadata", {}).get("tags")
+              if not tags:
+                  tags = []
+              if demisto.getArg("tag") in tags:
+                  if ids == "":
+                      ids = e["Metadata"]["id"]
+                  else:
+                      ids += "," + e["Metadata"]["id"]
+          if ids != "":
+              demisto.results(demisto.executeCommand("markAsNote", {"entryIDs": ids}))
+          else:
+              demisto.results(
+                  {
+                      "Type": entryTypes["error"],
+                      "ContentsFormat": formats["text"],
+                      "Contents": "No entries with '" + demisto.getArg("tag") + "' found",
+                  }
+              )
+
+
+  def main():
+      entries = demisto.executeCommand("getEntries", {})
+      mark_as_note(entries)
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):  # pragma: no cover
+      main()
+
+  register_module_line('MarkAsNoteByTag', 'end', __line__())
+scripttarget: 0
+signature: IesjJxDn2XmVqV8a2ag92CPI5J+OA4vTIiDWmwiqqfqp1LxN6uhMefJyMacO9ER67SxgaURPg/AQTnh/cbLUabfh8DEzAZfU9UVBN+WR3e17L6BIcEha+XbRZG6f5MAtYIg0paWKO7YBrDhYJu3W9F2lBjVB0S0l5c+9yP02ZxxmZqAZRPceOgsTuR+J8z3Zgv1OSDc9XLZ3+aAkRTqRXYs+nRwJNMHgDIwIwF85gjAQm/39PNZFoFt5V86/32tjtsgj+8WXYoSkkUhY0pMqYMjL7/mjaY4GCWa3Ac8MTLUfqTd6G+d5LJP4J011gbD19x8wFSjtuf9KfqbNtL+VgA==
+subtype: python3
+system: true
+tags:
+- Utility
+type: python
