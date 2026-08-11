@@ -1,0 +1,70 @@
+commonfields:
+  id: BreachConfirmationHTML
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.5.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: BreachConfirmationHTML
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('BreachConfirmationHTML', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+
+
+
+
+  def main():
+      try:
+          incident = demisto.incidents()
+          query = incident[0].get("CustomFields", {}).get("breachconfirmation", "Pending Confirmation")
+          color = "green"
+          header = "Pending Confirmation"
+
+          if query == "Confirm":
+              color = "red"
+              header = "Confirmed"
+
+          elif query == "Not Confirm":
+              color = "blue"
+              header = "Not Confirmed"
+
+          html = f"<div style='color:{color};'><h2>{header}</h2></div>"
+          demisto.results({"ContentsFormat": formats["html"], "Type": entryTypes["note"], "Contents": html})
+
+      except Exception as ex:
+          return_error(f"Failed to execute calculate entropy script. Error: {ex!s}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('BreachConfirmationHTML', 'end', __line__())
+scripttarget: 0
+signature: WUzdO0qDtJfQIEeTgkU1lEwnS0lj0BdE5W5RnS6wZjXAeISsk7FUGSgo3+n44PRSvMSMkCny1xNvzFMo+l2D+bUbL9UvqUgiEf3cbeTpzAtnGPVzENzlv3xO7MeW46bCZpVaOfwHhcZ9XygwQPUHY/8bnVZ3aMTrkANDa91gXoAfmMcxOye5f+k8t6y/cV0Av3dO8Ex1XhcTaUYpmNvJpR8jESd7Rd/L3yiE+WghBGVAKMFGmjJZzkfoH1fbLF+e88ML+eKsD+dmVnm6SguAdLMVd8H8b8b0fTdglgIm+zsNg2/V0bIqtSpe8BC8U720mKjEz7Fx2lXpH9O3zsj4Ug==
+subtype: python3
+system: true
+tags:
+- dynamic-section
+type: python
