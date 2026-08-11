@@ -1,0 +1,209 @@
+args:
+- default: true
+  description: A comma-separated list of incident IDs by which to filter the results.
+  isArray: true
+  name: id
+  supportedModules: []
+- description: A comma-separated list of incident names by which to filter the results.
+  isArray: true
+  name: name
+  supportedModules: []
+- description: 'A comma-separated list of incident statuses by which to filter the
+    results. For example: assigned.'
+  isArray: true
+  name: status
+  supportedModules: []
+- description: 'A comma-separated list of incident statuses to exclude from the results.  For
+    example: assigned.'
+  isArray: true
+  name: notstatus
+  supportedModules: []
+- description: A comma-separated list of incident close reasons by which to filter
+    the results.
+  isArray: true
+  name: reason
+  supportedModules: []
+- defaultValue: 35 days ago
+  description: Filter by from date (e.g. "3 days ago" or 2006-01-02T15:04:05+07:00
+    or 2006-01-02T15:04:05Z). (Low severity issues will only be returned if fromdate
+    is set to less than 30 days ago on platform).
+  name: fromdate
+  supportedModules: []
+- description: Filter by to date (e.g. "3 days ago" or 2006-01-02T15:04:05+07:00 or
+    2006-01-02T15:04:05Z).
+  name: todate
+  supportedModules: []
+- description: Filter by from close date (e.g. 2006-01-02T15:04:05+07:00 or 2006-01-02T15:04:05Z).
+  name: fromclosedate
+  supportedModules: []
+- description: Filter by to close date (e.g. 2006-01-02T15:04:05+07:00 or 2006-01-02T15:04:05Z).
+  name: toclosedate
+  supportedModules: []
+- description: Filter by from due date (e.g. 2006-01-02T15:04:05+07:00 or 2006-01-02T15:04:05Z).
+  name: fromduedate
+  supportedModules: []
+- description: Filter by to due date (e.g. 2006-01-02T15:04:05+07:00 or 2006-01-02T15:04:05Z).
+  name: toduedate
+  supportedModules: []
+- description: Filter by Severity.
+  isArray: true
+  name: level
+  supportedModules: []
+- description: Filter by incident owners.
+  isArray: true
+  name: owner
+  supportedModules: []
+- description: Filter by incident details.
+  name: details
+  supportedModules: []
+- description: Filter by incident type.
+  isArray: true
+  name: type
+  supportedModules: []
+- description: Use free form query (use Lucene syntax) as filter. All other filters
+    will be ignored when this filter is used.
+  name: query
+  supportedModules: []
+- deprecated: true
+  description: Filter by the page number.
+  name: page
+  supportedModules: []
+- description: |-
+    The number of events to return from the alert JSON. The default is 0, which returns all events.
+    Note that the count is from the head of the list, regardless of event time or other properties.
+  hidden: true
+  name: trimevents
+  supportedModules: []
+- deprecated: true
+  description: Number of incidents per page (per fetch).
+  name: size
+  supportedModules: []
+- defaultValue: "100"
+  description: The maximum number of incidents to be returned.
+  name: limit
+  supportedModules: []
+- description: Sort in format of field.asc,field.desc,...
+  name: sort
+  supportedModules: []
+- description: If provided, the value of this argument will be set under the searchResultsLabel
+    context key for each incident found.
+  name: searchresultslabel
+  supportedModules: []
+- auto: PREDEFINED
+  description: If enabled runs a summarized version of this script. Disables auto-extract,
+    sets fromDate to 30 days, and minimizes the context output. You can add sepcific
+    fields to context using the add_fields_to_summarize_context argument. Default
+    is false.
+  name: summarizedversion
+  predefined:
+  - "false"
+  - "true"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: When the value is set to 'True', informational severity alerts will
+    return as part of the results. The ‘fromdate’ and ‘todate’ arguments must be provided
+    to use this argument. The maximum value currently supported for the 'fromdate'
+    argument to retrieve informational incidents is 5 hours. If a value greater than
+    this is provided, it will be adjusted to 5 hours ago. To retrieve only informational
+    incidents, use the `query` argument and include this limitation within the query.
+    Default is false.
+  hidden: true
+  name: includeinformational
+  predefined:
+  - "false"
+  - "true"
+  supportedModules: []
+- description: A comma seperated list of fields to add to context when using summarized
+    version, (default- id,name,type,severity,status,owner,created,closed).
+  name: add_fields_to_summarize_context
+  supportedModules: []
+comment: "Searches Demisto incidents. A summarized version of this scrips is available
+  with the summarizedversion argument.\n\nThis automation runs using the default Limited
+  User role, unless you explicitly change the permissions.\nFor more information,
+  see the section about permissions here:\n- For Cortex XSOAR 6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+  \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+  For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script\nhttps://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.10/Cortex-XSOAR-Administrator-Guide/Automations"
+commonfields:
+  id: SearchIncidentsV2
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: SearchIncidentsV2
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: foundIncidents.id
+  description: A list of incident IDs returned from the query.
+  type: Unknown
+- contextPath: foundIncidents.name
+  description: A list of incident names returned from the query.
+  type: Unknown
+- contextPath: foundIncidents.severity
+  description: A list of incident severities returned from the query.
+  type: Unknown
+- contextPath: foundIncidents.status
+  description: A list of incident statuses returned from the query.
+  type: Unknown
+- contextPath: foundIncidents.owner
+  description: A list of incident owners returned from the query.
+  type: Unknown
+- contextPath: foundIncidents.created
+  description: A list of the incident create date returned from the query.
+  type: Unknown
+- contextPath: foundIncidents.closed
+  description: A list of incident close dates returned from the query.
+  type: Unknown
+- contextPath: foundIncidents.labels
+  description: An array of labels per incident returned from the query.
+  type: Unknown
+- contextPath: foundIncidents.details
+  description: Details of the incidents returned from the query.
+  type: Unknown
+- contextPath: foundIncidents.dueDate
+  description: A list of incident due dates returned from the query.
+  type: Unknown
+- contextPath: foundIncidents.phase
+  description: A list of incident phases returned from the query.
+  type: Unknown
+- contextPath: foundIncidents.incidentLink
+  description: A list with links to the incidents returned from the query.
+  type: Unknown
+- contextPath: foundIncidents.searchResultsLabel
+  description: The value provided in the searchresultslabel argument.
+  type: String
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  register_module_line('SearchIncidentsV2', 'start', __line__())
+
+  return_results(demisto.executeCommand('SearchAlertsV2', demisto.args()))
+
+  register_module_line('SearchIncidentsV2', 'end', __line__())
+scripttarget: 0
+signature: R6fUUIKe119sky5ci0e0lI6Sc64+o9SQDrIPW0vCw/lacJnViQKexdiR4lnfkPDvLHP5GA1+x1pJqz2mWxMuqlArvzzfkWkFXM9ing/1mwfkJ2tu5F0BkLFxyMV80WhhgKK2RHqn0g6Zco4GkRTZ/mN1/IjJfUxjeTck3gRmteCWrmliOmALQf48nm7pCIzZqRTsxYSm3JBIaN3GkYW42IhOHybqxuShxFaK0rirVDFoKWwnepUdwLYurlW57X52g5Bz9zzU+DpcoEC1url7Sql0jqKNAPEs8XEF2O5RiMi9//B9cRLky7giDg3OCHClTQQAGhwgwtDPvVfO87N1JA==
+subtype: python3
+system: true
+tags:
+- Utility
+type: python
