@@ -1,0 +1,104 @@
+args:
+- description: The Python library you wish to download and archive.
+  name: library_name
+  required: true
+  supportedModules: []
+comment: The script downloads a Python library using PIP, archives it, and returns
+  the file to the war room.
+commonfields:
+  id: DownloadAndArchivePythonLibrary
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.10.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/py3-tools:1.0.0.10120494
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: DownloadAndArchivePythonLibrary
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('DownloadAndArchivePythonLibrary', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+  import shlex
+  import subprocess
+  import zipfile
+  from pathlib import Path
+  from tempfile import mkdtemp
+
+
+
+
+
+  def installLibrary(dir_path: Path, library_name: str) -> str:
+      # Install the package using pip
+      demisto.debug(f"Running in {dir_path=}, {library_name=}")
+      cmd = f"python3 -m pip install --target {dir_path} {library_name}"
+      process = subprocess.Popen(shlex.split(cmd), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+      stdout, stderr = process.communicate()
+      demisto.debug(f"returned code: {process.returncode}")
+      if process.returncode != 0:
+          raise DemistoException(f"Failed to install the {library_name} library: {stderr.decode('utf-8')}")
+
+      # Create a zip file with maximum compression level
+      zip_path = dir_path / (library_name + ".zip")
+      with zipfile.ZipFile(zip_path, "w", compression=zipfile.ZIP_DEFLATED, compresslevel=9) as zip_file:  # pylint: disable=E1101
+          for root, _dirs, files in os.walk(dir_path):
+              for file in files:
+                  demisto.debug(f"{root=}, {file=}")
+                  file_path = Path(root) / file
+                  # Ensure the folder inside the ZIP file is named 'python'
+                  arcname = Path("python") / file_path.relative_to(dir_path)
+                  zip_file.write(file_path, arcname=arcname)
+                  demisto.debug("Updated file")
+
+      # Read the zip file contents
+      with open(zip_path, "rb") as zip_file:
+          zip_content = zip_file.read()
+
+      return fileResult(library_name + ".zip", zip_content)
+
+
+  def main():
+      args = demisto.args()
+      library_name = args.get("library_name")
+      try:
+          dir_path = Path(mkdtemp(prefix="python"))
+          demisto.debug("Starting installing library.")
+          result = installLibrary(dir_path, library_name)
+          return_results(result)
+
+      except Exception as e:
+          return_error(f"An error occurred: {e!s}")
+
+
+  if __name__ in ("__builtin__", "builtins"):
+      main()
+
+  register_module_line('DownloadAndArchivePythonLibrary', 'end', __line__())
+scripttarget: 0
+signature: jtsUyJugcCsKLgR9dnl5rD6oTBY4wkVErGk1NJygHqcQISNZTPUJk36JFCCQSepxHayxqFUtKV4hPyivVJP6ygASYK/Ch8bg8i7f9zO3C50sp8Pk2WI73h55PLSG5oOvv9Aq9C/P5FM2XoNij2ieaPSkdnD9xqmezehnZEs8pzf9UnEiLkVlDOJpAQVNjzFJeYGnjjt04CwZfJpn5u/H31sjOOSDFNmCX+EBkv+EbAFkXGJ+1VwNsrZ1MaKNPEkEjbwSZ0VNgdlZFoPsvzhFCb45f3kHwIU2F2E4YSV0bGzx41+v3XdTzy/ZdtR7jYSSq3d7yDxkfMjS0GSEZAxbbg==
+subtype: python3
+system: true
+tags:
+- Utility
+- file
+type: python
