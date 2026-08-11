@@ -1,0 +1,138 @@
+args:
+- description: The indicator value (e.g., IP address, domain, hash) to search for
+    in the selected dataset logs.
+  name: indicator
+  required: true
+  supportedModules: []
+- defaultValue: 7 days
+  description: The search timeframe in relative date or range format (e.g., "7 days",
+    "1 day", "3 weeks ago").
+  name: time_frame
+  supportedModules: []
+- defaultValue: xdr_data
+  description: The dataset for the search. By default, this is "xdr_data".
+  name: data_set
+  supportedModules: []
+- description: The name to use for the query results. Find the query results under
+    this name in the War Room context.
+  name: query_name
+  required: true
+  supportedModules: []
+comment: Searches for a specific indicator in the tenant's event and log data using
+  an XQL query via the runXQLQuery builtin command, and extracts the logs the indicator
+  appears in.
+commonfields:
+  id: SearchIndicatorInEventsAgentix
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.14.0
+    isoverridable: false
+    itemVersion: 3.5.81
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.8428455
+enabled: true
+engineinfo: {}
+internal: true
+mainengineinfo: {}
+name: SearchIndicatorInEventsAgentix
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: PaloAltoNetworksXQL
+  description: A list of event records (constructed as dictionaries) where the specified
+    indicator was found.
+  type: List
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('SearchIndicatorInEventsAgentix', 'start', __line__())
+  CONSTANT_PACK_VERSION = '3.5.81'
+  demisto.debug('pack id = Core, pack version = 3.5.81')
+
+
+
+  XQL_QUERY_TEMPLATE = 'search "{indicator}" dataset = {data_set}'
+
+
+  def build_xql_query(indicator: str, data_set: str) -> str:
+      """Sanitize the indicator value and build the XQL query string."""
+      sanitized = indicator.replace("\\", "\\\\").replace('"', '\\"')
+      return XQL_QUERY_TEMPLATE.format(data_set=data_set, indicator=sanitized)
+
+
+  def extract_results(entry_result: list) -> list:
+      """Extract query results from the executeCommand response, returning an empty list on missing keys."""
+      try:
+          return entry_result[0]["EntryContext"]["GenericXQLQuery"].get("results", [])
+      except (KeyError, TypeError, IndexError):
+          demisto.debug(f"Could not extract results from XQL query response. Raw response: {entry_result}")
+          return []
+
+
+  def _validate_entry_result(entry_result: list) -> None:
+      """Raise if the executeCommand response indicates an error."""
+      if isError(entry_result[0]):
+          raise DemistoException(f"runXQLQuery command failed: {entry_result[0].get('Contents', 'Unknown error')}")
+
+
+  def main():
+      """Search for an indicator using an XQL query."""
+      args = demisto.args()
+      indicator = args.get("indicator", "")
+      data_set = args.get("data_set") or "xdr_data"
+      time_frame = args.get("time_frame") or "7 days"
+      query_name = args.get("query_name", "")
+
+      query = build_xql_query(indicator, data_set)
+
+      try:
+          entry_result = demisto.executeCommand(
+              "runXQLQuery",
+              {
+                  "query": query,
+                  "timeframe": time_frame,
+                  "wait_for_results": "true",
+                  "widget_name": query_name,
+                  "widget_description": f"Search for indicator '{indicator}' in '{data_set}' dataset",
+              },
+          )
+          _validate_entry_result(entry_result)
+
+          outputs = extract_results(entry_result)
+
+          readable_output = tableToMarkdown(f"Query Results for indicator '{indicator}' in '{data_set}' dataset", outputs)
+
+          command_results = CommandResults(
+              readable_output=readable_output,
+              outputs=outputs,
+              outputs_prefix="PaloAltoNetworksXQL",
+          )
+          return_results(command_results)
+
+      except Exception as e:
+          return_error(f"Failed to execute script.\nError:\n{e!s}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('SearchIndicatorInEventsAgentix', 'end', __line__())
+scripttarget: 0
+signature: S+J0Y0u34qrU+VA5GiNURI8L7OEc6jM6Oyfk7AOSLhhIBU4jwUEKbTRyJSyklgsghjbRngtwgfpUmCp81DEh9A1sFTM04boNiSfaAEpLn5vgfu3HoiyKVvab+ha95X7c0yfgMu/8kMS6U2lyedWfyjpteZIDAgZ3xFJ/ZjXfRAQOhlHIGoKYCXY+Qv7tQoe0aAm1Us2ap602N9dp50mpWS55NJhvXzFkT4c3vwUgccJpr5HhaB426iWYN42djcPrfbMCWhr9yWAke9lJMTssC5Wfkxez44H7o/3GguLzBk8LjnUX5gT/ienRqXWJrGYNkfEShMM3GxnWdGnEVkD5tw==
+subtype: python3
+system: true
+tags:
+- Utilities
+type: python
