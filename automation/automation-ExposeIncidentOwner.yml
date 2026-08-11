@@ -1,0 +1,44 @@
+comment: Expose the incident owner into IncidentOwner context key
+commonfields:
+  id: ExposeIncidentOwner
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ExposeIncidentOwner
+outputs:
+- contextPath: IncidentOwner.name
+  description: Incident owner full name
+- contextPath: IncidentOwner.email
+  description: Incident owner email address
+- contextPath: IncidentOwner.phone
+  description: Incident owner phone number
+- contextPath: IncidentOwner.roles
+  description: Incident owner roles
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  return executeCommand('ExposeAlertOwner', args)
+scripttarget: 0
+signature: PSGuj3utJTficpuxjDb1BCAfrovgmFhkJlrcwTUZNbOctq7RSoiRTxs+K0uEn4GQGR0/8G3tK9Q9jVVoIPKXxul5g18NYPMNJ8TKKE8teswPuwfZ+9mZrgij0R+lp1ucS2kpVr9aiFQzqbGySl2lc5x4PyOSEL9BLLIPlL/WcBG3YD3brgBE/A9UjuTH/NPEwLsUpDYROC8enTkaecboeQPVqckfPsJZib081TNepHooD8Egf9wo+4WVsP9xJpwvpvA+m3eR8gauz8U9LKr9ywCkcUNcDI0HRDQVMOwDM75X9apF3zBQo/8DTjlqKDrEmDm6zRvfTpHxEyTbiP8pRQ==
+system: true
+tags:
+- Utility
+type: javascript
