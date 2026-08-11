@@ -1,0 +1,93 @@
+comment: |-
+  This script is used to display the indicators of an alert in an alert field of type Array. It can be used to select indicators from the alert in order to later perform some actions, like tagging the indicators for blocking via EDL.
+  This script is a field-display script, so it needs to be configured as such, when editing the alert field that will be used to display the indicators.
+commonfields:
+  id: ShowAlertIndicators
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.8.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ShowAlertIndicators
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('ShowAlertIndicators', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+
+
+
+
+  def group_by_type(indicators):
+      """
+      Gets the indicators of the current incident.
+
+      Returns:
+          A list of the indicator types followed by the corresponding indicator values.
+      """
+
+      grouped = {}
+      if indicators and "Contents" in indicators[0]:
+          indicators_res: dict = indicators[0]["Contents"]
+      else:
+          indicators_res = {}
+
+      for indicator in indicators_res:
+          if indicator["indicator_type"] not in grouped:
+              grouped[indicator["indicator_type"]] = [indicator["value"]]
+          else:
+              grouped[indicator["indicator_type"]].append(indicator["value"])
+      result = []
+      for indicator_header, indicator_values in grouped.items():
+          result.append("--- " + indicator_header + " ---")
+          result.extend(indicator_values)
+          result.append("")
+      return result
+
+
+  def get_indicators_from_incident():
+      """
+      Returns:
+          List of the indicators from the incident.
+      """
+      incident_id = demisto.incident()["id"]
+      indicators_query = "investigationIDs:" + str(incident_id)
+      all_indicator_data = demisto.executeCommand("findIndicators", {"query": indicators_query, "size": 200})
+      return {"hidden": False, "options": group_by_type(all_indicator_data)}
+
+
+  def main():  # pragma: no cover
+      return_results(get_indicators_from_incident())
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('ShowAlertIndicators', 'end', __line__())
+scripttarget: 0
+signature: tYOqEHgMM5CqPNDStio0YLG+6+rcd+YifJAsMyKvrtqC8Nt1v4WpskEeZsZcZiEf8fXAtq3i3LdC2zqqoc7KY5prHqL2rAsG+U2ibiKyzJoR/GfW/hvbPMXEAvp+ab3/mrhuPbQNrLe3BnsAi6SS51IRtc3EfujOK2g+nx6ANzX0hYxDZejzteyUu7TUGWJUnuBiw3uJH3hpr2HG6wQWGdLVwNhqxfYy1dAgnvl2qHHMAQ15JtHWFFsVsoDQHd46MbshNBo60MtzcIaJVsVyVmk7ZGdjA/lRbeG6FoX99Kkkicg0oT56AETjdA2Ediq0TDu0SL4nfTBj/AUNu/DxPA==
+subtype: python3
+system: true
+tags:
+- field-display
+type: python
