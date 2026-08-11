@@ -1,0 +1,83 @@
+args:
+- default: true
+  description: Incident ID to get tasks from.
+  name: inc_id
+  required: true
+  supportedModules: []
+- description: 'Comma separated list of states. Possible values: New, InProgress,
+    Completed, Waiting, Error, Skipped, Blocked (leave empty to get all tasks).'
+  name: states
+  supportedModules: []
+comment: Deprecated. Use the GetIncidentTasks script instead.
+commonfields:
+  id: GetIncidentTasksByState
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.5.5
+    packID: DemistoRESTAPI
+    packName: Cortex REST API
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: GetIncidentTasksByState
+outputs:
+- contextPath: Tasks
+  description: The entire task object.
+- contextPath: Tasks.id
+  description: Task ID.
+  type: string
+- contextPath: Tasks.name
+  description: Task name.
+  type: string
+- contextPath: Tasks.type
+  description: The type of the task (regular, condition, title, playbook, start).
+  type: string
+- contextPath: Tasks.owner
+  description: Task owner.
+  type: string
+- contextPath: Tasks.state
+  description: Task state (inprogress, Completed, WillNotBeExecuted, Error, Waiting,
+    Blocked, and empty string for not started).
+  type: string
+- contextPath: Tasks.scriptId
+  description: Task related script (empty if manual).
+  type: string
+- contextPath: Tasks.startDate
+  description: Task start date.
+  type: unknown
+- contextPath: Tasks.completedDate
+  description: Task completed date.
+  type: unknown
+- contextPath: Tasks.dueDate
+  description: Task due date (SLA).
+  type: unknown
+- contextPath: Tasks.parentPlaybookID
+  description: Task parent playbook ID (in case the task is part of sub-playbook).
+  type: unknown
+- contextPath: Tasks.completedBy
+  description: Task completed by (username).
+  type: string
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  return executeCommand('GetAlertTasksByState', args)
+scripttarget: 0
+sensitive: true
+signature: rqfk8Gmwzv8OfjAEiCPGR7P2YvDG+YwLGoC2B+aXkdSO3haTINtvXLwvdZ0wJ98zi0dd0PiBkWez7TVlR1Z94prxfXmlVauZ9H6cncp1UhZt2hg/llVqH9W+vEtGjG3wF4DZryS2DfbRPCeVMRgz+ZMGuhopiTHcnOREaZiphCxhxjeo3qr9RllLic3XX+SjfoK3Hwebq042XgUzCu5ELMuFzFENVGQrGYmaZi2AID24JkvsPN2+CzhQzot8DUqahjIGBW2c0W2rZkEwRQGwwNAiCVhfEuP0H6QK5WM3jRgw9orYjS+pzXPpnAhtbYDxS4JjqTUlp3fCtZOEjFKxmQ==
+system: true
+tags:
+- Utility
+type: javascript
