@@ -1,0 +1,75 @@
+args:
+- default: true
+  description: Entry ID where EmailAskUser will complete when user replies.
+  name: responseEntryId
+  required: true
+  supportedModules: []
+- description: Text to remove from the start of the answer. If the response contains
+    a known prefix that should be removed, this argument should be used.
+  name: prefix
+  supportedModules: []
+- description: Text to remove from the end of the answer. If the response contains
+    a known suffix that should be removed, this argument should be used.
+  name: suffix
+  supportedModules: []
+comment: Extract user's response from EmailAskUser reply. Returns the first textual
+  response line of the provided entry that contains the reply body. Use ${lastCompletedTaskEntries}
+  to analyze the previous playbook task containing the user's reply.
+commonfields:
+  id: EmailAskUserResponse
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: EmailAskUserResponse
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.44
+  var res = executeCommand("getEntry", {"id":args.responseEntryId});
+  var prefix = args.prefix;
+  var suffix = args.suffix;
+
+  if (res[0].Type==entryTypes.note || res[0].Type==entryTypes.file) {
+      text = res[0].Contents;
+      if (prefix && text.startsWith(prefix)) {
+          text = text.slice(prefix.length);
+      }
+      if (suffix && text.endsWith(suffix)) {
+          text = text.slice(0, -1 * suffix.length);
+      }
+      text = text.replace(/<br\/?>/gi,'\n')
+                  .replace(/\r/g,'')
+                  .replace(/\n/g,'__NL__')
+                  .replace(/<script .+?<\/script>/g,'')
+                  .replace(/<style .+?<\/style>/g,'')
+                  .replace(/__NL____NL__/g,'')
+                  .replace(/__NL__/g,'\n');
+      response = text.replace(/<(?:.|\n)*?>/gm, '').trim("\n").split("\n")[0].trim();
+      setContext('EmailAskUserResponse', response);
+      return response;
+  } else {
+      return res;
+  }
+scripttarget: 0
+signature: FQuAE4Xf4GDCs6SRAsUrL8ulR1HgJz4RR0WJDfic5QpN4/rK6PXABnm7oXuVtUQ/KeUFgSZf5I+jvPsKs8yGRLjvW1yjlk8g6vjc5aqGotxWqrc+T1r2v2TZ/f+NBm1m+z3fszJsTLoKA3f6H90xFsde1v209Tn81x1WnIQRFqy0x9Mjt3FwsxFzGMazBg17gUzowVqvg5HMKAdg3XsLougoPZcQBXwIxRKDRhcTLtwyvm6aPPSn3x9Gvzsyl+FnpI17UF8vSGoj2d/beQhsGkjQffneIe+Mmg0yG3dsIkwLOywn4WVW5oTBgyxfeMyA3tE1s9G9ala5z+me0v0qbw==
+system: true
+tags:
+- Condition
+type: javascript
