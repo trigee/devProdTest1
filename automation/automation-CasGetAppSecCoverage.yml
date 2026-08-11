@@ -1,0 +1,712 @@
+args:
+- description: The unique ID of the asset. Accepts a comma-separated list.
+  isArray: true
+  name: asset_id
+  supportedModules: []
+- description: The name of the asset. Accepts a comma-separated list.
+  isArray: true
+  name: asset_name
+  supportedModules: []
+- description: Business application names. Accepts a comma-separated list.
+  isArray: true
+  name: business_application_names
+  supportedModules: []
+- auto: PREDEFINED
+  description: The status coverage. Accepts a comma-separated list.
+  isArray: true
+  name: status_coverage
+  predefined:
+  - FULLY SCANNED
+  - NOT SCANNED
+  - PARTIALLY SCANNED
+  supportedModules: []
+- auto: PREDEFINED
+  description: Is scanned by vulnerabilities. Accepts a comma-separated list.
+  isArray: true
+  name: is_scanned_by_vulnerabilities
+  predefined:
+  - DISABLED
+  - ENABLED
+  - IRRELEVANT
+  supportedModules: []
+- auto: PREDEFINED
+  description: Is scanned by code weakness. Accepts a comma-separated list.
+  isArray: true
+  name: is_scanned_by_code_weakness
+  predefined:
+  - DISABLED
+  - ENABLED
+  - IRRELEVANT
+  supportedModules: []
+- auto: PREDEFINED
+  description: Is scanned by secrets. Accepts a comma-separated list.
+  isArray: true
+  name: is_scanned_by_secrets
+  predefined:
+  - DISABLED
+  - ENABLED
+  - IRRELEVANT
+  supportedModules: []
+- auto: PREDEFINED
+  description: Is scanned by IaC. Accepts a comma-separated list.
+  isArray: true
+  name: is_scanned_by_iac
+  predefined:
+  - DISABLED
+  - ENABLED
+  - IRRELEVANT
+  supportedModules: []
+- auto: PREDEFINED
+  description: Is scanned by malware. Accepts a comma-separated list.
+  isArray: true
+  name: is_scanned_by_malware
+  predefined:
+  - DISABLED
+  - ENABLED
+  - IRRELEVANT
+  supportedModules: []
+- auto: PREDEFINED
+  description: Is scanned by CICD. Accepts a comma-separated list.
+  isArray: true
+  name: is_scanned_by_cicd
+  predefined:
+  - DISABLED
+  - ENABLED
+  - IRRELEVANT
+  supportedModules: []
+- auto: PREDEFINED
+  description: The asset type. Accepts a comma-separated list.
+  isArray: true
+  name: asset_type
+  predefined:
+  - CICD PIPELINE
+  - CONTAINER IMAGE REPOSITORY
+  - REPOSITORY
+  supportedModules: []
+- auto: PREDEFINED
+  description: The asset provider. Accepts a comma-separated list.
+  isArray: true
+  name: asset_provider
+  predefined:
+  - AWS
+  - AWS_CODE_BUILD
+  - AWS_CODE_COMMIT
+  - AZURE
+  - AZURE_PIPELINES
+  - AZURE_REPOS
+  - BITBUCKET
+  - CIRCLE_CI
+  - DOCKER
+  - GCP
+  - GITHUB
+  - GITHUB_ACTIONS
+  - GITLAB
+  - GITLAB_CI
+  - HCP_TFC_RUN_TASKS
+  - JENKINS
+  - JFROG_ARTIFACTORY
+  - OCI
+  supportedModules: []
+- defaultValue: "50"
+  description: The maximum number of assets to return.
+  name: limit
+  supportedModules: []
+comment: Retrieves Application Security Posture Management (ASPM) coverage information
+  for assets, including scan status across different security scanning types (vulnerabilities,
+  secrets, code weakness, IaC, malware, CICD). Returns coverage statistics, histograms,
+  and detailed asset information. Filters can be provided to return a subset of the
+  results. Statistics are generated over the filtered set.
+commonfields:
+  id: CasGetAppSecCoverage
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.13.0
+    isoverridable: false
+    itemVersion: 3.5.81
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.8319994
+enabled: true
+engineinfo: {}
+internal: true
+mainengineinfo: {}
+name: CasGetAppSecCoverage
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: Cas.Coverage.total_filtered_assets
+  description: The total number of assets matching the filter (before the limit is
+    applied).
+  type: Number
+- contextPath: Cas.Coverage.number_returned_assets
+  description: The number of returned assets.
+  type: Number
+- contextPath: Cas.Coverage.coverage_percentage
+  description: The ASPM coverage percentage calculated from the scanner coverage histogram.
+  type: Number
+- contextPath: Cas.Coverage.coverage_with_non_onboarded_percentage
+  description: The ASPM coverage percentage calculated from the scanner coverage histogram
+    including not onboarded assets.
+  type: Number
+- contextPath: Cas.Coverage.recommended_next_steps
+  description: A list of suggested natural language follow-up queries or actions that
+    guide the user in refining their coverage analysis. This field is offering the
+    LLM or user contextually relevant options to drill down into the data.
+  type: Array
+- contextPath: Cas.Coverage.Metrics.aspm_status_coverage.partially_scanned_count
+  description: The number of assets that are partially scanned according to ASPM coverage.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.aspm_status_coverage.fully_scanned_count
+  description: The number of assets that are fully scanned according to ASPM coverage.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.aspm_status_coverage.not_scanned_count
+  description: The number of assets that are not scanned according to ASPM coverage.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.aspm_status_coverage.partially_scanned_percentage
+  description: The percentage of assets that are partially scanned according to ASPM
+    coverage.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.aspm_status_coverage.fully_scanned_percentage
+  description: The percentage of assets that are fully scanned according to ASPM coverage.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.aspm_status_coverage.not_scanned_percentage
+  description: The percentage of assets that are not scanned according to ASPM coverage.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_vulnerabilities.coverage_percentage
+  description: The percentage of assets scanned for vulnerabilities.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_vulnerabilities.coverage_with_non_onboarded_percentage
+  description: The percentage of assets scanned for vulnerabilities including not
+    onboarded assets.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_vulnerabilities.enabled
+  description: The number of assets where vulnerability scanning is enabled.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_vulnerabilities.disabled
+  description: The number of assets where vulnerability scanning is disabled.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_code_weakness.coverage_percentage
+  description: The percentage of assets scanned for code weaknesses.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_code_weakness.coverage_with_non_onboarded_percentage
+  description: The percentage of assets scanned for code weaknesses including not
+    onboarded assets.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_code_weakness.enabled
+  description: The number of assets where code weakness scanning is enabled.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_code_weakness.disabled
+  description: The number of assets where code weakness scanning is disabled.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_secrets.coverage_percentage
+  description: The percentage of assets scanned for secrets.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_secrets.coverage_with_non_onboarded_percentage
+  description: The percentage of assets scanned for secrets including not onboarded
+    assets.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_secrets.enabled
+  description: The number of assets where secret scanning is enabled.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_secrets.disabled
+  description: The number of assets where secret scanning is disabled.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_iac.coverage_percentage
+  description: The percentage of assets scanned for infrastructure-as-code (IaC) issues.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_iac.coverage_with_non_onboarded_percentage
+  description: The percentage of assets scanned for infrastructure-as-code (IaC) issues
+    including not onboarded assets.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_iac.enabled
+  description: The number of assets where infrastructure-as-code (IaC) scanning is
+    enabled.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_iac.disabled
+  description: The number of assets where infrastructure-as-code (IaC) scanning is
+    disabled.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_malware.coverage_percentage
+  description: The percentage of assets scanned for malware.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_malware.coverage_with_non_onboarded_percentage
+  description: The percentage of assets scanned for malware including not onboarded
+    assets.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_malware.enabled
+  description: The number of assets where malware scanning is enabled.
+  type: Number
+- contextPath: Cas.Coverage.Metrics.is_scanned_by_malware.disabled
+  description: The number of assets where malware scanning is disabled.
+  type: Number
+- contextPath: Cas.Coverage.Asset.asset_id
+  description: The unique ID of the asset. Each asset is assigned a unique identifier
+    in the system.
+  type: String
+- contextPath: Cas.Coverage.Asset.asset_name
+  description: The name of the asset. Typically corresponds to the repository, container
+    image, or pipeline name.
+  type: String
+- contextPath: Cas.Coverage.Asset.asset_provider
+  description: 'The vendor or source platform of the asset. Indicates where the asset
+    originates from. Possible values: AWS, AWS_CODE_BUILD, AWS_CODE_COMMIT, AZURE,
+    AZURE_REPOS, BITBUCKET, BITBUCKET_DATACENTER, CIRCLE_CI, DOCKER, GCP, GITHUB,
+    GITHUB_ACTIONS, GITHUB_ENTERPRISE, GITLAB, GITLAB_SELF_MANAGED, HCP_TFC_RUN_TASKS,
+    HCP_TFE_RUN_TASKS, JENKINS, JFROG_ARTIFACTORY, OCI.'
+  type: String
+- contextPath: Cas.Coverage.Asset.asset_type
+  description: 'The type or category of the asset. Determines the nature of the resource
+    being scanned. Possible values: CICD PIPELINE, CONTAINER IMAGE REPOSITORY, REPOSITORY.'
+  type: String
+- contextPath: Cas.Coverage.Asset.business_application_names
+  description: A list of business applications associated with the asset. These applications
+    help map the asset to business context or ownership.
+  type: String
+- contextPath: Cas.Coverage.Asset.is_scanned_by_cicd
+  description: 'Indicates whether the asset is scanned within CI/CD pipelines. Possible
+    values: ENABLED, DISABLED, IRRELEVANT.'
+  type: String
+- contextPath: Cas.Coverage.Asset.is_scanned_by_code_weakness
+  description: 'Indicates whether code weakness scanning is performed on the asset.
+    Possible values: ENABLED, DISABLED, IRRELEVANT.'
+  type: String
+- contextPath: Cas.Coverage.Asset.is_scanned_by_iac
+  description: 'Indicates whether infrastructure-as-code (IaC) scanning is enabled
+    for the asset. Possible values: ENABLED, DISABLED, IRRELEVANT.'
+  type: String
+- contextPath: Cas.Coverage.Asset.is_scanned_by_malware
+  description: 'Indicates whether malware scanning is enabled for the asset. Possible
+    values: ENABLED, DISABLED, IRRELEVANT.'
+  type: String
+- contextPath: Cas.Coverage.Asset.is_scanned_by_secrets
+  description: 'Indicates whether the asset is scanned for hardcoded secrets or credentials.
+    Possible values: ENABLED, DISABLED, IRRELEVANT.'
+  type: String
+- contextPath: Cas.Coverage.Asset.is_scanned_by_semgrep
+  description: 'Boolean flag indicating whether the asset is analyzed using Semgrep
+    for code issues or misconfigurations. Possible values: true, false.'
+  type: Boolean
+- contextPath: Cas.Coverage.Asset.is_scanned_by_sonarqube
+  description: 'Boolean flag indicating whether the asset is analyzed using SonarQube
+    for code quality and security issues. Possible values: true, false.'
+  type: Boolean
+- contextPath: Cas.Coverage.Asset.is_scanned_by_veracode
+  description: 'Boolean flag indicating whether the asset is scanned using Veracode
+    for security vulnerabilities. Possible values: true, false.'
+  type: Boolean
+- contextPath: Cas.Coverage.Asset.is_scanned_by_vulnerabilities
+  description: 'Indicates whether vulnerability scanning is enabled for the asset.
+    Possible values: ENABLED, DISABLED, IRRELEVANT.'
+  type: String
+- contextPath: Cas.Coverage.Asset.last_scan_status
+  description: 'The status of the most recent scan performed on the asset. Possible
+    values: NOT_SCANNED_YET, ERROR, COMPLETED.'
+  type: String
+- contextPath: Cas.Coverage.Asset.scanners_data
+  description: An array containing detailed information from the scanners that evaluated
+    the asset, including scan results, timestamps, and metadata.
+  type: String
+- contextPath: Cas.Coverage.Asset.status_coverage
+  description: 'The overall scan coverage of the asset. Possible values: FULLY SCANNED,
+    PARTIALLY SCANNED, NOT SCANNED.'
+  type: String
+- contextPath: Cas.Coverage.Asset.unified_provider
+  description: 'The unified provider name associated with the asset. Standardized
+    across different vendor integrations. Possible values: AWS, AWS_CODE_BUILD, AWS_CODE_COMMIT,
+    AZURE, AZURE_PIPELINES, AZURE_REPOS, BITBUCKET, CIRCLE_CI, DOCKER, GCP, GITHUB,
+    GITHUB_ACTIONS, GITLAB, GITLAB_CI, HCP_TFC_RUN_TASKS, JENKINS, JFROG_ARTIFACTORY,
+    OCI.'
+  type: String
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('CasGetAppSecCoverage', 'start', __line__())
+  CONSTANT_PACK_VERSION = '3.5.81'
+  demisto.debug('pack id = Core, pack version = 3.5.81')
+
+
+  import json
+  from typing import Any
+
+  # Columns representing different scanner coverage categories
+  SCANNER_COLUMNS: list[str] = [
+      "is_scanned_by_vulnerabilities",
+      "is_scanned_by_code_weakness",
+      "is_scanned_by_secrets",
+      "is_scanned_by_iac",
+      "is_scanned_by_malware",
+  ]
+
+  HISTOGRAM_COLUMNS: list[str] = [*SCANNER_COLUMNS, "status_coverage", "unified_provider"]
+
+  # Valid input arguments for this automation
+  VALID_ARGS: set[str] = {
+      "asset_id",
+      "asset_name",
+      "business_application_names",
+      "status_coverage",
+      "is_scanned_by_vulnerabilities",
+      "is_scanned_by_code_weakness",
+      "is_scanned_by_secrets",
+      "is_scanned_by_iac",
+      "is_scanned_by_malware",
+      "is_scanned_by_cicd",
+      "asset_type",
+      "asset_provider",
+      "limit",
+  }
+
+  ASSET_COVERAGE_TABLE = "COVERAGE"
+
+
+  def api_call(path: str, method: str, data: dict[str, Any] | None = None) -> Any:  # noqa: ANN401
+      """Execute an API call via demisto._apiCall and return the parsed reply object.
+
+      Args:
+          path (str): API endpoint path.
+          method (str): HTTP method (GET, POST, etc.).
+          data (dict[str, Any] | None): Optional request payload data.
+
+      Returns:
+          Any: Parsed reply from the API response.
+
+      Raises:
+          Exception: If the API call fails or response parsing fails.
+
+      """
+      kwargs: dict[str, Any] = {
+          "method": method,
+          "path": path,
+          "headers": {"content-type": "application/json"},
+      }
+      if data is not None:
+          kwargs["data"] = json.dumps(data)
+
+      response = demisto._apiCall(**kwargs)
+
+      try:
+          raw = json.loads(response.get("data", "{}"))
+
+          if isinstance(raw, list):
+              return raw
+
+          return raw.get("reply", {})
+      except Exception as ex:
+          raise DemistoException(f"Failed to parse API response from {path}. Error: {ex!s}") from ex
+
+
+  def build_asset_coverage_filter(args: dict, extra_filters: list[dict] | None = None) -> dict:
+      """Build a filter dictionary for asset coverage queries.
+
+      Args:
+          args (dict): Dictionary containing filter arguments from user input.
+          extra_filters (list[dict] | None): Optional additional filters to append.
+
+      Returns:
+          dict: Filter dictionary with AND logic combining all filter fields.
+
+      """
+      # Mapping from script args to API filter fields
+      filter_fields = []
+
+      def add_filter(field, search_type, value):
+          if value:
+              if search_type in ("ARRAY_CONTAINS", "CONTAINS") and not isinstance(value, list):
+                  value = [value]
+              filter_fields.append({"SEARCH_FIELD": field, "SEARCH_TYPE": search_type, "SEARCH_VALUE": value})
+
+      add_filter("asset_id", "CONTAINS", args.get("asset_id"))
+      add_filter("asset_name", "CONTAINS", args.get("asset_name"))
+      add_filter("business_application_names", "ARRAY_CONTAINS", args.get("business_application_names"))
+      add_filter("status_coverage", "EQ", args.get("status_coverage"))
+      add_filter("is_scanned_by_vulnerabilities", "EQ", args.get("is_scanned_by_vulnerabilities"))
+      add_filter("is_scanned_by_code_weakness", "EQ", args.get("is_scanned_by_code_weakness"))
+      add_filter("is_scanned_by_secrets", "EQ", args.get("is_scanned_by_secrets"))
+      add_filter("is_scanned_by_iac", "EQ", args.get("is_scanned_by_iac"))
+      add_filter("is_scanned_by_malware", "EQ", args.get("is_scanned_by_malware"))
+      add_filter("is_scanned_by_cicd", "EQ", args.get("is_scanned_by_cicd"))
+      add_filter("asset_type", "EQ", args.get("asset_type"))
+      add_filter("unified_provider", "EQ", args.get("asset_provider"))
+
+      if extra_filters:
+          filter_fields.extend(extra_filters)
+
+      if not filter_fields:
+          return {}
+
+      return {"AND": filter_fields}
+
+
+  def get_asset_coverage_histograms(args: dict, filter_dict: dict) -> dict[str, Any]:
+      """Retrieve histogram data for asset coverage metrics.
+
+      Args:
+          args (dict): Dictionary containing query arguments including limit.
+          filter_dict (dict): Filter criteria for the histogram query.
+
+      Returns:
+          dict[str, Any]: Histogram data for scanner coverage columns.
+
+      """
+      return api_call(
+          path="/api/webapp/get_histograms",
+          method="POST",
+          data={
+              "table_name": ASSET_COVERAGE_TABLE,
+              "filter_data": {"filter": filter_dict},
+              "max_values_per_column": arg_to_number(args.get("limit")) or 100,
+              "columns": HISTOGRAM_COLUMNS,
+          },
+      )
+
+
+  def transform_scanner_histograms_outputs(
+      repo_histograms: dict[str, Any], non_repo_histograms: dict[str, Any], total_repos_count: list[dict[str, Any]]
+  ) -> tuple[dict[str, dict[str, float]], float, float]:
+      """Transform scanner histogram data into coverage metrics.
+
+      Args:
+          repo_histograms (Dict[str, Any]): Histogram data for repository assets.
+          non_repo_histograms (Dict[str, Any]): Histogram data for non-repository assets.
+          total_repos_count (List[Dict[str, Any]]): Total repository counts from external providers.
+
+      Returns:
+          Tuple containing:
+              - Dict[str, Dict[str, float]]: Scanner-specific coverage metrics.
+              - float: Overall coverage percentage.
+              - float: Coverage percentage including non-onboarded repositories.
+
+      """
+
+      def get_histogram_count(data: list[dict[str, Any]], value_key: str) -> int:
+          """Helper to safely extract count from histogram list."""
+          return next((item.get("count", 0) for item in data if item.get("value") == value_key), 0)
+
+      unified_provider_data = repo_histograms.get("unified_provider", [])
+      unified_map = {item["value"]: item["count"] for item in unified_provider_data}
+
+      total_external_repos_sum = 0
+      use_disabled_override = False
+
+      for repo_entry in total_repos_count:
+          provider = repo_entry.get("integrationType")
+          provider_repo_count = repo_entry.get("totalRepoCount", 0)
+
+          # Track the total sum of repos existing in the provider (e.g. Github + Azure)
+          total_external_repos_sum += provider_repo_count
+
+          # Check against what we actually see in the histogram
+          internal_count = unified_map.get(provider, 0)
+
+          # Logic: If provider API reports more repos than our histogram, trigger override
+          if provider_repo_count > internal_count:
+              use_disabled_override = True
+
+      output: dict[str, dict[str, float]] = {}
+
+      # Accumulators for "Current" Coverage
+      curr_total_enabled = 0
+      curr_total_relevant = 0
+
+      # Accumulators for "Potential" Coverage
+      potential_total_enabled = 0
+      potential_total_relevant = 0
+
+      for column in SCANNER_COLUMNS:
+          # 1. Fetch Histogram Data
+          repo_data = repo_histograms.get(column, [])
+          non_repo_data = non_repo_histograms.get(column, [])
+
+          # 2. Extract Counts (Repo)
+          r_enabled = get_histogram_count(repo_data, "ENABLED")
+          r_disabled_actual = get_histogram_count(repo_data, "DISABLED")
+
+          # 3. Extract Counts (Non-Repo)
+          nr_enabled = get_histogram_count(non_repo_data, "ENABLED")
+          nr_disabled = get_histogram_count(non_repo_data, "DISABLED")
+
+          # 4. Calculate "Actual" (Histogram-only) Totals
+          # Summing Repo + Non-Repo for the standard calculation
+          col_actual_enabled = r_enabled + nr_enabled
+          col_actual_disabled = r_disabled_actual + nr_disabled
+
+          curr_total_enabled += col_actual_enabled
+          curr_total_relevant += col_actual_enabled + col_actual_disabled
+
+          # 5. Calculate "Potential" (With Override)
+          r_disabled_potential = r_disabled_actual
+          # If discrepancy exists, Repo Disabled becomes
+          scanner_not_ignored = r_enabled > 0 or r_disabled_actual > 0
+          if use_disabled_override and scanner_not_ignored:
+              r_disabled_potential = total_external_repos_sum
+
+          # Summing Repo (Potential) + Non-Repo
+          col_pot_disabled = r_disabled_potential + nr_disabled
+          col_pot_relevant = col_actual_enabled + col_pot_disabled
+
+          potential_total_enabled += col_actual_enabled
+          potential_total_relevant += col_pot_relevant
+
+          # 6. Populate Output
+          # The output dict usually drives the UI breakdown.
+          # Using Potential data here shows the gap including missing repos.
+          scanner_coverage_actual = (
+              (col_actual_enabled / (col_actual_enabled + col_actual_disabled))
+              if (col_actual_enabled + col_actual_disabled) > 0
+              else 0.0
+          )
+          scanner_coverage_potential = (col_actual_enabled / col_pot_relevant) if col_pot_relevant > 0 else 0.0
+
+          output[column] = {
+              "enabled": col_actual_enabled,
+              "disabled": col_actual_disabled,
+              "coverage_percentage": scanner_coverage_actual,
+              "coverage_with_non_onboarded_percentage": scanner_coverage_potential,
+          }
+
+      # Overall Coverage (As Today): Based purely on histograms
+      overall_coverage = (curr_total_enabled / curr_total_relevant) if curr_total_relevant > 0 else 0.0
+
+      # Potential Coverage: Includes the calculated "missing" repos
+      coverage_with_non_onboarded_percentage = (
+          (potential_total_enabled / potential_total_relevant) if potential_total_relevant > 0 else 0.0
+      )
+
+      return output, overall_coverage, coverage_with_non_onboarded_percentage
+
+
+  def transform_status_coverage_histogram_output(data: dict[str, Any]) -> dict[str, dict[str, int | float]]:
+      """Transform status coverage histogram data into structured output.
+
+      Args:
+          data (dict[str, Any]): Raw histogram data containing status_coverage information.
+
+      Returns:
+          dict[str, dict[str, int | float]]: Transformed status coverage metrics with counts and percentages.
+
+      """
+      mapping = {
+          "PARTIALLY SCANNED": "partially_scanned",
+          "FULLY SCANNED": "fully_scanned",
+          "NOT SCANNED": "not_scanned",
+      }
+
+      output: dict[str, int | float] = {}
+
+      for item in data.get("status_coverage", []):
+          label = mapping.get(item.get("value"), str(item.get("value", "")).lower().replace(" ", "_"))
+          output[f"{label}_count"] = item.get("count", 0)
+          output[f"{label}_percentage"] = item.get("percentage", 0.0)
+
+      return {"aspm_status_coverage": output}
+
+
+  def main() -> None:
+      """Retrieve AppSec asset coverage metrics including scanner coverage and status histograms."""
+      args = demisto.args()
+      extra_args = set(args.keys()) - VALID_ARGS
+      if extra_args:
+          return_error(f"Failed to execute GetAppSecCoverage. Error:\nUnexpected args found: {extra_args}")
+          return
+      try:
+          # Prepare filters for API calls
+          filter_dict = build_asset_coverage_filter(args)
+          limit = int(args.get("limit", 100))
+
+          asset_coverage = api_call(
+              path="/api/webapp/get_data",
+              method="POST",
+              data={
+                  "type": "grid",
+                  "table_name": ASSET_COVERAGE_TABLE,
+                  "filter_data": {"filter": filter_dict, "paging": {"from": 0, "to": limit}, "sort": []},
+                  "jsons": [],
+                  "onDemandFields": [],
+              },
+          )
+          assets = asset_coverage.get("DATA", [])
+
+          # Call histograms for REPOSITORY
+          repo_filter = build_asset_coverage_filter(
+              args, extra_filters=[{"SEARCH_FIELD": "asset_type", "SEARCH_TYPE": "EQ", "SEARCH_VALUE": "REPOSITORY"}]
+          )
+          repo_histograms = get_asset_coverage_histograms(args, repo_filter)
+          demisto.debug(f"{repo_histograms=}")
+          # Call histograms for non-REPOSITORY
+          non_repo_filter = build_asset_coverage_filter(
+              args, extra_filters=[{"SEARCH_FIELD": "asset_type", "SEARCH_TYPE": "NEQ", "SEARCH_VALUE": "REPOSITORY"}]
+          )
+          non_repo_histograms = get_asset_coverage_histograms(args, non_repo_filter)
+          demisto.debug(f"{non_repo_histograms=}")
+          total_repos_count = api_call(
+              path="/api/cas/v1/integrations/coverage/total-repos-count",
+              method="GET",
+          )
+          demisto.debug(f"{total_repos_count=}")
+
+          # Merge histograms
+          merged_histograms: dict[str, list] = {}
+          for col in HISTOGRAM_COLUMNS:
+              repo_data = repo_histograms.get(col, [])
+              non_repo_data = non_repo_histograms.get(col, [])
+
+              # Combine counts for same values
+              combined_values: dict[str, dict] = {}
+              for item in repo_data + non_repo_data:
+                  val = item.get("value")
+                  if val not in combined_values:
+                      combined_values[val] = {"value": val, "count": 0}
+                  combined_values[val]["count"] += item.get("count", 0)
+
+              merged_histograms[col] = list(combined_values.values())
+
+          scanner_histograms, coverage_percentage, coverage_with_non_onboarded_percentage = transform_scanner_histograms_outputs(
+              repo_histograms, non_repo_histograms, total_repos_count
+          )
+          status_histogram = transform_status_coverage_histogram_output(merged_histograms)
+
+          outputs = {
+              "total_filtered_assets": asset_coverage.get("FILTER_COUNT"),
+              "number_returned_assets": len(assets),
+              "coverage_percentage": coverage_percentage,
+              "coverage_with_non_onboarded_percentage": coverage_with_non_onboarded_percentage,
+              "Metrics": {**scanner_histograms, **status_histogram},
+              "Asset": assets,
+          }
+          demisto.debug(f"{outputs=}")
+
+          return_results(
+              CommandResults(
+                  outputs=outputs,
+                  outputs_prefix="Cas.Coverage",
+                  raw_response=outputs,
+              )
+          )
+
+      except Exception as e:
+          return_error(f"Failed to execute GetAppSecCoverage. Error:\n{e!s}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('CasGetAppSecCoverage', 'end', __line__())
+scripttarget: 0
+signature: nru4ioPBgN2RGfG90wdjCTZG9qLFjs5memV3dlfWRKgC6dowgNQioQDz5idawQ/Wxo8yLurpoGLeyLuQHR1Pj6Em3yTmNZ+GORmngFzTDvlLMt8zAhLTy+SLar8N5FUNvWqm+5ZpkyPduFL+PkfQk+93DFK6Z0bfOHhnOf8784/DOqjesLSZ34zoa5bJUHnezA31hM9Wzg91U8cKQBc5UlVh4Jvmv8Wfb4lyVjDYN4WVIqPi+/xdrTwZx+3UlyhGn2VO1yRnzWqSEzvI3j/fnJdRwZA2hx6WC8SHbgMrn36zrsg2r+2JN6faHdR9q4xH+8xksfKlqmnC6Z7AkZ37Qg==
+source: agentix
+subtype: python3
+system: true
+tags:
+- Utilities
+type: python
