@@ -1,0 +1,85 @@
+args:
+- description: Path in the context.
+  name: path
+  supportedModules: []
+- default: true
+  description: Value to search.
+  name: value
+  required: true
+  supportedModules: []
+comment: This script searches for a value in a context path.
+commonfields:
+  id: ContextContains
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ContextContains
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('ContextContains', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+
+
+
+
+  def search(context, path, value):
+      """
+      searches a value in a context path.
+      @param context - context tree to search in
+      @param path - a path to search in the context
+      @value - value to search
+      """
+
+      if isinstance(context, dict):
+          if len(path) > 0 and path[0] in context:
+              return search(context[path[0]], path[1:], value)
+          else:
+              return False
+      elif isinstance(context, list):
+          # in case current context has multiple objects, search them all.
+          return any(search(c, path, value) for c in context)
+      else:
+          # if we got to a leaf in the context
+          return len(path) == 0 and context == value
+
+
+  path = demisto.args().get("path", "")
+  value = demisto.args().get("value")
+
+  results = {
+      True: "yes",
+      False: "no",
+  }
+
+  demisto.results(results[search(demisto.context(), path.split("."), value)])
+
+  register_module_line('ContextContains', 'end', __line__())
+scripttarget: 0
+signature: d3wo46bYL3cHMC2nH7JOuA4I4/ayAjQmiFb6TaGIIXKpnwmLE8loFxoCXrBqk1yqSCBJb65h53EXIu9QubyfzsShtNGb67FhEHD6qtSuTKlozIQUjcAF6D0WdPBzH3qmDYC/mmeG0Uf+/JprwqFDaVvD68P0bXM6typH9OAUXJotgXQO0IO41aqmKtJAQhaGaIbc5btmZGqCw7QxPUZmpy+SNemKJ1BnECto3uKfNpn/KRX++8BXdmloIweZk/NvPZHWCgF6aTmFicrsOI4JzJiK+cV74ZnPxYkY8RwVYSnce8RR68gBLH/4kGVjmt0ZXejn3DlMgMmYmZ7GOEGZeQ==
+subtype: python3
+system: true
+tags: []
+type: python
