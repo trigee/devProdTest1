@@ -1,0 +1,930 @@
+args:
+- description: A unique name for the AppSec policy. Must be descriptive and follow
+    organizational naming conventions.
+  name: policy_name
+  required: true
+  supportedModules: []
+- description: A detailed explanation of the policy's objective, use case, and expected
+    outcomes.
+  name: description
+  supportedModules: []
+- description: Comma-separated list of Asset Group names to apply the policy to. Asset
+    groups will be automatically resolved to their corresponding IDs.
+  isArray: true
+  name: asset_group_names
+  supportedModules: []
+- description: 'Filter by specific finding types to target policy enforcement. Supported
+    values: Vulnerabilities, IaC Misconfiguration, Licenses, Operational Risk, Secrets,
+    Code Weaknesses, CI/CD Risks, Drift, Malware. Also accepts raw API values: VULNERABILITY,
+    IAC_MISCONFIGURATION, LICENSES, OPERATIONAL_RISK, SECRETS, CODE_WEAKNESS, CICD_RISKS,
+    DRIFT, MALWARE.'
+  isArray: true
+  name: conditions_finding_type
+  supportedModules: []
+- description: 'Filter findings by severity level to prioritize policy actions. Supported
+    values: CRITICAL, HIGH, MEDIUM, LOW.'
+  isArray: true
+  name: conditions_severity
+  supportedModules: []
+- auto: PREDEFINED
+  description: Controls whether a developer's manual suppression should be honored.
+    Set to 'true' to respect developer suppression (evaluate only non-suppressed findings).
+    Set to 'false' to ignore suppression and always evaluate the finding.
+  name: conditions_respect_developer_suppression
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Filter findings based on their backlog workflow status (NEW or BACKLOG).
+  name: conditions_backlog_status
+  predefined:
+  - NEW
+  - BACKLOG
+  supportedModules: []
+- description: Target specific software packages by name for license or vulnerability
+    policies.
+  name: conditions_package_name
+  supportedModules: []
+- description: Specify software package version constraints for precise policy targeting.
+  name: conditions_package_version
+  supportedModules: []
+- description: 'Filter packages by their operational risk assessment level. Supported
+    values: HIGH, MEDIUM, LOW.'
+  name: conditions_package_operational_risk
+  supportedModules: []
+- description: Comma-separated list of AppSec rule names to include in policy evaluation.
+    Rule names will be automatically resolved to their corresponding IDs.
+  isArray: true
+  name: conditions_appsec_rule_names
+  supportedModules: []
+- description: Filter findings by AppSec rule category. Applies to SECRETS and IAC_MISCONFIGURATION
+    and CI/CD Risk and Drift finding types.
+  isArray: true
+  name: conditions_appsec_rule_category
+  supportedModules: []
+- description: CVSS base score threshold for vulnerability findings (0.0-10.0). Only
+    vulnerabilities meeting or exceeding this score will trigger the policy.
+  name: conditions_cvss
+  supportedModules: []
+- description: Exploit Prediction Scoring System score threshold (0-100). Targets
+    vulnerabilities with higher exploitation probability.
+  name: conditions_epss
+  supportedModules: []
+- auto: PREDEFINED
+  description: 'Filter vulnerability findings by CVSS severity category. Supported
+    values: Critical, High, Medium, Low.'
+  isArray: true
+  name: conditions_cvss_severity
+  predefined:
+  - Critical
+  - High
+  - Medium
+  - Low
+  supportedModules: []
+- auto: PREDEFINED
+  description: Filter findings based on whether a remediation fix or patch is available.
+  name: conditions_has_a_fix
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Target findings listed in CISA's Known Exploited Vulnerabilities (KEV)
+    catalog for prioritized remediation.
+  name: conditions_is_kev
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- description: Filter vulnerability findings by risk factors (e.g. internet exposure,
+    privilege escalation). Applies to VULNERABILITY finding type.
+  isArray: true
+  name: conditions_risk_factors
+  supportedModules: []
+- description: 'Filter exposed secrets by their validity status. Supported values:
+    VALID (active secrets), PRIVILEGED (high-access secrets), INVALID (expired/revoked),
+    UNAVAILABLE (status unknown).'
+  isArray: true
+  name: conditions_secret_validity
+  supportedModules: []
+- description: Target specific software license types for compliance and legal risk
+    management.
+  isArray: true
+  name: conditions_license_type
+  supportedModules: []
+- auto: PREDEFINED
+  description: 'Filter findings by license category. Supported values: Weak copyleft,
+    Strong copyleft, Non permissive. Applies to LICENSES finding type.'
+  isArray: true
+  name: conditions_license_category
+  predefined:
+  - Weak copyleft
+  - Strong copyleft
+  - Non permissive
+  supportedModules: []
+- description: 'Define asset categories to include in policy scope. Supported values:
+    Application, Repository, CI/CD Instance, CI/CD Pipeline, VCS Collaborator, VCS
+    Organization.'
+  isArray: true
+  name: scope_category
+  supportedModules: []
+- description: Target specific business applications by name for focused policy enforcement.
+  isArray: true
+  name: scope_business_application_names
+  supportedModules: []
+- description: 'Filter applications by business criticality level. Supported values:
+    CRITICAL, HIGH, MEDIUM, LOW.'
+  isArray: true
+  name: scope_application_business_criticality
+  supportedModules: []
+- description: Target specific code repositories by name for repository-focused policies.
+  isArray: true
+  name: scope_repository_name
+  supportedModules: []
+- auto: PREDEFINED
+  description: Filter repositories based on their visibility (public vs private) for
+    exposure risk management.
+  name: scope_is_public_repository
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Target repositories or applications that have associated deployed infrastructure
+    or runtime assets.
+  name: scope_has_deployed_assets
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Filter assets based on whether the deployed components are exposed
+    to internet traffic for external attack surface management.
+  name: scope_has_internet_exposed_deployed_assets
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Target deployed assets that have access to sensitive data stores, databases,
+    or classified information.
+  name: scope_has_sensitive_data_access
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Filter deployed assets with elevated privileges, admin access, or high-impact
+    system capabilities.
+  name: scope_has_privileged_capabilities
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Enables detection during scheduled scans. When a violation is found
+    in a periodic scan, an issue will be created ("Detect").
+  name: triggers_periodic_report_issue
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Override the default severity level for issues created by periodic
+    scan detections.
+  name: triggers_periodic_override_severity
+  predefined:
+  - Critical
+  - High
+  - Medium
+  - Low
+  supportedModules: []
+- auto: PREDEFINED
+  description: Enables detection during pull request scans. When a violation is found
+    in a PR, an issue is created. Required for PR-based detection.
+  name: triggers_pr_report_issue
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Blocks merging of pull requests that contain violations detected by
+    the policy.
+  name: triggers_pr_block_pr
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Adds an automated comment to pull requests summarizing detected violations
+    and guidance.
+  name: triggers_pr_report_pr_comment
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Override the default severity level for issues created by pull request
+    detections.
+  name: triggers_pr_override_severity
+  predefined:
+  - Critical
+  - High
+  - Medium
+  - Low
+  supportedModules: []
+- auto: PREDEFINED
+  description: Enables detection during CI/CD pipeline scans. When a violation is
+    found in a pipeline run, an issue is created.
+  name: triggers_cicd_report_issue
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Blocks or fails CI/CD pipeline runs when violations occur.
+  name: triggers_cicd_block_cicd
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Reports violation details back to the CI/CD system (pipeline logs,
+    dashboards, status checks).
+  name: triggers_cicd_report_cicd
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Override the default severity level for issues created by CI/CD pipeline
+    detections.
+  name: triggers_cicd_override_severity
+  predefined:
+  - Critical
+  - High
+  - Medium
+  - Low
+  supportedModules: []
+- auto: PREDEFINED
+  description: Enables detection during CI image scans. When a violation is found,
+    an issue is created.
+  name: triggers_ci_image_report_issue
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Blocks or fails CI pipeline runs when violations are detected in container
+    images.
+  name: triggers_ci_image_block_cicd
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Reports violation details back to the CI system when detected in container
+    images.
+  name: triggers_ci_image_report_cicd
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Override the default severity level for issues created by CI image
+    detections.
+  name: triggers_ci_image_override_severity
+  predefined:
+  - Critical
+  - High
+  - Medium
+  - Low
+  supportedModules: []
+- auto: PREDEFINED
+  description: Enables detection during image registry scans. When a violation is
+    found, an issue is created.
+  name: triggers_image_registry_report_issue
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  description: Override the default severity level for issues created by image registry
+    detections.
+  name: triggers_image_registry_override_severity
+  predefined:
+  - Critical
+  - High
+  - Medium
+  - Low
+  supportedModules: []
+- description: The ID of a policy suggestion to associate with this policy. When provided,
+    links the created policy to the AI-generated suggestion it was based on.
+  name: suggestion_id
+  supportedModules: []
+comment: |
+  Creates a new AppSec policy in Cortex Platform with defined conditions, scope, and triggers for application security governance.
+  Supports all finding types (Vulnerabilities, Secrets, IaC Misconfiguration, Licenses, Operational Risk, Weaknesses, CI/CD Risk, Drift, Malware),
+  full scope filtering, and all five trigger types (periodic, PR, CI/CD, CI image, image registry).
+commonfields:
+  id: CasCreatePolicy
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.14.0
+    isoverridable: false
+    itemVersion: 3.5.81
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.8319994
+enabled: true
+engineinfo: {}
+internal: true
+mainengineinfo: {}
+name: CasCreatePolicy
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('CasCreatePolicy', 'start', __line__())
+  CONSTANT_PACK_VERSION = '3.5.81'
+  demisto.debug('pack id = Core, pack version = 3.5.81')
+
+
+  import json
+
+
+  POLICY_FINDING_TYPE_MAPPING: dict[str, str] = {
+      "CI/CD Risk": "CICD_RISKS",
+      "Vulnerabilities": "VULNERABILITY",
+      "IaC Misconfiguration": "IAC_MISCONFIGURATION",
+      "Licenses": "LICENSES",
+      "Operational Risk": "OPERATIONAL_RISK",
+      "Secrets": "SECRETS",
+      "Weaknesses": "CODE_WEAKNESS",
+      "Drift": "DRIFT",
+      "Malware": "MALWARE",
+  }
+
+  POLICY_CATEGORY_MAPPING: dict[str, str] = {
+      "Application": "APPLICATION",
+      "Repository": "REPOSITORY",
+      "CI/CD Instance": "CICD_INSTANCE",
+      "CI/CD Pipeline": "CICD_PIPELINE",
+      "VCS Collaborator": "VCS_COLLABORATOR",
+      "VCS Organization": "VCS_ORGANIZATION",
+  }
+
+  APPSEC_RULES_TABLE = "CAS_DETECTION_RULES"
+
+
+  # ---------------------------------------------------------------------------
+  # Minimal filter builder
+  # ---------------------------------------------------------------------------
+
+
+  class FilterBuilder:
+      """AND-based filter builder matching the integration's FilterBuilder (CoreIRApiModule) output.
+
+      Each value in a list becomes a separate filter entry with a scalar SEARCH_VALUE.
+      Multiple values for the same field are wrapped in an OR block.
+      All field blocks are combined under AND.
+      """
+
+      AND = "AND"
+      OR = "OR"
+      FIELD = "SEARCH_FIELD"
+      TYPE = "SEARCH_TYPE"
+      VALUE = "SEARCH_VALUE"
+
+      def __init__(self) -> None:
+          """Initialize the FilterBuilder with an empty list of field filters."""
+          self._fields: list[tuple[str, str, Any]] = []  # (field, op, values)
+
+      def add_field(self, field: str, op: str, value: Any) -> None:
+          """Add a field filter entry. Skips None, empty list, or empty string values.
+
+          Args:
+              field (str): The field name to filter on.
+              op (str): The filter operation type (e.g., EQ, GTE, CONTAINS).
+              value (Any): The value(s) to filter by. Can be a scalar or a list.
+
+          """
+          if value is None or value in ([], ""):
+              return
+          self._fields.append((field, op, value))
+
+      def to_dict(self) -> dict:
+          """Convert accumulated field filters into a nested AND/OR filter dictionary.
+
+          Returns:
+              dict: The combined filter structure, or an empty dict if no filters were added.
+
+          """
+          and_blocks: list[dict] = []
+
+          for field, op, value in self._fields:
+              values_list = value if isinstance(value, list) else [value]
+              values_list = [v for v in values_list if v is not None]
+              if not values_list:
+                  continue
+
+              entries = [{self.FIELD: field, self.TYPE: op, self.VALUE: v} for v in values_list]
+              block = {self.OR: entries} if len(entries) > 1 else entries[0]
+              and_blocks.append(block)
+
+          if not and_blocks:
+              return {}
+          # Always wrap in AND, even for single blocks
+          return {self.AND: and_blocks}
+
+
+  class FilterType:
+      """Available type options for filter filtering.
+      Each member holds its string value and its logical operator for multi-value scenarios.
+      """
+
+      EQ = "EQ"
+      GTE = "GTE"
+      CONTAINS = "CONTAINS"
+      ARRAY_CONTAINS = "ARRAY_CONTAINS"
+
+
+  # ---------------------------------------------------------------------------
+  # API helpers
+  # ---------------------------------------------------------------------------
+
+
+  def _api_call(method: str, path: str, data: dict | None = None) -> dict:
+      """Execute an API call via the Demisto API client.
+
+      Args:
+          method (str): HTTP method (e.g., 'GET', 'POST').
+          path (str): The API endpoint path.
+          data (dict | None): Optional request body dictionary.
+
+      Returns:
+          dict: The parsed JSON response.
+
+      """
+      res = demisto._apiCall(
+          method=method,
+          path=path,
+          data=json.dumps(data) if data else None,
+          headers={"content-type": "application/json"},
+      )
+
+      raw = res.get("data")
+      if isinstance(raw, str):
+          try:
+              return json.loads(raw)
+          except json.JSONDecodeError:
+              return {}
+      return raw or {}
+
+
+  def _get_asset_group_ids_from_names(group_names: list[str]) -> list[str]:
+      """Retrieves the IDs of asset groups based on their names.
+
+      Args:
+          group_names (list[str]): List of asset group names to retrieve IDs for.
+
+      Returns:
+          list[str]: List of asset group IDs.
+
+      """
+      if not group_names:
+          return []
+
+      fb = FilterBuilder()
+      fb.add_field("XDM.ASSET_GROUP.NAME", FilterType.EQ, group_names)
+
+      reply = _api_call(
+          method="POST",
+          path="/api/webapp/public_api/v1/asset-groups",
+          data={"request_data": {"filters": fb.to_dict()}},
+      )
+      groups = reply.get("reply", {}).get("data", [])
+
+      group_ids = [g.get("XDM.ASSET_GROUP.ID") for g in groups if g.get("XDM.ASSET_GROUP.ID")]
+
+      if len(group_ids) != len(group_names):
+          found = [g.get("XDM.ASSET_GROUP.NAME") for g in groups if g.get("XDM.ASSET_GROUP.ID")]
+          missing = [n for n in group_names if n not in found]
+          raise DemistoException(f"Failed to fetch asset group IDs for {missing}. Ensure the asset group names are valid.")
+
+      return group_ids
+
+
+  def _get_appsec_rule_ids_from_names(rule_names: list[str]) -> list[str]:
+      """Retrieves the IDs of AppSec rules based on their names using exact and partial matching.
+
+      Args:
+          rule_names (list[str]): List of AppSec rule names to retrieve IDs for.
+
+      Returns:
+          list[str]: List of AppSec rule IDs.
+
+      Raises:
+          DemistoException: If any rule names cannot be found in the system.
+
+      """
+      if not rule_names:
+          return []
+
+      fb = FilterBuilder()
+      fb.add_field("ruleName", FilterType.EQ, rule_names)
+
+      data = _api_call(
+          method="POST",
+          path="/api/webapp/get_data",
+          data={
+              "request_data": {
+                  "table_id": APPSEC_RULES_TABLE,
+                  "filters": fb.to_dict(),
+                  "search_from": 0,
+                  "search_to": 200,
+                  "sort": {"field": "ruleName", "keyword": "asc"},
+              }
+          },
+      )
+      records = data.get("reply", {}).get("DATA", []) or []
+
+      lookup = {r["ruleName"].lower(): r["ruleId"] for r in records if r.get("ruleId")}
+      ids: list[str] = []
+      found: set[str] = set()
+
+      for name in rule_names:
+          n = name.lower()
+          rid = lookup.get(n) or next((v for k, v in lookup.items() if n in k), None)
+          if rid:
+              ids.append(rid)
+              found.add(name)
+
+      missing = set(rule_names) - found
+      if missing:
+          raise DemistoException(f"Missing AppSec rules: {', '.join(missing)}")
+
+      return ids
+
+
+  # ---------------------------------------------------------------------------
+  # Build conditions
+  # ---------------------------------------------------------------------------
+
+
+  def build_conditions(args: dict) -> dict:
+      """Build conditions for create-policy command based on provided arguments.
+
+      Creates a filter structure for policy conditions including finding types, severity,
+      developer suppression, backlog status, package information, AppSec rules, CVSS/EPSS scores,
+      and various boolean conditions. If no finding types are specified, defaults to all types
+      except "CI/CD Risk".
+
+      Args:
+          args (dict): Dictionary containing condition arguments from the command.
+
+      Returns:
+          dict: Filter dictionary containing all specified conditions.
+
+      """
+      builder = FilterBuilder()
+
+      # 1. Finding Type
+      finding_types = argToList(args.get("conditions_finding_type"))
+      if not finding_types:
+          finding_types = [ft for ft in POLICY_FINDING_TYPE_MAPPING if ft != "CI/CD Risk"]
+
+      api_values = set(POLICY_FINDING_TYPE_MAPPING.values())
+      resolved_finding_types = []
+      for ft in finding_types:
+          if ft in api_values:
+              resolved_finding_types.append(ft)
+          elif ft in POLICY_FINDING_TYPE_MAPPING:
+              resolved_finding_types.append(POLICY_FINDING_TYPE_MAPPING[ft])
+
+      builder.add_field("Finding Type", FilterType.EQ, resolved_finding_types)
+
+      # 2. Severity
+      severities = argToList(args.get("conditions_severity"))
+      builder.add_field("Severity", FilterType.EQ, severities)
+
+      # 3. Has A Fix
+      has_a_fix = arg_to_bool_or_none(args.get("conditions_has_a_fix"))
+      builder.add_field("Has A Fix", FilterType.EQ, has_a_fix)
+
+      # 4. Backlog Status
+      backlog = args.get("conditions_backlog_status")
+      builder.add_field("Backlog Status", FilterType.EQ, backlog)
+
+      # 5. Is Kev
+      is_kev = arg_to_bool_or_none(args.get("conditions_is_kev"))
+      builder.add_field("Is Kev", FilterType.EQ, is_kev)
+
+      # 6. EPSS / CVSS
+      for f, n in [("epss", "EPSS"), ("cvss", "CVSS Score")]:
+          val = arg_to_number(args.get(f"conditions_{f}"))
+          builder.add_field(n, FilterType.GTE, val)
+
+      # 7. Package Operational Risk
+      package_risk = args.get("conditions_package_operational_risk")
+      builder.add_field("Package Operational Risk", FilterType.EQ, package_risk)
+
+      # Additional fields (order less critical)
+      dev_supp = arg_to_bool_or_none(args.get("conditions_respect_developer_suppression"))
+      builder.add_field("Respect Developer Suppression", FilterType.EQ, dev_supp)
+
+      package_name = args.get("conditions_package_name")
+      builder.add_field("PackageName", FilterType.EQ, package_name)
+
+      package_version = args.get("conditions_package_version")
+      builder.add_field("PackageVersion", FilterType.EQ, package_version)
+
+      if rule_names := argToList(args.get("conditions_appsec_rule_names")):
+          rule_ids = _get_appsec_rule_ids_from_names(rule_names)
+          builder.add_field("AppSec Rule", FilterType.EQ, rule_ids)
+
+      rule_categories = argToList(args.get("conditions_appsec_rule_category", []))
+      builder.add_field("AppSec Rule Category", FilterType.EQ, rule_categories)
+
+      cvss_severity = argToList(args.get("conditions_cvss_severity", []))
+      builder.add_field("CVSS Severity", FilterType.EQ, cvss_severity)
+
+      risk_factors = argToList(args.get("conditions_risk_factors", []))
+      builder.add_field("Risk Factors", FilterType.EQ, risk_factors)
+
+      for key, label in {
+          "secret_validity": "Secret Validity",
+          "license_type": "License Type",
+      }.items():
+          vals = argToList(args.get(f"conditions_{key}", []))
+          builder.add_field(label, FilterType.EQ, vals)
+
+      license_categories = argToList(args.get("conditions_license_category", []))
+      builder.add_field("License Category", FilterType.EQ, license_categories)
+
+      return builder.to_dict()
+
+
+  # ---------------------------------------------------------------------------
+  # Build scope
+  # ---------------------------------------------------------------------------
+
+
+  def build_scope(args: dict) -> dict:
+      """Build scope filters for create-policy.
+
+      Processes various scope parameters including categories, business applications,
+      repository settings, and boolean filters like public repository status and
+      security characteristics.
+
+      Args:
+          args (dict): Dictionary containing scope filter parameters with keys like:
+              - scope_category: List of categories to filter by
+              - scope_business_application_names: Business application names
+              - scope_application_business_criticality: Application criticality level
+              - scope_repository_name: Repository name to filter
+              - scope_is_public_repository: Boolean for public repository filter
+              - scope_has_deployed_assets: Boolean for deployed assets filter
+              - scope_has_internet_exposed_deployed_assets: Boolean for internet exposure filter
+              - scope_has_sensitive_data_access: Boolean for sensitive data access filter
+              - scope_has_privileged_capabilities: Boolean for privileged capabilities filter
+
+      Returns:
+          dict: Filter dictionary structure for policy scope, can be empty if no scope filters set.
+
+      """
+      builder = FilterBuilder()
+
+      if categories := argToList(args.get("scope_category", [])):
+          resolved = [POLICY_CATEGORY_MAPPING.get(c.title(), POLICY_CATEGORY_MAPPING.get(c, c)) for c in categories]
+          builder.add_field("category", FilterType.EQ, resolved)
+
+      if business_app_names := argToList(args.get("scope_business_application_names")):
+          builder.add_field("business_application_names", FilterType.ARRAY_CONTAINS, business_app_names)
+
+      if app_criticality := argToList(args.get("scope_application_business_criticality")):
+          builder.add_field("application_business_criticality", FilterType.EQ, app_criticality)
+
+      if repo_name := args.get("scope_repository_name"):
+          builder.add_field("repository_name", FilterType.CONTAINS, repo_name)
+
+      for key, label in {
+          "scope_is_public_repository": "is_public_repository",
+          "scope_has_deployed_assets": "has_deployed_assets",
+          "scope_has_internet_exposed_deployed_assets": "has_internet_exposed",
+          "scope_has_sensitive_data_access": "has_sensitive_data_access",
+          "scope_has_privileged_capabilities": "has_leverage_privileged_capabilities",
+      }.items():
+          if val := arg_to_bool_or_none(args.get(key)):
+              builder.add_field(label, FilterType.EQ, val)
+
+      return builder.to_dict()
+
+
+  # ---------------------------------------------------------------------------
+  # Build triggers
+  # ---------------------------------------------------------------------------
+
+
+  def build_triggers(args: dict) -> dict:
+      """Build triggers configuration for policy creation.
+
+      Creates a complete triggers structure with periodic, PR, CI/CD, CI image, and image registry
+      trigger types. Each trigger includes enabled status, actions, and optional severity overrides.
+
+      Args:
+          args (dict): Command arguments containing trigger configuration parameters:
+              - triggers_periodic_report_issue: Enable periodic issue reporting
+              - triggers_periodic_override_severity: Override severity for periodic triggers
+              - triggers_pr_report_issue: Enable PR issue reporting
+              - triggers_pr_block_pr: Enable PR blocking
+              - triggers_pr_report_pr_comment: Enable PR comment reporting
+              - triggers_pr_override_severity: Override severity for PR triggers
+              - triggers_cicd_report_issue: Enable CI/CD issue reporting
+              - triggers_cicd_block_cicd: Enable CI/CD blocking
+              - triggers_cicd_report_cicd: Enable CI/CD reporting
+              - triggers_cicd_override_severity: Override severity for CI/CD triggers
+              - triggers_ci_image_report_issue: Enable CI image issue reporting
+              - triggers_ci_image_block_cicd: Enable CI image blocking
+              - triggers_ci_image_report_cicd: Enable CI image reporting
+              - triggers_ci_image_override_severity: Override severity for CI image triggers
+              - triggers_image_registry_report_issue: Enable image registry issue reporting
+              - triggers_image_registry_override_severity: Override severity for image registry triggers
+
+      Returns:
+          dict: Triggers configuration with periodic, PR, CI/CD, CI image, and image registry sections.
+                Each section contains isEnabled flag, actions dict, and overrideIssueSeverity.
+
+      Raises:
+          DemistoException: When no triggers are enabled (at least one must be set).
+
+      Note:
+          When an override severity is specified, reportIssue is automatically enabled
+          for that trigger type.
+
+      """
+      # Periodic
+      periodic_report_issue = argToBoolean(args.get("triggers_periodic_report_issue", False))
+      periodic_override = args.get("triggers_periodic_override_severity")
+      if periodic_override:
+          periodic_report_issue = True
+      periodic_enabled = periodic_report_issue or bool(periodic_override)
+
+      # PR
+      pr_report_issue = argToBoolean(args.get("triggers_pr_report_issue", False))
+      pr_block_pr = argToBoolean(args.get("triggers_pr_block_pr", False))
+      pr_report_comment = argToBoolean(args.get("triggers_pr_report_pr_comment", False))
+      pr_override = args.get("triggers_pr_override_severity")
+      if pr_override:
+          pr_report_issue = True
+      pr_enabled = pr_report_issue or pr_block_pr or pr_report_comment or bool(pr_override)
+
+      # CI/CD
+      cicd_report_issue = argToBoolean(args.get("triggers_cicd_report_issue", False))
+      cicd_block_cicd = argToBoolean(args.get("triggers_cicd_block_cicd", False))
+      cicd_report_cicd = argToBoolean(args.get("triggers_cicd_report_cicd", False))
+      cicd_override = args.get("triggers_cicd_override_severity")
+      if cicd_override:
+          cicd_report_issue = True
+      cicd_enabled = cicd_report_issue or cicd_block_cicd or cicd_report_cicd or bool(cicd_override)
+
+      # CI Image
+      ci_image_report_issue = argToBoolean(args.get("triggers_ci_image_report_issue", False))
+      ci_image_block_cicd = argToBoolean(args.get("triggers_ci_image_block_cicd", False))
+      ci_image_report_cicd = argToBoolean(args.get("triggers_ci_image_report_cicd", False))
+      ci_image_override = args.get("triggers_ci_image_override_severity")
+      if ci_image_override:
+          ci_image_report_issue = True
+      ci_image_enabled = ci_image_report_issue or ci_image_block_cicd or ci_image_report_cicd or bool(ci_image_override)
+
+      # Image Registry
+      image_registry_report_issue = argToBoolean(args.get("triggers_image_registry_report_issue", False))
+      image_registry_override = args.get("triggers_image_registry_override_severity")
+      if image_registry_override:
+          image_registry_report_issue = True
+      image_registry_enabled = image_registry_report_issue or bool(image_registry_override)
+
+      triggers = {
+          "periodic": {
+              "isEnabled": periodic_enabled,
+              "overrideIssueSeverity": periodic_override if periodic_override else None,
+              "actions": {"reportIssue": periodic_report_issue},
+          },
+          "pr": {
+              "isEnabled": pr_enabled,
+              "overrideIssueSeverity": pr_override if pr_override else None,
+              "actions": {
+                  "reportIssue": pr_report_issue,
+                  "blockPr": pr_block_pr,
+                  "reportPrComment": pr_report_comment,
+              },
+          },
+          "cicd": {
+              "isEnabled": cicd_enabled,
+              "overrideIssueSeverity": cicd_override if cicd_override else None,
+              "actions": {
+                  "reportIssue": cicd_report_issue,
+                  "blockCicd": cicd_block_cicd,
+                  "reportCicd": cicd_report_cicd,
+              },
+          },
+          "ciImage": {
+              "isEnabled": ci_image_enabled,
+              "overrideIssueSeverity": ci_image_override if ci_image_override else None,
+              "actions": {
+                  "blockCicd": ci_image_block_cicd,
+                  "reportCicd": ci_image_report_cicd,
+                  "reportIssue": ci_image_report_issue,
+              },
+          },
+          "imageRegistry": {
+              "isEnabled": image_registry_enabled,
+              "overrideIssueSeverity": image_registry_override if image_registry_override else None,
+              "actions": {"reportIssue": image_registry_report_issue},
+          },
+      }
+
+      if not any(t["isEnabled"] for t in triggers.values()):
+          raise DemistoException("At least one trigger (periodic, PR, CI/CD, CI image, or image registry) must be set.")
+
+      return triggers
+
+
+  # ---------------------------------------------------------------------------
+  # Main
+  # ---------------------------------------------------------------------------
+
+
+  def main() -> None:
+      """Creates a new AppSec guardrails policy in Cortex Platform with defined conditions, scope, and triggers.
+
+      Collects policy name, description, conditions, scope, triggers, and asset group
+      information from script arguments, then sends a POST request to create the policy.
+
+      Raises:
+          DemistoException: If policy name is missing or no triggers are enabled.
+
+      """
+      try:
+          args = demisto.args()
+
+          policy_name = args.get("policy_name")
+          if not policy_name:
+              raise DemistoException("Policy name is required.")  # noqa: TRY301
+
+          description = args.get("description", "")
+          group_names = argToList(args.get("asset_group_names"))
+          asset_group_ids = _get_asset_group_ids_from_names(group_names)
+
+          conditions = build_conditions(args)
+          scope = build_scope(args)
+          triggers = build_triggers(args)
+
+          payload: dict = {
+              "name": policy_name,
+              "description": description,
+              "conditions": conditions,
+              "scope": scope,
+              "assetGroupIds": asset_group_ids,
+              "triggers": triggers,
+          }
+
+          if suggestion_id := args.get("suggestion_id"):
+              payload["suggestionId"] = suggestion_id
+
+          demisto.debug(f"CasCreatePolicy payload: {payload}")
+
+          _api_call(method="POST", path="/api/webapp/public_api/appsec/v1/policies", data=payload)
+
+          return_results(CommandResults(readable_output=f"AppSec policy '{policy_name}' created successfully."))
+
+      except Exception as ex:
+          return_error(f"Failed to execute CasCreatePolicy. Error:\n{ex!s}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):  # pragma: no cover
+      main()
+
+  register_module_line('CasCreatePolicy', 'end', __line__())
+scripttarget: 0
+signature: sITsjxvbX4okJ7TpVH4Pz4IBDXHWg7GVlhGG9VtNV1dGcesxkyXmYjox7ApMXKk+DWMgQmxxcn0PENToL10c1DkO7F1t8CbRyZUhWP7b1gqMbUYMHm1aGKeFZopNgU+jRxTYlKqvi06EHeq1B5hlIkcbPgZvG/qCmZeyC5fJ5VwOA16GRoT1lxIQgOlMAF/8F+kPU9PusmcZU31VkjReENbmJt4cjAm/RQvYJYJp7M1/ZS5WYSbMyBVbUoiEHt/AmBdRcvNQScRAShSOMsXCVBUz23z8Y1JzHC46Z0EGW3WjVjbwT62lmEZ9Vf3BPaNTwfPqMj56DMvo31LdSzdDdQ==
+source: agentix
+subtype: python3
+system: true
+tags:
+- Utilities
+- AppSec
+type: python
