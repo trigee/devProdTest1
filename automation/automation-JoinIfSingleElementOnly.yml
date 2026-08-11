@@ -1,0 +1,72 @@
+args:
+- default: true
+  description: The array to join if it has single element.
+  isArray: true
+  name: value
+  required: true
+  supportedModules: []
+comment: Return the single element in case the array has only 1 element in it, otherwise
+  return the whole array.
+commonfields:
+  id: JoinIfSingleElementOnly
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.28
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: JoinIfSingleElementOnly
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('JoinIfSingleElementOnly', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.28'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.28')
+
+
+
+
+  def return_first_element_if_single(value):
+      res = value
+      if isinstance(value, list) and len(value) == 1:
+          res = value[0]
+      return res
+
+
+  def main():  # pragma: no cover
+      value = demisto.args()["value"]
+      res = return_first_element_if_single(value)
+      demisto.results(res)
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('JoinIfSingleElementOnly', 'end', __line__())
+scripttarget: 0
+signature: p+6Rm7hfWyq45mh+t5P5oBNETF+Ch0Q/gm6gdUa2wgVeyPCLt9Cjxoa3+sNpKEdvPYRX8eEzTPUd6/AMnpdQiLfDz8dLQFMH55fNNntCJEVBKL0xzL+yVmZQ00Qh7a11+kD03sliZT4iBRwsT8U9TqQFiV+RF4/v6m5+5Nj7av/cl7IYoROkTa/m2kvaMdJaE+fFICfNHcQ8ARD5xxSYRGGXEehZH7Sk6/pABYgw2zLhHsnSDJ5mODWhHUHa6w+BG6mqYIPviITaoiXZqETJ6hS3kduWbGZ7Uho1+48Ykh7/gnxWGHX//VZA2MickXBP2AOjTX5r4HDeUJlzijaTeA==
+subtype: python3
+system: true
+tags:
+- entirelist
+- transformer
+- general
+type: python
