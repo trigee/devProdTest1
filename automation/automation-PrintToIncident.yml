@@ -1,0 +1,93 @@
+args:
+- description: The value to print to the war-room of specified incident.
+  name: value
+  required: true
+  supportedModules: []
+- description: The incident ID to print to.
+  name: incident_id
+  required: true
+  supportedModules: []
+comment: Prints a value to the specified incident's war-room.
+commonfields:
+  id: PrintToIncident
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.6.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: PrintToIncident
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('PrintToIncident', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+
+
+
+
+  def print_to_incident_command(current_job_id: str, value: str, incident_id: str) -> None:
+      """Prints a value to the specified incident ID.
+
+      Args:
+          current_job_id (str): The job ID running the script.
+          value (str): The value to print.
+          incident_id (str): The incident ID to print to.
+      """
+      entry_note = json.dumps(
+          [{"Type": 1, "ContentsFormat": EntryFormat.MARKDOWN, "Contents": f"Entry from #{current_job_id}:\n{value}"}]
+      )
+      entry_tags_res: list[dict[str, Any]] = demisto.executeCommand(
+          "addEntries", {"entries": entry_note, "id": incident_id, "reputationCalcAsync": True}
+      )
+      if isError(entry_tags_res[0]):
+          return_error(get_error(entry_tags_res))
+      else:
+          return_results(CommandResults(readable_output=f"Successfully printed to incident {incident_id}."))
+
+
+  def main():  # pragma: no cover
+      try:
+          current_job: dict[str, Any] = demisto.incident()
+          current_job_id: str = current_job["id"]
+          args = demisto.args()
+          value: str = args["value"]
+          incident_id = args["incident_id"]
+          print_to_incident_command(
+              current_job_id=current_job_id,
+              value=value,
+              incident_id=incident_id,
+          )
+      except Exception as ex:
+          return_error(f"Failed to execute PrintToIncident. Error: {ex!s}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('PrintToIncident', 'end', __line__())
+scripttarget: 0
+signature: roYc9/gDcK+gaSiVUlBfYKr1TPUM7niM62S6i9EukrTbcijBiPY3Ta68lbUTQVV54sdypkSGe2ol337M40Do1odHiE2WlIOxUMKFW44E1HMZHldiqpgqGKDGbTfJrch1lWT4dFjjuhWNYKsHAPmf11C6TLyj8cYadkrWe7/nB+RvilqrVJfXsX2tQFL/lQkToAuno0Xjskk0SIEriLBssZxVO2Ms6HrjoDE7i+RQjBNfCIOo3iTvwIRSfmXDD+WcCNH9NUUg66zaRPZ9hEfhbAo4swndtIMBKAYfvXqt8LUFyRxQh3Ula4Kmcd9xma/tA5kMu4YUdJLxGw4mncpsbA==
+subtype: python3
+system: true
+tags: []
+type: python
