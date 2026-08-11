@@ -1,0 +1,52 @@
+args:
+- description: Incident object.
+  name: incident
+  supportedModules: []
+- description: Field definition object.
+  name: field
+  supportedModules: []
+comment: When you apply this script to an incident field, that incident field is hidden
+  for new incidents, and it displays in edit mode.
+commonfields:
+  id: hideFieldsOnNewIncident
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: hideFieldsOnNewIncident
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  register_module_line('hideFieldsOnNewIncident', 'start', __line__())
+
+  return_results(demisto.executeCommand('hideFieldsOnNewAlert', demisto.args()))
+
+  register_module_line('hideFieldsOnNewIncident', 'end', __line__())
+scripttarget: 0
+signature: Po+Z+Pg+FKorYQ/0DQEhPKc/BJrohMyH+OEirXEjPsHCpb08BuKlx6Niiuik3HsvK7R/+iMnkftQC0g61lun6N7x9h7wYy2kB8fQcGIvICHmZSa6ZMVJbU8942amxr/SQq2hqRhBBk7Iqfqd2NlfMKf+uhdRmrNSRYGCf3atkJQaHOHKqKkcvIECArWJrAM+/GBx9jlQPtsk8r+ZgCsgA5ONJiX2LgkSWymDg4jVsJQFITCNiSjJjzGCqwtAXSXh0xAvcGozQKWiYThD94VCuwh6PwFCGnRbtSFRTTUQA7xUFjNrGdD+MK93LOxqRySn/4upxBOVv5Vg0KQl+Ya5GA==
+subtype: python3
+system: true
+tags:
+- field-display
+type: python
