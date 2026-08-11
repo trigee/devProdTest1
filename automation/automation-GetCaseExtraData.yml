@@ -1,0 +1,308 @@
+args:
+- description: A comma separated list of case IDs.
+  isArray: true
+  name: case_id
+  required: true
+  supportedModules: []
+- defaultValue: "1000"
+  description: Maximum number of issues to return per case. The maximum is 1000.
+  name: issues_limit
+  supportedModules: []
+comment: Retrieves extra data fields of a specific case, including issues and key
+  artifacts.
+commonfields:
+  id: GetCaseExtraData
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.6.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - xsiam
+    - agentix
+    - cloud
+    - cloud_posture
+    - cloud_runtime_security
+    - edr
+    toServerVersion: ""
+dependson:
+  must:
+  - core-get-case-extra-data
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+internal: true
+mainengineinfo: {}
+name: GetCaseExtraData
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: Core.CaseExtraData.case_id
+  description: The unique identifier for the case.
+  type: String
+- contextPath: Core.CaseExtraData.case_name
+  description: The name assigned to the case.
+  type: String
+- contextPath: Core.CaseExtraData.creation_time
+  description: The timestamp (in epoch format) when the case was created.
+  type: Number
+- contextPath: Core.CaseExtraData.modification_time
+  description: The timestamp (in epoch format) when the case was last modified.
+  type: Number
+- contextPath: Core.CaseExtraData.detection_time
+  description: The timestamp when the activity related to the case was first detected.
+  type: String
+- contextPath: Core.CaseExtraData.status
+  description: The current status of the case (e.g., 'new', 'under_investigation',
+    'closed').
+  type: String
+- contextPath: Core.CaseExtraData.severity
+  description: The severity level of the case (e.g., 'low', 'medium', 'high', 'critical').
+  type: String
+- contextPath: Core.CaseExtraData.description
+  description: A detailed textual description of the case.
+  type: String
+- contextPath: Core.CaseExtraData.assigned_user_mail
+  description: The email address of the user assigned to the case.
+  type: String
+- contextPath: Core.CaseExtraData.assigned_user_pretty_name
+  description: The display name of the user assigned to the case.
+  type: String
+- contextPath: Core.CaseExtraData.issue_count
+  description: The total number of issues associated with the case.
+  type: Number
+- contextPath: Core.CaseExtraData.low_severity_issue_count
+  description: The total number of low-severity issues within the case.
+  type: Number
+- contextPath: Core.CaseExtraData.med_severity_issue_count
+  description: The total number of medium-severity issues within the case.
+  type: Number
+- contextPath: Core.CaseExtraData.high_severity_issue_count
+  description: The total number of high-severity issues within the case.
+  type: Number
+- contextPath: Core.CaseExtraData.critical_severity_issue_count
+  description: The total number of critical-severity issues within the case.
+  type: Number
+- contextPath: Core.CaseExtraData.user_count
+  description: The number of unique users involved in the case.
+  type: Number
+- contextPath: Core.CaseExtraData.host_count
+  description: The number of unique hosts involved in the case.
+  type: Number
+- contextPath: Core.CaseExtraData.notes
+  description: A collection of notes or comments added to the case by analysts.
+  type: Array
+- contextPath: Core.CaseExtraData.resolve_comment
+  description: The comment entered by a user when resolving the case.
+  type: String
+- contextPath: Core.CaseExtraData.manual_severity
+  description: The severity level manually set by a user, which may override the calculated
+    severity for the case.
+  type: String
+- contextPath: Core.CaseExtraData.manual_description
+  description: A description of the case that was manually entered by a user.
+  type: String
+- contextPath: Core.CaseExtraData.xdr_url
+  description: The direct URL to view the case in the Cortex XDR platform.
+  type: String
+- contextPath: Core.CaseExtraData.starred
+  description: A flag indicating whether the case has been starred or marked as a
+    favorite.
+  type: Boolean
+- contextPath: Core.CaseExtraData.hosts
+  description: A comma-separated list of hostnames involved in the case.
+  type: Array
+- contextPath: Core.CaseExtraData.case_sources
+  description: The products or sources that contributed issues to this case (e.g.,
+    'XDR Agent', 'Firewall').
+  type: String
+- contextPath: Core.CaseExtraData.rule_based_score
+  description: The case's risk score as calculated by automated detection rules.
+  type: Number
+- contextPath: Core.CaseExtraData.manual_score
+  description: A risk score manually assigned to the case by a user.
+  type: Number
+- contextPath: Core.CaseExtraData.wildfire_hits
+  description: The number of times a file associated with this case was identified
+    as malicious by WildFire.
+  type: Number
+- contextPath: Core.CaseExtraData.issues_grouping_status
+  description: The current status of the issue grouping or clustering process for
+    this case.
+  type: String
+- contextPath: Core.CaseExtraData.mitre_techniques_ids_and_names
+  description: A list of MITRE ATT&CK technique IDs and names observed in the case.
+  type: Array
+- contextPath: Core.CaseExtraData.mitre_tactics_ids_and_names
+  description: A list of MITRE ATT&CK tactic IDs and names observed in the case.
+  type: Array
+- contextPath: Core.CaseExtraData.issue_categories
+  description: A comma-separated list of categories for the issues included in the
+    case.
+  type: String
+- contextPath: Core.CaseExtraData.issue_ids
+  description: IDs of related issues.
+  type: Array
+- contextPath: Core.CaseExtraData.network_artifacts.total_count
+  description: The total number of network artifacts associated with the case.
+  type: Number
+- contextPath: Core.CaseExtraData.network_artifacts.data.type
+  description: The type of network artifact (e.g., 'IP Address', 'Domain').
+  type: String
+- contextPath: Core.CaseExtraData.network_artifacts.data.issue_count
+  description: The number of issues in the case that involve this network artifact.
+  type: Number
+- contextPath: Core.CaseExtraData.network_artifacts.data.is_manual
+  description: A flag indicating whether the network artifact was added manually by
+    a user.
+  type: Boolean
+- contextPath: Core.CaseExtraData.network_artifacts.data.network_domain
+  description: The domain name of the network artifact.
+  type: String
+- contextPath: Core.CaseExtraData.network_artifacts.data.network_remote_ip
+  description: The remote IP address of the network artifact.
+  type: String
+- contextPath: Core.CaseExtraData.network_artifacts.data.network_remote_port
+  description: The remote port number of the network artifact.
+  type: String
+- contextPath: Core.CaseExtraData.network_artifacts.data.network_country
+  description: The country associated with the network artifact's IP address.
+  type: String
+- contextPath: Core.CaseExtraData.file_artifacts.total_count
+  description: The total number of file artifacts associated with the case.
+  type: Number
+- contextPath: Core.CaseExtraData.file_artifacts.data.issue_count
+  description: The number of issues in the case that involve this file artifact.
+  type: Number
+- contextPath: Core.CaseExtraData.file_artifacts.data.file_name
+  description: The name of the file artifact.
+  type: String
+- contextPath: Core.CaseExtraData.file_artifacts.data.File_sha256
+  description: The SHA256 hash of the file artifact.
+  type: String
+- contextPath: Core.CaseExtraData.file_artifacts.data.file_signature_status
+  description: The digital signature status of the file artifact.
+  type: String
+- contextPath: Core.CaseExtraData.file_artifacts.data.file_wildfire_verdict
+  description: The verdict from WildFire for this file (e.g., 'malicious', 'benign').
+  type: String
+- contextPath: Core.CaseExtraData.file_artifacts.data.is_malicous
+  description: A flag indicating whether the file artifact is considered malicious.
+  type: Boolean
+- contextPath: Core.CaseExtraData.file_artifacts.data.is_manual
+  description: A flag indicating whether the file artifact was added manually by a
+    user.
+  type: Boolean
+- contextPath: Core.CaseExtraData.file_artifacts.data.is_process
+  description: A flag indicating whether the file artifact is a process executable.
+  type: Boolean
+- contextPath: Core.CaseExtraData.file_artifacts.data.low_confidence
+  description: A flag indicating whether the verdict on the file artifact has low
+    confidence.
+  type: Boolean
+- contextPath: Core.CaseExtraData.file_artifacts.data.type
+  description: The type of the file artifact.
+  type: String
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('GetCaseExtraData', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+
+
+
+
+  def extract_ids(command_res, field_name):
+      """
+      Extract a list of IDs from a command result.
+
+      Args:
+          command_res: The result of a command. It can be either a dictionary or a list.
+          field_name: The name of the field that contains the ID.
+
+      Returns:
+          A list of the IDs extracted from the command result.
+      """
+      ids = []
+      if command_res:
+          if isinstance(command_res, dict):
+              ids = [command_res.get(field_name)] if field_name in command_res else []
+          elif isinstance(command_res, list):
+              ids = [c.get(field_name) for c in command_res if isinstance(c, dict) and field_name in c]
+      return ids
+
+
+  def get_case_extra_data(args):
+      """
+      Calls the core-get-case-extra-data command and parses the output to a standard structure.
+
+      Args:
+          args: The arguments to pass to the core-get-case-extra-data command.
+
+      Returns:
+          A dictionary containing the case data with the following keys:
+              issue_ids: A list of IDs of issues in the case.
+              network_artifacts: A list of network artifacts in the case.
+              file_artifacts: A list of file artifacts in the case.
+      """
+      demisto.debug(f"Calling core-get-case-extra-data, {args=}")
+      case_extra_data = execute_command("core-get-case-extra-data", args)
+      demisto.debug(f"After calling core-get-case-extra-data, {case_extra_data=}")
+      case = case_extra_data.get("case", {})
+      issues = case_extra_data.get("issues", {}).get("data")
+      issue_ids = extract_ids(issues, "issue_id")
+      network_artifacts = case_extra_data.get("network_artifacts")
+      file_artifacts = case_extra_data.get("file_artifacts")
+      case.update({"issue_ids": issue_ids, "network_artifacts": network_artifacts, "file_artifacts": file_artifacts})
+      return case
+
+
+  def main():  # pragma: nocover
+      """
+      This function will retrieve the extra data for the given case ID/s.
+
+      It will take the case IDs and issues limit as input and will return a list of cases with their extra data.
+      """
+      args = demisto.args()
+      case_ids = argToList(args.get("case_id", ""))
+      issues_limit = str(min(int(args.get("issues_limit", 1000)), 1000))
+      try:
+          final_results = []
+          for case_id in case_ids:
+              case_data = get_case_extra_data({"case_id": str(case_id), "issues_limit": issues_limit})
+              final_results.append(case_data)
+          return_results(
+              CommandResults(
+                  readable_output=tableToMarkdown("Cases Extra Data", final_results, headerTransform=string_to_table_header),
+                  outputs_prefix="Core.CaseExtraData",
+                  outputs_key_field="case_id",
+                  outputs=final_results,
+                  raw_response=final_results,
+              )
+          )
+      except Exception as e:
+          return_error("Error occurred while retrieving cases. Exception info:\n" + str(e))
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):  # pragma: no cover
+      main()
+
+  register_module_line('GetCaseExtraData', 'end', __line__())
+scripttarget: 0
+signature: hsIMIiYQ56MicEKwRTNWKtVqDu/+DuCSjNTmTnqaqTdE71XLEM+bSf98iubIQUjg03Elg8L1pQtOw5C2kopIpjodaGSoc0ksYGYl6LLLfmgWtwbvpHPf85MQ/NxQOR9pI9zcb4leB0nDlsnfFiOikziVTBSM+C3KEpj5zGYANyIYRH4OM9vmPbkI5e+/2jfRao8h94lZmFof1rNTGeH7S+SsiaL8SBK8Pl4TnQm41amqeHAYzi9CcoAhgVkL80x4W01yx3kHIcRWiyxLScLBTr2XR2qk6Cm8BBcmZB9VBuiW6/KFLikW4TyEY59isnNtvu9pvgzi9ZADI/yXbhEkmA==
+subtype: python3
+system: true
+tags: []
+type: python
