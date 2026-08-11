@@ -1,0 +1,69 @@
+args:
+- default: true
+  description: IP address to look up.
+  name: ip
+  required: true
+  supportedModules: []
+comment: A context script for IP entities.
+commonfields:
+  id: IPReputation
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: IPReputation
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('IPReputation', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+
+
+
+
+  def ip_reputation():
+      results = demisto.executeCommand("ip", {"ip": demisto.get(demisto.args(), "ip")})
+
+      for item in results:
+          if isError(item):
+              item["Contents"] = item["Brand"] + " returned an error.\n" + str(item["Contents"])
+
+      demisto.results(results)
+
+
+  def main():
+      ip_reputation()
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):  # pragma: no cover
+      main()
+
+  register_module_line('IPReputation', 'end', __line__())
+scripttarget: 0
+signature: euQ0FdZJXW+FB9gFP4ARSeC+Zx+R+uRPRPEAyToDsza11hgeviRzLhJEyOL3PcBKnZSi9E5go1uL3RvvhOf2206A0XA4WW7wDGaqWChJY+b/SJDdS19kpbGoKiHuC94StmL2Ehv5avI9LiaiHgnF3OLTBtKrftdCFv8HOwkpT20aBGrczhVM/OjvkF27CzZBVw8V6FJCu6QaFT3KrtB1ayyLeSzftvLzf3ChaS0lWahpLbcwD+XYDVRtxU4hXGbgR6IvnAL1h/DiJQML3xpjx96i/ZHM+lj5lO7U5Il78JvdtELjy5e1Kg7KAZ5pmAWMFe/WwSEVYrZ0KsvC66jAyQ==
+subtype: python3
+system: true
+tags:
+- enhancement
+type: python
