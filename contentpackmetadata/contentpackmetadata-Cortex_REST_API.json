@@ -19,64 +19,19 @@
 		"agentixskill": null,
 		"automation": [
 			{
-				"description": "Deprecated. Use UploadFile instead.",
+				"description": "Deprecated. Use the *DemistoUploadFileV2* script instead. Copies a file from this incident to the specified incident. The file is uploaded as an attachment to the specified incident’s Summary page, and recorded as an entry in the War Room.",
 				"fromversion": "5.0.0",
-				"id": "DemistoUploadFileV2",
-				"name": "DemistoUploadFileV2",
+				"id": "DemistoUploadFileToIncident",
+				"name": "DemistoUploadFileToIncident",
 				"tags": [
 					"DemistoAPI"
 				]
 			},
 			{
-				"description": "Deprecated. No available replacement.",
+				"description": "Deprecated. Use the *DemistoUploadFileV2* script instead. Copies a file from this alert to the specified alert. The file is uploaded as an attachment to the specified alert’s Summary page, and recorded as an entry in the War Room.",
 				"fromversion": "5.0.0",
-				"id": "DemistoLeaveAllInvestigations",
-				"name": "DemistoLeaveAllInvestigations",
-				"tags": [
-					"DemistoAPI"
-				]
-			},
-			{
-				"description": "Copies a file from this incident to the specified incident. The file is recorded as an entry in the specified incident’s War Room.",
-				"fromversion": "6.5.0",
-				"id": "UploadFile",
-				"name": "UploadFile",
-				"tags": [
-					"DemistoAPI"
-				]
-			},
-			{
-				"description": "Get all tasks for a specific incident by the given state, name and/or tag.",
-				"fromversion": "6.10.0",
-				"id": "GetIncidentTasks",
-				"name": "GetIncidentTasks",
-				"tags": [
-					"Utility"
-				]
-			},
-			{
-				"description": "Get all tasks for a specific alert by the given state, name and/or tag.",
-				"fromversion": "6.10.0",
-				"id": "GetAlertTasks",
-				"name": "GetAlertTasks",
-				"tags": [
-					"Utility"
-				]
-			},
-			{
-				"description": "Deprecated. No available replacement.",
-				"fromversion": "5.0.0",
-				"id": "DemistoSendInvite",
-				"name": "DemistoSendInvite",
-				"tags": [
-					"DemistoAPI"
-				]
-			},
-			{
-				"description": "Deprecated. Use UploadFileV2 instead.",
-				"fromversion": "5.0.0",
-				"id": "DemistoUploadFile",
-				"name": "DemistoUploadFile",
+				"id": "DemistoUploadFileToAlert",
+				"name": "DemistoUploadFileToAlert",
 				"tags": [
 					"DemistoAPI"
 				]
@@ -91,37 +46,28 @@
 				]
 			},
 			{
-				"description": "Deprecated. Use GetIncidentTasksByState instead.",
+				"description": "Deprecated. No available replacement.",
 				"fromversion": "5.0.0",
-				"id": "DemistoGetIncidentTasksByState",
-				"name": "DemistoGetIncidentTasksByState",
-				"tags": [
-					"Utility"
-				]
-			},
-			{
-				"description": "Deprecated. Use GetAlertTasksByState instead.",
-				"fromversion": "5.0.0",
-				"id": "DemistoGetAlertTasksByState",
-				"name": "DemistoGetAlertTasksByState",
-				"tags": [
-					"Utility"
-				]
-			},
-			{
-				"description": "Deprecated. Use the *DemistoUploadFileV2* script instead. Copies a file from this incident to the specified incident. The file is uploaded as an attachment to the specified incident’s Summary page, and recorded as an entry in the War Room.",
-				"fromversion": "5.0.0",
-				"id": "DemistoUploadFileToIncident",
-				"name": "DemistoUploadFileToIncident",
+				"id": "DemistoSendInvite",
+				"name": "DemistoSendInvite",
 				"tags": [
 					"DemistoAPI"
 				]
 			},
 			{
-				"description": "Deprecated. Use the *DemistoUploadFileV2* script instead. Copies a file from this alert to the specified alert. The file is uploaded as an attachment to the specified alert’s Summary page, and recorded as an entry in the War Room.",
+				"description": "Copies a file from this incident to the specified incident. The file is recorded as an entry in the specified incident’s War Room.",
+				"fromversion": "6.5.0",
+				"id": "UploadFile",
+				"name": "UploadFile",
+				"tags": [
+					"DemistoAPI"
+				]
+			},
+			{
+				"description": "Deprecated. No available replacement.",
 				"fromversion": "5.0.0",
-				"id": "DemistoUploadFileToAlert",
-				"name": "DemistoUploadFileToAlert",
+				"id": "DemistoLeaveAllInvestigations",
+				"name": "DemistoLeaveAllInvestigations",
 				"tags": [
 					"DemistoAPI"
 				]
@@ -154,12 +100,66 @@
 				]
 			},
 			{
+				"description": "Deprecated. Use UploadFile instead.",
+				"fromversion": "5.0.0",
+				"id": "DemistoUploadFileV2",
+				"name": "DemistoUploadFileV2",
+				"tags": [
+					"DemistoAPI"
+				]
+			},
+			{
+				"description": "Deprecated. Use GetIncidentTasksByState instead.",
+				"fromversion": "5.0.0",
+				"id": "DemistoGetIncidentTasksByState",
+				"name": "DemistoGetIncidentTasksByState",
+				"tags": [
+					"Utility"
+				]
+			},
+			{
+				"description": "Deprecated. Use GetAlertTasksByState instead.",
+				"fromversion": "5.0.0",
+				"id": "DemistoGetAlertTasksByState",
+				"name": "DemistoGetAlertTasksByState",
+				"tags": [
+					"Utility"
+				]
+			},
+			{
 				"description": "Creates markdown tables based on information from the GetTasksWithSection command.",
 				"fromversion": "6.0.0",
 				"id": "SetIRProceduresMarkdown",
 				"name": "SetIRProceduresMarkdown",
 				"tags": [
 					"dynamic-section"
+				]
+			},
+			{
+				"description": "Deprecated. Use UploadFileV2 instead.",
+				"fromversion": "5.0.0",
+				"id": "DemistoUploadFile",
+				"name": "DemistoUploadFile",
+				"tags": [
+					"DemistoAPI"
+				]
+			},
+			{
+				"description": "Get all tasks for a specific incident by the given state, name and/or tag.",
+				"fromversion": "6.10.0",
+				"id": "GetIncidentTasks",
+				"name": "GetIncidentTasks",
+				"tags": [
+					"Utility"
+				]
+			},
+			{
+				"description": "Get all tasks for a specific alert by the given state, name and/or tag.",
+				"fromversion": "6.10.0",
+				"id": "GetAlertTasks",
+				"name": "GetAlertTasks",
+				"tags": [
+					"Utility"
 				]
 			}
 		],
@@ -292,7 +292,7 @@
 		"wizard": null
 	},
 	"created": "2025-03-29T09:43:41Z",
-	"currentVersion": "1.5.4",
+	"currentVersion": "1.5.5",
 	"defaultDataSource": {
 		"id": "",
 		"name": ""
@@ -303,7 +303,7 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.42.15",
+			"minVersion": "1.42.16",
 			"name": "Base"
 		}
 	},
@@ -330,7 +330,7 @@
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "1.5.4",
+	"itemVersion": "1.5.5",
 	"keywords": [
 		"Demisto REST API",
 		"Core REST API"
@@ -367,9 +367,9 @@
 	],
 	"tags": [],
 	"toServerVersion": "",
-	"updated": "2026-08-03T20:08:40Z",
+	"updated": "2026-08-10T20:03:20Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "11600876",
+	"versionInfo": "11814182",
 	"videos": []
 }
