@@ -1,0 +1,53 @@
+comment: Expose the alert owner into AlertOwner context key
+commonfields:
+  id: ExposeAlertOwner
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ExposeAlertOwner
+outputs:
+- contextPath: IncidentOwner.name
+  description: Alert owner full name
+- contextPath: IncidentOwner.email
+  description: Alert owner email address
+- contextPath: IncidentOwner.phone
+  description: Alert owner phone number
+- contextPath: IncidentOwner.roles
+  description: Alert owner roles
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.44
+  var owner = incidents[0].owner;
+  owner = owner.replace(/\\/g,'\\\\');
+  var users = executeCommand('getUsers', {});
+  var ownerJSON = dq(users,'Contents(val.username==="' + owner + '")');
+  if (ownerJSON) {
+      setContext('IncidentOwner',ownerJSON);
+      return 'Incident owner set in IncidentOwner context key';
+  } else {
+      return 'Incident has no owner';
+  }
+scripttarget: 0
+signature: gspoh01j9DTmEIsefB2coNMSPw4s3ikCbtWNB1h9QOvSijtQp/gfpV0Hb9Hwj+avqmcT95QNzP0EzTsrvnRu4B66xMbg3AKagR5m3wTyT8KA1YP9gGj51CfpeoSq7BOoNPAhTo/bjSB2JoiwBav8MNR0zcckngNuDyekvEvqPjp6P9gX5W1OteFTp25wIJ4z4pD7d0MnDj6+kVdCuYKlOnyeh+Y9j9/67/hQDQzJX+eaLHgOtCSt0BmA7umymsFwpSc4IKLUIfwqBKBzODW0tp40p4QvVAPPZiQkEAiVigR3ercvpckrDbdhv+QncPs6GLNOdtigL3XstFUwxfynqw==
+system: true
+tags:
+- Utility
+type: javascript
