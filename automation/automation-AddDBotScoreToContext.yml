@@ -1,0 +1,91 @@
+args:
+- description: The indicator value (ex 1.1.1.1).
+  name: indicator
+  required: true
+  supportedModules: []
+- description: The indicator type (ex ip, url, email, domain).
+  name: indicatorType
+  required: true
+  supportedModules: []
+- description: The indicator score.
+  name: score
+  required: true
+  supportedModules: []
+- description: The vendor to assign to this DBotScoreEntry.
+  name: vendor
+  required: true
+  supportedModules: []
+- auto: PREDEFINED
+  description: The reputation reliability.
+  name: reliability
+  predefined:
+  - A+ - 3rd party enrichment
+  - A - Completely reliable
+  - B - Usually reliable
+  - C - Fairly reliable
+  - D - Not usually reliable
+  - E - Unreliable
+  - F - Reliability cannot be judged
+  supportedModules: []
+comment: Add DBot score to context for indicators with custom vendor, score, reliability,
+  and type.
+commonfields:
+  id: AddDBotScoreToContext
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: AddDBotScoreToContext
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('AddDBotScoreToContext', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+
+
+
+
+  def main():
+      indicator = demisto.args().get("indicator")
+      indicatorType = demisto.args().get("indicatorType")
+      score = int(demisto.args().get("score"))
+      vendor = demisto.args().get("vendor")
+      reliability = demisto.args().get("reliability", None)
+
+      dbotscore = {"Indicator": indicator, "Type": indicatorType, "Vendor": vendor, "Score": score, "Reliability": reliability}
+
+      command_results = CommandResults(outputs_prefix="DBotScore", outputs=dbotscore)
+      return_results(command_results)
+
+
+  if __name__ == "__builtin__" or __name__ == "builtins":
+      main()
+
+  register_module_line('AddDBotScoreToContext', 'end', __line__())
+scripttarget: 0
+signature: QkLXiD2uwCt8/vZtK9KxvlinFl99E8vzplPc3/QmwFKUEmNoUgeYySWo+PG/BBj26SJJm7K7a9443BWlf3lxl8h51i1b6ZnZK37bSrK///jvJN8Xuz5JjOOFTOyNVJNWdEJgLvTMiXRh6xNgV9JeU9j1bFpaYgavX7cZTYdVderjs9Qe6bPSHfFDTuq2b0G5fZByrkpmocVGme3H+VEvfGiIh7HTeWEuQkUEcXb5vPCntNmTExLxWVCxZko3PdASf2ihytzpI0zjlGwU9qv5eCr+cc6gZll01/VBVkY0EmAaCRDWhXmiUrr6xK2HZoEppk+whx5fGX4Vq9JHdoeMTg==
+subtype: python3
+system: true
+tags: []
+type: python
