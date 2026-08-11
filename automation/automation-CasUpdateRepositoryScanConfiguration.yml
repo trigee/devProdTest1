@@ -1,0 +1,281 @@
+args:
+- description: List of repository asset IDs to configure scanners for.
+  isArray: true
+  name: repository_ids
+  required: true
+  supportedModules: []
+- auto: PREDEFINED
+  description: List of scanners to enable.
+  isArray: true
+  name: enable_scanners
+  predefined:
+  - SECRETS
+  - IAC
+  - SCA
+  supportedModules: []
+- auto: PREDEFINED
+  description: List of scanners to disable.
+  isArray: true
+  name: disable_scanners
+  predefined:
+  - SECRETS
+  - IAC
+  - SCA
+  supportedModules: []
+- auto: PREDEFINED
+  description: Enable live validation of discovered secrets. This argument only relevant
+    when SECRETS scanner is enabled.
+  name: secret_validation
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+  type: boolean
+- auto: PREDEFINED
+  description: Enable git history secrets scan. This argument only relevant when SECRETS
+    scanner is enabled.
+  name: enable_git_history
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+  type: boolean
+- auto: PREDEFINED
+  description: Enable scanning on pull requests.
+  name: pr_scanning
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+  type: boolean
+- auto: PREDEFINED
+  description: Block deployment on scanner errors.
+  name: block_on_error
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+  type: boolean
+- auto: PREDEFINED
+  description: Enable tagging of resource blocks.
+  name: tag_resource_blocks
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+  type: boolean
+- auto: PREDEFINED
+  description: Enable tagging of module blocks.
+  name: tag_module_blocks
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+  type: boolean
+- description: List of file paths to exclude from scanning.
+  isArray: true
+  name: exclude_paths
+  supportedModules: []
+comment: Enable or disable scanners with the specified configuration.
+commonfields:
+  id: CasUpdateRepositoryScanConfiguration
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.13.0
+    isoverridable: false
+    itemVersion: 3.5.81
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.8319994
+enabled: true
+engineinfo: {}
+internal: true
+mainengineinfo: {}
+name: CasUpdateRepositoryScanConfiguration
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: Cas.RepositoryScanConfiguration
+  description: The repository IDs that have been changed.
+  type: String
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('CasUpdateRepositoryScanConfiguration', 'start', __line__())
+  CONSTANT_PACK_VERSION = '3.5.81'
+  demisto.debug('pack id = Core, pack version = 3.5.81')
+
+
+  import json
+  from typing import Any
+
+  ALLOWED_SCANNERS = ["SCA", "IAC", "SECRETS"]
+
+
+  def validate_scanner_name(scanner_name: str):
+      """Validate that a scanner name is allowed.
+
+      Args:
+          scanner_name (str): The name of the scanner to validate.
+
+      Returns:
+          bool: True if the scanner name is valid.
+
+      Raises:
+          ValueError: If the scanner name is not in the list of allowed scanners.
+
+      """
+      if scanner_name not in ALLOWED_SCANNERS:
+          raise ValueError(f"Invalid scanner '{scanner_name}'. Allowed scanners are: {', '.join(sorted(ALLOWED_SCANNERS))}")
+
+
+  def build_scanner_config_payload(args: dict) -> dict:
+      """Build a scanner configuration payload for repository scanning.
+
+      Args:
+          args (dict): Dictionary containing configuration arguments.
+                      Expected to include:
+                          - enable_scanners (list): List of scanners to enable.
+                          - disable_scanners (list): List of scanners to disable.
+                          - pr_scanning (bool): Whether to enable PR scanning.
+                          - block_on_error (bool): Whether to block on scanning errors.
+                          - tag_resource_blocks (bool): Whether to tag resource blocks.
+                          - tag_module_blocks (bool): Whether to tag module blocks.
+                          - exclude_paths (list): List of paths to exclude from scanning.
+
+      Returns:
+          dict: Scanner configuration payload.
+
+      Raises:
+          ValueError: If the same scanner is specified in both enable and disabled lists.
+
+      """
+      enabled_scanners = argToList(args.get("enable_scanners", []))
+      disabled_scanners = argToList(args.get("disable_scanners", []))
+      secret_validation = argToBoolean(args.get("secret_validation", "False"))
+      enable_git_history = argToBoolean(args.get("enable_git_history", "False"))
+      enable_pr_scanning = arg_to_bool_or_none(args.get("pr_scanning"))
+      block_on_error = arg_to_bool_or_none(args.get("block_on_error"))
+      tag_resource_blocks = arg_to_bool_or_none(args.get("tag_resource_blocks"))
+      tag_module_blocks = arg_to_bool_or_none(args.get("tag_module_blocks"))
+      exclude_paths = argToList(args.get("exclude_paths", []))
+
+      overlap = set(enabled_scanners) & set(disabled_scanners)
+      if overlap:
+          raise ValueError(f"Cannot enable and disable the same scanner(s) simultaneously: {', '.join(overlap)}")
+
+      enabled_scanners_upper = [s.upper() for s in enabled_scanners]
+      if (enable_git_history or secret_validation) and "SECRETS" not in enabled_scanners_upper:
+          raise ValueError(
+              "Cannot enable 'secret_validation' or 'enable_git_history' without enabling the SECRETS scanner,"
+              "Please add 'SECRETS' to 'enable_scanners'."
+          )
+
+      # Build scanners configuration
+      scanners: dict[str, Any] = {}
+      for scanner in enabled_scanners_upper:
+          validate_scanner_name(scanner)
+          if scanner == "SECRETS":
+              scanners["SECRETS"] = {
+                  "isEnabled": True,
+                  "scanOptions": {"secretValidation": secret_validation, "gitHistory": enable_git_history},
+              }
+          else:
+              scanners[scanner] = {"isEnabled": True}
+
+      for scanner in disabled_scanners:
+          validate_scanner_name(scanner)
+          scanners[scanner.upper()] = {"isEnabled": False}
+
+      # Build scan configuration payload with only relevant arguments
+      scan_configuration: dict[str, Any] = {}
+
+      if scanners:
+          scan_configuration["scanners"] = scanners
+
+      if args.get("pr_scanning") is not None:
+          scan_configuration["prScanning"] = {
+              "isEnabled": enable_pr_scanning,
+              **({"blockOnError": block_on_error} if block_on_error is not None else {}),
+          }
+
+      if args.get("tag_resource_blocks") is not None or args.get("tag_module_blocks") is not None:
+          scan_configuration["taggingBot"] = {
+              **({"tagResourceBlocks": tag_resource_blocks} if tag_resource_blocks is not None else {}),
+              **({"tagModuleBlocks": tag_module_blocks} if tag_module_blocks is not None else {}),
+          }
+
+      if exclude_paths:
+          scan_configuration["excludedPaths"] = exclude_paths
+
+      demisto.debug(f"{scan_configuration=}")
+
+      return scan_configuration
+
+
+  def enable_scanners_command(args: dict) -> CommandResults:
+      """Updates repository scan configuration by enabling/disabling scanners and setting scan options.
+
+      Args:
+          args (dict): Dictionary containing configuration arguments including repository_ids,
+                      enabled_scanners, disabled_scanners, and other scan settings.
+
+      Returns:
+          CommandResults: Command results with readable output showing update status and raw response.
+
+      """
+      repository_ids = argToList(args.get("repository_ids"))
+      payload = build_scanner_config_payload(args)
+
+      # Send request to update repository scan configuration
+      for repository_id in repository_ids:
+          demisto._apiCall(
+              method="PUT",
+              path=f"/api/webapp/public_api/appsec/v1/repositories/{repository_id}/scan-configuration",
+              data=json.dumps(payload),
+              headers={"content-type": "application/json"},
+          )
+
+      readable_output = f"Successfully updated repositories: {', '.join(repository_ids)}"
+
+      return CommandResults(
+          readable_output=readable_output,
+          outputs_prefix="Cas.RepositoryScanConfiguration",
+          outputs=repository_ids,
+          raw_response=repository_ids,
+      )
+
+
+  def main() -> None:
+      """Update repository scan configuration by enabling/disabling scanners and setting scan options."""
+      try:
+          args = demisto.args()
+          command_results = enable_scanners_command(args)
+          return_results(command_results)
+      except Exception as e:
+          return_error(f"Failed to execute CortexUpdateAppSecScanConfiguration. Error:\n{e!s}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('CasUpdateRepositoryScanConfiguration', 'end', __line__())
+scripttarget: 0
+signature: Mv2LGiodfJDvd+RDvckLhY7G2PTYJwJLQWdKWGx26C+lNx8Opw1BPzFqqlOFwbkEfIqTQetUxZTxnQAmWrrqfuAPVKSrVXWDCbTWBzWrUmgKWuK+6zNldms7HpB5WdRHnIgWtH1cC7q3KEk5UB9AZNK+5BK7LdWtno2zxvI1WQ+SKR1qlXtW4YdYCQT9TZTPB+15jCxNU9QtjTJahRTWUQ9dQt+x+Msz4tUkUvRnRsJ4DxJKiz142fEh1xKE1+L+SSVkoDZsxO74KbeLtM22ivunMhmbnaWtK9XPBIMvXa/TxY+iMf1WhpmkNcEG7nUjPKKGw1w1p0sahVDjpEbywQ==
+source: agentix
+subtype: python3
+system: true
+tags:
+- Utilities
+type: python
