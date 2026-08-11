@@ -1,0 +1,88 @@
+args:
+- description: An array of email addresses to be filtered by domain.
+  name: value
+  required: true
+  supportedModules: []
+- description: A regex pattern who's groups to be replaced by the replaceWith argument.
+  name: regex
+  required: true
+  supportedModules: []
+- description: The replacement string.
+  name: replace_with
+  required: true
+  supportedModules: []
+comment: Returns a string with all matches of a regex pattern groups replaced by a
+  replacement.
+commonfields:
+  id: ReplaceMatchGroup
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ReplaceMatchGroup
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('ReplaceMatchGroup', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+  import re
+
+
+
+
+
+  def main(args):
+      value = args["value"]
+      replace_with = args["replace_with"]
+      output = []
+      start = 0
+
+      try:
+          regex = re.compile(args["regex"])
+      except (re.error, TypeError):
+          raise DemistoException("Could not compile regex.")
+
+      for match in regex.finditer(value):
+          for index, _ in enumerate(match.groups(), start=1):
+              end = match.start(index)
+              output.append(value[start:end])
+              output.append(replace_with)
+              start = match.end(index)
+      output.append(value[start:])  # Handling the tail of the string
+
+      return "".join(output)
+
+
+  if __name__ in ["__builtin__", "builtins", "__main__"]:
+      result = main(demisto.args())
+      demisto.results(result)
+
+  register_module_line('ReplaceMatchGroup', 'end', __line__())
+scripttarget: 0
+signature: 0HGa+aiBQqdhcGYK48xfXj8Ss9uTdNIzXJ3bMOYzE/Jx45OMr838cJHoaA1Pl91h+m0La+TyNB80wib7PJssBkf1qiY3cZ37pUprCOEvupA9wIUrEaDOkeUi70EVtstxAUyKY3ClIndzRhIarBd+cFleuJN9PMkf3NsK+tw7ELc8NYNjpaCIvTM8/Qe9Y+TtF1we780knBZftpts/9+FoCK/4n0l4tZ/7guYo0l3DVjN6KiYPgUMv7dOLmsiYa9LxuPua2BwqmbbObaQuLNCSKXrSqgXxsvKq4NK9dzXE3K+ggW+ohYVNih6tNbM0pg+gzHNsbKVkNuIaCLv+jw7FQ==
+subtype: python3
+system: true
+tags:
+- transformer
+type: python
