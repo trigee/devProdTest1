@@ -1,0 +1,94 @@
+args:
+- description: The incident type for which to return incident field names.
+  name: incident_type
+  required: true
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Whether to shorten the incident field names. If "true", will cause
+    output to use shortened field names. The default value is "false".
+  name: short_names
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Whether to only return non-system fields. If "true", will only output
+    non-system fields. The default value is "false".
+  name: exclude_system
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Whether to only include fields that are explicitly associated to the
+    incident type. If "true", only fields which are explicitly associated to the incident
+    type will be included (i.e., excludes fields for which the "associate to any"
+    checkbox is selected). The default value is "false".
+  name: explicit_only
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "true"
+  description: Pretty-prints the output.
+  name: pprint
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+comment: Returns the incident field names associated to the specified incident type.
+commonfields:
+  id: GetFieldsByIncidentType
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - cloud
+    - cloud_runtime_security
+    - cloud_posture
+    - xsiam
+    - edr
+    toServerVersion: ""
+dependson:
+  must:
+  - '|||core-api-get'
+deprecated: true
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: GetFieldsByIncidentType
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  register_module_line('GetFieldsByIncidentType', 'start', __line__())
+
+  return_results(demisto.executeCommand('GetFieldsByAlertType', demisto.args()))
+
+  register_module_line('GetFieldsByIncidentType', 'end', __line__())
+scripttarget: 0
+signature: oAJaRx7DjbtXchvIjkgGeAWbtK/CybgfLWDXjNt0hJPYxQ1iUd9zUtNUuT9jgzqDchycg+XJfwBOCBt+/rfA+6itIF4pnSfMZ/RQX6oimLp+L2yLc3TWxks5Znqw303ouq0vYE6qxLTJEa9P2j39rRi90IB5Z3lv1T7HX2CH5TJCMkpnG5ogCMBG27Gmnjlp80Qh5MQUG6PyqtgWFaN0BFlsM+ODKYINF/FvHxOFoLUr2g1Bq6WwVikrzubJtx8R/MWERPB74pT2dDfn7kaVWlNYyxGdlHqdNM7jBXZuMl8tzhzrijHoCHzs+eFNr+kF0XCy2askJrPFUUwoz6Ny/Q==
+subtype: python3
+system: true
+tags: []
+type: python
