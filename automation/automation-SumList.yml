@@ -1,0 +1,88 @@
+args:
+- default: true
+  description: A list for which to sum the list values.
+  isArray: true
+  name: value
+  required: true
+  supportedModules: []
+comment: "Sums a List\ne.g. [\"25\", \"10\", \"25\"] =>  \"60\"\n\nThis is an example
+  for number transformer.\n "
+commonfields:
+  id: SumList
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.28
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: SumList
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('SumList', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.28'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.28')
+
+
+
+  def sum_value(value):
+      if isinstance(value, float):
+          return value
+
+      if isinstance(value, str):
+          try:
+              value = [float(item) for item in value.split(",")]
+          except ValueError:
+              return "error", "error"
+
+      elif isinstance(value, list):
+          try:
+              value = [float(item) for item in value]
+          except ValueError:
+              return "error", "error"
+
+      result = sum(value)
+      return result, "ok"
+
+
+  def main():
+      value = demisto.args()["value"]
+      result, return_type = sum_value(value)
+
+      if return_type == "error":
+          return_error("This transformer applies only to list of numbers.")
+      demisto.results(result)
+
+
+  # python2 uses __builtin__ python3 uses builtins
+  if __name__ == "__builtin__" or __name__ == "builtins":
+      main()
+
+  register_module_line('SumList', 'end', __line__())
+scripttarget: 0
+signature: O8OggI9fEVphw0ByAqX34F1o9auZEYE+5VMznf5FUEvFwp8KDYn3F+J3BblZMN0RPkbKj+g93fIMo99No6e4L6vZ66eEMTOR0CfHf0gnBGZ7JXYxHodUKqDqF3A4US+8XFr95uf7SWAV0fQbo99Opb6GfUtkrZtSNJZ1y/EPkY/HEucabx59kEyE9kgGpW5l2jP6esJ4ReihzfGQyMGHdO9/rxIlSpoS5Y0IrxR9/XrDozYf9fpsgDJJvAGs7kCn0QKELXBstO1zgd18yZeBCJzKLVi8P7iLZlGg+k1+B45UdLIQm6vTtbc0/7EKkICGfe7cUc8ECq6STYt6HAU8/g==
+subtype: python3
+system: true
+tags:
+- transformer
+- number
+- entirelist
+type: python
