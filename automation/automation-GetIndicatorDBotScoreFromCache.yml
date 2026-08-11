@@ -1,0 +1,142 @@
+args:
+- description: A comma-separated list of indicator values to check.
+  isArray: true
+  name: value
+  required: true
+  supportedModules: []
+comment: Get the overall score for the indicator as calculated by DBot.
+commonfields:
+  id: GetIndicatorDBotScoreFromCache
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: GetIndicatorDBotScoreFromCache
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  // pack version: 1.19.90
+  function escapeSpecialCharacters(text) {
+      return text
+          .replace(/\\/g, '\\\\')
+          .replace(/\n/g, '\\n')
+          .replace(/\t/g, '\\t')
+          .replace(/\r/g, '\\r')
+          .replace(/\(/g, '\\(')
+          .replace(/\)/g, '\\)')
+          .replace(/\[/g, '\\[')
+          .replace(/\]/g, '\\]')
+          .replace(/\^/g, '\\^')
+          .replace(/:/g, '\\:')
+          .replace(/"/g, '\\"');
+  }
+
+
+  var values = argToList(args.value)
+  var uniqueValues = new Set(values.map(v => v.toLowerCase()));
+  var uniqueValuesEscapeCharacters = Array.from(uniqueValues, item => escapeSpecialCharacters(item));
+  var uniqueValuesString = uniqueValuesEscapeCharacters.join('" "')
+
+  var query = `value:("${uniqueValuesString}")`;
+
+  var indicatorsRes = executeCommand('findIndicators', {
+      query: query,
+      populateFields: 'name,score,aggregatedReliability,type,expirationStatus'
+  });
+
+    if (!isValidRes(indicatorsRes)) {
+        if (indicatorsRes[0].Contents) {
+            return {
+                ContentsFormat: formats.markdown,
+                Type: entryTypes.error,
+                Contents: indicatorsRes[0].Contents
+            };
+        }
+    }
+
+  if (indicatorsRes && indicatorsRes[0] && indicatorsRes[0]) {
+      var returnEntries = [];
+
+
+      for (var data of indicatorsRes[0].Contents) {
+          var score = data["score"];
+          var reliability = data["aggregatedReliability"];
+          var indicatorType = data["indicator_type"];
+          var expirationStatus = data["expirationStatus"] !== "active";
+          var value = data["value"];
+
+          var dbotScore = {
+              Indicator: value,
+              Type: indicatorType,
+              Vendor: "XSOAR",
+              Score: score,
+              Reliability: reliability,
+              Expired: expirationStatus
+          };
+
+          returnEntries.push(dbotScore);
+
+          uniqueValues.delete(value.toLowerCase()); // for multiple IOCs with same value but different casing
+      }
+
+      var valuesNotFound = Array.from(new Set(
+          values.filter(v => uniqueValues.has(v.toLowerCase()))
+      ));
+
+      var entries = [];
+
+      if (returnEntries.length > 0) {
+          entries.push({
+              Type: entryTypes.note,
+              ReadableContentsFormat: formats.markdown,
+              Contents: returnEntries,
+              ContentsFormat: formats.json,
+              HumanReadable: tableToMarkdown('Indicator', returnEntries),
+              EntryContext: {
+                  'DBotScoreCache': returnEntries
+              }
+          });
+      }
+
+      if (valuesNotFound.length == 1) {
+          entries.push({
+              Type: entryTypes.note,
+              ReadableContentsFormat: formats.text,
+              Contents: `Could not find ${valuesNotFound[0]} in cache`
+          });
+
+      }
+
+      if (valuesNotFound.length > 1) {
+          entries.push({
+              Type: entryTypes.note,
+              HumanReadable: tableToMarkdown('Could not find in cache', valuesNotFound, ['Values']),
+              ReadableContentsFormat: formats.markdown,
+              Contents: {}
+          });
+
+      }
+
+      return entries;
+  }
+scripttarget: 0
+signature: KxrzWjLk0kH61I6CSjoGIpsvKZnObLkMgA0EivBromDR9buCUIx9kO55GpCGIqeT3S1/6xewFsNPlVcWBDzQkrbOLsqUg6ehxf/p9Svt3cBm7wM/lbCT2OEgohidK9Qbw6tYA6A+6CGFH5k1yF9oAdKsOjbUGKHRs5NiEJ8ojB3jDrylMK8C+BGOqp+zhH6V/d6CUyzffsBaKCcTHyOVHLcTj06VIC6VV2lBNuEgg/dxi/cWTJyY517a8XeqtMFTpWkmJ9hkn2DBXZwqKS5TLBFWiQogpptr8HIVg/wK6YKUOHh1e4d35vXNsWvtPIZM40WbMExc1K61WMXMCNd0Sg==
+system: true
+tags: []
+type: javascript
