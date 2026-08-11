@@ -1,0 +1,120 @@
+args:
+- default: true
+  description: Entry ID of a file entry to retrieve strings from.
+  name: entry
+  required: true
+  supportedModules: []
+- description: Number of consecutive characters to be considered a string - default
+    is 4.
+  name: chars
+  supportedModules: []
+- description: Display first 'size' results - default is 1024.
+  name: size
+  supportedModules: []
+- description: Regex to filter the strings - compiled with ignore case.
+  name: filter
+  supportedModules: []
+comment: Extract strings from a file with optional filter - similar to binutils strings
+  command.
+commonfields:
+  id: Strings
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10404775
+engineinfo: {}
+mainengineinfo: {}
+name: Strings
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('Strings', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+  import re
+  import string
+
+
+
+
+
+  def strings(args):
+      # Optional arguments and default values
+      chars = 4
+      if "chars" in args:
+          chars = int(args["chars"])
+      size = 1024
+      if "size" in args:
+          size = int(args["size"])
+      regex = None
+      if "filter" in args:
+          regex = re.compile(args["filter"], re.IGNORECASE)
+      fEntry = demisto.executeCommand("getFilePath", {"id": args["entry"]})[0]
+      if not isError(fEntry):
+          matches = []
+          # type: ignore[call-overload]
+          with open(demisto.get(fEntry, "Contents.path"), buffering=1024 * 1024, errors="ignore") as f:  # pragma: no cover
+              buff = ""
+              c = f.read(1)
+              while c != "":
+                  if c in string.printable:
+                      buff += c
+                  else:
+                      if len(buff) >= chars:
+                          if regex:
+                              if regex.match(buff):
+                                  matches.append(buff)
+                          else:
+                              matches.append(buff)
+                          if len(matches) >= size:
+                              break
+                      buff = ""
+                  c = f.read(1)
+              if len(buff) >= chars and len(matches) < size:
+                  if regex:
+                      if regex.match(buff):
+                          matches.append(buff)
+                  else:
+                      matches.append(buff)
+          if matches:
+              return "\n".join(matches)
+          else:
+              return "No strings were found."
+      else:
+          return fEntry  # pragma: no cover
+
+
+  def main():  # pragma: no cover
+      args = demisto.args()
+      demisto.results(strings(args))
+
+
+  if __name__ in ["__main__", "builtin", "builtins"]:
+      main()
+
+  register_module_line('Strings', 'end', __line__())
+scripttarget: 0
+signature: K3MXIsp2JVGeq62WHLBXRsGtt7uvkxgFwIJhE92SA3ORADd27KouOyhTlBHsGsY5+iR/K8Y2yB/+kfHRsnGpKMSROpmNQef8awBsrEL6zQX5AQuLaT/NgC8hqX8Knfkfw8kNC9EOO7h9EObXfjnGtSllO46n6RGJuL++2s+Do290hxL6Q7nVl7LhyN6vBxtqMkHKDQU2bGToS02cDuPPU3a36S+w4s4DYSPWpBwLm9z5fBbwnSILkOr5Bv28KgDBrvM8n2haQQNndwms/vcYd1M7GKsj7vNcVCZB2t0Ioj581x7K0z/fao1AT89tEn3XbmALDLNvr4TlEDD2DJW+lA==
+subtype: python3
+system: true
+tags:
+- server
+- file
+type: python
