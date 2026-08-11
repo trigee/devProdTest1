@@ -1,0 +1,78 @@
+args:
+- default: true
+  description: Entries with the given tag will be marked as evidence.
+  name: tag
+  required: true
+  supportedModules: []
+- description: Description for the Evidence item.
+  name: description
+  required: true
+  supportedModules: []
+comment: Mark entries as evidence if they are tagged with given tag.
+commonfields:
+  id: MarkAsEvidenceByTag
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: MarkAsEvidenceByTag
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('MarkAsEvidenceByTag', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+
+
+
+  entries = demisto.executeCommand("getEntries", {})
+  if isError(entries[0]):
+      demisto.results({"Type": entryTypes["error"], "ContentsFormat": formats["text"], "Contents": "Unable to retrieve entries"})
+  else:
+      ids = []
+      for e in entries:
+          tags = e.get("Metadata", {}).get("tags")
+          if not tags:
+              tags = []
+          if demisto.getArg("tag") in tags:
+              ids.append(e["Metadata"]["id"])
+      if len(ids) > 0:
+          for i in ids:
+              demisto.results(demisto.executeCommand("markAsEvidence", {"id": i, "description": demisto.getArg("description")}))
+      else:
+          demisto.results(
+              {
+                  "Type": entryTypes["note"],
+                  "ContentsFormat": formats["text"],
+                  "Contents": "No entries with '" + demisto.getArg("tag") + "' found",
+              }
+          )
+
+  register_module_line('MarkAsEvidenceByTag', 'end', __line__())
+scripttarget: 0
+signature: jKlwUXJ4xFW6zDc7FI1B65SHJBFU1l5gVDDIX/1F1kS9aDcRo6yBTv8moZDkG8PSJT41VoKwV4qQAZ0W15UpdY8bLFZWYNglNbBbavyVBqoJqs8k4l06RtlAnimbe6EoOO52cS6GHHwRnKn4Nhi9uIHV8kB3bPhHGHGWMqjJjW5cPBdTXjKBiV3g9Eiec1lzAqPcbl/rf1agPKB3ODN2SnVPUrAjje8/NeOtKtWguaPbLwUUv4fxxljKVyH0JITnWoWZzMs42duqEm/bf3Fqd84Bns9fIXQSH6DbNoil8JrdSxrQJ+QpzNzEM+YS9mEot1n1wuUCn/ktjaBVrGFuWA==
+subtype: python3
+system: true
+tags:
+- Utility
+type: python
