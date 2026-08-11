@@ -1,0 +1,120 @@
+args:
+- description: Latitude and Longitude coordinates for the first location.  Required
+    format 1.23,4.56.
+  isArray: true
+  name: src_coords
+  required: true
+  supportedModules: []
+- description: Latitude and Longitude coordinates for the second location.  Required
+    format 1.23,4.56.
+  isArray: true
+  name: dest_coords
+  supportedModules: []
+comment: Computes the distance between two sets of coordinates, in miles.
+commonfields:
+  id: impossibleTravelerGetDistance
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.6.0
+    isoverridable: false
+    itemVersion: 3.5.81
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/py3-tools:1.0.0.10120494
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: impossibleTravelerGetDistance
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: GeoEvents
+  description: The calculated events for each input.
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('impossibleTravelerGetDistance', 'start', __line__())
+  CONSTANT_PACK_VERSION = '3.5.81'
+  demisto.debug('pack id = Core, pack version = 3.5.81')
+
+
+  import itertools
+
+  import geopy.distance
+  import urllib3
+
+
+  urllib3.disable_warnings()
+
+
+  def get_distances_list(src_coords_list: list, events_dict: dict):
+      distance_list = []
+      for unique_pair in itertools.combinations(src_coords_list, 2):
+          geo_distance = round(geopy.distance.geodesic(unique_pair[0], unique_pair[1]).miles, 2)
+          hr = f"Calculated Distance: {str(geo_distance)} miles."
+          context = {
+              "distance": geo_distance,
+              "src_coords": unique_pair[0],
+              "dest_coords": unique_pair[1],
+              "source_ip": events_dict[unique_pair[0]]["ip"],
+              "source_country": events_dict[unique_pair[0]]["Country"],
+              "dest_ip": events_dict[unique_pair[1]]["ip"],
+              "dest_country": events_dict[unique_pair[1]]["Country"],
+              "timestamp": events_dict[unique_pair[0]]["event_timestamp"],
+              "identity": events_dict[unique_pair[0]]["identity_display_name"],
+          }
+          distance_list.append(
+              CommandResults(readable_output=hr, outputs=context, outputs_prefix="GeoEvents", outputs_key_field="")
+          )
+      return distance_list
+
+
+  def verify_coords(args: dict):
+      """
+      Verify the two given coords lists are identical - we receive two lists (and not one) for BC reasons
+      Args:
+          args: the script's arguments
+      """
+
+      if not set(argToList(args["src_coords"])) == set(argToList(args["dest_coords"])):
+          raise ValueError("The source coordination list and the destination coordination list should be identical.")
+
+
+  def generate_evetns_dict():
+      existing = demisto.get(demisto.context(), "ImpossibleTraveler.Events")
+      return {o["location"]: o for o in existing}
+
+
+  def main():
+      try:
+          events_dict = generate_evetns_dict()
+          args = demisto.args()
+          verify_coords(args)
+          return_results(get_distances_list(argToList(args["src_coords"]), events_dict))
+
+      except Exception as e:
+          return_error("Error occurred while parsing output from command. Exception info:\n" + str(e))
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('impossibleTravelerGetDistance', 'end', __line__())
+scripttarget: 0
+signature: tiC5RtqtnM4MOpZGRBOs/DrOv22OfFLeGYfTRU1Nca9CBjT0hWbhalKiF69wH4Oc4KNxt8d9BKk08MZDSiZyUUHLZFTrqKq/2DbHH7aTY/hy3fyYAzytoczcGfuvZJeJrzcql/hnqAK5Z6KZB2AW35i5w1MW+Wr2eKBqJW7iyExJH6CIudQDAYdOwViIt2F3bs2nTSCuyVjC9xFG5oSb8PKXBYc9/VnaqIutaPnNHVC3svFXtNSleg6wDodctwcSkJl42/xWgj/UpukdOrMnIFp5h29avC/0H9bA5NMas/FULlZThbJ+yHLmYdzPqrmrSzPWc+AQFlilKUAoLonmrw==
+subtype: python3
+system: true
+tags:
+- Utilities
+type: python
