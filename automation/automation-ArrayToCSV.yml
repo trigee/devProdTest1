@@ -1,0 +1,73 @@
+args:
+- default: true
+  description: An array of strings input.
+  isArray: true
+  name: value
+  supportedModules: []
+comment: Converts a simple Array into a textual comma separated string.
+commonfields:
+  id: ArrayToCSV
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ArrayToCSV
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('ArrayToCSV', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.44'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+  from traceback import format_exc
+
+
+
+
+
+  def arr_to_csv_command(array: list[str] | str) -> str:
+      csv = ",".join(array)
+      return csv
+
+
+  def main():  # pragma: no cover
+      args = demisto.args()
+      array = argToList(args.get("value"))
+      try:
+          return_results(arr_to_csv_command(array=array))
+      except Exception as e:
+          demisto.error(format_exc())
+          return_error(f"ArrToCSV command failed. Error: {e}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('ArrayToCSV', 'end', __line__())
+scripttarget: 0
+signature: Kx0RGTkSBbpHlePCgUrUzOlFQGcMN9OnPOFCg1QIlv1AvFK/Adda4Bnh1655nAqk+T0N0TLNzBfKmzqPPJCJRRaE6opiAFeza66u5nFsIAw9BNUTFj/3cb0IPy8V6abC7oota0XG+0do3Mao8BYXfMmKBa2I90UWqf2qIv9bWakEm0ti29lQLPqKDIN9XVb7UH4n3OorTDQhBjnMVQmRfNk/QcOvnEDxWz9OVSU7IP4pvLpAuwZLi0+qA0TnNYg+e/+C/ULmUR8MEdGG0mzmcx0PQbQkaK2xtr+k3zHjXWCy42M615fk9TjKp9qdyXzsnTlsCBl9S0XuYT29Vz4FyQ==
+subtype: python3
+system: true
+tags:
+- transformer
+- general
+type: python
