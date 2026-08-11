@@ -1,0 +1,108 @@
+args:
+- default: true
+  description: The string to preform replace on
+  name: data
+  required: true
+  supportedModules: []
+- description: The regex to find matches to be replaced with a new value
+  name: regex
+  required: true
+  supportedModules: []
+- description: The new value to replace the regex match. Pass '' to remove regex match.
+  name: newValue
+  required: true
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "true"
+  description: Pass true to replace all matches, false to replace only the first occurrence.
+  name: replaceAll
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "true"
+  description: Pass True to preform case-insensitive search and replace, false for
+    case-sensitive.
+  name: caseInsensitive
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "true"
+  description: Pass true to indicate 'data'  is a multi-line string, false otherwise.
+  name: multiLine
+  predefined:
+  - "true"
+  - "false"
+  supportedModules: []
+comment: |-
+  Replaces regex match/es in string.
+  Returns the string after replace was preformed.
+commonfields:
+  id: StringReplace
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: StringReplace
+outputs:
+- contextPath: StringReplace.Result
+  description: The string after replace was preformed
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.44
+  if ((typeof args.data) !== 'string') {
+      return {
+          Type: entryTypes.error,
+          ContentsFormat: formats.text,
+          Contents: 'Invalid input - please make sure \'data\' is of type string'
+      }
+  }
+
+  var arr = [];
+  if (args.replaceAll === 'true') {
+      arr.push('g');
+  }
+  if (args.caseInsensitive === 'true') {
+      arr.push('i');
+  }
+  if (args.multiLine === 'true') {
+      arr.push('m');
+  }
+
+  var newValue = args.newValue === "''" ? "" : args.newValue;
+  var r = new RegExp(args.regex, arr.join(''));
+  var val = args.data.replace(r, newValue);
+
+  //if no match found - return the original string
+  setContext('StringReplace.Result', val);
+  return {
+      Type: entryTypes.note,
+      Contents: val,
+      ContentsFormat: formats.text
+  };
+scripttarget: 0
+signature: jqpfRT7QXVvQY6AH6+yfd854/oxlH0ePHPPzh30IzLzl9sFTrL1YzM1RD22xT6NviBAgTqvKPa+FjtL5OG1c3+U0nKKnPm0FArEhB5fzcntAj2rQSLHSa9mRILzpMmIPCmOof5LVWKXbhLeCCoByowlrCvxtM4RJJGRbGg812tN1hyR0GX6aoAqXtgKllgkgcv8LwDe16x349HG0oMf2CXYyZSsw2/Kfw5E8AgoV5JcMTXRUqhWjt6ly9FLsts8XxkRI5YwdCSozhwO58USKA5Tepd3+Qn27iY2e6td/KW1zIG/eVs3c7D5hKwF/hKW9Fwp1H4GeYlh0hWWUI8p/MQ==
+system: true
+tags:
+- Utility
+type: javascript
