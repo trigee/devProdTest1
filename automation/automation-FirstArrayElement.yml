@@ -1,0 +1,54 @@
+args:
+- default: true
+  description: An array for which to return the first element.
+  isArray: true
+  name: value
+  required: true
+  supportedModules: []
+comment: Returns the first element of an array.  If the value passed is not an array,
+  it returns the original value that was passed.
+commonfields:
+  id: FirstArrayElement
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.28
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: FirstArrayElement
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.4.28
+  let value = args.value;
+
+  if (Array.isArray(value) && value.length > 0) {
+      value = value[0];
+  }
+  if (value === null) {
+      value = [];
+  }
+
+  return value;
+scripttarget: 0
+signature: CIXXHE8qlVQ+kkSgj1X2EkTKyAJotpb+qD2eH697Ec3gvXBw0T2wgKNeao417puSw/dmgEIMm3ZwvqCP7ymQDhbYvW7j22SdRJoXywKV7eOOAbGjOIGYTfE2e/nCuVm8pETcGFwSoiZYFrJfjYur7188s69FmQdA65tY540+PEetU4ng4QYmxk0oU+Hy8MOyOEygSKrpjD4N675nPxlr7ohKGJMjP9IjYpSLkVJAywJWAfV49fIXAKYwtE4r/U5aT/ZkhXRxG4zjfAUl72o/J+Mv8U3kRBvKJMm3XmqY+NCYV1LnEInvmCA0Z05t2BsDMcdO/W4N7OpHjodU7nl/yA==
+system: true
+tags:
+- general
+- transformer
+- entirelist
+type: javascript
