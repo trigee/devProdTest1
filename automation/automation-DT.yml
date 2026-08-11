@@ -1,0 +1,62 @@
+args:
+- description: The value to perform the transformation on.
+  name: value
+  required: true
+  supportedModules: []
+- description: DT expression.
+  name: dt
+  required: true
+  supportedModules: []
+comment: This automation allows the usage of DT scripts within playbooks transformers.
+commonfields:
+  id: DT
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.28
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.13.10404775
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: DT
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('DT', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.28'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.28')
+
+
+
+  args = demisto.args()
+  value = args["value"]
+  dt = args["dt"]
+
+  res = demisto.dt(value, dt)
+  return_results(encode_string_results(res))
+
+  register_module_line('DT', 'end', __line__())
+scripttarget: 0
+signature: vFe7kCg4LRoLXOBltkDSWAqYXTLFSpGaRikS1gEJ6HAEPLd7YgbjbhrPvEhP8/zgjerbDA9eLAvwEwkkZcRrOau9HA3GMlSMKnf26+dp/A+ZNSATJdETy+NwbUdSrtBaJz1c1bibDGSwhD34ercDvTJMNrNClnIiDYyBnucXSNYzTJjGBNlEnF2BmIldQX9eV/Trd8PCfdBX2QtYPYLQHEoXnCMnnNNKH2ttfTyOMKV3I93aPFSJKTvpAldeKQ6kHe+HCwGr9R2eIfVtAdBCC8kjDOeQu8M/9R+OPz7zN/riyU/eElhCB+bEoXBFO4cIl4GQ8OnQlnGmFoi6Psl0Ng==
+subtype: python3
+system: true
+tags:
+- transformer
+- general
+type: python
