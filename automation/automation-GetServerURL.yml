@@ -1,0 +1,79 @@
+comment: Get the Server URL.
+commonfields:
+  id: GetServerURL
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: GetServerURL
+outputs:
+- contextPath: ServerURL.Host
+  description: The server host name.
+  type: String
+- contextPath: ServerURL.Port
+  description: The server port.
+  type: Number
+- contextPath: ServerURL.Scheme
+  description: The server scheme.
+  type: String
+- contextPath: ServerURL.URL
+  description: The server full URL.
+  type: String
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  // pack version: 1.22.44
+    function parseUrl(url) {
+        match = url.match(urlRegex);
+
+        return match ? {
+            shcema: url.match(/^(https?):/)[1],
+            hostname: match[2],
+            port: match[3] || '',
+        } : null;
+    }
+
+    urls = demistoUrls();
+    server_url = urls['server'].toString();
+
+
+    result = parseUrl(server_url);
+
+    ec = {
+        'ServerURL': {
+            Scheme: result.shcema,
+            Host: result.hostname,
+            Port: Number(result.port),
+            URL: server_url
+        }
+    }
+
+    return {
+        Type: entryTypes.note,
+        Contents: server_url,
+        ContentsFormat: formats.note,
+        HumanReadable: server_url,
+        ReadableContentsFormat: formats.markdown,
+        EntryContext: ec
+    };
+scripttarget: 0
+signature: I9o4aVyuj3F67nWCUjC4jVrWPSpFL6AYclHx5ro8e9mb/4FzC//colr6C2y/5o5+PomfjwicDZtBIhHfYqf75yNnxZst91JOQkHu9xkkx0a0mhKA6xSCKI6YIxixzdSfwZjN49ZUn4fJ3r/AdZTdIp7ROrVHxBIThqO8jFOh+VRDbKUJhjbEodK5DvJYSis4qOsVFjykdVsNmYO6k21PpFxWrRYmenXE1AP5Icc26f7DyFg7/vi5JJYN7YRQr6zNslF6NI6B4jd6GB9Hn+6naLEANMCy71n4w0mMxwG5J0b27Lc2tox4uyDpoEV5tyrSSOQVjb5LGS8jFzTtpYVsGw==
+system: true
+tags: []
+type: javascript
