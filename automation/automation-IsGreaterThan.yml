@@ -1,0 +1,67 @@
+args:
+- default: true
+  description: First argument to compare.
+  name: first
+  required: true
+  supportedModules: []
+- description: Second argument to compare.
+  name: second
+  required: true
+  supportedModules: []
+comment: |-
+  Checks if one number(float) as bigger than the other(float)
+  Returns yes: if first > second
+  Returns no: if first <= second
+  Returns exception if one of the inputs is not a number
+commonfields:
+  id: IsGreaterThan
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: IsGreaterThan
+outputs:
+- contextPath: "yes"
+  description: if first > second
+- contextPath: "no"
+  description: if first <= second
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.44
+  first = parseFloat(args.first);
+  if (isNaN(first)) {
+      throw 'first is not valid: '+args.first;
+  }
+  second = parseFloat(args.second);
+  if (isNaN(second)) {
+      throw 'second is not valid: '+args.second;
+  }
+  if (first > second) {
+      return 'yes';
+  } else {
+      return 'no';
+  }
+scripttarget: 0
+signature: Pcpytn+r2wUTBil/avDdfmx+tw27f4yCxCnCWvSoHkAkd9OG5gnHY1mhfPX19jvAudx3NJi5dxAGE/rnDljJw26676SfxA3mcd7H2wS+nGJirwv1qWQh5+XVcaZNh8KFGm315iDf1Bi3M8nH7GhfAhtfsLH7FTQDgIO8wZKdk9DSP0AYm+O9zn7xKerYAUlKPdp7N5YjOQen/8SFqJnkawXzHLKOdYG56zgzM8R/uZRMvTQc6ZhzqrG4ElVsA12iOdbz3vl9Z9HUjFim+497rho9ZT1uVRKIlZHLk4BskLLJj+UBt41ExMXwpH110i+lQDEohgS9Jag6bWRBk4uRFg==
+system: true
+tags:
+- Utility
+- Condition
+type: javascript
