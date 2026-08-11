@@ -1,0 +1,50 @@
+comment: Sends email to incident owner when selected field is triggered.
+commonfields:
+  id: emailFieldTriggered
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.44
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dependson:
+  must:
+  - send-mail
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: emailFieldTriggered
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.44
+  var users = executeCommand('getUsers', {});
+  var email;
+  for (var i = 0; i < users[0].Contents.length; i++) {
+      if (incidents[0].owner === users[0].Contents[i].name || incidents[0].owner === users[0].Contents[i].username) {
+          email = users[0].Contents[i].email;
+          break;
+      }
+  }
+  if (email) {
+      var body = 'Hello,\nField ' + args.name + ' was changed from ' + args.old + ' to ' + args.new + ' in incident ' + incidents[0].name + '.\n--DBot';
+      var subject = 'Field ' + args.name + ' was triggered';
+      executeCommand('send-mail', {'to':email, 'subject':subject, 'body':body});
+  }
+scripttarget: 0
+signature: jPjRpJtpdfcxTvPP3BKvjDxhp6C72K85l0ZZwu3OL/huwiRYiz4hWR4w+h5GdhsMBLxEvTiHTSEliLNKkKxMTemBaNXItz5ryJsDV3FiIYVb9VAZBv+d8mjLAJ4wttHdHa/7Sa1dRXyLMZldsLqrTjbLNVTlGkulxnzs8UKuxSx4qCcsGVU9NVRMOiK7E+GY4GiW6RH+G5zl6LYvsFwivQ8RIHyBiaS/eFp2hinhYS57tsThT0O4VtZtHt/PwPeGj7J8aHS+1Smcft6p54M/4qDerB03Cd4nHTlyKNpT4sopP5WbYbg7bRFO5NRFlaqe25geIZY0hz4qJCzYKLZY3w==
+system: true
+tags:
+- field-change-triggered
+type: javascript
