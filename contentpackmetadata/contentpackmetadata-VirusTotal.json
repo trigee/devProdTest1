@@ -64,21 +64,21 @@
 			},
 			{
 				"description": "",
-				"name": "VT Engine Vendors",
-				"supportedModules": [
-					"agentix",
-					"xsiam"
-				],
-				"type": "tagsSelect"
-			},
-			{
-				"description": "",
 				"name": "VT Engine Detections",
 				"supportedModules": [
 					"agentix",
 					"xsiam"
 				],
 				"type": "number"
+			},
+			{
+				"description": "",
+				"name": "VT Engine Vendors",
+				"supportedModules": [
+					"agentix",
+					"xsiam"
+				],
+				"type": "tagsSelect"
 			}
 		],
 		"integration": [
@@ -198,6 +198,90 @@
 				"tags": [
 					"fetch-incidents"
 				],
+				"toversion": ""
+			},
+			{
+				"category": "Data Enrichment \u0026 Threat Intelligence",
+				"commands": [
+					{
+						"description": "Gets the indicators from VirusTotal Livehunt.",
+						"hidden": false,
+						"name": "vt-livehunt-get-indicators"
+					},
+					{
+						"description": "This command will reset your fetch history.",
+						"hidden": false,
+						"name": "vt-reset-fetch-indicators"
+					}
+				],
+				"description": "Use this feed integration to fetch VirusTotal Livehunt notifications as indicators.",
+				"fromversion": "5.5.0",
+				"id": "VirusTotal Livehunt Feed",
+				"name": "VirusTotal Livehunt Feed (Partner Contribution)",
+				"tags": [
+					"feed"
+				],
+				"toversion": ""
+			},
+			{
+				"category": "Data Enrichment \u0026 Threat Intelligence",
+				"commands": [
+					{
+						"description": "Checks the file reputation of the specified hash.",
+						"hidden": false,
+						"name": "file"
+					},
+					{
+						"description": "Checks the reputation of an IP address.",
+						"hidden": false,
+						"name": "ip"
+					},
+					{
+						"description": "Checks the reputation of a URL.",
+						"hidden": false,
+						"name": "url"
+					},
+					{
+						"description": "Checks the reputation of a domain.",
+						"hidden": false,
+						"name": "domain"
+					},
+					{
+						"description": "Submits a file for scanning.",
+						"hidden": false,
+						"name": "file-scan"
+					},
+					{
+						"description": "Re-scans an already submitted file. This avoids having to upload the file again.",
+						"hidden": false,
+						"name": "file-rescan"
+					},
+					{
+						"description": "Scans a specified URL.",
+						"hidden": false,
+						"name": "url-scan"
+					},
+					{
+						"description": "Adds comments to files and URLs.",
+						"hidden": false,
+						"name": "vt-comments-add"
+					},
+					{
+						"description": "Private API. Get a special URL for files larger than 32 MB.",
+						"hidden": false,
+						"name": "vt-file-scan-upload-url"
+					},
+					{
+						"description": "Private API. Retrieves comments for a given resource.",
+						"hidden": false,
+						"name": "vt-comments-get"
+					}
+				],
+				"deprecated": true,
+				"description": "Deprecated. Use VirusTotalV3 integration instead.",
+				"fromversion": "5.5.0",
+				"id": "VirusTotal",
+				"name": "VirusTotal (Deprecated) (Partner Contribution)",
 				"toversion": ""
 			},
 			{
@@ -342,90 +426,6 @@
 				"id": "VirusTotal (API v3)",
 				"name": "VirusTotal (API v3) (Partner Contribution)",
 				"toversion": ""
-			},
-			{
-				"category": "Data Enrichment \u0026 Threat Intelligence",
-				"commands": [
-					{
-						"description": "Checks the file reputation of the specified hash.",
-						"hidden": false,
-						"name": "file"
-					},
-					{
-						"description": "Checks the reputation of an IP address.",
-						"hidden": false,
-						"name": "ip"
-					},
-					{
-						"description": "Checks the reputation of a URL.",
-						"hidden": false,
-						"name": "url"
-					},
-					{
-						"description": "Checks the reputation of a domain.",
-						"hidden": false,
-						"name": "domain"
-					},
-					{
-						"description": "Submits a file for scanning.",
-						"hidden": false,
-						"name": "file-scan"
-					},
-					{
-						"description": "Re-scans an already submitted file. This avoids having to upload the file again.",
-						"hidden": false,
-						"name": "file-rescan"
-					},
-					{
-						"description": "Scans a specified URL.",
-						"hidden": false,
-						"name": "url-scan"
-					},
-					{
-						"description": "Adds comments to files and URLs.",
-						"hidden": false,
-						"name": "vt-comments-add"
-					},
-					{
-						"description": "Private API. Get a special URL for files larger than 32 MB.",
-						"hidden": false,
-						"name": "vt-file-scan-upload-url"
-					},
-					{
-						"description": "Private API. Retrieves comments for a given resource.",
-						"hidden": false,
-						"name": "vt-comments-get"
-					}
-				],
-				"deprecated": true,
-				"description": "Deprecated. Use VirusTotalV3 integration instead.",
-				"fromversion": "5.5.0",
-				"id": "VirusTotal",
-				"name": "VirusTotal (Deprecated) (Partner Contribution)",
-				"toversion": ""
-			},
-			{
-				"category": "Data Enrichment \u0026 Threat Intelligence",
-				"commands": [
-					{
-						"description": "Gets the indicators from VirusTotal Livehunt.",
-						"hidden": false,
-						"name": "vt-livehunt-get-indicators"
-					},
-					{
-						"description": "This command will reset your fetch history.",
-						"hidden": false,
-						"name": "vt-reset-fetch-indicators"
-					}
-				],
-				"description": "Use this feed integration to fetch VirusTotal Livehunt notifications as indicators.",
-				"fromversion": "5.5.0",
-				"id": "VirusTotal Livehunt Feed",
-				"name": "VirusTotal Livehunt Feed (Partner Contribution)",
-				"tags": [
-					"feed"
-				],
-				"toversion": ""
 			}
 		],
 		"layoutscontainer": null,
@@ -439,6 +439,13 @@
 				"tags": []
 			},
 			{
+				"description": "Detonate a file through VirusTotal (API v3)",
+				"fromversion": "5.5.0",
+				"id": "Detonate File - VirusTotal (API v3)",
+				"name": "Detonate File - VirusTotal (API v3)",
+				"tags": []
+			},
+			{
 				"description": "Creates a zip from given hashes exists in VirusTotal",
 				"fromversion": "5.5.0",
 				"id": "Create Zip from VirusTotal",
@@ -446,10 +453,10 @@
 				"tags": []
 			},
 			{
-				"description": "Detonate a file through VirusTotal (API v3)",
+				"description": "Detonate URL through VirusTotal (API v3) integration.",
 				"fromversion": "5.5.0",
-				"id": "Detonate File - VirusTotal (API v3)",
-				"name": "Detonate File - VirusTotal (API v3)",
+				"id": "Detonate URL - VirusTotal (API v3)",
+				"name": "Detonate URL - VirusTotal (API v3)",
 				"tags": []
 			},
 			{
@@ -465,13 +472,6 @@
 				"id": "Detonate File - VirusTotal",
 				"name": "Detonate File - VirusTotal",
 				"tags": []
-			},
-			{
-				"description": "Detonate URL through VirusTotal (API v3) integration.",
-				"fromversion": "5.5.0",
-				"id": "Detonate URL - VirusTotal (API v3)",
-				"name": "Detonate URL - VirusTotal (API v3)",
-				"tags": []
 			}
 		],
 		"report": null,
@@ -480,7 +480,7 @@
 		"wizard": null
 	},
 	"created": "2025-03-29T09:35:07Z",
-	"currentVersion": "2.7.22",
+	"currentVersion": "2.7.23",
 	"defaultDataSource": {
 		"id": "VirusTotal - Premium (API v3)",
 		"name": "VirusTotal - Premium (API v3)"
@@ -491,28 +491,28 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.42.3",
+			"minVersion": "1.42.17",
 			"name": "Base"
 		},
 		"CommonPlaybooks": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "2.8.3",
+			"minVersion": "2.8.8",
 			"name": "Common Playbooks"
 		},
 		"CommonScripts": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.22.29",
+			"minVersion": "1.22.44",
 			"name": "Common Scripts"
 		},
 		"CommonTypes": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "3.10.13",
+			"minVersion": "3.10.15",
 			"name": "Common Types"
 		},
 		"CoreAlertFields": {
@@ -567,7 +567,7 @@
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "2.7.22",
+	"itemVersion": "2.7.23",
 	"keywords": [],
 	"legacy": true,
 	"modules": [],
@@ -600,15 +600,15 @@
 		"cloud_runtime_security"
 	],
 	"tags": [
-		"Data Source",
 		"Featured",
-		"Free Enricher",
-		"TIM"
+		"TIM",
+		"Data Source",
+		"Free Enricher"
 	],
 	"toServerVersion": "",
-	"updated": "2026-07-05T20:10:12Z",
+	"updated": "2026-08-12T10:33:10Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "10750492",
+	"versionInfo": "11856720",
 	"videos": []
 }
