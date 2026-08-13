@@ -65,7 +65,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.16
+    itemVersion: 1.42.17
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -99,8 +99,8 @@ runas: DBotWeakRole
 runonce: true
 script: |
   register_module_line('FindSimilarAlertsByText', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.16'
-  demisto.debug('pack id = Base, pack version = 1.42.16')
+  CONSTANT_PACK_VERSION = '1.42.17'
+  demisto.debug('pack id = Base, pack version = 1.42.17')
   import dateutil.parser
   from sklearn.feature_extraction.text import TfidfVectorizer
   from sklearn.metrics.pairwise import linear_kernel
@@ -283,7 +283,7 @@ script: |
 
   register_module_line('FindSimilarAlertsByText', 'end', __line__())
 scripttarget: 0
-signature: xxxZw74S71hIqMUT61jATcnG38GVj5iCPR7R0BHYW7rAjWFHbe2aGVHxAkRSRkj3XLHOkfnOjFnyZqvJe/ijs1l4gdO/9gZXHpg3l4GzRCJsEuJvOx8w9Er+3PzABqa4w6+MQR4xCPFu1aDiQNrFtE82GnnerMT+ggRrAvfBwqOn3WE+u5CrJTPhk0m+IEyFHizgiRIFZSIZ95lb9J9wsL4mG50BOLxlCbkTxEtvN9fYdgGmIUMrpgmRFgaE/8Ygjwc5fzzzC1KZlkGGNhyNvIGxGbIRivYlJJBtQiB37QbSlUFDhQByeKXrAQV39dUPaEZSICiBwoF353v+E2UleA==
+signature: ribDqqyRDr9Zxp4QMX6aN06m6EEQ5e0/HLIHjcH3agJ+qlHD3nVfB0Ym81xZIVQISsvUiRin2VwHs3hM7JcUEQIuggE9M3AVxyPhIpq1/NR0jm8Ca4RHjYZno3UBRjb3e53nbHcAFj9NtJJAv6Uw45/9TBte9rX66ml3mvlkloXSke/f/5Fx4XFmrAqE37iGW8MQSEf+wC/WIdBUxx/cgnyDaR3Mh1NhNQNpm/mZizRK28J05sUEHVXNINU2pn5xGkqjlWSENQc4J36btO9NJDKakV3/X7OgUDgqqzOGUg4MR81arptbB91q7hZKzdQfcFowZtBjGK8bOPNW/+YfaQ==
 subtype: python3
 system: true
 tags:
