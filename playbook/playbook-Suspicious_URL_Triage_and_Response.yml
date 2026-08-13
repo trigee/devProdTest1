@@ -1,0 +1,727 @@
+adopted: true
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    supportedModules: []
+    toServerVersion: ""
+description: Triages a suspicious URL by performing visual screenshot, sandboxing,
+  and multi-source reputation checks, then auto-blocks or escalates for analyst review
+  based on configured thresholds.
+dirtyInputs: true
+id: 80d46aad-bfe2-4edd-8cf5-ed9e89a300e0
+inputSections:
+- description: Configure triage, reputation, screenshot, and automated response options.
+  inputs:
+  - URL
+  - ReputationSource
+  - DetonationEnabled
+  - ScreenshotEnabled
+  - AutoBlockThreshold
+  - AnalystEscalationEmail
+  - EnrichmentTimeout
+  name: Configuration Settings
+inputs:
+- description: The URL to triage and investigate.
+  key: URL
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: ${alert.url}
+- description: 'Reputation source: VirusTotal, URLScan, or Built-In'
+  key: ReputationSource
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: VirusTotal
+- description: Enable WildFire sandboxing detonation (true/false).
+  key: DetonationEnabled
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: "true"
+- description: Enable rendering a page screenshot using Rasterize (true/false).
+  key: ScreenshotEnabled
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: "true"
+- description: DBotScore threshold to auto-block URL (1=Good, 2=Suspicious, 3=Malicious).
+  key: AutoBlockThreshold
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: "3"
+- description: Email of the analyst to receive inconclusive triages.
+  key: AnalystEscalationEmail
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: admin@example.com
+- description: Timeout in seconds for detonation and enrichment.
+  key: EnrichmentTimeout
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: "900"
+name: Suspicious URL Triage and Response
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+quiet: true
+starttaskid: "0"
+tags:
+- AI Assisted
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f8e9abee-f1df-4482-80ab-2faa9cfd90e4
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: f8e9abee-f1df-4482-80ab-2faa9cfd90e4
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 3d1cadfc-e255-48a4-8e11-039ca9deff3a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: END
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 3d1cadfc-e255-48a4-8e11-039ca9deff3a
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 2070
+        }
+      }
+  "2":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: ${inputs.ScreenshotEnabled}
+          operator: isEqualString
+          right:
+            value:
+              simple: "true"
+      label: "yes"
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      "no":
+      - "4"
+      "yes":
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 306bd521-afff-417f-8d1c-80ecd346ade0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Decide whether to take a screenshot
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 306bd521-afff-417f-8d1c-80ecd346ade0
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 220
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      url:
+        simple: ${inputs.URL}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 0b667a93-31b8-479e-8782-a9c01c1d2e63
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Capture URL Screenshot
+      playbooktaskmissingcomponent:
+        connectors: []
+        missingcomponentenrichment: []
+        packid: ""
+        status: not_installed
+      script: rasterize
+      type: regular
+      version: -1
+    taskid: 0b667a93-31b8-479e-8782-a9c01c1d2e63
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 592.5,
+          "y": 405
+        }
+      }
+  "4":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: ${inputs.DetonationEnabled}
+          operator: isEqualString
+          right:
+            value:
+              simple: "true"
+      label: "yes"
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      "no":
+      - "6"
+      "yes":
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ec07b399-2b78-47e8-8648-fc4ee656189a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is detonation enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: ec07b399-2b78-47e8-8648-fc4ee656189a
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 590
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "6"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      polling:
+        simple: "true"
+      timeout_in_seconds:
+        simple: ${inputs.EnrichmentTimeout}
+      upload:
+        simple: ${inputs.URL}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: WildFire-v2
+      id: 5ba79514-6f54-40c5-8c9f-38049edcd10a
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Detonate URL with WildFire
+      playbooktaskmissingcomponent:
+        connectors:
+        - connectorid: wildfire-cloud
+          connectorname: WildFire Cloud
+        missingcomponentenrichment: []
+        packid: Palo_Alto_Networks_WildFire
+        status: not_configured
+      script: WildFire-v2|||wildfire-upload-url
+      type: regular
+      version: -1
+    taskid: 5ba79514-6f54-40c5-8c9f-38049edcd10a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 592.5,
+          "y": 775
+        }
+      }
+  "6":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: ${inputs.ReputationSource}
+          operator: isEqualString
+          right:
+            value:
+              simple: VirusTotal
+      label: VirusTotal
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: ${inputs.ReputationSource}
+          operator: isEqualString
+          right:
+            value:
+              simple: URLScan
+      label: URLScan
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: ${inputs.ReputationSource}
+          operator: isEqualString
+          right:
+            value:
+              simple: Built-In
+      label: Built-In
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      Built-In:
+      - "9"
+      URLScan:
+      - "8"
+      VirusTotal:
+      - "7"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ac834337-e61e-4f9a-8eb6-45b889d7a153
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Determine Reputation Source
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: ac834337-e61e-4f9a-8eb6-45b889d7a153
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 960
+        }
+      }
+  "7":
+    continueonerrortype: ""
+    id: "7"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "10"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      url:
+        simple: ${inputs.URL}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: VirusTotal
+      id: f20d1e27-7269-46ba-8a1f-3e882e820ce3
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Check URL reputation via VirusTotal
+      playbooktaskmissingcomponent:
+        connectors: []
+        missingcomponentenrichment: []
+        packid: VirusTotal
+        status: not_configured
+      script: VirusTotal|||url
+      type: regular
+      version: -1
+    taskid: f20d1e27-7269-46ba-8a1f-3e882e820ce3
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 50,
+          "y": 1145
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "10"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      url:
+        simple: ${inputs.URL}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: VirusTotal (API v3)
+      id: ce500814-c75e-402a-8b03-21567d5deedf
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Submit URL to URLScan.io
+      playbooktaskmissingcomponent:
+        connectors: []
+        missingcomponentenrichment: []
+        packid: VirusTotal
+        status: not_configured
+      script: VirusTotal (API v3)|||url-scan
+      type: regular
+      version: -1
+    taskid: ce500814-c75e-402a-8b03-21567d5deedf
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 1145
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "10"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      url:
+        simple: ${inputs.URL}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: AutoFocus V2
+      id: ad34bc2e-dc6b-4409-86f4-1ad7b8120e11
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Check URL Reputation via AutoFocus
+      playbooktaskmissingcomponent:
+        connectors: []
+        missingcomponentenrichment: []
+        packid: AutoFocus
+        status: not_configured
+      script: AutoFocus V2|||url
+      type: regular
+      version: -1
+    taskid: ad34bc2e-dc6b-4409-86f4-1ad7b8120e11
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 910,
+          "y": 1145
+        }
+      }
+  "10":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: DBotScore.Score
+          operator: greaterThanOrEqual
+          right:
+            value:
+              simple: ${inputs.AutoBlockThreshold}
+      label: Auto-Block
+    - label: Inconclusive
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      Auto-Block:
+      - "11"
+      Inconclusive:
+      - "12"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 202933a8-d265-40f6-8b28-dbc6af01ac63
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is DBotScore >= Auto-Block Threshold?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 202933a8-d265-40f6-8b28-dbc6af01ac63
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 1330
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      blocked:
+        simple: "true"
+      type:
+        simple: URL
+      value:
+        simple: ${inputs.URL}
+      verdict:
+        simple: Malicious
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.new.indicator
+      id: 9e93d629-c64d-4094-be98-ebe4eb5afb29
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Block URL Indicator
+      playbooktaskmissingcomponent: null
+      script: Builtin|||createNewIndicator
+      type: regular
+      version: -1
+    taskid: 9e93d629-c64d-4094-be98-ebe4eb5afb29
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 370,
+          "y": 1890
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    form:
+      description: Review details and decide whether to block the URL.
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: 'Should we block this URL: ${inputs.URL}?'
+        options: []
+        optionsarg:
+        - simple: Yes - block the URL
+        - simple: No - do not block
+        placeholder: ""
+        readonly: false
+        required: true
+        tooltip: ""
+        type: singleSelect
+      sender: SOC Triage Playbook
+      syncid: ""
+      title: URL Triage Escalation Form
+      totalanswers: 0
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body:
+        simple: The URL reputation score was inconclusive. Please review and provide
+          a final decision.
+      cc: null
+      format: ""
+      methods: []
+      subject:
+        simple: 'Action Required: Suspicious URL Analyst Escalation Form'
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to:
+        simple: ${inputs.AnalystEscalationEmail}
+    nexttasks:
+      '#none#':
+      - "13"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: dbcd43b7-b454-4074-8da8-88f7df852946
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Collect Analyst Input
+      playbooktaskmissingcomponent: null
+      type: collection
+      version: -1
+    taskid: dbcd43b7-b454-4074-8da8-88f7df852946
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": 592.5,
+          "y": 1515
+        }
+      }
+  "13":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: URL Triage Escalation Form.Answers.0
+          operator: isEqualString
+          right:
+            value:
+              simple: Yes - block the URL
+      label: Block
+    - label: Close
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      Block:
+      - "11"
+      Close:
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 5efc3360-1c03-43ec-8636-c64b61a50d6a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Did analyst choose to block URL?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 5efc3360-1c03-43ec-8636-c64b61a50d6a
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 592.5,
+          "y": 1700
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 2080,
+        "width": 1240,
+        "x": 50,
+        "y": 50
+      }
+    }
+  }
