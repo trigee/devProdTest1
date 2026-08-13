@@ -53,12 +53,12 @@
 		"incidentfield": [
 			{
 				"description": "",
-				"name": "Hello World Status",
+				"name": "Hello World ID",
 				"type": "shortText"
 			},
 			{
 				"description": "",
-				"name": "Hello World ID",
+				"name": "Hello World Status",
 				"type": "shortText"
 			},
 			{
@@ -109,24 +109,6 @@
 				"name": "HelloWorld (Community Contribution)",
 				"tags": [
 					"fetch-incidents"
-				],
-				"toversion": ""
-			},
-			{
-				"category": "Data Enrichment \u0026 Threat Intelligence",
-				"commands": [
-					{
-						"description": "Gets indicators from the feed.",
-						"hidden": false,
-						"name": "helloworld-get-indicators"
-					}
-				],
-				"description": "This is the Feed Hello World integration for getting started with your feed integration.",
-				"fromversion": "5.5.0",
-				"id": "HelloWorld Feed",
-				"name": "HelloWorld Feed (Community Contribution)",
-				"tags": [
-					"feed"
 				],
 				"toversion": ""
 			},
@@ -188,6 +170,24 @@
 					"fetch-assets"
 				],
 				"toversion": ""
+			},
+			{
+				"category": "Data Enrichment \u0026 Threat Intelligence",
+				"commands": [
+					{
+						"description": "Gets indicators from the feed.",
+						"hidden": false,
+						"name": "helloworld-get-indicators"
+					}
+				],
+				"description": "This is the Feed Hello World integration for getting started with your feed integration.",
+				"fromversion": "5.5.0",
+				"id": "HelloWorld Feed",
+				"name": "HelloWorld Feed (Community Contribution)",
+				"tags": [
+					"feed"
+				],
+				"toversion": ""
 			}
 		],
 		"layoutscontainer": null,
@@ -196,17 +196,17 @@
 		"parsingrule": [],
 		"playbook": [
 			{
-				"description": "This is a playbook which will handle the alerts coming from the Hello World service",
-				"fromversion": "6.8.0",
-				"id": "Handle Hello World Alert",
-				"name": "Handle Hello World Alert",
-				"tags": []
-			},
-			{
 				"description": "Deprecated. No available replacement.",
 				"fromversion": "5.0.0",
 				"id": "HelloWorld Scan",
 				"name": "HelloWorld Scan",
+				"tags": []
+			},
+			{
+				"description": "This is a playbook which will handle the alerts coming from the Hello World service",
+				"fromversion": "6.8.0",
+				"id": "Handle Hello World Alert",
+				"name": "Handle Hello World Alert",
 				"tags": []
 			}
 		],
@@ -216,7 +216,7 @@
 		"wizard": null
 	},
 	"created": "2025-03-29T09:38:42Z",
-	"currentVersion": "4.0.12",
+	"currentVersion": "4.0.13",
 	"defaultDataSource": {
 		"id": "HelloWorldEventCollector",
 		"name": "HelloWorld Event Collector"
@@ -227,28 +227,28 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.42.6",
+			"minVersion": "1.42.17",
 			"name": "Base"
 		},
 		"CommonPlaybooks": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "2.8.4",
+			"minVersion": "2.8.8",
 			"name": "Common Playbooks"
 		},
 		"CommonScripts": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.22.33",
+			"minVersion": "1.22.44",
 			"name": "Common Scripts"
 		},
 		"CommonTypes": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "3.10.13",
+			"minVersion": "3.10.15",
 			"name": "Common Types"
 		}
 	},
@@ -288,7 +288,7 @@
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "4.0.12",
+	"itemVersion": "4.0.13",
 	"keywords": [],
 	"legacy": true,
 	"modules": [],
@@ -324,9 +324,9 @@
 		"TIM"
 	],
 	"toServerVersion": "",
-	"updated": "2026-07-12T10:22:52Z",
+	"updated": "2026-08-12T10:45:05Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "10935523",
+	"versionInfo": "11856720",
 	"videos": []
 }
