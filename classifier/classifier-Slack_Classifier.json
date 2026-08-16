@@ -1,0 +1,134 @@
+{
+	"brands": null,
+	"cacheVersn": 0,
+	"defaultIncidentType": "",
+	"definitionId": "",
+	"description": "",
+	"feed": false,
+	"fromServerVersion": "6.8.0",
+	"id": "Slack Classifier",
+	"incidentSamples": null,
+	"indicatorSamples": null,
+	"instanceIds": null,
+	"isOverridable": false,
+	"itemVersion": "3.8.13",
+	"keyTypeMap": {
+		"1": "Password Reset via Chatbot"
+	},
+	"locked": false,
+	"logicalVersion": 1,
+	"mapping": null,
+	"name": "Slack Classifier",
+	"nameRaw": "",
+	"packID": "Slack",
+	"packName": "Slack",
+	"packPropagationLabels": [
+		"all"
+	],
+	"propagationLabels": [
+		"all"
+	],
+	"sourceClassifierId": "",
+	"supportedModules": [
+		"agentix",
+		"xsiam"
+	],
+	"system": true,
+	"toServerVersion": "",
+	"transformer": {
+		"complex": {
+			"filters": [
+				[
+					{
+						"ignoreCase": true,
+						"left": {
+							"isContext": true,
+							"value": {
+								"simple": "Message"
+							}
+						},
+						"operator": "containsString",
+						"right": {
+							"isContext": false,
+							"value": {
+								"simple": "reset password"
+							}
+						}
+					},
+					{
+						"ignoreCase": true,
+						"left": {
+							"isContext": true,
+							"value": {
+								"simple": "Message"
+							}
+						},
+						"operator": "containsString",
+						"right": {
+							"isContext": false,
+							"value": {
+								"simple": "reset my password"
+							}
+						}
+					},
+					{
+						"ignoreCase": true,
+						"left": {
+							"isContext": true,
+							"value": {
+								"simple": "Message"
+							}
+						},
+						"operator": "containsString",
+						"right": {
+							"isContext": false,
+							"value": {
+								"simple": "forgot password"
+							}
+						}
+					},
+					{
+						"ignoreCase": true,
+						"left": {
+							"isContext": true,
+							"value": {
+								"simple": "Message"
+							}
+						},
+						"operator": "containsString",
+						"right": {
+							"isContext": false,
+							"value": {
+								"simple": "forgot my password"
+							}
+						}
+					},
+					{
+						"ignoreCase": true,
+						"left": {
+							"isContext": true,
+							"value": {
+								"simple": "Message"
+							}
+						},
+						"operator": "containsString",
+						"right": {
+							"isContext": false,
+							"value": {
+								"simple": "password reset"
+							}
+						}
+					}
+				]
+			],
+			"root": "Message",
+			"transformers": [
+				{
+					"operator": "count"
+				}
+			]
+		}
+	},
+	"type": "classification",
+	"version": -1
+}
