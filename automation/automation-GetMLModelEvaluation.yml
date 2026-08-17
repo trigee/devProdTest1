@@ -36,7 +36,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.18
+    itemVersion: 1.42.19
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -45,7 +45,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/ml:1.0.0.9793547
+dockerimage: demisto/ml:1.0.0.11879924
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -67,8 +67,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetMLModelEvaluation', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.18'
-  demisto.debug('pack id = Base, pack version = 1.42.18')
+  CONSTANT_PACK_VERSION = '1.42.19'
+  demisto.debug('pack id = Base, pack version = 1.42.19')
   import numpy as np
   import pandas as pd
 
@@ -466,7 +466,7 @@ script: |
 
   register_module_line('GetMLModelEvaluation', 'end', __line__())
 scripttarget: 0
-signature: Mx52bN4clMA+fn8xV0f/NLbut8kom2dPAw9XW7JIfCjvOiu7d/lp7j+P5Vxx2DCIX59hFK9+aFUTep+7XyBuEWgwI8/XCWzHi37WWfCU7XJ7Ue8+7Y6fl6HsrlJK+ka2xoKT8WpEyr+nmzecKkNeDIpBnS/ezCBXMBFndGxjtmkG2/0/uObAIZyH7O5+DNsfXdr0cSCoE7HKhUQ0RfXgLiO75rBy/4dtZUG9mVu84Hd3Sx1QiwIN0ixu6dCI5MZa5R3l96uJaQyWF88LblfnBYL319ROpft+L+68MzxXI6G+IeuRYPxK8ZEbGWz2BKTs+elBFgIBPEokPJf2YruY/A==
+signature: NgFisPCQ+33zJ6+ML8/BojE/1+RTlW+RMpJCYrtdYA1hIM8GN0Wkf/hGoucInNKrDgE+YIPmoXTpxAyZCav9lieKCXWRtEbByK7awmcFLCq+CU1hTR4K0eRwcJILOWD5JW6h1hPkUXcAgFoefp62Kkiugqw9AwtUFs4QAUHyPBJZ1SqHaw8D6umCgpgBPok1H2iTY+dqSdHZUem7g+pxiVYdjucmejIjVj+8ffZw4r0V53xgTgtO8ncs/QxbSPuZ2Vs8vPINI+kAd0l/c0rH15J58RZEc00vMUiWdFV4osHttaCje+dHdEZbH046HJshgd7DkIoJI4rc3gEYgSWUyw==
 subtype: python3
 system: true
 tags:
