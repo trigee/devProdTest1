@@ -14,7 +14,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.45
+    itemVersion: 1.22.47
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -23,7 +23,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/office-utils:2.0.0.9067966
+dockerimage: demisto/office-utils:2.0.0.11285256
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -37,8 +37,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ParseWordDoc', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.45'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.45')
+  CONSTANT_PACK_VERSION = '1.22.47'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.47')
   import zipfile
   from xml.etree.ElementTree import XML
 
@@ -108,7 +108,7 @@ script: |
 
   register_module_line('ParseWordDoc', 'end', __line__())
 scripttarget: 0
-signature: uu0MMVarn1Z0SZyILkm7rptY6NTXKyXBw7yhz1woNdk3PC18QVV1BpgMmBjkZXZefFS0WQ35FNKzS1DDbsRjD7BLDx3gNMvIZhQP7doxJstFXBgB5DfuCrH9ROEZwSgoUHJxSTc6/jViQTglDQXrTKF7yUvjm1o70rzhjJ4ndrEDuRaIrI5IIjys5jzksAn9ycP+0+CFgbTcgSpXtjQBEWYlLk6aSkLMMbQM8GiOAnTsAXq2+7DhmBYfET1c2p4EpbteOL7Lxd9rEHM10B5Lhtgw71uW+z9TkRRKo5TcP2iMnQQXH0hinmF+XTcPa7MLB5dKDDUQWcDEohT6i4otmw==
+signature: jVCvrjHbTtZENkDrHBqRBypfy5tLuf3bTYvWLTxhyxY3fdMxobu24OSleuWLSduv5DF4UDab20IYcvlxT7bDZCYplROpqg38JlmmGGD1rw7sOIBBXGbfrtY0EeIY0jCS+Kk8Jq/5rbx0TjU6wPnj1plXKycjtsyXFDie2EXOKOZ8jXIhZ/Wrpum8kNxlv1/ny0ZSsZXEpNgyYRKEx7aIjf1kKyLSuqs9W+uYp3Twq8hvWkbv8tHiX3ubThLa9tTjwMLM4tOhlJ7zW+tG/6MScXO0GYBLpq0N9xIVX1CTLi7JY5VH0IoRYyW9V5eaWHINef5u2Ao0Os5Bdq2R/pDxmQ==
 subtype: python3
 system: true
 tags:
