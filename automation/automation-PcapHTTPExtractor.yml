@@ -32,7 +32,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.45
+    itemVersion: 1.22.47
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -41,7 +41,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/pcap-http-extractor:1.0.0.9431560
+dockerimage: demisto/pcap-http-extractor:1.0.0.11195141
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -92,8 +92,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('PcapHTTPExtractor', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.45'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.45')
+  CONSTANT_PACK_VERSION = '1.22.47'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.47')
   import re
   import sys
   import traceback
@@ -516,7 +516,7 @@ script: |
 
   register_module_line('PcapHTTPExtractor', 'end', __line__())
 scripttarget: 0
-signature: eHLG6eww7CgzCnHvoNPcd1yTmQJlIJ7XDKgywNwtD25r3fS+JY0JborLBaTqkL4YpKPunEFu1AuRp0YVtmKbBZE4KQlGw0Atdjcpz0cZ73+jnGcd3pyT8iStC3yQnBk7AcYE68pDPwSepEbVTstk5BXrNLY6nXJX2CQsE8e9sZbZCz1OliFUYcwhdmxWalM47jWIFT/zGHs1eYn4xCnFSpgdVz1cs1EazhTkM9oo6NondbSaajqlH4e1x3oGQVfLyzALmI4+VSzp3frHUmS+hcmQ9vEhQMsO6UFIJGh97UtGXp/q9kJpagQzly58Bla+/FqUI1HJGR307YxC7L/gCA==
+signature: LLPmtThi8U5OPHhsGn2Kl4nKE4lvMLxxbZgk4lBkmCfJ54bOMMlsgSw3pDpXrvEmFX2Nth0zKHMzNdfSc/os9wGysa+Lke9/ShZzhZD15R9FJ0yuBupXDL1K/nat6yW8KN33oewKdBr3kL02Hf22Nf8IjpBOoTUwpx6m1i4XBs75VQAueACEVGb/2KM9ZJcrkX+YV/Den7xSt1DxMU1+RISvjcc9rBXh4e8nhMYKpwh0UsRCaFPoGxFGD01ajsoGClAsS1UfHUn1Clt8z5rSJgsJFKTT4QbbptF6DpK8hTKbaK2rd6Bkto3DAe9mn3RfZfp+3q7z6K8BgkyDc+brug==
 subtype: python3
 system: true
 tags:
