@@ -125,7 +125,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.2.0
     isoverridable: false
-    itemVersion: 1.42.18
+    itemVersion: 1.42.19
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -134,7 +134,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/mlclustering:1.0.0.9062583
+dockerimage: demisto/mlclustering:1.0.0.11879924
 engineinfo: {}
 mainengineinfo: {}
 name: DBotTrainClustering
@@ -148,8 +148,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DBotTrainClustering', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.18'
-  demisto.debug('pack id = Base, pack version = 1.42.18')
+  CONSTANT_PACK_VERSION = '1.42.19'
+  demisto.debug('pack id = Base, pack version = 1.42.19')
   import builtins
   import collections
   import math
@@ -1196,7 +1196,7 @@ script: |
 
   register_module_line('DBotTrainClustering', 'end', __line__())
 scripttarget: 0
-signature: dM8jOvgeBTHbtZ0E+2h55LH9przK+jeT4KNMK+lmomxujwUOqanExgQjlw1et2BzLSTFRadDfQXIjD94g4aX6aYOQ8Z2CnHN1o+mPBRAGNlUEeFRR4WIN/tnxGVo4PRVjY5b8ltp97IZ10/Rv9ZEqTH6d7bJUCFsGSc6BtHhiYWfcvtLgN67+CWGCxJpEdE4G4VW6mHmP97Sxd/bxPIbN7Thxy37L6B0lXqRXoBMtRU97MxJdU0HBIbyFk+2vCOB+cZ4dx+L5BcqFl0SXvWoQ2/ocvwlDxaLP5Ywd5g5LdMcx/7i39bR4mNLJpc2RvvLUd0LNbYkhVcnyId//Iyubg==
+signature: 0mE6PMy3ajjcLwncs+xJ/3pBhzOiJTGWE0ngWf8Plk9tQmUyYYphSeWGDllZh8FMrjJDrLdR/rJPigAzav70K+kQKaXN2PDUR7lQ99kkxbLYhnXa/C6dTjxIXsN+XPiiUYzne4j0wOxySXwNf8y/Eygxf29TbyFp4bzsUSBtQWtKbvpMV+/WsVjZcUQn76ZAGlCait5ROjg3fBI09v69RR8u2twxZdsmHpRr5JowIm8C7X/R7SnLXwrONdh2eMWNF39lzCVYQFandhZSIcDMSKOwmLlWZMv2cU4G2iQDlAx0NnF9DUwCoua36BgymkxZQRNuR28ryzUkn5z+vy1iGg==
 subtype: python3
 system: true
 tags:
