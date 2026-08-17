@@ -15,7 +15,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.45
+    itemVersion: 1.22.47
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -24,7 +24,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/aquatone:2.0.0.10133006
+dockerimage: demisto/aquatone:2.0.0.11200773
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -38,8 +38,8 @@ runas: DBotWeakRole
 runonce: true
 script: |
   register_module_line('AquatoneDiscoverV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.45'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.45')
+  CONSTANT_PACK_VERSION = '1.22.47'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.47')
   from subprocess import PIPE, Popen
 
 
@@ -87,7 +87,7 @@ script: |
 
   register_module_line('AquatoneDiscoverV2', 'end', __line__())
 scripttarget: 0
-signature: FKFa2EygsZqypTeuL9ePrP24rP4KuAEscySUNmRypHH/Lcwl6NbZIRC/UMql3/0YPl68qJu+SNTao9/JeznxrMZBascD6Qp5Wa50bFgoSCi+d6isaahWz/ov8XMM8EhscW3HGaExxyZOEiT4kCfnkh/kIAPzxUGXSY6sd0Iv4gIdqnJucUVdWyPN6/VK7YF1yxk7ducFE2poxPr6DnYkMGQ1grlj0h7sHsNvVG6zYkD7ixSJ7jJ2Y4zINLr7n293Kk3V7dY2Sj4c1DE6wKf+LMH2pdZJL42Ts8h6XgfB7SZQfetn04S8wkrwGm1TIJW+WWsXsQCt4181eLikfK8/Ag==
+signature: Pm7eWrGWco1rBfGUXNMo0l5ZiqaLcPeh726kQx1f2tPmSIIj1UgcLxYdy9sJ8EM/HdzPxaokpA536wEmH+nGxTF7QhrbSkfEZFp29vfboYoyW2NS2eazXIrF+LyO1HM+YhQt5z6CYBXiRAXDdpg4X7s1kzJgSbUerNfheVfgr7pBRH65+I2g3OEttbqnOW9MCvlQSLaUW46adt+SI9K10xQnUZXXQKvG5d58DiQjo/zvxq1h66Z8YupT5JtvWf4L0jzVcBl1ltl2jDz8vjuqyjuWPyg1qsI1qMF4jGEX8zVl1SoG5o9zyi9bjgGQ1Z0l3D0C0Vs1LrbJ2CMDLkD5tw==
 subtype: python3
 system: true
 tags: []
