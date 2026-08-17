@@ -30,13 +30,6 @@
 		"agentixskill": null,
 		"automation": [
 			{
-				"description": "This script grants a user the permissions needed to create a Teams meeting. It connects to MS Teams, creating an application access policy to a chosen application and then grants a user permissions.",
-				"fromversion": "5.5.0",
-				"id": "ConfigureAzureApplicationAccessPolicy",
-				"name": "ConfigureAzureApplicationAccessPolicy",
-				"tags": []
-			},
-			{
 				"description": "Send a team member or channel a question with predefined response options on Microsoft Teams. The response can be used to close a task (might be conditional) in a playbook.",
 				"fromversion": "5.0.0",
 				"id": "MicrosoftTeamsAsk",
@@ -44,6 +37,13 @@
 				"tags": [
 					"microsoftteams"
 				]
+			},
+			{
+				"description": "This script grants a user the permissions needed to create a Teams meeting. It connects to MS Teams, creating an application access policy to a chosen application and then grants a user permissions.",
+				"fromversion": "5.5.0",
+				"id": "ConfigureAzureApplicationAccessPolicy",
+				"name": "ConfigureAzureApplicationAccessPolicy",
+				"tags": []
 			}
 		],
 		"casefield": null,
@@ -209,21 +209,6 @@
 				"category": "Messaging and Conferencing",
 				"commands": [
 					{
-						"description": "Send a message to Microsoft Teams via Incoming Webhook.",
-						"hidden": false,
-						"name": "ms-teams-message"
-					}
-				],
-				"description": "Integration for sending notifications to a Microsoft Teams channel via a workflow of type `Post to a channel when a webhook request is received`.",
-				"fromversion": "6.2.0",
-				"id": "Microsoft Teams via Webhook",
-				"name": "Microsoft Teams via Webhook",
-				"toversion": ""
-			},
-			{
-				"category": "Messaging and Conferencing",
-				"commands": [
-					{
 						"description": "Run this command to start the authorization process and follow the instructions in the command results.",
 						"hidden": false,
 						"name": "microsoft-teams-auth-start"
@@ -324,6 +309,21 @@
 				"id": "Microsoft Teams Management",
 				"name": "Microsoft Teams Management",
 				"toversion": ""
+			},
+			{
+				"category": "Messaging and Conferencing",
+				"commands": [
+					{
+						"description": "Send a message to Microsoft Teams via Incoming Webhook.",
+						"hidden": false,
+						"name": "ms-teams-message"
+					}
+				],
+				"description": "Integration for sending notifications to a Microsoft Teams channel via a workflow of type `Post to a channel when a webhook request is received`.",
+				"fromversion": "6.2.0",
+				"id": "Microsoft Teams via Webhook",
+				"name": "Microsoft Teams via Webhook",
+				"toversion": ""
 			}
 		],
 		"layoutscontainer": null,
@@ -335,7 +335,7 @@
 		"wizard": null
 	},
 	"created": "2025-03-29T09:43:16Z",
-	"currentVersion": "1.5.62",
+	"currentVersion": "1.5.63",
 	"defaultDataSource": {
 		"id": "Microsoft Teams",
 		"name": "Microsoft Teams"
@@ -346,7 +346,7 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.42.14",
+			"minVersion": "1.42.19",
 			"name": "Base"
 		}
 	},
@@ -383,7 +383,7 @@
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "1.5.62",
+	"itemVersion": "1.5.63",
 	"keywords": [],
 	"legacy": true,
 	"modules": [],
@@ -420,9 +420,9 @@
 		"Data Source"
 	],
 	"toServerVersion": "",
-	"updated": "2026-08-02T10:12:58Z",
+	"updated": "2026-08-17T10:14:35Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "11535554",
+	"versionInfo": "12006327",
 	"videos": []
 }
