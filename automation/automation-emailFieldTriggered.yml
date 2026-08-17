@@ -7,7 +7,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.45
+    itemVersion: 1.22.47
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -28,7 +28,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.45
+  // pack version: 1.22.47
   var users = executeCommand('getUsers', {});
   var email;
   for (var i = 0; i < users[0].Contents.length; i++) {
@@ -43,7 +43,7 @@ script: |
       executeCommand('send-mail', {'to':email, 'subject':subject, 'body':body});
   }
 scripttarget: 0
-signature: I5og3BZUgeF8+iDWsz6Sbyp9sxCdT6PUHFC35XkQUmiTP5PaJT+YMJwKfnn+LKBWLNNHhI7s6ttE5lFjw9sBJ6VRTSSlxjCGSMem60FlXgri1D95m875bVfDyQRoWQSja50Q1WgMm8jbNlmDyyKqeCHfDiZmGjPix5BtywArHsnH4WDA5V0dBCUvHPgAtmeGyodzF0y9+NZuYM4grbUCP4Gr1yj9q//RS/CzHTvDqgHQEajHjc+sIk4XoFYryxdbvrIP1WX0xhyGbKRDww6jDnyyVOeqm6L0If68i2atKNKBGJGhiXVLoqeLxFeqhvlQd3GcUuJ139eKkQI2Z6nVCw==
+signature: UIbvur4jx+fMmHiQ6ChDrX2Jk/k0b0YFUW1shwioVScZpeG4AAKxIsF7LZ5lQOaM5D2W3K6lL6Z8cXBVUurRCHlKCttj1W62ISScBEzGrxlh8VIVO+WgNA+yoQyu7ibBBViuGYZABgRTjjaiYvz4luuzSp6texW5PRULICzm4jRfJKF5wLy1hlECLC7XezpFEwYT19Owj+BvbCBdfL8TKSBt2CWT165a6YmMZ7y2uGCde7FUZ6Vwae110xznkRWKu3N7qZkFQCmGzswQDtpQakZGT4DRiBf/p2tuYjvI9Dk3BHsW7nQZqJSBbcX46UVswXWd5GfNVizr1WbR/KRT0w==
 system: true
 tags:
 - field-change-triggered
