@@ -37,7 +37,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.42.17
+    itemVersion: 1.42.18
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -46,7 +46,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/xsoar-tools:1.0.0.8457987
+dockerimage: demisto/xsoar-tools:1.0.0.11807991
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -70,8 +70,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ValidateContent', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.17'
-  demisto.debug('pack id = Base, pack version = 1.42.17')
+  CONSTANT_PACK_VERSION = '1.42.18'
+  demisto.debug('pack id = Base, pack version = 1.42.18')
   import io
   import json
   import os
@@ -903,7 +903,7 @@ script: |
 
   register_module_line('ValidateContent', 'end', __line__())
 scripttarget: 0
-signature: YEwkaaMw9NDrM+tp5scDCwGf7exul5RTe0g2Q+MRK0tONqXAbA6pWV06ahBAoPlM9ztEYQESlF42IGPYI0N3Wjpt8+D1ASiQbSp3Sda+HYisT8oaH7Lv/ux7hPty2KiqKeVDXY/DX7D4RKg0r+MLOUvBemYJrVgkpOdG1qYo2SDq9OasN+Av7M4adtojFQmKlf5QbRZSqHXm/cqgW7wEslSlp7kBxmuWPa4FuN6X+3NxLJ9AkCgATYhrYsjbOgQ/TMGijmYnsV9xSAsi3sSuLEHitGTcfR7t7tIcS3f+2+ut7y9qt7UXoj/npz2ZiwWDxtuTjjybI0rI89JHnCDPvQ==
+signature: VALtxn9WX3A8/dEZ7COtxqnHHAbAJjT4NTk/Flozls3QR3H+KfVKS8xth+uuFn3Fl/tznaVcfwcMtNq0FTDLKUBS2+lR9MSi5I0lZAqtuqqM3DtKAjQIGuXaAjSclSgQcmM20vZ/olnS9k52jgesk6UgBld7Ip0+llGVEfat2k0E3TwjwzaSvaf4VD7CFZ3aPZya3xJod4Q5eRYUd0j3wQZBLbUbIEHyOEBCcrIqk5HAG1HzKHgIe1gKU0KfVW3FiYmSlQlVndzKZ7kWAwBPxyB/n87tw6C6mP/WFO4cyQ2ZNaI5oaK6U8JdPs/lBTfv/Vux+OszD9sRCw+0/9gylg==
 subtype: python3
 system: true
 tags: []
