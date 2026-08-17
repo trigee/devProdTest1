@@ -26,7 +26,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.45
+    itemVersion: 1.22.47
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -35,7 +35,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/netutils:1.0.0.10187688
+dockerimage: demisto/netutils:1.0.0.11867191
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -49,8 +49,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('Dig', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.45'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.45')
+  CONSTANT_PACK_VERSION = '1.22.47'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.47')
   import re
   import subprocess
   import traceback
@@ -224,7 +224,7 @@ script: |
 
   register_module_line('Dig', 'end', __line__())
 scripttarget: 0
-signature: GaRESA9nt/i2nifytcI4cqzCiA8uNEuoDBNO5ceWb3SazsUMWK36swLYdMqq5r57GmimGqu+rN2P96dL5zzaf0jFXClOzeB4EnC8+fIZ6jXHMD4Vc3OGdVu4gWnEhj19yHK6OBWJLJyUPnVQq5o3jPkd5+C0VM+q5fEVbSVAIv643Nrt+xfdqvJMxnfroknGK3YyNi3zW9KbluGO1UijWrhFgTne8zQr10t079NXA2FjGf1RQCZhJMSJKnTdshoyT1125bEoEiBnFeXonubgg75Vo7I+AMHlIH71Qgxx1Y2d1p3EBV1WVpxqDutzVymv3zDfBqiXfnZjUZdYzLCdzg==
+signature: xqIEJpadbkgXhec57/4sHNBCahMTAJTTo0Q1YSM52vrSszHzo42KMuXDCzLD4niFz83ao03IAahei/GXhFu/CBrmBXMomUFymK4BYNTnlDS7mYaNJCDhejou4EoHOJQUU9DfacvB/tbRas561eY/+BgUjgud8/nCfjNUWVqkJnCj7e3PyexWPqCiwCZstE+Bc/goL6Kuca+Lg6XWFsY/WgDZinHAt4KUO7Ieoxq2WdYg1qiHw7hJFgL9Vx5LxOrc4F5STRfYzjKS7X2Jb4+9G3WrPvjWhZFQAjspQD8+oy85Jrs8giU0j5INmrzmreOra30uvUsqNV0hDGklI4F/cg==
 subtype: python3
 system: true
 tags:
