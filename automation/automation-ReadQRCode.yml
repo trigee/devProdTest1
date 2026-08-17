@@ -14,7 +14,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.22.45
+    itemVersion: 1.22.47
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -23,7 +23,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/qrcode:1.0.0.11449351
+dockerimage: demisto/qrcode:1.0.0.11458275
 engineinfo: {}
 mainengineinfo: {}
 name: ReadQRCode
@@ -46,8 +46,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ReadQRCode', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.45'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.45')
+  CONSTANT_PACK_VERSION = '1.22.47'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.47')
 
 
   from typing import IO
@@ -139,7 +139,7 @@ script: |
 
   register_module_line('ReadQRCode', 'end', __line__())
 scripttarget: 0
-signature: K1npiYEdYjr9e4rbKZ/JqaI9KsZC+arCtBLSlvINyP5lnwQTmxI1kRLkwMQMkadNh4wNeQmDlcK4inioH5gUfyi86/2aNx+/Egmyas/MJdVGMMATFvn4/f5wHtH9thWCoJeds10rrUjcShqpBQFskJd5JDEr7x7B16S0BfsUs08CwH0AHpT0VS5ys0jduobYMxFrfMOTEVRlm7AwS4YJs3LCEohxC0wzvZlTK7Cv/dVYih8D+ME+NN8DPdF8MdTWU2hmUcWJBVefULUPWNzPrUAbYGKeN8j8axNaKvhXqUCDDvxLTehVRokDbZjhWifv90wjKKzK60NnXVnfRXAnzg==
+signature: q3SKhzKGXYSJd59T+xDc0E4JjdyNUCTmrfPyeaJ9Wd/6fxFqdTbe3ejD3RgDHvXKAM8eUg2B6sr925B/s401qCdQBi4oEW9TMAbqxH+H1D7HD28K3GQbMLEeBFDUp52SbERtzjNxO8rjPsYqEybX/0qr3uY4U6UtaxE8dHX9KBezNR3HLDhJzDaHRX9KEBY7qAVuHjj72K7q99y0reoYuSHocy9sZ7kYHuQ+iKSY1iKn1Kxa6bzYl7/gEjGJDLecmQfUzWlZRH/MBkxwZ2g+IA8D/xTcev+GWFDE6UcZsKA2uddiuGFHuEXUpL23k5FlQJdNlX8hRargan/e5b2kYg==
 subtype: python3
 system: true
 tags: []
