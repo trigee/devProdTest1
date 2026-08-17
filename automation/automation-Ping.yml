@@ -14,7 +14,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.45
+    itemVersion: 1.22.47
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -23,7 +23,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/netutils:1.0.0.10187688
+dockerimage: demisto/netutils:1.0.0.11867191
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -56,8 +56,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('Ping', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.45'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.45')
+  CONSTANT_PACK_VERSION = '1.22.47'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.47')
   import re
   import subprocess
 
@@ -99,7 +99,7 @@ script: |
 
   register_module_line('Ping', 'end', __line__())
 scripttarget: 0
-signature: AwuZkXPib/aKFq82NxOaPk2XOVyoeQBOjSP7k1D8poxoeI9FNox02PygM39hnr1nghtMte5D5Hsx/InqDI2OPtubAfYXJ4HsbbjJ/lT5U8IUspAWMtOiG3Zd1LpOlAsAl437qoS2ebQzvXerwf+8Ka1h6ptooLQsOGlMbwFsDI1TD2RS4/g7vQaF3+SIhKY6jPONev0h3ejuLepGET9vyCAvazJViq4jLo76zCuk42B1Icv/7RuAWfJ/qj0NdTH63Djtk8bF9GZVllP9dZfZ9neF4wfbz0mhX8Us3PyT37GTzUsVdUoJ5fxx7hozRn8KF7tjf4iICFZ5GZNERF62uQ==
+signature: BxbjUs+qiNljdCBja98GKQocSVyDfSQ1n/h2ii5ykB3wSEv9dvfmf+SqWuKgpoBvaeUU6GE4UPhbGm87cHJvOtXjKlUPNJksq2y2SfV8TGlZ1P35jUMntoxeCaQLev9iZ4Xb39OsWgzImlLfjzO37HEeYJzf1l681lZse8V1amgql9TDdbD+ajvKCgRAyw6DzSTZU7dZVKsUVtbDGRK2/0dcS8jrQSB9PsvpDUMogQt54lm/rfkNvEdfM1RWzA13DkGqcJHqBJGHE8hHEqqGoI2EiZbAEyywqSf1EvkYNLUc7EgPeLEsNDTN8Aqlk1Emw3VswNySsKVEFxwG+KWAbA==
 subtype: python3
 system: true
 tags:
