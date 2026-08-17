@@ -1,0 +1,103 @@
+args:
+- description: The login admin's password.
+  name: password
+  required: true
+  secret: true
+  supportedModules: []
+- description: The login admin's username.
+  name: username
+  required: true
+  supportedModules: []
+- description: The relevant app's ID from the app studio.
+  name: app_id
+  supportedModules: []
+- description: The email of the user who will get permissions to create a meeting.
+  name: identity
+  supportedModules: []
+comment: This script grants a user the permissions needed to create a Teams meeting.
+  It connects to MS Teams, creating an application access policy to a chosen application
+  and then grants a user permissions.
+commonfields:
+  id: ConfigureAzureApplicationAccessPolicy
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.5.0
+    isoverridable: false
+    itemVersion: 1.5.63
+    packID: MicrosoftTeams
+    packName: Microsoft Teams
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/powershell-teams:1.0.0.11334222
+engineinfo: {}
+mainengineinfo: {}
+name: ConfigureAzureApplicationAccessPolicy
+outputs:
+- contextPath: ConfigureAzureApplicationAccessPolicy.Status
+  description: Whether the access policy was given.
+  type: String
+- contextPath: ConfigureAzureApplicationAccessPolicy.Account
+  description: The email of the user who received permissions to create a meeting.
+  type: String
+- contextPath: ConfigureAzureApplicationAccessPolicy.AppID
+  description: The relevant app's ID from the app studio.
+  type: String
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  ### pack version: 1.5.63
+  Import-Module MicrosoftTeams
+
+  function Main()
+  {
+      [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSAvoidUsingConvertToSecureStringWithPlainText', '')]
+      param()
+      $dargs = $demisto.Args()
+      $plain_username = $dargs.username
+      $plain_pass = $dargs.password
+      $password = (ConvertTo-SecureString -String $plain_pass -AsPlainText -Force)
+      $app_id = $dargs.app_id
+      $identity = $dargs.identity
+      try
+      {
+          $credential = New-Object System.Management.Automation.PSCredential($plain_username, $password)
+
+          Connect-MicrosoftTeams -Credential $credential
+
+          New-CsApplicationAccessPolicy -Identity Test-policy -AppIds $app_id
+          Grant-CsApplicationAccessPolicy -PolicyName Test-policy -Identity $identity
+
+          $human_readable = "Access policy was given"
+          $context = @{
+              "ConfigureAzureApplicationAccessPolicy" = @{
+                  "Status" = "Access policy was given"
+                  "Account" = $identity
+                  "AppID" = $app_id
+              }
+          }
+
+          ReturnOutputs $human_readable $context $null | Out-Null
+      }
+      finally
+      {
+          Disconnect-MicrosoftTeams
+      }
+  }
+
+  if ($MyInvocation.ScriptName -notlike "*.tests.ps1" -AND -NOT$Test)
+  {
+      Main
+  }
+scripttarget: 0
+signature: LCbsB8l+40/FbNLwJw/VXzIPP2PuWPDIxqH3qzEFervPp91IFzLfhiJ3VQHIhFMEqX+Gv7vWS28VMJ7R9tftNV7eN2K9GIumQdM1r0CpNi4pomjkueDchfBn3tG8+RLtpeSU1l70wVmZ29WFEg8uRAuMI9rxLKFpmpXLN4fZM+rz0IinEnNSf3V0eJgKtN8ygisDIAN2oh+vjpZAs83KKfBu3sQbvHxuYnBuM9dMeMdi3EF53D2qHYbIznXe94H3YeFAL01qwWkfPMk24qItYH47BlvJ8pkFIU+o9ZvbZMBR8uRVE0EQKbExMMNYGVgutgT5Drh2V+q2Igfu9qfHow==
+system: true
+tags: []
+type: powershell
