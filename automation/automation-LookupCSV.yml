@@ -32,7 +32,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.44
+    itemVersion: 1.22.45
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -63,8 +63,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('LookupCSV', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.44'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.44')
+  CONSTANT_PACK_VERSION = '1.22.45'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.45')
   """
   Given a CSV file in the War Room by entry ID, searches based on column and value.
   If the column is not present, simply parse the CSV into a list of lists or list of dicts (if header row supplied).
@@ -182,7 +182,7 @@ script: |
 
   register_module_line('LookupCSV', 'end', __line__())
 scripttarget: 0
-signature: N+gjqCvaDScPjT7rrb90OCtkcoRlVn6vP628F6OKptfDcy73xycmugV0GVdQuYDphdRUziYL4ctJwwFvkwUKSbgkM1saPRt9SclVGMMYdzSk9B112BXScuBKxDJKON0W2aImbhStqGFBL/ala9iUja2TobQk4sDx2n6iKaxnypqAZw8CGj9yE0Xo7Q1MytVkIvBMDi0uwtQg0jc6reUZFiMAG+w9hiQU+u7gH7YaOJ0H9wy3zHvZaT++4HljxS1v3nG6/gy7i3/tM08XuX/V/jKoSiOR/FaGd45gOITRN3nlRMdv2n0NOuURNKfFOStj5sRAQhSq4WAtFo7I+yA60A==
+signature: 22onNmt+VSUYwz+HeXFuCkAXZdOD6+rFXoDtol6W8lEzGfQlBamgxcp2tlPH8Fcu26t/JELwxHfQ01kKvsFkV2e5FN6I+uTn+rUot46EMOaOTxpbtVvJIVM+qggOAaBVOlo5IVHfwm5v3P3uQc8/+VVK7iozL6LzWx0Nn9gMJWjUl5LSsE1TFiekLfi5cjwe/uZhPplU3kieiums1ENmGdvUcFhKoRqxW3oBS9YwCJ3JQU3Kz1NO+oGYp87F9aXa8J+ql6NVlV2VgH8GVb+eqU4wif/LG/o1Aq4tBJJ16a2EKyVAYU72k2on88zM42v3m1ilqkzNQ3L8fRfUgJJjcw==
 subtype: python3
 system: true
 tags:
