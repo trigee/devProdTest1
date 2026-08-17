@@ -18,7 +18,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.4.28
+    itemVersion: 1.4.29
     packID: FiltersAndTransformers
     packName: Filters And Transformers
     packPropagationLabels:
@@ -40,8 +40,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('FormattedDateToEpoch', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.28'
-  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.28')
+  CONSTANT_PACK_VERSION = '1.4.29'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.29')
   from datetime import UTC, datetime
 
   import dateparser
@@ -72,7 +72,7 @@ script: |
 
   register_module_line('FormattedDateToEpoch', 'end', __line__())
 scripttarget: 0
-signature: mVik25qm70rnvDWnPzCo8UKCurYSz3xBIX0KCI+w+LebiECYtFJsUGwQkPEjo/pQHYkLdPtegPb3lj37MeP2SIp9V4uUaysNXjbnJRqDq5N3/IE4YU9V2ovqnHVDNpO5htZGoBpcBXErxuGGtfWxJnm7W0Mq+NVereOzDWB5idox3/NzYcwgsSuDh1dqtha7P8tB/BVVvnhVp8ih1bQ+wPu5ysJWp/UZ7vCyMJ18BI5zKqtnzPK+1cWtG4H9Clz2Us2S+1NA8mE/Ynk/tZxRjGW53zdTcTTwXIVq87cofJ5CaMw+MGfGayPdEBXA15hh9MxmP92mrLaOyC3we3rCAA==
+signature: dyiIegZziE87cQ2egeLVtXPWLeUpsF5c+U8QCR7c+JqRH9VIllhq81+dQf9rrQGXkWGwCML2bWKhWSVfR/a1kFqql+oJ9Gnjonn6cdFfjbWhUfXmJpl5nAEoq83zOVgsYnK18Qt33Q+k7ykARvYc9daH0fd0Udi8ykHOvjzs9fEUwDk1nGp2E+O260HidBorSM4ulqgbrNfrGlB9NdfdIkpEhjVCgeeA/iFqC5tK6PuMsgMjhUUu0460LZreflk3fuAdE4HgOyIORJSfWjCxsFUR6vf9ffRySNpyUIDHKacvQQFkzn+75FTs5lR3Th3FNsrISCweGdDR52UBDxqa4Q==
 subtype: python3
 system: true
 tags:
