@@ -1,8 +1,8 @@
 args:
-- description: JSON object
+- description: JSON object.
   name: value
   supportedModules: []
-comment: Recursively un-escapes JSON data if escaped JSON is found
+comment: Recursively un-escapes JSON data if escaped JSON is found.
 commonfields:
   id: JsonUnescape
   version: -1
@@ -11,7 +11,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.45
+    itemVersion: 1.22.47
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -20,7 +20,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3-deb:3.12.13.10404775
+dockerimage: demisto/python3-deb:3.12.13.11879924
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -30,15 +30,15 @@ nativeimage:
 - "8.6"
 outputs:
 - contextPath: JsonUnescape
-  description: Unescaped JSON Data
+  description: Unescaped JSON Data.
 pswd: ""
 restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('JsonUnescape', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.45'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.45')
+  CONSTANT_PACK_VERSION = '1.22.47'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.47')
   import json
   import traceback
 
@@ -77,7 +77,7 @@ script: |
 
   register_module_line('JsonUnescape', 'end', __line__())
 scripttarget: 0
-signature: MZfWXQVMav3EJSmcnGPjQm1kUWUBnVS12m+IfcaUJhcWARugD09n0vjQBSMqw557thkn+pw/0PirwfDS92kY1BgqREiHyV2SIYr7HatEMdrl+LPSfz8BRVjlZZExM6w+Xh/K253PsSkGQNnbYh4clCAKkZj8tXxuOvG1JcuqDgMDASgyqg1ScKcw0uPxiWauCI7PkVTczE4q9I7lYwjCajtMwFQ3rRmdEpLBL9CaFmMAZUoDm0TLhHNfk3dvY8LuG1kRbKsB7v9/3jYdFkDO+20RnIfc1PfoiZB5VlXxjFCAfmpcxVSnRWznAW6QAHr3jL0l8MJ53xQSsd6mcFMipQ==
+signature: vhsU3cw4Tk3m26fIOHMyiKccPsPETWk6FJTHaxmQdHb3clbNpHFyILQGvdLvm5+U23x/WqV/6t7cLjBAH1vH9ZfZTKw2oyFjJUnyFxAGzejw6IJYMMdgPRVquRqT5zbbh+tfshxmFEPx2EW2/dIVIxKU6G4opDSnRp1urkKn9oWcu99ca6v2ROBvEPQcyKVNjKB0ul5YY9RHEoMmsjRL0c0WHdrgR4uEOmGQ+Y8eRaWsnbvx0k1g0cOK7Zo4UkSer5BZJsheeGXiX+p5QCQ+B7KADiwaHVEGmG9Je9C3+t3cKtzjz6GIzpZrhoqblnhtKsO5RkEbcRjstlL2yujhjA==
 subtype: python3
 system: true
 tags:
