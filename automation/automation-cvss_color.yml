@@ -8,7 +8,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.47
+    itemVersion: 1.22.49
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -17,7 +17,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.11879924
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -31,8 +31,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('cvss_color', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.47'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.47')
+  CONSTANT_PACK_VERSION = '1.22.49'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.49')
   import math
 
 
@@ -84,9 +84,9 @@ script: |
 
       if cvss == 0:
           if theme not in ("light", ""):
-              return_results(CommandResults(readable_output="# <-:->{{color:#FFFFFF}}(**N\A**)"))
+              return_results(CommandResults(readable_output="# <-:->{{color:#FFFFFF}}(**N/A**)"))
           else:
-              return_results(CommandResults(readable_output="# <-:->{{color:#000000}}(**N\A**)"))
+              return_results(CommandResults(readable_output="# <-:->{{color:#000000}}(**N/A**)"))
       else:
           color = get_color(cvss)
           return_results(CommandResults(readable_output=f"# <-:->{{{{color:{color}}}}}(**{cvss}**)"))
@@ -97,7 +97,7 @@ script: |
 
   register_module_line('cvss_color', 'end', __line__())
 scripttarget: 0
-signature: KLzBuaEfUDEzrhD9ACiVphDmYkv50d5nfiUauxGX17pVzxJmVHRrDzZItEMRRG3NBTi4jxJkKkX1zLC1Aj+bimdHF+yAFvCHXs0AIgTHXgLQQH4LnrfpwzBzAeRdXE/79evHsf35n16xKd243OICWBL87cZzuaQANT+CMC9WhwRqNE0prEvGJGw2QWJt7vKffx41vikeKJrhor+riqWMxmxIlmwZkR72WpOJ2Eucl/DVoe6FQrJr8znp/qZcbREc0RCQ70sJeZ9SgZWbhZMlsG7EYyq2I94OIqjuL2gRYzjJXT7FYPEl2PBsJoHOLZBtNxThKx/5agE32diDTJSu4Q==
+signature: y01ooBfjrVrd8E3jdhgQTD6tSfV+k1qJcvnGEHWxFV1zw8q/1VXa+t+P86KpqAg6uj1wGhx9Jhlrqf8liupKqG3lzE1qIzJkne3vIAmt2yeVQX8ZlP0zy2EV657887dXx9coklCoC60gkE0wT/rv2oA300Okv4KiPtq3YJ/q7lrHNk6aC7Lt7kCLFVpw4z5b81qyJg7n5OQpHvHMd0oXgHJPxk4T+X156SYAgYdtKCQRHBIa+IHOM6iBDMK4rZSJy4ERfLe2g2jbgPou2T17h2oYx0TAUIQ7wwuhx38Sl/sBtVCY7eVXDJKWMAuOXkW0MNCFPJcO7ltoeJmi792cGA==
 subtype: python3
 system: true
 tags:
