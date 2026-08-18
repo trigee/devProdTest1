@@ -33,7 +33,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.47
+    itemVersion: 1.22.49
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -55,8 +55,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetDockerImageLatestTag', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.47'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.47')
+  CONSTANT_PACK_VERSION = '1.22.49'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.49')
   import re
 
 
@@ -75,6 +75,10 @@ script: |
   # use 10 seconds timeout for requests
   TIMEOUT = 10
   DEFAULT_REGISTRY = "registry-1.docker.io"
+
+  # OCI artifact tag suffixes that are not runnable Docker images.
+  # These are produced by tools like cosign (.sig), OCI referrers (.att, .sbom), etc.
+  NON_RUNNABLE_TAG_SUFFIXES = (".sig", ".att", ".sbom")
 
 
   def parse_www_auth(www_auth):
@@ -123,6 +127,29 @@ script: |
           return None
 
 
+  def is_runnable_tag(tag: Any) -> bool:
+      """Return True if *tag* represents a runnable Docker image tag.
+
+      Filters out OCI artifact tags such as cosign signature tags (``*.sig``),
+      attestation tags (``*.att``), and SBOM tags (``*.sbom``) which are not
+      valid Docker image tags and cannot be used to run a container.
+
+      Note that only tags *ending* with one of the artifact suffixes are
+      filtered, so a legitimate tag that merely contains the substring
+      (e.g. ``my.sig.image``) is preserved.
+
+      Args:
+          tag: A Docker image tag name. Non-string values are treated as
+              non-runnable rather than raising.
+
+      Returns:
+          True when the tag is a runnable image tag, False otherwise.
+      """
+      if not isinstance(tag, str) or not tag:
+          return False
+      return not tag.endswith(NON_RUNNABLE_TAG_SUFFIXES)
+
+
   def clear_non_numbered_tags(tags):
       """Clears a given tags list to only keep numbered tags
 
@@ -151,14 +178,24 @@ script: |
 
       for example for the tag list: [2.0.2000, 2.1.2700 2.1.373, latest], will return 2.1.2700
 
+      Non-runnable OCI artifact tags (e.g. ``*.sig``, ``*.att``, ``*.sbom``) are
+      excluded before any comparison.
+
       Args:
           tags(list): list of docker image tag names - ordered in lexical order
-      """
 
-      only_numbered_tags = clear_non_numbered_tags(tags)
+      Returns:
+          The latest runnable tag, or an empty string when no runnable tag exists.
+      """
+      runnable_tags = [tag for tag in tags if is_runnable_tag(tag)]
+      if not runnable_tags:
+          demisto.debug("No runnable tags found after filtering non-runnable artifact tags.")
+          return ""
+
+      only_numbered_tags = clear_non_numbered_tags(runnable_tags)
 
       if len(only_numbered_tags) == 0:
-          return tags[-1]
+          return runnable_tags[-1]
 
       max_tag = only_numbered_tags[0]
 
@@ -172,6 +209,10 @@ script: |
   def find_latest_tag_by_date(tags):
       """Get the latest tags by datetime comparison.
 
+      Non-runnable OCI artifact tags (e.g. ``*.sig``, ``*.att``, ``*.sbom``) are
+      excluded before comparison so that cosign signature artifacts are never
+      returned as the "latest" image tag.
+
       Args:
           tags(list): List of dictionaries representing the docker image tags
 
@@ -181,10 +222,23 @@ script: |
       latest_tag_name = "latest"
       latest_tag_date = datetime.now() - timedelta(days=400000)
       for tag in tags:
-          tag_date = datetime.strptime(tag.get("last_updated"), "%Y-%m-%dT%H:%M:%S.%fZ")
+          tag_name = tag.get("name")
+          # is_runnable_tag() also rejects non-string / empty values, so past this
+          # guard tag_name is guaranteed to be a usable string.
+          if not is_runnable_tag(tag_name):
+              demisto.debug(f"Skipping non-runnable or invalid tag: {tag_name!r}")
+              continue
+
+          last_updated = tag.get("last_updated")
+          try:
+              tag_date = datetime.strptime(last_updated, "%Y-%m-%dT%H:%M:%S.%fZ")
+          except (TypeError, ValueError):
+              demisto.debug(f"Skipping tag {tag_name!r} with unparsable last_updated value: {last_updated!r}")
+              continue
+
           if tag_date >= latest_tag_date:
               latest_tag_date = tag_date
-              latest_tag_name = tag.get("name")
+              latest_tag_name = tag_name
 
       return latest_tag_name
 
@@ -210,6 +264,7 @@ script: |
           # first try to get the docker image tags using normal http request
           res = requests.get(
               url=f"https://hub.docker.com/v2/repositories/{image_name}/tags",
+              timeout=TIMEOUT,
               verify=verify_ssl,
           )
           if res.status_code == 200:
@@ -247,7 +302,7 @@ script: |
 
   register_module_line('GetDockerImageLatestTag', 'end', __line__())
 scripttarget: 0
-signature: vSkjNzJf3VrCKQMg3ZRzDVb3ZksMj+y9FE9ht02y5YoABm940e6hyTDucqBrLxCTaS2ZJbViR2Cw6O4vvXln0FBw1Jw9RFLh2i0kJwJsB6sge55PplK/x3LTddKo9YaUw3wN3HOS6P/dadXJmjOmKXrDcvsgxTFNFcuHXhLrL+GoecDKnlEMgqqaSiIqm1YJhZvaA1EcPD5cS3n+cBPyfDxbnHPP/nYhcwD7jzm0pxPy32X+bX11/Wc4JDDCqBkRc9iwcBhF/4X+KMvrfzC8wcoOtpD55+D8ywsxMe7btSQer7/gKwyorndbaOEn4SpbvXejGdGDEJ59eZ8Gb7xj5w==
+signature: liaRtM6mu05HMabXdL2Wf12D5hc5PtuXS7wtMPbW4omwKFEP+SGGp9ZQNLH40i5SnMgPYwelPMG7ipxORlTvQN1ssVGip9gbgv/xD1/ySt2raaPXdYYg0H3AI93qfFKfrJ9WJ7QpBBTlWRb7o5B7OeEe/yBVCgL3CmmNBURtytY9V7dDUdGIrI/DhVeLtUtnpdcsGKq6Oga91WCpKQQm4D9KnSeVP4nSbnZQ8OdYd1lENlYKRH6nz6Q7AO+CP3xfyGhASGIoflZqjgIEEdgMfDUFPM/CbIbrywU+5fbjR5rU5SGnAmRxzozE2HyE5nW7PTaZ7fKaia+eXOEJntknZg==
 subtype: python2
 system: true
 tags: []
