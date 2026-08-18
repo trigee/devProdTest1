@@ -125,7 +125,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.19
+    itemVersion: 1.42.20
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -165,8 +165,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DBotFindSimilarAlerts', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.19'
-  demisto.debug('pack id = Base, pack version = 1.42.19')
+  CONSTANT_PACK_VERSION = '1.42.20'
+  demisto.debug('pack id = Base, pack version = 1.42.20')
   import json
   import re
   import warnings
@@ -1070,6 +1070,17 @@ script: |
       return incidents[0] if incidents else None
 
 
+  def escape_query_value(value: Any) -> str:
+      """
+      Escape special characters in a field value so it can be safely embedded inside a
+      double-quoted getIncidents query.
+
+      :param value: The raw field value to escape.
+      :return: The escaped value as a string.
+      """
+      return str(value).replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n").replace("\r", "\\r")
+
+
   def get_all_incidents_for_time_window_and_exact_match(
       exact_match_fields: list[str],
       populate_fields: list[str],
@@ -1096,7 +1107,8 @@ script: |
           if exact_match_field not in incident:
               msg += f"{MESSAGE_NO_FIELD % exact_match_field} \n"
           else:
-              exact_match_fields_list.append(f'{exact_match_field}: "{incident[exact_match_field]}"')
+              escaped_value = escape_query_value(incident[exact_match_field])
+              exact_match_fields_list.append(f'{exact_match_field}: "{escaped_value}"')
       query = " AND ".join(exact_match_fields_list)
       query += f" AND -id:{incident['id']} "
       if query_sup:
@@ -1490,7 +1502,7 @@ script: |
 
   register_module_line('DBotFindSimilarAlerts', 'end', __line__())
 scripttarget: 0
-signature: ZT0zrr38dkjfqWHtEV1wG+n1JXcCQwZsgaZGdgotOuaP/Xkwte6e96MMVuCZznGpm8Cqd46Vtz1Ie/xWEtShXClBfxtTJWOTgt7MnbxOwhLFVnmE/vQ5fMJpz76Od7JpJNzcta1EW5EMl955esUBcdwubRJeJ/mx4lbitxTyVaIDtJsObDJEZLuNg5qvUgy5Qh9Rhj8rE7r+dKEy0gWk5WgobpJWREwEUXH66Bvj0Ntm05/GKTOWD6xx66q1kEfZLqvfthHT8KQUhSF33yvqpo9JlCu9FcAKd17PDqBU0Fwg5BDmv4sZ9+eo+YfGCmZk89H+9sJSVi43Cm8MLH4nsQ==
+signature: eDdzH1866LWIbiMad2SN6jeZNxyl+S3Kecmw1neb7Mv+Xhya8jWNHEpb6keOxWX9ea/qBxZBGAqfVCemFgwKsGILOQb52gDvCsDrWXeWhkSnWBL/KR8W7UiXtBNTMlJcbpMwzuoWVCAndG6PBlkUL4C1VXDUUl/YHhyTmRWj46G8SWJUTE5Q7aAeBygIZc1dBco9YF6zv8wZHAzzJECv72SpsevKB3pg4W4Pada9SKI9uuG+YGcr6Pb7zWYlH58F7YEZ/VO7+IXHazNihkusoAldQJDV66qFmsGVzj3xAWvsKbtdaKqCLoFZjNNdEo4MmjXeLQQ5F59FSYCqnIPs3A==
 subtype: python3
 system: true
 tags: []
