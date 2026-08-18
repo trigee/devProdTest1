@@ -18,7 +18,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.47
+    itemVersion: 1.22.49
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -41,7 +41,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.47
+  // pack version: 1.22.49
   var res = executeCommand("getIncidents", {"query": 'indicator.value:"'+args.indicator+'"'});
   var incidentsIDs=[];
   var foundIncidents = [];
@@ -79,7 +79,7 @@ script: |
   }
   return {Type: entryTypes.note, Contents: foundIncidents, ContentsFormat: formats.json, HumanReadable: md, EntryContext: ec};
 scripttarget: 0
-signature: jRnw64c2eUf8e0jmJwDKBSclqEvWBB85PUP8H4AVFwyP7BFkC2vB8P6cRz2pnYuqWuoXUhEiyyvjnBhiduXd4aSjETR6irXQOsdQxbOhXZIj8K272o7+8e4194fIxoIlZvNOmvav7a8iVELsJU9Y6hApuYKdepo+eUCEupgWgTN99IKKk6gRs0mvHqnOl/rONSKK+LQSknYYkN/V7Ew8Qn9tDNS1G+ymHCw/72BkyntU+m5d2HUv8Wn5VoPmAxI5oz6QlSZ0cgQ2U3o4wrHnjO+V9wMJadb1fHgSvLmnG2kNTillkzKtIDna7QaSstLzkULrOEGyW5xTf/Siwh9XOA==
+signature: h/L2IRoZq9wQVp77GGGSNyPHI/rIW/LV12RydGZpzizu4SgQdyIgmSBWMu8jDRFPpCC1gfIE2HVuh2k/JbkQrgC4cYIAz/IvOFIpzUuqxaRj7j5alfIDGJNrFxTfX2mB8nAfmEAG8JxbX/HagRg7cFAE+KqHbf49oZNnCgHNIrsl7cfER1YKs/TEZfI1MWV7FSxH9V+UwGcQ/XFjaSrthu0+AW1Qn7Uee2uIGbAZoO47ZRxATorsRjyyJQZw9YCB4lYFOshtTqaqnx25Rvvy9QagwxHDGznCMJWDGktmjihzgXODsGDm6UlmujHYoCO3rW6JlXbAzNqrzx8Lv7yUjw==
 system: true
 tags:
 - Utility
