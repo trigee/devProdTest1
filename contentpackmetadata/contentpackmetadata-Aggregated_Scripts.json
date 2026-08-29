@@ -38,6 +38,16 @@
 		"agentixskill": null,
 		"automation": [
 			{
+				"description": "Enriches indicators from a provided list or a block of free text. This script detects the indicator type and runs the correct underlying enrichment script. Currently supports: IP, URL, Domain, CVE, and File.",
+				"fromversion": "8.0.0",
+				"id": "indicator-enrichment",
+				"name": "indicator-enrichment",
+				"tags": [
+					"basescript",
+					"enrichment"
+				]
+			},
+			{
 				"description": "Enriches IP indicators with reputation data from multiple integrations and outputs a consolidated IPEnrichment object. This script exclusively supports indicators of type IPv4 (IPv6 is not supported) and will automatically create the indicator in TIM if it is not already exists. Note: If enabled, get-endpoint-data is executed only for internal IP addresses.",
 				"fromversion": "8.0.0",
 				"id": "ip-enrichment",
@@ -45,20 +55,6 @@
 				"tags": [
 					"basescript"
 				]
-			},
-			{
-				"description": "The script blocks a list of IP addresses in supported integrations.",
-				"fromversion": "6.1.0",
-				"id": "block-external-ip",
-				"name": "block-external-ip",
-				"tags": []
-			},
-			{
-				"description": "This script gathers endpoint data from multiple integrations and returns an endpoint entity with consolidated information to the context.",
-				"fromversion": "6.10.0",
-				"id": "get-endpoint-data",
-				"name": "get-endpoint-data",
-				"tags": []
 			},
 			{
 				"description": "This script executes the 'quarantine-file' command on a specified file via the appropriate agent. This script is used to isolate files identified as suspicious. Currently supported brands are \"Cortex XDR - IR\", \"Cortex Core - IR\", and \"Microsoft Defender Advanced Threat Protection\".",
@@ -84,13 +80,6 @@
 				]
 			},
 			{
-				"description": "This script disables users for multiple services.",
-				"fromversion": "6.10.0",
-				"id": "disable-user",
-				"name": "disable-user",
-				"tags": []
-			},
-			{
 				"description": "This script isolates endpoints using multiple integrations and returns a success or failure message.",
 				"fromversion": "6.10.0",
 				"id": "isolate-endpoint",
@@ -105,30 +94,13 @@
 				"tags": []
 			},
 			{
-				"description": "Enriches URL indicators with reputation data from multiple integrations and outputs a consolidated URLEnrichment object. This script exclusively supports indicators of type URL and will automatically create the indicator in TIM if it is not already exists.",
+				"description": "Enriches Domain indicators with reputation data from multiple integrations and outputs a consolidated DomainEnrichment object. This script exclusively supports indicators of type Domain and will automatically create the indicator in TIM if it is not already exists.",
 				"fromversion": "8.0.0",
-				"id": "url-enrichment",
-				"name": "url-enrichment",
+				"id": "domain-enrichment",
+				"name": "domain-enrichment",
 				"tags": [
 					"basescript"
 				]
-			},
-			{
-				"description": "Enriches indicators from a provided list or a block of free text. This script detects the indicator type and runs the correct underlying enrichment script. Currently supports: IP, URL, Domain, CVE, and File.",
-				"fromversion": "8.0.0",
-				"id": "indicator-enrichment",
-				"name": "indicator-enrichment",
-				"tags": [
-					"basescript",
-					"enrichment"
-				]
-			},
-			{
-				"description": "This script gathers user data from multiple integrations and returns an Account entity with consolidated information to the context.",
-				"fromversion": "6.10.0",
-				"id": "get-user-data",
-				"name": "get-user-data",
-				"tags": []
 			},
 			{
 				"description": "Enriches CVE indicators with reputation data from multiple integrations and outputs a consolidated CVEEnrichment object. This script exclusively supports indicators of type CVE and will automatically create the indicator in TIM if it is not already exists.",
@@ -140,19 +112,47 @@
 				]
 			},
 			{
-				"description": "Enriches Domain indicators with reputation data from multiple integrations and outputs a consolidated DomainEnrichment object. This script exclusively supports indicators of type Domain and will automatically create the indicator in TIM if it is not already exists.",
+				"description": "This script clears user sessions across multiple integrations for a list of usernames.",
+				"fromversion": "6.10.0",
+				"id": "clear-user-session",
+				"name": "clear-user-session",
+				"tags": []
+			},
+			{
+				"description": "This script gathers user data from multiple integrations and returns an Account entity with consolidated information to the context.",
+				"fromversion": "6.10.0",
+				"id": "get-user-data",
+				"name": "get-user-data",
+				"tags": []
+			},
+			{
+				"description": "Enriches URL indicators with reputation data from multiple integrations and outputs a consolidated URLEnrichment object. This script exclusively supports indicators of type URL and will automatically create the indicator in TIM if it is not already exists.",
 				"fromversion": "8.0.0",
-				"id": "domain-enrichment",
-				"name": "domain-enrichment",
+				"id": "url-enrichment",
+				"name": "url-enrichment",
 				"tags": [
 					"basescript"
 				]
 			},
 			{
-				"description": "This script clears user sessions across multiple integrations for a list of usernames.",
+				"description": "The script blocks a list of IP addresses in supported integrations.",
+				"fromversion": "6.1.0",
+				"id": "block-external-ip",
+				"name": "block-external-ip",
+				"tags": []
+			},
+			{
+				"description": "This script gathers endpoint data from multiple integrations and returns an endpoint entity with consolidated information to the context.",
 				"fromversion": "6.10.0",
-				"id": "clear-user-session",
-				"name": "clear-user-session",
+				"id": "get-endpoint-data",
+				"name": "get-endpoint-data",
+				"tags": []
+			},
+			{
+				"description": "This script disables users for multiple services.",
+				"fromversion": "6.10.0",
+				"id": "disable-user",
+				"name": "disable-user",
 				"tags": []
 			},
 			{
@@ -181,7 +181,7 @@
 		"wizard": null
 	},
 	"created": "2025-06-18T20:34:03Z",
-	"currentVersion": "1.3.52",
+	"currentVersion": "1.3.53",
 	"defaultDataSource": {
 		"id": "",
 		"name": ""
@@ -192,14 +192,14 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.42.12",
+			"minVersion": "1.42.21",
 			"name": "Base"
 		},
 		"Core": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "3.5.75",
+			"minVersion": "3.5.85",
 			"name": "Core"
 		},
 		"Palo_Alto_Networks_WildFire": {
@@ -258,7 +258,7 @@
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "1.3.52",
+	"itemVersion": "1.3.53",
 	"keywords": [],
 	"legacy": true,
 	"modules": [],
@@ -295,9 +295,9 @@
 		"Core"
 	],
 	"toServerVersion": "",
-	"updated": "2026-07-24T01:28:24Z",
+	"updated": "2026-08-20T20:31:39Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "11291149",
+	"versionInfo": "12153175",
 	"videos": []
 }
