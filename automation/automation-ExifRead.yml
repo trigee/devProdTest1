@@ -13,7 +13,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.49
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -22,7 +22,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/py3-tools:1.0.0.10120494
+dockerimage: demisto/py3-tools:1.0.0.11597437
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -43,8 +43,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ExifRead', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.49'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.49')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
   import exifread
 
@@ -83,7 +83,7 @@ script: |
 
   register_module_line('ExifRead', 'end', __line__())
 scripttarget: 0
-signature: JyfEYQyw5EAc30uzI2rGhHjQDndjtvTJtVNuDU80IMlKzIff/NQmJNjSioH1KFHmLCllZ8vnbzNmsVYpX1czY1xA+6CJFU8klaGkXhs8Cd2oiUtdJqXQmXYC+vbTW5Cr1epCjUcRy7pvaIVCZy8l866WVN1OcIQo9NP1dXWGL8EgPhPTSsIGO+J0HZRtwe83oMGdhDiGZ8pMUX2WTniaiXtK9zM06HH5R9EjLffmXXH6tSK8RvgGJ0x4QZZl0HKVdg2FH6LcvyHAj2xNRhheVz0qvvB4roHdKTGUgmEKL3XVsE0GerdEuIfagvM+xu5IKizsmGOReupaCQbGZ2k9Bg==
+signature: PMXW1qHAw+Z6PGheVe2S4VvYROEIvO75sOXFGH2Jf8ep/f47ZXPwNO9sYPThQ528CTEzwaTkIvsbqpcibtbfs0HT982fjRxuZ+leemtdXfwG6j3b/ARrvzW9iASQkrq33JvdH/L1H+PIAsufUN0usssJHPGCgC/muiOU5WtOgMGWDqKtgg5cqcu/lYWvxbbDFxJGmFP+efskZANrX/mk0DjGuVIC2Y7r7EShU+C9e4t2T1d+iuPBGZarq1o1+rDdU/NOxZOpn9BA4PfBWdPy01q/Oam/DUFnoEga9CCNrti6QFdoA91MGudx+GwubU4pHO7YrY2jizRms79XU8+hwg==
 subtype: python3
 system: true
 tags:
