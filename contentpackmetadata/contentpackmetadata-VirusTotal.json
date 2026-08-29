@@ -55,7 +55,7 @@
 		"indicatorfield": [
 			{
 				"description": "",
-				"name": "VT Engine Detection Names",
+				"name": "VT Engine Vendors",
 				"supportedModules": [
 					"agentix",
 					"xsiam"
@@ -73,7 +73,7 @@
 			},
 			{
 				"description": "",
-				"name": "VT Engine Vendors",
+				"name": "VT Engine Detection Names",
 				"supportedModules": [
 					"agentix",
 					"xsiam"
@@ -204,29 +204,6 @@
 				"category": "Data Enrichment \u0026 Threat Intelligence",
 				"commands": [
 					{
-						"description": "Gets the indicators from VirusTotal Livehunt.",
-						"hidden": false,
-						"name": "vt-livehunt-get-indicators"
-					},
-					{
-						"description": "This command will reset your fetch history.",
-						"hidden": false,
-						"name": "vt-reset-fetch-indicators"
-					}
-				],
-				"description": "Use this feed integration to fetch VirusTotal Livehunt notifications as indicators.",
-				"fromversion": "5.5.0",
-				"id": "VirusTotal Livehunt Feed",
-				"name": "VirusTotal Livehunt Feed (Partner Contribution)",
-				"tags": [
-					"feed"
-				],
-				"toversion": ""
-			},
-			{
-				"category": "Data Enrichment \u0026 Threat Intelligence",
-				"commands": [
-					{
 						"description": "Checks the file reputation of the specified hash.",
 						"hidden": false,
 						"name": "file"
@@ -282,6 +259,29 @@
 				"fromversion": "5.5.0",
 				"id": "VirusTotal",
 				"name": "VirusTotal (Deprecated) (Partner Contribution)",
+				"toversion": ""
+			},
+			{
+				"category": "Data Enrichment \u0026 Threat Intelligence",
+				"commands": [
+					{
+						"description": "Gets the indicators from VirusTotal Livehunt.",
+						"hidden": false,
+						"name": "vt-livehunt-get-indicators"
+					},
+					{
+						"description": "This command will reset your fetch history.",
+						"hidden": false,
+						"name": "vt-reset-fetch-indicators"
+					}
+				],
+				"description": "Use this feed integration to fetch VirusTotal Livehunt notifications as indicators.",
+				"fromversion": "5.5.0",
+				"id": "VirusTotal Livehunt Feed",
+				"name": "VirusTotal Livehunt Feed (Partner Contribution)",
+				"tags": [
+					"feed"
+				],
 				"toversion": ""
 			},
 			{
@@ -432,17 +432,10 @@
 		"list": null,
 		"playbook": [
 			{
-				"description": "Get file information using the Virus Total API integration.",
-				"fromversion": "6.0.0",
-				"id": "File Enrichment - Virus Total (API v3)",
-				"name": "File Enrichment - Virus Total (API v3)",
-				"tags": []
-			},
-			{
-				"description": "Detonate a file through VirusTotal (API v3)",
+				"description": "Detonate a private file through VirusTotal Private Scanning service",
 				"fromversion": "5.5.0",
-				"id": "Detonate File - VirusTotal (API v3)",
-				"name": "Detonate File - VirusTotal (API v3)",
+				"id": "Detonate Private File - VirusTotal Private Scanning",
+				"name": "Detonate Private File - VirusTotal Private Scanning",
 				"tags": []
 			},
 			{
@@ -460,17 +453,24 @@
 				"tags": []
 			},
 			{
-				"description": "Detonate a private file through VirusTotal Private Scanning service",
-				"fromversion": "5.5.0",
-				"id": "Detonate Private File - VirusTotal Private Scanning",
-				"name": "Detonate Private File - VirusTotal Private Scanning",
-				"tags": []
-			},
-			{
 				"description": "Detonate one or more files using the VirusTotal integration. This playbook returns relevant reports to the War Room and file reputations to the context data.",
 				"fromversion": "5.0.0",
 				"id": "Detonate File - VirusTotal",
 				"name": "Detonate File - VirusTotal",
+				"tags": []
+			},
+			{
+				"description": "Get file information using the Virus Total API integration.",
+				"fromversion": "6.0.0",
+				"id": "File Enrichment - Virus Total (API v3)",
+				"name": "File Enrichment - Virus Total (API v3)",
+				"tags": []
+			},
+			{
+				"description": "Detonate a file through VirusTotal (API v3)",
+				"fromversion": "5.5.0",
+				"id": "Detonate File - VirusTotal (API v3)",
+				"name": "Detonate File - VirusTotal (API v3)",
 				"tags": []
 			}
 		],
@@ -480,7 +480,7 @@
 		"wizard": null
 	},
 	"created": "2025-03-29T09:35:07Z",
-	"currentVersion": "2.7.23",
+	"currentVersion": "2.7.24",
 	"defaultDataSource": {
 		"id": "VirusTotal - Premium (API v3)",
 		"name": "VirusTotal - Premium (API v3)"
@@ -491,21 +491,21 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.42.17",
+			"minVersion": "1.42.22",
 			"name": "Base"
 		},
 		"CommonPlaybooks": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "2.8.8",
+			"minVersion": "2.8.9",
 			"name": "Common Playbooks"
 		},
 		"CommonScripts": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.22.44",
+			"minVersion": "1.22.52",
 			"name": "Common Scripts"
 		},
 		"CommonTypes": {
@@ -567,7 +567,7 @@
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "2.7.23",
+	"itemVersion": "2.7.24",
 	"keywords": [],
 	"legacy": true,
 	"modules": [],
@@ -600,15 +600,15 @@
 		"cloud_runtime_security"
 	],
 	"tags": [
-		"Featured",
-		"TIM",
 		"Data Source",
-		"Free Enricher"
+		"Featured",
+		"Free Enricher",
+		"TIM"
 	],
 	"toServerVersion": "",
-	"updated": "2026-08-12T10:33:10Z",
+	"updated": "2026-08-27T20:11:56Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "11856720",
+	"versionInfo": "12411004",
 	"videos": []
 }
