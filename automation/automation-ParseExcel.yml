@@ -13,7 +13,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.49
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -22,7 +22,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/py3-tools:1.0.0.10120494
+dockerimage: demisto/py3-tools:1.0.0.11597437
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -39,8 +39,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ParseExcel', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.49'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.49')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
   import xlrd
 
@@ -94,7 +94,7 @@ script: |
 
   register_module_line('ParseExcel', 'end', __line__())
 scripttarget: 0
-signature: PIlcq/3JkkIkV7zwtkQ1JHKnP40ETho37ow7NEZDrIT2Mll32ZufFOGNTln41eMJXKmm8FPixRKD7FPn7kwqX8cpbWBIiHLulSLGBX1N4CQsuduh7nzNNw8AgtMkp3eV0Lx25k42tM7e/J7uTUYDVSYhWg8cBTvwSsFVUXardMdZ7lfGurHX5gY+9dR9cPkUnfFMyfL+qGakSSluy55zRbVkPYpA7IZzUJKLtqCcEUiFINvrRkVXDUfR7eCh/SnWq19tfHRFGeH9a+SfQtJqyiCu/GgvZebsUixZZUTUbdGOyZLZHnWI/lGZ00l/vU15JnB3otABRDMq07+xBuARqA==
+signature: a+yeIw2LakB1rAZAChd3aNVQIYwWsUT+nbxxRPeMhzAx1mY5+0yEf4/GxHDAC5kC2FSYsBTKnHmJpKvTfiWde4eJ7NUS655PqDWkFyRBJr+woIn4Zh+Ldn8Uz6o3CnGGMJ92II7aMFO4q8AZzqxx9rVCIkpJ2J4USLH6pse7u3IZggJXQB1r2vTG7eM3Z4qCTsncHioHko06QQ3vslVyr6CD5hNO2HN3C7H0IpmXZakcOfEeBeg+47X9sjGoM++cGaWxUCfFptFJZ7/Vvtya3L4RjoHVrHWQIeqs0np78Pal8yYZUHwWORu6dQcuOZVJrPEcWBJPPO3Qn/f2pDwjBw==
 subtype: python3
 system: true
 tags: []
