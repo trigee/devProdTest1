@@ -40,15 +40,29 @@ configuration:
   name: incidentType
   required: false
   section: Connect
-  supportedModules: []
+  supportedModules:
+  - agentix
+  - xsiam
   type: 13
+- advanced: true
+  defaultvalue: "1"
+  display: Incidents Fetch Interval
+  name: incidentFetchInterval
+  required: false
+  section: Collect
+  supportedModules:
+  - agentix
+  - xsiam
+  type: 19
 - additionalinfo: Maximum is limited to 200.
   defaultvalue: "50"
   display: Maximum number of incidents to fetch
   name: max_fetch
   required: false
   section: Collect
-  supportedModules: []
+  supportedModules:
+  - agentix
+  - xsiam
   type: 0
 - additionalinfo: Date or relative timestamp to start fetching incidents from, in
     the format of <number> <time unit>. For example, 2 minutes, 12 hours, 6 days,
@@ -88,7 +102,9 @@ configuration:
   name: isFetch
   required: false
   section: Collect
-  supportedModules: []
+  supportedModules:
+  - agentix
+  - xsiam
   type: 8
 - additionalinfo: 'Choose the direction to mirror the incident: Incoming (from Prisma
     Cloud to Cortex), Outgoing (from Cortex to Prisma Cloud), or Incoming and Outgoing
@@ -133,18 +149,12 @@ configuration:
   section: Connect
   supportedModules: []
   type: 8
-- defaultvalue: "1"
-  display: Alerts Fetch Interval
-  name: alertFetchInterval
-  required: false
-  supportedModules: []
-  type: 19
 contentitemexportablefields:
   contentitemfields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 4.4.34
+    itemVersion: 4.4.35
     packID: PrismaCloud
     packName: Prisma Cloud by Palo Alto Networks
     packPropagationLabels:
@@ -4425,8 +4435,8 @@ script:
   runonce: false
   script: |
     register_module_line('PrismaCloud v2', 'start', __line__())
-    CONSTANT_PACK_VERSION = '4.4.34'
-    demisto.debug('pack id = PrismaCloud, pack version = 4.4.34')
+    CONSTANT_PACK_VERSION = '4.4.35'
+    demisto.debug('pack id = PrismaCloud, pack version = 4.4.35')
     import json
     from copy import deepcopy
 
@@ -8320,5 +8330,5 @@ script:
 sectionorder:
 - Connect
 - Collect
-signature: iDto4+Rg+c4+9A/U5CokJ9eQ14Fb+0dErSDwlTp6CspbVUW009SsyLnxoIo5y0zKX2ZZcMFHqsChKpUVtYrwUAgjTq2q6U9tjgch5vABwfAZvVbMlCxuI1WmE4jSLx7uAu11lgT8Yvcf3tfAmuOYaiBDPXAINWH+zf29HClyuG2ma4UYP+mCQAz/38NqFexZWha59L4MpirjNNB44b9VOt7UKz2Ka62ON/03wWbziPBDCsgtMYSrxxQ2U2J3dIGfOWXvFhfZtBjEtyZCkDhNq7muowHFZLBRr3K8k2AATQ0UipKEPY+WSE/AsDF1qiXw5b0KD92vB3U0B9xzhggHxA==
+signature: Am6hMVbobGsD9m799iy/G2+g6WxNPlyt6NzkTExYLLTd7sYL/oubkewaeLIr5NCME6ue6Rn81xB/ULSWGfNzrC2VJVZ9str8pY5kLLH7I0M9dIYRDc9lKv/miJCIgrMBcjKfm5Tj944ro7nBZZqjMnzuRJ5Afdi7L8U99VxAQMKpl3Ua4sYfasG76GM/AQOaJaK+ZBEcO5ihFBBMk5Lr5ah+Wpt3v3Hruo2qOHMU8Qtq7Yw3CX1QCFeV79b+dgsTifdgaO1Uf6iJsKNQ9Fvo+3zpRLlqdnLblhMT4R2pA7NoYqAGysZrnvNbOVOJGUzxNxaXxtPBGxbGHfwjeb6X/Q==
 system: true
