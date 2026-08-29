@@ -13,7 +13,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.22.49
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -22,7 +22,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/py3-tools:1.0.0.10120494
+dockerimage: demisto/py3-tools:1.0.0.11597437
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -36,8 +36,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DownloadAndArchivePythonLibrary', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.49'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.49')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import shlex
   import subprocess
   import zipfile
@@ -95,7 +95,7 @@ script: |
 
   register_module_line('DownloadAndArchivePythonLibrary', 'end', __line__())
 scripttarget: 0
-signature: pDLA63vV7QqGwY1Rytp2XO+3bTRk74V8pSdBgt6yc02dlRiJ6fQJJdHMAXvpvIss77BjXT1iwnD1c1eihNK+XrJEygx8pmlc4j9Dg16/+1e98r6hp8P9VpFyY6dvKkxSNKisYsmiJNxKwo3KCgohddozX0eYdqqWN7m7wFTfGX52gHtWYQT7LnoSynqtxua/afEnlEySc8SsEvzwsB3FNmK85Bq/r/XDZ3yrTZMKe8b2WCIv4dP9eE9iCYGXMJ5FYVRDvbB1JXZIEVr2zoZdQHL1sr9qZjW0qWdw5btR3kPhJF7nlVw2s9G4h4uhiU5cXMfjmeYitkHD850ch0tg4A==
+signature: TnVszZPaikHUTWt6+QVp5EKIXeJYMhl9D6YrKc/lsuWGSAZpzrYKq8fLa+YprX1gDn4AjAAIPLjQDaXazV/ObfGXyCKbudGtG9usLahhDF6DqKX/gg1rM9JtgY4Sy/gEXZILsdp/g7qVRiDPFwn9RpJNZ6C+XerecWRy18rzsvMARrwKuE5pQfRey5pDhF+u+5wz3SDnIC4OcdIgRpeAT/RGi0EbSF9KwKEX56UCzS92FrX2+qy+VBk2W3QniOCxgyiiXJdx9ArXua4widBw00qkUZjDT2F1zYSGSKl1V+x+iq83Cf/nI4I/I4pXptftZVWB0PiTYV/95ViGLjmP5g==
 subtype: python3
 system: true
 tags:
