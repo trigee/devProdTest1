@@ -87,7 +87,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 2.1.44
+    itemVersion: 2.1.45
     packID: rasterize
     packName: Rasterize
     packPropagationLabels:
@@ -484,14 +484,14 @@ script:
       description: The extracted markdown-formatted text content.
       type: string
     supportedModules: []
-  dockerimage: demisto/chromium:149.0.7827.10133006
+  dockerimage: demisto/chromium:151.0.7922.11855526
   nativeimage:
   - "8.8"
   runonce: false
   script: |
     register_module_line('Rasterize', 'start', __line__())
-    CONSTANT_PACK_VERSION = '2.1.44'
-    demisto.debug('pack id = rasterize, pack version = 2.1.44')
+    CONSTANT_PACK_VERSION = '2.1.45'
+    demisto.debug('pack id = rasterize, pack version = 2.1.45')
     from pathlib import Path
 
 
@@ -3099,5 +3099,5 @@ script:
 sectionorder:
 - Connect
 - Collect
-signature: h1s6PbLFunJEBCRteoqxH/VMcjuRxjRIhERgx/IZ46gPC3zGbJNxTL5oeXoTSZz1ZVsZ+rg8TgmkVhHlUILLYdLy9jKYLlIZEmRCgoz4ojwVWUf6zDklcWLb5OEXkNv3ZlSjWypXs14BI75cVNpzbFn8dq+FMOOAqNRWKiUYYVyJDTUeeC02z64lRAGn9CdjHtL6N3pxWNhXvjzX+1xqKmZToDqDM4fIBr9Gy7ZEG+ZnCV9Qy2QVG36z/SvHhTG1j+IYmlDeUqgnPDJV1AgFQuWhUES+1+2pylh3IKr5UpmtfW1dm4cWJWkuBODov8bIAK+449+3rDbQ6pZGJvJJYw==
+signature: E1O6+vQM+7An6GLWcMjRspP5X4IIJ+lwJCKMgJSzpwzaSOf5qbQu+5JpBwbYtFP/YLmdUL8E7Hr0qXVlbuUePm/aF4pqZWpGFlIII6XRVQOPeaLZgBkoit3aw97snLsqqc9w7TFqTHVwD1qTOmHfYS9FCvbVdp1ecX8f4xCgReTCgve55wIQJtC1dA19bBJ0dMoN4AShnvWJh3BNNVuf7Mhe+cXhYqpQ07FtpH1TK9WOaEf4eoR02usYiQPKGVPcvw2jS3bdHSCs/6GZD+sAU45NKSlk4oKJjy3DboAI5PbPhCuRQkZ1NARgBwmWNtehV1ziDSh4FYxlYfhXeDcHWg==
 system: true
