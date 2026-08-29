@@ -20,7 +20,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.49
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -29,7 +29,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/py3-tools:1.0.0.10120494
+dockerimage: demisto/py3-tools:1.0.0.11597437
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -78,8 +78,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ZipFile', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.49'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.49')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import re
   import shutil
   from os.path import isfile
@@ -205,7 +205,7 @@ script: |
 
   register_module_line('ZipFile', 'end', __line__())
 scripttarget: 0
-signature: D3zh6UxYKxaflZhFfpeR0q/9byAwppnar/xDo6ZWOi2S690D3g94efp//auZzC1bTzyAxlJC6KPrsZ3XQsyKo0MCG7Ax/L8V98E3Kv70+4xuQ05bX5Zu5Nho9rNqrG5YppklDL3T7RP5Y7FgGsnYik90z86rwygwsIix/DvAJl+5yw53L4FVLRWTkD4sEG/2gC+dbX99UV90jAKyhHK0uvChTvrVaKsYOoQj6gnAbr+3E2uih4XeitAcc6ar3sRUAJklWtYtf4cLoCd25R9XeDBNkPxwDlY97nSjB5zCoH/+SPWw/C+KOuWX/NFPMDLvZ+B49BUCpfCy0cuFJZdtXg==
+signature: 2LHpevzn4gKDcsVXiNzfeTxoo1WcBI+pRgIUG7r5Q5R72SGll/4WzTn4aAObLbfz7XsgUrZFWgHRzKnpaRAFKODTJ4QWKuOdbvXwGGQx9DXppTmMShU7yj4M4ojR7Xid2f8sMA7LwNACJmYELzj+FSrBR5whkLG1NJNbA/DmW2HmRzCah3FaGRc7dznjPuAz8pKi/gi0ltaqYRrUXN6nRnlwOUKyMo/Pgt+Z4/v3XVk69/+Nl26lPmfSEPL2M0ZyuwBdBgdX9jPEb22XdN7+eIEAVkdRgtoNZuDV7P64SXbob/GPvxk2Ypzn3Zte7Stikrk98sVtRPoBZJhkA9PDzg==
 subtype: python3
 system: true
 tags:
