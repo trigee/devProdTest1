@@ -30,6 +30,33 @@
 				"category": "Data Enrichment \u0026 Threat Intelligence",
 				"commands": [
 					{
+						"description": "Gets indicators from the feed.",
+						"hidden": false,
+						"name": "unit42-get-indicators"
+					},
+					{
+						"description": "Gets threat objects from the feed.",
+						"hidden": false,
+						"name": "unit42-get-threat-objects"
+					}
+				],
+				"description": "Unit 42 Feed integration provides threat intelligence from Palo Alto Networks Unit 42 research team.",
+				"fromversion": "6.10.0",
+				"id": "Unit 42 Feed",
+				"name": "Unit 42 Feed",
+				"supportedModules": [
+					"agentix",
+					"xsiam"
+				],
+				"tags": [
+					"feed"
+				],
+				"toversion": ""
+			},
+			{
+				"category": "Data Enrichment \u0026 Threat Intelligence",
+				"commands": [
+					{
 						"description": "Enrich an IP address with Unit 42 threat intelligence context.",
 						"hidden": false,
 						"name": "ip"
@@ -55,29 +82,6 @@
 				"id": "Unit 42 Intelligence",
 				"name": "Unit 42 Intelligence",
 				"toversion": ""
-			},
-			{
-				"category": "Data Enrichment \u0026 Threat Intelligence",
-				"commands": [
-					{
-						"description": "Gets indicators from the feed.",
-						"hidden": false,
-						"name": "unit42-get-indicators"
-					},
-					{
-						"description": "Gets threat objects from the feed.",
-						"hidden": false,
-						"name": "unit42-get-threat-objects"
-					}
-				],
-				"description": "Unit 42 Feed integration provides threat intelligence from Palo Alto Networks Unit 42 research team.",
-				"fromversion": "6.10.0",
-				"id": "Unit 42 Feed",
-				"name": "Unit 42 Feed",
-				"tags": [
-					"feed"
-				],
-				"toversion": ""
 			}
 		],
 		"layoutscontainer": null,
@@ -89,7 +93,7 @@
 		"wizard": null
 	},
 	"created": "2025-10-15T20:34:16Z",
-	"currentVersion": "1.0.23",
+	"currentVersion": "1.0.24",
 	"defaultDataSource": {
 		"id": "",
 		"name": ""
@@ -100,14 +104,14 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.42.8",
+			"minVersion": "1.42.21",
 			"name": "Base"
 		},
 		"CommonScripts": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.22.37",
+			"minVersion": "1.22.51",
 			"name": "Common Scripts"
 		}
 	},
@@ -139,7 +143,7 @@
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "1.0.23",
+	"itemVersion": "1.0.24",
 	"keywords": [
 		"Feed",
 		"TIM",
@@ -179,14 +183,14 @@
 		"cloud_posture"
 	],
 	"tags": [
-		"Threat Intelligence Management",
 		"Palo Alto Networks Products",
-		"TIM"
+		"TIM",
+		"Threat Intelligence Management"
 	],
 	"toServerVersion": "",
-	"updated": "2026-07-16T20:23:59Z",
+	"updated": "2026-08-24T20:09:48Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "11098443",
+	"versionInfo": "12267446",
 	"videos": []
 }
