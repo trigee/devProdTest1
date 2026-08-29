@@ -12,7 +12,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.49
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -21,7 +21,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/py3-tools:1.0.0.10120494
+dockerimage: demisto/py3-tools:1.0.0.11597437
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -35,8 +35,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ExtractDomainFromUrlAndEmail', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.49'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.49')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import re
   from urllib.parse import parse_qs, unquote, urlparse
 
@@ -142,7 +142,7 @@ script: |
 
   register_module_line('ExtractDomainFromUrlAndEmail', 'end', __line__())
 scripttarget: 0
-signature: bpKESE1q389uH69fotVBj/CBw70j82jtgquzPMFubt78M/pvtj0hbbg/xYscwO69mJt2K2BI+yho88UF+nGV7BckPf/FOO52tw3DuD4uNFAttQIhahFTGtC8CFnnEzz1EQ/iQC80BRrCcEzM9bvFinoVKxme/HFwXfUlX6M0Kv+Q8Nk7W4EvLpua3+jvIWAvvHbIe7TvuyL/jqZfCBkMEDH6qOZnz1gHwJjDnRTbnx7Dc+8lr3tjf20Gq9M84Mv/GfaSnQYChlbEeB1tw/6Qr4tdL1NpPOucbYdWbd1RtGjpFIpyVV1RhHR5tdJwaY9+8MtxeUW0EeLMkX3NmPLZug==
+signature: QuefBpQ8sujEfuhuKz241yTNsBM6ar03GRF4JYlF68Ux0+mflQvbqIAc2LR5or1sOEgbMdaEbfHNk5Y9YRcbAXbBFJKyEJ9ktwiXUSq12InW0jRBliIe4ZYgZBFf3JexAiJXcuI5X1OKSz2+7ChN+DZM82sOOiBCqsIhq6fcRXwdlRv86CjrldMJ72GqnNebHGvIem4vE9yyGtTNk0Vp06uZTvlVgAKYO8F928Bo7an9S/cm4hrA5a0cUP/HJdQ8S0UdUWlyFTf/gsHPtRiz1kVN7ccG5tUVWH/2ULzUrYZwCgu0wnhFiUsi4gC5CaXNN3+QNALPh8ZpYOf4sfqiqQ==
 subtype: python3
 system: true
 tags:
