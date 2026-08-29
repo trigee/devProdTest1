@@ -57,6 +57,13 @@
 		"list": null,
 		"playbook": [
 			{
+				"description": "This playbook compares the domain creation time against a provided time value such as one month ago. The period can be configured within the playbook inputs MinimumAgeOfDomainMonths or MinimumAgeOfDomainHours. The playbook calculates the timestamp for the relevant period and compares it to the domain creation time value provided by Whois. The domains are outputted accordingly if they were created before or after the compared time, respectively.",
+				"fromversion": "5.5.0",
+				"id": "TIM - Process Domain Age With Whois",
+				"name": "TIM - Process Domain Age With Whois",
+				"tags": []
+			},
+			{
 				"description": "This playbook compares the domain registrant against the Cortex list of approved registrants provided in the inputs. A registrant is the company or entity that owns the domain.",
 				"fromversion": "5.5.0",
 				"id": "TIM - Process Domain Registrant With Whois",
@@ -69,13 +76,6 @@
 				"id": "TIM - Process Domains With Whois",
 				"name": "TIM - Process Domains With Whois",
 				"tags": []
-			},
-			{
-				"description": "This playbook compares the domain creation time against a provided time value such as one month ago. The period can be configured within the playbook inputs MinimumAgeOfDomainMonths or MinimumAgeOfDomainHours. The playbook calculates the timestamp for the relevant period and compares it to the domain creation time value provided by Whois. The domains are outputted accordingly if they were created before or after the compared time, respectively.",
-				"fromversion": "5.5.0",
-				"id": "TIM - Process Domain Age With Whois",
-				"name": "TIM - Process Domain Age With Whois",
-				"tags": []
 			}
 		],
 		"report": null,
@@ -84,7 +84,7 @@
 		"wizard": null
 	},
 	"created": "2025-03-29T09:34:18Z",
-	"currentVersion": "1.5.43",
+	"currentVersion": "1.5.44",
 	"defaultDataSource": {
 		"id": "",
 		"name": ""
@@ -95,14 +95,14 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.42.3",
+			"minVersion": "1.42.21",
 			"name": "Base"
 		},
 		"CommonScripts": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.22.29",
+			"minVersion": "1.22.49",
 			"name": "Common Scripts"
 		},
 		"DomainTools": {
@@ -116,14 +116,14 @@
 			"author": "DomainTools",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "2.2.9",
+			"minVersion": "2.2.11",
 			"name": "DomainTools Iris Investigate"
 		},
 		"JsonWhoIs": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "1.0.28",
+			"minVersion": "1.0.29",
 			"name": "JsonWhoIs"
 		}
 	},
@@ -154,18 +154,18 @@
 			"name": "DomainTools (Deprecated)"
 		},
 		{
-			"id": "JsonWhoIs",
-			"imagePath": "content/packs/JsonWhoIs/JsonWhoIs_image.png",
-			"name": "JsonWhoIs"
-		},
-		{
 			"id": "DomainTools Iris",
 			"imagePath": "content/packs/DomainTools_Iris/DomainToolsIris_image.png",
 			"name": "DomainTools Iris"
+		},
+		{
+			"id": "JsonWhoIs",
+			"imagePath": "content/packs/JsonWhoIs/JsonWhoIs_image.png",
+			"name": "JsonWhoIs"
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "1.5.43",
+	"itemVersion": "1.5.44",
 	"keywords": [],
 	"legacy": true,
 	"modules": [],
@@ -195,15 +195,15 @@
 		"xsiam"
 	],
 	"tags": [
-		"Getting Started",
 		"TIM",
-		"Plug \u0026 Enrich",
-		"Free Enricher"
+		"Getting Started",
+		"Free Enricher",
+		"Plug \u0026 Enrich"
 	],
 	"toServerVersion": "",
-	"updated": "2026-07-05T20:05:16Z",
+	"updated": "2026-08-19T20:16:18Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "10750492",
+	"versionInfo": "12113321",
 	"videos": []
 }
