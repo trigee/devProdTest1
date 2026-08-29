@@ -35,7 +35,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.49
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -44,7 +44,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/unzip:1.0.0.9067966
+dockerimage: demisto/unzip:1.0.0.11009641
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -62,8 +62,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('UnzipFile', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.49'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.49')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import os
   import shutil
   import sys
@@ -380,7 +380,7 @@ script: |
 
   register_module_line('UnzipFile', 'end', __line__())
 scripttarget: 0
-signature: yi/4/Hb3A1L/vZCk9Ir10YHGBZOBFvg78I2yMKDau1LEgAjm2n7mITLdxKaCsHtYPl3FqbW+8txU4oWP0WLLFu+k8EmhmZVCWphGiY7qzMDWpnf8Sv6TyM5II27CwIC7JuLs6umzcMRbkpeaLWq35xv6Rw5Yg0zPazWHd5jhsIW2PDlj3VIgClwb68wduQaunKssgmtS/y0yscgJSg9LBLm3foocHN4svUqMTiIqhrQQpxLyLbjb93lW1Yi+8VRVbRFPpqr1I24fG4Xh8iGr8na4FX5Zg4j1oovT1WuRjDrST+JN3gztvyZEdpXbnqHHpeDgdwKboS5KSnkWaSmeeA==
+signature: sEzwvUPMnv55fZiO9k+jouWjXroWDrQLllYu2+eO87/IE+qDn0hEElTFiBZB1C0bXTSHGTuE71UUPBQhQGQMXJ3sQ3NAPAFevOFnHtI2knK+erEDECERP9GAweosilQFCSlvubNTvS1TmFpnNnMg7B8zP9mswIQOWWy+N7n+NOSdOtMmhs5WNuEacDOZorQ/XQjO3/EldihzrYw0H0phTulw/3jCrM6W2oiRfpvj6BU3OKFb2sHRauRpvNv/WeuddrErbZAukuneb9TSduRbXOEGAEQW+0Ucdmd961D+cZjDaEoRjBYH6dDEEjZX2kLTHsAFuBYpQplOl5q1m7uPsQ==
 subtype: python3
 system: true
 tags:
