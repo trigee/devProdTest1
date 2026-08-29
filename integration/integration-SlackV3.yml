@@ -248,7 +248,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 3.8.14
+    itemVersion: 3.8.19
     packID: Slack
     packName: Slack
     packPropagationLabels:
@@ -779,7 +779,7 @@ script:
   - "8.6"
   runonce: false
   script: "register_module_line('SlackV3', 'start', __line__())\nCONSTANT_PACK_VERSION
-    = '3.8.14'\ndemisto.debug('pack id = Slack, pack version = 3.8.14')\nimport asyncio\nimport
+    = '3.8.19'\ndemisto.debug('pack id = Slack, pack version = 3.8.19')\nimport asyncio\nimport
     concurrent\nimport logging.handlers\nimport ssl\nimport re\nimport json\nimport
     threading\nfrom typing import Literal, TypedDict, get_args\nfrom urllib.parse
     import urlparse\nfrom datetime import UTC, datetime\nimport dateparser\nimport
@@ -3704,34 +3704,38 @@ script:
     is None:\n        demisto.debug(\"Did not find conversation ID by username, attempting
     to find by channel name\")\n        conversation_info = get_conversation_by_name(channel_name)\n
     \       channel_id = conversation_info.get(\"id\")\n\n    if not channel_id:\n
-    \       raise DemistoException(f\"Channel '{channel_name}' does not exist.\")\n\n
-    \   return channel_id\n\n\ndef conversation_history() -> None:\n    \"\"\"\n    Fetches
-    a conversation's history of messages and events.\n\n    Raises:\n        ValueError:
-    If neither conversation_id nor conversation_name is provided.\n        DemistoException:
-    If the Slack API returns an error.\n    \"\"\"\n    args = demisto.args()\n    conversation_id
+    \       raise CortexResourceNotFoundError(\n            resource_type=\"Slack
+    channel\",\n            identifier=channel_name,\n            override_message=f\"Channel
+    '{channel_name}' does not exist.\",\n        )\n\n    return channel_id\n\n\ndef
+    conversation_history() -> None:\n    \"\"\"\n    Fetches a conversation's history
+    of messages and events.\n\n    Raises:\n        ValueError: If neither conversation_id
+    nor conversation_name is provided.\n        DemistoException: If the Slack API
+    returns an error.\n    \"\"\"\n    args = demisto.args()\n    conversation_id
     = args.get(\"channel_id\") or args.get(\"conversation_id\")\n    conversation_name
     = args.get(\"conversation_name\")\n    limit = arg_to_number(args.get(\"limit\"))\n
     \   from_time = args.get(\"from_time\")\n    page_token = args.get(\"page_token\")\n
     \   thread_id = args.get(\"thread_id\")\n\n    if not conversation_id and not
-    conversation_name:\n        raise ValueError(\"Either conversation_id or conversation_name
-    must be provided.\")\n\n    if not conversation_id:\n        conversation_id =
-    resolve_conversation_id_from_name(conversation_name)\n\n    # When thread_id is
-    provided, delegate to conversation replies logic\n    if thread_id:\n        conversation_replies(channel_id=conversation_id,
-    thread_timestamp=thread_id)\n        return\n\n    body = {\"channel\": conversation_id,
-    \"limit\": limit}\n    if from_time:\n        body[\"oldest\"] = to_unix_seconds_str(from_time)\n\n
-    \   if page_token:\n        body[\"cursor\"] = page_token\n\n    raw_response
+    conversation_name:\n        raise CortexMissingArgError(\n            [\"conversation_id\",
+    \"conversation_name\"],\n            require_one=True,\n            override_message=\"Either
+    conversation_id or conversation_name must be provided.\",\n        )\n\n    if
+    not conversation_id:\n        conversation_id = resolve_conversation_id_from_name(conversation_name)\n\n
+    \   # When thread_id is provided, delegate to conversation replies logic\n    if
+    thread_id:\n        conversation_replies(channel_id=conversation_id, thread_timestamp=thread_id)\n
+    \       return\n\n    body = {\"channel\": conversation_id, \"limit\": limit}\n
+    \   if from_time:\n        body[\"oldest\"] = to_unix_seconds_str(from_time)\n\n
+    \   if page_token:\n        body[\"cursor\"] = page_token\n\n    try:\n        raw_response
     = send_slack_request_sync(CLIENT, \"conversations.history\", http_verb=\"GET\",
-    body=body)\n\n    if not raw_response.get(\"ok\"):\n        raise DemistoException(\n
-    \           f'An error occurred while listing conversation history: {raw_response.get(\"error\")}',
-    res=raw_response\n        )\n\n    messages: Any = raw_response.get(\"messages\",
+    body=body)\n    except SlackApiError as e:\n        raise CortexExternalApiError(\n
+    \           override_message=f\"An error occurred while listing conversation history:
+    {e.response.get('error')}\"\n        )\n\n    messages: Any = raw_response.get(\"messages\",
     [])\n    response_metadata: dict = raw_response.get(\"response_metadata\", {})
     or {}\n    cursor: str = response_metadata.get(\"next_cursor\", \"\")\n\n    #
     Normalize messages to list\n    if isinstance(messages, dict):\n        messages
-    = [messages]\n    if not isinstance(messages, list):\n        raise DemistoException(\n
-    \           f'An error occurred while listing conversation history: {raw_response.get(\"error\")}',
-    res=raw_response\n        )\n\n    context: List[Dict[str, Any]] = []\n    for
-    message in messages:\n        thread_ts = \"N/A\"\n        has_replies = \"No\"\n
-    \       name = \"N/A\"\n        full_name = \"N/A\"\n\n        if \"subtype\"
+    = [messages]\n    if not isinstance(messages, list):\n        raise CortexExternalApiError(\n
+    \           override_message=f\"An error occurred while listing conversation history:
+    {raw_response.get('error')}\"\n        )\n\n    context: List[Dict[str, Any]]
+    = []\n    for message in messages:\n        thread_ts = \"N/A\"\n        has_replies
+    = \"No\"\n        name = \"N/A\"\n        full_name = \"N/A\"\n\n        if \"subtype\"
     not in message:\n            user_id = message.get(\"user\")\n            user_details_response
     = send_slack_request_sync(CLIENT, \"users.info\", http_verb=\"GET\", body={\"user\":
     user_id})\n            user_details: dict = user_details_response.get(\"user\",
@@ -3938,6 +3942,6 @@ sectionorder:
 - Connect
 - Collect
 - Agentic Assistant
-signature: dHevYtpHV2KFeXYQVWqNoCG7YXtnvcJNLp6IUXBr6KAtwwPup7cNBWRg+GBKdf854z1JZc85264/gVQehgcMHg34+z6vD91zD0qfKAJnuKz8JhmY6aAiRe/8+LhJdvLHHFQWVteVLXjcPYjQjSpm0+v8/GzkBCrZ0jd4bYUWsz9qr6yN92Y2b3Q6LEl2XvIPZJ9aFiSEadqhupcj8ffAAE8oIsDq2e6V/0nRUqC/M7obxALkezAEXcXv0NTixpm3Ut/idQmjfINSobmtUNGuIE5syLfw3wY00SkZeOtB2mhlzHdA8eZRxMRlbA2JPXftPjEfRqsg736q421aPR/6xQ==
+signature: 3Eh+dGnM+dXgfpcpR2CBy2oLTY5/FA7tbP3OMcEpPFmIoUzll9NmtPw1hs36SerYG8wC05t/l8DSKMyHyLnLreb6w3pNbwWmXW0zw4A6q46Ftpmc2vo5tHVUrhdnR2dZGoIb3J/nxyPin7v9iBXDeHnuHNrUWAmkACG9Yabx+TfacvMqW0pOrFwkLfy/VG5RJdvVLomYJpwjgeRwcaMwQ7Tl1Cv6TYl4vp55E8aX7D4uf0LvCDcr59qpLemeF7UX3yXwZjaiwu+E+/JZ64RMv0qnl9WC4yuWxpXegbUJHrFTpKpFYzqLYgEEeQmGi6eyKFBn4mmTvoW+JmNiG1jVVQ==
 supportsquickactions: true
 system: true
