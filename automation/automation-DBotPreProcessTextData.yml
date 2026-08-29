@@ -111,7 +111,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.20
+    itemVersion: 1.42.22
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -120,7 +120,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/ml:1.0.0.9793547
+dockerimage: demisto/ml:1.0.0.12042988
 engineinfo: {}
 mainengineinfo: {}
 name: DBotPreProcessTextData
@@ -143,8 +143,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DBotPreProcessTextData', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.20'
-  demisto.debug('pack id = Base, pack version = 1.42.20')
+  CONSTANT_PACK_VERSION = '1.42.22'
+  demisto.debug('pack id = Base, pack version = 1.42.22')
   # pylint: disable=no-member
   import pickle
   import string
@@ -671,7 +671,7 @@ script: |
 
   register_module_line('DBotPreProcessTextData', 'end', __line__())
 scripttarget: 0
-signature: xty5BnTt/ABVyvVGvXoU8m1s0GO8D2y0+y+UPP3w5oNgGkb3eHqmJDrzXe2JQxDQw1V4ZFjHd/6oKWF7S2lGTm4YRo8iDoVzCPD4fj/p3ZuPqCE/rxDqyS6mfd2FiCMPN7rguwuk1eMAL+8Zq6WfvP9Vm69CvpIdsO1QMWATyqMz0sitO8MBzNfablB17N/7KlsmuHqr1P69j36djr2hgXUvfP4wCxPa6Uiy8++QwNEXJTH43K9j00TGsLgt5aY6D1T4HOJcvUBdTdH0Q3c3MnkPBbNw2vZyRxIJ7h+r6W9AUkx+YBlHt4ueSjvRLl9iEgv4F2I/kBmCfG84TqOOew==
+signature: RruuQC+5x6I+yLbgP6V3LQeyx5Ow5N6R3ZP1Nw+GMD7iCw8HAuNAHEkT6C3unLCsrkYvX5wKANrB/B79m1GCxCDcQLT+SFYuvkt7tjvH39sHpK3JTyZ21hPHJDcTnfjQNnqzcfTBwjmqSOntQ1tooAHX+XwtKOjrmx9z+uH4hDotigaSeEIf2Vbks+UAAsENQHsj2nGPO1z1r3jwXtoa6NPUHcl9yI3lc9iHofXGNU8BF/mI4587FvQZ3nr7LqbrCrYHQfA5Vtph1URuyeujkFnlDNDw0QRdGprmyPxbkEo7TXyn+4LkS8Kj0JYYIIlMvqLCTsuGbmGJeJj+ky0NBQ==
 subtype: python3
 system: true
 tags:
