@@ -53,7 +53,7 @@
 		"incidentfield": [
 			{
 				"description": "",
-				"name": "Hello World ID",
+				"name": "Hello World Type",
 				"type": "shortText"
 			},
 			{
@@ -63,7 +63,7 @@
 			},
 			{
 				"description": "",
-				"name": "Hello World Type",
+				"name": "Hello World ID",
 				"type": "shortText"
 			}
 		],
@@ -79,39 +79,6 @@
 		],
 		"indicatorfield": null,
 		"integration": [
-			{
-				"category": "Utilities",
-				"commands": [
-					{
-						"description": "Hello command - prints hello to anyone.",
-						"hidden": false,
-						"name": "helloworld-say-hello"
-					},
-					{
-						"description": "Lists the example alerts as it would be fetched from the API.",
-						"hidden": false,
-						"name": "helloworld-alert-list"
-					},
-					{
-						"description": "Example of creating a new item in the API.",
-						"hidden": false,
-						"name": "helloworld-alert-note-create"
-					},
-					{
-						"description": "Return IP information and reputation.",
-						"hidden": false,
-						"name": "ip"
-					}
-				],
-				"description": "This is the Hello World integration for getting started.",
-				"fromversion": "6.8.0",
-				"id": "HelloWorld",
-				"name": "HelloWorld (Community Contribution)",
-				"tags": [
-					"fetch-incidents"
-				],
-				"toversion": ""
-			},
 			{
 				"category": "Utilities",
 				"commands": [
@@ -172,6 +139,39 @@
 				"toversion": ""
 			},
 			{
+				"category": "Utilities",
+				"commands": [
+					{
+						"description": "Hello command - prints hello to anyone.",
+						"hidden": false,
+						"name": "helloworld-say-hello"
+					},
+					{
+						"description": "Lists the example alerts as it would be fetched from the API.",
+						"hidden": false,
+						"name": "helloworld-alert-list"
+					},
+					{
+						"description": "Example of creating a new item in the API.",
+						"hidden": false,
+						"name": "helloworld-alert-note-create"
+					},
+					{
+						"description": "Return IP information and reputation.",
+						"hidden": false,
+						"name": "ip"
+					}
+				],
+				"description": "This is the Hello World integration for getting started.",
+				"fromversion": "6.8.0",
+				"id": "HelloWorld",
+				"name": "HelloWorld (Community Contribution)",
+				"tags": [
+					"fetch-incidents"
+				],
+				"toversion": ""
+			},
+			{
 				"category": "Data Enrichment \u0026 Threat Intelligence",
 				"commands": [
 					{
@@ -196,17 +196,17 @@
 		"parsingrule": [],
 		"playbook": [
 			{
-				"description": "Deprecated. No available replacement.",
-				"fromversion": "5.0.0",
-				"id": "HelloWorld Scan",
-				"name": "HelloWorld Scan",
-				"tags": []
-			},
-			{
 				"description": "This is a playbook which will handle the alerts coming from the Hello World service",
 				"fromversion": "6.8.0",
 				"id": "Handle Hello World Alert",
 				"name": "Handle Hello World Alert",
+				"tags": []
+			},
+			{
+				"description": "Deprecated. No available replacement.",
+				"fromversion": "5.0.0",
+				"id": "HelloWorld Scan",
+				"name": "HelloWorld Scan",
 				"tags": []
 			}
 		],
@@ -216,7 +216,7 @@
 		"wizard": null
 	},
 	"created": "2025-03-29T09:38:42Z",
-	"currentVersion": "4.0.13",
+	"currentVersion": "4.0.15",
 	"defaultDataSource": {
 		"id": "HelloWorldEventCollector",
 		"name": "HelloWorld Event Collector"
@@ -227,21 +227,21 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.42.17",
+			"minVersion": "1.42.22",
 			"name": "Base"
 		},
 		"CommonPlaybooks": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "2.8.8",
+			"minVersion": "2.8.9",
 			"name": "Common Playbooks"
 		},
 		"CommonScripts": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.22.44",
+			"minVersion": "1.22.52",
 			"name": "Common Scripts"
 		},
 		"CommonTypes": {
@@ -288,7 +288,7 @@
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "4.0.13",
+	"itemVersion": "4.0.15",
 	"keywords": [],
 	"legacy": true,
 	"modules": [],
@@ -315,18 +315,19 @@
 	},
 	"supportedModules": [
 		"agentix",
-		"xsiam"
+		"xsiam",
+		"exposure_management"
 	],
 	"tags": [
-		"Collection",
-		"Getting Started",
 		"Data Source",
+		"Getting Started",
+		"Collection",
 		"TIM"
 	],
 	"toServerVersion": "",
-	"updated": "2026-08-12T10:45:05Z",
+	"updated": "2026-08-27T20:19:54Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "11856720",
+	"versionInfo": "12411004",
 	"videos": []
 }
