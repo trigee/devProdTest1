@@ -42,7 +42,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.1.0
     isoverridable: false
-    itemVersion: 3.5.84
+    itemVersion: 3.5.89
     packID: Core
     packName: Core
     packPropagationLabels:
@@ -71,8 +71,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SearchIndicatorInEvents', 'start', __line__())
-  CONSTANT_PACK_VERSION = '3.5.84'
-  demisto.debug('pack id = Core, pack version = 3.5.84')
+  CONSTANT_PACK_VERSION = '3.5.89'
+  demisto.debug('pack id = Core, pack version = 3.5.89')
 
 
   import urllib3
@@ -84,6 +84,7 @@ script: |
   import json
   import secrets
   import string
+  import traceback
 
 
   import urllib3
@@ -556,7 +557,29 @@ script: |
           )
 
 
-  def add_playbook_metadata(data: dict, command: str):
+  def get_source_override(args: Optional[dict], key: str) -> str:
+      """Get a non-empty source override value from the command arguments.
+
+      Args:
+          args (Optional[dict]): The command arguments.
+          key (str): The argument name to read ('source_id' or 'source_name').
+
+      Returns:
+          str: The stripped argument value, or an empty string if it was not provided or is blank.
+      """
+      if not args:
+          return ""
+      return str(args.get(key) or "").strip()
+
+
+  def add_playbook_metadata(data: dict, command: str, args: Optional[dict] = None) -> None:
+      """Add the playbook metadata to the request data.
+
+      Args:
+          data (dict): The request data to enrich.
+          command (str): The name of the command being executed.
+          args (Optional[dict]): The command arguments, used to read the source overrides.
+      """
       ctx_output: dict = demisto.callingContext or {}
 
       context = ctx_output.get("context") or {}
@@ -569,6 +592,10 @@ script: |
       task_name = entry_task.get("taskName", "")
       task_id = entry_task.get("taskId", "")
       brand = ctx_output.get("context", {}).get("IntegrationBrand", "")
+
+      playbook_id = get_source_override(args, "source_id") or playbook_id
+      playbook_name = get_source_override(args, "source_name") or playbook_name
+
       playbook_metadata = {
           "playbook_name": playbook_name,
           "playbook_id": playbook_id,
@@ -607,9 +634,10 @@ script: |
       }
 
       try:
-          add_playbook_metadata(data, "start_xql_query")
+          add_playbook_metadata(data, "start_xql_query", args)
       except Exception as e:
           demisto.error(f"Error adding playbook metadata: {str(e)}")
+          demisto.debug(traceback.format_exc())
 
       time_frame = args.get("time_frame")
       if time_frame:
@@ -1305,7 +1333,7 @@ script: |
 
   register_module_line('SearchIndicatorInEvents', 'end', __line__())
 scripttarget: 0
-signature: Dutk1w/EVav9+IUbScbrbIsTmnyI3x9M38bcT1vjT+y6jfsv5ciJloIXPojN+orUC2m79YNxNHo1oOvGtd9Vhoe8khgHg90/qcrJuZlH3S5u27PTKN8WGrcelpGuqsNaWsyB2LCkNUk975yjMAyxyrqLZrU+LtenN0i2BXcIKK6Laay42uZbSJk59X8VqNSAbeExGy3nUdQfauu3OhM9xWts/vx9+QFGDDfMBiEYIMvXpRIe0de1bkJzkI0vjiaDj8sgwrcRm4433kRVV1OcYcDDvjBxiW5I22r/y3gAuqdsdhB86czE4ue7Nxj+a/4SDoyYyyzi4UJgzfgk1/ZVvw==
+signature: 4ahL2AnyafgTcY16wqIEDAuHLHphanSvM/CgNjavzkuiQWcH+kL9zJL2yHVZfMM5UpQjOtL9YvsbklkJttVvNAp9GiqvzJNRy2Yn1MT68+HG1n/RpfQbQahVA3ihC99dcy/tVy79a8vfPz/M+aNzdBpHLvRLY3KwiKnE8g8BF009bbqdjo5HY1I4I64Lrik4LBPHcelL6CIk9M4ys3EGTREAWQ0gywDSx46TYtYVwbNPd0ySqfAuf8Efh5qUOnbXtSRI3HTbP17zgBbGDWsMEAf3fVYG1wLh71885Etc5F0803jXd9Chz+EicPbglKe+YTBXSNgBPhzgV/ygExdAyg==
 subtype: python3
 system: true
 tags:
