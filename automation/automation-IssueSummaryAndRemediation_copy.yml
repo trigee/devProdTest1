@@ -1,0 +1,58 @@
+args:
+- description: The issue key reference from the playbook context that provides the
+    security issue details to be analyzed and summarized by the LLM.
+  name: issue
+  supportedModules: []
+comment: Provides detailed, actionable steps for remediating the security alert that
+  has been provided.
+commonfields:
+  id: f1df6fa9-e7f8-4798-8d34-ac8b8bdd21e8
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.13.0
+    isoverridable: false
+    itemVersion: 1.22.42
+    packID: ""
+    packName: Common Scripts
+    prevname: ""
+    propagationLabels:
+    - all
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    - edr
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.12.6391686
+engineinfo: {}
+isllm: true
+mainengineinfo: {}
+name: IssueSummaryAndRemediation_copy
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: llm.summary
+  description: The LLM Output Summary.
+  type: string
+promptConfig:
+  maxOutputTokens: 12000
+  model: ""
+  modelTier: ""
+  temperature: 0.1
+  webSearch: false
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: ""
+scripttarget: 0
+signature: NEVci84+/68DE8lJLhuPYac60DmFBvY1idv7wKsTjVfOsGZONSgY264TmIZ4DZGTcUuPol8TyJkMiuY/6Wcp1EgxHPlSZKaVqjic4fs9NfCuc3fx00mfgKHOsDnGIuPEayzPJiOuXcMVXqRyTykwZtxuBmym1KfYYA6PBfhQr6R5SXBIjEJLiCtVUbn9w9VFc6796ocGvH2yKbweY2r2p07WPczwwg8e+65VzvszL/sfk1j0Dr4lZ+F6ujffjzPM6Q1AaYV4ERDCmwVAfWtgnaWrXH04Tl/K6OLrK7FzX+iczIDlyGswX7BB/yLDReiymjqhogh8LB8gwUB1cpQc6w==
+sourcescripid: IssueSummaryAndRemediation
+subtype: python3
+tags: []
+type: python
+userprompt: Provide detailed remediation steps for the security alert ${issue} in
+  a professional, well-structured format.
