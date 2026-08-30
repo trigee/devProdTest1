@@ -1,0 +1,316 @@
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: activedir
+  version: -1
+configuration:
+- display: Server IP (e.g. 192.168.0.1)
+  name: LDAPServer
+  required: true
+  supportedModules: []
+  type: 0
+- defaultvalue: "389"
+  display: Port
+  name: LDAPServerPort
+  required: false
+  supportedModules: []
+  type: 0
+- display: ""
+  name: Credentials
+  required: true
+  supportedModules: []
+  type: 9
+- display: Base DN (e.g. DC=domain,DC=com)
+  name: LDAPBaseDN
+  required: true
+  supportedModules: []
+  type: 0
+- defaultvalue: none
+  display: Security Type (none/ssl/tls)
+  name: LDAPSecurity
+  required: true
+  supportedModules: []
+  type: 0
+- defaultvalue: "500"
+  display: Page Size
+  name: LDAPPageSize
+  required: false
+  supportedModules: []
+  type: 0
+- display: Do not validate server certificate (insecure)
+  name: LDAPSInsecure
+  required: false
+  supportedModules: []
+  type: 8
+- display: Full path for CA certificate of Active Directory server (type pem)
+  name: LDAPCaCertFile
+  required: false
+  supportedModules: []
+  type: 0
+contentitemexportablefields: {}
+deprecated: true
+description: Deprecated. Use the Active Directory Query v2 integration instead.
+display: Active Directory Query
+icon: activedirectory.png
+ispasswordprotected: true
+name: activedir
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - description: commands.server.ad.arguments.filter.description
+      name: filter
+      required: true
+      supportedModules: []
+    - default: true
+      description: commands.server.ad.arguments.baseDn.description
+      name: base-dn
+      supportedModules: []
+    - description: commands.server.ad.arguments.attributes.description
+      name: attributes
+      supportedModules: []
+    - description: commands.server.ad.arguments.sizeLimit.description
+      name: size-limit
+      supportedModules: []
+    - description: commands.server.ad.arguments.timeLimit.description
+      name: time-limit
+      supportedModules: []
+    deprecated: true
+    description: commands.server.adSearch.description
+    name: ad-search
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.ad.arguments.username.description
+      name: username
+      required: true
+      supportedModules: []
+    - description: commands.server.ad.arguments.baseDn.description
+      name: base-dn
+      supportedModules: []
+    deprecated: true
+    description: commands.server.adExpirePassword.description
+    execution: true
+    name: ad-expire-password
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.ad.arguments.username.description
+      name: username
+      required: true
+      supportedModules: []
+    - description: commands.server.ad.arguments.password.description
+      name: password
+      required: true
+      supportedModules: []
+    - description: commands.server.ad.arguments.baseDn.description
+      name: base-dn
+      supportedModules: []
+    deprecated: true
+    description: commands.server.adSetNewPassword.description
+    execution: true
+    name: ad-set-new-password
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.ad.arguments.username.description
+      name: username
+      required: true
+      supportedModules: []
+    - description: commands.server.ad.arguments.baseDn.description
+      name: base-dn
+      supportedModules: []
+    deprecated: true
+    description: commands.server.adUnlockAccount.description
+    execution: true
+    name: ad-unlock-account
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.ad.arguments.username.description
+      name: username
+      required: true
+      supportedModules: []
+    - description: commands.server.ad.arguments.baseDn.description
+      name: base-dn
+      supportedModules: []
+    deprecated: true
+    description: commands.server.adDisableAccount.description
+    execution: true
+    name: ad-disable-account
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.ad.arguments.username.description
+      name: username
+      required: true
+      supportedModules: []
+    - description: commands.server.ad.arguments.baseDn.description
+      name: base-dn
+      supportedModules: []
+    deprecated: true
+    description: commands.server.adEnableAccount.description
+    execution: true
+    name: ad-enable-account
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.ad.arguments.username.description
+      name: username
+      supportedModules: []
+    - description: commands.server.ad.arguments.computerName.description
+      name: computer-name
+      supportedModules: []
+    - description: commands.server.ad.arguments.group.description
+      name: group-cn
+      required: true
+      supportedModules: []
+    - description: commands.server.ad.arguments.baseDn.description
+      name: base-dn
+      supportedModules: []
+    deprecated: true
+    description: commands.server.adRemoveFromGroup.description
+    execution: true
+    name: ad-remove-from-group
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.ad.arguments.username.description
+      name: username
+      supportedModules: []
+    - description: commands.server.ad.arguments.computerName.description
+      name: computer-name
+      supportedModules: []
+    - description: commands.server.ad.arguments.group.description
+      name: group-cn
+      required: true
+      supportedModules: []
+    - description: commands.server.ad.arguments.baseDn.description
+      name: base-dn
+      supportedModules: []
+    deprecated: true
+    description: commands.server.adAddToGroup.description
+    execution: true
+    name: ad-add-to-group
+    supportedModules: []
+  - arguments:
+    - description: commands.server.ad.arguments.username.description
+      name: username
+      required: true
+      supportedModules: []
+    - description: commands.server.ad.arguments.password.description
+      name: password
+      required: true
+      supportedModules: []
+    - default: true
+      description: commands.server.ad.arguments.dn.description
+      name: user-dn
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.adCreateUser.description
+    execution: true
+    name: ad-create-user
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.ad.arguments.username.description
+      name: username
+      required: true
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.ad.arguments.attributeName.description
+      name: attribute-name
+      predefined:
+      - givenName
+      - sn
+      - displayName
+      - description
+      - office
+      - mail
+      - telephoneNumber
+      - mobile
+      required: true
+      supportedModules: []
+    - description: commands.server.ad.arguments.attributeValue.description
+      name: attribute-value
+      required: true
+      supportedModules: []
+    - description: commands.server.ad.arguments.baseDn.description
+      name: base-dn
+      supportedModules: []
+    deprecated: true
+    description: commands.server.adUpdateUser.description
+    execution: true
+    name: ad-update-user
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.ad.arguments.dn.description
+      name: user-dn
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.adDeleteUser.description
+    execution: true
+    name: ad-delete-user
+    supportedModules: []
+  - arguments:
+    - description: commands.server.ad.arguments.computerName.description
+      name: computer-name
+      required: true
+      supportedModules: []
+    - description: commands.server.ad.arguments.baseDn.description
+      name: base-dn
+      supportedModules: []
+    - description: commands.server.ad.arguments.fullSuperiorDN.description
+      name: full-superior-dn
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.adMoveComputer.description
+    execution: true
+    name: ad-modify-computer-ou
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.ad.arguments.contactDN.description
+      name: contact-dn
+      required: true
+      supportedModules: []
+    - description: commands.server.ad.arguments.displayName.description
+      name: display-name
+      supportedModules: []
+    - description: commands.server.ad.arguments.contactDescription.description
+      name: description
+      supportedModules: []
+    - description: commands.server.ad.arguments.customAttr.description
+      name: custom-attributes
+      supportedModules: []
+    deprecated: true
+    description: commands.server.adCreateContact.description
+    execution: true
+    name: ad-create-contact
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.ad.arguments.contactDN.description
+      name: contact-dn
+      required: true
+      supportedModules: []
+    - description: commands.server.ad.arguments.attributeName.description
+      name: attribute-name
+      required: true
+      supportedModules: []
+    - description: commands.server.ad.arguments.attributeValue.description
+      name: attribute-value
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.adUpdateContact.description
+    execution: true
+    name: ad-update-contact
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
