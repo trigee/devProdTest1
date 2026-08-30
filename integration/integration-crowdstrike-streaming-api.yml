@@ -1,0 +1,76 @@
+category: Endpoint
+commonfields:
+  id: crowdstrike-streaming-api
+  version: -1
+configuration:
+- defaultvalue: https://firehose.crowdstrike.com
+  display: Server URL (e.g. https://192.168.0.1)
+  name: Address
+  required: true
+  supportedModules: []
+  type: 0
+- defaultvalue: Demisto
+  display: App ID
+  name: appID
+  required: true
+  supportedModules: []
+  type: 0
+- display: API UUID
+  name: ApiUUID
+  required: true
+  supportedModules: []
+  type: 0
+- display: API Key
+  name: ApiKey
+  required: true
+  supportedModules: []
+  type: 4
+- display: Filter events string
+  name: filter
+  required: false
+  supportedModules: []
+  type: 0
+- display: Data Feed URL to use
+  name: FeedUrl
+  required: false
+  supportedModules: []
+  type: 0
+- display: Alert type
+  name: alertType
+  required: false
+  supportedModules: []
+  type: 13
+- defaultvalue: "true"
+  display: Use system proxy settings
+  name: useproxy
+  required: false
+  supportedModules: []
+  type: 8
+- display: Do not validate server certificate (insecure)
+  name: insecure
+  required: false
+  supportedModules: []
+  type: 8
+- defaultvalue: "true"
+  display: ""
+  hidden: true
+  name: isFetch
+  required: false
+  supportedModules: []
+  type: 8
+contentitemexportablefields: {}
+deprecated: true
+description: Deprecated - We recommend using CrowdStrike Falcon Streaming v2 instead.
+  The Falcon Streaming API (formerly known as the Falcon Firehose API)
+detaileddescription: |-
+  Use CrowdStrike Streaming API to fetch detections and create incidents from them.
+  CrowdStrike uses API keys to provide access to the Falcon Streaming API and to restrict the data returned.
+  These credentials are different than the Query API and Threat Graph API credentials.
+  Your API key and UUID are on the API Key page. There is one API key and UUID per customer ID.
+display: CrowdStrike Falcon Streaming
+icon: crowdstrike.png
+ispasswordprotected: true
+name: crowdstrike-streaming-api
+restrictioncenter: {}
+script: null
+signature: ""
