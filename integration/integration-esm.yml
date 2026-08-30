@@ -1,0 +1,135 @@
+category: Analytics & SIEM
+commonfields:
+  id: esm
+  version: -1
+configuration:
+- display: Server URL (e.g. https://192.168.0.1)
+  name: ServerURL
+  required: true
+  supportedModules: []
+  type: 0
+- defaultvalue: "443"
+  display: Port
+  name: port
+  required: false
+  supportedModules: []
+  type: 0
+- display: ""
+  name: Credentials
+  required: true
+  supportedModules: []
+  type: 9
+- display: Import alarms as incidents
+  name: isFetch
+  required: false
+  supportedModules: []
+  type: 8
+- display: Alert type
+  name: alertType
+  required: false
+  supportedModules: []
+  type: 13
+- display: Do not validate server certificate (insecure)
+  name: tlsCheck
+  required: false
+  supportedModules: []
+  type: 8
+- defaultvalue: "true"
+  display: Use system proxy settings
+  name: useproxy
+  required: false
+  supportedModules: []
+  type: 8
+- display: Timezone of Nitro ESM server in minutes e.g. for gmt +3 set +180 (set only
+    if different than Cortex XSOAR server)
+  name: timezone
+  required: false
+  supportedModules: []
+  type: 0
+contentitemexportablefields: {}
+deprecated: true
+description: Deprecated. Use the McAfee ESM v2 integration instead.
+detaileddescription: |-
+  The integration pulls the Mcafee SIEM triggered alarms that are unacknowledged.
+  As soon as the instance is set-up, the first pull will get the alarms generated in the last 10 minutes. After that, new alarms will be fetched every other minute, starting the last pull index.
+display: McAfee ESM
+icon: mcafee.png
+ispasswordprotected: true
+name: esm
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - description: commands.server.nitro.arguments.search.limit
+      name: limit
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.nitro.arguments.search.timerange
+      name: time_range
+      predefined:
+      - CUSTOM
+      - LAST_MINUTE
+      - LAST_10_MINUTES
+      - LAST_30_MINUTES
+      - LAST_HOUR
+      - CURRENT_DAY
+      - PREVIOUS_DAY
+      - LAST_24_HOURS
+      - LAST_2_DAYS
+      - LAST_3_DAYS
+      - CURRENT_WEEK
+      - PREVIOUS_WEEK
+      - CURRENT_MONTH
+      - PREVIOUS_MONTH
+      - PREVIOUS_MONTH
+      - CURRENT_QUARTER
+      - PREVIOUS_QUARTER
+      - CURRENT_YEAR
+      - PREVIOUS_YEAR
+      supportedModules: []
+    - description: commands.server.nitro.arguments.search.end
+      name: custom_end
+      supportedModules: []
+    - description: commands.server.nitro.arguments.search.start
+      name: custom_start
+      supportedModules: []
+    - description: commands.server.nitro.arguments.search.filters
+      name: filters
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.nitro.arguments.search.reverse
+      name: reverse_query
+      predefined:
+      - "true"
+      - "false"
+      supportedModules: []
+    - description: commands.server.nitro.arguments.search.maxrows
+      name: results_max_rows
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.nitro.arguments.search.type
+      name: query_type
+      predefined:
+      - EVENT
+      - FLOW
+      - ASSET
+      supportedModules: []
+    - description: commands.server.nitro.arguments.search.fields
+      name: fields
+      supportedModules: []
+    - description: commands.server.mysql.query.arguments.columns.description
+      name: columns
+      supportedModules: []
+    deprecated: true
+    description: commands.server.nitro.commands.search.description
+    name: search
+    supportedModules: []
+  - arguments: []
+    deprecated: true
+    description: commands.server.nitro.commands.fields.description
+    name: esmFetchAllFields
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
