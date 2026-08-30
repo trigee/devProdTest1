@@ -1,0 +1,93 @@
+category: Messaging
+commonfields:
+  id: mail-sender
+  version: -1
+configuration:
+- display: Mail server hostname or IP address
+  name: MailServerURL
+  required: true
+  supportedModules: []
+  type: 0
+- defaultvalue: "25"
+  display: SMTP Port
+  name: smtpPort
+  required: true
+  supportedModules: []
+  type: 1
+- display: ""
+  name: Credentials
+  required: false
+  supportedModules: []
+  type: 9
+- display: Sender address
+  name: from
+  required: true
+  supportedModules: []
+  type: 0
+- display: Use TLS for connection
+  name: tls
+  required: false
+  supportedModules: []
+  type: 8
+- display: Do not validate server certificate (insecure)
+  name: insecure
+  required: false
+  supportedModules: []
+  type: 8
+contentitemexportablefields: {}
+description: Send email notifications to users
+display: Mail Sender
+icon: mail-sender.png
+ispasswordprotected: true
+name: mail-sender
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - default: true
+      description: commands.server.mail.argument.to
+      isArray: true
+      name: to
+      supportedModules: []
+    - description: commands.server.mail.argument.cc
+      isArray: true
+      name: cc
+      supportedModules: []
+    - description: commands.server.mail.argument.bcc
+      isArray: true
+      name: bcc
+      supportedModules: []
+    - description: commands.server.mail.argument.subject
+      name: subject
+      supportedModules: []
+    - description: commands.server.mail.argument.body
+      name: body
+      supportedModules: []
+    - description: commands.server.mail.argument.attach
+      isArray: true
+      name: attachIDs
+      supportedModules: []
+    - description: commands.server.mail.argument.attachNames
+      name: attachNames
+      supportedModules: []
+    - allowSuffix: true
+      description: commands.server.mail.argument.transient.file
+      name: transientFile
+      supportedModules: []
+    - allowSuffix: true
+      description: commands.server.mail.argument.transient.file.content
+      name: transientFileContent
+      supportedModules: []
+    - description: commands.server.mail.argument.html.body.content
+      name: htmlBody
+      supportedModules: []
+    - description: commands.server.mail.argument.replyTo
+      name: replyTo
+      supportedModules: []
+    description: commands.server.mail.sendmail
+    name: send-mail
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
