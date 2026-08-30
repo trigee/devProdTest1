@@ -1,0 +1,1123 @@
+category: Endpoint
+commonfields:
+  id: carbonblackprotection
+  version: -1
+configuration:
+- display: Server URL (e.g. https://192.168.0.1)
+  name: serverurl
+  required: false
+  supportedModules: []
+  type: 0
+- display: API Token
+  name: apitoken
+  required: false
+  supportedModules: []
+  type: 4
+- defaultvalue: "true"
+  display: Do not validate server certificate (insecure)
+  name: insecure
+  required: false
+  supportedModules: []
+  type: 8
+- defaultvalue: "true"
+  display: Use system proxy settings
+  name: useproxy
+  required: false
+  supportedModules: []
+  type: 8
+contentitemexportablefields: {}
+deprecated: true
+description: Deprecated. Use the VMware Carbon Black App Control v2 integration instead.
+display: Carbon Black Enterprise Protection
+icon: carbonblack.png
+ispasswordprotected: true
+name: carbonblackprotection
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - description: commands.server.cbp.searchParam.arguments.query
+      name: query
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.limit
+      name: limit
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.offset
+      name: offset
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.group
+      name: group
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.sort
+      name: sort
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbpFileCatalogSearch.description
+    name: cbp-fileCatalog-search
+    outputs:
+    - contentPath: ".={ID: val.id, MD5: val.md5, SHA1: val.sha1, SHA256: val.sha256,
+        Name: val.fileName, Extension: val.fileExtension,\n\t\t\tType: val.fileType,
+        Path: val.pathName, Size: val.fileSize, ProductName: val.productName, Publisher:
+        val.publisher,\n\t\t\tCompany: val.company}"
+      contextPath: File
+      description:
+        Company: The company for the product
+        Extension: Extension of the file
+        ID: Unique fileCatalog Id
+        MD5: MD5 hash of the file
+        Name: Name of the file
+        Path: Path on the found hostname
+        ProductName: The name of the product this file belongs to
+        Publisher: The publisher of the file
+        SHA1: SHA1 hash of the file
+        SHA256: SHA256 hash of the file
+        Size: Size of the file
+        Type: File type
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.searchParam.arguments.query
+      name: query
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.limit
+      name: limit
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.offset
+      name: offset
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.group
+      name: group
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.sort
+      name: sort
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbpFileInstanceSearch.description
+    name: cbp-fileInstance-search
+    outputs:
+    - contentPath: ".={Name: val.fileName, ID: val.id, ComputerID: val.computerId,
+        CatalogID: val.fileCatalogId,\n\t\t\tPath: val.pathName}"
+      contextPath: CBPFileInstance
+      description:
+        CatalogID: The file ID in the file catalog
+        ComputerID: The computer ID on which the file was found
+        ID: CBP internal ID of the file instance
+        Name: Name of the file
+        Path: Path on the found hostname
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.searchParam.arguments.query
+      name: query
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.limit
+      name: limit
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.offset
+      name: offset
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.group
+      name: group
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.sort
+      name: sort
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbpFileRuleSearch.description
+    name: cbp-fileRule-search
+    outputs:
+    - contentPath: ".={ID: val.id, Name: val.fileName, Description: val.description,
+        PolicyIDs: val.policyIds,\n\t\t\tReportOnly: val.reportOnly, CatalogID: val.fileCatalogId,
+        FileState: fileState, Hash: val.hash}"
+      contextPath: CBPFileRule
+      description:
+        CatalogID: The file catalog ID for the rule
+        Description: The rule description
+        FileState: The file state for the rule
+        Hash: The hash for the rule
+        ID: The rule ID
+        Name: The rule name
+        PolicyIDs: The policies this rule is part of
+        ReportOnly: Is this rule reporting only or also enforcing
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.fileRule.arguments.id.description
+      name: id
+      required: true
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    description: commands.server.cbpFileRuleGet.description
+    name: cbp-fileRule-get
+    outputs:
+    - contentPath: ".={ID: val.id, Name: val.fileName, Description: val.description,
+        PolicyIDs: val.policyIds,\n\t\t\tReportOnly: val.reportOnly, CatalogID: val.fileCatalogId,
+        FileState: fileState, Hash: val.hash}"
+      contextPath: CBPFileRule
+      description:
+        CatalogID: The file catalog ID for the rule
+        Description: The rule description
+        FileState: The file state for the rule
+        Hash: The hash for the rule
+        ID: The rule ID
+        Name: The rule name
+        PolicyIDs: The policies this rule is part of
+        ReportOnly: Is this rule reporting only or also enforcing
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.fileRule.arguments.id.description
+      name: id
+      required: true
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    description: commands.server.cbpFileRuleDelete.description
+    execution: true
+    name: cbp-fileRule-delete
+    outputs:
+    - contentPath: ".={ID: val.id, Name: val.fileName, Description: val.description,
+        PolicyIDs: val.policyIds,\n\t\t\tReportOnly: val.reportOnly, CatalogID: val.fileCatalogId,
+        FileState: fileState, Hash: val.hash}"
+      contextPath: CBPFileRule
+      description:
+        CatalogID: The file catalog ID for the rule
+        Description: The rule description
+        FileState: The file state for the rule
+        Hash: The hash for the rule
+        ID: The rule ID
+        Name: The rule name
+        PolicyIDs: The policies this rule is part of
+        ReportOnly: Is this rule reporting only or also enforcing
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.fileRule.arguments.id.description
+      name: id
+      supportedModules: []
+    - description: commands.server.cbp.fileRule.arguments.hash.description
+      name: hash
+      required: true
+      supportedModules: []
+    - description: commands.server.cbp.fileRule.arguments.fileCatalogId.description
+      name: fileCatalogId
+      supportedModules: []
+    - description: commands.server.cbp.fileRule.arguments.name.description
+      name: name
+      supportedModules: []
+    - description: commands.server.cbp.fileRule.arguments.description.description
+      name: description
+      supportedModules: []
+    - description: commands.server.cbp.fileRule.arguments.fileState.description
+      name: fileState
+      required: true
+      supportedModules: []
+    - description: commands.server.cbp.fileRule.arguments.reportOnly.description
+      name: reportOnly
+      supportedModules: []
+    - description: commands.server.cbp.fileRule.arguments.reputationApprovalsEnabled.description
+      name: reputationApprovalsEnabled
+      supportedModules: []
+    - description: commands.server.cbp.fileRule.arguments.forceInstaller.description
+      name: forceInstaller
+      supportedModules: []
+    - description: commands.server.cbp.fileRule.arguments.forceNotInstaller.description
+      name: forceNotInstaller
+      supportedModules: []
+    - description: commands.server.cbp.fileRule.arguments.policyIds.description
+      name: policyIds
+      supportedModules: []
+    - description: commands.server.cbp.fileRule.arguments.platformFlags.description
+      name: platformFlags
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    description: commands.server.cbpFileRuleUpdate.description
+    execution: true
+    name: cbp-fileRule-update
+    outputs:
+    - contentPath: ".={ID: val.id, Name: val.fileName, Description: val.description,
+        PolicyIDs: val.policyIds,\n\t\t\tReportOnly: val.reportOnly, CatalogID: val.fileCatalogId,
+        FileState: fileState, Hash: val.hash}"
+      contextPath: CBPFileRule
+      description:
+        CatalogID: The file catalog ID for the rule
+        Description: The rule description
+        FileState: The file state for the rule
+        Hash: The hash for the rule
+        ID: The rule ID
+        Name: The rule name
+        PolicyIDs: The policies this rule is part of
+        ReportOnly: Is this rule reporting only or also enforcing
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.fileAnalysis.arguments.id.description
+      name: id
+      required: true
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    description: commands.server.cbp.fileAnalysisGet.description
+    name: cbp-fileAnalysis-get
+    outputs:
+    - contentPath: ".={\n\t\t\t\t  ID:                   val.id,\n\t\t\t\t  FileName:
+        \            val.fileName,\n\t\t\t\t  PathName:             val.pathName,\n\t\t\t\t
+        \ FileCatalogId:        val.fileCatalogId,\n\t\t\t\t  AnalysisResult:       function(status)
+        {\n\t\t\t\t                           switch(status) {\n\t\t\t\t                                case
+        0:\n\t\t\t\t                                        return \"Not yet available\";\n\t\t\t\t
+        \                                       break;\n\t\t\t\t                                case
+        1:\n\t\t\t\t                                        return \"File is clean\";\n\t\t\t\t
+        \                                       break;\n\t\t\t\t                                case
+        2:\n\t\t\t\t                                        return \"File is a potential
+        threat\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 3:\n\t\t\t\t                                        return
+        \"File is malicious\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               default:\n\t\t\t\t                                        return
+        \"Not yet available\"\n\t\t\t\t                           }\n\t\t\t\t                        }(val.analysisResult),\n\t\t\t\t
+        \ AnalysisStatus:       function(status) {\n\t\t\t\t                           switch(status)
+        {\n\t\t\t\t                                case 0:\n\t\t\t\t                                        return
+        \"scheduled\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 1:\n\t\t\t\t                                        return
+        \"submitted\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 2:\n\t\t\t\t                                        return
+        \"processed\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 3:\n\t\t\t\t                                        return
+        \"analyzed\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 4:\n\t\t\t\t                                        return
+        \"error\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 5:\n\t\t\t\t                                        return
+        \"cancelled\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               default:\n\t\t\t\t                                        return
+        \"status is not yet available\"\n\t\t\t\t                           }\n\t\t\t\t
+        \                       }(val.analysisStatus),\n\t\t\t\t  ConnectorId:          val.connectorId,\n\t\t\t\t
+        \ AnalysisTarget:       val.analysisTarget\n\t\t\t\t  ComputerId:           val.computerId,\n\t\t\t\t
+        \ DateModified:         val.dateModified,\n\t\t\t\t  DateCreated:          val.dateCreated,\n\t\t\t\t
+        \ Priority:             val.priority,\n\t\t\t\t  CreatedBy:            val.createdBy,\n\t\t\t\t
+        \ CreatedByUserId:      val.createdByUserId,\n\n\t\t\t\t}"
+      contextPath: CbP.FileAnalysis
+      description:
+        AnalysisResult: 'Result of the analysis. Can be one of: [0-3]'
+        AnalysisStatus: 'Status of analysis. Can be one of: [0-5]'
+        AnalysisTarget: Target of the analysis (Connector-dependent)
+        ComputerId: Id of computer entry associated with this analysis
+        ConnectorId: Id of connector associated with this analysis
+        CreatedBy: User that requested this analysis
+        DateCreated: Date/Time when fileAnalysis request was created (UTC)
+        DateModified: Date/Time when fileAnalysis request was last modified (UTC)
+        FileCatalogId: Id of fileCatalog entry associated with this analysis
+        FileName: Name of the file where file exists on the endpoint
+        ID: Unique fileAnalysis id
+        PathName: Path of the file where file exists on the endpoint
+        Priority: File analysis priority in range [-2, 2], where 2 is highest priority.
+          Default priority is 0
+    - contentPath: ".={\n\n\t\t\t\t\tFileCatalogId:              function(retVal)
+        {\n\t\t\t\t\t\t\t\t\tif(retVal.analysisResult == 0) {\n\t\t\t\t\t\t\t\t\t\treturn
+        retVal.fileCatalogId;\n\t\t\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\t\t\treturn
+        undefined;\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}(val),\n\t\t\t\t\tFileName:\t
+        \       function(retVal) {\n\t\t\t\t\t\t\t\t\tif(retVal.analysisResult ==
+        0) {\n\t\t\t\t\t\t\t\t\t\treturn retVal.fileName;\n\t\t\t\t\t\t\t\t\t} else
+        {\n\t\t\t\t\t\t\t\t\t\treturn undefined;\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}(val),\n\t\t\t\t\tPathName:
+        \              function(retVal) {\n\t\t\t\t\t\t\t\t\tif(retVal.analysisResult
+        == 0) {\n\t\t\t\t\t\t\t\t\t\treturn retVal.pathName;\n\t\t\t\t\t\t\t\t\t}
+        else {\n\t\t\t\t\t\t\t\t\t\treturn undefined;\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}(val),\n\t\t\t\t\tMalicious:
+        \             function(retVal) {\n\t\t\t\t\t\t\t\t\tif(retVal.analysisResult
+        == 0) {\n\t\t\t\t\t\t\t\t\t\treturn {Vendor:\"Carbon Black Protect\", Description:
+        \"Analysis Result\"};\n\t\t\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\t\t\treturn
+        undefined;\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}(val),\n\t\t\t\t\tproperties_to_append:
+        \  function(retVal) {\n\t\t\t\t\t\t\t\t\tif(retVal.analysisResult == 0) {\n\t\t\t\t\t\t\t\t\t\treturn
+        ['Malicious'];\n\t\t\t\t\t\t\t\t\t} else {\n\t\t\t\t\t\t\t\t\t\treturn undefined;\n\t\t\t\t\t\t\t\t\t}\n\t\t\t\t\t\t\t\t}(val),\n\t\t\t\t\t}"
+      contextPath: File(val.CatalogID && val.CatalogID == obj.CatalogID)
+      description:
+        FileCatalogId: Id of fileCatalog entry associated with this analysis
+        FileName: Name of the file where file exists on the endpoint
+        Malicious: Vendor and description of malicious file
+        PathName: Path of the file where file exists on the endpoint
+    supportedModules: []
+  - arguments:
+    - defaultValue: "0"
+      description: commands.server.cbp.fileAnalysis.arguments.computerId.description
+      name: computerId
+      supportedModules: []
+    - description: commands.server.cbp.fileAnalysis.arguments.fileCatalogId.description
+      name: fileCatalogId
+      required: true
+      supportedModules: []
+    - description: commands.server.cbp.fileAnalysis.arguments.connectorId.description
+      name: connectorId
+      required: true
+      supportedModules: []
+    - defaultValue: "0"
+      description: commands.server.cbp.fileAnalysis.arguments.priority.description
+      name: priority
+      supportedModules: []
+    - description: commands.server.cbp.fileAnalysis.arguments.analysisStatus.description
+      name: analysisStatus
+      supportedModules: []
+    - description: commands.server.cbp.fileAnalysis.arguments.analysisTarget.description
+      name: analysisTarget
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    description: commands.server.cbp.fileAnalysisPost.description
+    execution: true
+    name: cbp-fileAnalysis-createOrUpdate
+    outputs:
+    - contentPath: ".={\n\t\t\t\t  ID:                   val.id,\n\t\t\t\t  FileName:
+        \            val.fileName,\n\t\t\t\t  PathName:             val.pathName,\n\t\t\t\t
+        \ FileCatalogId:        val.fileCatalogId,\n\t\t\t\t  AnalysisResult:       function(status)
+        {\n\t\t\t\t                           switch(status) {\n\t\t\t\t                                case
+        0:\n\t\t\t\t                                        return \"Not yet available\";\n\t\t\t\t
+        \                                       break;\n\t\t\t\t                                case
+        1:\n\t\t\t\t                                        return \"File is clean\";\n\t\t\t\t
+        \                                       break;\n\t\t\t\t                                case
+        2:\n\t\t\t\t                                        return \"File is a potential
+        threat\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 3:\n\t\t\t\t                                        return
+        \"File is malicious\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               default:\n\t\t\t\t                                        return
+        \"Not yet available\"\n\t\t\t\t                           }\n\t\t\t\t                        }(val.analysisResult),\n\t\t\t\t
+        \ AnalysisStatus:       function(status) {\n\t\t\t\t                           switch(status)
+        {\n\t\t\t\t                                case 0:\n\t\t\t\t                                        return
+        \"scheduled\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 1:\n\t\t\t\t                                        return
+        \"submitted\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 2:\n\t\t\t\t                                        return
+        \"processed\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 3:\n\t\t\t\t                                        return
+        \"analyzed\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 4:\n\t\t\t\t                                        return
+        \"error\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 5:\n\t\t\t\t                                        return
+        \"cancelled\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               default:\n\t\t\t\t                                        return
+        \"status is not yet available\"\n\t\t\t\t                           }\n\t\t\t\t
+        \                       }(val.analysisStatus),\n\t\t\t\t  ConnectorId:          val.connectorId,\n\t\t\t\t
+        \ AnalysisTarget:       val.analysisTarget\n\t\t\t\t  ComputerId:           val.computerId,\n\t\t\t\t
+        \ DateModified:         val.dateModified,\n\t\t\t\t  DateCreated:          val.dateCreated,\n\t\t\t\t
+        \ Priority:             val.priority,\n\t\t\t\t}"
+      contextPath: CbP.FileAnalysis
+      description:
+        AnalysisResult: 'Result of the analysis. Can be one of: [0-3]'
+        AnalysisStatus: 'Status of analysis. Can be one of: [0-5]'
+        AnalysisTarget: Target of the analysis (Connector-dependent)
+        ComputerID: Id of computer entry associated with this analysis
+        ConnectorId: Id of connector associated with this analysis
+        CreatedBy: User that requested this analysis
+        DateCreated: Date/Time when fileAnalysis request was created (UTC)
+        DateModified: Date/Time when fileAnalysis request was last modified (UTC)
+        FileCatalogId: Id of fileCatalog entry associated with this analysis
+        FileName: Name of the file where file exists on the endpoint
+        ID: Unique fileAnalysis id
+        PathName: Path of the file where file exists on the endpoint
+        Priority: File analysis priority in range [-2, 2], where 2 is highest priority.
+          Default priority is 0
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.searchParam.arguments.query
+      name: query
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.limit
+      name: limit
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.offset
+      name: offset
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.group
+      name: group
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.sort
+      name: sort
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbp.fileAnalysisSearch.description
+    name: cbp-fileAnalysis-search
+    outputs:
+    - contentPath: ".={\n\t\t\t\t  ID:                   val.id,\n\t\t\t\t  FileName:
+        \            val.fileName,\n\t\t\t\t  PathName:             val.pathName,\n\t\t\t\t
+        \ FileCatalogId:        val.fileCatalogId,\n\t\t\t\t  AnalysisResult:       function(status)
+        {\n\t\t\t\t                           switch(status) {\n\t\t\t\t                                case
+        0:\n\t\t\t\t                                        return \"Not yet available\";\n\t\t\t\t
+        \                                       break;\n\t\t\t\t                                case
+        1:\n\t\t\t\t                                        return \"File is clean\";\n\t\t\t\t
+        \                                       break;\n\t\t\t\t                                case
+        2:\n\t\t\t\t                                        return \"File is a potential
+        threat\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 3:\n\t\t\t\t                                        return
+        \"File is malicious\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               default:\n\t\t\t\t                                        return
+        \"Not yet available\"\n\t\t\t\t                           }\n\t\t\t\t                        }(val.analysisResult),\n\t\t\t\t
+        \ AnalysisStatus:       function(status) {\n\t\t\t\t                           switch(status)
+        {\n\t\t\t\t                                case 0:\n\t\t\t\t                                        return
+        \"scheduled\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 1:\n\t\t\t\t                                        return
+        \"submitted\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 2:\n\t\t\t\t                                        return
+        \"processed\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 3:\n\t\t\t\t                                        return
+        \"analyzed\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 4:\n\t\t\t\t                                        return
+        \"error\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               case 5:\n\t\t\t\t                                        return
+        \"cancelled\";\n\t\t\t\t                                        break;\n\t\t\t\t
+        \                               default:\n\t\t\t\t                                        return
+        \"status is not yet available\"\n\t\t\t\t                           }\n\t\t\t\t
+        \                       }(val.analysisStatus),\n\t\t\t\t  ConnectorId:          val.connectorId,\n\t\t\t\t
+        \ AnalysisTarget:       val.analysisTarget\n\t\t\t\t  ComputerId:           val.computerId,\n\t\t\t\t
+        \ DateModified:         val.dateModified,\n\t\t\t\t  DateCreated:          val.dateCreated,\n\t\t\t\t
+        \ Priority:             val.priority,\n\t\t\t\t  CreatedBy:            val.createdBy,\n\t\t\t\t
+        \ CreatedByUserId:      val.createdByUserId,\n\n\t\t\t\t}"
+      contextPath: CbP.FileAnalysis
+      description:
+        AnalysisResult: 'Result of the analysis. Can be one of: [0-3]'
+        AnalysisStatus: 'Status of analysis. Can be one of: [0-5]'
+        AnalysisTarget: Target of the analysis (Connector-dependent)
+        ComputerId: Id of computer entry associated with this analysis
+        ConnectorId: Id of connector associated with this analysis
+        CreatedBy: User that requested this analysis
+        DateCreated: Date/Time when fileAnalysis request was created (UTC)
+        DateModified: Date/Time when fileAnalysis request was last modified (UTC)
+        FileCatalogId: Id of fileCatalog entry associated with this analysis
+        FileName: Name of the file where file exists on the endpoint
+        ID: Unique fileAnalysis id
+        PathName: Path of the file where file exists on the endpoint
+        Priority: File analysis priority in range [-2, 2], where 2 is highest priority.
+          Default priority is 0
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.fileUpload.arguments.id.description
+      name: id
+      required: true
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    description: commands.server.cbp.FileUploadGet.description
+    name: cbp-fileUpload-get
+    outputs:
+    - contentPath: ".={\n\t\t\t\t  ID:                   val.id,\n\t\t\t\t  FileName:
+        \            val.fileName,\n\t\t\t\t  PathName:             val.pathName,\n\t\t\t\t
+        \ UploadStatus:         val.uploadStatus\n\t\t\t\t  FileCatalogId:        val.fileCatalogId,\n\t\t\t\t
+        \ ComputerId:           val.computerId,\n\t\t\t\t  UploadedFileSize:     val.uploadedFileSize,\n\t\t\t\t
+        \ UploadPath:           val.uploadPath,\n\t\t\t\t  CreatedBy:            val.createdBy,\n\t\t\t\t
+        \ CreatedByUserId:      val.createdByUserId,\n\t\t\t\t  DateCreated:          val.dateCreated,\n\t\t\t\t
+        \ DateModified:         val.dateModified,\n\t\t\t\t  Priority:             val.priority,\n\t\t\t\t}"
+      contextPath: CbP.FileUpload
+      description:
+        ComputerID: Id of computer entry associated with this analysis
+        CreatedBy: User that requested this analysis
+        CreatedByUserId: User Id that requested this analysis
+        DateCreated: Date/Time when fileAnalysis request was created (UTC)
+        DateModified: Date/Time when fileAnalysis request was last modified (UTC)
+        FileCatalogId: Id of fileCatalog entry associated with this analysis
+        FileName: Name of the file where file exists on the endpoint
+        ID: Unique fileAnalysis id
+        PathName: Path of the file where file exists on the endpoint
+        Priority: File analysis priority in range [-2, 2], where 2 is highest priority.
+          Default priority is 0
+        UploadPath: Local upload path for this file on the server (can be a shared
+          network path). Note that file is compressed in a ZIP archive
+        UploadStatus: Status of upload. Can be one of:[0-6]
+        UploadedFileSize: Size of uploaded file. This will be 0 unless uploadStatus
+          is 3 (Completed)
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.fileUpload.arguments.id.description
+      name: id
+      required: true
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    description: commands.server.cbp.FileUploadGet.description
+    name: cbp-fileUpload-download
+    supportedModules: []
+  - arguments:
+    - defaultValue: "0"
+      description: commands.server.cbp.fileUpload.arguments.computerId.description
+      name: computerId
+      supportedModules: []
+    - description: commands.server.cbp.fileUpload.arguments.fileCatalogId.description
+      name: fileCatalogId
+      required: true
+      supportedModules: []
+    - defaultValue: "0"
+      description: commands.server.cbp.fileUpload.arguments.priority.description
+      name: priority
+      supportedModules: []
+    - description: commands.server.cbp.fileUpload.arguments.uploadStatus.description
+      name: uploadStatus
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    description: commands.server.cbp.FileUploadPost.description
+    execution: true
+    name: cbp-fileUpload-createOrUpdate
+    outputs:
+    - contentPath: ".={\n\t\t\t\t  ID:                   val.id,\n\t\t\t\t  FileName:
+        \            val.fileName,\n\t\t\t\t  PathName:             val.pathName,\n\t\t\t\t
+        \ UploadStatus:         val.uploadStatus\n\t\t\t\t  FileCatalogId:        val.fileCatalogId,\n\t\t\t\t
+        \ ComputerId:           val.computerId,\n\t\t\t\t  UploadedFileSize:     val.uploadedFileSize,\n\t\t\t\t
+        \ UploadPath:           val.uploadPath,\n\t\t\t\t  CreatedBy:            val.createdBy,\n\t\t\t\t
+        \ CreatedByUserId:      val.createdByUserId,\n\t\t\t\t  DateCreated:          val.dateCreated,\n\t\t\t\t
+        \ DateModified:         val.dateModified,\n\t\t\t\t  Priority:             val.priority,\n\t\t\t\t}"
+      contextPath: CbP.FileUpload
+      description:
+        ComputerID: Id of computer entry associated with this analysis
+        CreatedBy: User that requested this analysis
+        CreatedByUserId: User Id that requested this analysis
+        DateCreated: Date/Time when fileAnalysis request was created (UTC)
+        DateModified: Date/Time when fileAnalysis request was last modified (UTC)
+        FileCatalogId: Id of fileCatalog entry associated with this analysis
+        FileName: Name of the file where file exists on the endpoint
+        ID: Unique fileAnalysis id
+        PathName: Path of the file where file exists on the endpoint
+        Priority: File analysis priority in range [-2, 2], where 2 is highest priority.
+          Default priority is 0
+        UploadPath: Local upload path for this file on the server (can be a shared
+          network path). Note that file is compressed in a ZIP archive
+        UploadStatus: Status of upload. Can be one of:[0-6]
+        UploadedFileSize: Size of uploaded file. This will be 0 unless uploadStatus
+          is 3 (Completed)
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.searchParam.arguments.query
+      name: query
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.limit
+      name: limit
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.offset
+      name: offset
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.group
+      name: group
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.sort
+      name: sort
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbp.FileUploadSearch.description
+    name: cbp-fileUpload-search
+    outputs:
+    - contentPath: ".={\n\t\t\t\t  ID:                   val.id,\n\t\t\t\t  FileName:
+        \            val.fileName,\n\t\t\t\t  PathName:             val.pathName,\n\t\t\t\t
+        \ UploadStatus:         val.uploadStatus\n\t\t\t\t  FileCatalogId:        val.fileCatalogId,\n\t\t\t\t
+        \ ComputerId:           val.computerId,\n\t\t\t\t  UploadedFileSize:     val.uploadedFileSize,\n\t\t\t\t
+        \ UploadPath:           val.uploadPath,\n\t\t\t\t  CreatedBy:            val.createdBy,\n\t\t\t\t
+        \ CreatedByUserId:      val.createdByUserId,\n\t\t\t\t  DateCreated:          val.dateCreated,\n\t\t\t\t
+        \ DateModified:         val.dateModified,\n\t\t\t\t  Priority:             val.priority,\n\t\t\t\t}"
+      contextPath: CbP.FileUpload
+      description:
+        ComputerID: Id of computer entry associated with this analysis
+        CreatedBy: User that requested this analysis
+        CreatedByUserId: User Id that requested this analysis
+        DateCreated: Date/Time when fileAnalysis request was created (UTC)
+        DateModified: Date/Time when fileAnalysis request was last modified (UTC)
+        FileCatalogId: Id of fileCatalog entry associated with this analysis
+        FileName: Name of the file where file exists on the endpoint
+        ID: Unique fileAnalysis id
+        PathName: Path of the file where file exists on the endpoint
+        Priority: File analysis priority in range [-2, 2], where 2 is highest priority.
+          Default priority is 0
+        UploadPath: Local upload path for this file on the server (can be a shared
+          network path). Note that file is compressed in a ZIP archive
+        UploadStatus: Status of upload. Can be one of:[0-6]
+        UploadedFileSize: Size of uploaded file. This will be 0 unless uploadStatus
+          is 3 (Completed)
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.Connector.arguments.id.description
+      name: id
+      required: true
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    description: commands.server.cbp.ConnectorGet.description
+    name: cbp-connector-get
+    outputs:
+    - contentPath: ".={\n\t\t\t\t  ID:                   val.id,\n\t\t\t\t  AnalysisName:
+        \        val.analysisName,\n\t\t\t\t  Enabled:              val.enabled,\n\t\t\t\t
+        \ AnalysisEnabled:      val.analysisEnabled,\n\t\t\t\t  CanAnalyze:           val.canAnalyze,\n\t\t\t\t
+        \ AnalysisTargets:      val.analysisTargets,\n\t\t\t\t  ConnectorVersion:
+        \    val.connectorVersion,\n\t\t\t\t}"
+      contextPath: CbP.Connector
+      description:
+        AnalysisEnabled: True if analysis component of this connector is enabled
+        AnalysisName: Name for analysis component of the connector (can be same as
+          the name field)
+        AnalysisTargets: Array of possible analysis targets. Analysis targets are
+          required when creating new fileAnalysis. They usualy represent different
+          OS and configurations and are available only for some internal connectors.
+        CanAnalyze: True if this connector can analyze files
+        ConnectorVersion: Version of this connector
+        Enabled: True if connector is enabled
+        ID: Unique fileAnalysis id
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.searchParam.arguments.query
+      name: query
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.limit
+      name: limit
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.offset
+      name: offset
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.group
+      name: group
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.sort
+      name: sort
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbp.ConnectorSearch.description
+    name: cbp-connector-search
+    outputs:
+    - contentPath: ".={\n\t\t\t\t  ID:                   val.id,\n\t\t\t\t  AnalysisName:
+        \        val.analysisName,\n\t\t\t\t  Enabled:              val.enabled,\n\t\t\t\t
+        \ AnalysisEnabled:      val.analysisEnabled,\n\t\t\t\t  CanAnalyze:           val.canAnalyze,\n\t\t\t\t
+        \ AnalysisTargets:      val.analysisTargets,\n\t\t\t\t  ConnectorVersion:
+        \    val.connectorVersion,\n\t\t\t\t}"
+      contextPath: CbP.Connector
+      description:
+        AnalysisEnabled: True if analysis component of this connector is enabled
+        AnalysisName: Name for analysis component of the connector (can be same as
+          the name field)
+        AnalysisTargets: Array of possible analysis targets. Analysis targets are
+          required when creating new fileAnalysis. They usualy represent different
+          OS and configurations and are available only for some internal connectors.
+        CanAnalyze: True if this connector can analyze files
+        ConnectorVersion: Version of this connector
+        Enabled: True if connector is enabled
+        ID: Unique fileAnalysis id
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.searchParam.arguments.query
+      name: query
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.limit
+      name: limit
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.offset
+      name: offset
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.group
+      name: group
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.sort
+      name: sort
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbpComputerSearch.description
+    name: cbp-computer-search
+    outputs:
+    - contentPath: ".={Hostname: val.name, ID: val.id, IPAddress: val.ipAddress, MACAddress:
+        val.macAddress,\n\t\t\tModel: val.machineModel, Memory: val.memorySize, OS:
+        val.osShortName, OSVersion: val.osName,\n\t\t\tProcessors: val.processorCount,
+        Processor: val.processorModel}"
+      contextPath: Endpoint
+      description:
+        Hostname: Hostname of the endpoint
+        ID: The unique ID within the tool retreiving the endpoint
+        IPAddress: The IP address of the endpoint
+        MACAddress: MAC address of the endpoint
+        Memory: Amount of memory for the endpoint
+        Model: The machine model, if available
+        OS: The short OS name running on the endpoint
+        OSVersion: The full OS name for the endpoint
+        Processor: The model of the processor
+        Processors: The number of processors
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.computer.arguments.id.description
+      name: id
+      required: true
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    description: commands.server.cbpComputerGet.description
+    name: cbp-computer-get
+    outputs:
+    - contentPath: ".={Hostname: val.name, ID: val.id, IPAddress: val.ipAddress, MACAddress:
+        val.macAddress,\n\t\t\tModel: val.machineModel, Memory: val.memorySize, OS:
+        val.osShortName, OSVersion: val.osName,\n\t\t\tProcessors: val.processorCount,
+        Processor: val.processorModel}"
+      contextPath: Endpoint
+      description:
+        Hostname: Hostname of the endpoint
+        ID: The unique ID within the tool retreiving the endpoint
+        IPAddress: The IP address of the endpoint
+        MACAddress: MAC address of the endpoint
+        Memory: Amount of memory for the endpoint
+        Model: The machine model, if available
+        OS: The short OS name running on the endpoint
+        OSVersion: The full OS name for the endpoint
+        Processor: The model of the processor
+        Processors: The number of processors
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.computer.arguments.id.description
+      name: id
+      required: true
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.name.description
+      name: name
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.computerTag.description
+      name: computerTag
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.description.description
+      name: description
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.policyId.description
+      name: policyId
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.automaticPolicy.description
+      name: automaticPolicy
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.localApproval.description
+      name: localApproval
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.refreshFlags.description
+      name: refreshFlags
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.prioritized.description
+      name: prioritized
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.debugLevel.description
+      name: debugLevel
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.kernelDebugLevel.description
+      name: kernelDebugLevel
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.debugFlags.description
+      name: debugFlags
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.debugDuration.description
+      name: debugDuration
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.ccLevel.description
+      name: cCLevel
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.ccFlags.description
+      name: cCFlags
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.forceUpgrade.description
+      name: forceUpgrade
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.template.description
+      name: template
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.templateCloneCleanupMode.description
+      name: templateCloneCleanupMode
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.templateCloneCleanupTime.description
+      name: templateCloneCleanupTime
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.templateCloneCleanupTimeScale.description
+      name: templateCloneCleanupTimeScale
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.templateTrackModsOnly.description
+      name: templateTrackModsOnly
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.changeDiagnostics.description
+      name: changeDiagnostics
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.changeTemplate.description
+      name: changeTemplate
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.delete.description
+      name: delete
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.resetCLIPassword.description
+      name: resetCLIPassword
+      supportedModules: []
+    - description: commands.server.cbp.computer.arguments.newTamperProtectionActive.description
+      name: newTamperProtectionActive
+      supportedModules: []
+    description: commands.server.cbpComputerUpdate.description
+    execution: true
+    name: cbp-computer-update
+    outputs:
+    - contentPath: ".={Hostname: val.name, ID: val.id, IPAddress: val.ipAddress, MACAddress:
+        val.macAddress,\n\t\t\tModel: val.machineModel, Memory: val.memorySize, OS:
+        val.osShortName, OSVersion: val.osName,\n\t\t\tProcessors: val.processorCount,
+        Processor: val.processorModel}"
+      contextPath: Endpoint
+      description:
+        Hostname: Hostname of the endpoint
+        ID: The unique ID within the tool retreiving the endpoint
+        IPAddress: The IP address of the endpoint
+        MACAddress: MAC address of the endpoint
+        Memory: Amount of memory for the endpoint
+        Model: The machine model, if available
+        OS: The short OS name running on the endpoint
+        OSVersion: The full OS name for the endpoint
+        Processor: The model of the processor
+        Processors: The number of processors
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.searchParam.arguments.query
+      name: query
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.limit
+      name: limit
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.offset
+      name: offset
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.group
+      name: group
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.sort
+      name: sort
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbpNotificationSearch.description
+    name: cbp-notification-search
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.searchParam.arguments.query
+      name: query
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.limit
+      name: limit
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.offset
+      name: offset
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.group
+      name: group
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.sort
+      name: sort
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbpPublisherSearch.description
+    name: cbp-publisher-search
+    outputs:
+    - contentPath: ".={ID: val.id, Name: val.name, Description: val.description, Reputation:
+        val.publisherReputation,\n\t\t\tState: val.publisherState, SignedFilesCount:
+        val.signedFilesCount, SignedCertificatesCount: val.signedCertificateCount}"
+      contextPath: CBPPublisher
+      description:
+        Description: Description of the publisher
+        ID: CBP internal ID of the publisher
+        Name: Name of the publisher
+        Reputation: The reputation of the publisher
+        SignedCertificatesCount: Number of certificates from the publisher
+        SignedFilesCount: Number of signed files from publisher
+        State: The state of the publisher
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.searchParam.arguments.query
+      name: query
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.limit
+      name: limit
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.offset
+      name: offset
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.group
+      name: group
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.sort
+      name: sort
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbpEventSearch.description
+    name: cbp-event-search
+    outputs:
+    - contentPath: ".={ID: val.id, ComputerID: val.computerId, FileCatalogID: val.fileCatalogId,
+        InstallerFileCatalogID: val.installerFileCatalogId,\n\t\t\tProcessFileCatalogID:
+        val.processFileCatalogId, FileName: val.fileName, FilePath: val.pathName,
+        Timestamp: val.timestamp,\n\t\t\tDescription: val.description, Severity: val.severity,
+        Type: val.type, SubType: val.subtype, SubTypeName: val.subtypeName,\n\t\t\tIPAddress:
+        val.ipAddress, Username: val.userName, RuleName: val.ruleName, BanName: val.banName,
+        UpdaterName: val.updaterName,\n\t\t\tIndicatorName: val.indicatorName, CommandLine:
+        val.commandLine, ProcessKey: val.processKey, ComputerName: val.computerName,\n\t\t\tProcessPathName:
+        val.processPathName, ProcessFileName: val.processFileName, InstallerFileName:
+        val.installerFileName,\n\t\t\tParam1: val.param1, Param2: val.param2, Param3:
+        val.param3, PolicyID: val.policyId, PolicyName: val.policyName, StringID:
+        val.stringId}"
+      contextPath: CBPEvent
+      description:
+        BanName: Ban name associated with the event
+        CommandLine: Command line associated with the event
+        ComputerID: CBP internal ID of the computer
+        ComputerName: Computer name associated with the event
+        Description: Description of the event
+        FileCatalogID: CBP internal ID of the file catalogr
+        FileName: File name associated with the event
+        FilePath: File path associated with the event
+        ID: CBP internal ID of the event
+        IPAddress: IP address associated with the event
+        IndicatorName: Indicator name associated with the event
+        InstallerFileCatalogID: CBP internal ID of the installer file catalog
+        InstallerFileName: Installer file name associated with the event
+        Param1: Generic params which value depends on the event type and subtype
+        Param2: Generic params which value depends on the event type and subtype
+        Param3: Generic params which value depends on the event type and subtype
+        PolicyID: Policy ID associated with the event
+        PolicyName: Policy name associated with the event
+        ProcessFileCatalogID: CBP internal ID of the process file catalog
+        ProcessFileName: Process filename associated with the event
+        ProcessKey: Process key associated with the event
+        ProcessPathName: Process path associated with the event
+        RuleName: Rule name associated with the event
+        Severity: The severity of the event
+        StringID: String ID of the event
+        SubType: The subtype of the event
+        SubTypeName: The name of the subtype
+        Timestamp: The timestamp of the event
+        Type: The type of the event
+        UpdaterName: Updater name associated with the event
+        Username: User name associated with the event
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.searchParam.arguments.query
+      name: query
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.limit
+      name: limit
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.offset
+      name: offset
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.group
+      name: group
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.sort
+      name: sort
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbpApprovalRequestSearch.description
+    execution: true
+    name: cbp-approvalRequest-search
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.searchParam.arguments.query
+      name: query
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.limit
+      name: limit
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.offset
+      name: offset
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.group
+      name: group
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.sort
+      name: sort
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbpServerConfigSearch.description
+    name: cbp-serverConfig-search
+    outputs:
+    - contentPath: '.={ID: val.id, Name: val.name, Value: val.value}'
+      contextPath: CBPServerConfig
+      description:
+        ID: CBP internal ID of the server config
+        Name: Name of the server config
+        Value: Value of the server config
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cbp.searchParam.arguments.query
+      name: query
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.limit
+      name: limit
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.offset
+      name: offset
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.group
+      name: group
+      supportedModules: []
+    - description: commands.server.cbp.searchParam.arguments.sort
+      name: sort
+      supportedModules: []
+    - description: commands.server.cbp.headers.description
+      name: headers
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbpPolicySearch.description
+    name: cbp-policy-search
+    outputs:
+    - contentPath: ".={ID: val.id, Name: val.name, Description: val.description, PackageName:
+        val.packageName,\n\t\t\tEnforcementLevel: val.enforcementLevel, DisconnectedEnforcementLevel:
+        val.disconnectedEnforcementLevel,\n\t\t\tReadOnly: val.readOnly, Automatic:
+        val.automatic, LoadAgentInSafeMode: val.loadAgentInSafeMode,\n\t\t\tReputationEnabled:
+        val.reputationEnabled, FileTrackingEnabled: val.fileTrackingEnabled,\n\t\t\tAutomaticApprovalsOnTransition:
+        val.automaticApprovalsOnTransition, AllowAgentUpgrades: val.allowAgentUpgrades,\n\t\t\tTotalComputers:
+        val.totalComputers, ConnectedComputers: val.connectedComputers,AtEnforcementComputers:
+        val.atEnforcementComputers}"
+      contextPath: CBPPolicy
+      description:
+        AllowAgentUpgrades: Does the polixy allow agent upgrades
+        AtEnforcementComputers: Number of enforced computers
+        Automatic: Is this policy automatic
+        AutomaticApprovalsOnTransition: Approve on transition
+        ConnectedComputers: Number of connected computers assocuated with the policy
+        Description: Description of the policy
+        DisconnectedEnforcementLevel: The level of enforcement of the policy when
+          disconnected
+        EnforcementLevel: The level of enforcement of the policy
+        FileTrackingEnabled: Is file tracking enabled for policy
+        ID: CBP internal ID of the policy
+        LoadAgentInSafeMode: Should we load in safe mode
+        Name: Name of the policy
+        PackageName: Package name of the policy
+        ReadOnly: Is this policy read only
+        ReputationEnabled: Is reputation enabled for policy
+        TotalComputers: Number of computers associated with the policy
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
