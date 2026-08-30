@@ -1,0 +1,88 @@
+category: Forensics & Malware Analysis
+commonfields:
+  id: cylance
+  version: -1
+configuration:
+- defaultvalue: https://api.cylance.com/apiv2/
+  display: Server URL (e.g. https://192.168.0.1)
+  name: Address
+  required: true
+  supportedModules: []
+  type: 0
+- display: API Key
+  name: Key
+  required: false
+  supportedModules: []
+  type: 4
+- defaultvalue: "true"
+  display: Use system proxy settings
+  name: useproxy
+  required: false
+  supportedModules: []
+  type: 8
+contentitemexportablefields: {}
+deprecated: true
+description: File threat intelligence
+detaileddescription: Deprecated. This service has been discontinued for external users
+  by Cylance. No available replacement.
+display: CylanceINFINITY
+icon: cylance.png
+ispasswordprotected: true
+name: cylance
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - default: true
+      description: commands.server.file.arguments.file.description
+      name: file
+      required: true
+      supportedModules: []
+    description: commands.server.file.description
+    name: file
+    outputs:
+    - contextPath: File.MD5
+      description: outputs.file.malicious.md5
+    - contextPath: File.SHA1
+      description: outputs.file.malicious.sha1
+    - contextPath: File.SHA256
+      description: outputs.file.malicious.sha256
+    - contextPath: DBotScore.Indicator
+      description: outputs.dbot.score.indicator
+    - contextPath: DBotScore.Type
+      description: outputs.dbot.score.type
+    - contextPath: DBotScore.Vendor
+      description: outputs.dbot.score.vendor
+    - contextPath: DBotScore.Score
+      description: outputs.dbot.score.score
+    - contextPath: File.CylanceFileStatus
+      description: outputs.cylance.status
+    - contextPath: File.CylanceConfirmCode
+      description: outputs.cylance.confirm
+    - contextPath: File.Malicious.Description
+      description: Why is this file considered malicious
+    - contextPath: File.Malicious.Vendor
+      description: Vendor that convicted this file
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cyUpload.arguments.entry.description
+      name: entry
+      supportedModules: []
+    - description: commands.server.cyUpload.arguments.fileid.description
+      name: fileID
+      supportedModules: []
+    - description: commands.server.cyUpload.arguments.confirm.description
+      name: confirmCode
+      required: true
+      supportedModules: []
+    description: commands.server.cyUpload.description
+    name: cy-upload
+    outputs:
+    - contextPath: CylanceFileStatus
+      description: outputs.cylance.status
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
