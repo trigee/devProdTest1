@@ -1,0 +1,144 @@
+category: Messaging
+commonfields:
+  id: pagerduty
+  version: -1
+configuration:
+- display: API Key
+  name: APIKey
+  required: true
+  supportedModules: []
+  type: 4
+- display: Subdomain
+  name: subdomain
+  required: true
+  supportedModules: []
+  type: 0
+- display: Service Key (for triggering events only)
+  name: serviceKey
+  required: false
+  supportedModules: []
+  type: 4
+contentitemexportablefields: {}
+deprecated: true
+description: Deprecated. Use the PagerDuty v2 integration instead.
+display: PagerDuty
+icon: pagerduty.png
+ispasswordprotected: true
+name: pagerduty
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - default: true
+      description: commands.server.pagerDutyGetUsersOnCall.arguments.scheduleID.description
+      name: scheduleID
+      required: true
+      supportedModules: []
+    - description: commands.server.pagerDutyGetUsersOnCall.arguments.since.description
+      name: since
+      supportedModules: []
+    - description: commands.server.pagerDutyGetUsersOnCall.arguments.until.description
+      name: until
+      supportedModules: []
+    deprecated: true
+    description: commands.server.pagerDutyGetUsersOnCall.description
+    name: PagerDutyGetUsersOnCall
+    outputs:
+    - contentPath: '.={ID: val.id, Email: val.email, Usermame: val.name, DisplayName:
+        val.name, Role: val.role}'
+      contextPath: PagerDutyUser
+      description:
+        DisplayName: Display name of person
+        Email: Email of user
+        ID: User's ID
+        Usermame: Usermame of person
+    supportedModules: []
+  - arguments:
+    - description: commands.server.pagerDutyGetAllSchedules.arguments.description
+      name: requesterID
+      supportedModules: []
+    - default: true
+      description: commands.server.pagerDutyGetAllSchedules.arguments.query.description
+      name: query
+      supportedModules: []
+    deprecated: true
+    description: commands.server.pagerDutyGetAllSchedules.description
+    name: PagerDutyGetAllSchedules
+    outputs:
+    - contentPath: '.={Schedules: val}'
+      contextPath: PagerDuty
+      description:
+        schedules: 'Schedules '
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.pagerDutyGetUsersOnCallNow.arguments.query.description
+      name: query
+      supportedModules: []
+    deprecated: true
+    description: commands.server.pagerDutyGetUsersOnCallNow.description
+    name: PagerDutyGetUsersOnCallNow
+    outputs:
+    - contentPath: '.={ID: val.id, Email: val.email, Usermame: val.name, DisplayName:
+        val.name, Role: val.role}'
+      contextPath: PagerDutyUser
+      description:
+        DisplayName: Display name of person
+        Email: Email of user
+        ID: User's ID
+        Usermame: Usermame of person
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.pagerDutyIncidents.arguments.status.description
+      name: status
+      supportedModules: []
+    - description: commands.server.pagerDutyIncidents.arguments.sortBy.description
+      name: sortBy
+      supportedModules: []
+    - description: commands.server.pagerDutyIncidents.arguments.since.description
+      name: since
+      supportedModules: []
+    - description: commands.server.pagerDutyIncidents.arguments.until.description
+      name: until
+      supportedModules: []
+    deprecated: true
+    description: commands.server.pagerDutyIncidents.description
+    name: PagerDutyIncidents
+    outputs:
+    - contentPath: '.={Incidents: val}'
+      contextPath: PagerDuty
+      description:
+        Incidents: All incidents
+    supportedModules: []
+  - arguments:
+    - description: commands.server.pagerDutySubmitEvent.arguments.incidentKey.description
+      name: incidentKey
+      supportedModules: []
+    - description: commands.server.pagerDutySubmitEvent.arguments.description.description
+      name: description
+      required: true
+      supportedModules: []
+    - description: commands.server.pagerDutySubmitEvent.arguments.serviceKey.description
+      name: serviceKey
+      supportedModules: []
+    - description: commands.server.pagerDutySubmitEvent.arguments.client.description
+      name: client
+      supportedModules: []
+    - description: commands.server.pagerDutySubmitEvent.arguments.details.description
+      name: details
+      supportedModules: []
+    deprecated: true
+    description: commands.server.pagerDutySubmitEvent.description
+    execution: true
+    name: pagerDutySubmitEvent
+    outputs:
+    - contentPath: '.={Event: val}'
+      contextPath: PagerDuty
+      description:
+        Event: Event data
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
