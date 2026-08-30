@@ -1,0 +1,970 @@
+category: Endpoint
+commonfields:
+  id: carbonblack
+  version: -1
+configuration:
+- display: Server URL
+  name: serverurl
+  required: false
+  supportedModules: []
+  type: 0
+- display: API Token
+  name: apitoken
+  required: false
+  supportedModules: []
+  type: 4
+- defaultvalue: v1
+  display: 'API Version(Support values: v1, v2, v3)'
+  name: apiversion
+  required: false
+  supportedModules: []
+  type: 0
+- display: Do not validate server certificate (insecure)
+  name: insecure
+  required: false
+  supportedModules: []
+  type: 8
+- defaultvalue: "true"
+  display: Use system proxy settings
+  name: useproxy
+  required: false
+  supportedModules: []
+  type: 8
+contentitemexportablefields: {}
+deprecated: true
+description: Deprecated. Use the VMware Carbon Black EDR integration instead.
+display: Carbon Black Enterprise Response
+icon: carbonblack.png
+ispasswordprotected: true
+name: carbonblack
+restrictioncenter: {}
+script:
+  commands:
+  - arguments: []
+    deprecated: true
+    description: commands.server.cbversion.description
+    name: cb-version
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.query.description
+      name: query
+      supportedModules: []
+    - description: commands.server.cb.arguments.rows.description
+      name: rows
+      supportedModules: []
+    - description: commands.server.cb.arguments.start.description
+      name: start
+      supportedModules: []
+    - description: commands.server.cb.arguments.sort.description
+      name: sort
+      supportedModules: []
+    - description: commands.server.cb.arguments.facet.description
+      name: facet
+      supportedModules: []
+    - description: commands.server.cb.arguments.pid.description
+      name: pid
+      supportedModules: []
+    - description: commands.server.cb.arguments.segid.description
+      name: segid
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbprocess.description
+    name: cb-process
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cb.arguments.pid.description
+      name: pid
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.segid.description
+      name: segid
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbprocessEvents.description
+    name: cb-process-events
+    outputs:
+    - contextPath: Process
+      description:
+        CbID: Cb unique ID for this process instance - required (together with CbSegmentID)
+          to fetch further info on a process.
+        CbSegmentID: Cb "segment" where this process instance is stored. Required
+          to fetch further info on a process.
+        CommandLine: Process CommandLine
+        Hostname: Process Hostname
+        MD5: Process MD5
+        Name: Process Name
+        PID: Process PID
+        Parent.Name: The parent Process Name
+        Parent.PID: The parent Process PID
+        Path: Process Path
+    - contextPath: Process.CrossProc
+      description:
+        Action: Cross process action
+        OtherProcessBinary: Other process binary
+        OtherProcessCbID: Other process CbID
+        OtherProcessMD5: Other process MD5
+        Time: Time of action
+    - contextPath: Process.Modules
+      description:
+        Filepath: Module path
+        MD5: Module MD5
+        Time: Module time
+    - contextPath: Process.Registry
+      description:
+        RegistryPath: Registry path
+        Time: Registry time
+    - contextPath: Process.Binaries
+      description:
+        DigSig.Publisher: The publisher of the Digital Signature
+        DigSig.Result: Cb's decision after checking this binary's Digital Signature
+        MD5: Binary MD5
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.query.description
+      name: query
+      supportedModules: []
+    - description: commands.server.cb.arguments.rows.description
+      name: rows
+      supportedModules: []
+    - description: commands.server.cb.arguments.start.description
+      name: start
+      supportedModules: []
+    - description: commands.server.cb.arguments.sort.description
+      name: sort
+      supportedModules: []
+    - description: commands.server.cb.arguments.facet.description
+      name: facet
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbbinary.description
+    name: cb-binary
+    outputs:
+    - contentPath: ".results={\n\t\t\t\t\tName: val.original_filename,\n\t\t\t\t\tMD5:
+        val.md5,\n\t\t\t\t\tExtension: (val.original_filename.indexOf(\".\")>=0 ?
+        val.original_filename.split(\".\")[1] : \"\"),\n\t\t\t\t\tHostname: val.endpoint
+        ? val.endpoint[0].split(\"|\")[0] : '',\n\t\t\t\t\tPath: val.observed_filename,\n\t\t\t\t\tLastSeen:
+        val.last_seen,\n\t\t\t\t\tTimestamp: val.timestamp,\n\t\t\t\t\tServerAddedTimestamp:
+        val.server_added_timestamp,\n\t\t\t\t\tDescription: val.file_desc,\n\t\t\t\t\tInternalName:
+        val.internal_name,\n\t\t\t\t\tProductName: val.product_name,\n\t\t\t\t\tOS:
+        val.os_type,\n\t\t\t\t\tDigSig: {\n\t\t\t\t\t\tResult: val.digsig_result,\n\t\t\t\t\t\tPublisher:
+        val.digsig_publisher\n\t\t\t\t\t}\n\t\t\t\t}"
+      contextPath: File
+      description:
+        Description: The description
+        DigSig.Publisher: The publisher of the Digital Signature
+        DigSig.Result: Cb's decision after checking this binary's Digital Signature
+        Extension: Binary Extension
+        Hostname: Binary Hostname
+        InternalName: The Internal Name
+        LastSeen: Last time binary was seen
+        MD5: Binary MD5
+        Name: Binary Name
+        OS: The OS
+        Path: Binary Path
+        ProductName: The Product Name
+        ServerAddedTimestamp: The server added timestamp
+        Timestamp: Binary Timestamp
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cb.arguments.md5.description
+      name: md5
+      supportedModules: []
+    - description: commands.server.cb.arguments.summary.description
+      name: summary
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbbinaryGet.description
+    name: cb-binary-get
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.query.description
+      name: query
+      supportedModules: []
+    - description: commands.server.cb.arguments.rows.description
+      name: rows
+      supportedModules: []
+    - description: commands.server.cb.arguments.start.description
+      name: start
+      supportedModules: []
+    - description: commands.server.cb.arguments.sort.description
+      name: sort
+      supportedModules: []
+    - description: commands.server.cb.arguments.facet.description
+      name: facet
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbalerts.description
+    name: cb-alert
+    supportedModules: []
+  - arguments: []
+    deprecated: true
+    description: commands.server.cblistSensors.description
+    name: cb-list-sensors
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbSensorID: val.id,\n\t\t\t\t\tHostname: val.computer_name,\n\t\t\t\t\tStatus:
+        val.status,\n\t\t\t\t\tIPAddresses: val.network_adapters.split(\"|\").slice(0,
+        val.network_adapters.split(\"|\").length-1),\n\t\t\t\t\tNotes: val.notes,\n\t\t\t\t\tIsolated:
+        val.network_isolation_enabled,\n\t\t\t\t\tOS: val.os_environment_display_string,\n\t\t\t\t\tUptime:
+        val.sensor_uptime,\n\t\t\t\t\tLastUpdate: val.last_update,\n\t\t\t\t\tSupportsCbLive:
+        val.supports_cblr\n\t\t\t\t}"
+      contextPath: CbResponse.Sensors
+      description:
+        CbSensorID: Sensor ID
+        Hostname: Hostname
+        IPAddresses: Sensor IP Addresses
+        Isolated: Sensor Isolated
+        LastUpdate: Sensor Last Updated
+        Notes: Sensor Notes
+        OS: Sensor OS
+        Status: Sensor Status
+        SupportsCbLive: Sensor Support CB Live
+        Uptime: The Sensor uptime
+    - contentPath: ".={\n\t\t\t\t\tHostname: val.computer_name,\n\t\t\t\t\tOS: val.os_environment_display_string,\n\t\t\t\t\tIPAddresses:
+        val.network_adapters.split(\"|\").slice(0, val.network_adapters.split(\"|\").length-1)\n\t\t\t\t}"
+      contextPath: Endpoint
+      description:
+        Hostname: Sensor Hostname
+        IPAddresses: Sensor IP Addresses
+        OS: Sensor OS
+    supportedModules: []
+  - arguments: []
+    deprecated: true
+    description: commands.server.cblistSessions.description
+    name: cb-list-sessions
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbSensorID: val.sensor_id,\n\t\t\t\t\tCbSessionID:
+        val.id,\n\t\t\t\t\tHostname: val.computer_name,\n\t\t\t\t\tStatus: val.status,\n\t\t\t\t\tWaitTimeout:
+        val.sensor_wait_timeout,\n\t\t\t\t\tSessionTimeout: val.session_timeout\n\t\t\t\t}"
+      contextPath: CbResponse.Sessions
+      description:
+        CbSensorID: Sensor ID
+        CbSessionID: Session ID
+        Hostname: Hostname
+        SessionTimeout: Session Timeout
+        Status: Session Status
+        WaitTimeout: Sensor wait timeout
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cb.arguments.sensor.id.description
+      name: sensor
+      supportedModules: []
+    - description: commands.server.cb.arguments.sensor.ip.description
+      name: ip
+      supportedModules: []
+    - description: commands.server.cb.arguments.sensor.hostname.description
+      name: hostname
+      supportedModules: []
+    - description: commands.server.cb.arguments.sensor.groupId.description
+      name: groupid
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbsensorInfo.description
+    name: cb-sensor-info
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbSensorID: val.id,\n\t\t\t\t\tHostname: val.computer_name,\n\t\t\t\t\tStatus:
+        val.status,\n\t\t\t\t\tIPAddresses: val.network_adapters.split(\"|\").slice(0,
+        val.network_adapters.split(\"|\").length-1),\n\t\t\t\t\tNotes: val.notes,\n\t\t\t\t\tIsolated:
+        val.network_isolation_enabled,\n\t\t\t\t\tOS: val.os_environment_display_string,\n\t\t\t\t\tUptime:
+        val.sensor_uptime,\n\t\t\t\t\tLastUpdate: val.last_update,\n\t\t\t\t\tSupportsCbLive:
+        val.supports_cblr\n\t\t\t\t}"
+      contextPath: CbResponse.Sensors
+      description:
+        CbSensorID: Sensor ID
+        Hostname: Hostname
+        IPAddresses: Sensor IP Addresses
+        Isolated: Sensor Isolated
+        LastUpdate: Sensor Last Updated
+        Notes: Sensor Notes
+        OS: Sensor OS
+        Status: Sensor Status
+        SupportsCbLive: Sensor Support CB Live
+        Uptime: The Sensor uptime
+    - contentPath: ".={\n\t\t\t\t\tHostname: val.computer_name,\n\t\t\t\t\tOS: val.os_environment_display_string,\n\t\t\t\t\tIPAddresses:
+        val.network_adapters.split(\"|\").slice(0, val.network_adapters.split(\"|\").length-1)\n\t\t\t\t}"
+      contextPath: Endpoint
+      description:
+        Hostname: Sensor Hostname
+        IPAddresses: Sensor IP Addresses
+        OS: Sensor OS
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.sensor.id.description
+      name: sensor
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.session.commandTimout.description
+      name: command-timeout
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbsessionCreate.description
+    name: cb-session-create
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbSensorID: val.sensor_id,\n\t\t\t\t\tCbSessionID:
+        val.id,\n\t\t\t\t\tHostname: val.computer_name,\n\t\t\t\t\tStatus: val.status,\n\t\t\t\t\tWaitTimeout:
+        val.sensor_wait_timeout,\n\t\t\t\t\tSessionTimeout: val.session_timeout\n\t\t\t\t}"
+      contextPath: CbResponse.Sessions
+      description:
+        CbSensorID: Sensor ID
+        CbSessionID: Session ID
+        Hostname: Hostname
+        SessionTimeout: Session Timeout
+        Status: Session Status
+        WaitTimeout: Sensor wait timeout
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.sensor.id.description
+      name: sensor
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.session.description
+      name: session
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbsessionClose.description
+    name: cb-session-close
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbSensorID: val.sensor_id,\n\t\t\t\t\tCbSessionID:
+        val.id,\n\t\t\t\t\tHostname: val.computer_name,\n\t\t\t\t\tStatus: val.status,\n\t\t\t\t\tWaitTimeout:
+        val.sensor_wait_timeout,\n\t\t\t\t\tSessionTimeout: val.session_timeout\n\t\t\t\t}"
+      contextPath: CbResponse.Sessions
+      description:
+        CbSensorID: Sensor ID
+        CbSessionID: Session ID
+        Hostname: Hostname
+        SessionTimeout: Session Timeout
+        Status: Session Status
+        WaitTimeout: Sensor wait timeout
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.session.description
+      name: session
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbkeepalive.description
+    name: cb-keepalive
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.session.description
+      name: session
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbsessionInfo.description
+    name: cb-session-info
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbSensorID: val.sensor_id,\n\t\t\t\t\tCbSessionID:
+        val.id,\n\t\t\t\t\tHostname: val.computer_name,\n\t\t\t\t\tStatus: val.status,\n\t\t\t\t\tWaitTimeout:
+        val.sensor_wait_timeout,\n\t\t\t\t\tSessionTimeout: val.session_timeout\n\t\t\t\t}"
+      contextPath: CbResponse.Sessions
+      description:
+        CbSensorID: Sensor ID
+        CbSessionID: Session ID
+        Hostname: Hostname
+        SessionTimeout: Session Timeout
+        Status: Session Status
+        WaitTimeout: Sensor wait timeout
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.session.description
+      name: session
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbarchive.description
+    name: cb-archive
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.session.description
+      name: session
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.cmdName.description
+      name: name
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.cmdTimeout.description
+      name: timeout
+      supportedModules: []
+    - description: commands.server.cb.arguments.cmdObject.description
+      name: object
+      supportedModules: []
+    - description: commands.server.cb.arguments.cmdCompress.description
+      name: compress
+      supportedModules: []
+    - description: commands.server.cb.arguments.cmdWait.description
+      name: wait
+      supportedModules: []
+    - description: commands.server.cb.arguments.cmdWorkingDir.description
+      name: working-dir
+      supportedModules: []
+    - description: commands.server.cb.arguments.cmdOutputFile.description
+      name: output-file
+      supportedModules: []
+    - description: commands.server.cb.arguments.cmdValueDate.description
+      name: value-data
+      supportedModules: []
+    - description: commands.server.cb.arguments.cmdValueType.description
+      name: value-type
+      supportedModules: []
+    - description: commands.server.cb.arguments.cmdOverride.description
+      name: overwrite
+      supportedModules: []
+    - description: commands.server.cb.arguments.cmdOffset.description
+      name: offset
+      supportedModules: []
+    - description: commands.server.cb.arguments.cmdGetCount.description
+      name: get-count
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbcreateCommand.description
+    execution: true
+    name: cb-command-create
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbSensorID: val.sensor_id,\n\t\t\t\t\tCbSessionID:
+        val.session_id,\n\t\t\t\t\tCbCommandID: val.id,\n\t\t\t\t\tCommandName: val.hostname,\n\t\t\t\t\tHostname:
+        val.computer_name,\n\t\t\t\t\tStatus: val.status,\n\t\t\t\t\tWaitTimeout:
+        val.sensor_wait_timeout,\n\t\t\t\t\tCreateTime: val.create_time,\n\t\t\t\t\tOperandObject:
+        val.object\n\t\t\t\t}"
+      contextPath: CbResponse.Commands
+      description:
+        CbCommandID: The Command ID
+        CbSensorID: The Sensor ID
+        CbSessionID: The Session ID
+        CommandName: The Command name
+        CreateTime: Command create time
+        Hostname: The Hostname running the command
+        OperandObject: 'Object argument for the CbLive command - e.g. for "directory
+          list" this is the path of the dir to list. Full docs: https://github.com/carbonblack/cbapi/tree/master/sensor_apis#command-objects'
+        Status: The Command Status
+        WaitTimeout: The Wait timeout
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.session.description
+      name: session
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbListCommands.description
+    name: cb-list-commands
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbSensorID: val.sensor_id,\n\t\t\t\t\tCbSessionID:
+        val.session_id,\n\t\t\t\t\tCbCommandID: val.id,\n\t\t\t\t\tCommandName: val.hostname,\n\t\t\t\t\tHostname:
+        val.computer_name,\n\t\t\t\t\tStatus: val.status,\n\t\t\t\t\tWaitTimeout:
+        val.sensor_wait_timeout,\n\t\t\t\t\tCreateTime: val.create_time,\n\t\t\t\t\tResult:
+        {\n\t\t\t\t\t\tDesc: val.result_desc,\n\t\t\t\t\t\tType: val.result_type,\n\t\t\t\t\t\tCode:
+        val.result_code\n\t\t\t\t\t}\n\t\t\t\t}"
+      contextPath: CbResponse.Commands
+      description:
+        CbCommandID: The Command ID
+        CbSensorID: The Sensor ID
+        CbSessionID: The Session ID
+        CommandName: The Command name
+        CreateTime: Command create time
+        Hostname: The Hostname running the command
+        OperandObject: 'Object argument for the CbLive command - e.g. for "directory
+          list" this is the path of the dir to list. Full docs: https://github.com/carbonblack/cbapi/tree/master/sensor_apis#command-objects'
+        Result.Code: Result code
+        Result.Desc: Result description
+        Result.Type: Result type
+        Status: The Command Status
+        WaitTimeout: The Wait timeout
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.session.description
+      name: session
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.commandId.description
+      name: command
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbCommandInfo.description
+    name: cb-command-info
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbSensorID: val.sensor_id,\n\t\t\t\t\tCbSessionID:
+        val.session_id,\n\t\t\t\t\tCbCommandID: val.id,\n\t\t\t\t\tCommandName: val.hostname,\n\t\t\t\t\tHostname:
+        val.computer_name,\n\t\t\t\t\tStatus: val.status,\n\t\t\t\t\tWaitTimeout:
+        val.sensor_wait_timeout,\n\t\t\t\t\tCreateTime: val.create_time,\n\t\t\t\t\tResult:
+        {\n\t\t\t\t\t\tDesc: val.result_desc,\n\t\t\t\t\t\tType: val.result_type,\n\t\t\t\t\t\tCode:
+        val.result_code\n\t\t\t\t\t}\n\t\t\t\t}"
+      contextPath: CbResponse.Commands
+      description:
+        CbCommandID: The Command ID
+        CbSensorID: The Sensor ID
+        CbSessionID: The Session ID
+        CommandName: The Command name
+        CreateTime: Command create time
+        Hostname: The Hostname running the command
+        OperandObject: 'Object argument for the CbLive command - e.g. for "directory
+          list" this is the path of the dir to list. Full docs: https://github.com/carbonblack/cbapi/tree/master/sensor_apis#command-objects'
+        Result.Code: Result code
+        Result.Desc: Result description
+        Result.Type: Result type
+        Status: The Command Status
+        WaitTimeout: The Wait timeout
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.session.description
+      name: session
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.commandId.description
+      name: command
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbCommandCancel.description
+    execution: true
+    name: cb-command-cancel
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbSensorID: val.sensor_id,\n\t\t\t\t\tCbSessionID:
+        val.session_id,\n\t\t\t\t\tCbCommandID: val.id,\n\t\t\t\t\tCommandName: val.hostname,\n\t\t\t\t\tHostname:
+        val.computer_name,\n\t\t\t\t\tStatus: val.status,\n\t\t\t\t\tWaitTimeout:
+        val.sensor_wait_timeout,\n\t\t\t\t\tCreateTime: val.create_time,\n\t\t\t\t\tResult:
+        {\n\t\t\t\t\t\tDesc: val.result_desc,\n\t\t\t\t\t\tType: val.result_type,\n\t\t\t\t\t\tCode:
+        val.result_code\n\t\t\t\t\t}\n\t\t\t\t}"
+      contextPath: CbResponse.Commands
+      description:
+        CbCommandID: The Command ID
+        CbSensorID: The Sensor ID
+        CbSessionID: The Session ID
+        CommandName: The Command name
+        CreateTime: Command create time
+        Hostname: The Hostname running the command
+        OperandObject: 'Object argument for the CbLive command - e.g. for "directory
+          list" this is the path of the dir to list. Full docs: https://github.com/carbonblack/cbapi/tree/master/sensor_apis#command-objects'
+        Result.Code: Result code
+        Result.Desc: Result description
+        Result.Type: Result type
+        Status: The Command Status
+        WaitTimeout: The Wait timeout
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.session.description
+      name: session
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cblistFiles.description
+    name: cb-list-files
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbFileID: val.id,\n\t\t\t\t\tFilename: val.file_name,\n\t\t\t\t\tSize:
+        val.size_uploaded\n\t\t\t\t}"
+      contextPath: CbResponse.Files
+      description:
+        CbFileID: ID of the file within the Cb Session Storage - use with cb-file-get.
+        Filename: The Filename
+        Size: The File size
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.session.description
+      name: session
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.fileId.description
+      name: file-id
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbfileInfo.description
+    name: cb-file-info
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbFileID: val.id,\n\t\t\t\t\tFilename: val.file_name,\n\t\t\t\t\tSize:
+        val.size_uploaded\n\t\t\t\t}"
+      contextPath: CbResponse.Files
+      description:
+        CbFileID: ID of the file within the Cb Session Storage - use with cb-file-get.
+        Filename: The Filename
+        Size: The File size
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.session.description
+      name: session
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.fileId.description
+      name: file-id
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbfileDelete.description
+    execution: true
+    name: cb-file-delete
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbFileID: val.id,\n\t\t\t\t\tFilename: val.file_name,\n\t\t\t\t\tSize:
+        val.size_uploaded\n\t\t\t\t}"
+      contextPath: CbResponse.Files
+      description:
+        CbFileID: ID of the file within the Cb Session Storage - use with cb-file-get.
+        Filename: The Filename
+        Size: The File size
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.session.description
+      name: session
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.fileId.description
+      name: file-id
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbfileGet.description
+    name: cb-file-get
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cb.arguments.watchlistID.description
+      name: watchlist-id
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbwlget.description
+    name: cb-watchlist-get
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbWatchlistID: val.id,\n\t\t\t\t\tName: val.name,\n\t\t\t\t\tSearchQuery:
+        val.search_query,\n\t\t\t\t\tEnabled: val.enabled,\n\t\t\t\t\tLastHit: val.last_hit,\n\t\t\t\t\tLastHitCount:
+        val.last_hit_count,\n\t\t\t\t\tSearchTimestamp: val.search_timestamp,\n\t\t\t\t\tTotalHits:
+        val.total_hits,\n\t\t\t\t\tDateAdded: val.date_added\n\t\t\t\t}"
+      contextPath: CbResponse.Watchlists
+      description:
+        CbWatchlistID: Watchlist ID
+        DateAdded: Watchlist Date added
+        Enabled: Watchlist is enabled
+        LastHit: Watchlist last hit
+        LastHitCount: Watchlist last hit count
+        Name: Watchlist Name
+        SearchQuery: Cb search query used for the watchlist.
+        SearchTimestamp: Watchlist last hit count
+        TotalHits: Watchlist Total hits
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cb.arguments.wlSearchQuery.description
+      name: search-query
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.wlName.description
+      name: name
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbwlnew.description
+    execution: true
+    name: cb-watchlist-new
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbWatchlistID: val.id,\n\t\t\t\t\tName: val.name,\n\t\t\t\t\tSearchQuery:
+        val.search_query,\n\t\t\t\t\tEnabled: val.enabled,\n\t\t\t\t\tLastHit: val.last_hit,\n\t\t\t\t\tLastHitCount:
+        val.last_hit_count,\n\t\t\t\t\tSearchTimestamp: val.search_timestamp,\n\t\t\t\t\tTotalHits:
+        val.total_hits,\n\t\t\t\t\tDateAdded: val.date_added\n\t\t\t\t}"
+      contextPath: CbResponse.Watchlists
+      description:
+        CbWatchlistID: Watchlist ID
+        DateAdded: Watchlist Date added
+        Enabled: Watchlist is enabled
+        LastHit: Watchlist last hit
+        LastHitCount: Watchlist last hit count
+        Name: Watchlist Name
+        SearchQuery: Cb search query used for the watchlist.
+        SearchTimestamp: Watchlist last hit count
+        TotalHits: Watchlist Total hits
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cb.arguments.watchlistID.description
+      name: watchlist-id
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.wlSearchQuery.description
+      name: search-query
+      supportedModules: []
+    - description: commands.server.cb.arguments.wlName.description
+      name: name
+      supportedModules: []
+    - description: commands.server.cb.arguments.wlIndexType.description
+      name: indexType
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbwlset.description
+    execution: true
+    name: cb-watchlist-set
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cb.arguments.watchlistID.description
+      name: watchlist-id
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbwldel.description
+    execution: true
+    name: cb-watchlist-del
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.session.description
+      name: session
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.pid.description
+      name: pid
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbTerminateProcess.description
+    execution: true
+    name: cb-terminate-process
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tCbSensorID: val.sensor_id,\n\t\t\t\t\tCbSessionID:
+        val.session_id,\n\t\t\t\t\tCbCommandID: val.id,\n\t\t\t\t\tCommandName: val.hostname,\n\t\t\t\t\tHostname:
+        val.computer_name,\n\t\t\t\t\tStatus: val.status,\n\t\t\t\t\tWaitTimeout:
+        val.sensor_wait_timeout,\n\t\t\t\t\tCreateTime: val.create_time,\n\t\t\t\t\tResult:
+        {\n\t\t\t\t\t\tDesc: val.result_desc,\n\t\t\t\t\t\tType: val.result_type,\n\t\t\t\t\t\tCode:
+        val.result_code\n\t\t\t\t\t}\n\t\t\t\t}"
+      contextPath: CbResponse.Commands
+      description:
+        CbCommandID: The Command ID
+        CbSensorID: The Sensor ID
+        CbSessionID: The Session ID
+        CommandName: The Command name
+        CreateTime: Command create time
+        Hostname: The Hostname running the command
+        OperandObject: 'Object argument for the CbLive command - e.g. for "directory
+          list" this is the path of the dir to list. Full docs: https://github.com/carbonblack/cbapi/tree/master/sensor_apis#command-objects'
+        Result.Code: Result code
+        Result.Desc: Result description
+        Result.Type: Result type
+        Status: The Command Status
+        WaitTimeout: The Wait timeout
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.sensor.id.description
+      name: sensor
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbQuarantineDevice.description
+    execution: true
+    name: cb-quarantine-device
+    outputs:
+    - contextPath: Endpoint.LastAction
+      description: Endpoint Actions
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.sensor.id.description
+      name: sensor
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbUnquarantineDevice.description
+    execution: true
+    name: cb-unquarantine-device
+    outputs:
+    - contextPath: Endpoint.LastAction
+      description: Endpoint Actions
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cb.arguments.md5hash.description
+      name: md5hash
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.text.description
+      name: text
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.lastBanHost.description
+      name: lastBanHost
+      supportedModules: []
+    - description: commands.server.cb.arguments.lastBanTime.description
+      name: lastBanTime
+      supportedModules: []
+    - description: commands.server.cb.arguments.banCount.description
+      name: banCount
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbBlockHash.description
+    execution: true
+    name: cb-block-hash
+    outputs:
+    - contextPath: File.LastAction
+      description: Last action taken on this file
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cb.arguments.md5hash.description
+      name: md5hash
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.text.description
+      name: text
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbUnblockHash.description
+    execution: true
+    name: cb-unblock-hash
+    outputs:
+    - contextPath: File.LastAction
+      description: Last action taken on this file
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cb.arguments.filter.description
+      name: filter
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbGetHashBlacklist.description
+    name: cb-get-hash-blacklist
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tMD5: val.md5_hash,\n\t\t\t\t\tEnabled: val.enabled,\n\t\t\t\t\tDescription:
+        val.text,\n\t\t\t\t\tTimestamp: val.timestamp,\n\t\t\t\t\tBlockCount: val.block_count,\n\t\t\t\t\tUsername:
+        val.text,\n\t\t\t\t\tDescription: val.username,\n\t\t\t\t\tLastBlock: {\n\t\t\t\t\t\tTime:
+        val.last_block_time,\n\t\t\t\t\t\tHostname: val.last_block_hostname,\n\t\t\t\t\t\tCbSensorID:
+        val.last_block_sensor_id\n\t\t\t\t\t}\n\t\t\t\t}"
+      contextPath: CbResponse.BlockedHashes
+      description:
+        BlockCount: Blocked Count
+        Description: Blocked Description
+        Enabled: Is Enabled
+        LastBlock.CbSensorID: Last block sensor id
+        LastBlock.Hostname: Last block hostname
+        LastBlock.Time: Last block time
+        MD5: Blocked MD5
+        Timestamp: Blocked Timestamp
+        Username: Blocked hash username
+    supportedModules: []
+  - arguments:
+    - description: commands.server.cb.arguments.pid.description
+      name: pid
+      required: true
+      supportedModules: []
+    - description: commands.server.cb.arguments.segid.description
+      name: segid
+      required: true
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbprocess.description
+    name: cb-get-process
+    outputs:
+    - contentPath: ".={\n\t\t\t\t\tMD5: val.process.process_md5,\n\t\t\t\t\tHostname:
+        val.process.hostname,\n\t\t\t\t\tCommandLine: val.process.cmdline,\n\t\t\t\t\tPID:
+        val.process.process_pid,\n\t\t\t\t\tPath: val.process.path,\n\t\t\t\t\tCbID:
+        val.process.id,\n\t\t\t\t\tCbSegmentID: val.segment_id,\n\t\t\t\t\tName: val.process.process_name,\n\t\t\t\t\tParent:
+        {\n\t\t\t\t\t\tMD5: val.parent.process_md5,\n\t\t\t\t\t\tHostname: val.parent.hostname,\n\t\t\t\t\t\tCommandLine:
+        val.parent.cmdline,\n\t\t\t\t\t\tPID: val.parent.process_pid,\n\t\t\t\t\t\tPath:
+        val.parent.path,\n\t\t\t\t\t\tCbID: val.parent.id,\n\t\t\t\t\t\tCbSegmentID:
+        val.segment_id,\n\t\t\t\t\t\tName: val.parent.process_name,\n\t\t\t\t\t\tParent:
+        {\n\t\t\t\t\t\t\tPID: val.parent.parent_pid,\n\t\t\t\t\t\t\tName: val.parent.parent_name\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\tSibling:
+        {\n\t\t\t\t\t\tMD5: val.siblings.process_md5,\n\t\t\t\t\t\tHostname: val.siblings.hostname,\n\t\t\t\t\t\tCommandLine:
+        val.siblings.cmdline,\n\t\t\t\t\t\tPID: val.siblings.process_pid,\n\t\t\t\t\t\tPath:
+        val.siblings.path,\n\t\t\t\t\t\tCbID: val.siblings.id,\n\t\t\t\t\t\tCbSegmentID:
+        val.segment_id,\n\t\t\t\t\t\tName: val.siblings.process_name,\n\t\t\t\t\t\tParent:
+        {\n\t\t\t\t\t\t\tPID: val.siblings.parent_pid,\n\t\t\t\t\t\t\tName: val.siblings.parent_name\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t},\n\t\t\t\t\tChildren:
+        {\n\t\t\t\t\t\tMD5: val.children.process_md5,\n\t\t\t\t\t\tHostname: val.children.hostname,\n\t\t\t\t\t\tCommandLine:
+        val.children.cmdline,\n\t\t\t\t\t\tPID: val.children.process_pid,\n\t\t\t\t\t\tPath:
+        val.children.path,\n\t\t\t\t\t\tCbID: val.children.id,\n\t\t\t\t\t\tCbSegmentID:
+        val.segment_id,\n\t\t\t\t\t\tName: val.children.process_name,\n\t\t\t\t\t\tParent:
+        {\n\t\t\t\t\t\t\tPID: val.children.parent_pid,\n\t\t\t\t\t\t\tName: val.children.parent_name\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}\n\t\t\t\t\t}"
+      contextPath: Process
+      description:
+        CbID: Cb unique ID for this process instance - required (together with CbSegmentID)
+          to fetch further info on a process.
+        CbSegmentID: Cb "segment" where this process instance is stored. Required
+          to fetch further info on a process.
+        Children.CbID: The children Cb unique ID for this process instance - required
+          (together with CbSegmentID) to fetch further info on a process.
+        Children.CbSegmentID: The children Cb "segment" where this process instance
+          is stored. Required to fetch further info on a process.
+        Children.CommandLine: The children Process CommandLine
+        Children.Hostname: The children Process Hostname
+        Children.MD5: The children Process MD5
+        Children.Name: The children Process Name
+        Children.PID: The children Process PID
+        Children.Path: The children Process Path
+        CommandLine: Process CommandLine
+        Hostname: Process Hostname
+        MD5: Process MD5
+        Name: Process Name
+        PID: Process PID
+        Parent.CbID: The parent Cb unique ID for this process instance - required
+          (together with CbSegmentID) to fetch further info on a process.
+        Parent.CbSegmentID: The parent Cb "segment" where this process instance is
+          stored. Required to fetch further info on a process.
+        Parent.CommandLine: The parent Process CommandLine
+        Parent.Hostname: The parent Process Hostname
+        Parent.MD5: The parent Process MD5
+        Parent.Name: The parent Process Name
+        Parent.PID: The parent Process PID
+        Parent.Path: The parent Process Path
+        Path: Process Path
+        Sibling.CbID: The sibling Cb unique ID for this process instance - required
+          (together with CbSegmentID) to fetch further info on a process.
+        Sibling.CbSegmentID: The sibling Cb "segment" where this process instance
+          is stored. Required to fetch further info on a process.
+        Sibling.CommandLine: The sibling Process CommandLine
+        Sibling.Hostname: The sibling Process Hostname
+        Sibling.MD5: The sibling Process MD5
+        Sibling.Name: The sibling Process Name
+        Sibling.PID: The sibling Process PID
+        Sibling.Path: The sibling Process Path
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.cb.arguments.query.description
+      name: query
+      supportedModules: []
+    - description: commands.server.cb.arguments.rows.description
+      name: rows
+      supportedModules: []
+    - description: commands.server.cb.arguments.start.description
+      name: start
+      supportedModules: []
+    - description: commands.server.cb.arguments.sort.description
+      name: sort
+      supportedModules: []
+    - description: commands.server.cb.arguments.facet.description
+      name: facet
+      supportedModules: []
+    deprecated: true
+    description: commands.server.cbprocess.description
+    name: cb-get-processes
+    outputs:
+    - contentPath: ".results={\n\t\t\t\t\t\tMD5: val.process_md5,\n\t\t\t\t\t\tHostname:
+        val.hostname,\n\t\t\t\t\t\tCommandLine: val.cmdline,\n\t\t\t\t\t\tPID: val.process_pid,\n\t\t\t\t\t\tPath:
+        val.path,\n\t\t\t\t\t\tCbID: val.id,\n\t\t\t\t\t\tCbSegmentID: val.segment_id,\n\t\t\t\t\t\tName:
+        val.process_name,\n\t\t\t\t\t\tParent: {\n\t\t\t\t\t\t\tPID: val.parent_pid,\n\t\t\t\t\t\t\tName:
+        val.parent_name\n\t\t\t\t\t\t\t}\n\t\t\t\t\t\t}"
+      contextPath: Process
+      description:
+        CbID: Cb unique ID for this process instance - required (together with CbSegmentID)
+          to fetch further info on a process.
+        CbSegmentID: Cb "segment" where this process instance is stored. Required
+          to fetch further info on a process.
+        CommandLine: Process CommandLine
+        Hostname: Process Hostname
+        MD5: Process MD5
+        Name: Process Name
+        PID: Process PID
+        Parent.Name: The Parent Name
+        Parent.PID: The Parent PID
+        Path: Process Path
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
