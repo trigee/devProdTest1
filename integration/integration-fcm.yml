@@ -1,0 +1,42 @@
+category: Messaging
+commonfields:
+  id: fcm
+  version: -1
+configuration:
+- defaultvalue: "true"
+  display: Use system proxy settings
+  name: useproxy
+  required: false
+  supportedModules: []
+  type: 8
+contentitemexportablefields: {}
+description: Send push notifications to mobile app
+display: FCM Push Notifications
+icon: fcm.png
+name: fcm
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - name: title
+      required: true
+      supportedModules: []
+    - name: body
+      required: true
+      supportedModules: []
+    - name: fcmToken
+      required: true
+      supportedModules: []
+    - name: incidentId
+      required: true
+      supportedModules: []
+    - name: msgType
+      supportedModules: []
+    execution: true
+    hidden: true
+    name: fcm-push
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
