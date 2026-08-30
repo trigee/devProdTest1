@@ -1,0 +1,136 @@
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: threatcentral
+  version: -1
+configuration:
+- defaultvalue: https://threatcentral.io/tc/rest/summaries
+  display: Server URL (e.g. https://192.168.0.1)
+  name: APIAddress
+  required: true
+  supportedModules: []
+  type: 0
+- display: API Key
+  name: APIKey
+  required: true
+  supportedModules: []
+  type: 4
+- display: Do not validate server certificate (insecure)
+  name: tcIgnoreTLS
+  required: false
+  supportedModules: []
+  type: 8
+- defaultvalue: "true"
+  display: Use system proxy settings
+  name: useproxy
+  required: false
+  supportedModules: []
+  type: 8
+contentitemexportablefields: {}
+description: Get actionable threat analysis and intelligence from HPE’s cloud-based,
+  standards-compliant sharing platform
+detaileddescription: For an API key, go to your user profile at your ThreatCentral
+  account, and press Manage API Keys, where you can generate a new API key.
+display: Threat Central
+icon: tc.png
+ispasswordprotected: true
+name: threatcentral
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - description: commands.server.threatcentral.arguments.text.desctiption
+      name: text
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.threatcentral.arguments.exactMatch.desctiption
+      name: exactMatch
+      predefined:
+      - "true"
+      - "false"
+      supportedModules: []
+    - description: commands.server.threatcentral.arguments.id.desctiption
+      name: id
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.threatcentral.arguments.entities.desctiption
+      name: entities
+      predefined:
+      - actors
+      - indicators
+      - incidents
+      - ttps
+      - cases
+      - all
+      supportedModules: []
+    - description: commands.server.threatcentral.arguments.created.desctiption
+      name: created
+      supportedModules: []
+    - description: commands.server.threatcentral.arguments.lastUpdated.desctiption
+      name: lastUpdated
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.threatcentral.arguments.observables.desctiption
+      name: observables
+      predefined:
+      - IP
+      - URI
+      - FILE_HASH
+      - DOMAIN
+      - REGISTRY_KEY
+      - MUTEX
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.threatcentral.arguments.indicators.desctiption
+      name: indicators
+      predefined:
+      - unknown
+      - malicious_email
+      - ip_watchlist
+      - domain_watchlist
+      - file_hash_watchlist
+      - url_watchlist
+      - malware_artifacts
+      - c2
+      - anonymization
+      - exfiltration
+      - host_characteristics
+      - login_name
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.threatcentral.arguments.onlyMine.desctiption
+      name: onlyMine
+      predefined:
+      - "true"
+      - "false"
+      supportedModules: []
+    - description: commands.server.threatcentral.arguments.size.desctiption
+      name: size
+      supportedModules: []
+    - description: commands.server.threatcentral.arguments.page.desctiption
+      name: Page
+      supportedModules: []
+    - description: commands.server.threatcentral.arguments.score.desctiption
+      name: onlyMine
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.threatcentral.arguments.sortProperties.desctiption
+      name: sortProperties
+      predefined:
+      - created
+      - lastUpdated
+      - tcScore
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.threatcentral.arguments.sortDirection.desctiption
+      name: sortDirection
+      predefined:
+      - DESC
+      - ASC
+      supportedModules: []
+    description: commands.server.threatcentral.commands.tc.description
+    name: Threat-Central
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
