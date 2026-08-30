@@ -1,0 +1,114 @@
+category: Analytics & SIEM
+commonfields:
+  id: elasticsearch
+  version: -1
+configuration:
+- display: Server URL (e.g. http://192.168.0.1:9200)
+  name: Address
+  required: true
+  supportedModules: []
+  type: 0
+- display: ""
+  name: Credentials
+  required: false
+  supportedModules: []
+  type: 9
+- defaultvalue: 2.*
+  display: Elastic version 2.* or 5.*
+  name: version
+  required: false
+  supportedModules: []
+  type: 0
+- defaultvalue: "true"
+  display: Trust server certificate
+  name: insecure
+  required: false
+  supportedModules: []
+  type: 8
+- defaultvalue: "false"
+  display: Use system proxy settings
+  name: proxy
+  required: false
+  supportedModules: []
+  type: 8
+- defaultvalue: "false"
+  display: Import data as incidents
+  name: isFetch
+  required: false
+  supportedModules: []
+  type: 8
+- display: Alert type
+  name: alertType
+  required: false
+  supportedModules: []
+  type: 13
+- display: Index/indexes to fetch incidents from (comma separated)
+  name: fetchIndex
+  required: false
+  supportedModules: []
+  type: 0
+- display: Query to fetch incidents by (Lucene style)
+  name: fetchQuery
+  required: false
+  supportedModules: []
+  type: 0
+- display: Index time field, used to sort and limit data
+  name: fetchTimeField
+  required: false
+  supportedModules: []
+  type: 0
+- display: Time format as kept in ElasticSearch, leave empty to use default
+  name: fetchTimeFormat
+  required: false
+  supportedModules: []
+  type: 0
+- display: 'Use DQ syntax to map elastic JSON struct to incident fields, use :: as
+    mapping seperator'
+  name: incidentMapping
+  required: false
+  supportedModules: []
+  type: 0
+contentitemexportablefields: {}
+deprecated: true
+description: Deprecated. Use the Elasticsearch v2 integration instead.
+detaileddescription: "Time format is goland style format. For more details, look at:
+  [https://golang.org/pkg/time](https://golang.org/pkg/time)\n\t\t\t"
+display: Elasticsearch
+icon: elasticseearch.png
+ispasswordprotected: true
+name: elasticsearch
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - default: true
+      description: commands.server.esquery.query.description
+      name: query
+      required: true
+      supportedModules: []
+    - description: commands.server.esquery.index.description
+      name: index
+      required: true
+      supportedModules: []
+    - description: commands.server.esquery.page.description
+      name: page
+      supportedModules: []
+    - description: commands.server.esquery.size.description
+      name: size
+      supportedModules: []
+    - description: commands.server.esquery.sort.description
+      name: sort
+      supportedModules: []
+    - description: commands.server.esquery.fields.description
+      name: fields
+      supportedModules: []
+    - description: commands.server.esquery.explain.description
+      name: explain
+      supportedModules: []
+    description: commands.server.esquery.description
+    name: search
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
