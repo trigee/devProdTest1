@@ -1,0 +1,133 @@
+category: Analytics & SIEM
+commonfields:
+  id: syslog
+  version: -1
+configuration:
+- display: IP address (e.g. 127.0.0.1)
+  name: address
+  required: true
+  supportedModules: []
+  type: 0
+- defaultvalue: "514"
+  display: Port
+  name: port
+  required: true
+  supportedModules: []
+  type: 0
+- defaultvalue: UDP
+  display: Protocol (TCP / UDP / Unix)
+  name: protocol
+  required: true
+  supportedModules: []
+  type: 0
+- defaultvalue: Auto
+  display: Format (Auto / RFC5424 / RFC3164 / RFC6587)
+  name: format
+  required: false
+  supportedModules: []
+  type: 0
+- display: Log content field as a filter for incident creation (Regex).
+  name: content
+  required: false
+  supportedModules: []
+  type: 0
+- display: Log message field as a filter for incident creation (Regex).
+  name: message
+  required: false
+  supportedModules: []
+  type: 0
+- display: Log tag field as a filter for incident creation (Equal).
+  name: tag
+  required: false
+  supportedModules: []
+  type: 0
+- display: Log client field as a filter for incident creation (Equal).
+  name: client
+  required: false
+  supportedModules: []
+  type: 0
+- display: Log hostname field as a filter for incident creation (Equal).
+  name: hostname
+  required: false
+  supportedModules: []
+  type: 0
+- display: Log TLS peer field as a filter for incident creation (Equal).
+  name: tls_peer
+  required: false
+  supportedModules: []
+  type: 0
+- display: Log app name field as a filter for incident creation (Equal).
+  name: app_name
+  required: false
+  supportedModules: []
+  type: 0
+- display: Log process id field as a filter for incident creation (Equal).
+  name: proc_id
+  required: false
+  supportedModules: []
+  type: 0
+- display: Log message id field as a filter for incident creation (Equal).
+  name: msg_id
+  required: false
+  supportedModules: []
+  type: 0
+- display: Log structured data field as a filter for incident creation (Equal).
+  name: structured_data
+  required: false
+  supportedModules: []
+  type: 0
+- display: Log version field as a filter for incident creation (Greater than).
+  name: version
+  required: false
+  supportedModules: []
+  type: 1
+- display: Log severity field as a filter for incident creation (Greater than).
+  name: severity
+  required: false
+  supportedModules: []
+  type: 1
+- display: Log priority field as a filter for incident creation (Greater than).
+  name: priority
+  required: false
+  supportedModules: []
+  type: 1
+- display: Log facility field as a filter for incident creation (Greater than).
+  name: facility
+  required: false
+  supportedModules: []
+  type: 1
+- defaultvalue: "true"
+  display: ""
+  hidden: true
+  name: isFetch
+  required: false
+  supportedModules: []
+  type: 8
+- display: Alert type
+  name: alertType
+  required: false
+  supportedModules: []
+  type: 13
+contentitemexportablefields: {}
+deprecated: true
+description: Deprecated - We recommend using the Syslog v2 integration instead.
+detaileddescription: |-
+  ### You may add a combination of filters, leave empty to convert all incoming logs to incidents.
+
+  ### Filter types:
+
+  * Regex - Use a regular expression as a filter.
+  Example: "[abc]", that matches the letters 'a', 'b' or 'c', will filter the logs "boot" or "cab", but will not filter the log "system"".
+  Example: "abc", will filter the string "abc" but will not filter the strings "ab" or "bac".
+  * Equal - Compare the field to the filter, match if they are exactly equal.
+  Example: "localhost" will filter by a field "ocalhost" but will not filter by a field "localhost-1".
+  * Greater than - Compare the field to the filter, match if it is greater than the filter.
+  Example: 17 will filter by a field 10 but will not filter by a field 17 or 20.
+
+  *Applies only to incoming logs from the moment the module was enabled (previously received logs will not be converted)*
+display: Syslog
+icon: syslog.png
+name: syslog
+restrictioncenter: {}
+script: null
+signature: ""
