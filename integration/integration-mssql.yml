@@ -1,0 +1,87 @@
+category: Database
+commonfields:
+  id: mssql
+  version: -1
+configuration:
+- display: Server Address
+  name: server
+  required: true
+  supportedModules: []
+  type: 0
+- defaultvalue: "1433"
+  display: Server Port
+  name: port
+  required: true
+  supportedModules: []
+  type: 0
+- display: Username
+  name: user id
+  required: true
+  supportedModules: []
+  type: 0
+- display: Password
+  name: password
+  required: true
+  supportedModules: []
+  type: 4
+- display: Database
+  name: database
+  required: false
+  supportedModules: []
+  type: 0
+- display: Encrypt
+  name: encrypt
+  required: false
+  supportedModules: []
+  type: 8
+- display: Trust server certificate
+  name: TrustServerCertificate
+  required: false
+  supportedModules: []
+  type: 8
+- display: Host name that should appear in certificate
+  name: hostNameInCertificate
+  required: false
+  supportedModules: []
+  type: 0
+- display: Additional connection parameters
+  name: AdvancedParams
+  required: false
+  supportedModules: []
+  type: 0
+contentitemexportablefields: {}
+deprecated: true
+description: Deprecated. Use The Generic SQL integration instead.
+detaileddescription: "Use to query SQL Server, using a remote (TCP) connection to
+  the DB. \n\nPlease note the default timeout for queries is 30 seconds. To increase
+  the timeout set the following parameter in the **Additional connection parameters**
+  field: _connection timeout_ (notice the space in the name of the parameter) with
+  the desired timeout in seconds. For example to set a timeout of 120 seconds use:
+  _connection timeout=120_."
+display: SQL Server
+icon: mssql.png
+ispasswordprotected: true
+name: mssql
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - default: true
+      description: commands.server.mysql.query.arguments.query.description
+      name: query
+      required: true
+      supportedModules: []
+    - description: commands.server.mysql.query.arguments.limit.description
+      name: limit
+      supportedModules: []
+    - description: commands.server.mysql.query.arguments.columns.description
+      name: columns
+      supportedModules: []
+    description: commands.server.mysql.query.description
+    execution: true
+    name: query
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
