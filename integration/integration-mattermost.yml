@@ -1,0 +1,207 @@
+category: Messaging
+commonfields:
+  id: mattermost
+  version: -1
+configuration:
+- display: Mattermost server address (e.g. https://1.2.3.4:8065)
+  name: address
+  required: true
+  supportedModules: []
+  type: 0
+- display: Team name (e.g. my-team-name)
+  name: teamName
+  required: true
+  supportedModules: []
+  type: 0
+- display: Personal Access Token
+  name: accessToken
+  required: true
+  supportedModules: []
+  type: 4
+- defaultvalue: general
+  display: Notifications channel (You will need to invite the Demisto Bot user to
+    this channel)
+  name: incidentNotificationChannel
+  required: false
+  supportedModules: []
+  type: 0
+- defaultvalue: "true"
+  display: Should anyone be allowed to create incidents by DM
+  name: allowIncidents
+  required: false
+  supportedModules: []
+  type: 8
+- display: Do not validate server certificate (insecure)
+  name: insecure
+  required: false
+  supportedModules: []
+  type: 8
+- defaultvalue: "true"
+  display: Use system proxy settings
+  name: useproxy
+  required: false
+  supportedModules: []
+  type: 8
+contentitemexportablefields: {}
+deprecated: true
+description: Deprecated. Use the Mattermost v2 integration instead.
+detaileddescription: |-
+  ### To use the mattermost integration:
+
+  1. Create a new Mattermost user (to act as the Mattermost Bot)
+  2. Under "Manage Members", make it a Team Admin
+  3. Create a Personal Access Token for the new account ([Detailed Instructions...](https://docs.mattermost.com/developer/personal-access-tokens.html))
+  4. Copy the Access Token to the "Personal Access Token" field
+display: Mattermost
+icon: mattermost.png
+name: mattermost
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - default: true
+      description: commands.server.mattermostSend.arguments.message.description
+      name: message
+      supportedModules: []
+    - description: commands.server.mattermostSend.arguments.message.type.description
+      name: messageType
+      supportedModules: []
+    - deprecated: true
+      name: originalMessage
+      supportedModules: []
+    - description: commands.server.mattermostSend.arguments.to.description
+      isArray: true
+      name: to
+      supportedModules: []
+    - description: commands.server.mattermostSend.arguments.channel.description
+      name: channel
+      supportedModules: []
+    - description: commands.server.mattermostSend.arguments.entry.description
+      name: entry
+      supportedModules: []
+    - description: commands.server.mattermostSend.arguments.ignoreAddURL.description
+      name: ignoreAddURL
+      supportedModules: []
+    description: commands.server.mattermostSend.description
+    name: send-notification
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.mattermostSend.arguments.message.description
+      name: message
+      supportedModules: []
+    - description: commands.server.mattermostSend.arguments.to.description
+      isArray: true
+      name: to
+      supportedModules: []
+    - description: commands.server.mattermostSend.arguments.channel.description
+      name: channel
+      supportedModules: []
+    - description: commands.server.mattermostSend.arguments.entry.description
+      name: entry
+      supportedModules: []
+    - description: commands.server.mattermostSend.arguments.ignoreAddURL.description
+      name: IgnoreAddURL
+      supportedModules: []
+    deprecated: true
+    description: commands.server.mattermostSend.description
+    name: mattermost-send
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.mattermostSendFile.arguments.to.description
+      name: file
+      required: true
+      supportedModules: []
+    - description: commands.server.mattermostSend.arguments.to.description
+      isArray: true
+      name: to
+      supportedModules: []
+    - description: commands.server.mattermostSend.arguments.channel.description
+      name: channel
+      supportedModules: []
+    description: commands.server.mattermostSendFile.description
+    name: mattermost-send-file
+    supportedModules: []
+  - arguments: []
+    description: commands.server.mattermostCloseChannel.description
+    name: mattermost-close-channel
+    supportedModules: []
+  - arguments: []
+    description: commands.server.mattermostCloseChannel.description
+    name: close-channel
+    supportedModules: []
+  - arguments:
+    - auto: PREDEFINED
+      default: true
+      description: commands.server.mattermostMirror.arguments.type.description
+      name: type
+      predefined:
+      - all
+      - chat
+      - none
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.mattermostMirror.arguments.autoclose.description
+      name: autoclose
+      predefined:
+      - "true"
+      - "false"
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.mattermostMirror.arguments.groupOrChannel.description
+      name: mirrorTo
+      predefined:
+      - group
+      - channel
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.mattermostMirror.arguments.direction.description
+      name: direction
+      predefined:
+      - Both
+      - ToDemisto
+      - FromDemisto
+      supportedModules: []
+    description: commands.server.mattermostMirror.description
+    name: mattermost-mirror-investigation
+    supportedModules: []
+  - arguments:
+    - auto: PREDEFINED
+      default: true
+      description: commands.server.mattermostMirror.arguments.type.description
+      name: type
+      predefined:
+      - all
+      - chat
+      - none
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.mattermostMirror.arguments.autoclose.description
+      name: autoclose
+      predefined:
+      - "true"
+      - "false"
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.mattermostMirror.arguments.groupOrChannel.description
+      name: mirrorTo
+      predefined:
+      - group
+      - channel
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.mattermostMirror.arguments.direction.description
+      name: direction
+      predefined:
+      - Both
+      - ToDemisto
+      - FromDemisto
+      supportedModules: []
+    description: commands.server.mattermostMirror.description
+    name: mirror-investigation
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
