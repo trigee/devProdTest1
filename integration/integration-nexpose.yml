@@ -1,0 +1,84 @@
+category: Vulnerability Management
+commonfields:
+  id: nexpose
+  version: -1
+configuration:
+- display: Server URL (e.g. https://192.168.0.1)
+  name: Address
+  required: true
+  supportedModules: []
+  type: 0
+- defaultvalue: "3780"
+  display: Port
+  name: Port
+  required: true
+  supportedModules: []
+  type: 0
+- display: ""
+  name: Credentials
+  required: true
+  supportedModules: []
+  type: 9
+- defaultvalue: "1.2"
+  display: API Version
+  name: Version
+  required: true
+  supportedModules: []
+  type: 0
+- display: Do not validate server certificate (insecure)
+  name: IgnoreTls
+  required: false
+  supportedModules: []
+  type: 8
+contentitemexportablefields: {}
+deprecated: true
+description: Deprecated. Use the Rapid7 Nexpose integration instead.
+display: Nexpose
+icon: rapid7.png
+ispasswordprotected: true
+name: nexpose
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - name: api-version
+      supportedModules: []
+    deprecated: true
+    name: vulnerability-list
+    supportedModules: []
+  - arguments:
+    - name: api-version
+      supportedModules: []
+    - default: true
+      name: vulnerability-id
+      required: true
+      supportedModules: []
+    deprecated: true
+    name: vulnerability-details
+    supportedModules: []
+  - arguments:
+    - name: api-version
+      supportedModules: []
+    - default: true
+      name: filter
+      supportedModules: []
+    deprecated: true
+    name: generate-adhoc-report
+    supportedModules: []
+  - arguments:
+    - name: api-version
+      supportedModules: []
+    - name: xml
+      required: true
+      supportedModules: []
+    - default: true
+      name: title
+      required: true
+      supportedModules: []
+    deprecated: true
+    name: send-xml
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
