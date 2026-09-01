@@ -1,0 +1,88 @@
+category: Endpoint
+commonfields:
+  id: remoteaccess
+  version: -1
+configuration:
+- display: Default Hostname or IP Address
+  name: HostName
+  required: false
+  supportedModules: []
+  type: 0
+- display: ""
+  name: Credentials
+  required: false
+  supportedModules: []
+  type: 9
+- display: ""
+  name: Ciphers
+  required: false
+  supportedModules: []
+  type: 0
+- defaultvalue: "false"
+  display: Interactive terminal mode
+  name: terminal
+  required: false
+  supportedModules: []
+  type: 8
+- defaultvalue: xterm
+  display: Terminal Type
+  name: terminalType
+  required: false
+  supportedModules: []
+  type: 0
+contentitemexportablefields: {}
+deprecated: true
+description: Deprecated - We recommend using the Remote Access v2 integration instead.
+detaileddescription: File transfer and execute commands via ssh, on remote machines
+display: RemoteAccess
+icon: remoteaccess.png
+ispasswordprotected: true
+name: remoteaccess
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - auto: SYSTEM
+      name: system
+      supportedModules: []
+    - name: timeout
+      supportedModules: []
+    - name: cmd
+      required: true
+      supportedModules: []
+    description: commands.server.remoteacess.ssh.description
+    execution: true
+    name: ssh
+    supportedModules: []
+  - arguments:
+    - auto: SYSTEM
+      name: system
+      supportedModules: []
+    - name: timeout
+      supportedModules: []
+    - name: entry
+      supportedModules: []
+    - name: fileID
+      supportedModules: []
+    - name: dest-dir
+      required: true
+      supportedModules: []
+    description: commands.server.remoteacess.copyto.description
+    name: copy-to
+    supportedModules: []
+  - arguments:
+    - auto: SYSTEM
+      name: system
+      supportedModules: []
+    - name: timeout
+      supportedModules: []
+    - name: file
+      required: true
+      supportedModules: []
+    description: commands.server.remoteacess.copyfrom.description
+    name: copy-from
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
