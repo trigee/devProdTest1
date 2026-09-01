@@ -1,0 +1,88 @@
+category: Messaging
+commonfields:
+  id: mail-listener
+  version: -1
+configuration:
+- display: Mail server hostname or IP address
+  name: MailServerURL
+  required: true
+  supportedModules: []
+  type: 0
+- defaultvalue: "143"
+  display: IMAP port
+  name: port
+  required: true
+  supportedModules: []
+  type: 1
+- display: ""
+  name: Credentials
+  required: true
+  supportedModules: []
+  type: 9
+- defaultvalue: "false"
+  display: Delete processed emails
+  name: deleteEmails
+  required: false
+  supportedModules: []
+  type: 8
+- defaultvalue: INBOX
+  display: Incoming mail folder
+  name: folder
+  required: true
+  supportedModules: []
+  type: 0
+- defaultvalue: "false"
+  display: Include raw body
+  name: includeRawBody
+  required: false
+  supportedModules: []
+  type: 8
+- display: Forward mails from this sender address only (eg. admin@demo.com)
+  name: permittedFromAdd
+  required: false
+  supportedModules: []
+  type: 0
+- display: Forward mails from this domain only (eg. demo.com)
+  name: permittedFromDomain
+  required: false
+  supportedModules: []
+  type: 0
+- display: Timezone of mail server in minutes e.g. for gmt +3 set +180 (set only if
+    different than Cortex XSOAR server)
+  name: Timezone
+  required: false
+  supportedModules: []
+  type: 0
+- display: Use TLS for connection
+  name: tls
+  required: false
+  supportedModules: []
+  type: 8
+- display: Do not validate server certificate (insecure)
+  name: insecure
+  required: false
+  supportedModules: []
+  type: 8
+- defaultvalue: "true"
+  display: Filter by SINCE date for IMAP that supports it. Lotus Notes does not by
+    default.
+  name: filterByDate
+  required: false
+  supportedModules: []
+  type: 8
+- display: Alert type
+  name: alertType
+  required: false
+  supportedModules: []
+  type: 13
+contentitemexportablefields: {}
+defaultclassifier: mail-listener
+defaultmapperin: mail-listener-mapper
+deprecated: true
+description: Deprecated. Use the Mail Listener v2 integration instead.
+display: Mail Listener
+icon: mail-listener.png
+name: mail-listener
+restrictioncenter: {}
+script: null
+signature: ""
