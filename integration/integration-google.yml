@@ -1,0 +1,568 @@
+category: Authentication
+commonfields:
+  id: google
+  version: -1
+configuration:
+- display: Service Account Private Key file contents (JSON)
+  name: serviceAccountJsonFile
+  required: true
+  supportedModules: []
+  type: 14
+- display: Email of user with admin capabilities
+  name: AdminUserEmail
+  required: true
+  supportedModules: []
+  type: 0
+- display: Immutable Google Apps ID
+  name: immutableGoogleAppsId
+  required: false
+  supportedModules: []
+  type: 0
+- display: Import emails as incidents
+  name: isFetch
+  required: false
+  supportedModules: []
+  type: 8
+- display: Events query (e.g. "from:Demisto")
+  name: FetchQuery
+  required: false
+  supportedModules: []
+  type: 0
+- display: Events user key (e.g. example@demisto.com)
+  name: FetchQueryUser
+  required: false
+  supportedModules: []
+  type: 0
+- display: Alert type
+  name: alertType
+  required: false
+  supportedModules: []
+  type: 13
+contentitemexportablefields: {}
+deprecated: true
+description: Deprecated - We recommend using GSuite Admin instead. Google apps Admin
+  API, or GSuite
+detaileddescription: |-
+  This API enables the usage of Google Admin API. In order to enable it, you will need to create an account service private key **json** file and copy its content.
+  Follow the steps here to create such a private key and authorize the API for usage: [https://developers.google.com/admin-sdk/directory/v1/guides/delegation](https://developers.google.com/admin-sdk/directory/v1/guides/delegation)
+  It is necessary to authrize the next API's for that service account:
+  [https://www.googleapis.com/auth/admin.directory.user.readonly](https://www.googleapis.com/auth/admin.directory.user.readonly)
+
+  In order to fetch user roles, please authrize this api too: [https://www.googleapis.com/auth/admin.directory.rolemanagement.readonly](https://www.googleapis.com/auth/admin.directory.rolemanagement.readonly)
+
+  In order to revoke user roles, please authrize this api too: [https://www.googleapis.com/auth/admin.directory.rolemanagement](https://www.googleapis.com/auth/admin.directory.rolemanagement)
+
+  In order to search user mailboxes, please authrize this api too: [https://www.googleapis.com/auth/gmail.readonly](https://www.googleapis.com/auth/gmail.readonly)
+
+  In order to to fetch user security tokens, please authrize this api too: [https://www.googleapis.com/auth/admin.directory.user.security](https://www.googleapis.com/auth/admin.directory.user.security)
+
+  In order to to fetch mobile info, please authrize this api too: [https://www.googleapis.com/auth/admin.directory.device.mobile.readonly](https://www.googleapis.com/auth/admin.directory.device.mobile.readonly)
+
+  In order to to preform actions on mobile devices, please authrize this api too: [https://www.googleapis.com/auth/admin.directory.device.mobile.action](https://www.googleapis.com/auth/admin.directory.device.mobile.action)
+
+  In order to to preform actions on chorme devices, please authrize this api too: [https://www.googleapis.com/auth/admin.directory.device.chromeos](https://www.googleapis.com/auth/admin.directory.device.chromeos)
+
+  For the email user param, please choose a user with admin permissions and make sure that you follow the steps to perform Google Apps Domain-Wide Delegation of Authority.
+
+  In order to revoke/fetch user role, you will need the Immutable Google Apps ID param.
+  To get an Immutable Google Apps ID (or customerId):
+  1. Go to [https://admin.google.com](https://admin.google.com)
+  2. Security -> Set up single sign-on (SSO)
+
+  You will see there URLs in the format:
+  [https://accounts.google.com/o/saml2/idp?idpid=Cxxxxxxxx](https://accounts.google.com/o/saml2/idp?idpid=Cxxxxxxxx)
+
+  Cxxxxxxxx is your Immutable Google Apps ID (customerId).
+display: GoogleApps API
+icon: google-api.png
+ispasswordprotected: true
+name: google
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - description: commands.server.googleapps.arguments.token
+      name: token
+      supportedModules: []
+    - default: true
+      description: commands.server.googleapps.arguments.domain
+      name: domain
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.customer
+      name: customer
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.googleapps.arguments.viewtype
+      name: view-type-public-domain
+      predefined:
+      - "true"
+      - "false"
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.maxresults
+      name: max-results
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.custom.field.mask
+      name: custom-field-mask
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.event
+      name: event
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.query
+      name: query
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.projection
+      name: projection
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.googleapps.arguments.show.deleted
+      name: show-deleted
+      predefined:
+      - "true"
+      - "false"
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.sortorder
+      name: sort-order
+      supportedModules: []
+    description: commands.server.googleapps.get.user.list
+    name: googleapps-list-users
+    outputs:
+    - contextPath: Account.Type
+      description: Type of account like Google, facebook
+    - contextPath: Account.ID
+      description: Unique Id of current account
+    - contextPath: Account.UserName
+      description: Username of user with current account
+    - contextPath: Account.DisplayName
+      description: Name to display in current account
+    - contextPath: Account.Email
+      description: Email assigned with current account
+    - contextPath: Account.Group
+      description: Group associated with current accout
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.googleapps.arguments.user
+      name: user-key
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.projection
+      name: projection
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.googleapps.arguments.viewtype
+      name: view-type-public-domain
+      predefined:
+      - "true"
+      - "false"
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.custom.field.mask
+      name: custom-field-mask
+      supportedModules: []
+    description: commands.server.googleapps.get.user
+    name: googleapps-get-user
+    outputs:
+    - contextPath: Account.Type
+      description: Type of account like Google, facebook
+    - contextPath: Account.ID
+      description: Unique Id of current account
+    - contextPath: Account.UserName
+      description: Username of user with current account
+    - contextPath: Account.DisplayName
+      description: Name to display in current account
+    - contextPath: Account.Email
+      description: Email assigned with current account
+    - contextPath: Account.Group
+      description: Group associated with current accout
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.googleapps.arguments.user
+      name: user-key
+      required: true
+      supportedModules: []
+    description: commands.server.googleapps.delete.user
+    execution: true
+    name: googleapps-delete-user
+    outputs:
+    - contextPath: GoogleApps.Deleted.User
+      description: The deleted user key
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.googleapps.arguments.user
+      name: user-key
+      required: true
+      supportedModules: []
+    description: commands.server.googleapps.get.user.roles
+    name: googleapps-get-user-roles
+    outputs:
+    - contextPath: GoogleApps.Role.ID
+      description: The inner role id
+    - contextPath: GoogleApps.Role.AssignedTo
+      description: User Id who was assigned to role
+    - contextPath: GoogleApps.Role.RoleAssignmentId
+      description: unique id of role assignement
+    - contextPath: GoogleApps.Role.ScopeType
+      description: Scope type of the role
+    - contextPath: GoogleApps.Role.Kind
+      description: Kind of the role
+    - contextPath: GoogleApps.Role.OrgUnitId
+      description: Organization in which user was assigned
+    supportedModules: []
+  - arguments:
+    - description: commands.server.googleapps.arguments.token
+      name: token
+      secret: true
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.role.assignment.id
+      name: role-assignment-id
+      required: true
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.user
+      name: user-key
+      supportedModules: []
+    description: commands.server.googleapps.delete.user.roles
+    execution: true
+    name: googleapps-revoke-user-role
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.googleapps.arguments.user
+      name: user-key
+      required: true
+      supportedModules: []
+    - description: commands.server.googleapps.gmail.arguments.query
+      name: query
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.maxresults
+      name: max-results
+      supportedModules: []
+    - description: commands.server.googleapps.gmail.arguments.fields
+      name: fields
+      supportedModules: []
+    - description: commands.server.googleapps.gmail.arguments.labels
+      name: labels-ids
+      supportedModules: []
+    - description: commands.server.googleapps.gmail.arguments.page.token
+      name: page-token
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.googleapps.gmail.arguments.include.spam
+      name: include-spam-trash
+      predefined:
+      - "true"
+      - "false"
+      supportedModules: []
+    description: commands.server.googleapps.gmail.search
+    name: googleapps-gmail-search
+    outputs:
+    - contextPath: Email.ID
+      description: Inner Id of mail in gmail
+    - contextPath: Email.Type
+      description: 'Name of mail service like: Gmail'
+    - contextPath: Email.ThreadId
+      description: The thread id
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.googleapps.arguments.user
+      name: user-key
+      required: true
+      supportedModules: []
+    - description: commands.server.googleapps.gmail.arguments.msg.id
+      name: message-id
+      required: true
+      supportedModules: []
+    - description: commands.server.googleapps.gmail.arguments.fields
+      name: fields
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.googleapps.gmail.arguments.msg.format
+      name: format
+      predefined:
+      - full
+      - metadata
+      - minimal
+      - raw
+      supportedModules: []
+    description: commands.server.googleapps.gmail.get.msg
+    name: googleapps-gmail-get-mail
+    outputs:
+    - contextPath: Email.ID
+      description: Inner Id of mail in gmail
+    - contextPath: Email.Type
+      description: 'Name of mail service like: Gmail'
+    - contextPath: Email.Format
+      description: MIME type of mail
+    - contextPath: Email.Labels
+      description: Labels of specific mail
+    - contextPath: Email.To
+      description: Email Address of reciever
+    - contextPath: Email.From
+      description: Email Address of sender
+    - contextPath: Email.Cc
+      description: Carbon Copying
+    - contextPath: Email.Bcc
+      description: Blind Carbon Copy
+    - contextPath: Email.Subject
+      description: Subject of specific mail
+    - contextPath: Email.Body
+      description: The content of mail
+    - contextPath: Email.Attachments
+      description: Attachments ids separated by ','
+    - contextPath: Email.Headers
+      description: All headers of specific mail
+    supportedModules: []
+  - arguments:
+    - description: commands.server.googleapps.arguments.token
+      name: token
+      secret: true
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.user
+      name: user-key
+      supportedModules: []
+    - default: true
+      description: commands.server.googleapps.arguments.customer.id
+      name: customerId
+      required: true
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.resource.id
+      name: resource-id
+      required: true
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.googleapps.arguments.mobile.action
+      name: action
+      predefined:
+      - approve
+      - block
+      - admin_account_wipe
+      - admin_remote_wipe
+      - cancel_remote_wipe_then_activate
+      - cancel_remote_wipe_then_block
+      required: true
+      supportedModules: []
+    description: commands.server.googleapps.device.action
+    name: googleapps-device-action
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.googleapps.arguments.customer.id
+      name: customerId
+      required: true
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.query
+      name: query
+      supportedModules: []
+    description: commands.server.googleapps.device.for.user
+    name: googleapps-get-devices-for-user
+    outputs:
+    - contextPath: Device.Applications
+      description: The list of applications installed on an Android mobile device
+    - contextPath: Device.DevicePasswordStatus
+      description: Status of the device password.
+    - contextPath: Device.Os
+      description: The mobile device's operating system
+    - contextPath: Device.DeviceCompromisedStatus
+      description: The compromised device status.
+    - contextPath: Device.Brand
+      description: Mobile Device Brand
+    - contextPath: Device.Imei
+      description: The device's IMEI number.
+    - contextPath: Device.Hardware
+      description: Mobile Device Hardware.
+    - contextPath: Device.ResourceId
+      description: The unique ID the API service uses to identify the mobile device.
+    - contextPath: Device.Model
+      description: he mobile device's model name, for example Nexus S.
+    - contextPath: Device.Name
+      description: List of the owner's user names.
+    - contextPath: Device.DeviceId
+      description: The serial number for a Google Sync mobile device.
+    - contextPath: Device.Status
+      description: The device's status.
+    - contextPath: Device.BootloaderVersion
+      description: Mobile Device Bootloader version.
+    - contextPath: Device.Application Permissions
+      description: The list of permissions of this application.
+    - contextPath: Device.Kind
+      description: The type of the API resource.
+    - contextPath: Device.BuildNumber
+      description: The device's operating system build number.
+    - contextPath: Device.Applications Versions
+      description: List of application versions
+    - contextPath: Device.DefaultLanguage
+      description: The default locale used on the device.
+    - contextPath: Device.WifiMacAddress
+      description: The device's MAC address on Wi-Fi networks.
+    - contextPath: Device.Type
+      description: The type of mobile device.
+    - contextPath: Device.KernelVersion
+      description: The device's kernel version.
+    - contextPath: Device.Packages
+      description: List os application packages.
+    - contextPath: Device.Email
+      description: List of owner's email addresses.
+    - contextPath: Device.SerialNumber
+      description: The device's serial number.
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.googleapps.arguments.user
+      name: user-key
+      required: true
+      supportedModules: []
+    description: commands.server.googleapps.tokens.for.user
+    name: googleapps-get-tokens-for-user
+    outputs:
+    - contextPath: Tokens.ClientId
+      description: "The Client ID of the application the token is issued to.\t"
+    - contextPath: Tokens.DisplayText
+      description: The displayable name of the application the token is issued to.
+    - contextPath: Tokens.Kind
+      description: The type of the API resource. This is always admin#directory#token.
+    - contextPath: Tokens.Scopes
+      description: A list of authorization scopes the application is granted.
+    - contextPath: Tokens.UserKey
+      description: "The unique ID of the user that issued the token.\t"
+    supportedModules: []
+  - arguments:
+    - description: commands.server.googleapps.arguments.token
+      name: token
+      secret: true
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.user
+      name: user-key
+      supportedModules: []
+    - default: true
+      description: commands.server.googleapps.arguments.customer.id
+      name: customerId
+      required: true
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.resource.id
+      name: resource-id
+      required: true
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.googleapps.arguments.chrome.device.action
+      name: action
+      predefined:
+      - deprovision
+      - disable
+      - reenable
+      required: true
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.googleapps.arguments.chrome.device.reason
+      name: deprovision-reason
+      predefined:
+      - same_model_replacement
+      - different_model_replacement
+      - retiring_device
+      required: true
+      supportedModules: []
+    description: commands.server.googleapps.chrome.device.action
+    name: googleapps-chrome-device-action
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.googleapps.arguments.customer.id
+      name: customerId
+      required: true
+      supportedModules: []
+    - description: commands.server.googleapps.arguments.query
+      name: query
+      supportedModules: []
+    description: commands.server.googleapps.chrome.device.for.user
+    name: googleapps-get-chrome-devices-for-user
+    outputs:
+    - contextPath: Device.BootMode
+      description: The boot mode for the device.
+    - contextPath: Device.ActiveTimeRanges
+      description: List of active time ranges.
+    - contextPath: Device.recentUsersEmails
+      description: List of users' email addresses.
+    - contextPath: Device.recentUsersTypes
+      description: List of types of the users.
+    - contextPath: Device.AnnotatedAssetId
+      description: The asset identifier as noted by an administrator or specified
+        during enrollment.
+    - contextPath: Device.OrgUnitPath
+      description: The full parent path with the organizational unit's name associated
+        with the device. Path names are case insensitive.
+    - contextPath: Device.AnnotatedLocation
+      description: The address or location of the device as noted by the administrator.
+    - contextPath: Device.EthernetMacAddress
+      description: The device's MAC address on the ethernet network interface.
+    - contextPath: Device.FirmwareVersion
+      description: The Chrome device's firmware version.
+    - contextPath: Device.DeviceId
+      description: The unique ID of the Chrome device.
+    - contextPath: Device.LastEnrollmentTime
+      description: The date and time the device was last enrolled.
+    - contextPath: Device.Meid
+      description: The Mobile Equipment Identifier (MEID) for the 3G mobile card in
+        a mobile device.
+    - contextPath: Device.Notes
+      description: Notes about this device added by the administrator.
+    - contextPath: Device.OrderNumber
+      description: The device's order number. Only devices directly purchased from
+        Google have an order number.
+    - contextPath: Device.Kind
+      description: The type of resource.
+    - contextPath: Device.PlatformVersion
+      description: The Chrome device's platform version.
+    - contextPath: Device.SerialNumber
+      description: The Chrome device serial number entered when the device was enabled.
+    - contextPath: Device.Model
+      description: The device's model information.
+    - contextPath: Device.SupportEndDate
+      description: The final date the device will be supported. This is applicable
+        only for those devices purchased directly from Google.
+    - contextPath: Device.OsVersion
+      description: The Chrome device's operating system version.
+    - contextPath: Device.Status
+      description: The status of the device.
+    - contextPath: Device.MacAddress
+      description: The device's wireless MAC address.
+    - contextPath: Device.LastSync
+      description: The date and time the device was last synchronized with the policy
+        settings in the Admin console.
+    supportedModules: []
+  - arguments:
+    - description: commands.server.googleapps.arguments.user
+      name: user-key
+      supportedModules: []
+    - description: commands.server.googleapps.gmail.arguments.msg.id
+      name: message-id
+      required: true
+      supportedModules: []
+    - description: commands.server.googleapps.gmail.attachment.msg.id
+      name: attachment-id
+      required: true
+      supportedModules: []
+    description: commands.server.googleapps.gmail.get.attachment
+    name: googleapps-gmail-get-attachment
+    outputs:
+    - contextPath: File.MD5
+      description: outputs.file.md5
+    - contextPath: File.SHA1
+      description: outputs.file.sha1
+    - contextPath: File.SHA256
+      description: outputs.file.sha256
+    - contextPath: File.EntryID
+      description: outputs.file.entryID
+    - contextPath: File.Name
+      description: outputs.file.name
+    - contextPath: File.Size
+      description: outputs.file.size
+    - contextPath: File.SSDeep
+      description: outputs.file.ssdeep
+    - contextPath: File.Info
+      description: outputs.file.info
+    - contextPath: File.Type
+      description: outputs.file.type
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
