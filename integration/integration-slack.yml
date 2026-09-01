@@ -1,0 +1,203 @@
+category: Messaging
+commonfields:
+  id: slack
+  version: -1
+configuration:
+- display: Slack Bot API token
+  name: slackBotToken
+  required: true
+  supportedModules: []
+  type: 4
+- display: Slack API Token for channel creation
+  name: slackToken
+  required: true
+  supportedModules: []
+  type: 4
+- display: Incidents channel
+  name: incidentNotificationChannel
+  required: true
+  supportedModules: []
+  type: 0
+- defaultvalue: "1"
+  display: Min severity [1-4] 1=low
+  name: minSeverityForIncidents
+  required: false
+  supportedModules: []
+  type: 1
+- defaultvalue: "true"
+  display: Should anyone be allowed to create incidents by DM
+  name: allowIncidents
+  required: false
+  supportedModules: []
+  type: 8
+contentitemexportablefields: {}
+deprecated: true
+description: Deprecated. Use the Slack v2 integration instead.
+detaileddescription: To generate tokens, browse to [demistobot](https://demistobot.demisto.com)
+  and follow the instructions
+display: Slack
+icon: slack.png
+ispasswordprotected: true
+name: slack
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - default: true
+      description: commands.server.slackSend.arguments.message.description
+      name: message
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.message.type.description
+      name: messageType
+      supportedModules: []
+    - deprecated: true
+      name: originalMessage
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.to.description
+      name: to
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.channel.description
+      name: channel
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.group.description
+      name: group
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.entry.description
+      name: entry
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.ignoreAddURL.description
+      name: ignoreAddURL
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.threadID.description
+      name: threadID
+      supportedModules: []
+    description: commands.server.slackSend.description
+    name: send-notification
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.slackSend.arguments.message.description
+      name: message
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.to.description
+      name: to
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.channel.description
+      name: channel
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.group.description
+      name: group
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.entry.description
+      name: entry
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.ignoreAddURL.description
+      name: IgnoreAddURL
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.threadID.description
+      name: threadID
+      supportedModules: []
+    deprecated: true
+    description: commands.server.slackSend.description
+    name: slack-send
+    supportedModules: []
+  - arguments:
+    - auto: PREDEFINED
+      default: true
+      description: commands.server.slackMirror.arguments.type.description
+      name: type
+      predefined:
+      - all
+      - chat
+      - none
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.slackMirror.arguments.autoclose.description
+      name: autoclose
+      predefined:
+      - "true"
+      - "false"
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.slackMirror.arguments.groupOrChannel.description
+      name: mirrorTo
+      predefined:
+      - group
+      - channel
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.slackMirror.arguments.direction.description
+      name: direction
+      predefined:
+      - Both
+      - ToDemisto
+      - FromDemisto
+      supportedModules: []
+    description: commands.server.slackMirror.description
+    name: mirror-investigation
+    supportedModules: []
+  - arguments:
+    - auto: PREDEFINED
+      default: true
+      description: commands.server.slackMirror.arguments.type.description
+      name: type
+      predefined:
+      - all
+      - chat
+      - none
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.slackMirror.arguments.autoclose.description
+      name: autoclose
+      predefined:
+      - "true"
+      - "false"
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.slackMirror.arguments.groupOrChannel.description
+      name: mirrorTo
+      predefined:
+      - group
+      - channel
+      supportedModules: []
+    - auto: PREDEFINED
+      description: commands.server.slackMirror.arguments.direction.description
+      name: direction
+      predefined:
+      - Both
+      - ToDemisto
+      - FromDemisto
+      supportedModules: []
+    description: commands.server.slackMirror.description
+    name: slack-mirror-investigation
+    supportedModules: []
+  - arguments: []
+    description: commands.server.slackCloseChannel.description
+    name: close-channel
+    supportedModules: []
+  - arguments: []
+    description: commands.server.slackCloseChannel.description
+    name: slack-close-channel
+    supportedModules: []
+  - arguments:
+    - default: true
+      description: commands.server.slackSendFile.arguments.to.description
+      name: file
+      required: true
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.to.description
+      name: to
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.channel.description
+      name: channel
+      supportedModules: []
+    - description: commands.server.slackSend.arguments.group.description
+      name: group
+      supportedModules: []
+    description: commands.server.slackSendFile.description
+    name: slack-send-file
+    supportedModules: []
+  runonce: false
+  script: ""
+  type: ""
+signature: ""
