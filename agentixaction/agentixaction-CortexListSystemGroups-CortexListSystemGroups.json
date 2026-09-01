@@ -1,0 +1,89 @@
+args:
+- defaultvalue: "true"
+  description: 'Whether to include account-level groups (groups shared across all
+    tenants in the account, identified by xdrId="0") in the results. Options: true,
+    false. Default value is true.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: include_account_groups
+  required: false
+  type: string
+  underlyingargname: include_account_groups
+commonfields:
+  id: CortexListSystemGroups
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.15.0
+    isoverridable: false
+    itemVersion: 1.0.0
+    packID: CortexListSystemGroups
+    packName: Cortex - List System Groups
+    packPropagationLabels:
+    - all
+    prevname: CortexListSystemGroups
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:21:09Z"
+createdby: DBot
+description: |
+  Lists user groups in the current Cortex tenant, returning each group's UUID, display name, assigned role, group type ("Custom" or "AD"), and platform (xdr) tenant identifier. Use this action whenever a group is referenced by display name and you need to resolve it to its canonical "groupId" (UUID) before passing it to another action. Disambiguation rules - when the group is identified by display name:
+    - If exactly one group matches, use its "groupId".
+    - If multiple groups match (for example "us-soc-analyst" could match "us-soc-analyst-tier1" and "us-soc-analyst-tier2"), do NOT guess. Ask the requester which group they meant (present the candidate display names alongside their groupIds).
+    - If zero groups match, do NOT proceed by substituting the raw name string for a real groupId. Inform the requester that no matching group was found and ask for a more specific name.
+  This action does NOT return group membership (users, IDP groups, nested groups) or descriptive metadata (description, timestamps, creator).
+display: Cortex - List System Groups
+isdetailsoverridden: false
+locked: false
+name: CortexListSystemGroups
+outputs:
+- description: |
+    Unique group identifier (UUID with tenant suffix, e.g. "0de501d3-abab-4d38-a83b-dd3a39af2387_1710886"). Use this value when assigning groups to a case team via CortexUpdateCase.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.SystemGroup.groupId
+  type: string
+  underlyingoutputcontextpath: Core.SystemGroup.groupId
+- description: |
+    Group display name.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.SystemGroup.groupName
+  type: string
+  underlyingoutputcontextpath: Core.SystemGroup.groupName
+- description: |
+    Role assigned to this group. May be empty when no role is set.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.SystemGroup.roleName
+  type: string
+  underlyingoutputcontextpath: Core.SystemGroup.roleName
+- description: |
+    Group type. Possible values: "custom" for custom groups, "ad" for Active Directory groups.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.SystemGroup.groupType
+  type: string
+  underlyingoutputcontextpath: Core.SystemGroup.groupType
+- description: |
+    Platform tenant (XDR) ID for the group. The value "0" indicates an account-level (cross-tenant) group; any other value is a tenant-scoped group.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.SystemGroup.xdrId
+  type: string
+  underlyingoutputcontextpath: Core.SystemGroup.xdrId
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: getSystemGroups
+  id: _builtin_
+  instance: ""
+  name: _builtin_
+  type: command

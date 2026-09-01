@@ -15,19 +15,19 @@
 		"agentixaction": [
 			{
 				"category": "",
-				"description": "Retrieves detailed information about a specific endpoint by querying multiple integrated security tools\n(such as EDR, asset management, or vulnerability scanners).\nThe command consolidates the results into a single unified endpoint object and stores it in the context\nfor further analysis or automation.",
+				"description": "Retrieves identity context from external identity providers, such as Active Directory and Okta, to enrich an account observed in alerts, events, or investigations.\n",
 				"fromversion": "8.12.0",
-				"id": "GetEndpointData",
-				"name": "EnrichEndpoint",
+				"id": "GetUserData",
+				"name": "EnrichUser",
 				"toversion": "",
 				"underlyingContentItemType": "script"
 			},
 			{
 				"category": "",
-				"description": "Retrieves identity context from external identity providers, such as Active Directory and Okta, to enrich an account observed in alerts, events, or investigations.\n",
+				"description": "Retrieves detailed information about a specific endpoint by querying multiple integrated security tools\n(such as EDR, asset management, or vulnerability scanners).\nThe command consolidates the results into a single unified endpoint object and stores it in the context\nfor further analysis or automation.",
 				"fromversion": "8.12.0",
-				"id": "GetUserData",
-				"name": "EnrichUser",
+				"id": "GetEndpointData",
+				"name": "EnrichEndpoint",
 				"toversion": "",
 				"underlyingContentItemType": "script"
 			}
@@ -38,87 +38,6 @@
 		"agentixskill": null,
 		"automation": [
 			{
-				"description": "Enriches indicators from a provided list or a block of free text. This script detects the indicator type and runs the correct underlying enrichment script. Currently supports: IP, URL, Domain, CVE, and File.",
-				"fromversion": "8.0.0",
-				"id": "indicator-enrichment",
-				"name": "indicator-enrichment",
-				"tags": [
-					"basescript",
-					"enrichment"
-				]
-			},
-			{
-				"description": "Enriches IP indicators with reputation data from multiple integrations and outputs a consolidated IPEnrichment object. This script exclusively supports indicators of type IPv4 (IPv6 is not supported) and will automatically create the indicator in TIM if it is not already exists. Note: If enabled, get-endpoint-data is executed only for internal IP addresses.",
-				"fromversion": "8.0.0",
-				"id": "ip-enrichment",
-				"name": "ip-enrichment",
-				"tags": [
-					"basescript"
-				]
-			},
-			{
-				"description": "This script executes the 'quarantine-file' command on a specified file via the appropriate agent. This script is used to isolate files identified as suspicious. Currently supported brands are \"Cortex XDR - IR\", \"Cortex Core - IR\", and \"Microsoft Defender Advanced Threat Protection\".",
-				"fromversion": "6.10.0",
-				"id": "quarantine-file",
-				"name": "quarantine-file",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "Enriches File indicators with reputation data from multiple integrations and outputs a consolidated FileEnrichment object. This script exclusively supports indicators of type File and will automatically create the indicator in TIM if it is not already exists. Note: The script runs core-get-hash-analytics-prevalence on SHA256 values only.",
-				"fromversion": "8.0.0",
-				"id": "file-enrichment",
-				"name": "file-enrichment",
-				"tags": [
-					"basescript"
-				]
-			},
-			{
-				"description": "This script isolates endpoints using multiple integrations and returns a success or failure message.",
-				"fromversion": "6.10.0",
-				"id": "isolate-endpoint",
-				"name": "isolate-endpoint",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "Enriches Domain indicators with reputation data from multiple integrations and outputs a consolidated DomainEnrichment object. This script exclusively supports indicators of type Domain and will automatically create the indicator in TIM if it is not already exists.",
-				"fromversion": "8.0.0",
-				"id": "domain-enrichment",
-				"name": "domain-enrichment",
-				"tags": [
-					"basescript"
-				]
-			},
-			{
-				"description": "Enriches CVE indicators with reputation data from multiple integrations and outputs a consolidated CVEEnrichment object. This script exclusively supports indicators of type CVE and will automatically create the indicator in TIM if it is not already exists.",
-				"fromversion": "8.0.0",
-				"id": "cve-enrichment",
-				"name": "cve-enrichment",
-				"tags": [
-					"basescript"
-				]
-			},
-			{
-				"description": "This script clears user sessions across multiple integrations for a list of usernames.",
-				"fromversion": "6.10.0",
-				"id": "clear-user-session",
-				"name": "clear-user-session",
-				"tags": []
-			},
-			{
 				"description": "This script gathers user data from multiple integrations and returns an Account entity with consolidated information to the context.",
 				"fromversion": "6.10.0",
 				"id": "get-user-data",
@@ -126,19 +45,10 @@
 				"tags": []
 			},
 			{
-				"description": "Enriches URL indicators with reputation data from multiple integrations and outputs a consolidated URLEnrichment object. This script exclusively supports indicators of type URL and will automatically create the indicator in TIM if it is not already exists.",
-				"fromversion": "8.0.0",
-				"id": "url-enrichment",
-				"name": "url-enrichment",
-				"tags": [
-					"basescript"
-				]
-			},
-			{
-				"description": "The script blocks a list of IP addresses in supported integrations.",
-				"fromversion": "6.1.0",
-				"id": "block-external-ip",
-				"name": "block-external-ip",
+				"description": "This script clears user sessions across multiple integrations for a list of usernames.",
+				"fromversion": "6.10.0",
+				"id": "clear-user-session",
+				"name": "clear-user-session",
 				"tags": []
 			},
 			{
@@ -156,10 +66,107 @@
 				"tags": []
 			},
 			{
+				"description": "Enriches indicators from a provided list or a block of free text. This script detects the indicator type and runs the correct underlying enrichment script. Currently supports: IP, URL, Domain, CVE, and File.",
+				"fromversion": "8.0.0",
+				"id": "indicator-enrichment",
+				"name": "indicator-enrichment",
+				"tags": [
+					"basescript",
+					"enrichment"
+				]
+			},
+			{
+				"description": "This script executes the 'quarantine-file' command on a specified file via the appropriate agent. This script is used to isolate files identified as suspicious. Currently supported brands are \"Cortex XDR - IR\", \"Cortex Core - IR\", and \"Microsoft Defender Advanced Threat Protection\".",
+				"fromversion": "6.10.0",
+				"id": "quarantine-file",
+				"name": "quarantine-file",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "This script isolates endpoints using multiple integrations and returns a success or failure message.",
+				"fromversion": "6.10.0",
+				"id": "isolate-endpoint",
+				"name": "isolate-endpoint",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "Enriches CVE indicators with reputation data from multiple integrations and outputs a consolidated CVEEnrichment object. This script exclusively supports indicators of type CVE and will automatically create the indicator in TIM if it is not already exists.",
+				"fromversion": "8.0.0",
+				"id": "cve-enrichment",
+				"name": "cve-enrichment",
+				"tags": [
+					"basescript"
+				]
+			},
+			{
+				"description": "Enriches URL indicators with reputation data from multiple integrations and outputs a consolidated URLEnrichment object. This script exclusively supports indicators of type URL and will automatically create the indicator in TIM if it is not already exists.",
+				"fromversion": "8.0.0",
+				"id": "url-enrichment",
+				"name": "url-enrichment",
+				"tags": [
+					"basescript"
+				]
+			},
+			{
+				"description": "Enriches IP indicators with reputation data from multiple integrations and outputs a consolidated IPEnrichment object. This script exclusively supports indicators of type IPv4 (IPv6 is not supported) and will automatically create the indicator in TIM if it is not already exists. Note: If enabled, get-endpoint-data is executed only for internal IP addresses.",
+				"fromversion": "8.0.0",
+				"id": "ip-enrichment",
+				"name": "ip-enrichment",
+				"tags": [
+					"basescript"
+				]
+			},
+			{
+				"description": "Enriches File indicators with reputation data from multiple integrations and outputs a consolidated FileEnrichment object. This script exclusively supports indicators of type File and will automatically create the indicator in TIM if it is not already exists. Note: The script runs core-get-hash-analytics-prevalence on SHA256 values only.",
+				"fromversion": "8.0.0",
+				"id": "file-enrichment",
+				"name": "file-enrichment",
+				"tags": [
+					"basescript"
+				]
+			},
+			{
 				"description": "This script expires users password for multiple services.",
 				"fromversion": "6.10.0",
 				"id": "expire-password",
 				"name": "expire-password",
+				"tags": []
+			},
+			{
+				"description": "Enriches Domain indicators with reputation data from multiple integrations and outputs a consolidated DomainEnrichment object. This script exclusively supports indicators of type Domain and will automatically create the indicator in TIM if it is not already exists.",
+				"fromversion": "8.0.0",
+				"id": "domain-enrichment",
+				"name": "domain-enrichment",
+				"tags": [
+					"basescript"
+				]
+			},
+			{
+				"description": "The script blocks a list of IP addresses in supported integrations.",
+				"fromversion": "6.1.0",
+				"id": "block-external-ip",
+				"name": "block-external-ip",
+				"tags": []
+			},
+			{
+				"description": "Blocks a list of domain FQDNs across the configured security products.",
+				"fromversion": "6.10.0",
+				"id": "block-domain",
+				"name": "block-domain",
 				"tags": []
 			}
 		],
@@ -181,7 +188,7 @@
 		"wizard": null
 	},
 	"created": "2025-06-18T20:34:03Z",
-	"currentVersion": "1.3.53",
+	"currentVersion": "1.4.0",
 	"defaultDataSource": {
 		"id": "",
 		"name": ""
@@ -192,14 +199,14 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.42.21",
+			"minVersion": "1.42.22",
 			"name": "Base"
 		},
 		"Core": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "3.5.85",
+			"minVersion": "3.5.89",
 			"name": "Core"
 		},
 		"Palo_Alto_Networks_WildFire": {
@@ -258,7 +265,7 @@
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "1.3.53",
+	"itemVersion": "1.4.0",
 	"keywords": [],
 	"legacy": true,
 	"modules": [],
@@ -295,9 +302,9 @@
 		"Core"
 	],
 	"toServerVersion": "",
-	"updated": "2026-08-20T20:31:39Z",
+	"updated": "2026-08-30T20:04:22Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "12153175",
+	"versionInfo": "12517118",
 	"videos": []
 }

@@ -1,0 +1,227 @@
+category: Utilities
+commonfields:
+  id: Rocket Jobs Indicator Generator
+  version: -1
+configuration:
+- defaultvalue: '{"foo":"bar"}'
+  display: The raw JSON string to use as the sample data
+  name: JSON
+  required: false
+  supportedModules: []
+  type: 12
+- display: Count of objects to generate
+  name: objectsCount
+  required: false
+  supportedModules: []
+  type: 0
+- defaultvalue: rocket
+  display: Indicator prefix
+  name: indicatorPrefix
+  required: false
+  supportedModules: []
+  type: 0
+- display: Fetch indicators
+  name: feed
+  required: false
+  supportedModules: []
+  type: 8
+- additionalinfo: Indicators from this integration instance will be marked with this
+    verdict
+  display: Indicator Verdict
+  name: feedReputation
+  options:
+  - Unknown
+  - None
+  - Benign
+  - Good
+  - Suspicious
+  - Malicious
+  - Bad
+  required: false
+  supportedModules: []
+  type: 18
+- additionalinfo: Reliability of the source providing the intelligence data
+  defaultvalue: F - Reliability cannot be judged
+  display: Source Reliability
+  name: feedReliability
+  options:
+  - A - Completely reliable
+  - B - Usually reliable
+  - C - Fairly reliable
+  - D - Not usually reliable
+  - E - Unreliable
+  - F - Reliability cannot be judged
+  required: true
+  supportedModules: []
+  type: 15
+- defaultvalue: suddenDeath
+  display: ""
+  name: feedExpirationPolicy
+  options:
+  - never
+  - interval
+  - indicatorType
+  - suddenDeath
+  required: false
+  supportedModules: []
+  type: 17
+- defaultvalue: "20160"
+  display: ""
+  name: feedExpirationInterval
+  required: false
+  supportedModules: []
+  type: 1
+- defaultvalue: Host
+  display: indicator_type
+  name: indicator_type
+  required: false
+  supportedModules: []
+  type: 0
+- defaultvalue: "1"
+  display: Feed Fetch Interval
+  name: feedFetchInterval
+  required: false
+  supportedModules: []
+  type: 19
+- additionalinfo: When selected, the exclusion list is ignored for indicators from
+    this feed. This means that if an indicator from this feed is on the exclusion
+    list, the indicator might still be added to the system.
+  display: Bypass exclusion list
+  name: feedBypassExclusionList
+  required: false
+  supportedModules: []
+  type: 8
+- additionalinfo: Indicate XSOAR server that a feed is incremental or not
+  defaultvalue: "true"
+  display: Incremental feed
+  name: feedIncremental
+  required: false
+  supportedModules: []
+  type: 8
+- defaultvalue: done
+  display: Data to be inserted into setLastRun
+  name: last_run_data
+  required: false
+  supportedModules: []
+  type: 0
+- defaultvalue: "0"
+  display: number_of_indicators_to_add
+  name: number_of_indicators_to_add
+  required: false
+  supportedModules: []
+  type: 0
+- display: indicator_to_process_value
+  name: indicator_to_process_value
+  required: false
+  supportedModules: []
+  type: 0
+- display: indicator_to_process_index
+  name: indicator_to_process_index
+  required: false
+  supportedModules: []
+  type: 0
+- defaultvalue: "0"
+  display: modified_score
+  name: modified_score
+  required: false
+  supportedModules: []
+  type: 0
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    supportedModules: []
+    toServerVersion: ""
+description: Rocket Jobs Indicator Generator
+detaileddescription: |
+  #### Integration Author: Ruth Milano Mahalla
+  Based on JSON Sample Incident Generator integration by Nicholas Ericksen
+
+  ## Testing integration for the Rocket project
+display: Rocket Jobs Indicator Generator
+image: data:image/png;base64,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
+name: Rocket Jobs Indicator Generator
+restrictioncenter: {}
+script:
+  dockerimage: demisto/python3:3.10.4.30607
+  feed: true
+  isFetchSamples: true
+  runonce: false
+  script: |
+    import time
+    import json
+    from datetime import datetime
+    from enum import Enum
+    import random
+    import string
+
+
+    START_TIME = datetime.now().isoformat().split("Z", 1)[0] + "Z"
+
+
+    def main() -> None:
+        command = demisto.command()
+        params = demisto.params()
+        integration_instance = demisto.integrationInstance()
+
+        objects_count = int(params.get("objectsCount", 1))
+        data = json.loads(params.get('JSON'))
+
+        integration_context: Dict = get_integration_context()
+        new_context = {'counter': objects_count, 'modified': False}
+        if not integration_context.get('counter'):
+            set_integration_context(new_context)
+            integration_context = get_integration_context()
+        objects_count = integration_context['counter']
+        new_context['counter'] = objects_count + int(params.get('number_of_indicators_to_add'))
+        if params.get('modified_score'):
+            new_context['modified'] = not new_context['modified']
+        set_integration_context(new_context)
+
+        demisto.debug(f'Command being called is {command}')
+        try:
+            indicators = []
+            for i in range(objects_count):
+                indicator_name = f'{params.get("indicatorPrefix")}_{i}'
+                indicator_type = params.get('indicator_type')
+                indicator = {
+                    'value': indicator_name,
+                    'type': indicator_type,
+                    "rawJSON": {
+                        'value': indicator_name,
+                        'type': indicator_type
+                    },
+                    'score': int(params.get('modified_score')) if integration_context['modified'] else 0  # change verdict from unknown to Suspicious
+                }
+                if str(i) == params.get('indicator_to_process_index') and params.get('indicator_to_process_value'):  # indicator index and value to be processed by a job
+                    indicator['value'] = params['indicator_to_process_value']
+
+                indicators.append(indicator)
+
+            # we submit the indicators in batches
+            for b in batch(indicators, batch_size=20000):
+                demisto.createIndicators(b)
+
+            demisto.setLastRun({"rocket": str(params.get("last_run_data"))})
+
+
+        # Log exceptions and return errors
+        except Exception as e:
+            demisto.error(traceback.format_exc())  # print the traceback
+            return_error(f'Failed to execute {demisto.command()} command.\nError:\n{str(e)}')
+
+
+    ''' ENTRY POINT '''
+    if __name__ in ('__main__', '__builtin__', 'builtins'):
+        main()
+  subtype: python3
+  type: python
+signature: ""
+sourcemoduleid: Rocket Jobs Indicator Generator

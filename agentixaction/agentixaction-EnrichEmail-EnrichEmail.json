@@ -1,0 +1,85 @@
+args:
+- description: A comma-separated list of email addresses to search.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: email
+  required: true
+  type: string
+  underlyingargname: email
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: EnrichEmail
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.42.13
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: EnrichEmail
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - cloud
+    - cloud_runtime_security
+    - edr
+    - xsiam
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  Retrieves all available threat intelligence and reputation data for an email address using configured integrations.
+  This includes associations with phishing campaigns, malicious activity, and breach data.
+  Ensure that one or more of these integrations are configured in your environment to retrieve enrichment using the email command.
+  PREREQUISITE: Ensure that one or more of these external integrations are configured in your environment.
+display: Enrich Email
+isdetailsoverridden: false
+locked: false
+name: EnrichEmail
+outputs:
+- description: The reliability rating of the data source (A+ - Completely reliable,
+    A - Reliable, B - Usually reliable, C - Fairly reliable, D - Not usually reliable,
+    E - Unreliable, F - Reliability cannot be judged)
+  disabled: false
+  isdetailsoverridden: false
+  name: DBotScore.Reliability
+  type: string
+  underlyingoutputcontextpath: DBotScore.Reliability
+- description: The email address being scored.
+  disabled: false
+  isdetailsoverridden: false
+  name: DBotScore.Indicator
+  type: string
+  underlyingoutputcontextpath: DBotScore.Indicator
+- description: The vendor that provided the Verdict.
+  disabled: false
+  isdetailsoverridden: false
+  name: DBotScore.Vendor
+  type: string
+  underlyingoutputcontextpath: DBotScore.Vendor
+- description: The verdict (0 - Unknown, 1 - Benign, 2 - Suspicious, 3 - Malicious).
+  disabled: false
+  isdetailsoverridden: false
+  name: DBotScore.Score
+  type: string
+  underlyingoutputcontextpath: DBotScore.Score
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Email
+- Data Enrichment
+underlyingcontentitem:
+  command: email
+  id: _any_
+  instance: ""
+  name: _any_
+  type: command

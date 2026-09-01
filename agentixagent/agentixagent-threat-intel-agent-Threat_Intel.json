@@ -1,0 +1,62 @@
+actionids:
+- SearchIssues
+- EnrichCVE
+- EnrichIP
+- EnrichURL
+- EnrichDomain
+- EnrichFile
+- EnrichEmail
+- ExtractIndicators
+- SearchIndicators
+- EnrichIndicators
+- ServiceNowCreateTicket
+- jiraCreateIssue
+- SendNotification
+- SendMail
+- TavilyExtract
+- ExtractURLContent
+- jiraGetIssue
+- SearchCases
+- SetIssue
+- SetIndicator
+- JiraUpdateIssue
+- ServiceNowGetTicket
+- ServiceNowUpdateTicket
+- CortexListIndicatorRelationships
+- CortexRunXQLQuery
+- SlackGetConversationHistory
+- CortexListAssets
+- CortexCreateWarRoomEntry
+builtinactions:
+- InvokeLLM
+color: '#00CC66'
+commonfields:
+  id: threat-intel-agent
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.0.38
+    packID: AIAgents
+    packName: AI Agents
+    packPropagationLabels:
+    - all
+    prevname: Threat Intel
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - xti
+    toServerVersion: ""
+created: "2026-07-28T16:19:37Z"
+createdby: DBot
+description: |-
+  Gathers fresh threat data, enriches indicators and vulnerabilities, links them to past or current incidents, and
+  publishes clear briefings so the whole SOC acts on the latest attacker tactics
+locked: false
+name: Threat Intel
+status: enabled
+system: true
+visibility: public

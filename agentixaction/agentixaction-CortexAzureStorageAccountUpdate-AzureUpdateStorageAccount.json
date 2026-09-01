@@ -1,0 +1,250 @@
+args:
+- description: The resource group containing the storage account.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: resource_group_name
+  required: true
+  type: string
+  underlyingargname: resource_group_name
+- description: The Azure subscription ID that contains the storage account.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: subscription_id
+  required: true
+  type: string
+  underlyingargname: subscription_id
+- description: The storage account to update.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: account_name
+  required: true
+  type: string
+  underlyingargname: account_name
+- description: A list of tags that describe the resource.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: tags
+  required: false
+  type: string
+  underlyingargname: tags
+- description: 'Encryption key source. Options: Microsoft.Storage, Microsoft.Keyvault.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: enc_key_source
+  required: false
+  type: string
+  underlyingargname: enc_key_source
+- description: 'Apply a secondary encryption layer with platform-managed keys for
+    data at rest. Options: true, false.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: enc_requireInfrastructureEncryption
+  required: false
+  type: string
+  underlyingargname: enc_requireInfrastructureEncryption
+- description: The name of the KeyVault key for encryption.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: enc_keyvault_key_name
+  required: false
+  type: string
+  underlyingargname: enc_keyvault_key_name
+- description: The version of the KeyVault key for encryption.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: enc_keyvault_key_version
+  required: false
+  type: string
+  underlyingargname: enc_keyvault_key_version
+- description: The URI of the KeyVault for encryption.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: enc_keyvault_uri
+  required: false
+  type: string
+  underlyingargname: enc_keyvault_uri
+- description: 'Allow only HTTPS traffic to the storage service. Options: true, false.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: supports_https_traffic_only
+  required: false
+  type: string
+  underlyingargname: supports_https_traffic_only
+- description: 'Allow public access to blobs or containers. Options: true, false.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: allow_blob_public_access
+  required: false
+  type: string
+  underlyingargname: allow_blob_public_access
+- description: 'Minimum TLS version permitted. Options: TLS1_0, TLS1_1, TLS1_2.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: minimum_tls_version
+  required: false
+  type: string
+  underlyingargname: minimum_tls_version
+- description: 'Default action when no network rules match. Options: Allow, Deny.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: network_ruleset_default_action
+  required: false
+  type: string
+  underlyingargname: network_ruleset_default_action
+- description: The IP ACL rules for the storage account.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: network_ruleset_ipRules
+  required: false
+  type: string
+  underlyingargname: network_ruleset_ipRules
+- description: The virtual network rules for the storage account.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: virtual_network_rules
+  required: false
+  type: string
+  underlyingargname: virtual_network_rules
+category: Cloud Services
+commonfields:
+  id: CortexAzureStorageAccountUpdate
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.1.22
+    packID: Azure
+    packName: Azure
+    packPropagationLabels:
+    - all
+    prevname: AzureUpdateStorageAccount
+    propagationLabels: []
+    supportedModules:
+    - cloud_posture
+    - agentix
+    - xsiam
+    toServerVersion: ""
+createdby: DBot
+description: Updates settings of an Azure storage account (encryption, HTTPS-only
+  enforcement, minimum TLS version, public blob access, network rules, tags) to remediate
+  cloud posture issues. REQUIRES `resource_group_name`, `subscription_id`, and `account_name`;
+  if not in user input, resolve them first via `CortexListAssets` using the issue's
+  asset_id or asset_name.
+display: Azure Update Storage Account
+isdetailsoverridden: false
+locked: false
+name: AzureUpdateStorageAccount
+outputs:
+- description: Fully qualified resource ID for the storage account.
+  disabled: false
+  isdetailsoverridden: false
+  name: Azure.Storage.StorageAccounts.id
+  type: string
+  underlyingoutputcontextpath: Azure.Storage.StorageAccounts.id
+- description: The kind of storage account.
+  disabled: false
+  isdetailsoverridden: false
+  name: Azure.Storage.StorageAccounts.kind
+  type: string
+  underlyingoutputcontextpath: Azure.Storage.StorageAccounts.kind
+- description: The geo-location where the storage account lives.
+  disabled: false
+  isdetailsoverridden: false
+  name: Azure.Storage.StorageAccounts.location
+  type: string
+  underlyingoutputcontextpath: Azure.Storage.StorageAccounts.location
+- description: The creation date and time of the storage account in UTC.
+  disabled: false
+  isdetailsoverridden: false
+  name: Azure.Storage.StorageAccounts.properties.creationTime
+  type: string
+  underlyingoutputcontextpath: Azure.Storage.StorageAccounts.properties.creationTime
+- description: The storage account primary data center location.
+  disabled: false
+  isdetailsoverridden: false
+  name: Azure.Storage.StorageAccounts.properties.primaryLocation
+  type: string
+  underlyingoutputcontextpath: Azure.Storage.StorageAccounts.properties.primaryLocation
+- description: The status of the storage account when the operation was called.
+  disabled: false
+  isdetailsoverridden: false
+  name: Azure.Storage.StorageAccounts.properties.provisioningState
+  type: string
+  underlyingoutputcontextpath: Azure.Storage.StorageAccounts.properties.provisioningState
+- description: Encryption settings for the storage account.
+  disabled: false
+  isdetailsoverridden: false
+  name: Azure.Storage.StorageAccounts.properties.encryption
+  type: string
+  underlyingoutputcontextpath: Azure.Storage.StorageAccounts.properties.encryption
+- description: Whether only HTTPS traffic is allowed to the storage service.
+  disabled: false
+  isdetailsoverridden: false
+  name: Azure.Storage.StorageAccounts.properties.supportsHttpsTrafficOnly
+  type: boolean
+  underlyingoutputcontextpath: Azure.Storage.StorageAccounts.properties.supportsHttpsTrafficOnly
+- description: Resource tags.
+  disabled: false
+  isdetailsoverridden: false
+  name: Azure.Storage.StorageAccounts.tags
+  type: string
+  underlyingoutputcontextpath: Azure.Storage.StorageAccounts.tags
+- description: The storage account type.
+  disabled: false
+  isdetailsoverridden: false
+  name: Azure.Storage.StorageAccounts.type
+  type: string
+  underlyingoutputcontextpath: Azure.Storage.StorageAccounts.type
+- description: If set to true (default), allows public access to all blobs or containers
+    in the storage account.
+  disabled: false
+  isdetailsoverridden: false
+  name: Azure.Storage.StorageAccounts.properties.allowBlobPublicAccess
+  type: boolean
+  underlyingoutputcontextpath: Azure.Storage.StorageAccounts.properties.allowBlobPublicAccess
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Remediation
+- Cloud
+underlyingcontentitem:
+  command: azure-storage-account-update
+  id: Azure
+  instance: ""
+  name: Azure
+  type: command

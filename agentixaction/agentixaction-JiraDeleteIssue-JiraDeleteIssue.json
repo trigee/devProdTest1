@@ -1,0 +1,50 @@
+args:
+- description: |
+    The key or ID of the issue to delete. For example: "IT-123", "21394".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_key
+  required: true
+  type: string
+  underlyingargname: issue_key
+category: Case Management
+commonfields:
+  id: JiraDeleteIssue
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.3.21
+    packID: Jira
+    packName: Atlassian Jira
+    packPropagationLabels:
+    - all
+    prevname: JiraDeleteIssue
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    toServerVersion: ""
+createdby: DBot
+description: |
+  Deletes issues from Jira (Cloud or Server). If the issue has sub-tasks, they will also be deleted.
+display: Jira - Delete Issue
+isdetailsoverridden: false
+locked: false
+name: JiraDeleteIssue
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: jira-delete-issue
+  id: Jira V3
+  instance: ""
+  name: Jira V3
+  type: command

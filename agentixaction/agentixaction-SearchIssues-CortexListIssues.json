@@ -1,0 +1,336 @@
+args:
+- description: A comma-separated list of issue names.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_name
+  required: false
+  type: string
+  underlyingargname: issue_name
+- defaultvalue: "0"
+  description: The page number for the issues to return for pagination. Must be a
+    non-negative integer (e.g. 0, 50).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: page
+  required: false
+  type: number
+  underlyingargname: page
+- defaultvalue: "50"
+  description: The number of issues to return per page. Must be a positive integer
+    (e.g. 50, 100).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: page_size
+  required: false
+  type: number
+  underlyingargname: page_size
+- description: A comma-separated list of numeric issue identifiers to search by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_id
+  required: false
+  type: string
+  underlyingargname: issue_id
+- description: 'A comma-separated list of issue severity levels to search issues by.
+    Options: low, medium, high, critical.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: severity
+  required: false
+  type: string
+  underlyingargname: severity
+- description: The description of the issue to search issues by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_description
+  required: false
+  type: string
+  underlyingargname: issue_description
+- description: 'A comma-separated list of domains associated with the issue to search
+    issues by, for example: Health, Hunting, IT, Posture, Security.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_domain
+  required: false
+  type: string
+  underlyingargname: issue_domain
+- description: 'A comma-separated list of the current status of the issue to search
+    issues by. Options: New, In Progress, Resolved.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: status
+  required: false
+  type: string
+  underlyingargname: status
+- description: 'A comma-separated list of statuses to exclude from the results of
+    the issue search. Options: New, In Progress, Resolved.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: not_status
+  required: false
+  type: string
+  underlyingargname: not_status
+- description: |
+    A comma-separated list of assigned users to search the issue by.
+    Alternatively, use "unassigned" (for all unassigned issues) or "assigned" (for all assigned issues).
+    These keywords are exclusive and cannot be combined with usernames.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: assignee
+  required: false
+  type: string
+  underlyingargname: assignee
+- description: 'A comma-separated list of issue sources to filter the issues by. Options:
+    XDR Agent, XDR Analytics, XDR Analytics BIOC, PAN NGFW, XDR BIOC, XDR IOC, Threat
+    Intelligence, XDR Managed Threat Hunting, Correlation, Prisma Cloud, Prisma Cloud
+    Compute, ASM, IoT Security, Custom Alert, Health, SaaS Attachments, Attack Path,
+    Cloud Network Analyzer, IaC Scanner, CAS Secret Scanner, CI/CD Risks, CLI Scanner,
+    CIEM Scanner, API Traffic Monitor, API Posture Scanner, Agentless Disk Scanner,
+    Kubernetes Scanner, Compute Policy, CSPM Scanner, CAS CVE Scanner, CAS License
+    Scanner, Secrets Scanner, SAST Scanner, Data Policy, Attack Surface Test, Package
+    Operational Risk, Vulnerability Policy, AI Security Posture.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_source
+  required: false
+  type: string
+  underlyingargname: issue_source
+- description: A comma-separated list of related asset identifiers associated with
+    the issue to search the issue by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_ids
+  required: false
+  type: string
+  underlyingargname: asset_ids
+- description: 'The start time for filtering. Supports free text relative and absolute
+    times. For example: 7 days ago, 2023-06-15T10:30:00Z, 13/8/2025.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: start_time
+  required: false
+  type: date
+  underlyingargname: start_time
+- description: 'The end time for filtering. This argument is not required. For example:
+    7 days ago, 2023-06-15T10:30:00Z, 13/8/2025.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: end_time
+  required: false
+  type: date
+  underlyingargname: end_time
+- description: A comma-separated list of SHA256 hashes for processes and file macros
+    involved in the issue to filter the issues by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: sha256
+  required: false
+  type: string
+  underlyingargname: sha256
+category: Utilities
+commonfields:
+  id: SearchIssues
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.22.39
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: CortexListIssues
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    - edr
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  Searches Cortex issues using the provided filters. All filters are applied together (pagination fields are not considered filters). Note: If OR logic is needed across different fields (e.g., "name contains 'malware' or description contains 'phishing'"), the action should run once per field with the other filters applied.
+display: Cortex - List Issues
+isdetailsoverridden: false
+locked: false
+name: CortexListIssues
+outputs:
+- description: The internal ID of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.internal_id
+  type: string
+  underlyingoutputcontextpath: Core.Issue.internal_id
+- description: The source of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.issue_source
+  type: string
+  underlyingoutputcontextpath: Core.Issue.issue_source
+- description: The progress status of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.status.progress
+  type: string
+  underlyingoutputcontextpath: Core.Issue.status.progress
+- description: The user assigned to the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.assigned_to_pretty
+  type: string
+  underlyingoutputcontextpath: Core.Issue.assigned_to_pretty
+- description: The user pretty name assigned to the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.assigned_to
+  type: string
+  underlyingoutputcontextpath: Core.Issue.assigned_to
+- description: The asset IDs related to the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.asset_ids
+  type: string
+  underlyingoutputcontextpath: Core.Issue.asset_ids
+- description: The File Macro SHA256 hash of the action file macro.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.action_file_macro_sha256
+  type: string
+  underlyingoutputcontextpath: Core.Issue.action_file_macro_sha256
+- description: The OS Parent SHA256 hash of the OS actor process image.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.os_actor_process_image_sha256
+  type: string
+  underlyingoutputcontextpath: Core.Issue.os_actor_process_image_sha256
+- description: The domain of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.issue_domain
+  type: string
+  underlyingoutputcontextpath: Core.Issue.issue_domain
+- description: The Action process image SHA256 hash.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.action_process_image_sha256
+  type: string
+  underlyingoutputcontextpath: Core.Issue.action_process_image_sha256
+- description: The Causality actor process image SHA256 hash.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.causality_actor_process_image_sha256
+  type: string
+  underlyingoutputcontextpath: Core.Issue.causality_actor_process_image_sha256
+- description: The Actor process image SHA256 hash.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.actor_process_image_sha256
+  type: string
+  underlyingoutputcontextpath: Core.Issue.actor_process_image_sha256
+- description: The detection timestamp.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.source_insert_ts
+  type: number
+  underlyingoutputcontextpath: Core.Issue.source_insert_ts
+- description: The name of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.issue_name
+  type: string
+  underlyingoutputcontextpath: Core.Issue.issue_name
+- description: The severity of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.severity
+  type: string
+  underlyingoutputcontextpath: Core.Issue.severity
+- description: The issue description.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.issue_description
+  type: string
+  underlyingoutputcontextpath: Core.Issue.issue_description
+- description: The identity type associated with the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.Identity_type
+  type: string
+  underlyingoutputcontextpath: Core.Issue.Identity_type
+- description: The category of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.issue_category
+  type: string
+  underlyingoutputcontextpath: Core.Issue.issue_category
+- description: The endpoint ID associated with the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.endpoint_id
+  type: string
+  underlyingoutputcontextpath: Core.Issue.endpoint_id
+- description: The case IDs associated with the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Issue.case_ids
+  type: string
+  underlyingoutputcontextpath: Core.Issue.case_ids
+- description: The actual number of issues that match all filter criteria and returned
+    in this specific response.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueMetadata.returned_count
+  type: number
+  underlyingoutputcontextpath: Core.IssueMetadata.returned_count
+- description: The total number of issues in the system that match all filter criteria.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueMetadata.filtered_count
+  type: number
+  underlyingoutputcontextpath: Core.IssueMetadata.filtered_count
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Utility
+underlyingcontentitem:
+  command: ""
+  id: SearchIssuesAgentix
+  instance: ""
+  name: SearchIssuesAgentix
+  type: script

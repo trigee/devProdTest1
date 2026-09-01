@@ -1,0 +1,88 @@
+args:
+- description: The AWS account ID.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: account_id
+  required: true
+  type: string
+  underlyingargname: account_id
+- description: 'The AWS region where the S3 bucket is located. For example: us-east-1,
+    eu-west-1.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: region
+  required: true
+  type: string
+  underlyingargname: region
+- description: 'The canned ACL to apply to the bucket. Options: private, public-read,
+    public-read-write, authenticated-read. Use ''private'' to remove public access.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: acl
+  required: true
+  type: string
+  underlyingargname: acl
+- description: The bucket to which to apply the ACL.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: bucket
+  required: true
+  type: string
+  underlyingargname: bucket
+category: Cloud Services
+commonfields:
+  id: CortexAWSS3BucketACLPut
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 2.3.2
+    packID: AWS
+    packName: AWS
+    packPropagationLabels:
+    - all
+    prevname: AWSPutS3BucketACL
+    propagationLabels: []
+    supportedModules:
+    - cloud_posture
+    - agentix
+    - xsiam
+    toServerVersion: ""
+createdby: DBot
+description: 'Sets the access control list (ACL) permissions for an existing Amazon
+  S3 bucket in a specified AWS account and region. Allows you to define who can access
+  the bucket and what actions they can perform using predefined (canned) ACLs. Use
+  this action to remediate cloud posture issues by setting the bucket ACL to ''private''
+  to remove public access grants. Since 2023, all new S3 buckets block ACLs by default
+  for better security. This is a remediation action that modifies bucket configuration.
+  REQUIRES: `account_id`, `region`, and the resource identifier. When these are not
+  present in user input, resolve them first via `CortexListAssets` using the issue''s
+  asset_id or asset_name.'
+display: AWS Put S3 Bucket ACL
+isdetailsoverridden: false
+locked: false
+name: AWSPutS3BucketACL
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Remediation
+- Cloud
+underlyingcontentitem:
+  command: aws-s3-bucket-acl-put
+  id: AWS
+  instance: ""
+  name: AWS
+  type: command

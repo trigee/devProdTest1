@@ -1,0 +1,252 @@
+category: Utilities
+commonfields:
+  id: Dima Incident Generator - 2
+  version: -1
+configuration:
+- display: Fetch incidents
+  name: isFetch
+  required: false
+  supportedModules: []
+  type: 8
+- display: Incident type
+  name: incidentType
+  required: false
+  supportedModules: []
+  type: 13
+- defaultvalue: "1"
+  display: Incidents Fetch Interval
+  name: incidentFetchInterval
+  required: false
+  supportedModules: []
+  type: 19
+- display: The raw JSON string to use as the sample data
+  name: JSON
+  required: false
+  supportedModules: []
+  type: 12
+- display: The incident name to give to the created incident
+  name: name
+  required: false
+  supportedModules: []
+  type: 0
+- display: ""
+  name: file_string
+  required: false
+  supportedModules: []
+  type: 0
+- display: Specified Alert Name Contains
+  name: specified_alert_name
+  required: false
+  supportedModules: []
+  type: 0
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    supportedModules: []
+    toServerVersion: ""
+description: A utility for testing incident fetching with mock JSON data.
+display: Dima Incident Generator - 2
+image: data:image/png;base64,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
+imagepath: xsoar-files://xsoar/images/Dima_Incident_Generator_-_2_aab75227-2396-4b9d-84bc-cff141fc89ee.png
+name: Dima Incident Generator - 2
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - name: type
+      required: true
+      supportedModules: []
+    name: dima-create-alerts
+    supportedModules: []
+  dockerimage: docker.io/demisto/python3:3.10.9.42476
+  isfetch: true
+  runonce: false
+  script: |
+    import json
+    from datetime import datetime
+    from typing import Dict
+    import calendar
+    import random
+    import hashlib
+    import uuid
+
+    alert_types = ["Authentication", "Exfiltration", "C2Communication", "Defacement", "DoS", "Exploit",
+                   "Generic Export Indicators Service Change", "Hunt", "Indicator Feed", "Job", "Lateral Movement",
+                   "Network", "Policy Violation", "Reconnaissance", "Simulation", "Unclassified", "UnknownBinary",
+                   "VirusTotal Intelligence LiveHunt Notification", "Vulnerability", "Hello World Alert"
+                   ]
+
+    def generate_json_data(a_type, file_str, specified_alert_name) -> Dict:
+        utc_time = datetime.utcnow()
+        alert_name = a_type + f"_{specified_alert_name}" if specified_alert_name else a_type + "_Alert"
+        data_dict = {
+            "action_external_hostname": "action_external_hostname t4kh",
+            "action_file_macro_sha256": "1626ab3a17d266f8dd419ba7f5db7233721de90b9c12ba8bb87b8b0cb1da7499",
+            "action_file_md5": hashlib.md5(file_str.encode('UTF-8')).hexdigest(),
+            "action_file_path": "action_file_path kg",
+            "action_file_sha256": hashlib.sha256(file_str.encode('UTF-8')).hexdigest(),
+            "action_local_ip":
+                f'{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}',
+            "action_local_port": random.randint(100, 300),
+            "action_process_image_command_line": "action_process_image_command_line r1b",
+            "action_process_image_name": "action_process_image_name y8",
+            "action_process_image_sha256": "bc0fab633314925667950feb7744b34166fc59affeddf27109edd7f388069004",
+            "action_process_signature_vendor": "action_process_signature_vendor gdz",
+            "action_registry_data": "action_registry_data lw4w",
+            "action_registry_full_key": "action_registry_full_key r2l",
+            "action_remote_ip":
+                f'{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}.{random.randint(0,255)}',
+            "action_remote_port": random.randint(5000, 8000),
+            "actor_effective_username": "actor_effective_username acd",
+            "actor_process_command_line": "actor_process_command_line f3lj",
+            "actor_process_image_md5": "12f3356169dbb5a4c1befc91651dd784",
+            "actor_process_image_name": "actor_process_image_name bt",
+            "actor_process_image_path": "actor_process_image_path fy",
+            "actor_process_image_sha256": "77c6909f9242447ffc95c7c04de27bac51d4daa62585d685d896101c874ecfda",
+            "actor_process_os_pid": 1356,
+            "actor_process_signature_vendor": "actor_process_signature_vendor swzf",
+            "actor_thread_thread_id": 2697,
+            "agent_device_domain": "agent_device_domain 757",
+            "agent_fqdn": "agent_fqdn tabe",
+            "agent_hostname": f"agent_hostname {random.randint(1000,55000)}",
+            "agent_ip_addresses": "10.10.10.20",
+            "agent_os_sub_type": "agent_os_sub_type x2o",
+            "agent_os_type": 2,
+            "alert_category": "alert_category md",
+            "alert_description": "alert_description csu",
+            "alert_name": alert_name,
+            "alert_type": a_type,
+            "attack_techniques": "attack_techniques cw",
+            "audit_ids": "audit_ids m94",
+            "causality_actor_causality_id": "causality_actor_causality_id 3ll",
+            "causality_actor_process_command_line": "causality_actor_process_command_line lnw",
+            "causality_actor_process_image_md5": "ec6f49cf323cc6b7f905cd254c11d963",
+            "causality_actor_process_image_name": "causality_actor_process_image_name of",
+            "causality_actor_process_image_path": "causality_actor_process_image_path ibrf",
+            "causality_actor_process_image_sha256": "8f85145986286cc2c1540e7d0d476aa7cdbf6a9b83abab2d3fc024411e130c0f",
+            "causality_actor_process_signature_vendor": "causality_actor_process_signature_vendor ba",
+            "cloud_provider": "AWS",
+            "cluster_name": "cluster_name 7lrc",
+            "container_id": "container_id n2h",
+            "dns_query_name": "dns_query_name wo2",
+            "dst_agent_hostname": "dst_agent_hostname ce3",
+            "external_id": "external_id n30",
+            "fw_app_category": "fw_app_category xnc",
+            "fw_app_id": "fw_app_id 8y1f",
+            "fw_app_subcategory": "fw_app_subcategory igae",
+            "fw_app_technology": "fw_app_technology 9mpr",
+            "fw_device_name": "fw_device_name xgsz",
+            "fw_email_recipient": "fw_email_recipient hp7j",
+            "fw_email_sender": "fw_email_sender ovr",
+            "fw_email_subject": "fw_email_subject gc",
+            "fw_interface_from": "fw_interface_from o3s",
+            "fw_interface_to": "fw_interface_to naxs",
+            "fw_is_phishing": "NO",
+            "fw_misc": "fw_misc tg",
+            "fw_rule": "fw_rule bz",
+            "fw_rule_id": "fw_rule_id 0z",
+            "fw_serial_number": "fw_serial_number nqz",
+            "fw_url_domain": "fw_url_domain mh",
+            "fw_vsys": "fw_vsys 2dkx",
+            "fw_xff": "fw_xff 5195",
+            "identity_sub_type": "KUBERNETES",
+            "identity_type": "TOKEN",
+            "image_name": "image_name wbs",
+            "mac": "mac ha",
+            "module_id": "module_id yxnz",
+            "operation_name": "GET_DATA",
+            "os_actor_effective_username": "os_actor_effective_username rxhj",
+            "os_actor_process_command_line": "os_actor_process_command_line v42u",
+            "os_actor_process_image_name": "os_actor_process_image_name rckh",
+            "os_actor_process_image_sha256": "9df46f3f4536977e6e625a889879fd49acdaf86d2d88052c06fbabba342223e0",
+            "os_actor_process_os_pid": 3051,
+            "os_actor_process_signature_vendor": "os_actor_process_signature_vendor k6c",
+            "os_actor_thread_thread_id": 888,
+            "project": "project vv3n",
+            "referenced_resource": "referenced_resource 6qzz",
+            "resource_sub_type": "BUCKET",
+            "resource_type": "CHAT_BOT",
+            "severity": random.choice(["Low", "Medium", "High", "Critical"]),
+            "timestamp": calendar.timegm(utc_time.utctimetuple()),
+            "user_agent": ["user_agent_5xf"],
+            "markdown_field": "+This text will be underline+\n**Text in Bold**\n \
+                {{background:blue;color:white}}(This text will be in white with blue background) \
+                <:-->Left Aligned Text \
+                <-:->Center Aligned Text \
+                <--:>Right Aligned Text",
+            "x": [1, 2],
+            "y": 3,
+            "z": True
+        }
+
+        return data_dict
+
+
+    def main() -> None:
+        integrationInstance = demisto.integrationInstance()
+        demisto.debug(f'Command being called is {demisto.command()}')
+        try:
+            if demisto.command() == 'test-module':
+                return_results("ok")
+
+            elif demisto.command() == 'fetch-incidents':
+                incidents = []
+                get_file = demisto.params()['file_string']
+                file_str =  str(uuid.uuid4()) if get_file is None else get_file
+                specified_name = demisto.params().get("specified_alert_name")
+
+                for t in alert_types:
+                    data = generate_json_data(t, file_str, specified_name)
+
+                    incident_name = f'Incident for {data["alert_type"]}_Alert'
+
+                    incident = {
+                        'name': incident_name,
+                        'details': json.dumps(data),
+                        'occurred': datetime.now().isoformat().split("Z", 1)[0] + "Z",
+                        'rawJSON': json.dumps(data)
+                    }
+                    incidents.append(incident)
+                demisto.incidents(incidents)
+            elif demisto.command() == 'dima-create-alerts':
+                # type_to_fetch = demisto.args().get("type")
+
+                # incident_name = f'Manually generated alert of type {type}_Alert'
+                # data = generate_json_data(type_to_fetch, "anyshortstring")
+
+                # incident = {
+                #     'name': incident_name,
+                #     'details': json.dumps(data),
+                #     'occurred': datetime.now().isoformat().split("Z", 1)[0] + "Z",
+                #     'rawJSON': json.dumps(data)
+                # }
+                # incidents = []
+                # incidents.append(incident)
+                # demisto.incidents(incident)
+
+                demisto.log(alert_types[0])
+
+            else:
+                raise NotImplementedError("Command is not implemented")
+
+        # Log exceptions and return errors
+        except Exception as e:
+            demisto.error(traceback.format_exc())  # print the traceback
+            return_error(f'Failed to execute {demisto.command()} command.\nError:\n{str(e)}')
+
+
+    ''' ENTRY POINT '''
+    if __name__ in ('__main__', '__builtin__', 'builtins'):
+        main()
+  subtype: python3
+  type: python
+signature: ""
+sourcemoduleid: JSONSampleIncidentGenerator

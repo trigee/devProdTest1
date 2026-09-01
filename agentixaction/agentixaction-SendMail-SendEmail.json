@@ -1,0 +1,112 @@
+args:
+- description: Comma-separated list of email addresses to send the email to.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: to
+  required: true
+  type: string
+  underlyingargname: to
+- description: The subject of the email.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: true
+  name: subject
+  required: true
+  type: string
+  underlyingargname: subject
+- description: |-
+    The email body supports HTML and Markdown input.
+    HTML is the preferred format for reliable rendering across email clients.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: true
+  name: body
+  required: true
+  type: string
+  underlyingargname: body
+- description: Comma-separated list of CC email addresses.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: cc
+  required: false
+  type: string
+  underlyingargname: cc
+- description: Comma-separated list of BCC email addresses.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: bcc
+  required: false
+  type: string
+  underlyingargname: bcc
+- description: Email address for replies.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: replyTo
+  required: false
+  type: string
+  underlyingargname: replyTo
+- description: Comma-separated list of War Room entry IDs to attach to the email.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: attachIDs
+  required: false
+  type: string
+  underlyingargname: attachIDs
+category: Email
+commonfields:
+  id: SendMail
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.14.0
+    isoverridable: false
+    itemVersion: 1.42.13
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: SendEmail
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |-
+  Sends an email using one of the configured mail integrations.
+  The `body` content must be valid, well-formed HTML or Markdown.
+  HTML is recommended for consistent rendering across email clients.
+  Works with any integration that exposes the `send-mail` command. Known integrations include:
+  - Mail Sender (New) – Generic SMTP integration (e.g., Exchange, Postfix, SendGrid)
+  - EWS Mail Sender / EWS On-Premise – Microsoft Exchange Web Services
+  - Gmail / Gmail Single User – Google Gmail API with OAuth 2.0
+  - Microsoft Graph Mail / Graph Mail Single User – Microsoft 365 Graph API
+display: Send Email
+isdetailsoverridden: false
+locked: false
+name: SendEmail
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Email
+underlyingcontentitem:
+  command: ""
+  id: SendMailV2
+  instance: ""
+  name: SendMailV2
+  type: script

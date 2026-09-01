@@ -1,0 +1,143 @@
+args:
+- description: The AWS account ID.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: account_id
+  required: true
+  type: string
+  underlyingargname: account_id
+- description: 'The AWS region where the S3 bucket is located. For example: us-east-1,
+    eu-west-1.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: region
+  required: true
+  type: string
+  underlyingargname: region
+- description: The name of the S3 bucket whose policy to retrieve.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: bucket
+  required: true
+  type: string
+  underlyingargname: bucket
+- description: The account ID of the expected bucket owner. If the account ID that
+    you provide does not match the actual owner of the bucket, the request fails.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: expected_bucket_owner
+  required: false
+  type: string
+  underlyingargname: expected_bucket_owner
+category: Cloud Services
+commonfields:
+  id: CortexAWSS3BucketPolicyGet
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 2.3.2
+    packID: AWS
+    packName: AWS
+    packPropagationLabels:
+    - all
+    prevname: AWSGetS3BucketPolicy
+    propagationLabels: []
+    supportedModules:
+    - cloud_posture
+    - agentix
+    - xsiam
+    toServerVersion: ""
+createdby: DBot
+description: 'Retrieves the bucket policy for an Amazon S3 bucket in a specified AWS
+  account and region. Returns the policy document in JSON format including statements
+  that define who can access the bucket and what actions they can perform. Use this
+  action to investigate cloud posture issues related to S3 bucket policies such as
+  overly permissive access grants, public access via wildcard principals, or missing
+  condition constraints. REQUIRES: `account_id`, `region`, and the resource identifier.
+  When these are not present in user input, resolve them first via `CortexListAssets`
+  using the issue''s asset_id or asset_name.'
+display: AWS Get S3 Bucket Policy
+isdetailsoverridden: false
+locked: false
+name: AWSGetS3BucketPolicy
+outputs:
+- description: Name of the S3 bucket.
+  disabled: false
+  isdetailsoverridden: false
+  name: AWS.S3-Buckets.BucketName
+  type: string
+  underlyingoutputcontextpath: AWS.S3-Buckets.BucketName
+- description: The version of the policy.
+  disabled: false
+  isdetailsoverridden: false
+  name: AWS.S3-Buckets.Policy.Version
+  type: string
+  underlyingoutputcontextpath: AWS.S3-Buckets.Policy.Version
+- description: The id of the policy.
+  disabled: false
+  isdetailsoverridden: false
+  name: AWS.S3-Buckets.Policy.Id
+  type: string
+  underlyingoutputcontextpath: AWS.S3-Buckets.Policy.Id
+- description: Identifier of the policy statement.
+  disabled: false
+  isdetailsoverridden: false
+  name: AWS.S3-Buckets.Policy.Statement.Sid
+  type: string
+  underlyingoutputcontextpath: AWS.S3-Buckets.Policy.Statement.Sid
+- description: Specifies whether the statement results in an allow or an explicit
+    deny.
+  disabled: false
+  isdetailsoverridden: false
+  name: AWS.S3-Buckets.Policy.Statement.Effect
+  type: string
+  underlyingoutputcontextpath: AWS.S3-Buckets.Policy.Statement.Effect
+- description: Specify the principal that is allowed or denied access to a resource.
+  disabled: false
+  isdetailsoverridden: false
+  name: AWS.S3-Buckets.Policy.Statement.Principal
+  type: string
+  underlyingoutputcontextpath: AWS.S3-Buckets.Policy.Statement.Principal
+- description: Describes the specific action or actions that will be allowed or denied.
+  disabled: false
+  isdetailsoverridden: false
+  name: AWS.S3-Buckets.Policy.Statement.Action
+  type: string
+  underlyingoutputcontextpath: AWS.S3-Buckets.Policy.Statement.Action
+- description: Defines the object or objects that the statement applies to.
+  disabled: false
+  isdetailsoverridden: false
+  name: AWS.S3-Buckets.Policy.Statement.Resource
+  type: string
+  underlyingoutputcontextpath: AWS.S3-Buckets.Policy.Statement.Resource
+- description: Specifies conditions for when a policy is in effect.
+  disabled: false
+  isdetailsoverridden: false
+  name: AWS.S3-Buckets.Policy.Statement.Condition
+  type: string
+  underlyingoutputcontextpath: AWS.S3-Buckets.Policy.Statement.Condition
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Investigation
+- Cloud
+underlyingcontentitem:
+  command: aws-s3-bucket-policy-get
+  id: AWS
+  instance: ""
+  name: AWS
+  type: command

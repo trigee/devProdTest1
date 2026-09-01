@@ -1,0 +1,245 @@
+args:
+- description: |
+    Not recommended to use. A complete issue object in JSON format. This is intended for advanced users. When using this argument, all other arguments are ignored, and the entire issue must be defined in JSON — including required fields like `summary`, `project.key`, and `issuetype.id` or `issuetype.name`. Note: Only the project key is supported (not the project name). Example: {
+      "fields": {
+        "summary": "New issue summary",
+        "project": {"key": "DEMO"},
+        "issuetype": {"name": "Task"}
+      }
+    }
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_json
+  required: false
+  type: string
+  underlyingargname: issue_json
+- description: The issue summary (short title of the issue). Required unless using
+    `issue_json`.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: summary
+  required: false
+  type: string
+  underlyingargname: summary
+- description: The key of the Jira project to associate the issue with (e.g., "IT",
+    "HR"). Required unless using `project_name` or `issue_json`.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: project_key
+  required: false
+  type: string
+  underlyingargname: project_key
+- description: The name of the Jira project to associate the issue with. Required
+    unless using `project_key` or `issue_json`.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: project_name
+  required: false
+  type: string
+  underlyingargname: project_name
+- description: The name of the issue type (e.g., "Bug", "Task", "Story"). Required
+    unless using `issue_type_id` or `issue_json`.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_type_name
+  required: false
+  type: string
+  underlyingargname: issue_type_name
+- description: The numeric ID of the issue type. Required unless using `issue_type_name`
+    or `issue_json`.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_type_id
+  required: false
+  type: string
+  underlyingargname: issue_type_id
+- description: The detailed description of the issue.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: description
+  required: false
+  type: string
+  underlyingargname: description
+- description: A comma-separated string of labels to add to the issue (e.g., "phishing,automation").
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: labels
+  required: false
+  type: string
+  underlyingargname: labels
+- description: The priority of the issue (e.g., "High", "Medium", "Low").
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: priority
+  required: false
+  type: string
+  underlyingargname: priority
+- description: The issue due date in `YYYY-MM-DD` format.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: due_date
+  required: false
+  type: date
+  underlyingargname: due_date
+- description: The username of the assignee (for Jira Server). For Jira Cloud, use
+    `assignee_id`.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: assignee
+  required: false
+  type: string
+  underlyingargname: assignee
+- description: The account ID of the assignee (for Jira Cloud). Use `jira-get-id-by-attribute`
+    to look this up.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: assignee_id
+  required: false
+  type: string
+  underlyingargname: assignee_id
+- description: The username of the reporter (for Jira Server). For Jira Cloud, use
+    `reporter_id`.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: reporter
+  required: false
+  type: string
+  underlyingargname: reporter
+- description: The account ID of the reporter (for Jira Cloud). Use `jira-get-id-by-attribute`
+    to look this up.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: reporter_id
+  required: false
+  type: string
+  underlyingargname: reporter_id
+- description: The issue key of the parent issue (used when creating a sub-task).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: parent_issue_key
+  required: false
+  type: string
+  underlyingargname: parent_issue_key
+- description: The numeric ID of the parent issue (used when creating a sub-task).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: parent_issue_id
+  required: false
+  type: string
+  underlyingargname: parent_issue_id
+- description: |
+    Describes the environment in which the issue occurred. Example: "Windows 11, Chrome v100".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: environment
+  required: false
+  type: string
+  underlyingargname: environment
+- description: |
+    The security level of the issue (e.g., "Anyone", "Developers only").
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: security
+  required: false
+  type: string
+  underlyingargname: security
+- description: |
+    A list of component names to associate with the issue (e.g., "backend,API"). For Jira Server, these components must already exist in the project.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: components
+  required: false
+  type: string
+  underlyingargname: components
+category: Case Management
+commonfields:
+  id: jiraCreateIssue
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.3.21
+    packID: Jira
+    packName: Atlassian Jira
+    packPropagationLabels:
+    - all
+    prevname: JiraCreateIssue
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    toServerVersion: ""
+createdby: DBot
+description: |
+  Creates a new issue in a Jira project (Cloud or Server). You can use this command to open incidents, tasks, or sub-tasks directly in Jira as part of an automated workflow or manual response. It supports both basic field-based input (like summary, project, and issue type) and advanced use through a full issue_json object for maximum flexibility. The command allows setting properties such as assignee, reporter, priority, due date, environment, components, and labels. Compatible with Jira Cloud and Jira Server. Fields and behavior may vary slightly between platforms.
+display: Jira - Create Issue
+isdetailsoverridden: false
+locked: false
+name: JiraCreateIssue
+outputs:
+- description: The unique ID of the created Jira issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Id
+  type: string
+  underlyingoutputcontextpath: Ticket.Id
+- description: The issue key (e.g., "IT-123").
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Key
+  type: string
+  underlyingoutputcontextpath: Ticket.Key
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Case Management
+underlyingcontentitem:
+  command: jira-create-issue
+  id: Jira V3
+  instance: ""
+  name: Jira V3
+  type: command

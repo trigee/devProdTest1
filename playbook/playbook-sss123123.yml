@@ -1,0 +1,268 @@
+adopted: true
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    supportedModules: []
+    toServerVersion: ""
+description: Playbook checking VectraXDR integration and adding notes for Hosts or
+  Accounts.
+id: 16106217-48d5-4219-88df-93af825d2028
+inputs: []
+name: sss123123
+outlinetasks: {}
+outputs: []
+possibleresponses: []
+quiet: true
+starttaskid: "0"
+tags:
+- AI Assisted
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ada73c98-5452-4352-8630-a952ff48635a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: ada73c98-5452-4352-8630-a952ff48635a
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      "no":
+      - "5"
+      "yes":
+      - "2"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      brandname:
+        simple: VectraXDR
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks if the VectraXDR integration is enabled.
+      id: 83290bea-04d6-4856-83f7-62a27e32cd33
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is VectraXDR Integration Enabled?
+      playbooktaskmissingcomponent: null
+      script: IsIntegrationAvailable
+      type: condition
+      version: -1
+    taskid: 83290bea-04d6-4856-83f7-62a27e32cd33
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 250
+        }
+      }
+  "2":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: ${Endpoint}
+          operator: isExists
+        - left:
+            iscontext: true
+            value:
+              simple: ${Host}
+          operator: isExists
+      label: Host
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: ${Account}
+          operator: isExists
+      label: Account
+    continueonerrortype: ""
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+      Account:
+      - "4"
+      Host:
+      - "3"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Checks whether the entity is an Account or a Host.
+      id: fea57613-f865-4d5d-8584-0d25dd2a4a0e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is entity Account or Host?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: fea57613-f865-4d5d-8584-0d25dd2a4a0e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 250,
+          "y": 450
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      value:
+        simple: The entity is a Host.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c834578c-511b-4a09-8858-bcd70902cf36
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add a note for a Host
+      playbooktaskmissingcomponent: null
+      script: Print
+      type: regular
+      version: -1
+    taskid: c834578c-511b-4a09-8858-bcd70902cf36
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -150,
+          "y": 650
+        }
+      }
+  "4":
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "5"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      value:
+        simple: The entity is an Account.
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: bd619188-5ddc-4da2-81cc-126151c561fe
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add note for an Account
+      playbooktaskmissingcomponent: null
+      script: Print
+      type: regular
+      version: -1
+    taskid: bd619188-5ddc-4da2-81cc-126151c561fe
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 250,
+          "y": 650
+        }
+      }
+  "5":
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: fe9fbfdb-8417-4c38-86ad-d0b78dac7d01
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: fe9fbfdb-8417-4c38-86ad-d0b78dac7d01
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1050,
+          "y": 850
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 860,
+        "width": 1580,
+        "x": -150,
+        "y": 50
+      }
+    }
+  }

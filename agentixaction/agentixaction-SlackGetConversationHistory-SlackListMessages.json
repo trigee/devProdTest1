@@ -1,0 +1,154 @@
+args:
+- description: |
+    The ID of the conversation, for example: "C012QRSTUW9", "CAA78KABS".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: conversation_id
+  required: false
+  type: string
+  underlyingargname: conversation_id
+- description: |
+    The name of the conversation, for example: "rnd-innovation" (channel name), "John Doe" (full name), "jdoe" (username), "jdoe@example.com" (user email).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: conversation_name
+  required: false
+  type: string
+  underlyingargname: conversation_name
+- description: |
+    The maximum number of messages to return.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: limit
+  required: false
+  type: number
+  underlyingargname: limit
+- description: |
+    The earliest time from which to retrieve messages.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: from_time
+  required: false
+  type: string
+  underlyingargname: from_time
+- description: Token to retrieve the next page of results.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: page_token
+  required: false
+  type: string
+  underlyingargname: page_token
+- description: |
+    Optional. Only provide this argument when the user explicitly asks for replies within a specific thread. Do NOT provide this argument when the user asks for messages from a channel or conversation — to get channel-level messages, leave this argument empty. When provided, only the replies under the specified thread are returned instead of the top-level channel messages.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: thread_id
+  required: false
+  type: string
+  underlyingargname: thread_id
+category: Messaging and Conferencing
+commonfields:
+  id: SlackGetConversationHistory
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.8.11
+    packID: Slack
+    packName: Slack
+    packPropagationLabels:
+    - all
+    prevname: SlackListMessages
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  Retrieves the message history of a Slack conversation, or a specific thread within the conversation. Results are returned in descending order. To retrieve conversation messages, use the conversation_id argument. To retrieve replies from a specific thread, combine both the conversation_id and thread_id arguments.
+display: Slack - List Messages
+isdetailsoverridden: false
+locked: false
+name: SlackListMessages
+outputs:
+- description: The type of the message (e.g., message, file_share, etc.).
+  disabled: false
+  isdetailsoverridden: false
+  name: Slack.Messages.Type
+  type: string
+  underlyingoutputcontextpath: Slack.Messages.Type
+- description: The text content of the message.
+  disabled: false
+  isdetailsoverridden: false
+  name: Slack.Messages.Text
+  type: string
+  underlyingoutputcontextpath: Slack.Messages.Text
+- description: The user ID of the message sender.
+  disabled: false
+  isdetailsoverridden: false
+  name: Slack.Messages.UserId
+  type: string
+  underlyingoutputcontextpath: Slack.Messages.UserId
+- description: The username of the message sender.
+  disabled: false
+  isdetailsoverridden: false
+  name: Slack.Messages.Name
+  type: string
+  underlyingoutputcontextpath: Slack.Messages.Name
+- description: The full name of the message sender.
+  disabled: false
+  isdetailsoverridden: false
+  name: Slack.Messages.FullName
+  type: string
+  underlyingoutputcontextpath: Slack.Messages.FullName
+- description: The timestamp of the message.
+  disabled: false
+  isdetailsoverridden: false
+  name: Slack.Messages.TimeStamp
+  type: string
+  underlyingoutputcontextpath: Slack.Messages.TimeStamp
+- description: Whether the message has replies.
+  disabled: false
+  isdetailsoverridden: false
+  name: Slack.Messages.HasReplies
+  type: boolean
+  underlyingoutputcontextpath: Slack.Messages.HasReplies
+- description: The thread timestamp of the message.
+  disabled: false
+  isdetailsoverridden: false
+  name: Slack.Messages.ThreadTimeStamp
+  type: string
+  underlyingoutputcontextpath: Slack.Messages.ThreadTimeStamp
+- description: Token to retrieve the next page of results.
+  disabled: false
+  isdetailsoverridden: false
+  name: SlackConversationHistory.NextPageToken
+  type: string
+  underlyingoutputcontextpath: SlackConversationHistory.NextPageToken
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- slack
+underlyingcontentitem:
+  command: slack-get-conversation-history
+  id: SlackV3
+  instance: ""
+  name: SlackV3
+  type: command

@@ -1,0 +1,103 @@
+args:
+- description: The GCP project ID that contains the bucket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: project_id
+  required: true
+  type: string
+  underlyingargname: project_id
+- description: The name of the storage bucket to retrieve the IAM policy from.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: bucket_name
+  required: true
+  type: string
+  underlyingargname: bucket_name
+- description: The IAM policy version to be returned. Required to be 3 or greater
+    for buckets with IAM Conditions. If not specified, the default policy version
+    is returned.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: requested_policy_version
+  required: false
+  type: number
+  underlyingargname: requested_policy_version
+category: Cloud Services
+commonfields:
+  id: CortexGCPStorageBucketPolicyList
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.2.2
+    packID: GCP
+    packName: GCP
+    packPropagationLabels:
+    - all
+    prevname: GCPListStorageBucketPolicy
+    propagationLabels: []
+    supportedModules:
+    - cloud_posture
+    - agentix
+    - xsiam
+    toServerVersion: ""
+createdby: DBot
+description: 'Retrieves the IAM policy for a Google Cloud Storage bucket. Returns
+  the policy version, ETag, and list of role bindings including members and their
+  assigned roles. Use this action to check for public access by looking for allUsers
+  or allAuthenticatedUsers members in the bindings, or to audit which principals have
+  access to a specific bucket. REQUIRES: `project_id`, `bucket_name`. When these are
+  not present in user input, resolve them first via `CortexListAssets` using the issue''s
+  asset_id or asset_name.'
+display: GCP List Storage Bucket IAM Policy
+isdetailsoverridden: false
+locked: false
+name: GCPListStorageBucketPolicy
+outputs:
+- description: IAM policy version.
+  disabled: false
+  isdetailsoverridden: false
+  name: GCP.Storage.BucketPolicy.version
+  type: number
+  underlyingoutputcontextpath: GCP.Storage.BucketPolicy.version
+- description: ETag of the IAM policy for concurrency control.
+  disabled: false
+  isdetailsoverridden: false
+  name: GCP.Storage.BucketPolicy.etag
+  type: string
+  underlyingoutputcontextpath: GCP.Storage.BucketPolicy.etag
+- description: List of role bindings for the bucket, each containing a role and list
+    of members.
+  disabled: false
+  isdetailsoverridden: false
+  name: GCP.Storage.BucketPolicy.bindings
+  type: json
+  underlyingoutputcontextpath: GCP.Storage.BucketPolicy.bindings
+- description: Resource ID of the IAM policy (e.g., projects/_/buckets/BUCKET_NAME).
+  disabled: false
+  isdetailsoverridden: false
+  name: GCP.Storage.BucketPolicy.resourceId
+  type: string
+  underlyingoutputcontextpath: GCP.Storage.BucketPolicy.resourceId
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Investigation
+- Cloud
+underlyingcontentitem:
+  command: gcp-storage-bucket-policy-list
+  id: GCP
+  instance: ""
+  name: GCP
+  type: command

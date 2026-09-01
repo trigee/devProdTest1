@@ -1,0 +1,59 @@
+args:
+- description: |
+    A comma-separated list of endpoint IDs to retrieve Technical Support Files for.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: endpoint_ids
+  required: true
+  type: string
+  underlyingargname: endpoint_ids
+category: Endpoint
+commonfields:
+  id: CortexGenerateEndpointSupportFile
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.15.0
+    isoverridable: false
+    itemVersion: 1.0.2
+    packID: AgentixAction_CortexGenerateEndpointSupportFile
+    packName: Cortex - Generate Endpoint Support File
+    packPropagationLabels:
+    - all
+    prevname: CortexGenerateEndpointSupportFile
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:21:09Z"
+createdby: DBot
+description: |
+  Generates Technical Support Files (TSF) for the provided list of endpoints.
+display: Cortex - Generate Endpoint Support File
+isdetailsoverridden: false
+locked: false
+name: CortexGenerateEndpointSupportFile
+outputs:
+- description: The unique group action identifier for the support file.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.EndpointSupportFile.group_action_id
+  type: string
+  underlyingoutputcontextpath: Core.EndpointSupportFile.group_action_id
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- endpoint
+- support
+- diagnostics
+underlyingcontentitem:
+  command: getEndpointSupportFile
+  id: _builtin_
+  instance: ""
+  name: _builtin_
+  type: command

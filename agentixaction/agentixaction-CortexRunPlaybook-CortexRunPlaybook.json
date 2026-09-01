@@ -1,0 +1,77 @@
+args:
+- description: The name or ID of the playbook to run.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: playbook
+  required: true
+  type: string
+  underlyingargname: playbook
+- description: |
+    A comma-separated list of issues IDs to process with the playbook.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_ids
+  required: true
+  type: string
+  underlyingargname: issue_ids
+category: Analytics & SIEM
+commonfields:
+  id: CortexRunPlaybook
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.5.76
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexRunPlaybook
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    - cloud
+    - cloud_runtime_security
+    - edr
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  Runs a specified playbook on a provided set of issue IDs.
+display: Cortex - Run Playbook
+isdetailsoverridden: false
+locked: false
+name: CortexRunPlaybook
+outputs:
+- description: The playbook name or ID that was provided as input.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.RunPlaybook.playbook
+  type: string
+  underlyingoutputcontextpath: Core.RunPlaybook.playbook
+- description: The result of the playbook execution, containing either a success message
+    or an error message describing what went wrong.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.RunPlaybook.result
+  type: string
+  underlyingoutputcontextpath: Core.RunPlaybook.result
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: core-run-playbook
+  id: Cortex Core - Platform
+  instance: ""
+  name: Cortex Core - Platform
+  type: command

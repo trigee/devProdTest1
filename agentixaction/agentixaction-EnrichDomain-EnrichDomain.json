@@ -1,0 +1,186 @@
+args:
+- description: |
+    A JSON-encoded string representing an array of bare domain values to enrich.
+    A domain is a plain hostname without any protocol or "www." prefix.
+    Valid examples: "example.com", "openclaw.ai", "mail.google.com", "subdomain.evil.com"
+    Invalid examples: "https://example.com" (has protocol — this is a URL), "www.example.com" (starts with "www." — this is a URL), "1.1.1.1" (IP address, not a domain)
+    Example: '["example.com", "malicious-domain.org", "openclaw.ai"]'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: domain_list
+  required: true
+  type: string
+  underlyingargname: domain_list
+- defaultvalue: "true"
+  description: Always set to true.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: external_enrichment
+  required: false
+  type: string
+  underlyingargname: external_enrichment
+- defaultvalue: "true"
+  description: When set to true, the output will include additional fields about the
+    domain. Default is true.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: additional_fields
+  required: false
+  type: string
+  underlyingargname: additional_fields
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: EnrichDomain
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.14.0
+    isoverridable: false
+    itemVersion: 1.42.13
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: EnrichDomain
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - cloud
+    - cloud_runtime_security
+    - edr
+    - xsiam
+    - tim
+    - xti
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  A comprehensive action to enrich the provided domain indicator and retrieve all available data.
+  The results include both tenant-specific internal information (from the Threat Intelligence Management (TIM) brand) and global threat intelligence.
+  Global threat intelligence is retrieved using configured integrations to identify potential threats.
+  USE ONLY for bare domain names — inputs must be plain hostnames without a protocol or "www." prefix.
+  DO NOT USE this action for values that include a protocol (such as http:// or https://) or start with www., as these are classified as URLs rather than domains.
+  ACTION REDUNDANCY WARNING: Due to its comprehensive nature, DO NOT use 'EnrichIndicator' or 'CortexListIndicators' in parallel with this action, as the data is already included in the output.
+  PREREQUISITE: Ensure that one or more of these external integrations are configured in your environment.
+display: Enrich Domain
+isdetailsoverridden: false
+locked: false
+name: EnrichDomain
+outputs:
+- description: The brand that provided the enrichment information for this domain
+    indicator.
+  disabled: false
+  isdetailsoverridden: false
+  name: DomainEnrichment.Results.Brand
+  type: string
+  underlyingoutputcontextpath: DomainEnrichment.Results.Brand
+- description: The actual domain name or indicator that was enriched.
+  disabled: false
+  isdetailsoverridden: false
+  name: DomainEnrichment.Value
+  type: string
+  underlyingoutputcontextpath: DomainEnrichment.Value
+- description: The canonical domain name derived from the enrichment results.
+  disabled: false
+  isdetailsoverridden: false
+  name: DomainEnrichment.Results.Name
+  type: string
+  underlyingoutputcontextpath: DomainEnrichment.Results.Name
+- description: A list of DNS records (e.g., A, MX, NS) currently associated with the
+    domain.
+  disabled: false
+  isdetailsoverridden: false
+  name: DomainEnrichment.Results.AdditionalFields.DNS
+  type: string
+  underlyingoutputcontextpath: DomainEnrichment.Results.AdditionalFields.DNS
+- description: The vendor or source that reported this domain as malicious.
+  disabled: false
+  isdetailsoverridden: false
+  name: DomainEnrichment.Results.AdditionalFields.Malicious.Vendor
+  type: string
+  underlyingoutputcontextpath: DomainEnrichment.Results.AdditionalFields.Malicious.Vendor
+- description: A detailed explanation or rationale provided by the vendor regarding
+    why the domain was flagged as malicious.
+  disabled: false
+  isdetailsoverridden: false
+  name: DomainEnrichment.Results.AdditionalFields.Malicious.Description
+  type: string
+  underlyingoutputcontextpath: DomainEnrichment.Results.AdditionalFields.Malicious.Description
+- description: 'The risk classification (verdict) for this specific domain indicator,
+    based on a single brand''s analysis. Options include: Unknown, Benign, Suspicious,
+    Malicious.'
+  disabled: false
+  isdetailsoverridden: false
+  name: DomainEnrichment.Results.Verdict
+  type: string
+  underlyingoutputcontextpath: DomainEnrichment.Results.Verdict
+- description: 'The highest risk classification (maximum verdict) aggregated from
+    all brands'' verdicts found for this domain. Options include: Unknown, Benign,
+    Suspicious, Malicious.'
+  disabled: false
+  isdetailsoverridden: false
+  name: DomainEnrichment.MaxVerdict
+  type: string
+  underlyingoutputcontextpath: DomainEnrichment.MaxVerdict
+- description: 'The reliability score of the reporting Brand. Options: A+ - Completely
+    reliable, A - Reliable, B - Usually reliable, C - Fairly reliable, D - Not usually
+    reliable, E - Unreliable, F - Reliability cannot be judged.'
+  disabled: false
+  isdetailsoverridden: false
+  name: DomainEnrichment.Results.Reliability
+  type: string
+  underlyingoutputcontextpath: DomainEnrichment.Results.Reliability
+- description: The name servers (NS records) responsible for managing the domain's
+    zone file.
+  disabled: false
+  isdetailsoverridden: false
+  name: DomainEnrichment.Results.AdditionalFields.NameServers
+  type: string
+  underlyingoutputcontextpath: DomainEnrichment.Results.AdditionalFields.NameServers
+- description: The timestamp or date when the domain registration details were last
+    modified (e.g., in WHOIS records).
+  disabled: false
+  isdetailsoverridden: false
+  name: DomainEnrichment.Results.AdditionalFields.UpdatedDate
+  type: date
+  underlyingoutputcontextpath: DomainEnrichment.Results.AdditionalFields.UpdatedDate
+- description: The timestamp or date when the domain was originally registered.
+  disabled: false
+  isdetailsoverridden: false
+  name: DomainEnrichment.Results.AdditionalFields.CreationDate
+  type: date
+  underlyingoutputcontextpath: DomainEnrichment.Results.AdditionalFields.CreationDate
+- description: The email address listed for the domain's administrative contact (Admin).
+  disabled: false
+  isdetailsoverridden: false
+  name: DomainEnrichment.Results.AdditionalFields.Admin.Email
+  type: string
+  underlyingoutputcontextpath: DomainEnrichment.Results.AdditionalFields.Admin.Email
+- description: The full name listed for the domain's administrative contact (Admin).
+  disabled: false
+  isdetailsoverridden: false
+  name: DomainEnrichment.Results.AdditionalFields.Admin.Name
+  type: string
+  underlyingoutputcontextpath: DomainEnrichment.Results.AdditionalFields.Admin.Name
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- domain
+- threat-intelligence
+- reputation
+underlyingcontentitem:
+  command: ""
+  id: EnrichDomainV2
+  instance: ""
+  name: EnrichDomainV2
+  type: script

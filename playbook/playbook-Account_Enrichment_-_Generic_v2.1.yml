@@ -3,7 +3,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 2.8.5
+    itemVersion: 2.8.9
     packID: CommonPlaybooks
     packName: Common Playbooks
     packPropagationLabels:
@@ -427,10 +427,10 @@ outputs:
   description: Description of the incident.
   type: string
 - contextPath: PaloAltoNetworksXDR.RiskyUser.reasons.severity
-  description: The severity of the incident
+  description: The severity of the incident.
   type: string
 - contextPath: PaloAltoNetworksXDR.RiskyUser.reasons.status
-  description: The incident status
+  description: The incident status.
   type: string
 - contextPath: PaloAltoNetworksXDR.RiskyUser.reasons.points
   description: The score.
@@ -554,6 +554,20 @@ tasks:
                     right:
                       value:
                         simple: \
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: inputs.Username
+                    operator: isNotEqualString
+                    right:
+                      value:
+                        simple: N/A
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: inputs.Username
+                    operator: isNotEmpty
                 root: inputs.Username
           operator: isExists
           right:
@@ -835,8 +849,6 @@ tasks:
       - "29"
     note: false
     quietmode: 0
-    results:
-    - brandInstances
     scriptarguments:
       brandname:
         simple: SailPointIdentityIQ
@@ -877,8 +889,6 @@ tasks:
       - "31"
     note: false
     quietmode: 0
-    results:
-    - brandInstances
     scriptarguments:
       brandname:
         simple: PingOne
@@ -1033,8 +1043,6 @@ tasks:
       - "34"
     note: false
     quietmode: 0
-    results:
-    - brandInstances
     scriptarguments:
       brandname:
         simple: Okta v2
@@ -1148,8 +1156,6 @@ tasks:
       - "44"
     note: false
     quietmode: 0
-    results:
-    - brandInstances
     scriptarguments:
       brandname:
         simple: AWS - IAM
@@ -1295,8 +1301,6 @@ tasks:
       - "52"
     note: false
     quietmode: 0
-    results:
-    - brandInstances
     scriptarguments:
       brandname:
         simple: SailPointIdentityNow
@@ -1510,8 +1514,6 @@ tasks:
       - "57"
     note: false
     quietmode: 0
-    results:
-    - brandInstances
     scriptarguments:
       brandname:
         simple: Microsoft Graph User
@@ -1930,8 +1932,6 @@ tasks:
       - "66"
     note: false
     quietmode: 0
-    results:
-    - brandInstances
     scriptarguments:
       brandname:
         simple: Cortex XDR - IR
@@ -2041,6 +2041,20 @@ tasks:
               right:
                 value:
                   simple: \
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: inputs.Username
+              operator: isNotEqualString
+              right:
+                value:
+                  simple: N/A
+          - - left:
+                iscontext: true
+                value:
+                  simple: inputs.Username
+              operator: isNotEmpty
           root: inputs.Username
     separatecontext: false
     skipunavailable: false
@@ -2086,6 +2100,20 @@ tasks:
                     right:
                       value:
                         simple: \
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: inputs.Username
+                    operator: isNotEqualString
+                    right:
+                      value:
+                        simple: N/A
+                - - left:
+                      iscontext: true
+                      value:
+                        simple: inputs.Username
+                    operator: isNotEmpty
                 root: inputs.Username
           operator: isExists
           right:
@@ -2150,6 +2178,20 @@ tasks:
               right:
                 value:
                   simple: \
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: inputs.Username
+              operator: isNotEqualString
+              right:
+                value:
+                  simple: N/A
+          - - left:
+                iscontext: true
+                value:
+                  simple: inputs.Username
+              operator: isNotEmpty
           root: inputs.Username
     separatecontext: false
     skipunavailable: false

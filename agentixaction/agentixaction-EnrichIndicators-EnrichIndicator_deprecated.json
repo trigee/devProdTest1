@@ -1,0 +1,99 @@
+args:
+- description: A comma-separated list of indicator values to retrieve information
+    about (e.g., IPs like 1.1.1.1, domains, file hashes, URLs).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: indicatorsValues
+  required: false
+  type: string
+  underlyingargname: indicatorsValues
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: EnrichIndicators
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.15.0
+    isoverridable: false
+    itemVersion: 1.1.0
+    packID: AgentixAction_EnrichIndicators
+    packName: Enrich Indicators
+    packPropagationLabels:
+    - all
+    prevname: EnrichIndicator_deprecated
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: Deprecated. Use the type-specific enrichment actions instead (EnrichIP,
+  EnrichDomain, EnrichFile, EnrichURL, EnrichCVE). Enriches existing Cortex indicators
+  with reputation and intelligence data using the specified indicator values.
+display: Enrich Indicator - Deprecated
+isdetailsoverridden: false
+locked: false
+name: EnrichIndicator_deprecated
+outputs:
+- description: The ID of the indicator in the tenant's system.
+  disabled: false
+  isdetailsoverridden: false
+  name: Indicators.ID
+  type: string
+  underlyingoutputcontextpath: Indicators.ID
+- description: The indicator value from which the data was retrieved.
+  disabled: false
+  isdetailsoverridden: false
+  name: Indicators.Value
+  type: string
+  underlyingoutputcontextpath: Indicators.Value
+- description: The indicator type which its data was retrieved.
+  disabled: false
+  isdetailsoverridden: false
+  name: Indicators.Type
+  type: string
+  underlyingoutputcontextpath: Indicators.Type
+- description: The indicator's verdict. (e.g., 0 = Unknown, 1 = Benign, 2 = Suspicious,
+    3 = Malicious).
+  disabled: false
+  isdetailsoverridden: false
+  name: Indicators.Verdict
+  type: number
+  underlyingoutputcontextpath: Indicators.Verdict
+- description: The additional custom fields stored for the indicator (e.g., geocountry,
+    positivedetections, detectionengines).
+  disabled: false
+  isdetailsoverridden: false
+  name: Indicators.CustomFields
+  type: json
+  underlyingoutputcontextpath: Indicators.CustomFields
+- description: The current status of the indicator whether active or expired.
+  disabled: false
+  isdetailsoverridden: false
+  name: Indicators.ExpirationStatus
+  type: string
+  underlyingoutputcontextpath: Indicators.ExpirationStatus
+- description: The date and time when the indicator is set to expire, if defined.
+    The format is ISO 8601 UTC datetime string.
+  disabled: false
+  isdetailsoverridden: false
+  name: Indicators.Expiration
+  type: date
+  underlyingoutputcontextpath: Indicators.Expiration
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- indicator enrichment
+- threat intelligence
+- reputation
+underlyingcontentitem:
+  command: enrichIndicators
+  id: _builtin_
+  instance: ""
+  name: _builtin_
+  type: command

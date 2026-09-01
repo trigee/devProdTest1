@@ -1,0 +1,112 @@
+args:
+- description: A comma-separated list of endpoint IDs.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: endpoint_ids
+  required: true
+  type: string
+  underlyingargname: endpoint_ids
+- description: 'The platform of the endpoints. Options: windows, macos, linux.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: platform
+  required: true
+  type: string
+  underlyingargname: platform
+- description: The target version for updating the endpoints.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: version
+  required: true
+  type: string
+  underlyingargname: version
+- description: |-
+    The start time for the update. Enter the time in a 24-hour format (HH:MM).
+    Ensure that there are at least two hours between the start time and the end time.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: start_time
+  required: false
+  type: string
+  underlyingargname: start_time
+- description: The end time for the update. Enter the time in a 24-hour format (HH:MM).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: end_time
+  required: false
+  type: string
+  underlyingargname: end_time
+- description: |-
+    A comma-separated list of days of the week the update may run.
+    Options: Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: days
+  required: false
+  type: string
+  underlyingargname: days
+category: Endpoint
+commonfields:
+  id: CortexUpdateEndpointVersion
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.15.0
+    isoverridable: false
+    itemVersion: 1.0.2
+    packID: AgentixAction_CortexUpdateEndpointVersion
+    packName: Cortex - Update Endpoint Version
+    packPropagationLabels:
+    - all
+    prevname: CortexUpdateEndpointVersion
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:21:09Z"
+createdby: DBot
+description: |-
+  Updates the version of the specified endpoints (can also be referred as XDR Agents or Agents)
+  to the provided target version, with optional scheduling support (days and hours).
+display: Cortex - Update Endpoint Version
+isdetailsoverridden: false
+locked: false
+name: CortexUpdateEndpointVersion
+outputs:
+- description: The IDs of the endpoints on which the update run.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.EndpointUpdate.endpoint_ids
+  type: string
+  underlyingoutputcontextpath: Core.EndpointUpdate.endpoint_ids
+- description: The ID of the update action. 0 means that the action failed.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.EndpointUpdate.action_id
+  type: string
+  underlyingoutputcontextpath: Core.EndpointUpdate.action_id
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Endpoint
+underlyingcontentitem:
+  command: setEndpointVersion
+  id: _builtin_
+  instance: ""
+  name: _builtin_
+  type: command

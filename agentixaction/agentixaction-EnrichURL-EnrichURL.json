@@ -1,0 +1,146 @@
+args:
+- description: |
+    A JSON-encoded string representing an array of URL values to enrich.
+    A URL must include a protocol/scheme (http://, https://, ftp://) or start with "www." or "ftp.".
+    Valid examples: "https://example.com", "http://malicious.com/payload", "www.example.com", "www.example.com/path", "ftp://files.example.com"
+    Invalid examples: "example.com", "openclaw.ai", "google.com" (bare hostnames without protocol or "www." are domains, not URLs), "1.1.1.1" (IP address, not a URL)
+    Example: '[\"https://example.com/page\", \"http://malicious.com/payload\", \"www.example.com\"]'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: url_list
+  required: true
+  type: string
+  underlyingargname: url_list
+- defaultvalue: "true"
+  description: Always set to true.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: external_enrichment
+  required: false
+  type: string
+  underlyingargname: external_enrichment
+- defaultvalue: "true"
+  description: When set to true, the output will include additional fields about the
+    URL. Default is true.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: additional_fields
+  required: false
+  type: string
+  underlyingargname: additional_fields
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: EnrichURL
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.14.0
+    isoverridable: false
+    itemVersion: 1.42.13
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: EnrichURL
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - cloud
+    - cloud_runtime_security
+    - edr
+    - xsiam
+    - tim
+    - xti
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  A comprehensive action to enrich the provided URL indicator and retrieve all available data.
+  The results include both tenant-specific internal information and global threat intelligence.
+  Global threat intelligence is retrieved using configured integrations to identify potential malicious activity.
+  USE ONLY for URLs — inputs must have a protocol (http://, https://) or start with "www.".
+  DO NOT USE this action for bare hostnames (e.g., example.com or openclaw.ai).
+  ACTION REDUNDANCY WARNING: Due to its comprehensive nature, DO NOT use 'EnrichIndicator' or 'CortexListIndicators' in parallel with this action, as the data is already included in the output.
+  PREREQUISITE: Ensure that one or more of these external integrations are configured in your environment.
+display: Enrich URL
+isdetailsoverridden: false
+locked: false
+name: EnrichURL
+outputs:
+- description: The actual URL (Uniform Resource Locator) indicator that was enriched.
+  disabled: false
+  isdetailsoverridden: false
+  name: URLEnrichment.Value
+  type: string
+  underlyingoutputcontextpath: URLEnrichment.Value
+- description: 'The reliability score of the reporting Brand. Options: A+ - Completely
+    reliable, A - Reliable, B - Usually reliable, C - Fairly reliable, D - Not usually
+    reliable, E - Unreliable, F - Reliability cannot be judged.'
+  disabled: false
+  isdetailsoverridden: false
+  name: URLEnrichment.Results.Reliability
+  type: string
+  underlyingoutputcontextpath: URLEnrichment.Results.Reliability
+- description: The vendor or source that reported this URL as malicious.
+  disabled: false
+  isdetailsoverridden: false
+  name: URLEnrichment.Results.AdditionalFields.Malicious.Vendor
+  type: string
+  underlyingoutputcontextpath: URLEnrichment.Results.AdditionalFields.Malicious.Vendor
+- description: A detailed explanation or rationale provided by the vendor regarding
+    why the URL was flagged as malicious.
+  disabled: false
+  isdetailsoverridden: false
+  name: URLEnrichment.Results.AdditionalFields.Malicious.Description
+  type: string
+  underlyingoutputcontextpath: URLEnrichment.Results.AdditionalFields.Malicious.Description
+- description: Descriptive tags or categories associated with the URL (e.g., 'phishing',
+    'spam', 'adware').
+  disabled: false
+  isdetailsoverridden: false
+  name: URLEnrichment.Results.AdditionalFields.Tags
+  type: string
+  underlyingoutputcontextpath: URLEnrichment.Results.AdditionalFields.Tags
+- description: The brand that provided the enrichment information for this URL indicator.
+  disabled: false
+  isdetailsoverridden: false
+  name: URLEnrichment.Results.Brand
+  type: string
+  underlyingoutputcontextpath: URLEnrichment.Results.Brand
+- description: 'The risk classification (verdict) for this specific URL indicator,
+    based on a single brand''s analysis. Options: Unknown, Benign, Suspicious, Malicious.'
+  disabled: false
+  isdetailsoverridden: false
+  name: URLEnrichment.Results.Verdict
+  type: string
+  underlyingoutputcontextpath: URLEnrichment.Results.Verdict
+- description: 'The highest risk classification (maximum verdict) aggregated from
+    all brands'' verdicts found for this URL. Options: Unknown, Benign, Suspicious,
+    Malicious.'
+  disabled: false
+  isdetailsoverridden: false
+  name: URLEnrichment.MaxVerdict
+  type: string
+  underlyingoutputcontextpath: URLEnrichment.MaxVerdict
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- threat-intelligence
+- url
+- reputation
+underlyingcontentitem:
+  command: ""
+  id: EnrichURLV2
+  instance: ""
+  name: EnrichURLV2
+  type: script

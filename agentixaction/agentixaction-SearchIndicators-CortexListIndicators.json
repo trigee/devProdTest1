@@ -1,0 +1,147 @@
+args:
+- description: |
+    A JSON-encoded string representing an array of indicator values, for example: '[\"1.1.1.1\", \"8.8.8.8\"]' , '[\"https://unit42.paloaltonetworks.com\", \"https://t.co/i/adsct\"]'.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: value
+  required: false
+  type: string
+  underlyingargname: value
+- description: 'The expiration status of the indicator. Options: active, expired.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: expirationStatus
+  required: false
+  type: string
+  underlyingargname: expirationStatus
+- description: 'A comma-separated list of types of indicators to search. Options:
+    Account, ASN, Attack Pattern, Campaign, CIDR, CVE, Domain, Email, File, Host,
+    IP, IPv6, IPv6CIDR, Malware, Threat Actor.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: type
+  required: false
+  type: string
+  underlyingargname: type
+- description: A comma-separated list of IDs of issues linked to the indicator.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: IssuesIDs
+  required: false
+  type: string
+  underlyingargname: IssuesIDs
+- description: The number of indicators to return, defaults to a max of 25 records.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: size
+  required: false
+  type: string
+  underlyingargname: size
+- description: 'A comma-separated list of indicator verdicts to filter the search
+    results. Options: Malicious, Suspicious, Benign, or Unknown.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: verdict
+  required: false
+  type: string
+  underlyingargname: verdict
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: SearchIndicators
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.22.39
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: CortexListIndicators
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    - tim
+    - xti
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  Searches for indicators within the tenant's indicator database based on arguments provided by the user. This command can be used to retrieve indicators such as IPs, domains, URLs, file hashes, and emails, and supports filtering and result enrichment options.
+display: Cortex - List Indicators
+isdetailsoverridden: false
+locked: false
+name: CortexListIndicators
+outputs:
+- description: The internal ID of each indicator found in the tenant's database.
+  disabled: false
+  isdetailsoverridden: false
+  name: foundIndicators.id
+  type: string
+  underlyingoutputcontextpath: foundIndicators.id
+- description: The type of the indicator (e.g., IP, Domain, URL, File, Email).
+  disabled: false
+  isdetailsoverridden: false
+  name: foundIndicators.indicator_type
+  type: string
+  underlyingoutputcontextpath: foundIndicators.indicator_type
+- description: The value of the indicator.
+  disabled: false
+  isdetailsoverridden: false
+  name: foundIndicators.value
+  type: string
+  underlyingoutputcontextpath: foundIndicators.value
+- description: The verdict or classification assigned to the indicator, if available
+    (e.g., Malicious, Suspicious, Benign).
+  disabled: false
+  isdetailsoverridden: false
+  name: foundIndicators.verdict
+  type: string
+  underlyingoutputcontextpath: foundIndicators.verdict
+- description: The Issue IDs related to the indicator.
+  disabled: false
+  isdetailsoverridden: false
+  name: foundIndicators.IssueIDs
+  type: string
+  underlyingoutputcontextpath: foundIndicators.IssueIDs
+- description: The expiration status of the indicator.
+  disabled: false
+  isdetailsoverridden: false
+  name: foundIndicators.expirationStatus
+  type: string
+  underlyingoutputcontextpath: foundIndicators.expirationStatus
+- description: The timestamp of the last time the indicator was seen.
+  disabled: false
+  isdetailsoverridden: false
+  name: foundIndicators.lastSeen
+  type: string
+  underlyingoutputcontextpath: foundIndicators.lastSeen
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Threat Intel
+underlyingcontentitem:
+  command: ""
+  id: SearchIndicatorAgentix
+  instance: ""
+  name: SearchIndicatorAgentix
+  type: script

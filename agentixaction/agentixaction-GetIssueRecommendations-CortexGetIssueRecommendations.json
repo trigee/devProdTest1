@@ -1,0 +1,194 @@
+args:
+- description: |
+    Comma-separated list of IDs of the issues to get recommendations for (maximum 10 per request).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_ids
+  required: true
+  type: string
+  underlyingargname: issue_ids
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: GetIssueRecommendations
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.5.76
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexGetIssueRecommendations
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  Retrieves recommendations for a Cortex issues, including remediation steps, playbook and quick action suggestions. In addition existing and suggested code blocks will return for relevant AppSec issues.
+display: Cortex - Get Issue Recommendations
+isdetailsoverridden: false
+locked: false
+name: CortexGetIssueRecommendations
+outputs:
+- description: The unique identifier for the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.issue_id
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.issue_id
+- description: The name of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.issue_name
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.issue_name
+- description: The severity of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.severity
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.severity
+- description: The description of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.description
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.description
+- description: The remediation steps and recommendations for the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.remediation
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.remediation
+- description: The ID of the suggested playbook.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.playbook_suggestions.playbook_id
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.playbook_suggestions.playbook_id
+- description: The ID of the suggestion rule that generated this recommendation.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.playbook_suggestions.suggestion_rule_id
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.playbook_suggestions.suggestion_rule_id
+- description: The name of the suggested playbook.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.playbook_suggestions.name
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.playbook_suggestions.name
+- description: An explanation of the suggested playbook.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.playbook_suggestions.comment
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.playbook_suggestions.comment
+- description: The name of the suggested quick action.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.quick_action_suggestions.name
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.quick_action_suggestions.name
+- description: The ID of the suggestion quick action rule that generated this recommendation.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.quick_action_suggestions.suggestion_rule_id
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.quick_action_suggestions.suggestion_rule_id
+- description: The brand of the quick action.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.quick_action_suggestions.brand
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.quick_action_suggestions.brand
+- description: The category of the quick action.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.quick_action_suggestions.category
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.quick_action_suggestions.category
+- description: A description of the quick action.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.quick_action_suggestions.description
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.quick_action_suggestions.description
+- description: The display name of the quick action.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.quick_action_suggestions.pretty_name
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.quick_action_suggestions.pretty_name
+- description: The argument name.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.quick_action_suggestions.arguments.name
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.quick_action_suggestions.arguments.name
+- description: The argument display name.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.quick_action_suggestions.arguments.prettyName
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.quick_action_suggestions.arguments.prettyName
+- description: The argument predefined display value.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.quick_action_suggestions.arguments.prettyPredefined
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.quick_action_suggestions.arguments.prettyPredefined
+- description: The argument description.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.quick_action_suggestions.arguments.description
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.quick_action_suggestions.arguments.description
+- description: Whether the argument is required.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.quick_action_suggestions.arguments.required
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.quick_action_suggestions.arguments.required
+- description: Original vulnerable code.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.existing_code_block
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.existing_code_block
+- description: Code block fix suggestion.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.suggested_code_block
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.suggested_code_block
+- description: The network reachability information for the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.IssueRecommendations.network_reachability
+  type: string
+  underlyingoutputcontextpath: Core.IssueRecommendations.network_reachability
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- recommendations
+- remediation
+- security
+underlyingcontentitem:
+  command: core-get-issue-recommendations
+  id: Cortex Core - Platform
+  instance: ""
+  name: Cortex Core - Platform
+  type: command

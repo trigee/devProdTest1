@@ -1,0 +1,180 @@
+args:
+- description: The XQL query string to execute.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: query
+  required: true
+  type: string
+  underlyingargname: query
+- defaultvalue: 7 days
+  description: 'The time range for the query in relative date or range format. Examples:
+    "1 day", "3 weeks ago", "between 2021-01-01 12:34:56 +02:00 and 2021-02-01 12:34:56
+    +02:00". Default is the last 7 days.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: timeframe
+  required: false
+  type: string
+  underlyingargname: timeframe
+- defaultvalue: "true"
+  description: 'Whether to wait and poll for query results. When true, returns results.
+    When false, doesn''t return results. Options: true, false. Default is true.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: wait_for_results
+  required: false
+  type: string
+  underlyingargname: wait_for_results
+- defaultvalue: XQL Query Results
+  description: The name of the widget to display the query results.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: true
+  name: widget_name
+  required: true
+  type: string
+  underlyingargname: widget_name
+- defaultvalue: Widget displaying XQL query results
+  description: A description of the widget that displays the query results.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: true
+  name: widget_description
+  required: true
+  type: string
+  underlyingargname: widget_description
+- description: A unique alphanumeric identifier for a specific XQL query execution.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: execution_id
+  required: false
+  type: string
+  underlyingargname: execution_id
+category: Endpoint
+commonfields:
+  id: CortexRunXQLQuery
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.14.0
+    isoverridable: false
+    itemVersion: 3.5.76
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexRunXQLQuery
+    propagationLabels: []
+    supportedModules:
+    - xsiam
+    - agentix
+    - cloud
+    - cloud_posture
+    - cloud_runtime_security
+    - edr
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |-
+  Executes an XQL query on the Cortex platform.
+  When wait_for_results is set to true, polls every 10 seconds until results are available or timeout is reached, then returns the query results.
+  Results are limited to a maximum of 1000 records. If the query specifies a larger LIMIT, it will be automatically reduced to 1000.
+  IMPORTANT: If asked to visualize existing XQL execution results with a chart (widget / graph), you must first regenerate the query using the same method that produced the original query, adding only the visualization clause at the end of the query and nothing else, and reuse the execution ID of the original XQL run to avoid unnecessary query cost, since queries that differ only by optional `| view graph ...` suffixes return the same results.
+display: Cortex - Run XQL Query
+isdetailsoverridden: false
+locked: false
+name: CortexRunXQLQuery
+outputs:
+- description: An integer representing the unique ID of the XQL query execution.
+  disabled: false
+  isdetailsoverridden: false
+  name: GenericXQLQuery.execution_id
+  type: string
+  underlyingoutputcontextpath: GenericXQLQuery.execution_id
+- description: 'The status of the query. Options: SUCCESS, FAIL, PENDING.'
+  disabled: false
+  isdetailsoverridden: false
+  name: GenericXQLQuery.status
+  type: string
+  underlyingoutputcontextpath: GenericXQLQuery.status
+- description: Error information in case of a failed query.
+  disabled: false
+  isdetailsoverridden: false
+  name: GenericXQLQuery.error_details
+  type: string
+  underlyingoutputcontextpath: GenericXQLQuery.error_details
+- description: URL to view the complete query results in the Query Center.
+  disabled: false
+  isdetailsoverridden: false
+  name: GenericXQLQuery.query_url
+  type: string
+  underlyingoutputcontextpath: GenericXQLQuery.query_url
+- description: Integer representing the number of results returned.
+  disabled: false
+  isdetailsoverridden: false
+  name: GenericXQLQuery.number_of_results
+  type: number
+  underlyingoutputcontextpath: GenericXQLQuery.number_of_results
+- description: The query results data. Only populated when wait_for_results is set
+    to true.
+  disabled: false
+  isdetailsoverridden: false
+  name: GenericXQLQuery.results
+  type: unknown
+  underlyingoutputcontextpath: GenericXQLQuery.results
+- description: Contains a message if the query's LIMIT clause was automatically reduced
+    to 1000. When this field is non-empty, the results are capped and may not include
+    all matching records. Inform the user about this limitation.
+  disabled: false
+  isdetailsoverridden: false
+  name: GenericXQLQuery.query_limit_modified
+  type: string
+  underlyingoutputcontextpath: GenericXQLQuery.query_limit_modified
+- description: The name of the widget to display the query results.
+  disabled: false
+  isdetailsoverridden: false
+  name: GenericXQLQuery.widget_name
+  type: string
+  underlyingoutputcontextpath: GenericXQLQuery.widget_name
+- description: A description of the widget that displays the query results.
+  disabled: false
+  isdetailsoverridden: false
+  name: GenericXQLQuery.widget_description
+  type: string
+  underlyingoutputcontextpath: GenericXQLQuery.widget_description
+- description: The name of the query, used for identification purposes.
+  disabled: false
+  isdetailsoverridden: false
+  name: GenericXQLQuery.query_name
+  type: string
+  underlyingoutputcontextpath: GenericXQLQuery.query_name
+- description: The timeframe used for the query execution.
+  disabled: false
+  isdetailsoverridden: false
+  name: GenericXQLQuery.timeframe
+  type: unknown
+  underlyingoutputcontextpath: GenericXQLQuery.timeframe
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Utilities
+underlyingcontentitem:
+  command: runXQLQuery
+  id: _builtin_
+  instance: ""
+  name: _builtin_
+  type: command

@@ -1,0 +1,380 @@
+args:
+- description: A comma-separated list of case IDs to retrieve extra data. Use up to
+    10 IDs.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: case_id
+  required: true
+  type: string
+  underlyingargname: case_id
+- defaultvalue: "1000"
+  description: Maximum number of issues to return per case.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issues_limit
+  required: false
+  type: number
+  underlyingargname: issues_limit
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: GetCaseExtraData
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.15.0
+    isoverridable: false
+    itemVersion: 1.1.0
+    packID: AgentixAction_GetCaseExtraData
+    packName: Cortex - Get Case
+    packPropagationLabels:
+    - all
+    prevname: GetCase_deprecated
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: Deprecated. Use the CortexListCases action instead. Retrieves extra data
+  fields of a specific case, including related issues, key artifacts, and network
+  artifacts.
+display: Get Case - Deprecated
+isdetailsoverridden: false
+locked: false
+name: GetCase_deprecated
+outputs:
+- description: The unique identifier for the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.case_id
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.case_id
+- description: The name assigned to the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.case_name
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.case_name
+- description: The timestamp (in epoch format) when the case was created.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.creation_time
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.creation_time
+- description: The timestamp (in epoch format) when the case was last modified.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.modification_time
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.modification_time
+- description: The timestamp when the activity related to the case was first detected.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.detection_time
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.detection_time
+- description: The current status of the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.status
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.status
+- description: The severity level of the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.severity
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.severity
+- description: A detailed textual description of the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.description
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.description
+- description: The email address of the user assigned to the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.assigned_user_mail
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.assigned_user_mail
+- description: The display name of the user assigned to the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.assigned_user_pretty_name
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.assigned_user_pretty_name
+- description: The total number of issues associated with the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.issue_count
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.issue_count
+- description: The total number of low-severity issues within the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.low_severity_issue_count
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.low_severity_issue_count
+- description: The total number of medium-severity issues within the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.med_severity_issue_count
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.med_severity_issue_count
+- description: The total number of high-severity issues within the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.high_severity_issue_count
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.high_severity_issue_count
+- description: The total number of critical-severity issues within the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.critical_severity_issue_count
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.critical_severity_issue_count
+- description: The number of unique users involved in the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.user_count
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.user_count
+- description: The number of unique hosts involved in the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.host_count
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.host_count
+- description: A collection of notes or comments added to the case by analysts.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.notes
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.notes
+- description: The comment entered by a user when resolving the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.resolve_comment
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.resolve_comment
+- description: The severity level manually set by a user, which may override the calculated
+    severity for the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.manual_severity
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.manual_severity
+- description: A description of the case that was manually entered by a user.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.manual_description
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.manual_description
+- description: The direct URL to view the case in the XDR platform.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.xdr_url
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.xdr_url
+- description: A flag indicating whether the case has been starred or marked as a
+    favorite.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.starred
+  type: boolean
+  underlyingoutputcontextpath: Core.CaseExtraData.starred
+- description: A comma-separated list of hostnames involved in the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.hosts
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.hosts
+- description: The products or sources that contributed issues to this case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.case_sources
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.case_sources
+- description: The case's risk score as calculated by automated detection rules.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.rule_based_score
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.rule_based_score
+- description: A risk score manually assigned to the case by a user.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.manual_score
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.manual_score
+- description: The number of times a file associated with this case was identified
+    as malicious by WildFire.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.wildfire_hits
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.wildfire_hits
+- description: The current status of the issue grouping or clustering process for
+    this case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.issues_grouping_status
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.issues_grouping_status
+- description: A list of MITRE ATT&CK technique IDs and names observed in the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.mitre_techniques_ids_and_names
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.mitre_techniques_ids_and_names
+- description: A list of MITRE ATT&CK tactic IDs and names observed in the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.mitre_tactics_ids_and_names
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.mitre_tactics_ids_and_names
+- description: A comma-separated list of categories for the issues included in the
+    case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.issue_categories
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.issue_categories
+- description: IDs of related issues.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.issue_ids
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.issue_ids
+- description: The total number of network artifacts associated with the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.network_artifacts.total_count
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.network_artifacts.total_count
+- description: The type of network artifact.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.network_artifacts.data.type
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.network_artifacts.data.type
+- description: The number of issues in the case that involve this network artifact.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.network_artifacts.data.issue_count
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.network_artifacts.data.issue_count
+- description: A flag indicating if the network artifact was added manually by a user.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.network_artifacts.data.is_manual
+  type: boolean
+  underlyingoutputcontextpath: Core.CaseExtraData.network_artifacts.data.is_manual
+- description: The domain name of the network artifact.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.network_artifacts.data.network_domain
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.network_artifacts.data.network_domain
+- description: The remote IP address of the network artifact.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.network_artifacts.data.network_remote_ip
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.network_artifacts.data.network_remote_ip
+- description: The remote port number of the network artifact.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.network_artifacts.data.network_remote_port
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.network_artifacts.data.network_remote_port
+- description: The country associated with the network artifact's IP address.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.network_artifacts.data.network_country
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.network_artifacts.data.network_country
+- description: The total number of file artifacts associated with the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.file_artifacts.total_count
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.file_artifacts.total_count
+- description: The number of issues in the case that involve this file artifact.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.file_artifacts.data.issue_count
+  type: number
+  underlyingoutputcontextpath: Core.CaseExtraData.file_artifacts.data.issue_count
+- description: The name of the file artifact.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.file_artifacts.data.file_name
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.file_artifacts.data.file_name
+- description: The SHA256 hash of the file artifact.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.file_artifacts.data.File_sha256
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.file_artifacts.data.File_sha256
+- description: The digital signature status of the file artifact.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.file_artifacts.data.file_signature_status
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.file_artifacts.data.file_signature_status
+- description: The verdict from WildFire for this file.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.file_artifacts.data.file_wildfire_verdict
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.file_artifacts.data.file_wildfire_verdict
+- description: A flag indicating whether the file artifact is considered malicious.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.file_artifacts.data.is_malicous
+  type: boolean
+  underlyingoutputcontextpath: Core.CaseExtraData.file_artifacts.data.is_malicous
+- description: A flag indicating if the file artifact was added manually by a user.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.file_artifacts.data.is_manual
+  type: boolean
+  underlyingoutputcontextpath: Core.CaseExtraData.file_artifacts.data.is_manual
+- description: A flag indicating if the file artifact is a process executable.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.file_artifacts.data.is_process
+  type: boolean
+  underlyingoutputcontextpath: Core.CaseExtraData.file_artifacts.data.is_process
+- description: A flag indicating if the verdict on the file artifact has low confidence.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.file_artifacts.data.low_confidence
+  type: boolean
+  underlyingoutputcontextpath: Core.CaseExtraData.file_artifacts.data.low_confidence
+- description: The type of the file artifact.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseExtraData.file_artifacts.data.type
+  type: string
+  underlyingoutputcontextpath: Core.CaseExtraData.file_artifacts.data.type
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: ""
+  id: GetCase
+  instance: ""
+  name: GetCase
+  type: script

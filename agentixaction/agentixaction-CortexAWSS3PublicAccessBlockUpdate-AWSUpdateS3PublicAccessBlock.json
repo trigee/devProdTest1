@@ -1,0 +1,119 @@
+args:
+- description: The AWS account ID.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: account_id
+  required: true
+  type: string
+  underlyingargname: account_id
+- description: 'The AWS region where the S3 bucket is located. For example: us-east-1,
+    eu-west-1.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: region
+  required: true
+  type: string
+  underlyingargname: region
+- description: The name of the Amazon S3 bucket to set the public access block configuration
+    on.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: bucket
+  required: true
+  type: string
+  underlyingargname: bucket
+- description: Whether Amazon S3 should block public access control lists (ACLs) for
+    this bucket and objects in this bucket. Set to true to block public ACLs.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: block_public_acls
+  required: false
+  type: string
+  underlyingargname: block_public_acls
+- description: Whether Amazon S3 should ignore public ACLs for this bucket and objects
+    in this bucket. Set to true to ignore public ACLs.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: ignore_public_acls
+  required: false
+  type: string
+  underlyingargname: ignore_public_acls
+- description: Whether Amazon S3 should block public bucket policies for this bucket.
+    Set to true to block public bucket policies.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: block_public_policy
+  required: false
+  type: string
+  underlyingargname: block_public_policy
+- description: Whether Amazon S3 should restrict public bucket policies for this bucket.
+    Set to true to restrict public bucket policies.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: restrict_public_buckets
+  required: false
+  type: string
+  underlyingargname: restrict_public_buckets
+category: Cloud Services
+commonfields:
+  id: CortexAWSS3PublicAccessBlockUpdate
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 2.3.2
+    packID: AWS
+    packName: AWS
+    packPropagationLabels:
+    - all
+    prevname: AWSUpdateS3PublicAccessBlock
+    propagationLabels: []
+    supportedModules:
+    - cloud_posture
+    - agentix
+    - xsiam
+    toServerVersion: ""
+createdby: DBot
+description: 'Creates or modifies the PublicAccessBlock configuration for an Amazon
+  S3 bucket in a specified AWS account and region. Controls whether public access
+  is allowed through ACLs and bucket policies. Use this action to remediate cloud
+  posture issues by enabling all four public access block settings (BlockPublicAcls,
+  IgnorePublicAcls, BlockPublicPolicy, RestrictPublicBuckets) to prevent any public
+  access to the bucket and its objects. This is a remediation action that modifies
+  bucket configuration. REQUIRES: `account_id`, `region`, and the resource identifier.
+  When these are not present in user input, resolve them first via `CortexListAssets`
+  using the issue''s asset_id or asset_name.'
+display: AWS Update S3 Public Access Block
+isdetailsoverridden: false
+locked: false
+name: AWSUpdateS3PublicAccessBlock
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Remediation
+- Cloud
+underlyingcontentitem:
+  command: aws-s3-public-access-block-update
+  id: AWS
+  instance: ""
+  name: AWS
+  type: command

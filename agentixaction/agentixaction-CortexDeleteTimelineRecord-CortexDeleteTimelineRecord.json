@@ -1,0 +1,74 @@
+args:
+- description: The ID of the case to delete the timeline record from.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: case_id
+  required: true
+  type: string
+  underlyingargname: case_id
+- description: The ID of the timeline record to delete.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: record_id
+  required: true
+  type: string
+  underlyingargname: record_id
+commonfields:
+  id: CortexDeleteTimelineRecord
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.2.0
+    packID: CortexCaseTimeline
+    packName: Cortex - Case Timeline
+    packPropagationLabels:
+    - all
+    prevname: CortexDeleteTimelineRecord
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:21:09Z"
+createdby: DBot
+description: Deletes a timeline record from a Cortex case. Only manually created records
+  can be deleted.
+display: Cortex - Delete Timeline Record
+isdetailsoverridden: false
+locked: false
+name: CortexDeleteTimelineRecord
+outputs:
+- description: The ID of the deleted timeline record.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.record_id
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.record_id
+- description: Whether the delete operation completed successfully.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.success
+  type: boolean
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.success
+- description: The ID of the case the timeline record was deleted from.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.case_id
+  type: number
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.case_id
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: deleteTimelineRecord
+  id: _any_
+  instance: ""
+  name: _any_
+  type: command

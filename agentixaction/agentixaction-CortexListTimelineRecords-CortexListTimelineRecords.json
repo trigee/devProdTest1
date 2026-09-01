@@ -1,0 +1,427 @@
+args:
+- description: The ID of the case to retrieve timeline records for.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: case_id
+  required: true
+  type: string
+  underlyingargname: case_id
+- description: Filter by a specific Record ID. Returns only the record with this exact
+    ID.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: record_id
+  required: false
+  type: string
+  underlyingargname: record_id
+- description: |-
+    Filter by the Type of timeline record. A comma-separated list.
+    Use "Case activity" to find analyst notes and case management actions.
+    Use "Detection" to find detection-related events.
+    Use "Response" to find response actions.
+    Options: Case activity, Detection, Automation, System update, Response.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: record_type
+  required: false
+  type: string
+  underlyingargname: record_type
+- description: |-
+    Filter by the Subtype of timeline record. A comma-separated list.
+    Options: Case created, Case assigned, Status changed, Case starred, Case merged, Severity changed, Score changed, Description changed, Name changed, Field updated, Comment added / deleted, Issues grouped, Issues linked to case, Issues unlinked from case, Note added, Issue created, Playbook executed, Response action.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: record_subtype
+  required: false
+  type: string
+  underlyingargname: record_subtype
+- description: Filter by Record Name. Returns records whose name contains this text
+    (partial match, case-insensitive).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: record_name
+  required: false
+  type: string
+  underlyingargname: record_name
+- description: |-
+    Filter by Source (who created the record). A comma-separated list.
+    Options: User, Automation, System, API Key.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: source
+  required: false
+  type: string
+  underlyingargname: source
+- description: Filter by Source ID (the creator's display name). For user-created
+    records this is the username or email. For automation-created records this is
+    "Automation". Supports partial match.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: source_id
+  required: false
+  type: string
+  underlyingargname: source_id
+- description: A comma-separated list of named timeline names to filter by. Returns
+    records that belong to any of the specified timelines.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: timelines
+  required: false
+  type: string
+  underlyingargname: timelines
+- description: A comma-separated list of Tags to filter by. Returns records that have
+    any of the specified tags.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: tags
+  required: false
+  type: string
+  underlyingargname: tags
+- description: Filter by Evidence status. Set to true to return only records marked
+    as evidence. Set to false to return only records not marked as evidence. Leave
+    empty to return all records.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: is_evidence
+  required: false
+  type: string
+  underlyingargname: is_evidence
+- description: Filter by Evidence Comment text. Returns records whose evidence comment
+    contains this text (partial match).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: evidence_comment
+  required: false
+  type: string
+  underlyingargname: evidence_comment
+- description: Filter records flagged as evidence on or after this time (Evidence
+    Flag Time). Supports relative and absolute dates, for example 2 days ago, 2024-01-15T10:00:00Z.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: evidence_flag_time_start_time
+  required: false
+  type: date
+  underlyingargname: evidence_flag_time_start_time
+- description: Filter records flagged as evidence on or before this time (Evidence
+    Flag Time). Supports relative and absolute dates, for example 2024-01-15T10:00:00Z.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: evidence_flag_time_end_time
+  required: false
+  type: date
+  underlyingargname: evidence_flag_time_end_time
+- description: Filter by Evidence Flag By (who flagged the record as evidence). Supports
+    partial match on username.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: evidence_flag_by
+  required: false
+  type: string
+  underlyingargname: evidence_flag_by
+- description: Filter by Record Creation Time - on or after this time (when the record
+    was added to the timeline, not when the event occurred). Supports relative and
+    absolute dates, for example 2 days ago, 2024-01-15T10:00:00Z.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: record_creation_time_start_time
+  required: false
+  type: date
+  underlyingargname: record_creation_time_start_time
+- description: Filter by Record Creation Time - on or before this time (when the record
+    was added to the timeline, not when the event occurred). Supports relative and
+    absolute dates, for example 2024-01-15T10:00:00Z.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: record_creation_time_end_time
+  required: false
+  type: date
+  underlyingargname: record_creation_time_end_time
+- description: Filter by Occurred At - on or after this time (when the event actually
+    happened, not when the record was created). Supports relative and absolute dates,
+    for example 2 days ago, 2024-01-15T10:00:00Z.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: occurred_at_start_time
+  required: false
+  type: date
+  underlyingargname: occurred_at_start_time
+- description: Filter by Occurred At - on or before this time (when the event actually
+    happened, not when the record was created). Supports relative and absolute dates,
+    for example 2024-01-15T10:00:00Z.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: occurred_at_end_time
+  required: false
+  type: date
+  underlyingargname: occurred_at_end_time
+- defaultvalue: occurred_at
+  description: |-
+    Field to sort results by. Default is occurred_at (Occurred At timestamp, most recent first).
+    Options: occurred_at, record_creation_time, record_type, record_subtype, record_name, source, is_evidence.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: sort_field
+  required: false
+  type: string
+  underlyingargname: sort_field
+- defaultvalue: DESC
+  description: 'Sort order for results. Default is DESC (most recent first). Options:
+    ASC, DESC.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: sort_order
+  required: false
+  type: string
+  underlyingargname: sort_order
+- defaultvalue: "50"
+  description: Maximum number of timeline records to return per page. Default is 50.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: limit
+  required: false
+  type: number
+  underlyingargname: limit
+- defaultvalue: "0"
+  description: Page number for pagination (zero-based). Default is 0 (the first page).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: page
+  required: false
+  type: number
+  underlyingargname: page
+commonfields:
+  id: CortexListTimelineRecords
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.2.0
+    packID: CortexCaseTimeline
+    packName: Cortex - Case Timeline
+    packPropagationLabels:
+    - all
+    prevname: CortexListTimelineRecords
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:21:09Z"
+createdby: DBot
+description: |-
+  Retrieves timeline records from a Cortex case based on filter criteria.
+  Returns record details including Type, Record Name, Source, Evidence status, and timestamps.
+  Multiple filters are combined with AND logic. If no filters are specified, all records are returned.
+  Note: This action may return partial results based on pagination limits.
+display: Cortex - List Timeline Records
+isdetailsoverridden: false
+locked: false
+name: CortexListTimelineRecords
+outputs:
+- description: The ID of the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.case_id
+  type: number
+  underlyingoutputcontextpath: Core.Case.case_id
+- description: The unique Record ID of the timeline record.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.record_id
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.record_id
+- description: 'The Type of the timeline record. Possible values: Case activity, Detection,
+    Automation, System update, Response.'
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.record_type
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.record_type
+- description: 'The Subtype of the timeline record. For example: Note added, Playbook
+    executed, Case created.'
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.record_subtype
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.record_subtype
+- description: The Record Name or title of the timeline record.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.record_name
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.record_name
+- description: The Description of the timeline record.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.description
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.description
+- description: The Record Creation Time timestamp in Unix milliseconds (when the record
+    was added to the timeline).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.start_ts
+  type: number
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.start_ts
+- description: The Occurred At timestamp in Unix milliseconds (when the event actually
+    occurred, may differ from start_ts).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.occurred_at
+  type: number
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.occurred_at
+- description: 'The Source that created the record. Possible values: User, Automation,
+    System, API Key, AI.'
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.origin
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.origin
+- description: The Source ID (creator's display name or username).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.origin_id
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.origin_id
+- description: Whether the record is marked as Evidence.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.is_evidence
+  type: boolean
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.is_evidence
+- description: The Evidence Comment explaining why the record was marked as evidence.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.evidence_comment
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.evidence_comment
+- description: The Evidence Flag Time timestamp in Unix milliseconds (when the record
+    was flagged as evidence).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.evidence_flag_time
+  type: number
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.evidence_flag_time
+- description: The Evidence Flag By user who flagged the record as evidence.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.evidence_flag_by
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.evidence_flag_by
+- description: The Tags attached to this individual timeline record.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.tags
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.tags
+- description: The named timelines this individual record belongs to.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.timelines
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.timelines
+- description: The title assigned to the record when it was marked as evidence.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.evidence_title
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.evidence_title
+- description: The Attachments associated with the timeline record.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.attachments
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.attachments
+- description: Whether the timeline record was created manually (as opposed to being
+    system-generated).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.is_manual
+  type: boolean
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.is_manual
+- description: The Query Execution ID linked to this record.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.xql_execution_id
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.xql_execution_id
+- description: The XQL Data (query results) linked to this record.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Records.xql_data
+  type: string
+  underlyingoutputcontextpath: Core.Case.Timeline.Records.xql_data
+- description: The actual number of timeline records returned in this response.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Metadata.returned_count
+  type: number
+  underlyingoutputcontextpath: Core.Case.Timeline.Metadata.returned_count
+- description: The total number of timeline records that match the specified filter
+    criteria.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Metadata.filtered_count
+  type: number
+  underlyingoutputcontextpath: Core.Case.Timeline.Metadata.filtered_count
+- description: The total number of timeline records in the case (unfiltered).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.Timeline.Metadata.total_count
+  type: number
+  underlyingoutputcontextpath: Core.Case.Timeline.Metadata.total_count
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: listTimelineRecords
+  id: _any_
+  instance: ""
+  name: _any_
+  type: command

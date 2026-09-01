@@ -1,0 +1,77 @@
+actionids:
+- SearchCases
+- SearchIssues
+- SearchIndicators
+- CortexUpdateCase
+- GetEndpointData
+- GetUserData
+- SearchAssets
+- SearchAssetGroups
+- EnrichCVE
+- EnrichIP
+- EnrichFile
+- EnrichDomain
+- EnrichURL
+- ExtractIndicators
+- EnrichIndicators
+- ExtractURLContent
+- TavilyExtract
+- jiraCreateIssue
+- SendNotification
+- SendMail
+- ServiceNowCreateTicket
+- CortexQuarantineFiles
+- CortexIsolateEndpoint
+- CortexListIndicatorRelationships
+- CortexRunXQLQuery
+- CortexGetCaseResolutionStatuses
+- CortexListFindings
+- CortexListTimelineRecords
+- CortexCreateTimelineRecord
+- CortexMarkTimelineRecordAsEvidence
+- CortexDeleteTimelineRecord
+- CortexUpdateTimelineRecordTags
+- CortexLinkRecordToTimeline
+- CortexListTimelines
+- CortexListTimelineTags
+- SlackGetConversationHistory
+- CortexListEndpoints
+- CortexRunPlaybook
+builtinactions:
+- InvokeLLM
+color: '#FFE275'
+commonfields:
+  id: case-investigation-agent
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.0.38
+    packID: AIAgents
+    packName: AI Agents
+    packPropagationLabels:
+    - all
+    prevname: Case Investigation
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:19:37Z"
+createdby: DBot
+description: |-
+  This Agent is designed to accelerate and simplify the analyst's workflow by converting complex data points,
+  case context, and event relationships into clear, actionable insights.
+  It understands the whole structure of a case, automatically highlights what matters most,
+  and offers concise summaries that reduce noise and cognitive load.
+
+  Beyond interpretation, it provides quick-access actions and guided steps that help analysts progress investigations
+  with confidence and consistency. Its strength comes from its ability to reason across diverse evidence,
+  stitch narrative context, and translate technical signals into meaningful next moves - enabling a smoother,
+  more intuitive investigation experience end to end.
+locked: false
+name: Case Investigation
+status: enabled
+system: true
+systeminstructions: '{MULAN}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'
+visibility: public

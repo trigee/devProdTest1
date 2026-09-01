@@ -1,0 +1,79 @@
+args:
+- description: The GCP project ID that contains the storage bucket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: project_id
+  required: true
+  type: string
+  underlyingargname: project_id
+- description: The name of the GCS bucket to modify the ACL for.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: resource_name
+  required: true
+  type: string
+  underlyingargname: resource_name
+- defaultvalue: allUsers
+  description: A comma-separated list of entities to remove from the Access Control
+    List. Common entity formats - user:<userId or email>, group:<groupId or email>,
+    allUsers, allAuthenticatedUsers. The default is 'allUsers'.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: entity
+  required: false
+  type: string
+  underlyingargname: entity
+category: Cloud Services
+commonfields:
+  id: CortexGCPStorageBucketPolicyDelete
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.2.2
+    packID: GCP
+    packName: GCP
+    packPropagationLabels:
+    - all
+    prevname: GCPDeleteStorageBucketPolicy
+    propagationLabels: []
+    supportedModules:
+    - cloud_posture
+    - agentix
+    - xsiam
+    toServerVersion: ""
+createdby: DBot
+description: Removes one or more entities from a GCP Cloud Storage bucket's Access
+  Control List (ACL). Use this action to remediate publicly exposed buckets by removing
+  the 'allUsers' entity (which makes the bucket accessible to anyone on the internet)
+  or 'allAuthenticatedUsers' (which makes it accessible to any Google account holder).
+  Can also revoke access for specific users or groups by removing user, group, or
+  domain entities. This is a remediation action that modifies bucket access permissions.
+  REQUIRES `project_id` and `resource_name`; if not in user input, resolve them first
+  via `CortexListAssets` using the issue's asset_id or asset_name.
+display: GCP Delete Storage Bucket Policy Entity
+isdetailsoverridden: false
+locked: false
+name: GCPDeleteStorageBucketPolicy
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Remediation
+- Cloud
+underlyingcontentitem:
+  command: gcp-storage-bucket-policy-delete
+  id: GCP
+  instance: ""
+  name: GCP
+  type: command

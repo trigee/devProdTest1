@@ -1,0 +1,101 @@
+args:
+- description: The name of the assessment profile to create.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: profile_name
+  required: true
+  type: string
+  underlyingargname: profile_name
+- description: The description of the assessment profile to create.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: profile_description
+  required: false
+  type: string
+  underlyingargname: profile_description
+- description: The name of the compliance standard to associate with the profile.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: standard_name
+  required: true
+  type: string
+  underlyingargname: standard_name
+- description: The name of the asset group to apply the assessment profile to.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_group_name
+  required: true
+  type: string
+  underlyingargname: asset_group_name
+- description: |-
+    The day of the week to schedule the assessment. Options include sunday, monday, tuesday, wednesday, thursday, friday, saturday.
+    If left empty, assessment runs daily.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: day
+  required: false
+  type: string
+  underlyingargname: day
+- defaultvalue: "12:00"
+  description: The time of day to run the assessment in HH:MM format.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: time
+  required: false
+  type: string
+  underlyingargname: time
+category: Cloud Security
+commonfields:
+  id: CortexCreateAssessmentProfile
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.15.0
+    isoverridable: false
+    itemVersion: 1.0.2
+    packID: AgentixAction_CortexCreateAssessmentProfile
+    packName: Cortex - Create Assessment Profile
+    packPropagationLabels:
+    - all
+    prevname: CortexCreateAssessmentProfile
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:21:09Z"
+createdby: DBot
+description: Creates a new assessment profile with specified parameters.
+display: Cortex - Create Assessment Profile
+isdetailsoverridden: false
+locked: false
+name: CortexCreateAssessmentProfile
+outputs:
+- description: The unique identifier of the newly created assessment profile.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AssessmentProfile.assessment_profile_id
+  type: string
+  underlyingoutputcontextpath: Core.AssessmentProfile.assessment_profile_id
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: addAssessmentProfile
+  id: _builtin_
+  instance: ""
+  name: _builtin_
+  type: command

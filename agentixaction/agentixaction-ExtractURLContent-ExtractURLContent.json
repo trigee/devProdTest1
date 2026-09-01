@@ -1,0 +1,87 @@
+args:
+- description: |
+    A comma-separated list of URLs to extract content from.  Each value can be a full URL with protocol or a bare domain; if no protocol is given, http:// or https:// is added automatically, based on the Rasterize integration instance configuration (http:// by default). For example "https://example.com" or "https://a.com,https://b.com,https://c.com".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: url
+  required: true
+  type: string
+  underlyingargname: url
+- defaultvalue: "0"
+  description: |
+    Time in seconds to wait before extracting content after page load completes. Useful for pages with dynamic content that loads after initial page rendering. If content extraction fails or returns incomplete results, try increasing this value (e.g., 5-10 seconds for slow-loading dynamic content).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: wait_time
+  required: false
+  type: number
+  underlyingargname: wait_time
+- defaultvalue: "180"
+  description: |
+    Maximum time in seconds to wait for the page to load before timing out. Prevents hanging on slow or unresponsive pages. If you encounter timeout errors, increase this value (e.g., 300 or 600 seconds) for slow-loading pages or pages with heavy content.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: max_page_load_time
+  required: false
+  type: number
+  underlyingargname: max_page_load_time
+category: Utilities
+commonfields:
+  id: ExtractURLContent
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 2.1.41
+    packID: rasterize
+    packName: Rasterize
+    packPropagationLabels:
+    - all
+    prevname: ExtractURLContent
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  Extract rendered content from web pages using Chrome browser automation. Navigates to each URL, waits for full page rendering, and extracts clean text content while preserving structure and converting links to markdown format. Note: This action does not bypass Cloudflare or other anti-bot protections. if a page is protected, extraction may fail for that URL and an alternative web content retrieval action should be used for it.
+display: Extract URL Content
+isdetailsoverridden: false
+locked: false
+name: ExtractURLContent
+outputs:
+- description: The URL that was processed, with one entry per input URL.
+  disabled: false
+  isdetailsoverridden: false
+  name: Rasterize.URL
+  type: string
+  underlyingoutputcontextpath: Rasterize.URL
+- description: The extracted markdown-formatted page content, with one entry per input
+    URL.
+  disabled: false
+  isdetailsoverridden: false
+  name: Rasterize.Content
+  type: string
+  underlyingoutputcontextpath: Rasterize.Content
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+tags:
+- web-scraping
+- content-extraction
+underlyingcontentitem:
+  command: rasterize-extract
+  id: Rasterize
+  instance: ""
+  name: Rasterize
+  type: command

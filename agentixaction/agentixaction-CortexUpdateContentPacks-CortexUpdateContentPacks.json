@@ -1,0 +1,109 @@
+args:
+- description: A comma-separated list of content pack IDs to update.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: pack_ids
+  required: true
+  type: string
+  underlyingargname: pack_ids
+- defaultvalue: "true"
+  description: Whether to resolve and install missing or outdated mandatory dependencies
+    before installing the requested packs. Default is true.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: install_dependencies
+  required: false
+  type: boolean
+  underlyingargname: install_dependencies
+- defaultvalue: "false"
+  description: When false, aborts and returns a summary if any pack or dependency
+    introduces breaking changes. Set to true only after the user explicitly confirms
+    acceptance. Default is false.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: install_bc
+  required: false
+  type: boolean
+  underlyingargname: install_bc
+commonfields:
+  id: CortexUpdateContentPacks
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.14.0
+    isoverridable: false
+    itemVersion: 1.0.0
+    packID: CortexUpdateContentPacks
+    packName: Cortex - Update Content Packs
+    packPropagationLabels:
+    - all
+    prevname: CortexUpdateContentPacks
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:21:09Z"
+createdby: DBot
+description: Updates one or more Marketplace content packs to their latest available
+  version. If any pack introduces breaking changes, the action aborts and returns
+  the breaking-change details so the user can confirm before re-running with install_bc=true.
+display: Cortex - Update Content Packs
+isdetailsoverridden: false
+locked: false
+name: CortexUpdateContentPacks
+outputs:
+- description: The identifier of the content pack.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ContentPackUpdate.packId
+  type: string
+  underlyingoutputcontextpath: Core.ContentPackUpdate.packId
+- description: The version that was installed or skipped.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ContentPackUpdate.version
+  type: string
+  underlyingoutputcontextpath: Core.ContentPackUpdate.version
+- description: The outcome of the update operation. Either "installed" or "skipped"
+    (already up-to-date).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ContentPackUpdate.status
+  type: string
+  underlyingoutputcontextpath: Core.ContentPackUpdate.status
+- description: The release notes between the previously installed version and the
+    newly installed version.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ContentPackUpdate.releaseNotes
+  type: string
+  underlyingoutputcontextpath: Core.ContentPackUpdate.releaseNotes
+- description: The identifier of the content pack that introduces breaking changes.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ContentPackUpdate.BreakingChanges.packId
+  type: string
+  underlyingoutputcontextpath: Core.ContentPackUpdate.BreakingChanges.packId
+- description: The breaking-change notes for this pack.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ContentPackUpdate.BreakingChanges.summary
+  type: string
+  underlyingoutputcontextpath: Core.ContentPackUpdate.BreakingChanges.summary
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: ""
+  id: CortexUpdateContentPacks
+  instance: ""
+  name: CortexUpdateContentPacks
+  type: script

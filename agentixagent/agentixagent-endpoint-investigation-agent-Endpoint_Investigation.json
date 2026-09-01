@@ -1,0 +1,81 @@
+actionids:
+- SearchIssues
+- CrowdstrikeFalconContainHost
+- MicrosoftDefenderIsolateMachine
+- CrowdstrikeFalconUncontainHost
+- MicrosoftDefenderUnisolateMachine
+- MicrosoftDefenderStopAndQuarantineFile
+- CrowdstrikeFalconSearchDevice
+- MicrosoftDefenderListMachines
+- Microsoft365DefenderAdvancedHunting
+- GetEndpointData
+- ServiceNowCreateTicket
+- jiraCreateIssue
+- jiraGetIssue
+- SendNotification
+- SendMail
+- TavilyExtract
+- ExtractURLContent
+- CortexBlocklistFiles
+- CortexIsolateEndpoint
+- CortexSearchForIndicatorInEvents
+- CortexTerminateProcess
+- CortexGetQuarantinedFilesStatus
+- CortexQuarantineFiles
+- CortexTerminateCausality
+- CortexUnisolateEndpoint
+- SearchCases
+- SetIssue
+- JiraUpdateIssue
+- ServiceNowGetTicket
+- ServiceNowUpdateTicket
+- CortexRunPlaybook
+- CortexRunXQLQuery
+- SlackGetConversationHistory
+- CortexListEndpoints
+- CortexListSystemUsers
+- CortexListEndpointExceptionRules
+- CortexGetEndpointUpdateVersions
+- CortexUpdateEndpointVersion
+- CortexListEndpointScripts
+- CortexRunScriptOnEndpoints
+- CortexUpdateEndpointTags
+- CortexRunMalwareScanOnEndpoint
+- CortexGenerateEndpointSupportFile
+- CortexListAssets
+- CortexCreateWarRoomEntry
+builtinactions:
+- InvokeLLM
+color: '#C95DFF'
+commonfields:
+  id: endpoint-investigation-agent
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.0.38
+    packID: AIAgents
+    packName: AI Agents
+    packPropagationLabels:
+    - all
+    prevname: Endpoint Investigation
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - cloud
+    - cloud_runtime_security
+    - edr
+    - xsiam
+    toServerVersion: ""
+created: "2026-07-28T16:19:37Z"
+createdby: DBot
+description: |-
+  Unifies host-level containment, forensic collection, and remediation across all major EDR/XDR platforms while feeding
+  evidence and status into the SOC's ticketing and collaboration stack
+locked: false
+name: Endpoint Investigation
+status: enabled
+system: true
+visibility: public

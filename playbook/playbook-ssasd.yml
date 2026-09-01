@@ -1,0 +1,114 @@
+adopted: true
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: ""
+    packID: ""
+    packName: ""
+    prevname: ""
+    propagationLabels:
+    - all
+    supportedModules: []
+    toServerVersion: ""
+description: Playbook that generates a summary report for the issue
+id: a95d31bd-99aa-408c-8131-1d4c6978518d
+inputs: []
+name: ssasd
+outlinetasks: {}
+outputs:
+- contextPath: Report.Name
+  description: The report name
+  type: String
+- contextPath: Report.FileID
+  description: The file ID of the generated report
+  type: String
+possibleresponses: []
+quiet: true
+starttaskid: "0"
+tags:
+- AI Assisted
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 931a55a3-f780-4636-83a1-9bbb17963e57
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 931a55a3-f780-4636-83a1-9bbb17963e57
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 50
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    scriptarguments:
+      issueId:
+        simple: ${incident.id}
+      name:
+        simple: Summary Report
+      type:
+        simple: pdf
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Generates a summary report for the current issue.
+      id: e1fcab4b-d630-4c7b-8daa-6554670e6b19
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Generate Summary Report
+      playbooktaskmissingcomponent: null
+      script: Builtin|||generateSummaryReport
+      type: regular
+      version: -1
+    taskid: e1fcab4b-d630-4c7b-8daa-6554670e6b19
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 250
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {},
+    "paper": {
+      "dimensions": {
+        "height": 275,
+        "width": 380,
+        "x": 450,
+        "y": 50
+      }
+    }
+  }

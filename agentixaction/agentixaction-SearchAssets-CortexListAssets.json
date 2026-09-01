@@ -1,0 +1,298 @@
+args:
+- defaultvalue: "100"
+  description: The number of assets to return per page. Default is 100. Max is 5000.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: page_size
+  required: false
+  type: number
+  underlyingargname: page_size
+- defaultvalue: "0"
+  description: Page number (for pagination). The default is 0 (the first page).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: page_number
+  required: false
+  type: number
+  underlyingargname: page_number
+- description: A Comma-separated list of asset names to search for. (e.g., "asset_name1,asset_name2")
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_names
+  required: false
+  type: string
+  underlyingargname: asset_names
+- description: |-
+    A comma-separated list of asset types to search for (using CONTAINS operator).
+    Supported values: "Endpoint", "Server", "Virtual Machine", "EC2 Instance", "Azure VM", "GCP", "S3 Bucket", "Lambda Function", "IAM Role", "Container Image Repository", "Kubernetes Cluster", "Network Interface", "Load Balancer", "Database", "Storage Account", "Security Group", "Subnet", "VPC", "DNS Zone", "Key Vault".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_types
+  required: false
+  type: string
+  underlyingargname: asset_types
+- description: |
+    A JSON encoded string representing a list of tag:value pairs to search for. (e.g., `[{"tag1": "value1"}, {"tag2": "value2"}]`).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_tags
+  required: false
+  type: string
+  underlyingargname: asset_tags
+- description: A Comma-separated list of asset IDs to search for. (e.g., "asset_id1,asset_id2")
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_ids
+  required: false
+  type: string
+  underlyingargname: asset_ids
+- description: A Comma-separated list of asset providers to search for. (e.g., "provider1,provider2")
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_providers
+  required: false
+  type: string
+  underlyingargname: asset_providers
+- description: A Comma-separated list of asset realms to search for. (e.g., "realm1,realm2")
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_realms
+  required: false
+  type: string
+  underlyingargname: asset_realms
+- description: |
+    A JSON encoded string representing a list of asset groups to search for. (e.g., `["group1", "group2"]`).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_groups
+  required: false
+  type: string
+  underlyingargname: asset_groups
+- description: A Comma-separated list of asset categories to search for. (e.g., "category1,category2")
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_categories
+  required: false
+  type: string
+  underlyingargname: asset_categories
+- description: 'A comma-separated list of asset classes to search for. Options: AI,
+    API, Application, Code, Compute, Data, Device, External Surface, Identity, Management,
+    Network, Organization, Other, Security Services.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_classes
+  required: false
+  type: string
+  underlyingargname: asset_classes
+- description: A comma-separated list of software package versions to search for.
+    (e.g., "0.23.0,5.2.0").
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: software_package_versions
+  required: false
+  type: string
+  underlyingargname: software_package_versions
+- description: A comma-separated list of Kubernetes cluster versions to search for.
+    (e.g., "1.22,1.3").
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: kubernetes_cluster_versions
+  required: false
+  type: string
+  underlyingargname: kubernetes_cluster_versions
+category: Endpoint
+commonfields:
+  id: SearchAssets
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.5.76
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexListAssets
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  Retrieves asset information from the Cortex platform using various filters. Use this action to automatically fetch asset details instead of prompting the user for asset-specific information.
+display: Cortex - List Assets
+isdetailsoverridden: false
+locked: false
+name: CortexListAssets
+outputs:
+- description: The external provider ID of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.external_provider_id
+  type: string
+  underlyingoutputcontextpath: Core.Asset.external_provider_id
+- description: The first time the asset was observed.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.first_observed
+  type: unknown
+  underlyingoutputcontextpath: Core.Asset.first_observed
+- description: The tags of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.tags
+  type: unknown
+  underlyingoutputcontextpath: Core.Asset.tags
+- description: The realm of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.realm
+  type: unknown
+  underlyingoutputcontextpath: Core.Asset.realm
+- description: The ID of the asset type.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.type.id
+  type: string
+  underlyingoutputcontextpath: Core.Asset.type.id
+- description: Critical issues related to the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.related_issues.critical_issues
+  type: unknown
+  underlyingoutputcontextpath: Core.Asset.related_issues.critical_issues
+- description: The ID of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.id
+  type: string
+  underlyingoutputcontextpath: Core.Asset.id
+- description: The last time the asset was observed.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.last_observed
+  type: unknown
+  underlyingoutputcontextpath: Core.Asset.last_observed
+- description: The category of the asset type.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.type.category
+  type: string
+  underlyingoutputcontextpath: Core.Asset.type.category
+- description: Critical cases related to the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.related_cases.critical_cases
+  type: unknown
+  underlyingoutputcontextpath: Core.Asset.related_cases.critical_cases
+- description: The group IDs of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.group_ids
+  type: unknown
+  underlyingoutputcontextpath: Core.Asset.group_ids
+- description: The class of the asset type.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.type.class
+  type: string
+  underlyingoutputcontextpath: Core.Asset.type.class
+- description: The related issues breakdown of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.related_issues.issues_breakdown
+  type: unknown
+  underlyingoutputcontextpath: Core.Asset.related_issues.issues_breakdown
+- description: The type of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.type.name
+  type: string
+  underlyingoutputcontextpath: Core.Asset.type.name
+- description: The name of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.name
+  type: string
+  underlyingoutputcontextpath: Core.Asset.name
+- description: The strong ID of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.strong_id
+  type: string
+  underlyingoutputcontextpath: Core.Asset.strong_id
+- description: The cloud region of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.cloud.region
+  type: string
+  underlyingoutputcontextpath: Core.Asset.cloud.region
+- description: The related cases breakdown of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.related_cases.cases_breakdown
+  type: unknown
+  underlyingoutputcontextpath: Core.Asset.related_cases.cases_breakdown
+- description: The asset provider.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.provider
+  type: string
+  underlyingoutputcontextpath: Core.Asset.provider
+- description: The Kubernetes cluster version of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.kubernetes.cluster.version
+  type: string
+  underlyingoutputcontextpath: Core.Asset.kubernetes.cluster.version
+- description: The software package version of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Asset.software_package.version
+  type: string
+  underlyingoutputcontextpath: Core.Asset.software_package.version
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Endpoint
+- Assets
+underlyingcontentitem:
+  command: core-search-assets
+  id: Cortex Core - Platform
+  instance: ""
+  name: Cortex Core - Platform
+  type: command

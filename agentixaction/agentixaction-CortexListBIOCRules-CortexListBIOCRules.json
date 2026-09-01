@@ -1,0 +1,172 @@
+args:
+- description: |
+    A comma-separated list of BIOC rule types to filter by. Options: Collection, Credential Access, Discovery, Dropper, Evasion, Execution, Exfiltration, File Privilege Manipulation, File Type Obfuscation, Infiltration, Lateral Movement, Other, Persistence, Privilege Escalation, Reconnaissance, Tampering.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: type
+  required: false
+  type: string
+  underlyingargname: type
+- description: |
+    A comma-separated list of BIOC rule names to filter by. Supports partial matching.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: name
+  required: false
+  type: string
+  underlyingargname: name
+- description: |
+    Filter by the indicator text of the BIOC rule. Supports partial matching.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: indicator
+  required: false
+  type: string
+  underlyingargname: indicator
+- defaultvalue: "200"
+  description: The number of results to return per page.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: page_size
+  required: false
+  type: string
+  underlyingargname: page_size
+- defaultvalue: "0"
+  description: The page number to retrieve (0-based).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: page
+  required: false
+  type: string
+  underlyingargname: page
+commonfields:
+  id: CortexListBIOCRules
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.16.0
+    isoverridable: false
+    itemVersion: 1.0.0
+    packID: AgentixAction_CortexListBIOCRules
+    packName: Cortex - List BIOC Rules
+    packPropagationLabels:
+    - all
+    prevname: CortexListBIOCRules
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-08-17T11:15:33Z"
+createdby: DBot
+description: |
+  Returns BIOC rules from the BIOC rules table, optionally filtered by type, name, or indicator. Use this action to review behavioral detection rules, audit BIOC coverage, or investigate which behavioral patterns are being monitored across the tenant. Results are paginated - to get a complete picture of all BIOC rules configured in the tenant, all pages need to be retrieved.
+display: Cortex - List BIOC Rules
+isdetailsoverridden: false
+locked: false
+name: CortexListBIOCRules
+outputs:
+- description: The unique ID of the BIOC rule.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.BIOC.rule_id
+  type: number
+  underlyingoutputcontextpath: Core.BIOC.rule_id
+- description: The name of the BIOC rule.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.BIOC.name
+  type: string
+  underlyingoutputcontextpath: Core.BIOC.name
+- description: The behavioral category type of the BIOC rule (e.g. Execution, Persistence).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.BIOC.type
+  type: string
+  underlyingoutputcontextpath: Core.BIOC.type
+- description: The severity level of the BIOC rule (e.g. Low, Medium, High).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.BIOC.severity
+  type: string
+  underlyingoutputcontextpath: Core.BIOC.severity
+- description: The current status of the BIOC rule (e.g. Enabled, Disabled).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.BIOC.status
+  type: string
+  underlyingoutputcontextpath: Core.BIOC.status
+- description: Whether the BIOC rule uses XQL.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.BIOC.is_xql
+  type: boolean
+  underlyingoutputcontextpath: Core.BIOC.is_xql
+- description: A comment for the BIOC rule.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.BIOC.comment
+  type: string
+  underlyingoutputcontextpath: Core.BIOC.comment
+- description: The indicator pattern of the BIOC rule.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.BIOC.indicator
+  type: string
+  underlyingoutputcontextpath: Core.BIOC.indicator
+- description: The MITRE ATT&CK technique IDs and names associated with the BIOC rule.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.BIOC.mitre_technique_id_and_name
+  type: json
+  underlyingoutputcontextpath: Core.BIOC.mitre_technique_id_and_name
+- description: The MITRE ATT&CK tactic IDs and names associated with the BIOC rule.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.BIOC.mitre_tactic_id_and_name
+  type: json
+  underlyingoutputcontextpath: Core.BIOC.mitre_tactic_id_and_name
+- description: The source of the BIOC rule.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.BIOC.source
+  type: string
+  underlyingoutputcontextpath: Core.BIOC.source
+- description: The number of times the BIOC rule has been triggered.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.BIOC.number_of_issues
+  type: number
+  underlyingoutputcontextpath: Core.BIOC.number_of_issues
+- description: The creation timestamp of the BIOC rule (epoch milliseconds).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.BIOC.creation_time
+  type: number
+  underlyingoutputcontextpath: Core.BIOC.creation_time
+- description: The last modification timestamp of the BIOC rule (epoch milliseconds).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.BIOC.modification_time
+  type: number
+  underlyingoutputcontextpath: Core.BIOC.modification_time
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: getBIOCRules
+  id: _builtin_
+  instance: ""
+  name: _builtin_
+  type: command

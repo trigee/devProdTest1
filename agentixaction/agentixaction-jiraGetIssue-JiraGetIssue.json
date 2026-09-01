@@ -1,0 +1,261 @@
+args:
+- description: A comma-separated string of fields to return (Using the name or ID
+    of the fields) to context data. Supplying `all` will return all the issue fields
+    (which will include nested values), except for the comments, which can be retrieved
+    using the !jira-get-comments command.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: fields
+  required: false
+  type: string
+  underlyingargname: fields
+- description: The issue ID (Issue ID or key is required).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_id
+  required: false
+  type: string
+  underlyingargname: issue_id
+- description: The issue key (Issue ID or key is required).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_key
+  required: false
+  type: string
+  underlyingargname: issue_key
+- description: Displays the headers in human readable format.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: headers
+  required: false
+  type: string
+  underlyingargname: headers
+- defaultvalue: "false"
+  description: |
+    If "true", retrieves the issue attachments and downloads the file to the tenant. Valid values are: true or false.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: get_attachments
+  required: false
+  type: boolean
+  underlyingargname: get_attachments
+- defaultvalue: "false"
+  description: |
+    If "true", expands the issue links (the linked issues and subtasks). Valid values are: true or false.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: expand_links
+  required: false
+  type: boolean
+  underlyingargname: expand_links
+category: Case Management
+commonfields:
+  id: jiraGetIssue
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.3.21
+    packID: Jira
+    packName: Atlassian Jira
+    packPropagationLabels:
+    - all
+    prevname: JiraGetIssue
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    toServerVersion: ""
+createdby: DBot
+description: |
+  Fetches detailed information about a specific issue from Jira by its issue details. This command retrieves fields such as summary, description, status, assignee, reporter, and other relevant metadata to help track and manage Jira issues efficiently.
+display: Jira - Get Issue
+isdetailsoverridden: false
+locked: false
+name: JiraGetIssue
+outputs:
+- description: The ticket ID.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Id
+  type: string
+  underlyingoutputcontextpath: Ticket.Id
+- description: The ticket key.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Key
+  type: string
+  underlyingoutputcontextpath: Ticket.Key
+- description: The user assigned to the ticket, in the form `Username(User email address)`.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Assignee
+  type: string
+  underlyingoutputcontextpath: Ticket.Assignee
+- description: The user who created the ticket.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Creator
+  type: string
+  underlyingoutputcontextpath: Ticket.Creator
+- description: The ticket summary.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Summary
+  type: string
+  underlyingoutputcontextpath: Ticket.Summary
+- description: The ticket status.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Status
+  type: string
+  underlyingoutputcontextpath: Ticket.Status
+- description: The ticket's labels.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Labels
+  type: string
+  underlyingoutputcontextpath: Ticket.Labels
+- description: The ticket's components.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Components
+  type: string
+  underlyingoutputcontextpath: Ticket.Components
+- description: The ticket priority.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Priority
+  type: string
+  underlyingoutputcontextpath: Ticket.Priority
+- description: The ticket project name.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.ProjectName
+  type: string
+  underlyingoutputcontextpath: Ticket.ProjectName
+- description: The due date.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.DueDate
+  type: date
+  underlyingoutputcontextpath: Ticket.DueDate
+- description: The time the ticket was created.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Created
+  type: date
+  underlyingoutputcontextpath: Ticket.Created
+- description: The last time the ticket was viewed.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.LastSeen
+  type: date
+  underlyingoutputcontextpath: Ticket.LastSeen
+- description: The last time the ticket was updated.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.LastUpdate
+  type: date
+  underlyingoutputcontextpath: Ticket.LastUpdate
+- description: The created time of the attachment.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Attachments.created
+  type: date
+  underlyingoutputcontextpath: Ticket.Attachments.created
+- description: The file name of the attachment.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Attachments.filename
+  type: string
+  underlyingoutputcontextpath: Ticket.Attachments.filename
+- description: The id of the attachment.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Attachments.id
+  type: string
+  underlyingoutputcontextpath: Ticket.Attachments.id
+- description: The size (in bytes) of the attachment.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Attachments.size
+  type: number
+  underlyingoutputcontextpath: Ticket.Attachments.size
+- description: The file name.
+  disabled: false
+  isdetailsoverridden: false
+  name: InfoFile.Name
+  type: string
+  underlyingoutputcontextpath: InfoFile.Name
+- description: The ID for locating the file in the War Room.
+  disabled: false
+  isdetailsoverridden: false
+  name: InfoFile.EntryID
+  type: string
+  underlyingoutputcontextpath: InfoFile.EntryID
+- description: The size of the file (in bytes).
+  disabled: false
+  isdetailsoverridden: false
+  name: InfoFile.Size
+  type: number
+  underlyingoutputcontextpath: InfoFile.Size
+- description: The file type, as determined by libmagic (same as displayed in file
+    entries).
+  disabled: false
+  isdetailsoverridden: false
+  name: InfoFile.Type
+  type: string
+  underlyingoutputcontextpath: InfoFile.Type
+- description: The file extension.
+  disabled: false
+  isdetailsoverridden: false
+  name: InfoFile.Extension
+  type: string
+  underlyingoutputcontextpath: InfoFile.Extension
+- description: Basic information about the file.
+  disabled: false
+  isdetailsoverridden: false
+  name: InfoFile.Info
+  type: string
+  underlyingoutputcontextpath: InfoFile.Info
+- description: The ticket's description.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Description
+  type: string
+  underlyingoutputcontextpath: Ticket.Description
+- description: The ticket's raw description.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.RawDescription
+  type: string
+  underlyingoutputcontextpath: Ticket.RawDescription
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Case Management
+underlyingcontentitem:
+  command: jira-get-issue
+  id: Jira V3
+  instance: ""
+  name: Jira V3
+  type: command

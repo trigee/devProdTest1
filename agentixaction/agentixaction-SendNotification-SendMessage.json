@@ -1,0 +1,111 @@
+args:
+- description: The message content.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: true
+  name: message
+  required: false
+  type: string
+  underlyingargname: message
+- description: |
+    The platform used to send the message. Options: Slack, Microsoft Teams, Mattermost, Zoom.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: brand
+  required: true
+  type: string
+  underlyingargname: brand
+- description: The recipient of the message. Can be a user ID (only in Slack and Zoom),
+    username, or email address.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: to
+  required: false
+  type: string
+  underlyingargname: to
+- description: The name of the channel to send the message to.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: channel
+  required: false
+  type: string
+  underlyingargname: channel
+- description: |
+    (Supported only for Slack and Zoom)
+    The ID of the channel to send the message to.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: channel_id
+  required: false
+  type: string
+  underlyingargname: channel_id
+- description: |
+    (Supported only for Microsoft Teams)
+    The team in which the specified channel exists.
+    Leave blank to use the default team configured in the integration parameters.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: team
+  required: false
+  type: string
+  underlyingargname: team
+- description: The ID of the message to which to reply. Supported only for Microsoft
+    Teams and Slack.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: thread_id
+  required: false
+  type: string
+  underlyingargname: thread_id
+category: Messaging and Conferencing
+commonfields:
+  id: SendNotification
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.22.39
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: SendMessage
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  Sends a message to a user or channel. Supports sending a message to Slack, Microsoft Teams, Mattermost or Zoom Chat.
+display: Send Message
+isdetailsoverridden: false
+locked: false
+name: SendMessage
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Messaging and Conferencing
+underlyingcontentitem:
+  command: ""
+  id: SendNotificationAgentix
+  instance: ""
+  name: SendNotificationAgentix
+  type: script

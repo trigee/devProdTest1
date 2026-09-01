@@ -1,0 +1,284 @@
+args:
+- description: |-
+    The chat ID, group chat name (topic), oneOnOne member (Display name/mail/UPN), or channel name.
+    Notes:
+    - Supports all chars.
+    - For chat, the client has to authenticate with Authorization Code Flow.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: conversation_id
+  required: true
+  type: string
+  underlyingargname: conversation_id
+- description: The channel's team. Should be provided when specifying a channel name
+    in the conversation_id argument.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: team_name
+  required: false
+  type: string
+  underlyingargname: team_name
+- defaultvalue: "50"
+  description: The number of results to retrieve.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: limit
+  required: false
+  type: number
+  underlyingargname: limit
+- description: |-
+    Orders results by lastModifiedDateTime or createdDateTime in descending order.
+    Options: lastModifiedDateTime, createdDateTime.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: order_by
+  required: false
+  type: string
+  underlyingargname: order_by
+- description: The link for the next page of results.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: next_link
+  required: false
+  type: string
+  underlyingargname: next_link
+- description: Id of a message to retrieve its replies. Supported only for channels.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: message_id
+  required: false
+  type: string
+  underlyingargname: message_id
+category: Messaging and Conferencing
+commonfields:
+  id: MicrosoftTeamsListMessages
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.5.61
+    packID: MicrosoftTeams
+    packName: Microsoft Teams
+    packPropagationLabels:
+    - all
+    prevname: MicrosoftTeamsListMessages
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |-
+  Lists messages from a Microsoft Teams chat or channel based on the provided chat ID or channel name.
+  To retrieve the next page of results, use the value from the `MicrosoftTeams.MessagesListNextLink` output field as the `next_link` argument in the next execution.
+display: Microsoft Teams - List Messages
+isdetailsoverridden: false
+locked: false
+name: MicrosoftTeamsListMessages
+outputs:
+- description: The conversation's unique identifier.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.conversationId
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.conversationId
+- description: Unique ID of the message.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.id
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.id
+- description: ID of the parent message or root message of the thread.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.replyToId
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.replyToId
+- description: Version number of the message.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.etag
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.etag
+- description: The type of message.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.messageType
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.messageType
+- description: Timestamp of when the message was created.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.createdDateTime
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.createdDateTime
+- description: Timestamp when the message is created (initial setting) or modified,
+    including when a reaction is added or removed.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.lastModifiedDateTime
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.lastModifiedDateTime
+- description: Timestamp when edits to the message were made. Triggers an "Edited"
+    flag in the Teams UI. If no edits are made the value is null.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.lastEditedDateTime
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.lastEditedDateTime
+- description: Timestamp when the message was deleted, or null if not deleted.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.deletedDateTime
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.deletedDateTime
+- description: The subject of the message, in plaintext.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.subject
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.subject
+- description: Summary text of the message that could be used for push notifications
+    and summary views or fall back views.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.summary
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.summary
+- description: If the message was sent in a chat, represents the identity of the chat.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.chatId
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.chatId
+- description: The importance of the message.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.importance
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.importance
+- description: Locale of the message set by the client.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.locale
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.locale
+- description: Link to the message in Microsoft Teams.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.webUrl
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.webUrl
+- description: If the message was sent in a channel, represents the identity of the
+    channel.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.channelIdentity
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.channelIdentity
+- description: Defines the properties of a policy violation set by a data loss prevention
+    (DLP) application.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.policyViolation
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.policyViolation
+- description: If present, represents details of an event that happened in a chat,
+    a channel, or a team, for example, adding new members.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.eventDetail
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.eventDetail
+- description: Details of the sender of the message.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.from
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.from
+- description: The content of the message.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.body.content
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.body.content
+- description: Plaintext/HTML representation of the content of the message.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.body.contentType
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.body.contentType
+- description: References to attached objects like files, tabs, meetings, etc.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.attachments
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.attachments
+- description: The content of the attachments.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.attachments.content
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.attachments.content
+- description: List of entities mentioned in the message.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.mentions
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.mentions
+- description: Reactions for this message (for example, Like).
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesList.messages.reactions
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesList.messages.reactions
+- description: Used if an operation returns partial results. If a response contains
+    a NextLink element, its value specifies a starting point to use for subsequent
+    calls.
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesListNextLink
+  type: string
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesListNextLink
+- description: 'IMPORTANT: returned_count must always be part of the response displayed
+    to the user. This field must be accompanied by its definition: The actual number
+    of script results returned in this specific execution.'
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesListMetadata.returned_count
+  type: number
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesListMetadata.returned_count
+- description: 'IMPORTANT: filtered_count must always be part of the response displayed
+    to the user. This field must be accompanied by its definition: The total number
+    of script results in the system that match the specified filter criteria.'
+  disabled: false
+  isdetailsoverridden: false
+  name: MicrosoftTeams.MessagesListMetadata.filtered_count
+  type: number
+  underlyingoutputcontextpath: MicrosoftTeams.MessagesListMetadata.filtered_count
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Microsoft Teams
+underlyingcontentitem:
+  command: microsoft-teams-list-messages
+  id: Microsoft Teams
+  instance: ""
+  name: Microsoft Teams
+  type: command

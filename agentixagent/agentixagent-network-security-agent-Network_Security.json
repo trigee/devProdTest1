@@ -1,0 +1,74 @@
+actionids:
+- SearchIssues
+- PanOSCustomBlockRule
+- ServiceNowCreateTicket
+- jiraCreateIssue
+- SendNotification
+- SendMail
+- TavilyExtract
+- ExtractURLContent
+- PANOSCheckCertificateExpiration
+- PANOSCheckOutdatedDynamicUpdates
+- PANOSGetSystemInfo
+- PANOSQueryLogs
+- PANOSSecurityPolicyMatch
+- PANOSCheckFWUpgradeReadiness
+- PANOSCheckSecurityConfigurationHygiene
+- PANOSDeleteRule
+- PANOSDisableRule
+- PANOSDownloadAndInstallDynamicUpdates
+- PANOSIdentifyUnusedPolicyRules
+- PANOSCheckVulnerabilities
+- CiscoASACreateRule
+- jiraGetIssue
+- SearchCases
+- SetIssue
+- JiraUpdateIssue
+- ServiceNowGetTicket
+- ServiceNowUpdateTicket
+- SCMConfigJobList
+- CortexRunXQLQuery
+- SlackGetConversationHistory
+- CortexListAssets
+- CortexCreateWarRoomEntry
+builtinactions:
+- InvokeLLM
+color: '#FFE260'
+commonfields:
+  id: network-security-agent
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.0.38
+    packID: AIAgents
+    packName: AI Agents
+    packPropagationLabels:
+    - all
+    prevname: Network Security
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - edr
+    toServerVersion: ""
+conversationstarters:
+- Have any of the SSL certificates on our Panorama and Firewalls expired?
+- Check our Panorama and Firewall devices for SSL certificates expiring in the next
+  30 days
+- Check if any employee accessed any website from the Malware URL category
+- Show me the system information across our PAN-OS devices
+created: "2026-07-28T16:19:37Z"
+createdby: DBot
+description: |-
+  Manages Palo Alto Networks Panorama and Firewalls, as well as third-party network security products. Streamlines work
+  for network security engineers by performing configuration checks, policy optimization, vulnerability assessment,
+  certificate expiration monitoring as well as log analysis and threat response.
+locked: false
+name: Network Security
+status: enabled
+system: true
+systeminstructions: '{MULAN}8CGBY7yXLmsFf3tkco+FEHxkJMCTRgVxbZS6h5Ac7vihbPSNSUckjSLIpkaZgz82Ml+V4t6vVo7G2L8cEO4u4n7SiQGn/4Wl1GyTT0Ub4iLk3DJQsOlfqLSxHDGWZuOvzramNQjqo8Qq2rFNlfx09vu2HmoeYmaUo0yCOJXlwkwCSxtmsgFv7NuH7/SQOSi3GXB09/n/vgyGT+8vQRwzyS/94V+iF2SNREpbI5cCzIRCUw9h57auG73WxFrfMnZBH+Uvawcy5QH1KQAO2nqNeJK4qaOU1WK7QfZcBDNGie8A+kwrO74KFh3BVXjGlO428RXVU4YEMeYr/7eru7q7gT/odC+5EimCscq68G660Gfs3XwP1QaYSC7WdJ+Q6DuDRBNb3/3r4Ob8iiRURENxzsuXPBwH20Gytu3gkBkweDIQBlH76f3JcNtY5COp+SPLjibF6OHzrqfkJrYF6dIx670cYgpUCxrT1YYhRF0yyE3X6bqGB66zIgGbL5JUonmBzeTjy52Dy371UMVilzGXEcSf0ihMch3NlcxgAKpkQoN/jSMozShp+2YTInR5+5juLwcDunwYfP89+DS055KN5eZ1Qg83UE+8R2chUCn2VNV4+a4du8aK4XOJKMbFBCqTjtFKR9SWnQrShhNPsHPLtjhGYN87FiFzKJm528N560PT++NpKaVY0vUQKUXgB2UZUMyhuhU1zj4WDWXjYNMaBs9AYMZoBwKjyIzoZleMNrwXnIIh+WgtDEBOVt4iF9OqPlJvBJC1C+OQe+RCfhLvrvgOO+qJLY10tqAEj3b1qJrMRlh/GWfZzhQkI6GZiATuiKH4aDyxplpflOQqmC6GiqyCdrShWJkWUF6un0+DgwVujZD7JjVdSSSh+iieRDTLwcelqbDmV0UTArJnaYjRe9icHJt+UVcBhNYKKp8UQO2DPBN5GYTsv/oYa/k/JKe1Toxcgq9cTrO2KKVGTAdHZuBO5RNSB0FO0h0tZ0s4IbtxeMBn7bMLUEMeiC2D6X+GeRxmJeBinRotiCfAPwfEgsc5eAoKum9is0JuPQkO63ZRhx6QicsPKreTyvYKacbzKrZpBTyhVsyAOj7GV/FbJnEL/7E48VkinwRrpeQFCkieVFQXFCWiCT/MAFxxjYdF18/DaHzXkqvH0099Ft59ZxPmK6pQUeDVFKJJE6FrjlkQz5Img7w8HB64UeGCXhiIlA+0KAtjltm9M79ki+VNMU2RhiykdEc0JW3n7lsARYxJvIqwXxYumEZkfQAvGWow6aK3wzAqFNDsut76mHubrByLXsvQ6J4CyZUF51+Iq2sPu9aJUb3DXAMbbDl6maMD0Gfn+J41B/DKWPoUQjK3C3k6z/8e1yUrEn4yiRjfY3v5yjdTxXWAbqOpwT/LnGhLvV5enTjldcZMjqFc8RwINM1hef/fpH/uYqm4sC8O/oL6tOFuX/Fwc8dNr7fXsJ4JqK2gdIT08UBJR/pR3lf3hF6Q4vXa79BQA75m3oP7ywNuszxlvlcMuUk9iEjuHi8jwiO7f5YMock154wpnWUwfaaBBtVsptUG5xap25W3DkSJ6b/s/fKki1YWheCgIxtsbCalsSJo7hnQeoS53xtPZmeiPSdyOTQt2y0SADlwab5J20zHMrdNpBnD1XiPZLjc3IOyNhWWoIjiXQjfDRRnvlS8PQ06wa0ODSvNIS8OTGBG73qez74ay5wadMCOAJgFit4DobrB3WxCkYDdCzYwpe4vzspW3Onw107CveLAdmhPJ3KFAdBVYXZmeYKj/91u+rVm+ZjQz8K8JZTsX+etlTqt/M3gGORxWmc2pvpUM2qr9AHltNtTmzmGa5h89Mp/9hWKrs/ZkxXiCIgGiFC7M6z9knZPjDCrVk2CK31OgcN2lGN5WNpbUhGYViKKRGN7d5RDncuOhRBV4nkvfODq4yRnlTbbV9Ckl7uMRjHCfBVB4jk9K80BGRqhDsInu+vOe8oTuT9eKrirNI0hYwT/mwTFgIT8kwznd50Pgb+jEzv+6W3uJJJI3OKnyWnFV3XBjnjk/5ffxfj9Mgs040kAd1PVsJKf/eDa4wnXfaAgMJtdG0/GgDNc9mwPrea+arj2k6rsN4xzw2qYg/2Eko2TJ5pWTzQkQO1z8xUDswIquJ5HZjHYhJRGtj8OH35J/mPmRkVmdzlAofqh6s6Ppq+MCYSzTY1/f/PkELY+HEFmzEPMt34MoHFirvoHFXK+KUSge72vh8mQ6Fe55mTC0qvnNWQHpaCvIotAL1QjLVS6RiPcHAy7dYdbHWcXO/OmMBP74KQh2ExGSdwyG7mdwfbwQEoEXRyyLBZdyQKUM2KbTNU+p/G6hU73tRVKiUkNbpU12//pguld7shvnwmQwXX3fdAKqvGNQU9U5W12xo0ve+seLdHAHRAxo4WLnFDL+mG9/AgI64vkh5shN5IsixsF+muPljaCZNZ0We9OWYySrTUVMsGHhywCEOqWd1RZgmFclGd18M2IMI61MWUqyH77hc2oNK4Y0YNdLRVNtgjh+C0='
+visibility: public

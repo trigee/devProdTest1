@@ -1,0 +1,181 @@
+args:
+- description: |-
+    The IP address to query in the network adapters table.
+    - Can be either IPv4 (e.g., 192.168.1.1) or IPv6 (e.g., 2001:0db8:85a3:0000:0000:8a2e:0370:7334) format.
+    - Supports both single IP addresses and CIDR notation (e.g., 192.168.1.0/24).
+    - Example values: 10.0.0.1, 2001:db8::1, 192.168.1.0/24
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: ip_address
+  required: true
+  type: string
+  underlyingargname: ip_address
+commonfields:
+  id: ServiceNowCMDBEnrichAsset
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 2.8.24
+    packID: ServiceNow
+    packName: ServiceNow
+    packPropagationLabels:
+    - all
+    prevname: ServiceNowCMDBEnrichAsset
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    toServerVersion: ""
+createdby: DBot
+description: Enriches network adapters with ownership and configuration item details
+  from ServiceNow based on the specified IP address.
+display: ServiceNow CMDB - Enrich Asset
+isdetailsoverridden: false
+locked: false
+name: ServiceNowCMDBEnrichAsset
+outputs:
+- description: A brief summary of the results of enrichment.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.summary
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.summary
+- description: The unique system identifier (Sys ID) of the network adapter record
+    in ServiceNow.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.network_adapters.sys_id
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.network_adapters.sys_id
+- description: The name of the network adapter.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.network_adapters.name
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.network_adapters.name
+- description: The IP address assigned to the network adapter.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.network_adapters.ip
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.network_adapters.ip
+- description: The display name of the user assigned as the owner of the network adapter.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.network_adapters.owner
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.network_adapters.owner
+- description: The unique Sys ID of the user assigned to the network adapter.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.network_adapters.owner_id
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.network_adapters.owner_id
+- description: The display name of the related configuration item (CI) associated
+    with this network adapter.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.network_adapters.related_configuration_item_name
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.network_adapters.related_configuration_item_name
+- description: The Sys ID of the related configuration item associated with this network
+    adapter.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.network_adapters.related_configuration_item_id
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.network_adapters.related_configuration_item_id
+- description: A direct URL link to the network adapter record in the ServiceNow instance.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.network_adapters.url
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.network_adapters.url
+- description: The unique system identifier (Sys ID) of the related configuration
+    item (CI) record in ServiceNow.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.related_configuration_items.sys_id
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.related_configuration_items.sys_id
+- description: The name of the related configuration item.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.related_configuration_items.name
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.related_configuration_items.name
+- description: The IP address associated with the configuration item.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.related_configuration_items.ip
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.related_configuration_items.ip
+- description: The display name of the user assigned as the owner of the configuration
+    item.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.related_configuration_items.owner
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.related_configuration_items.owner
+- description: The unique Sys ID of the user assigned to the configuration item.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.related_configuration_items.owner_id
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.related_configuration_items.owner_id
+- description: The hostname of the configuration item.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.related_configuration_items.hostname
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.related_configuration_items.hostname
+- description: The operating system running on the configuration item.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.related_configuration_items.os
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.related_configuration_items.os
+- description: The version of the operating system running on the configuration item.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.related_configuration_items.os_version
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.related_configuration_items.os_version
+- description: The ServiceNow CI class that defines the type of the configuration
+    item (e.g., Server, Application, Network Gear).
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.related_configuration_items.ci_class
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.related_configuration_items.ci_class
+- description: The intended purpose or usage of the configuration item as recorded
+    in ServiceNow.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.related_configuration_items.use
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.related_configuration_items.use
+- description: A direct URL link to the configuration item record in the ServiceNow
+    instance.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNowCMDBAssetEnrichment.related_configuration_items.url
+  type: string
+  underlyingoutputcontextpath: ServiceNowCMDBAssetEnrichment.related_configuration_items.url
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: ""
+  id: ServiceNowCMDBEnrichAsset
+  instance: ""
+  name: ServiceNowCMDBEnrichAsset
+  type: script

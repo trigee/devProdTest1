@@ -1,0 +1,89 @@
+args:
+- description: A comma-separated list of issue IDs for which to create the war room
+    entry.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_ids
+  required: false
+  type: string
+  underlyingargname: issue_ids
+- description: A comma-separated list of case IDs for which to create the war room
+    entry.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: case_ids
+  required: false
+  type: string
+  underlyingargname: case_ids
+- description: The content for the war room entry.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: true
+  name: content
+  required: true
+  type: string
+  underlyingargname: content
+category: Utilities
+commonfields:
+  id: CortexCreateWarRoomEntry
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.2.0
+    packID: CortexCreateWarRoomEntry
+    packName: Cortex - Create War Room Entry
+    packPropagationLabels:
+    - all
+    prevname: CortexCreateWarRoomEntry
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - edr
+    - cloud
+    - cloud_posture
+    - cloud_runtime_security
+    - asm
+    - email_security
+    - exposure_management
+    toServerVersion: ""
+created: "2026-07-28T16:21:09Z"
+createdby: DBot
+description: Creates a war room entry for up to 20 cases and/or issues. At least one
+  of issue_id or case_id must be provided.
+display: Cortex - Create War Room Entry
+isdetailsoverridden: false
+locked: false
+name: CortexCreateWarRoomEntry
+outputs:
+- description: The entry IDs in case of success.
+  disabled: false
+  isdetailsoverridden: false
+  name: CortexCreateWarRoomEntry.result
+  type: string
+  underlyingoutputcontextpath: CortexCreateWarRoomEntry.result
+- description: A list of errors that occurred during the operation.
+  disabled: false
+  isdetailsoverridden: false
+  name: CortexCreateWarRoomEntry.errors
+  type: string
+  underlyingoutputcontextpath: CortexCreateWarRoomEntry.errors
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: ""
+  id: CreateWarRoomEntry
+  instance: ""
+  name: CreateWarRoomEntry
+  type: script

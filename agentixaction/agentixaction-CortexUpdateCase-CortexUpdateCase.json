@@ -1,0 +1,295 @@
+args:
+- description: A comma-separated list of case IDs to update.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: case_ids
+  required: true
+  type: string
+  underlyingargname: case_ids
+- description: The new name for the case.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: case_name
+  required: false
+  type: string
+  underlyingargname: case_name
+- description: The new description for the case.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: description
+  required: false
+  type: string
+  underlyingargname: description
+- description: The email address of the new assignee. Use "unassigned" to remove an
+    existing assignee.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: assignee
+  required: false
+  type: string
+  underlyingargname: assignee
+- description: 'The new status for the case. Options: new, in_progress, resolved.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: status
+  required: false
+  type: string
+  underlyingargname: status
+- description: Additional notes for the case.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: notes
+  required: false
+  type: string
+  underlyingargname: notes
+- description: 'Whether the case should be starred. Options: true, false.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: starred
+  required: false
+  type: boolean
+  underlyingargname: starred
+- description: 'The user-defined severity for the case. Options: low, medium, high,
+    critical.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: user_defined_severity
+  required: false
+  type: string
+  underlyingargname: user_defined_severity
+- description: 'The reason for resolving the case. Only relevant when status is set
+    to resolved. Options: known_issue, duplicate, false_positive, true_positive, security_testing,
+    other.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: resolve_reason
+  required: false
+  type: string
+  underlyingargname: resolve_reason
+- description: Comment when resolving the case. Only relevant when status is set to
+    resolved.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: resolved_comment
+  required: false
+  type: string
+  underlyingargname: resolved_comment
+- description: 'Whether to resolve all alerts associated with the case. Only relevant
+    when status is set to resolved. Options: true, false.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: resolve_all_alerts
+  required: false
+  type: boolean
+  underlyingargname: resolve_all_alerts
+- description: |-
+    A JSON encoded string representing custom field name-value pairs to update (e.g., `{"field1": "value1"}`).
+    Note: multiSelect field types are not supported and cannot be updated using this argument.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: custom_fields
+  required: false
+  type: string
+  underlyingargname: custom_fields
+- description: |-
+    A comma-separated list of case team member identifiers. Each entry must be a canonical identifier - NEVER a display name or partial value:
+      - When the matching case_team_member_types is "USER": a full user email address (e.g. "dummy@dummy.com"). If you only have a user's name, first resolve it via CortexListSystemUsers and use the "user_email" output.
+      - When the matching case_team_member_types is "USER_GROUP": a group UUID (e.g. "0de501d3-abab-4d38-a83b-dd3a39af2387_1710886"). If you only have a group's display name, first resolve it via CortexListSystemGroups and use the "groupId" output.
+    This list is positional and zipped with case_team_member_types and case_team_roles - all three lists must have the same length. To clear the team, pass an empty list together with case_team_operation="REPLACE". Example: case_team_ids="dummy@dummy.com,dummy1@dummy.com,0de501d3-abab-4d38-a83b-dd3a39af2387_1710886".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: case_team_ids
+  required: false
+  type: string
+  underlyingargname: case_team_ids
+- description: 'A comma-separated list of member types, one per entry in case_team_ids.
+    Positional and parallel to case_team_ids and case_team_roles - all three lists
+    must have the same length. Allowed values per entry: USER, USER_GROUP. Example:
+    case_team_member_types="USER,USER,USER_GROUP".'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: case_team_member_types
+  required: false
+  type: string
+  underlyingargname: case_team_member_types
+- description: 'A comma-separated list of team roles, one per entry in case_team_ids.
+    Positional and parallel to case_team_ids and case_team_member_types - all three
+    lists must have the same length. Allowed values per entry: CONTRIBUTOR, WATCHER.
+    Example: case_team_roles= "CONTRIBUTOR,WATCHER,WATCHER".'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: case_team_roles
+  required: false
+  type: string
+  underlyingargname: case_team_roles
+- defaultvalue: REPLACE
+  description: |-
+    Controls how case_team entries are applied. Required whenever any of case_team_ids, case_team_member_types or case_team_roles is provided. Options:
+      - REPLACE: overwrites the entire team with the provided entries (DESTRUCTIVE - any existing members not in the new list are removed). Use only when the requester explicitly says "replace", "set the team to", or equivalent.
+      - ADD: appends entries to the existing team. Use this for additive prompts such as "add X as watcher/contributor", "include also", "assign also".
+      - REMOVE: deletes entries (only id needs to match).
+    Default is REPLACE; explicitly set ADD when the requester's intent is additive, otherwise existing team members will be lost.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: case_team_operation
+  required: false
+  type: string
+  underlyingargname: case_team_operation
+- description: 'Controls case visibility. Options: CASE_SCOPE (any user whose scope
+    permits can view the case), TEAM_ONLY (restricts access to team members only).
+    Only sent when explicitly provided.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: access_mode
+  required: false
+  type: string
+  underlyingargname: access_mode
+commonfields:
+  id: CortexUpdateCase
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.14.1
+    isoverridable: false
+    itemVersion: 3.5.76
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexUpdateCase
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: Updates case properties and returns the updated case information.
+display: Cortex - Update Case
+isdetailsoverridden: false
+locked: false
+name: CortexUpdateCase
+outputs:
+- description: The unique identifier of the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.id
+  type: string
+  underlyingoutputcontextpath: Core.Case.id
+- description: The case severity.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.severity
+  type: string
+  underlyingoutputcontextpath: Core.Case.severity
+- description: The creation time of the case in milliseconds.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.creationTime
+  type: number
+  underlyingoutputcontextpath: Core.Case.creationTime
+- description: The last update time of the case in milliseconds.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.lastUpdateTime
+  type: number
+  underlyingoutputcontextpath: Core.Case.lastUpdateTime
+- description: Domain of the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.caseDomain
+  type: string
+  underlyingoutputcontextpath: Core.Case.caseDomain
+- description: Internal status of the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.internalStatus
+  type: string
+  underlyingoutputcontextpath: Core.Case.internalStatus
+- description: Whether the case has attachments.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.hasAttachment
+  type: boolean
+  underlyingoutputcontextpath: Core.Case.hasAttachment
+- description: User who last modified the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.modifiedBy
+  type: string
+  underlyingoutputcontextpath: Core.Case.modifiedBy
+- description: Notes associated with the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.notes
+  type: string
+  underlyingoutputcontextpath: Core.Case.notes
+- description: The case team member identifier - user email (for memberType=USER)
+    or group UUID (for memberType=USER_GROUP).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.caseTeam.id
+  type: string
+  underlyingoutputcontextpath: Core.Case.caseTeam.id
+- description: 'The case team member type. One of: USER, USER_GROUP.'
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.caseTeam.memberType
+  type: string
+  underlyingoutputcontextpath: Core.Case.caseTeam.memberType
+- description: 'The case team member role. One of: CONTRIBUTOR, WATCHER.'
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.caseTeam.teamRole
+  type: string
+  underlyingoutputcontextpath: Core.Case.caseTeam.teamRole
+- description: 'Case visibility mode. One of: CASE_SCOPE, TEAM_ONLY.'
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.accessMode
+  type: string
+  underlyingoutputcontextpath: Core.Case.accessMode
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: setCase
+  id: _builtin_
+  instance: ""
+  name: _builtin_
+  type: command

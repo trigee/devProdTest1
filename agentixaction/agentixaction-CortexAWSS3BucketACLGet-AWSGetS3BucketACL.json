@@ -1,0 +1,90 @@
+args:
+- description: The AWS account ID.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: account_id
+  required: true
+  type: string
+  underlyingargname: account_id
+- description: 'The AWS region where the S3 bucket is located. For example: us-east-1,
+    eu-west-1.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: region
+  required: true
+  type: string
+  underlyingargname: region
+- description: The S3 bucket whose ACL is being requested.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: bucket
+  required: true
+  type: string
+  underlyingargname: bucket
+category: Cloud Services
+commonfields:
+  id: CortexAWSS3BucketACLGet
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 2.3.2
+    packID: AWS
+    packName: AWS
+    packPropagationLabels:
+    - all
+    prevname: AWSGetS3BucketACL
+    propagationLabels: []
+    supportedModules:
+    - cloud_posture
+    - agentix
+    - xsiam
+    toServerVersion: ""
+createdby: DBot
+description: 'Returns the access control list (ACL) of an Amazon S3 bucket in a specified
+  AWS account and region. Shows the grants that define who has access to the bucket
+  and what permissions they have. Use this action to investigate cloud posture issues
+  related to S3 bucket ACLs such as public access grants to AllUsers or AuthenticatedUsers
+  groups, or overly permissive bucket-level permissions. REQUIRES: `account_id`, `region`,
+  and the resource identifier. When these are not present in user input, resolve them
+  first via `CortexListAssets` using the issue''s asset_id or asset_name.'
+display: AWS Get S3 Bucket ACL
+isdetailsoverridden: false
+locked: false
+name: AWSGetS3BucketACL
+outputs:
+- description: A list of grants defining who has access and what permissions they
+    have.
+  disabled: false
+  isdetailsoverridden: false
+  name: AWS.S3-Buckets.BucketAcl.Grants
+  type: json
+  underlyingoutputcontextpath: AWS.S3-Buckets.BucketAcl.Grants
+- description: Container for the bucket owner's display name and ID.
+  disabled: false
+  isdetailsoverridden: false
+  name: AWS.S3-Buckets.BucketAcl.Owner
+  type: json
+  underlyingoutputcontextpath: AWS.S3-Buckets.BucketAcl.Owner
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Investigation
+- Cloud
+underlyingcontentitem:
+  command: aws-s3-bucket-acl-get
+  id: AWS
+  instance: ""
+  name: AWS
+  type: command

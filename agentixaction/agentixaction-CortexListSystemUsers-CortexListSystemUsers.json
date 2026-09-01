@@ -1,0 +1,121 @@
+args:
+- description: |
+    A comma-separated list of user email addresses to filter the response by. Only users whose email matches an entry in the list are returned.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: emails
+  required: false
+  type: string
+  underlyingargname: emails
+- description: |
+    A comma-separated list of user names (full or partial) to filter the response by. Each entry is matched case-insensitively against the user's first and last name combined; every whitespace-separated word in an entry must appear somewhere in the user's name for that entry to match (so "John Doe" matches a user whose first name is John and last name is Doe, in either order, but not "John Smith"). Multiple entries are OR-ed, so "John Doe,Mary Watson" returns either user. Combine with the emails filter to narrow further.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: names
+  required: false
+  type: string
+  underlyingargname: names
+- defaultvalue: "50"
+  description: |
+    Maximum number of users to return. Default value is 50.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: limit
+  required: false
+  type: number
+  underlyingargname: limit
+commonfields:
+  id: CortexListSystemUsers
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.14.1
+    isoverridable: false
+    itemVersion: 3.5.76
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexListSystemUsers
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  Retrieves the list of Cortex tenant console users (operators, analysts, administrators who log into the Cortex platform itself) along with their core properties (email, first/last name, role, last login, type, groups, scope), optionally filtered by email addresses and/or names. Use this action to resolve a Cortex console user from a display name or partial identifier to a canonical "user_email" before passing them to another action (for example, setting a case assignee or adding a case team member). Do NOT use this action to enrich an investigation subject (an employee or identity observed in alerts/events) or to look up risk levels, directory attributes, or data from external identity providers - this action only returns Cortex platform accounts. Disambiguation rules - when the user is identified by name (the "names" argument):
+    - If exactly one user matches, use their "user_email".
+    - If multiple users match, do NOT guess - ask the requester which user they meant.
+    - If zero users match, do NOT substitute the raw name string for a real email - inform the requester and ask for a more specific name or an email address.
+  Note: The default result size is 50 users; the data returned may be partial.
+display: Cortex - List System Users
+isdetailsoverridden: false
+locked: false
+name: CortexListSystemUsers
+outputs:
+- description: Email address of the user.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.User.user_email
+  type: string
+  underlyingoutputcontextpath: Core.User.user_email
+- description: First name of the user.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.User.user_first_name
+  type: string
+  underlyingoutputcontextpath: Core.User.user_first_name
+- description: Last name of the user.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.User.user_last_name
+  type: string
+  underlyingoutputcontextpath: Core.User.user_last_name
+- description: Role name associated with the user.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.User.role_name
+  type: string
+  underlyingoutputcontextpath: Core.User.role_name
+- description: Timestamp of when the user last logged in.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.User.last_logged_in
+  type: date
+  underlyingoutputcontextpath: Core.User.last_logged_in
+- description: Type of user.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.User.user_type
+  type: string
+  underlyingoutputcontextpath: Core.User.user_type
+- description: Name of user groups associated with the user, if applicable.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.User.groups
+  type: string
+  underlyingoutputcontextpath: Core.User.groups
+- description: Name of scope associated with the user, if applicable.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.User.scope
+  type: string
+  underlyingoutputcontextpath: Core.User.scope
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: getSystemUsers
+  id: _builtin_
+  instance: ""
+  name: _builtin_
+  type: command

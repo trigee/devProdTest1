@@ -1,0 +1,171 @@
+args:
+- description: |
+    A comma-separated list of hashes of the files to enrich.
+    Supported hash types are: MD5, SHA1, SHA256, and SHA512.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: file_hash
+  required: true
+  type: string
+  underlyingargname: file_hash
+- defaultvalue: "true"
+  description: Always set to true.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: external_enrichment
+  required: false
+  type: string
+  underlyingargname: external_enrichment
+- defaultvalue: "true"
+  description: When set to true, the output will include additional fields about the
+    file. Default is true.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: additional_fields
+  required: false
+  type: string
+  underlyingargname: additional_fields
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: EnrichFile
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.14.0
+    isoverridable: false
+    itemVersion: 1.42.13
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: EnrichFile
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud
+    - cloud_runtime_security
+    - edr
+    - tim
+    - xti
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  A comprehensive action to enrich the provided file indicator and retrieve all available data.
+  The results include both tenant-specific internal information and global threat intelligence.
+  Global threat intelligence is retrieved using configured integrations to identify potential threats.
+  ACTION REDUNDANCY WARNING: Due to its comprehensive nature, DO NOT use 'EnrichIndicator' or 'CortexListIndicators' in parallel with this action, as the data is already included in the output.
+  PREREQUISITE: Ensure that one or more of these external integrations are configured in your environment.
+display: Enrich File
+isdetailsoverridden: false
+locked: false
+name: EnrichFile
+outputs:
+- description: 'The numerical risk assessment score of the indicator, ranging from
+    0 to 3. Options are: 0 - Unknown, 1 - Benign, 2 - Suspicious, 3 - Malicious.'
+  disabled: false
+  isdetailsoverridden: false
+  name: FileEnrichment.Results.Score
+  type: number
+  underlyingoutputcontextpath: FileEnrichment.Results.Score
+- description: The security vendor or source used to calculate the verdict score for
+    the indicator.
+  disabled: false
+  isdetailsoverridden: false
+  name: FileEnrichment.Results.Brand
+  type: string
+  underlyingoutputcontextpath: FileEnrichment.Results.Brand
+- description: The size of the file, expressed in bytes.
+  disabled: false
+  isdetailsoverridden: false
+  name: FileEnrichment.Results.Size
+  type: string
+  underlyingoutputcontextpath: FileEnrichment.Results.Size
+- description: 'The reliability score of the reporting Brand. Options: "A+ - Completely
+    reliable", "A - Reliable", "B - Usually reliable", "C - Fairly reliable", "D -
+    Not usually reliable", "E - Unreliable", "F - Reliability cannot be judged".'
+  disabled: false
+  isdetailsoverridden: false
+  name: FileEnrichment.Results.Reliability
+  type: string
+  underlyingoutputcontextpath: FileEnrichment.Results.Reliability
+- description: The MD5 cryptographic hash calculated for the file.
+  disabled: false
+  isdetailsoverridden: false
+  name: FileEnrichment.Hashes.MD5
+  type: string
+  underlyingoutputcontextpath: FileEnrichment.Hashes.MD5
+- description: The SHA1 cryptographic hash calculated for the file.
+  disabled: false
+  isdetailsoverridden: false
+  name: FileEnrichment.Hashes.SHA1
+  type: string
+  underlyingoutputcontextpath: FileEnrichment.Hashes.SHA1
+- description: The SHA256 cryptographic hash calculated for the file.
+  disabled: false
+  isdetailsoverridden: false
+  name: FileEnrichment.Hashes.SHA256
+  type: string
+  underlyingoutputcontextpath: FileEnrichment.Hashes.SHA256
+- description: The original file name retrieved during enrichment.
+  disabled: false
+  isdetailsoverridden: false
+  name: FileEnrichment.Results.AdditionalFields.Name
+  type: string
+  underlyingoutputcontextpath: FileEnrichment.Results.AdditionalFields.Name
+- description: The SSDeep fuzzy hash (context-triggered piecewise hash) used for file
+    similarity matching.
+  disabled: false
+  isdetailsoverridden: false
+  name: FileEnrichment.Hashes.SSDeep
+  type: string
+  underlyingoutputcontextpath: FileEnrichment.Hashes.SSDeep
+- description: The detected file type. Example, Portable Executable, PDF document.
+  disabled: false
+  isdetailsoverridden: false
+  name: FileEnrichment.Results.AdditionalFields.Type
+  type: string
+  underlyingoutputcontextpath: FileEnrichment.Results.AdditionalFields.Type
+- description: The file extension. Example, .exe, .pdf, .zip.
+  disabled: false
+  isdetailsoverridden: false
+  name: FileEnrichment.Results.AdditionalFields.Extension
+  type: string
+  underlyingoutputcontextpath: FileEnrichment.Results.AdditionalFields.Extension
+- description: The actual file hash value of the file indicator that was enriched.
+  disabled: false
+  isdetailsoverridden: false
+  name: FileEnrichment.Value
+  type: string
+  underlyingoutputcontextpath: FileEnrichment.Value
+- description: 'The highest risk classification (maximum verdict) aggregated from
+    all brands verdicts found for this file. Options include: Unknown, Benign, Suspicious,
+    Malicious.'
+  disabled: false
+  isdetailsoverridden: false
+  name: FileEnrichment.MaxVerdict
+  type: string
+  underlyingoutputcontextpath: FileEnrichment.MaxVerdict
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- threat-intelligence
+- file
+- reputation
+underlyingcontentitem:
+  command: ""
+  id: EnrichFileV2
+  instance: ""
+  name: EnrichFileV2
+  type: script

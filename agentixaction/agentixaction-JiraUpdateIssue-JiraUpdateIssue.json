@@ -1,0 +1,277 @@
+args:
+- description: |
+    The key of the issue to edit. For example: "IT-123".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_key
+  required: true
+  type: string
+  underlyingargname: issue_key
+- defaultvalue: rewrite
+  description: |
+    Whether to append or rewrite values. Only string and array fields support appending. For string fields, appending produces: "old value, new value". Options: append, rewrite.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: action
+  required: false
+  type: string
+  underlyingargname: action
+- description: |
+    Target issue status. For example: "In Progress", "Done".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: status
+  required: false
+  type: string
+  underlyingargname: status
+- description: |
+    Exact workflow action to execute (ID or name). For example: "31", "Start Progress".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: transition
+  required: false
+  type: string
+  underlyingargname: transition
+- description: |
+    The parent issue key when editing a sub-task. Jira Cloud only.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: parent_issue_key
+  required: false
+  type: string
+  underlyingargname: parent_issue_key
+- description: The issue summary.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: summary
+  required: false
+  type: string
+  underlyingargname: summary
+- description: The issue description.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: description
+  required: false
+  type: string
+  underlyingargname: description
+- description: A comma-separated list of labels. Label cannot contain spaces.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: labels
+  required: false
+  type: string
+  underlyingargname: labels
+- description: The issue priority. For example "High", "Medium".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: priority
+  required: false
+  type: string
+  underlyingargname: priority
+- description: The due date in YYYY-MM-DD format.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: due_date
+  required: false
+  type: date
+  underlyingargname: due_date
+- description: |
+    The assignee's username. Jira Server only.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: assignee
+  required: false
+  type: string
+  underlyingargname: assignee
+- description: |
+    The assignee's account ID. Jira Cloud only.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: assignee_id
+  required: false
+  type: string
+  underlyingargname: assignee_id
+- description: |
+    Text describing the environment where the issue occurred. For example "IE9 on Windows 7".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: environment
+  required: false
+  type: string
+  underlyingargname: environment
+- description: |
+    A comma-separated list of components. For example: "backend,api".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: components
+  required: false
+  type: string
+  underlyingargname: components
+- description: |
+    Security level name for the issue. For example: "Anyone".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: security
+  required: false
+  type: string
+  underlyingargname: security
+category: Case Management
+commonfields:
+  id: JiraUpdateIssue
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.3.21
+    packID: Jira
+    packName: Atlassian Jira
+    packPropagationLabels:
+    - all
+    prevname: JiraUpdateIssue
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    toServerVersion: ""
+createdby: DBot
+description: |
+  Updates an existing issue from Jira (Cloud or Server).
+display: Jira - Update Issue
+isdetailsoverridden: false
+locked: false
+name: JiraUpdateIssue
+outputs:
+- description: The ticket ID.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Id
+  type: string
+  underlyingoutputcontextpath: Ticket.Id
+- description: The ticket key.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Key
+  type: string
+  underlyingoutputcontextpath: Ticket.Key
+- description: The user assigned to the ticket.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Assignee
+  type: string
+  underlyingoutputcontextpath: Ticket.Assignee
+- description: The user who created the ticket.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Creator
+  type: string
+  underlyingoutputcontextpath: Ticket.Creator
+- description: The ticket summary.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Summary
+  type: string
+  underlyingoutputcontextpath: Ticket.Summary
+- description: The ticket description.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Description
+  type: string
+  underlyingoutputcontextpath: Ticket.Description
+- description: The ticket raw description.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.RawDescription
+  type: string
+  underlyingoutputcontextpath: Ticket.RawDescription
+- description: The ticket labels.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Labels
+  type: string
+  underlyingoutputcontextpath: Ticket.Labels
+- description: The ticket status.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Status
+  type: string
+  underlyingoutputcontextpath: Ticket.Status
+- description: The ticket priority.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Priority
+  type: string
+  underlyingoutputcontextpath: Ticket.Priority
+- description: The ticket project name.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.ProjectName
+  type: string
+  underlyingoutputcontextpath: Ticket.ProjectName
+- description: The ticket due date.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.DueDate
+  type: date
+  underlyingoutputcontextpath: Ticket.DueDate
+- description: The ticket creation time.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.Created
+  type: date
+  underlyingoutputcontextpath: Ticket.Created
+- description: The ticket last viewed time.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.LastSeen
+  type: date
+  underlyingoutputcontextpath: Ticket.LastSeen
+- description: The ticket last update time.
+  disabled: false
+  isdetailsoverridden: false
+  name: Ticket.LastUpdate
+  type: date
+  underlyingoutputcontextpath: Ticket.LastUpdate
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: jira-edit-issue
+  id: Jira V3
+  instance: ""
+  name: Jira V3
+  type: command

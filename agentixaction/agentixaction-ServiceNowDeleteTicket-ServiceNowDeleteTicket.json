@@ -1,0 +1,72 @@
+args:
+- description: |
+    The ID of the ticket to be deleted.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: id
+  required: true
+  type: string
+  underlyingargname: id
+- description: |
+    Type of ServiceNow ticket to delete. Options: incident, problem, change_request, sc_request, sc_task.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: ticket_type
+  required: false
+  type: string
+  underlyingargname: ticket_type
+category: Case Management
+commonfields:
+  id: ServiceNowDeleteTicket
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 2.8.24
+    packID: ServiceNow
+    packName: ServiceNow
+    packPropagationLabels:
+    - all
+    prevname: ServiceNowDeleteTicket
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    toServerVersion: ""
+createdby: DBot
+description: Deletes the specified ticket from ServiceNow based on ticket ID and type.
+display: ServiceNow - Delete Ticket
+isdetailsoverridden: false
+locked: false
+name: ServiceNowDeleteTicket
+outputs:
+- description: The unique ID of the ServiceNow ticket.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNow.Ticket.ID
+  type: string
+  underlyingoutputcontextpath: ServiceNow.Ticket.ID
+- description: The message indicating the result of the ticket deletion operation.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNow.Ticket.DeleteMessage
+  type: string
+  underlyingoutputcontextpath: ServiceNow.Ticket.DeleteMessage
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: servicenow-delete-ticket
+  id: ServiceNow v2
+  instance: ""
+  name: ServiceNow v2
+  type: command

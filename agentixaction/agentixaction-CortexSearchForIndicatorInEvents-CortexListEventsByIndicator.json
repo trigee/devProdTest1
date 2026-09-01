@@ -1,0 +1,98 @@
+args:
+- description: |-
+    A single raw indicator value to search for in the dataset logs. Must be only the indicator itself.
+    Examples of valid values: "8.8.8.8", "evil.com", "44d88612fea8a8f36de82e1278abb02f", "user@example.com".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: indicator
+  required: true
+  type: string
+  underlyingargname: indicator
+- defaultvalue: 7 days
+  description: 'The time range for the search in relative date or range format. Examples:
+    "1 day", "7 days", "3 weeks ago", "between 2021-01-01 12:34:56 +02:00 and 2021-02-01
+    12:34:56 +02:00". Default is the last 7 days.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: time_frame
+  required: false
+  type: string
+  underlyingargname: time_frame
+- defaultvalue: xdr_data
+  description: The name of the dataset to search in. Common datasets include "xdr_data",
+    "cloud_audit", and "identity". Default is "xdr_data".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: data_set
+  required: false
+  type: string
+  underlyingargname: data_set
+- description: 'A descriptive label for this search query. Used to identify the results
+    in the output. For example: "suspicious_ip_search" or "hash_lookup_results".'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: true
+  name: query_name
+  required: true
+  type: string
+  underlyingargname: query_name
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: CortexSearchForIndicatorInEvents
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.5.76
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexListEventsByIndicator
+    propagationLabels: []
+    supportedModules:
+    - xsiam
+    - agentix
+    - cloud_posture
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |-
+  Searches for a specific indicator in Cortex's events and logs and extracts the logs in which the indicator appears.
+  By default, the search is performed in the xdr_data dataset, but a different dataset can be specified.
+display: Cortex - List Events By Indicator
+isdetailsoverridden: false
+locked: false
+name: CortexListEventsByIndicator
+outputs:
+- description: A list of event records where the specified indicator was found.
+  disabled: false
+  isdetailsoverridden: false
+  name: PaloAltoNetworksXQL
+  type: unknown
+  underlyingoutputcontextpath: PaloAltoNetworksXQL
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+tags:
+- indicator enrichment
+- log search
+- threat hunting
+- detection
+underlyingcontentitem:
+  command: ""
+  id: SearchIndicatorInEventsAgentix
+  instance: ""
+  name: SearchIndicatorInEventsAgentix
+  type: script

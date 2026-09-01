@@ -1,0 +1,192 @@
+args:
+- description: |
+    A comma-separated list of indicators to search for in relationships.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: entities
+  required: false
+  type: string
+  underlyingargname: entities
+- description: |
+    A comma-separated list of entity types used to filter results. When provided, the response includes only entities that match the specified types. For example, if searching relationships for example.com and related_entity_types is set to IP, the results will only include related IP addresses, excluding other types like files or URLs. Note: Leave this field empty to return all related entity types. Options: Account, ASN, Attack Pattern, Campaign, CIDR, CVE, Domain, Email, File, Host, IP, IPv6, IPv6CIDR, Malware, Threat Actor.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: related_entity_types
+  required: false
+  type: string
+  underlyingargname: related_entity_types
+- description: |
+    A comma-separated list of relationship types to filter relationships by. Options: attributed-by, communicated-with, compromises, delivered-by, detects, downloads, dropped-by, executed, exploits, hosted-on, indicator-of, is-also, mitigated-by, related-to, remediates, resolved-by, targeted-by, used-by, variant-of.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: relationships
+  required: false
+  type: string
+  underlyingargname: relationships
+- defaultvalue: "20"
+  description: |
+    Maximum number of results to return.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: limit
+  required: false
+  type: number
+  underlyingargname: limit
+- defaultvalue: "false"
+  description: |
+    Return detailed relationship attributes when true. When false, returns basic fields: name, Entity A/B values and types, relationship type.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: verbose
+  required: false
+  type: boolean
+  underlyingargname: verbose
+- defaultvalue: "false"
+  description: |
+    Include revoked relationships when true. When false, returns only active (non-revoked) relationships.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: revoked
+  required: false
+  type: boolean
+  underlyingargname: revoked
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: CortexListIndicatorRelationships
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.42.13
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: CortexListIndicatorRelationships
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    - tim
+    - xti
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  Searches the threat intelligence database for relationships between indicators based on specified criteria. Returns relationships where at least one side of the relationship matches a value in entities or matches a type in related_entity_types. The search can be narrowed to return only specific relationship types between the entities. All filters use AND logic between different filter types, while multiple values within a single filter use OR logic.
+display: Cortex - List Indicator Relationships
+isdetailsoverridden: false
+locked: false
+name: CortexListIndicatorRelationships
+outputs:
+- description: The source entity of the relationship.
+  disabled: false
+  isdetailsoverridden: false
+  name: Relationships.EntityA
+  type: string
+  underlyingoutputcontextpath: Relationships.EntityA
+- description: The destination entity of the relationship.
+  disabled: false
+  isdetailsoverridden: false
+  name: Relationships.EntityB
+  type: string
+  underlyingoutputcontextpath: Relationships.EntityB
+- description: The relationship type name.
+  disabled: false
+  isdetailsoverridden: false
+  name: Relationships.Relationship
+  type: string
+  underlyingoutputcontextpath: Relationships.Relationship
+- description: The reverse relationship type name.
+  disabled: false
+  isdetailsoverridden: false
+  name: Relationships.Reverse
+  type: string
+  underlyingoutputcontextpath: Relationships.Reverse
+- description: The type of the source entity.
+  disabled: false
+  isdetailsoverridden: false
+  name: Relationships.EntityAType
+  type: string
+  underlyingoutputcontextpath: Relationships.EntityAType
+- description: The type of the destination entity.
+  disabled: false
+  isdetailsoverridden: false
+  name: Relationships.EntityBType
+  type: string
+  underlyingoutputcontextpath: Relationships.EntityBType
+- description: Unique identifier for the relationship.
+  disabled: false
+  isdetailsoverridden: false
+  name: Relationships.ID
+  type: string
+  underlyingoutputcontextpath: Relationships.ID
+- description: The confidence rating of the relationship from the source.
+  disabled: false
+  isdetailsoverridden: false
+  name: Relationships.Reliability
+  type: string
+  underlyingoutputcontextpath: Relationships.Reliability
+- description: The source that provided the relationship (integration/feed/vendor
+    name).
+  disabled: false
+  isdetailsoverridden: false
+  name: Relationships.Brand
+  type: string
+  underlyingoutputcontextpath: Relationships.Brand
+- description: Whether the relationship has been revoked by the source.
+  disabled: false
+  isdetailsoverridden: false
+  name: Relationships.Revoked
+  type: boolean
+  underlyingoutputcontextpath: Relationships.Revoked
+- description: The timestamp when the relationship was first observed by the source.
+  disabled: false
+  isdetailsoverridden: false
+  name: Relationships.FirstSeenBySource
+  type: date
+  underlyingoutputcontextpath: Relationships.FirstSeenBySource
+- description: The timestamp when the relationship was last observed by the source.
+  disabled: false
+  isdetailsoverridden: false
+  name: Relationships.LastSeenBySource
+  type: date
+  underlyingoutputcontextpath: Relationships.LastSeenBySource
+- description: The detailed description of the relationship.
+  disabled: false
+  isdetailsoverridden: false
+  name: Relationships.Description
+  type: string
+  underlyingoutputcontextpath: Relationships.Description
+- description: The relationship type classification.
+  disabled: false
+  isdetailsoverridden: false
+  name: Relationships.Type
+  type: string
+  underlyingoutputcontextpath: Relationships.Type
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: ""
+  id: SearchIndicatorRelationshipsAgentix
+  instance: ""
+  name: SearchIndicatorRelationshipsAgentix
+  type: script

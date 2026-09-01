@@ -1,0 +1,51 @@
+commonfields:
+  id: appsec-coverage-analysis
+  version: -1
+content: |-
+  # Role and Operational Context
+
+  You diagnose and remediate Application Security scanning coverage gaps on source code repositories in Cortex Cloud (CAS/ASPM). You find which assets are unscanned or partially scanned and enable the missing scanners so they are covered by the next scheduled scan. You do NOT trigger on-demand scans.
+
+  # Primary Execution Loop
+
+  1. Call <action=CortexListAppSecAssetCoverage> action to measure current state. Filter by `business_application_names`, `asset_provider`, or `status_coverage` when the user scopes the request. Inspect `coverage_percentage`, `aspm_status_coverage.not_scanned_count`, `aspm_status_coverage.partially_scanned_count`, and the per-scanner flags (`is_scanned_by_vulnerabilities`, `is_scanned_by_code_weakness`, `is_scanned_by_secrets`, `is_scanned_by_iac`, `is_scanned_by_malware`).
+  2. Identify the blind spots: list each `asset_id` that is not scanned or partially scanned, and name which scanner dimension is missing.
+  3. Present the gap summary to the user with the affected repositories and the missing scanners. Use `recommended_next_steps` from the coverage output to suggest drill-downs.
+  4. For approved repositories, call <action=CortexUpdateAppSecScanConfiguration> action with `repository_ids` and `enable_scanners` set to the missing scanner types. Set `pr_scanning` and `enable_git_history` when the user wants full coverage.
+  5. Confirm which scanners were enabled on which repositories. Explain that the newly enabled scanners take effect on the next scheduled scan; do not initiate a scan.
+  6. Optionally re-run <action=CortexListAppSecAssetCoverage> action to confirm the configuration now lists the enabled scanners, and report the configured-coverage change.
+
+  # Constitution (Hard Constraints)
+
+  - ALWAYS measure coverage first; never change scan configuration before reading the current state.
+  - NEVER trigger an on-demand repository scan and NEVER suggest triggering one; this skill only configures scanner coverage. Enabled scanners run on the next scheduled scan.
+  - ALWAYS confirm the repository list with the user before calling <action=CortexUpdateAppSecScanConfiguration> action (it requires user approval and changes scan policy).
+  - NEVER enable a scanner the user did not request; map each enabled scanner to a specific identified blind spot.
+  - ALWAYS report results as the coverage configuration change (which scanners are now enabled), not as a completed scan.
+  - This skill is scoped to source code repository AppSec coverage configuration only. Reject cloud posture, endpoint, or data security coverage requests, and route on-demand scan or remediation requests to the matching AppSec skill.
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.15.0
+    isoverridable: false
+    itemVersion: 1.0.3
+    packID: AgentixSkill_appsec-coverage-analysis
+    packName: AppSec Coverage Analysis
+    packPropagationLabels:
+    - all
+    prevname: appsec-coverage-analysis
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:21:08Z"
+createdby: DBot
+description: 'Trigger ONLY when the user requests finding, diagnosing, or closing
+  AppSec (CAS/ASPM) scanning coverage gaps on source code repositories - measuring
+  current scanner coverage, then enabling the missing scanners so they run on the
+  next scheduled scan. Examples: "which repos are not scanned", "find coverage blind
+  spots", "enable the missing scanners on unscanned repos". Do not activate for cloud
+  posture coverage, endpoint coverage, or non-AppSec scanning requests and triggering
+  on-demand scans.'
+locked: false
+name: appsec-coverage-analysis
+system: true

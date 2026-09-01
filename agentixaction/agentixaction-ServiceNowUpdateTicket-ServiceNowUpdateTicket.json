@@ -1,0 +1,333 @@
+args:
+- description: The ID of the ticket to be updated.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: id
+  required: true
+  type: string
+  underlyingargname: id
+- description: A brief summary of the issue.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: short_description
+  required: false
+  type: string
+  underlyingargname: short_description
+- description: Full description of the issue or request.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: description
+  required: false
+  type: string
+  underlyingargname: description
+- description: |
+    Type of ServiceNow ticket to update.
+    Options: incident, problem, change_request, sc_request, sc_task.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: ticket_type
+  required: false
+  type: string
+  underlyingargname: ticket_type
+- description: |
+    Urgency level of the ticket. It can be selected or entered manually.
+    Options: 1 - High, 2 - Medium, 3 - Low.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: urgency
+  required: false
+  type: number
+  underlyingargname: urgency
+- description: |
+    Severity level of the issue. It can be selected or entered manually.
+    Options: 1 - High, 2 - Medium, 3 - Low.
+    Note: The priority field is automatically calculated based on impact and severity. To modify it, update one or both of those two fields.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: severity
+  required: false
+  type: number
+  underlyingargname: severity
+- description: |
+    Business impact of the issue.
+    Options: 1 - High, 2 - Medium, 3 - Low.
+    Note: The priority field is automatically calculated based on impact and severity. To modify it, update one or both of those two fields.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: impact
+  required: false
+  type: number
+  underlyingargname: impact
+- description: |
+    Set the ticket as active.
+    Options: true, false.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: active
+  required: false
+  type: boolean
+  underlyingargname: active
+- description: The user assigned to work on the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: assigned_to
+  required: false
+  type: string
+  underlyingargname: assigned_to
+- description: Caller name.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: caller
+  required: false
+  type: string
+  underlyingargname: caller
+- description: The category assigned to the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: category
+  required: false
+  type: string
+  underlyingargname: category
+- description: Subcategory of the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: subcategory
+  required: false
+  type: string
+  underlyingargname: subcategory
+- description: The ID of a related ticket that has been identified as the root cause
+    of the current issue.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: caused_by
+  required: false
+  type: string
+  underlyingargname: caused_by
+- description: |
+    Ticket state. For example: "1 - New", "2 - In Progress", "3 - On Hold", "6 - Resolved", "7 - Closed", "8 - Canceled".
+    Note: To change a ticket's state to Resolved or Closed, you must also provide a close_code and close_notes.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: state
+  required: false
+  type: string
+  underlyingargname: state
+- description: Public, customer-facing comments shown to the requester/end user, for
+    example, updates or questions.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: comments
+  required: false
+  type: string
+  underlyingargname: comments
+- description: The company associated with the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: company
+  required: false
+  type: string
+  underlyingargname: company
+- description: |
+    When the ticket is due. Format: YYYY-MM-DD HH:MM:SS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: due_date
+  required: false
+  type: string
+  underlyingargname: due_date
+- description: |
+    Time work was completed. Format: YYYY-MM-DD HH:MM:SS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: work_end
+  required: false
+  type: string
+  underlyingargname: work_end
+- description: Internal work notes for IT/support staff, not visible to the requester.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: work_notes
+  required: false
+  type: string
+  underlyingargname: work_notes
+- description: Time when work began.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: work_start
+  required: false
+  type: string
+  underlyingargname: work_start
+- description: ID of the group to assign the ticket to.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: assignment_group
+  required: false
+  type: string
+  underlyingargname: assignment_group
+- description: Comma-separated list of users watching the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: watch_list
+  required: false
+  type: string
+  underlyingargname: watch_list
+- description: Approval status of the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: approval
+  required: false
+  type: string
+  underlyingargname: approval
+- description: |
+    Whether to send notifications to stakeholders.
+    Options: 1 - No, 0 - Yes.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: notify
+  required: false
+  type: number
+  underlyingargname: notify
+- description: |
+    Reason for closing the ticket.
+    For example: "Solved (Work Around)", "Solved (Permanently)", "Solved Remotely (Work Around)", "Solved Remotely (Permanently)", "Not Solved (Not Reproducible)", "Not Solved (Too Costly)", "Closed/Resolved by Caller".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: close_code
+  required: false
+  type: string
+  underlyingargname: close_code
+- description: Additional notes when closing the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: close_notes
+  required: false
+  type: string
+  underlyingargname: close_notes
+- description: Parent ticket ID.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: parent
+  required: false
+  type: string
+  underlyingargname: parent
+- description: Risk score assigned to the incident.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: risk_score
+  required: false
+  type: number
+  underlyingargname: risk_score
+category: Case Management
+commonfields:
+  id: ServiceNowUpdateTicket
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 2.8.24
+    packID: ServiceNow
+    packName: ServiceNow
+    packPropagationLabels:
+    - all
+    prevname: ServiceNowUpdateTicket
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    toServerVersion: ""
+createdby: DBot
+description: Updates a ServiceNow ticket based on the specified ticket ID and field
+  values.
+display: ServiceNow - Update Ticket
+isdetailsoverridden: false
+locked: false
+name: ServiceNowUpdateTicket
+outputs:
+- description: The unique ID of the ServiceNow ticket.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNow.Ticket.ID
+  type: string
+  underlyingoutputcontextpath: ServiceNow.Ticket.ID
+- description: The assignee of the ServiceNow ticket.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNow.Ticket.Assignee
+  type: string
+  underlyingoutputcontextpath: ServiceNow.Ticket.Assignee
+- description: The ServiceNow ticket fields.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNow.Ticket
+  type: string
+  underlyingoutputcontextpath: ServiceNow.Ticket
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: servicenow-update-ticket
+  id: ServiceNow v2
+  instance: ""
+  name: ServiceNow v2
+  type: command

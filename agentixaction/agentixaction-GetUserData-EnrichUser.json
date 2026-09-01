@@ -1,0 +1,171 @@
+args:
+- description: |
+    A comma-separated list of user IDs to retrieve. Use this to look up users based on their unique identifier in the integrated systems.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: user_id
+  required: false
+  type: string
+  underlyingargname: user_id
+- description: |
+    A comma-separated list of usernames to retrieve. Use this to search for users by their login or account name.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: user_name
+  required: false
+  type: string
+  underlyingargname: user_name
+- description: |
+    A comma-separated list of user email addresses to retrieve. Use this to find users based on their email identifiers
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: user_email
+  required: false
+  type: string
+  underlyingargname: user_email
+- description: |
+    A comma-separated string of specific Active Directory (AD) attributes to retrieve for each user. Only applicable when querying Active Directory based integration.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: attributes
+  required: false
+  type: string
+  underlyingargname: attributes
+- description: |
+    Specifies which integration brand(s) to run the command against. If not set, the command runs across all available integrations. To select multiple integrations, provide a comma-separated list (e.g., "Okta v2,Active Directory Query v2"). Optional values: 'Active Directory Query v2', 'Okta v2', 'AWS - IAM', 'Microsoft Graph User', 'PrismaCloud v2', 'AzureRiskyUsers', 'GSuiteAdmin', 'Cortex XDR - IR', 'Cortex Core - IR'.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: brands
+  required: false
+  type: string
+  underlyingargname: brands
+- defaultvalue: "true"
+  description: |
+    If true, returns both risky and non-risky users from Cortex, instead of only risky users. Should be set to "true" unless explicitly scoped to risky users.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: list_non_risky_users
+  required: false
+  type: boolean
+  underlyingargname: list_non_risky_users
+- description: |
+    Controls the level of detail in the human-readable output. Set to true to return human-readable results from each integration. Set to false to return only the final consolidated result. Optional values: True, False.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: verbose
+  required: false
+  type: boolean
+  underlyingargname: verbose
+- defaultvalue: "true"
+  description: When set to true, the output will include additional fields about the
+    user. Default is true.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: additional_fields
+  required: false
+  type: string
+  underlyingargname: additional_fields
+category: Utilities
+commonfields:
+  id: GetUserData
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.3.52
+    packID: AggregatedScripts
+    packName: Aggregated Scripts
+    packPropagationLabels:
+    - all
+    prevname: EnrichUser
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  Retrieves identity context from external identity providers, such as Active Directory and Okta, to enrich an account observed in alerts, events, or investigations.
+display: Enrich User
+isdetailsoverridden: false
+locked: false
+name: EnrichUser
+outputs:
+- description: The name of the integration from which the user data was retrieved.
+  disabled: false
+  isdetailsoverridden: false
+  name: UserData.Brand
+  type: string
+  underlyingoutputcontextpath: UserData.Brand
+- description: The instance name of the integration from which the user data was retrieved.
+  disabled: false
+  isdetailsoverridden: false
+  name: UserData.Instance
+  type: string
+  underlyingoutputcontextpath: UserData.Instance
+- description: The user ID.
+  disabled: false
+  isdetailsoverridden: false
+  name: UserData.ID
+  type: string
+  underlyingoutputcontextpath: UserData.ID
+- description: The username in the originating system.
+  disabled: false
+  isdetailsoverridden: false
+  name: UserData.Username
+  type: string
+  underlyingoutputcontextpath: UserData.Username
+- description: The email address of the user.
+  disabled: false
+  isdetailsoverridden: false
+  name: UserData.Email
+  type: string
+  underlyingoutputcontextpath: UserData.Email
+- description: The risk level of the user.
+  disabled: false
+  isdetailsoverridden: false
+  name: UserData.RiskLevel
+  type: string
+  underlyingoutputcontextpath: UserData.RiskLevel
+- description: Additional data returned from the integration.
+  disabled: false
+  isdetailsoverridden: false
+  name: UserData.AdditionalFields
+  type: string
+  underlyingoutputcontextpath: UserData.AdditionalFields
+- description: Status of the results returned from the script.
+  disabled: false
+  isdetailsoverridden: false
+  name: UserData.Status
+  type: string
+  underlyingoutputcontextpath: UserData.Status
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Utility
+underlyingcontentitem:
+  command: ""
+  id: get-user-data
+  instance: ""
+  name: get-user-data
+  type: script

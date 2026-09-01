@@ -1,0 +1,113 @@
+args:
+- description: Provide text to extract indicators from.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: text
+  required: false
+  type: string
+  underlyingargname: text
+- description: Path to a file whose content should be scanned for indicators.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: filePath
+  required: false
+  type: string
+  underlyingargname: filePath
+- description: The ID of an entry in the tenant's playground from which to extract
+    indicators.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: entryID
+  required: false
+  type: string
+  underlyingargname: entryID
+- description: ID of the investigation where extraction should apply.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: investigationID
+  required: false
+  type: string
+  underlyingargname: investigationID
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: ExtractIndicators
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.42.13
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: ExtractIndicators
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    - xti
+    - tim
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: |
+  Extract all indicators (such as IPs, domains, URLs, hashes) from text, files, or entries, based on the server’s indicator configuration.
+display: Extract Indicators
+isdetailsoverridden: false
+locked: false
+name: ExtractIndicators
+outputs:
+- description: An array of extracted file hashes found in the input.
+  disabled: false
+  isdetailsoverridden: false
+  name: ExtractedIndicators.File
+  type: string
+  underlyingoutputcontextpath: ExtractedIndicators.File
+- description: An array of extracted IP addresses from the provided input.
+  disabled: false
+  isdetailsoverridden: false
+  name: ExtractedIndicators.IP
+  type: string
+  underlyingoutputcontextpath: ExtractedIndicators.IP
+- description: An array of extracted domain names found in the input.
+  disabled: false
+  isdetailsoverridden: false
+  name: ExtractedIndicators.Domain
+  type: string
+  underlyingoutputcontextpath: ExtractedIndicators.Domain
+- description: An array of extracted email addresses from the input.
+  disabled: false
+  isdetailsoverridden: false
+  name: ExtractedIndicators.Email
+  type: string
+  underlyingoutputcontextpath: ExtractedIndicators.Email
+- description: An array of extracted URLs found in the input content.
+  disabled: false
+  isdetailsoverridden: false
+  name: ExtractedIndicators.URL
+  type: string
+  underlyingoutputcontextpath: ExtractedIndicators.URL
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Threat Intel
+underlyingcontentitem:
+  command: extractIndicators
+  id: _builtin_
+  instance: ""
+  name: _builtin_
+  type: command

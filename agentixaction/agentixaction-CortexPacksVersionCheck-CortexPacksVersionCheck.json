@@ -1,0 +1,62 @@
+commonfields:
+  id: CortexPacksVersionCheck
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.14.0
+    isoverridable: false
+    itemVersion: 1.0.0
+    packID: CortexPackVersionCheck
+    packName: Cortex - Packs Version Check
+    packPropagationLabels:
+    - all
+    prevname: CortexPacksVersionCheck
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:21:09Z"
+createdby: DBot
+description: Lists installed Marketplace content packs that have a newer version available
+  in the Marketplace, returning each pack's id, name, currently installed version,
+  and latest available version.
+display: Cortex - Packs Version Check
+isdetailsoverridden: false
+locked: false
+name: CortexPacksVersionCheck
+outputs:
+- description: The identifier of the content pack.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ContentPack.id
+  type: string
+  underlyingoutputcontextpath: Core.ContentPack.id
+- description: The display name of the content pack.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ContentPack.name
+  type: string
+  underlyingoutputcontextpath: Core.ContentPack.name
+- description: The currently installed version of the content pack.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ContentPack.currentVersion
+  type: string
+  underlyingoutputcontextpath: Core.ContentPack.currentVersion
+- description: The latest available version of the content pack in the Marketplace.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ContentPack.latestVersion
+  type: string
+  underlyingoutputcontextpath: Core.ContentPack.latestVersion
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: ""
+  id: CortexPacksVersionCheck
+  instance: ""
+  name: CortexPacksVersionCheck
+  type: script

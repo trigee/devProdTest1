@@ -1,0 +1,816 @@
+args:
+- description: A brief summary of the issue or request.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: short_description
+  required: false
+  type: string
+  underlyingargname: short_description
+- defaultvalue: incident
+  description: |
+    Type of ServiceNow ticket to create. Defaults to "incident". Valid values are:
+      - incident
+      - problem
+      - change_request
+      - sc_request
+      - sc_task
+      - sc_req_item
+      - sn_si_incident
+      - std_change_template
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: ticket_type
+  required: false
+  type: string
+  underlyingargname: ticket_type
+- description: |
+    Urgency level of the ticket. Can be selected or entered manually. Valid values are:
+      - 3 - Low
+      - 2 - Medium
+      - 1 - High
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: urgency
+  required: false
+  type: number
+  underlyingargname: urgency
+- description: |
+    Severity level of the issue. Can be selected or entered manually. Valid values are:
+      - 3 - Low
+      - 2 - Medium
+      - 1 - High
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: severity
+  required: false
+  type: number
+  underlyingargname: severity
+- description: |
+    Business impact of the issue. Valid values are:
+      - 3 - Low
+      - 2 - Medium
+      - 1 - High
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: impact
+  required: false
+  type: number
+  underlyingargname: impact
+- description: |
+    Set the ticket as active. Can be "true" or "false". Valid values are:
+      - 'true'
+      - 'false'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: active
+  required: false
+  type: boolean
+  underlyingargname: active
+- description: Date/time when ticket activity is due. Format, YYYY-MM-DD HH:MM:SS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: activity_due
+  required: false
+  type: string
+  underlyingargname: activity_due
+- description: List of additional users assigned to the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: additional_assignee_list
+  required: false
+  type: string
+  underlyingargname: additional_assignee_list
+- description: History of approvals for this ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: approval_history
+  required: false
+  type: string
+  underlyingargname: approval_history
+- description: Date/time when approval was set. Format, YYYY-MM-DD HH:MM:SS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: approval_set
+  required: false
+  type: string
+  underlyingargname: approval_set
+- description: The user assigned to work on the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: assigned_to
+  required: false
+  type: string
+  underlyingargname: assigned_to
+- description: Duration spent on the ticket during business hours. Format, YYYY-MM-DD
+    HH:MM:SS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: business_duration
+  required: false
+  type: string
+  underlyingargname: business_duration
+- description: The business service related to the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: business_service
+  required: false
+  type: string
+  underlyingargname: business_service
+- description: Business source for the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: business_stc
+  required: false
+  type: string
+  underlyingargname: business_stc
+- description: Total duration (including non-business hours). Format, YYYY-MM-DD HH:MM:SS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: calendar_duration
+  required: false
+  type: string
+  underlyingargname: calendar_duration
+- description: ID of the caller reporting the issue.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: caller_id
+  required: false
+  type: string
+  underlyingargname: caller_id
+- description: The category assigned to the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: category
+  required: false
+  type: string
+  underlyingargname: category
+- description: Identifier for the cause of the issue.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: caused_by
+  required: false
+  type: string
+  underlyingargname: caused_by
+- description: |
+    Reason for closing the ticket. Valid values are:
+      - Solved (Work Around)
+      - Solved (Permanently)
+      - Solved Remotely (Work Around)
+      - Solved Remotely (Permanently)
+      - Not Solved (Not Reproducible)
+      - Not Solved (Too Costly)
+      - Closed/Resolved by Caller
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: close_code
+  required: false
+  type: string
+  underlyingargname: close_code
+- description: Additional notes when closing the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: close_notes
+  required: false
+  type: string
+  underlyingargname: close_notes
+- description: Date/time the ticket was closed. Format, YYYY-MM-DD HH:MM:SS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: closed_at
+  required: false
+  type: string
+  underlyingargname: closed_at
+- description: User who closed the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: closed_by
+  required: false
+  type: string
+  underlyingargname: closed_by
+- description: Configuration item associated with the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: cmdb_ci
+  required: false
+  type: string
+  underlyingargname: cmdb_ci
+- description: General comments about the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: comments
+  required: false
+  type: string
+  underlyingargname: comments
+- description: Combined field for both comments and work notes.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: comments_and_work_notes
+  required: false
+  type: string
+  underlyingargname: comments_and_work_notes
+- description: The company associated with the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: company
+  required: false
+  type: string
+  underlyingargname: company
+- description: Type of contact who raised the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: contact_type
+  required: false
+  type: string
+  underlyingargname: contact_type
+- description: Correlation display name.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: correlation_display
+  required: false
+  type: string
+  underlyingargname: correlation_display
+- description: Correlation ID for matching external systems.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: correlation_id
+  required: false
+  type: string
+  underlyingargname: correlation_id
+- description: ID of the associated delivery plan.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: delivery_plan
+  required: false
+  type: string
+  underlyingargname: delivery_plan
+- description: Full description of the issue or request.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: description
+  required: false
+  type: string
+  underlyingargname: description
+- description: When the ticket is due. Format, YYYY-MM-DD HH:MM:SS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: due_date
+  required: false
+  type: string
+  underlyingargname: due_date
+- description: Expected start time of the ticket's work. Format, YYYY-MM-DD HH:MM:SS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: expected_start
+  required: false
+  type: string
+  underlyingargname: expected_start
+- description: Follow-up date/time. Format, YYYY-MM-DD HH:MM:SS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: follow_up
+  required: false
+  type: string
+  underlyingargname: follow_up
+- description: List of group IDs associated with the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: group_list
+  required: false
+  type: string
+  underlyingargname: group_list
+- description: |
+    Whether the solution is available in the knowledge base. Valid values are: true or false.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: knowledge
+  required: false
+  type: boolean
+  underlyingargname: knowledge
+- description: Location related to the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: location
+  required: false
+  type: string
+  underlyingargname: location
+- description: Whether the ticket met its SLA.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: made_sla
+  required: false
+  type: string
+  underlyingargname: made_sla
+- description: |
+    Whether to notify stakeholders. "1" = Yes, "0" = No. Valid values are: 0 or 1.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: notify
+  required: false
+  type: number
+  underlyingargname: notify
+- description: Related order number.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: order
+  required: false
+  type: number
+  underlyingargname: order
+- description: Parent ticket ID.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: parent
+  required: false
+  type: string
+  underlyingargname: parent
+- description: Parent incident ID.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: parent_incident
+  required: false
+  type: string
+  underlyingargname: parent_incident
+- description: Problem ID associated with the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: problem_id
+  required: false
+  type: string
+  underlyingargname: problem_id
+- description: How many users were reassigned this ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: reassignment_count
+  required: false
+  type: number
+  underlyingargname: reassignment_count
+- description: Number of times the ticket was reopened.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: reopen_count
+  required: false
+  type: number
+  underlyingargname: reopen_count
+- description: Date/time the ticket was resolved. Format, YYYY-MM-DD HH:MM:SS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: resolved_at
+  required: false
+  type: string
+  underlyingargname: resolved_at
+- description: ID of the user who resolved the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: resolved_by
+  required: false
+  type: string
+  underlyingargname: resolved_by
+- description: Request for change ID.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: rfc
+  required: false
+  type: string
+  underlyingargname: rfc
+- description: SLA due time. Format, YYYY-MM-DD HH:MM:SS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: sla_due
+  required: false
+  type: string
+  underlyingargname: sla_due
+- description: Subcategory of the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: subcategory
+  required: false
+  type: string
+  underlyingargname: subcategory
+- description: User who last updated the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: sys_updated_by
+  required: false
+  type: string
+  underlyingargname: sys_updated_by
+- description: Last update time. Format, YYYY-MM-DD HH:MM:SS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: sys_updated_on
+  required: false
+  type: string
+  underlyingargname: sys_updated_on
+- description: Input provided by the end user.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: user_input
+  required: false
+  type: string
+  underlyingargname: user_input
+- description: List of users watching the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: watch_list
+  required: false
+  type: string
+  underlyingargname: watch_list
+- description: Time work was completed. Format, YYYY-MM-DD HH:MM:SS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: work_end
+  required: false
+  type: string
+  underlyingargname: work_end
+- description: Work-related notes.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: work_notes
+  required: false
+  type: string
+  underlyingargname: work_notes
+- description: List of work note IDs.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: work_notes_list
+  required: false
+  type: string
+  underlyingargname: work_notes_list
+- description: Time when work began.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: work_start
+  required: false
+  type: string
+  underlyingargname: work_start
+- description: ID of the group to assign the ticket to.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: assignment_group
+  required: false
+  type: string
+  underlyingargname: assignment_group
+- description: State value of the incident.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: incident_state
+  required: false
+  type: string
+  underlyingargname: incident_state
+- description: Specific ticket number (if known).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: number
+  required: false
+  type: number
+  underlyingargname: number
+- description: |
+    Priority level of the ticket. Valid values are:
+      - 5 - Planning
+      - 4 - Low
+      - 3 - Moderate
+      - 2 - High
+      - 1 - Critical
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: priority
+  required: false
+  type: number
+  underlyingargname: priority
+- description: Template name to use for ticket creation.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: template
+  required: false
+  type: string
+  underlyingargname: template
+- description: Custom fields in format, fieldname1=value;fieldname2=value. Custom
+    fields must start with "u_".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: custom_fields
+  required: false
+  type: string
+  underlyingargname: custom_fields
+- defaultvalue: normal
+  description: |
+    Type of change request. Default is "normal". Valid values are:
+      - normal
+      - standard
+      - emergency
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: change_type
+  required: false
+  type: string
+  underlyingargname: change_type
+- description: Ticket state. Can be a number or string (e.g., "7 - Closed").
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: state
+  required: false
+  type: string
+  underlyingargname: state
+- description: Ticket creation time. Format, YYYY-MM-DD HH:MM:SS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: opened_at
+  required: false
+  type: string
+  underlyingargname: opened_at
+- description: Caller system ID.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: caller
+  required: false
+  type: string
+  underlyingargname: caller
+- description: Approval status of the ticket.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: approval
+  required: false
+  type: string
+  underlyingargname: approval
+- description: Additional fields in format, fieldname1=value;fieldname2=value.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: additional_fields
+  required: false
+  type: string
+  underlyingargname: additional_fields
+- defaultvalue: "false"
+  description: |
+    Use display values instead of actual values. Default is "false". Valid values are:
+      - 'false'
+      - 'true'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: input_display_value
+  required: false
+  type: boolean
+  underlyingargname: input_display_value
+- defaultvalue: ;
+  description: Delimiter used to separate fields in list arguments. Default is ";".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: fields_delimiter
+  required: false
+  type: string
+  underlyingargname: fields_delimiter
+- description: |
+    Business criticality level. Valid values are:
+      - 3 - Non-Critical
+      - 2 - High
+      - 1 - Critical
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: business_criticality
+  required: false
+  type: number
+  underlyingargname: business_criticality
+- description: Risk score assigned to the incident.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: risk_score
+  required: false
+  type: number
+  underlyingargname: risk_score
+category: Case Management
+commonfields:
+  id: ServiceNowCreateTicket
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 2.8.24
+    packID: ServiceNow
+    packName: ServiceNow
+    packPropagationLabels:
+    - all
+    prevname: ServiceNowCreateTicket
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    toServerVersion: ""
+createdby: DBot
+description: Creates a new ServiceNow ticket with detailed optional inputs for categorization,
+  workflow, assignment, and more.
+display: ServiceNow - Create Ticket
+isdetailsoverridden: false
+locked: false
+name: ServiceNowCreateTicket
+outputs:
+- description: Unique system ID of the newly created ServiceNow ticket.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNow.Ticket.ID
+  type: string
+  underlyingoutputcontextpath: ServiceNow.Ticket.ID
+- description: System ID of the user assigned to the ticket.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNow.Ticket.Assignee
+  type: string
+  underlyingoutputcontextpath: ServiceNow.Ticket.Assignee
+- description: Current state of the ticket (e.g., New, In Progress, Resolved).
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNow.Ticket.State
+  type: string
+  underlyingoutputcontextpath: ServiceNow.Ticket.State
+- description: Short description or summary of the ticket.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNow.Ticket.Summary
+  type: string
+  underlyingoutputcontextpath: ServiceNow.Ticket.Summary
+- description: Human-readable ticket number (e.g., INC0010001).
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNow.Ticket.Number
+  type: string
+  underlyingoutputcontextpath: ServiceNow.Ticket.Number
+- description: Indicates whether the ticket is active. True if active, false otherwise.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNow.Ticket.Active
+  type: boolean
+  underlyingoutputcontextpath: ServiceNow.Ticket.Active
+- description: Additional comments or notes added to the ticket.
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNow.Ticket.AdditionalComments
+  type: string
+  underlyingoutputcontextpath: ServiceNow.Ticket.AdditionalComments
+- description: Priority level of the ticket (e.g., 1 - Critical, 3 - Moderate).
+  disabled: false
+  isdetailsoverridden: false
+  name: ServiceNow.Ticket.Priority
+  type: string
+  underlyingoutputcontextpath: ServiceNow.Ticket.Priority
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- ticketing
+- servicenow
+- create
+underlyingcontentitem:
+  command: servicenow-create-ticket
+  id: ServiceNow v2
+  instance: ""
+  name: ServiceNow v2
+  type: command

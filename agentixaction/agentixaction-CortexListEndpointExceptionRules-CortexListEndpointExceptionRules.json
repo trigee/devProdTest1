@@ -1,0 +1,263 @@
+args:
+- description: Exception rule ID. Accepts a comma seperated list.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: id
+  required: false
+  type: string
+  underlyingargname: ids
+- description: The rule name. Accepts a comma-separated list.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: rule_name
+  required: false
+  type: string
+  underlyingargname: rule_names
+- description: |
+    Platforms the rule applies to. Accepts a comma-separated list. Options: AGENT_OS_WINDOWS, AGENT_OS_MAC, AGENT_OS_LINUX, AGENT_OS_ANDROID, AGENT_OS_IOS, AGENT_OS_CAAS_LINUX, AGENT_OS_SERVERLESS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: platform
+  required: false
+  type: string
+  underlyingargname: platforms
+- description: Filter results by the provided value within the rule conditions. These
+    conditions define the specific criteria required for an exception to apply. They
+    act as a filter to narrow the scope, identifying specific entities—such as processes,
+    files, IP addresses, hashes, or other relevant attributes—to be excluded from
+    the affected module. Accepts a comma-separated list.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: conditions
+  required: false
+  type: string
+  underlyingargname: conditions
+- description: The email address of the user that created the rule. Accepts a comma-separated
+    list.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: user_email
+  required: false
+  type: string
+  underlyingargname: user_emails
+- description: |
+    The start time for filtering according to rule modification time. Supports free-text relative and absolute times. For example: 7 days ago, 2023-06-15T10:30:00Z, 13/8/2025. If start_modification_time is provided but not end_modification_time - end_modification_time will be set to current time.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: start_modification_time
+  required: false
+  type: string
+  underlyingargname: start_modification_time
+- description: |
+    The end time for filtering according to rule modification time. Supports free-text relative and absolute times. For example: 7 days ago, 2023-06-15T10:30:00Z, 13/8/2025. Must be used in conjunction with start_modification_time. If end_modification_time is provided but not start_modification_time - start_modification_time is set to 0.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: end_modification_time
+  required: false
+  type: string
+  underlyingargname: end_modification_time
+- description: |
+    The status of the exception rule. Options: ENABLED, DISABLED.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: status
+  required: false
+  type: string
+  underlyingargname: status
+- description: |
+    The type of the disable prevention rule. Accepts a comma-separated list. Options: XDR, WAAS.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: rule_type
+  required: false
+  type: string
+  underlyingargname: rule_types
+- description: |
+    The type of the exception rule. If not specified, both are returned. Options: legacy_agent_exceptions, disable_prevention_rules.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: type
+  required: false
+  type: string
+  underlyingargname: type
+- defaultvalue: "100"
+  description: Number of exception rules to return. Default is 100. Ignored if 'retrieve_all'
+    is set to true.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: page_size
+  required: false
+  type: string
+  underlyingargname: page_size
+- defaultvalue: "0"
+  description: Page number to return. Default is 0. Ignored if 'retrieve_all' is set
+    to true.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: page
+  required: false
+  type: string
+  underlyingargname: page
+- defaultvalue: "true"
+  description: Return all exception rules. Default is true.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: retrieve_all
+  required: false
+  type: string
+  underlyingargname: retrieve_all
+commonfields:
+  id: CortexListEndpointExceptionRules
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.15.0
+    isoverridable: false
+    itemVersion: 1.0.2
+    packID: AgentixAction_CortexListEndpointExceptionRules
+    packName: Cortex - List Endpoint Exception Rules
+    packPropagationLabels:
+    - all
+    prevname: CortexListEndpointExceptionRules
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:21:09Z"
+createdby: DBot
+description: |
+  Retrieves a list of exception rules applied to endpoints (also known as XDR agents) based on provided filters. Note: Due to a value constraint on the result size, the data returned may be partial and not reflect the complete set of matching results.
+display: Cortex - List Endpoint Exception Rules
+isdetailsoverridden: false
+locked: false
+name: CortexListEndpointExceptionRules
+outputs:
+- description: The user-defined name of the exception rule.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ExceptionRules.NAME
+  type: string
+  underlyingoutputcontextpath: Core.ExceptionRules.NAME
+- description: The operating system platform the rule targets (e.g., AGENT_OS_MAC).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ExceptionRules.PLATFORM
+  type: string
+  underlyingoutputcontextpath: Core.ExceptionRules.PLATFORM
+- description: The rule conditions (e.g., "Signer = ...").
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ExceptionRules.CONDITIONS
+  type: string
+  underlyingoutputcontextpath: Core.ExceptionRules.CONDITIONS
+- description: A specific security module the rule applies to.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ExceptionRules.MODULES
+  type: string
+  underlyingoutputcontextpath: Core.ExceptionRules.MODULES
+- description: The full name of the user who created the rule.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ExceptionRules.CREATED_BY
+  type: string
+  underlyingoutputcontextpath: Core.ExceptionRules.CREATED_BY
+- description: The last modification time of the rule (ISO 8601 string).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ExceptionRules.MODIFICATION_TIME
+  type: string
+  underlyingoutputcontextpath: Core.ExceptionRules.MODIFICATION_TIME
+- description: The email address of the user who created the rule.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ExceptionRules.USER_EMAIL
+  type: string
+  underlyingoutputcontextpath: Core.ExceptionRules.USER_EMAIL
+- description: The current status of the rule (ENABLED, DISABLED).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ExceptionRules.STATUS
+  type: string
+  underlyingoutputcontextpath: Core.ExceptionRules.STATUS
+- description: A specific profile the rule is associated with.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ExceptionRules.PROFILE_IDS
+  type: string
+  underlyingoutputcontextpath: Core.ExceptionRules.PROFILE_IDS
+- description: A specific target (e.g., endpoint, group) the rule is applied to.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ExceptionRules.ASSOCIATED_TARGETS
+  type: string
+  underlyingoutputcontextpath: Core.ExceptionRules.ASSOCIATED_TARGETS
+- description: The specific rule category (XDR, WAAS).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ExceptionRules.RULE_TYPE
+  type: string
+  underlyingoutputcontextpath: Core.ExceptionRules.RULE_TYPE
+- description: The general type of the rule (legacy_agent_exceptions, disable_prevention_rules).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ExceptionRules.TYPE
+  type: string
+  underlyingoutputcontextpath: Core.ExceptionRules.TYPE
+- description: The unique identifier of the exception rule.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ExceptionRules.ID
+  type: string
+  underlyingoutputcontextpath: Core.ExceptionRules.ID
+- description: The actual number of exception rules that match all filter criteria
+    and returned in this specific response.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ExceptionRulesMetadata.returned_count
+  type: string
+  underlyingoutputcontextpath: Core.ExceptionRulesMetadata.returned_count
+- description: The total number of exception rules in the system that match all filter
+    criteria.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.ExceptionRulesMetadata.filtered_count
+  type: string
+  underlyingoutputcontextpath: Core.ExceptionRulesMetadata.filtered_count
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: getExceptionRules
+  id: _builtin_
+  instance: ""
+  name: _builtin_
+  type: command

@@ -1,0 +1,115 @@
+args:
+- description: The unique identifier of the case to retrieve resolution statuses for.
+    Accepts a comma separated list.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: case_id
+  required: true
+  type: string
+  underlyingargname: case_id
+commonfields:
+  id: CortexGetCaseResolutionStatuses
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.5.76
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexGetCaseResolutionStatuses
+    propagationLabels: []
+    supportedModules:
+    - agentix
+    - xsiam
+    - cloud_posture
+    toServerVersion: ""
+created: "2026-07-28T16:19:39Z"
+createdby: DBot
+description: Retrieves resolution status information for a specific case, including
+  pending playbook tasks, active playbooks, completed playbooks, and recommended playbooks.
+display: Cortex - Get Case Resolution Statuses
+isdetailsoverridden: false
+locked: false
+name: CortexGetCaseResolutionStatuses
+outputs:
+- description: 'The resolution status of the item. Options are "done", "inProgress",
+    "pending", "recommended". Note: The "pending" status is relevant only for tasks
+    within a playbook. A task is considered pending primarily when the playbook is
+    stopped and waiting for user input on a manual task. It can also be considered
+    pending if the playbook is new and has not yet started, is paused, or is stopped.
+    In a broader sense, tasks within an in-progress playbook might also be considered
+    pending if they are awaiting completion.'
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseResolutionStatus.category
+  type: string
+  underlyingoutputcontextpath: Core.CaseResolutionStatus.category
+- description: 'The type of item.  Options are: "playbook" or "playbookTask".'
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseResolutionStatus.itemType
+  type: string
+  underlyingoutputcontextpath: Core.CaseResolutionStatus.itemType
+- description: The unique identifier of the playbook or task.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseResolutionStatus.id
+  type: string
+  underlyingoutputcontextpath: Core.CaseResolutionStatus.id
+- description: The name of the playbook or task.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseResolutionStatus.name
+  type: string
+  underlyingoutputcontextpath: Core.CaseResolutionStatus.name
+- description: The description of the playbook explaining its purpose and functionality.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseResolutionStatus.description
+  type: string
+  underlyingoutputcontextpath: Core.CaseResolutionStatus.description
+- description: 'The completion status of the item. Note: A task is considered pending
+    if it is waiting for user input or external action, polling an external system,
+    blocked by another task or condition, awaiting loop condition evaluation, or halted
+    at a breakpoint.'
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseResolutionStatus.status
+  type: string
+  underlyingoutputcontextpath: Core.CaseResolutionStatus.status
+- description: 'The type of the pending playbook task. Examples: "regular", "condition",
+    "collection".'
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseResolutionStatus.type
+  type: string
+  underlyingoutputcontextpath: Core.CaseResolutionStatus.type
+- description: Required user input parameters (for pending playbookTask items).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseResolutionStatus.userInput
+  type: string
+  underlyingoutputcontextpath: Core.CaseResolutionStatus.userInput
+- description: The issue IDs associated with the playbook or task.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.CaseResolutionStatus.issueIDs
+  type: string
+  underlyingoutputcontextpath: Core.CaseResolutionStatus.issueIDs
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: core-get-case-resolution-statuses
+  id: Cortex Core - Platform
+  instance: ""
+  name: Cortex Core - Platform
+  type: command

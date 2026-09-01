@@ -1,0 +1,112 @@
+args:
+- description: |
+    The unique identifier of the AppSec application to get override assets for.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: application_id
+  required: false
+  type: string
+  underlyingargname: application_id
+- description: |
+    The display name (business application name) of the AppSec application to get override assets for.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: application_name
+  required: false
+  type: string
+  underlyingargname: application_name
+category: Cloud Security
+commonfields:
+  id: CortexGetOverrideAssets
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.15.0
+    isoverridable: false
+    itemVersion: 1.0.0
+    packID: CasGetOverrideAssets
+    packName: Cortex - Get Override Assets
+    packPropagationLabels:
+    - all
+    prevname: CortexGetOverrideAssets
+    propagationLabels: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-07-28T16:21:09Z"
+createdby: DBot
+description: |
+  Retrieves the list of override assets for an AppSec application. Returns all manual asset
+  additions and removals grouped by override action, including the user who performed each
+  change, the operation type (ADD or REMOVE), the action ID that can be used to revert
+  the override, and the affected asset IDs together with their resolved asset names.
+  Either application_id or application_name must be provided (but not both).
+display: Cortex - Get Override Assets
+isdetailsoverridden: false
+locked: false
+name: CortexGetOverrideAssets
+outputs:
+- description: |
+    The override batch action ID.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.GetOverrideAssets.actionId
+  type: string
+  underlyingoutputcontextpath: Cas.GetOverrideAssets.actionId
+- description: The list of asset IDs in this override action.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.GetOverrideAssets.assetIds
+  type: unknown
+  underlyingoutputcontextpath: Cas.GetOverrideAssets.assetIds
+- description: |
+    The list of asset display names parallel to assetIds. Falls back to the asset ID string when a name cannot be resolved.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.GetOverrideAssets.assetNames
+  type: unknown
+  underlyingoutputcontextpath: Cas.GetOverrideAssets.assetNames
+- description: |
+    The type of override operation performed. Options: ADD, REMOVE.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.GetOverrideAssets.operationType
+  type: string
+  underlyingoutputcontextpath: Cas.GetOverrideAssets.operationType
+- description: The email of the user who performed the override action.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.GetOverrideAssets.userEmail
+  type: string
+  underlyingoutputcontextpath: Cas.GetOverrideAssets.userEmail
+- description: The UI filter or query used to select assets, if any.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.GetOverrideAssets.filter
+  type: string
+  underlyingoutputcontextpath: Cas.GetOverrideAssets.filter
+- description: The timestamp when the override action was created.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.GetOverrideAssets.createdAt
+  type: date
+  underlyingoutputcontextpath: Cas.GetOverrideAssets.createdAt
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- security
+- appsec
+- assets
+underlyingcontentitem:
+  command: ""
+  id: CortexGetOverrideAssets
+  instance: ""
+  name: CortexGetOverrideAssets
+  type: script
