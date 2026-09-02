@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The indicators query.
   name: query
@@ -38,7 +42,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -61,8 +65,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetIndicatorsByQuery', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
   import hashlib
 
 
@@ -216,7 +220,7 @@ script: |
 
   register_module_line('GetIndicatorsByQuery', 'end', __line__())
 scripttarget: 0
-signature: tc6lJC5f0Zm6wqYAyWVWpIMWpH4z0rmUwJ3to4DGBKo4UYyBFrQF+2rjjwDzZqb9c2l2Y0VkxUclHUlv7+v+GuVJPOaxr5b9WFmn66gZiKeQFFLwfYUI+Y37yBUe7hdJhLU96DR4YTBFU+UtXoF58XAq9Rssb+akzne3iDwNxnAA61xEW9DS0YN+NpU186dtDOpsLKx/NJVoJsljuAJUOrcXEY1XUnRbZVY4hUhKbb7k3XwHdhK+f3//XIIfK7sDMeQr++5nj3ba1QVds/XAr2e230P4aoEyekUfQCFr9bLtgAFL8tTSXyDleGttLzVYQSE6BrsEh7dXpiJJKWOvaQ==
+signature: VAqNLcwLdgnkiRjdQwHVen3Q/WT12IJbiif9ALPRFUDXJQ3LrOH9LWdhGDrTMYv3bqT7/EghWu46Y6KGZHsUNkerx0XHY7c3BQ115/BO41d/rl+Md06U648T2oylXDq78Lbt1pfqLgzDwyd08MEZhWJfHkMrSK4RrmuO25/mmETLdoSiEXGLVi4ZsDFFXqdJlAF/hhcWVPEvQLhUfBS3XQjZtokWGcryrvDYXQ6URKR+AQbbPWysb+1+8KTgtw7Be5T4LtP/2ap1xH4yZdHS1vVkULeqwIw8iKt4czQKyZEJAGPXXA1J3sIVbXNEGst7FDkezhPJheElS4HWHajbXw==
 subtype: python3
 system: true
 tags:
