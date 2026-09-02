@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - defaultValue: name,details
   description: 'Text fields to compare. Can be label name, alert fields or custom
@@ -65,7 +69,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -75,7 +79,7 @@ contentitemexportablefields:
     supportedModules: []
     toServerVersion: ""
 deprecated: true
-dockerimage: demisto/sklearn:1.0.0.10866354
+dockerimage: demisto/sklearn:1.0.0.12545527
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -99,8 +103,8 @@ runas: DBotWeakRole
 runonce: true
 script: |
   register_module_line('FindSimilarAlertsByText', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
   import dateutil.parser
   from sklearn.feature_extraction.text import TfidfVectorizer
   from sklearn.metrics.pairwise import linear_kernel
@@ -283,7 +287,7 @@ script: |
 
   register_module_line('FindSimilarAlertsByText', 'end', __line__())
 scripttarget: 0
-signature: aohHMHqCbf7C5svhS7n3kPi6TtFuJLnHkMoSZwn187unr6wi7wmiks/lqB7OTBJO6yNY7tJRru0T9XlCIXj8kwNckbd/v+gWKkFWtN40fzmqOyhtxGWVqO0rjfYHkMlfnId08dhB2GSr2tOUK7UVMqNDugB7GauL5hD01rNx+iU5lXvBLsV08+1/g7boYH0kKLYbiiQqpkk7/IGR0LReTEjyMZCUMtNL4/Dyn+R5ywntmajCrP5zHC9dmC+kPn+UitBUmkNWlT6hjJZ3a2/ETHkYgEs15vG19a93SeuUf6r9pVCkenkWjYirymH85/vDPlHjm0CWKt9r/bCkoga/fQ==
+signature: dY1noAzGw8Fc5kxSrUCMs5IZjb5WQM9CaRE2RwzBtwRvaam01HREzCrlsFXQ4UTj7yeZi6X4zX1AlFKSHCTBx9vnX3c+0QYxG1BMIo0BShvsdwyjID066r29m/trhQnkSz4l+T2bG36yFwLCGL/8/jPNCydsQr8u4+83BM/d/30jh7Y3GBKLa0J1HaURs8FqWVPErhDx++L7rwD3FfLfHmMiJBmzO5W4ghI3YBwwkosg0NdjwPqnSvug3fmQKf2NwA25harfdWjWaBHuomhTqZKg8anVK/LrS1Zdbe+tfzpXPufVs/KjhIZd+K1ijukAop6Yy36kn+QStuRPagdDUw==
 subtype: python3
 system: true
 tags:
