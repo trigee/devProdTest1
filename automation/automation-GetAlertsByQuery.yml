@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Additional text by which to query alerts.
   name: query
@@ -74,7 +78,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -103,8 +107,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetAlertsByQuery', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
   import pickle
   import uuid
 
@@ -387,7 +391,7 @@ script: |
 
   register_module_line('GetAlertsByQuery', 'end', __line__())
 scripttarget: 0
-signature: aId4nb/XbK7cKceDX6Yia9sN8ojpfcDmuhAEcmeGwlO9XJvMLqRpkdz6ApxBBm8EhZdrVgOGqg7ZhWSyC22hC0J/LipLbIkpAJ+O7jqz//p7wTh+G4CyWVDXzBSXNg7X/m/V3Z78DRNx5HG4pdxQ7XRG5ZZMt9JDX/2/7hXVsAe4IDIA5SdtQL89KOz+mWMR6cKoWB08dtIEC1PhhnbiGD1HRiSDwWa8KEfPbquirT12i8cENoUAajzpnDbiBuGcbLawUDc0AK6RqidFdwT7YrZwJ87mXAo9Qgt9nbNCExv/CKnFTeJLwdd6pxWcS1n497WrZGV7ZvT/iECSt31Nig==
+signature: DcW69Hii3baX044rFOQuVWMAQXaO/siK50hhsFHgZL44SpZSBpxW7pZJcvXf7utw6PQHqWJu0TY+2cNti+el1S+/ggYbLHE3XHptKzamMcd4NylkUU2urVeBIjvdt0s+5Unl7+lNIhFRElAUvuvwpkPyGfzFkq+sx/d6osuo1nBBi/H1B6NY52CxglxUYMTLzc14jeLTO6C7FhBWICxU+/zmvue4BL0ryao0cL38eKRNagDW4HQRffZ2Fz1uPPIt6DrFV9yThnq9bjR8fxNwTAQnvlDxOYCvTs2DzyJXEyo7wwq9Qud+vhrLFCxO8zFVe3nv0d75kbgy6STDngMbuQ==
 subtype: python3
 system: true
 tags:
