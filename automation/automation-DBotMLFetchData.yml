@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Additional text by which to query incidents.
   name: query
@@ -98,7 +102,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -118,8 +122,8 @@ runas: DBotWeakRole
 runonce: true
 script: |
   register_module_line('DBotMLFetchData', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
 
 
   import uuid
@@ -1023,7 +1027,7 @@ script: |
 
   register_module_line('DBotMLFetchData', 'end', __line__())
 scripttarget: 0
-signature: j8o6ebogsnjQBfdiUPt2yxCWRnSnTDuJTwbCldV18DWXOESUdaABKTuBGKnKTcitagGwxiUiNfsH+aCKT3RswiwhgabEnZHzoLJdbT0TGJ6tUjRhPE52v+ozZQsdpBTm/KBxCz0lbiPJXZ32HJ5uNTcC2ISIj9d5gavufvKtmJ+BUxyW1FoqdVr9pot7WMAwMt9MhStqy5pgI28607Dn/Oi/QjC6fy9uBzhiNVwM+J13j6MqK/98qWfrJipJoC4WCJcVjvaxbgd/2ARTugdiPoIAElBzJ5h1uRKBY9+/Xm/EgF3FqlUvpKsP13amHcPB4fHxGmJDgfkJepl8CkOsCg==
+signature: AJwWdtrjG8VQJcLOByhzdLmbN4le7Gd2c39VvjnfD8Ptf3oNrtwKEw+ydEPlL7PZNvlYiifsU+jnbc+ZaSzGx+xKk3oWiWcOrhuPVjljiv+yU82PvxY5CecLBsWs4FzbWxSsIT6z5nQCsojMi0izij3KIcvAUXb92syNWxx9PUNAIfk1fbZsxRxfq/e/6qic30Ylf3gSU0fZ+eSf4RxAvSNWVyIidIy7+MG+a/JGCr86DaEpkfvvhhcbNhvZ2mc4NNSzd8NMyE6WwH6o7MmRH69BSvYygd+JEpnjf5r3KWUsW7OiJ9o9jPKztBVDAU2Ibo1cusEw3tgfy9d/Rpv9fw==
 subtype: python3
 system: true
 tags:
