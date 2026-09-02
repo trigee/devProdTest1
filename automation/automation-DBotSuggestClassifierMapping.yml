@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The incident samples (raw events).
   name: incidentSamples
@@ -24,7 +28,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -47,8 +51,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DBotSuggestClassifierMapping', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
 
 
   import itertools
@@ -806,7 +810,7 @@ script: |
 
   register_module_line('DBotSuggestClassifierMapping', 'end', __line__())
 scripttarget: 0
-signature: TAF239dU+7nxpxy9EPncDnRGjf8yqhS5IwBB570i66GsZYQPlMuPQOW71iiZuW1RatDMjO5U9jfRxUUgUM/lp8wma7fbc0NLS/Httsd1M0jhRw8YorhAbocCDLYrVBbmSYmt9YEvVIxwXEyBJ3uonKIgP0X2s/UFTeNdKwEgk7jnYt5zfp/hXcaZJJBgadS/k29JwHNz8uu+R6tsMBfb/VqcUzQNoqKajWiccEdF/VzJR+m2pGexu5Feeq3fJY3FGjEeeqLcdM5kCKBH63QpFv4O3Ax8xn5GzcHLWJP2R3boB0WrM5HtNKgTAlVmzFYSsB48Ft0Xj2utVi3fuoc8pw==
+signature: u3meQKOQ3dJnf3uDlGj8nfd9mDGkOe6u33YTsa+UImvZ4OqM09Qg7VAIgQ2EfEXvJgnecJq1HpqYGCOe720DrYiHK4vc2DkGVLbkZMQI7CFmGD9qdbjzMx4jlTgCgPGPUrJDkO0dP+bk3GmuOmKlQLvJDZoS5QBdt8qk21/E+wMociXf+3XLYHlfpGgGTotvym7mMOQH43sJ+e+2Ud2O2uyMSQ9QnMtcOxgumUUJrGNjBl2kPuMjh5c7tz238k/UEldYvErQd1yQ5ccfUSSI+P3WDp0BD6Gtg/kWM3v56pM7WTuExRcutf1Q0H13mlWdkUtR//tHD9xPEak5uSjDqA==
 subtype: python2
 system: true
 tags:
