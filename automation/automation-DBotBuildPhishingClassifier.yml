@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Additional text by which to query incidents.
   name: query
@@ -126,7 +130,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -148,8 +152,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DBotBuildPhishingClassifier', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
   import base64
   import gc
 
@@ -253,7 +257,7 @@ script: |
 
   register_module_line('DBotBuildPhishingClassifier', 'end', __line__())
 scripttarget: 0
-signature: QFch2pfqRMXswoU7a/wUg6I1ytEJRblHjfR0Yn6E36xQyh6CIO9AoJsgXFwmV1LYa2BofrLA47LGKseQsRtBE5sOw3OgAiiRmQR6otnbyH/ojqYaC7xsEk4kBjlg3euoI/mdcU/l5S8QGnOfN/MEHRjGbuuTO+sJrRe30t7ulbeLCeCzZDfA1EJegbBuAnaJeiQ8GU4cynCS5tQ4S9ZErP2d1/1O7sU88i4TkjUvII0fdhQH8Jk6S2pfGjAyWOGbf4mTbu5r+QxAHCnMVIdsDUPM3vQZpK9aKygajWA6Cgkp4iORjHxhoTO4KMDUkJxj5tE9Xkx77MrjSxiFcHlADA==
+signature: 0QYy7SJ0pbxGBq+ndjP9GfL9zhFo7KAm8ir4BDJ1YXBlLrSgJjM/ikFVNXb1kKSeObXPqsXbqF4sXksX6+Hvry3LAL0VPeyQ0IsRreOFMMmUF2JGsM9O04Av8z3JMrahpRE7lNy+jAvIcLg5ueQpsZUrFtQz+qOIQPh6xCFs96mgg5U5rTbbRKHnLlna8uu96WES1fJkhPHEchPFx3wFOg0yoH9D8qn0caKrZANcO/66UYhq7HqtS02JoefwgOCLeAqzv1ij26Vq2s0snGrTGQgOxbKv8MnvuGGWKFYrFk0nWwuoz0bVjVrhdM9aFqEX4HtgqKlCNGs+F0e9ShFBhg==
 subtype: python3
 system: true
 tags:
