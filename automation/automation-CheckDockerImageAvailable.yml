@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: 'Docker image full name with version: For example: demisto/python:2.7.15.155.'
   name: input
@@ -30,7 +34,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -53,8 +57,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CheckDockerImageAvailable', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
   import re
 
 
@@ -213,7 +217,7 @@ script: |
 
   register_module_line('CheckDockerImageAvailable', 'end', __line__())
 scripttarget: 0
-signature: YDVnXqtHRzRQceHwfcEpxoCxZ6roPF0AzvPuN8gpTDZ5XPBM0K3E4IIOxLF+0dOdrZjWMaDPEUsxGXhgvGRwH+V1B1Sbd6ScjN0dn84Wg1lVGatyjZXox7zh2Vts1wXiDH7TBRixRWSlgP+fPA09f7mGcasWopQXNxUYvAwoAD7/JXnkWmqP4qD/kN8W9sUN0oGly43mq3gwQvcMphk9GVdDgR4FldSN9SN7q4libJpYnJGOvT5w0XcNYPEF9iKhn+cjAPuARWhGKl/NQ7AjMU58uEyuDnnbPftLHPpfv1H+5rBzhPOz5N9zlAmdrw0OiRxroQhgPi0D3IUZxMNnnQ==
+signature: AipoQjuCCKwvN0QNpmcAXSwUwOpzKQMt8H33FCABip4ZLHwXMVIxgno0ISbWuKughj9sFlwhvFTMpGY1EMonaIr+unJbgc+Xs7sscZPgOGQ3Mlx2GO5CnGMmKNzwS5BCsxMk5EEltEgjbxW2a+iqdrJ7iAb/TO6DsELbTz9rZBUWXMeArlpYem0lZiFr0wybcxActhmkxNYEmzly7uol39vmRF49riKyAJGpNEYz9PaJyveF8OXT2CGRSw2raA9Eg04QqYbSQgv0JrYhEaeHcoNMN0dtWnBeLIb+SUvIttH9VYNAOLdCG7OL7x3OT9wNLdNU/dXX8vOGgj5JIK/buw==
 subtype: python3
 system: true
 tags: []
