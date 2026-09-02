@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Comma-separated list of incident fields to take into account when training
     the clustering.
@@ -125,7 +129,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.2.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -134,7 +138,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/mlclustering:1.0.0.9062583
+dockerimage: demisto/mlclustering:1.0.0.11879924
 engineinfo: {}
 mainengineinfo: {}
 name: DBotTrainClustering
@@ -148,8 +152,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DBotTrainClustering', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
   import builtins
   import collections
   import math
@@ -1196,7 +1200,7 @@ script: |
 
   register_module_line('DBotTrainClustering', 'end', __line__())
 scripttarget: 0
-signature: l9jLbY08/ik+7xmL3XF9tJPg7+Y6OxDZho1o14hggsZB8VkUPbXQQszah5au+Y8xcyhW4jMDO+LC7jmohFHpasYAr8MMSeq9wJ+RtoKq5tWRLufwc4jrbxs7cJE+tkE8mpLTKK4DuzxGSH/kGlS0ubSHqVVRxfxaczj48RjBXueibsGifif4/MhRMEwC/O+noYeFjccUK75kVqjLMOjOozjwbjy/QuuIfRA7R02sKk7Kdnd5v+STF5NDL7+iV3L74kEmVV7MzC+2am67mF3yFzusHxDqAIhrDupPnd7qX8VKFJQ7QBa5hRH0kDNFUx5mD2JM5tdrC6gkZjfHBERQ3Q==
+signature: G+MTwdSrz1/lTKC6SOVvDnmDsk/RfFaEYHAv5hSPTVJ958/fZ29Lo/4esTRv1JJtxqfTgeY3kprJWuLq1T/Jqgz7x7DtK1pYhIfrWZv9/kpynBKjV5/9in8BfV6FIHORv6H5sNgAhphMELfjVm1Ow3MGfUN5JujGFzRHXDpHILjWWQdcby24u5zuThAgJJ2wxVHyxf+KZMyFtjAFUT7lMbnpd4/TgpwXcnLfb/58xIJwXI7cmpNVZSy/usxRg7TjHj3H30xhpbrbt5Vetw670q8cO9N/tDgq0qrUYqPDn0xP6nk6lPEw1PiLRBHaY4TBk1X3QtfQa/efjbebh+xeuQ==
 subtype: python3
 system: true
 tags:
