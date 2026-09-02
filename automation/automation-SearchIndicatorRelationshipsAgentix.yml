@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - auto: PREDEFINED
   defaultValue: "false"
@@ -151,7 +155,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.6.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -164,7 +168,6 @@ dockerimage: demisto/python3:3.12.13.10116658
 enabled: true
 engineinfo: {}
 internal: true
-isInternal: true
 mainengineinfo: {}
 name: SearchIndicatorRelationshipsAgentix
 nativeimage:
@@ -219,8 +222,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SearchIndicatorRelationshipsAgentix', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
 
 
 
@@ -379,7 +382,7 @@ script: |
 
   register_module_line('SearchIndicatorRelationshipsAgentix', 'end', __line__())
 scripttarget: 0
-signature: g/swUIQt1yYCLTGwvX2E+xCwcPZWUpILBbXbcKZyQ0Ho5m0JUxu/XWnGwvM4KhLwScejx+3znQnb2G5v8sJF3Q0IfSLNN1YKmpZvkU78d27ggCPVdChFiWpjEX78HE/VbihCb6wv/32WtUW9h9W+SNGZGzhwdNjG9GVxqH4nET1SipVqBq7xrxUReKeIJVG4jhX3OB784RscayNyXw07znlKXWo3OgOZYCx+AzUAIXOt0BGwmIHAzWfOTopwRUKGI21+Qtb2qQl3y3POm0Br72qwOIw/VZWZMG9AQJrPu0i1lBKkaJWi0p3ez79SgM/KEfohyZ1Ra5HWv/iJq1jO0w==
+signature: K/5ueiCd8kLCM6NQcQtqulYeeT9EpLThq5CuGWwdtL+dapn1021ECW6rW5VR0KGE7OHfjSig/Xgio0E9XQzyHurTFd4lTzX/GUWmR9SNqbUmE+81B/Mz3OPZ7pqJwiZ4mj01d7wnxHxX74/sRLCR75Y734eMCUtE9E/txzlj+yNVSWm/AGLN+y3/YkKhBJqRbpmm5QeT87uCADyLnDw03wzM93O6mopfnRU4GxSRkO1mWtBXSC2S5umTD/7euvbIa50xVFSTd3kchtGv1xNQh9/LrGy/CHokdDHJ2yUQhUWoVOGP78Reo/2dNxNjVkchYxwX8N+L/Dgi1uag3TcAIw==
 subtype: python3
 system: true
 tags: []
