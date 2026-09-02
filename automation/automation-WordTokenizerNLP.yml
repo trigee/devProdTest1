@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - auto: PREDEFINED
   defaultValue: "yes"
@@ -132,7 +136,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -157,8 +161,8 @@ runas: DBotWeakRole
 runonce: true
 script: |
   register_module_line('WordTokenizerNLP', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
   import spacy
   import string
   from HTMLParser import HTMLParser
@@ -389,7 +393,7 @@ script: |
 
   register_module_line('WordTokenizerNLP', 'end', __line__())
 scripttarget: 0
-signature: LKaqIK+IpsIKeQjK06wZvZFoeOxI3bZRSd9codLdzwfeY43WNmjGMSl3dHM7teoW5v564lHcwBii6/ve/VHZOAcz5suEvmXoqjWsh3lxSd5fBvI+UeuI9negUAJDZgRBDmpslBYA/Th9hk30ckJQiEISYU6gGxWFQfuHdbDmjW8JmxreFEG4Q1dwe2WuBYdz0gdVAxeS5WXUdv7dZ2Wg+Mpc38UntJFCTi9kyRW5VucFRYrFEQ1H7M8O3fxm5QvcMkQkXshUBOFwuogc/DiijHskBLAFmfFz11mZUXoINT0W7Qc/XE/Cr+P2BfxpyPqffzDftc4PTiGzsL/t2q4JJw==
+signature: HpIwum8Hn2EliolNg4ESZbHXm4/zU+P9JVw3ZSZx4VK8yexMerMxusf2jngdidVjdptM+YQPgWgvopY3QJcJRTYI5aC++p9Mz1/ImHlWdQsoQkc27KPHBK2bomOF79i1rD57gzcIIUD6xix4L9qCJ1yW+psmm+Zm6X6B1CwYG1X4uwQnWD8jG57MsWmj84mCKPSv1uOJSaheTs4m2zuZ0vGGRIYdJEuxnQqv83+os3wbfSbOHEVCKZlhfXGyT7TrMp664U2iYvxUrcZ5WDdfqFb7T9zKQTtHS39IJ5F88Yx8sh6f3EO5FuCAsLLP4VS3lJmtHcd/mRO2mivwxJ21Jw==
 subtype: python2
 system: true
 tags:
