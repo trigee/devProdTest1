@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The source of the relationship, for example 1.1.1.1. Only a single
     value is acceptable.
@@ -278,7 +282,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.2.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -300,8 +304,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CreateIndicatorRelationship', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
 
 
 
@@ -541,7 +545,7 @@ script: |
 
   register_module_line('CreateIndicatorRelationship', 'end', __line__())
 scripttarget: 0
-signature: lmb4hPB94lVR4RQBN1F48S+/njfyariAml9OW+ujJSgjcHDrN+CerLPZfDxGffAW866jTJUhtdl9NcJo6+sVJZH3R4Hwk0g3UweFLipJhK2ntblMqUUNypdZE33DQgBYgQdUCW9EIcVNH9Qr/35vEpEnE90oguFfzw6hDdXet5YrEhaFtyaZ4ZFEymcymZOBAYpYlSBeAb4IS06ozBYk4P3M9x/BjBgUrradcUpx1NU5ZAQGiqS5coXwm8DSjl5NjE9LTbyQGK1bPfdu6sBr2b7YEGfF2tTxm6VOr9H6zI4JKLt/U4F9bRVkUv0di0sGsxUBZSXA2bY9zLM/BuwZwA==
+signature: BlK759DmomOMcStOlUcs3LItvYIcmXzShMY3qmx67qMa2uJ2q0U80adY86zBe4tKFPfJa4320R1b6g1cMcqXPnr5KJAd8i3Dvf28nQZrVPExQzMUYnAbY1unbF3TRdig3Q8scfqk7kABr3dT9v+/YVnMyAR3QND4Ax58C0NUJKsASveEQdOxNqg/9K/I5kF8iDrK1L7+fPgYG1qt0YnU7eThz6QxEuszfEalqIVNluwitPKpKhr2wqLdgxNoPccynrZW4n2/QjyHHwlNR3xYgcT1UzzZSxIUe7yC4wqPnH1juP07mCitHS+4ufQy5SxCvzH1wmVIxEOb6zzRbqKsrA==
 subtype: python3
 system: true
 tags:
