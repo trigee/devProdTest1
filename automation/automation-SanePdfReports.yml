@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: sane report json file contents base64.
@@ -57,7 +61,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -66,7 +70,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/sane-pdf-reports:1.0.0.10737051
+dockerimage: demisto/sane-pdf-reports:1.0.0.11473180
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -77,8 +81,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SanePdfReports', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
   import base64
   import http
   import os
@@ -337,7 +341,7 @@ script: |
 
   register_module_line('SanePdfReports', 'end', __line__())
 scripttarget: 0
-signature: PG1eXgNyD0LqUVTEelBtna2Pk8dAgz8/mQBqkwKfovFmbNdiF64CQ12mINeDkmTzXEYb1o+sZmlnMnTofBZ189L7dg+gwyYCX3hHv9PCq2cyuYuCa7iDk3LOWJQbx12JY6Y063ohQcCO4vEw/ZOkd/s6Clx4kQS6VAW6/3VLoK6F566aKDwoKKho5VTDUCId4ilKFwUrVG4DV3Df+9gZCHcpXZgGgqDdXCKCkAxs+zndl6hreaqU3HQ7StUQOOFX6GDSsCUggvy/+RnBhhne13isx4gZpTrw6LGytZH0SnysJ8KjBB4iAHBtVxEMZyEpaT/alKyNXGxPNjN50UnSdA==
+signature: OS5aV+TBL9M8Bd33yukd7c3i39rkEkuagRS91oNdbaYyOX26vcfVG5dDsyqlkqD+v7d/V2Qwkhy+q9gz898KZMhHl37MuTDX/XCBHHgt8w00KkIi5a3gYY8krBgFEa2rHCFnqDRbLcNBXiBThaA52GT+uqnsGlEsDYZxvYCttbKjMCpuZHGI8auNaOIhIYpm8ZsicVtJZhm+/s3v1wVqIiPrerLFaT0FXwMgdnWlCQ/JV6DVIioIO9OISqsPrOGX5HgvBA8qlOBvTze2i6XpafRD7s7MVJuvG72f2gn6Tft7puS9+n19ULcStvshFA82xYLahcwNKl6SLh0k7z/vnA==
 subtype: python3
 system: true
 tags:
