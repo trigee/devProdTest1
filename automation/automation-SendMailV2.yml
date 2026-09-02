@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Comma-separated list of email addresses to send the email to.
   isArray: true
@@ -39,7 +43,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 8.14.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -62,8 +66,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SendMailV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
 
 
 
@@ -81,7 +85,7 @@ script: |
 
   register_module_line('SendMailV2', 'end', __line__())
 scripttarget: 0
-signature: pbv2eHz8vki0CEPC3tD8je+N3/mIgLApMoldu1AQ9dQx1T1pG2L6iZM0pg32dijw9BfyGXgsYBeAOqylpbQk5kWjtfQ/f+L4YQjXEx577++ydzNZDuZ9CW99cbWVYYsR6ShKOKgqCQMX2RMQn9dfvyust59d2gFr8q9CJCtJ0plC8t/8bttzn9xutkZAgwSihglfl4qLP/29EeiJuXHHmYcrJlm8A13musvmeUDIrY2smrZBun7/dKAOzFu4ZtfYfc4Q24hc6MQNHDiXQLTNNGf2hxV/Htf/xRhGQUzy23vuSe1EmD6sJbXBSBa7MD7cm4JZj2DT/mOlvLJHIKiDZw==
+signature: PaBz1SFEiwB9H9Lq7EbapTNy8wCfCsZqv99I14DvCWCK2mA/fCPr3mAI60aVXEYwP2hROdjMzmaY4/aW76hINjk/O3Y7MfvQghHCKFsGoaBew1IpOzhNJzdaZJVXFDMhioFUj0H72PATsrtPZV4E/47UpN0nMTwOKq+xoMXLnTd3JTWU1u6wUeAXsEwGuXwqJD2AJY+mPWrpfmcP8eGbqICtPOZ6daqwX9ZO6y9b+2uY2Fe5Zf2wDxs60atlisIJ9vHseC0+6wgeYFX+vytKTMPdWQ7hTx1PsADyfUal2sbAK8pLkoWIi+IjyfWDB0klxfMm3tYSB3wMoRcBf12Ckg==
 source: agentix
 subtype: python3
 system: true
