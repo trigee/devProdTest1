@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: sane report json file contents base64
@@ -27,7 +31,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -48,8 +52,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SaneDocReports', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
 
 
   import traceback
@@ -93,7 +97,7 @@ script: |
 
   register_module_line('SaneDocReports', 'end', __line__())
 scripttarget: 0
-signature: pRDsvtID3Qqg6y4EQSmWrLW4aPQUaG5F7IoD7Ua/YHZnZLJGWb8+RVCGHBjMe9nxuDqB+hO4wfvZgq0fkCMChH9JRprT0X0H8mqQRaigr6wPJ0sfYsPepX4Bjy8kiZA2svRXk1mH28CeykpgjIJVxnM4ng6iIHIwPF/FvOAS40jHFtK23IMdelUi3k2e+rBMkPopffq9OXRJvx0COFJMJAl30CdRBbqNy3+wLMFKkAP5A3nq7ZW+Kbj1Q9YD5kP24MP0+bSAV0zUayEDCEFf4aXHFNIBXhcPSUiRBnBV6twdizMlmjVQsrgcIY+oXqHL506ShmuwSP1WT3iq5xx1+g==
+signature: zqIXdEufSpXNWSYY/cRJEwkOxfSsrIoT6DTLjtPDnSKSC8WnvH26Ks8yJcbATk+UNpcQQvrvCWJq3H2QXdJEq3Dvsm0t862MOAE0P02wyicH6j1tdop8jlAX5vsNDCYdEq92Vmw6fClJ8IQEjPbY/wG/FBdSemmlJzLz5mWPbRr3XBmQ70OX8+3XssOx5F8dwnNKiM/yV/EIqDKbry/V/ElVxYNNa7F6ioNqBG2Yrw4HeVLGOS9WW7hL56zywMwOXBa9Tn3JKlfoZaiFTATkD4VuA/KBQT/mLCJ/cO1kh3n4xgME+J2E3fFFkaEmz0QwWeOYEUUco72YQC+UvdBvaQ==
 subtype: python3
 system: true
 tags:
