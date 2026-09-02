@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Name of the file to validate.
   name: filename
@@ -37,7 +41,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -46,7 +50,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/xsoar-tools:1.0.0.8457987
+dockerimage: demisto/xsoar-tools:1.0.0.11807991
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -70,8 +74,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ValidateContent', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
   import io
   import json
   import os
@@ -903,7 +907,7 @@ script: |
 
   register_module_line('ValidateContent', 'end', __line__())
 scripttarget: 0
-signature: PxTOB7eAZGQ07ETkIP8bL9AP4WD3YP4I7Ja3arr/ZPEqlF2mvSBg0oyr+eLmHwnDqsK1BnEb5l4Ary0Gr3d7DIFEaQo4OP+g82rfEW0sOkkpXSpnureyiep8OqmE5O2Vu/PeijytSPczI+lQ3bwAAY8QBR+OKVeVJI/8JoCdUoTGX/JeVSHlZUFaT2bQVdJy9wHAolorIwLVN9f2yArfrGGi1sYxMJTzVXM2D0Ff2NWwiP8ivRr4rWThXJn7k7zcbmHoBfL86MapE1VIOaIRraisWa+rT5iJMl+42azI403VYvdKt9CwEAktOIdJWSpt7fKZTlg8LYfQ8J/AkzzIvA==
+signature: hdBMkhv7IKPYKg+1Ujl8CCryctERZBaAlsPKGEHZLfITy837J6rqJR2hBZaEL8CH9LdxQlCgHZhGULZTWgXelM+NVeRLmRJhYbkBSpblfYWiOtdXbVaD6Z5UU3DVoKZ5jY6ox4hE5gPxOxPYDGci+dWtNYTaZE5ztHbXAE9SIT+8EfXMX9kGy8e2mGmU5nrkI14Juo4hq5j1rotX/0BZd9NSpR89L4I/Ln/j5O2v0fntWsc5YFQRal6lCCfSYcQ/mOIOrydBGGgSapvVWKGui1Bfh/Q966I5wr8w5U9uEoLLodRFaT5zKabUjxVnySveoijE4R7FJvxKf5XilcWR4Q==
 subtype: python3
 system: true
 tags: []
