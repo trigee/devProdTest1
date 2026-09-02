@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Alert ID to get the prediction of. If empty, predicts the the current
     alert ID.
@@ -125,7 +129,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -134,7 +138,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/sklearn:1.0.0.10866354
+dockerimage: demisto/sklearn:1.0.0.12545527
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -165,11 +169,12 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DBotFindSimilarAlerts', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
   import json
   import re
   import warnings
+  from collections.abc import Callable
   from copy import deepcopy
   from types import UnionType
   from typing import Any
@@ -482,6 +487,34 @@ script: |
       "maxIncidentsToDisplay": "3000",
   }
   KEYS_ARGS_INDICATORS = ["indicatorsTypes", "maxIncidentsInIndicatorsForWhiteList", "minNumberOfIndicators", "incidentId"]
+
+
+  def get_incident_link_creator() -> Callable[[Any], str]:
+      """Returns a function to build a markdown link to an incident details page.
+
+      The URL format depends on the platform:
+
+      - Unified Cortex platform (XSIAM v3 / XSOAR on platform): ``/issue-view/{id}``
+      - Cortex (SaaS, non-platform): ``/Details/{id}``
+      - Cortex (on-prem, legacy): ``#/Details/{id}``
+
+      This ensures the generated hyperlinks navigate directly to the incident/issue on
+      every supported platform.
+
+      :return: A function that takes an incident_id and returns a markdown-formatted link.
+      """
+      if is_platform():
+          template = "[{id}](/issue-view/{id})"
+      elif is_demisto_version_ge("8.4.0"):
+          template = "[{id}](/Details/{id})"
+      else:
+          template = "[{id}](#/Details/{id})"
+
+      def create_incident_link(incident_id: Any) -> str:
+          return template.format(id=incident_id)
+
+      return create_incident_link
+
 
   REGEX_DATE_PATTERN = [
       re.compile(r"^(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})Z"),
@@ -991,7 +1024,7 @@ script: |
       :return: Clean Dataframe
       """
       if "id" in similar_incidents.columns.tolist():
-          similar_incidents[COLUMN_ID] = similar_incidents["id"].apply(lambda _id: f"[{_id}](#/Details/{_id})")
+          similar_incidents[COLUMN_ID] = similar_incidents["id"].apply(get_incident_link_creator())
       if COLUMN_TIME in similar_incidents.columns:
           similar_incidents[COLUMN_TIME] = similar_incidents[COLUMN_TIME].apply(lambda x: return_clean_date(x))
       if aggregate == "True":
@@ -1041,6 +1074,17 @@ script: |
       return incidents[0] if incidents else None
 
 
+  def escape_query_value(value: Any) -> str:
+      """
+      Escape special characters in a field value so it can be safely embedded inside a
+      double-quoted getIncidents query.
+
+      :param value: The raw field value to escape.
+      :return: The escaped value as a string.
+      """
+      return str(value).replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n").replace("\r", "\\r")
+
+
   def get_all_incidents_for_time_window_and_exact_match(
       exact_match_fields: list[str],
       populate_fields: list[str],
@@ -1067,7 +1111,8 @@ script: |
           if exact_match_field not in incident:
               msg += f"{MESSAGE_NO_FIELD % exact_match_field} \n"
           else:
-              exact_match_fields_list.append(f'{exact_match_field}: "{incident[exact_match_field]}"')
+              escaped_value = escape_query_value(incident[exact_match_field])
+              exact_match_fields_list.append(f'{exact_match_field}: "{escaped_value}"')
       query = " AND ".join(exact_match_fields_list)
       query += f" AND -id:{incident['id']} "
       if query_sup:
@@ -1351,7 +1396,7 @@ script: |
       if COLUMN_TIME in incident_filter.columns.tolist():
           incident_filter[COLUMN_TIME] = incident_filter[COLUMN_TIME].apply(lambda x: return_clean_date(x))
       if "id" in incident_filter.columns.tolist():
-          incident_filter[COLUMN_ID] = incident_filter["id"].apply(lambda _id: f"[{_id}](#/Details/{_id})")
+          incident_filter[COLUMN_ID] = incident_filter["id"].apply(get_incident_link_creator())
       return incident_filter
 
 
@@ -1461,7 +1506,7 @@ script: |
 
   register_module_line('DBotFindSimilarAlerts', 'end', __line__())
 scripttarget: 0
-signature: DIg2relwUnCmjCMcislnWqBXToyqQU7GDX5nA+aY/PP0DWSdljlTsTPVQOxvxnfvHeupq2WuMh+gxTZENJDlUk+dXdNx1jg3JG8F6odhzDZ69aD59ZwdpICtEdDqN13kyDPkpAtoxgdUvFWQ6JBmK3xnbjwavWGRvnRq13015tOgp4x9RBkA2+kXY11sxaDjcifblR+D+xsAoPIG5LrwyeUlYHXTgXCWneu6CEWLh+9kXKTOdqrUInyLIjjaPmgRpe3DPXpAcQMRQOUz38WDgxSXjhwVYOWM7y/h7HbwWPb4KgKd6dcW4Rah7AaHNiuySumGVpuFlMsqo+nuitP7xg==
+signature: mqKtSjiafhNIS5G0Kadjk4XxqgRrM1QpFMZHvhsMWXAs47hUu26d7xg2ptC1kpVUi9G5OIiLbpBr+wSWKaNbeK/HVjnuQqkicTfL4rinLP+FDQo/LOXYuUTgGzdHs5GclRULZFcNwHI2qtSEZjrlzj9XGX0cvH4WjTW62R9vM3Ukswpk0uBCHazoKtPtE99WI0/UZjF+LV9+6Nn1jk4cIszaRXrJhT7WiRi8hQKbjzvs1gpgiQAojDaMlsjWJKYzJQYRw/BY/+PKS1yJBGgPCFr095hPe96WT8LiyxefbNJgbdap+ve+kNZbq+tYNejSv9n6TPsDD8bhXmL/pVx5fw==
 subtype: python3
 system: true
 tags: []
