@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: A comma-separated list of CVEs to enrich.
   isArray: true
@@ -59,7 +63,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 8.14.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -146,8 +150,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('EnrichCVEV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
 
 
 
@@ -165,7 +169,7 @@ script: |
 
   register_module_line('EnrichCVEV2', 'end', __line__())
 scripttarget: 0
-signature: pTG/YXgGjXR9yW/UuCbu936eCvnTySCue4PX8pS0x3qq0QBvrlWLFUGwIggtrpVxj3Kxo+NcOYGKLZQVawnvEKkmgUcLlSBn7GMuChDP0bt1DSI+TvjFyXcy/A0eu9WZM2x7ZuOOMmf06YOdZd/vUA0gENaQpwUHYsz3yMK4fCdiqgg3F54CjzOaAhgnk1WKR1xgxrL2pqkNgmdRtOgAoFcppFsf5puaN+2tYSCVKCuQh/5UgyVglOX6LeGZ/qr1ELR+aOrPhsZVZ2KNO2mDFwbm6ggFclTZ2bE4Ulv4IRppWijTIf7DYgaFgz/ssHFhlvmPB//TMGglLP95s6V+3A==
+signature: dGe2uvXWHKHVJQ0E8o/z9NNOMUf6Ll1QlcxkWpFHq52m/Udam0et1u8ZrFWn6ZSaJQi+Eb/VtuJWCSuX7pTq/dmo4x5WmDIhLYuWWUehwQEfgJU9tFAGS8oGHUWO8+IpEw04k5F4vy3wHIqEcGUC91xiXBrm1toq+PA+hRjyaQvbp0XDIG8pu2wyd2vQHdsbr3cBIkW+z2TU3idc3mWMTTc/TapBc5HlVAwR5GDlJOKwRSopM50R5MlcdE8qZpgk4amb1P7HK23krOywDbaj7yb9ipbYyqfjptT53K4Yl+K7rudrazpr1XuphvF8WSJJPCftHrZJ5P3NJWNKj0zCpg==
 source: agentix
 subtype: python3
 system: true
