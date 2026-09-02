@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: Common code that will be merged into each server script when it runs.
 commonfields:
   id: CommonServerPython
@@ -7,7 +11,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -25,8 +29,8 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
   """Common functions script
   This script will be appended to each server script before being executed.
   Please notice that to add custom common code, add it to the CommonServerUserPython script.
@@ -15692,7 +15696,7 @@ script: |
   register_module_line('CommonServerPython', 'end', __line__())
   register_module_line('CustomScriptIntegration', 'start', __line__())
 scripttarget: 0
-signature: 3uVkkJU34ssSdjoZG57bHUz1w5QjFwd/dlioCQDxrSZ8OHag9nc65dVglOc/sJfyjkZ5BsrAcIeRlKhLL2oVheEoeCO7tdKXD9rfoTLt8N4+34fiUuW6NFBSEhnvI90/XXMrnw0pr97ssWCKkmEECo2PkVGFf0fzssqecqCctQ4hFjfy4ZGXL64eIbmmspGbpkOtVcosHy+b3Ty+iXP0pOYMS/S5JPpA4HxR/fQCbuuLOsmWyfos7NrIYWXwROCDPuYgT8N5o+o1YbkKbDoM+2RQU7WOvmyDFImDvbECEfj0umC77g7QWNfoeeWnnkmvaF/xggSA4hiXMc3kjlHnyA==
+signature: L7pWDVhdOXpCvEHrQD343baU+uAoHbAcZx6BqehkvEpv+6Y2M8V1S47T1miUOjZymuXV7jzV8Jel6I2+9cLbzDwcev9q0luwgJV10Uj90up2B5wLESYkG4817NdRYub5sYatc+9Kvw/TmdsNILfZfsGhZIPnixGeaD5Ka+cCObWq7U1LzLUvW3/uTD+GC2HzlMip6T263H8h3j/bNK9qsnKH2wS5yJGTOtYkRO0nEyuMNmKfDAyt84lH1TuENqMihBEECCtUuFNiXOJVdXxZcliib5A0resqF6VUJnkDEWXq6qz4MC39MxDFnbqrREz3nXK8SEOYcKVKBcdlscTQcw==
 subtype: python2
 system: true
 tags:
