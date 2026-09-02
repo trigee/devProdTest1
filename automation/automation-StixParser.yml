@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: IOC XML or JSON in STIX format.
@@ -17,7 +21,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -47,8 +51,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('StixParser', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
   import collections
   import copy
   import tempfile
@@ -1731,7 +1735,7 @@ script: |
 
   register_module_line('StixParser', 'end', __line__())
 scripttarget: 0
-signature: Rlkz8RWN3CgUPfTK62RuhZ2ldGd3uwlA+E83xZQBdhvZrdV2Bo5tmQg52LSpLiAvpWK8487LIjSQTgGl3L5DOfQjrbgvQrvbKxz4uXJgW8s1JgjbmXBKYfIJ1mdWUhnPsmSSmzqzq4tq4U7bwqaa3/cPPq5G9xKlHtPXaleAmFhEowAyMCfDffAuqZpgWNEyKkhtybtcz8aI3feAjtYklQ+tqDYZhoQIeUOdm0mcelf4iF5RJ9h+HWZIIGKZGA4j/Y0sy52x4VPRMkosaS2lV7epstZC0gkYdEhxmbX6tmIWaKC14sDvxgvRL+KJi4N/HFAzT19Pfssy3R2VBA0kdw==
+signature: tt/nKxpfh2Q9grwfKdv1qRJkRTMW87U5VocvaIWctK09X9g2MCY8C/SgRFftBmq+OQJJO1+P03/dN2N+82oANcDA5XQXHoQumTh/muryEqF6JxSBXISqF1+UTYtRdUn0+vyD+LBi/cDZu4LwgKNYd4vUpSyukoiHsjVD6oJ5ba8XIflszpgFF54eIBLTLh+hg6uqMjADOVKCOqtSe43BzplxSOdrmRiHb+fcg7iHvpBzUZMza+tlUglChKZlvNWbExSRMlLFhW+gY/A36i9P9gku6aP02klcbUuNIsVEsbnNynTzGbrCaBO4JtRVo2+fHw+sqVI0pLNzetezrYWS4g==
 subtype: python3
 system: true
 tags:
