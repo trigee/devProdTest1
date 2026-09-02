@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: 'A comma-separated list of entities for which to search for relationships.
     For example: 192.168.1.1,192.168.1.2. The search applies to both entity A or entity
@@ -162,7 +166,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.2.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -230,8 +234,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SearchIndicatorRelationships', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
   import re
 
 
@@ -382,7 +386,7 @@ script: |
 
   register_module_line('SearchIndicatorRelationships', 'end', __line__())
 scripttarget: 0
-signature: lg6YuW4FSqaPVeOiSMDZ7Gl4IQfl7Cg5qYS+QflV0PKxP5j7LpV1EkY7bfImrYs8cM/eMoWOtYFtCp2KxTQ8Lj/IEgPLLVfa3HnypuuONnV+p2lsMYwoNY3LKSqN96X4VxEm8WkOTfebHFh93phl9xtcE/6CzKDURYxoq3oBQ4yWp7v/t8AaGl7i3MPTx+V66+WPFAdKRCigPMOQZ3+pqo4SeLqjNtF8Z4m7Gnb2jlYu5Xv8wSg3Plns/l786XTTvP6WcNZjG/unsqwXqrilFQif28uyMhUUTQjbgDjH5+SfjiD7rlfv8uosSBPSFu85rFfhdNl3VqlxyxJUjdY1ew==
+signature: eODFInd1o6tXpata7X1+690O5+SJTy85lmmAIPzVf3gEphLaUE7q03q0DRCs/fr/W/YSUNUT9Tnj/8i1Sc+7PqTTg3TvDADHtp1nCQhxuKk6JhqmPP2HikDLVVhTYJCkq5LJFWiysM/RFxWW7ZAY3b6IczSbhsVEbqVPqEb4ZE7qSNSgzpQNc7VwWktRsE2+1GUxI/ghWN5PcRy3h1F3Wt5GXGbuyvnc/VuvEWQ0KJN8o/16NLKFIA5z4IELuaMW/wZnW/vNcU3huXDKGKIvwGs7oLED/y9mCo6b7TFt+fXaj2zs2jydKD9zj4GDz1ej4p3B2SyLc8xKLcKof6lMbQ==
 subtype: python3
 system: true
 tags:
