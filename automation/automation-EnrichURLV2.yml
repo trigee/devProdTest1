@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: |
     Accepts a list of URLs to enrich.
@@ -64,7 +68,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 8.14.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -231,8 +235,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('EnrichURLV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
 
 
 
@@ -250,7 +254,7 @@ script: |
 
   register_module_line('EnrichURLV2', 'end', __line__())
 scripttarget: 0
-signature: Dm5lZXmtbX6nLAGjyfBaggwinv0Z0Vu3+phZjiWiR7SbsetiuHbSTCg/IIDqai+qE4B78FTfhXDuemMn7ZJG9zsRWPotEoD7PAgU7/8lxJdFp4fUKvk77DaYTEfyoRHwNj8KrTCkxn524AEjs79t1X0bL2hlkOgYM9iHTkJWgxFyZa0KJXYGKx66wDlKKyYTuloIU/gGTNTx8Z0/DPrzWCYSrphmxWh0CiZ+ZmV6eHlvbJgBZC4+DZCFRRzjiAx/SkXoaFgo4xc3734uQJiRtEFqyDvwZ78giZ63wDkal4yUN1/4BEs1MI3/YjCTxcQjEHbj4wk/EkLzLQP+OPQkBA==
+signature: pqzfNWc+qvLbPok2Fif9kqMNEEaZ7KX1qwB8FM4h2djha+1MUL4fasPh5DYQdmm2Za9CNFTNWJTqhOmXPjawgL6WeOEJzg/X7TS3Zw/2RDTdFL3B6PS4McocMcPdfo1lfHSrNzlhirMTEjcnzE/QzhqOR8YpLHb//kARXByssjbDUD0DA3Vd8txh4kuH1D2S3zD8M4vT+8I+BXc8DPUsuc90acyOQoQk1uV8PC4rKRsYXpy99rWdphDOLUu06zAq+zTSov9aFQlKZKdA29zzh97vzUTKwIU5Q/+ysSNTtMTkKMJUXd+lljd44ars6zzhO5icPhQR1CpPkg88puL02w==
 source: agentix
 subtype: python3
 system: true
