@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The IDs of the relationships to delete. Can accept a list of ID's.
@@ -15,7 +19,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.2.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -37,8 +41,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DeleteIndicatorRelationships', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
 
 
 
@@ -67,7 +71,7 @@ script: |
 
   register_module_line('DeleteIndicatorRelationships', 'end', __line__())
 scripttarget: 0
-signature: m1GtY0RfQlXZZ+UQjwKmKBvy2pmJNt9LmaRLH7pPG/B1BAsAnuOW9DepFydSZzL5nGxt4WZq+Jp0S8xt53TvRo2yeAiVz2XJ6g80Y2qOU/j01ewINUs5PDkJ815lnekrSTbJpFoRN7bp3JcWu651fV2NxBRZrHaVs/sXFjaF9U4TX5jpg8hC0gGKyzQ3lYfb+WzAzH/tc2Pu8oY7oFX+0wp9L2QmcTPqSJibF49NTnD0/U3WAqnhJEwYJzd+pmKBl1ZeTHBtgPKo3EHj9kzT1SwVaPPtmhh7w5PAYBip0cMvwXqM81Jrv0euNrUi1uVKvZOCcv99yZK2LzM3EkrvRA==
+signature: SPMECs65bvOf5euJZw2B/dtZ759NrMqy/RKJIM0Dvtm9My7Ctg1opl1gUWt/UoIz9SOZz4B69aYbUMCU2uvltrOq4aS2nIcFzSwFH8IxPCP1MlsrbAoH/+b0cZgZYQuRMjiVg8SbrN8r1sk2aVUOwuSfraDm/lyy8Rqwbn/RuWrnUuXd4aJJ/WBSwIbXpCssM6OhddfOV9ur1QXYSij8OwC0x7sGJidlrmYIXul2RJPbDjSWLDkPtaPVyN9QQK+yuAtYv+3P1KnFrOxQSopCzHnqv8nqAOpakAkaDMoL1FFkPc5jtW3xv3rM1wrfLkI3a6KFJhiprDK+RSPk+tZwsA==
 subtype: python3
 system: true
 tags:
