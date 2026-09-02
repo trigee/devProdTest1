@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: A comma-separated list of IPv4 addresses to enrich.
   isArray: true
@@ -60,7 +64,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 8.14.0
     isoverridable: false
-    itemVersion: 1.42.13
+    itemVersion: 1.42.24
     packID: Base
     packName: Base
     packPropagationLabels:
@@ -275,8 +279,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('EnrichIPV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.42.13'
-  demisto.debug('pack id = Base, pack version = 1.42.13')
+  CONSTANT_PACK_VERSION = '1.42.24'
+  demisto.debug('pack id = Base, pack version = 1.42.24')
 
 
 
@@ -294,7 +298,7 @@ script: |
 
   register_module_line('EnrichIPV2', 'end', __line__())
 scripttarget: 0
-signature: qpW2XH8Nql0JT5plnM6JhNjzUvouLC7psnfuoj647Vs9lFTfKLcWleZsm6bZJcgkmr/Wlh5Mbkspw0sRHD8DAbcJIzFOZtWU70QlG5+/MHC0yliCqb2wZDopQYprDqsEWkZSzDXxMzt7KxwORI5BRyzBHqPF6lMzfW7Y7mR6OwP2jtFxw1RWzpNuTX+Um7kSJjrfcoTWlft2FCewt7mA/CznDVZWpDfNF1j4kWTtvFBUmSsrNL8XlKEPx/XsGrhvkjGtHNbhWhF/qb5wKvP6z8bT8gYGMw+jl31aBvuuRitmN0F/wcRtGiuWZqXLGj7hBgllzYaDuMABZMNBI478HQ==
+signature: TWldY0sBmTFECFqmFE8TvV8/ms6UD7QYlc9yde0eZKBfYX8qqUn9bbj/N0R/lg/Uclo1GDCEvjfmCAxtBLi2maKRRoeDfpJL7lq2AeJUtsdMkW5Y7Tx87yLpsf2/d79oX+JeawdiSo8C91ltEiLiGrgLwrlyu82+8wZ89p6E8fzz6+QwCxST0E2zISZTcWVDLZ9FvCuV1ImGDiIw8JUAVTv44pKsN4YALlL0VicqYCfxPg1KD7D/P+hQdCBek1WKoJn6gB5q8xWY9srXEKwU4TDq9Jcqmit9NOK/6yCRqC3EUvKaqgB0EFcXpciL03ba7LNB2FiWcJjUOyM/0ld0EQ==
 source: agentix
 subtype: python3
 system: true
