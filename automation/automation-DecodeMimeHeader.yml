@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The header value to decode.
   name: value
@@ -11,7 +15,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -38,8 +42,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DecodeMimeHeader', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   from email.header import decode_header
 
 
@@ -85,7 +89,7 @@ script: |
 
   register_module_line('DecodeMimeHeader', 'end', __line__())
 scripttarget: 0
-signature: sD8bzYXXL/k8usk4GjA+EEw8nk46quj8zuu2fEi5ohUMnzQYKldV6nzFM72ZuD2ZIFmScwhzSQip5HkjKMvLjVAyeiUbIsdDp15QldTA6CkARbhy/Rn2OQowTI9BEMjGbuGdwrb1Z0cGVcPm0wdRKJsecVJCmPE0CQ0CVB3SQ7XUEyXgnjtOGg3BBoAnMLWy0h90t5R5wg7yFSNFKt1uT/6OfqYMH2VO/Qfu4jqozzx4a5D0H5HT3CAwk0dnyAIzFat8F5T6XQgTaEy3hU8JuquYcETJtRVsdB0GNSt8TAEK+AnSpEbn1vKusqqxC/ziIrHGByoZKcLSIDFzoEp5WQ==
+signature: zQrPJ+2M91V+kBvjzGpH4zo6mfCz14xLuh4F9xLzGHHr3EjV3bv0XawjdUwd2eZ/QxevrIW1KSviycTCs5TQNGDLH2dNzFiwokI+NNB7ZHAOr6dt9DoxZYpsTW7G/nwIFT3gnc4U2oupkzsXtuo7DhVIZyvi61BKrJaGXQCisz1e6/P56ROPGs9azFDZmR5Lljxj/fnbfHrcWW5+ZcPSPmbJ/OVkoAUNrmNQJ7y3T98HH/Cgsbg2xosLm7CadJZxm5WTYYyBbvRHJbUmHs5LTaleq+qjKNG/KQXJo3QrRcK87I/tEs6B2bkGixza/rzheJHrG/RQwkNUqvUH1ZIQwA==
 subtype: python3
 system: true
 tags: []
