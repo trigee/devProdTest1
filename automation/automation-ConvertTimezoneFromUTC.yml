@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Time in UTC in the format specified.
@@ -25,7 +29,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -48,8 +52,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ConvertTimezoneFromUTC', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   from traceback import format_exc
 
 
@@ -94,7 +98,7 @@ script: |
 
   register_module_line('ConvertTimezoneFromUTC', 'end', __line__())
 scripttarget: 0
-signature: t7Jjx/Hve+hVBoIoemem4EClwcF/ZPMXV3kVzLcVEZL150A0OnNv/NV0KYOJHWFs23YcHJC84omyPMZO1iToyEk3PUzXYW1LpDxElK26hjqrffzwjrfr53ocxctwHUR5ZZ0+2pxpJI+Gk/jW92AtTuDHmcJbqjsNc6t34y+j6nG9qI5ia/iV18JX2Ka3vJoYcdRFuZcqbtHCh+nd0lFj1VuHrwzR/1jB256C2uXPBUCZJgYWDQjNnK+syg78+N12RsLeWrwNiyX2fO7f0P/BJg4dPDmvM/zq7AZMZcR8DmPAU07imQV/KELkbDwNTDeCTDZ50z7CLi8z8sA8EbPIGQ==
+signature: kX2nwcxOkCdN/gxSomA7r+y7zNrIKQ3odhc66qIjv1aHvbhtjRnO62MmDE8U0gcjn0TiCUGEH0mv+f/qOhunY0JmN1vjTnv1zraHXdD/Bai95R9Qwwo5TyjJNqQYfaDdc+7AHUSngudfr4pIj8LaXKW55WXRVhi2yhT7BVr9gMve0qi/NXLl3P/vZoJOxZhNFYitzMdV9X5ihOUf+33c1qeg4MB+Oi5yUMweD5atmQ2LctJ0RFK4qD4/TgqyRjrMlrRh5BSYGFtOWI+OOttfb7l39yqygkByB9+4qGShvBYWpsgDFUM9JwXKk8uh52pRdhsggH0tbHf6/odhyAmEcQ==
 subtype: python3
 system: true
 tags:
