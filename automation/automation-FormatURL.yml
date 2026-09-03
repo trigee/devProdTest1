@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: A pipe ("|") separated list of URL inputs.
   isArray: true
@@ -15,7 +19,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -41,8 +45,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('FormatURL', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -182,6 +186,8 @@ script: |
                   self.output = unquoted
               else:
                   break
+
+          self.output = self.output.replace(" ", "%20")
 
       def __str__(self):
           return f"{self.output}"
@@ -540,6 +546,11 @@ script: |
           elif char == "\\":
               # Edge case of the url ending with an escape char
               return len(self.modified_url), part
+
+          elif char == " ":
+              # A space is not a valid URL character, encode it to %20 instead of failing
+              part += "%20"
+              index += 1
 
           elif not char.isalnum() and not self.check_codepoint_validity(char):
               raise URLError(f"Invalid character {self.modified_url[index]} at position {index}")
@@ -1035,7 +1046,7 @@ script: |
 
   register_module_line('FormatURL', 'end', __line__())
 scripttarget: 0
-signature: E1xWeZS1c7DfAE1yKetrzU8/7bu1S5zJ7QhuoiA6LhPmdLSUh4Y3FzTUpnhdY7ymNMkxAdyh51LV002eRYRzYtHEJf/NzEUhSmmyWbB8zNCrpfGipuIDrlM7JeU9o9/HhFCeUeG+YI1pkWU8JvCvd4TPTPcyJF6c/QRURoK45uB9ehVOyq9ERyOABVyR+PxQrrR9HSBE/CsG5eFSH3lbJO1KoALeHJHn02oS2TckMs/khNq6WoWcILAbicJln+LSUgxevSgfTvsYky5N9igid55DfUY8CETHtufW6/OTj43LWdbuLdHhW0BRPsowjojbIFy0D1Ac2SNaKCE1RnXUMQ==
+signature: ik2ds3KxCiJvXhw2OfddDBwbhmXtP+mzN0lKvZKI6GnoENcMNYAEy46d1EVJ7PUsXEjoscBAP7eJ65Izg0jQFpdvyVaGNpPAvbSakMSsU2N+3wiWMgApOZsFv9wfT7uKcu1EVRHtOpSalxDF7FV0mU4VXqyLjiH1rO5llCv820WPlAMNJQQRgXxZwx7x4jSj1NBEkxg50Aq5VYsIrQ+eH13SA90RrjXvsoHF5an99GFca1sPQeIo6NN08rPqAnWViU1aGecYMRMN3bR+512m8YUZJcTDjRsaPxovsdrnxC0wLXaRafnMNNDvd5F72BfiyCPCTQ3o/wvj3YW6AUdCnw==
 subtype: python3
 system: true
 tags:
