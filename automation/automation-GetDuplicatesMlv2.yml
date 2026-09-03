@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - defaultValue: "1000"
   description: Maximum number of incidents (to fetch from the database) to consider
@@ -93,7 +97,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -129,8 +133,8 @@ runas: DBotWeakRole
 runonce: true
 script: |
   register_module_line('GetDuplicatesMlv2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
   from sklearn import impute
@@ -940,7 +944,7 @@ script: |
 
   register_module_line('GetDuplicatesMlv2', 'end', __line__())
 scripttarget: 0
-signature: YM+Xtd4Q0E5vQRpFdPpjIAr0NvMFPCcr9ZQTYYDLWvDXCmXjPIEy+wnjAdcrYDm6z/0lDpeaZmq6u6IZ+vJUd1/TCDmW6FXdMaRewsqGr9QUGlJGTee0gEi3+55JkZKRXyVRgAJfdeWgfXrxqK6P3aMNRKdVEdYELXuhnGnp279W5H2FToKiwmP9Wbm7RD1aCUndRLyQZCQxMO0td3RyTfXuTAe+5AWQ9rciLwb/uoDjYWlsEOgWPQGZmybG/iyxGImeiMXaT3+vRTKiEdaRLs+26YKguHC+HQcaXOVA0Ka9T1pTNKNuiq0hiGK4BZvg8PGllqhVttohtsLBYlCikA==
+signature: 1vPs9plECm9a7gu4nHEEavOxbIvIcG2B0P9lQpNV8QCnGLdC8g7R/FgjdQH+kONLkw5BHy7ou+8bGdYBIYEIYtf7eqG9by7s4dJ8utunCNpXAEnpXRPnP2jepR/K3o4vlimGm4c9qeiK4EIhtzv1KmTaLG5zrBGrMfQEVorBbEmKB761V6F/3hIB5iy6TRVUGwn/aZAHwJX1N2xkT5gQ4Lm5siS21Omtn6ZqCHBp5C7IqcZ7kwgpsSDguM6Xi4m0DlaLZmzXEZFo2CgkT4/z89UReG/3E45sWp2OB83d+hNDsFGk7i/plv6t3UUkCtTUejBycytf+H8XJqnbBIr3yg==
 subtype: python2
 system: true
 tags:
