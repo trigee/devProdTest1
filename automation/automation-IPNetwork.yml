@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: IP/CIDR, e.g. 192.168.0.0/24.
   name: cidr
@@ -21,7 +25,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -68,8 +72,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('IPNetwork', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   # STD imports
   import ipaddress
 
@@ -132,7 +136,7 @@ script: |
 
   register_module_line('IPNetwork', 'end', __line__())
 scripttarget: 0
-signature: TmZoh5Ypz3y9QXAqq3a7Bmy3cCCUu5WRLcEjovq6UAeKYiRH5U0XDbTHrgCFbBqDAv2EwKHQ47a4apqVarcO03wdhOFcVJ6W3CzXeVTyA22TaK07AtkK2K1H7wrYG9aRxXUTqSuPy9+kmRIiS2c+Vfe2a64cRRza8aeeV0DG7P/fbsaBMebQCZPr+FtGKD4dnGZ2+LapoPIBmRw5NorX93RrQz56nXa5a3w6xX1INMWR9JYgXlR2z4MS68HwOV/EO4fiNQpsQraWJ/LOxPUbujA+dORk37FzsWUdVx+9xXYnUfIejrVvlMHb4u+ahRtBFX0MBytw/ogp7bMuSRidLA==
+signature: BCirhk9bDhog5wtTasWh6Z+w1OkmHmNZw9uGHhdncDdCt4tICGpAxAHiV9lNmfALn/4qd7vZ25gTlRKigBC4mHJW6sIx1Df/NUdzb/6j3ogbigET2U4FBjA7cpbvZShsadvuTvXKVekAkidP0xhfjItMOXufiwDKFFEWW3EmiV1QhmDvIp9XAm0HIhc+1VJmeVG+L+JoseNyV15v3LwLYpVlG1LKhZqg2481v1Et4MGfb7PneEq1qKhW4aNJvQS23S5iwIdexl9VXVWtbl8KIpT+nBz+q74KIzRjNIgFoOi4vRctCyE8jL2J72dzXIkTPVi4dHv9qEIH5tT8TTRakw==
 subtype: python3
 system: true
 tags:
