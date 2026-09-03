@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: Generates a random UUID (UUID 4).
 commonfields:
   id: GenerateRandomUUID
@@ -7,7 +11,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -34,8 +38,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GenerateRandomUUID', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -81,7 +85,7 @@ script: |
 
   register_module_line('GenerateRandomUUID', 'end', __line__())
 scripttarget: 0
-signature: 1gfz+1P5QcclDHg85yywFVNUL+/HTYH8SOlb1EJZdPsiIe5z7c/zgTzr4r0WimX6R5mgdHShk4S05TlPyVBI0K7aPGQxMuhQkHjF7sUT11TGy712cmlkD1l2keklb1/sRwSSQvrARsaMBnMh8P6bCetKclAXfFGSwuEbMSjvTtgJx39P9dnDUzfWsAzCVX78BvXz0EyAGiMMaM++tO8IrAeVYC8OuAjBzbhXs8QDWf8Ltqslda4rmn7WiBB+NfcK2lKFbopmW1a9NsGEVVISV5V05aGRqNYroUM6A1fcJqDppIeMuReyZD+uixNN6A7OCGlk+Z42GbvLr6NP9awP6w==
+signature: ltiqnLUnErCnFhhAPrSV4q9Mdqqanf04uTGMEO3CjYR6JxKry3s80AG3sTYU+PFGg6AmIRSeRl5FdDIbhGybHqKvnJHW11CN1/KY4JK/h8VxZfWsyy4AOK+VIGADKif+qNfzJ8himcF4zBPdneHuJHDzlwEEp/b9xcMt7/5/jRZNnJmECGVySPGyAD8yX1hQPzlEm+k2STNocbD8NAjmdHgBFZG5/fYgsxbeWJ2jBY7AUoxwPpRYtbZjDb79e/CfsXPeF+MV8fwS8f9BQHg5Fpd8pfyM7hRxbW3E78YXGPrpnBvQ/DhZA4xykbAHBIKXbFIp1WYISDRtvZ2kAd2Q5Q==
 subtype: python3
 system: true
 tags: []
