@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Docx file to parse.
@@ -14,7 +18,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -23,7 +27,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/office-utils:2.0.0.9067966
+dockerimage: demisto/office-utils:2.0.0.11285256
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -37,8 +41,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ParseWordDoc', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import zipfile
   from xml.etree.ElementTree import XML
 
@@ -108,7 +112,7 @@ script: |
 
   register_module_line('ParseWordDoc', 'end', __line__())
 scripttarget: 0
-signature: OPg/pbiatBoLa08x+NEd8n+yA1SEYNlveQnx6BvVygb86gzw+KdTNpf/HD7s5AByATxiZ+3QKGW2EM2rLRtTkkqv9XW94csVAPGHgf0H4WkS5aQI8n7romWEkyU5xY+YDM1mPBiWU7LWaO+ANfia8LQEJYMoxn6tCq0c59eha6BbOFhdNZsTxTH5qhdTtBUnu6RWLjObpjzTe+qy0ctdwvxHlg9pHZLeL+bzVyLdcOlvTpeJRlKDovi2PZptPS9xzuEvQj7xMsn/81bNzLQciOIgN8LoiZh5+2DzS8U8d/G6LBui+308M0RcDfiiI2nXUYpaUqVyUymc6XzMnppErw==
+signature: qw6orHqMvbJFsp9R+b58HstNBpqVeLFMNrQTe74ivYXbg1zQc4qSuDSyxrHtHM26KqSXlOm5MV69FKagRhz6P/Doj+84orWlkeReN/IuNrZr+ROFeVYrOtBqfDeFIFcO/NmN8q3r82djbg2sC7Fpu+zQkGFaVhtVFJxTbnyvd7tXOTZ6xhToK0VWdOvWxuaXtMRsoDHKCXEa69Tai1ydhr+Q7henfRy2rg6+o+j77Z1nkraBIP8y+XZAirmt0HtiBrTPZe44HtOsoAYEG9qucU3fhr1yb8TT4q3FoF283h4tTZfFOI1hpBr/g/n/vmadXJ9RhJ3BwNRclEXjav4Vlg==
 subtype: python3
 system: true
 tags:
