@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The indicators to which to add the reputation.
   isArray: true
@@ -16,7 +20,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -39,8 +43,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('OnionURLReputation', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -74,7 +78,7 @@ script: |
 
   register_module_line('OnionURLReputation', 'end', __line__())
 scripttarget: 0
-signature: FlfaQkf2/FYxxshd2KV8qV5caYBbGcFJBRwa3msyNpmEcbpSkQtTBJNZZgtm2B+BnEESlNNRte3hFICVvdUcvU/3xcfadmfy1Erc7w572cfslVYmoKjethbXNnqve+/fj7Ev36SvvbJVWBpnJwLgLKIKeWJjUxnv+1y+5GHf0TptGB7KoK+OeEw+N1lAS/fWRN8kb4ls8YwmPnJlVQ3odzr8JfT8TbxbTQUxFJlk9bkzEwCQh+sZFLbpEqk55ITn1PDhzZBm+UFIszdUO0qFOUcNIUT/fWcmYEBiymEEx4tCrt5K34kbWE1N5GNQFrv0tcBkOo9g43LiXyNLti/xwg==
+signature: rOLZuxM86PcdZGhFTdi+l9XO27ZapL9wHa0zc2gQWYtg7ZHQ2tciMDxV1Djsjh5kgYPq/JUw0iVNGvkeC4M0CTqnjGMd2MoE+smu+C2f1CFtQN800n4rGg+WPlizJuaPFnOm1LAfWcL0sKVUpYnBtBM5+lwA+aR///P4TtTQzW+Unxigbexe8zKdvlvXFW/LZPF4ScQyQFXCeEVjADqfEFKz9PuUvYrOp8i8I8oRHJw+lon50V3f2SENPGWtXZrXn66Xxkvfe9gd/Rq8B8kxi0xteEvQ9vxv1wWhkCw923TT9fBTzp6gWbbtiWE2YpeAGw905icXmGuBka25IvGUeg==
 subtype: python3
 system: true
 tags:
