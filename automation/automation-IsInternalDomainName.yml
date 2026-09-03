@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - auto: PREDEFINED
   default: true
@@ -32,7 +36,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -67,8 +71,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('IsInternalDomainName', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   """
   Script to check if a domain or a sub domain is part of a given domain
   """
@@ -149,7 +153,7 @@ script: |
 
   register_module_line('IsInternalDomainName', 'end', __line__())
 scripttarget: 0
-signature: C/GC6nGUaGxsv+UNgFWWJlzz+MOddxgwiQvmhoSBd63l2vjinj5d5ULEmcYIfKksMPiInfg4sSSrB+STqy3J5lzVJlh684ba7743ezoTV5Fo58giB/jwgFc8vdqSWjBdkT/0RO4JrWENLIfn3edyB0tlMTUdk+hRxD1YBe5nhPVbpz3B0x+O5l/PfKAx0FGN5ZN3PPoggvpkQb9Zy5TCgUeJ8wR2pvLTd9M4Qiuq+rpmopNmf9l6h2wzqXrobFyLHCJcFjjrd8+Rd13QBn2lGUVn4QKvbXHyzPv62gMw9BujV6EdXf4xTcJNN6PozHWNxVHeaKt9HZhc0dqfaFcjtA==
+signature: nNRcZ0RQkBH8XX07GsEAaDZYCNJa0N3xTeZWwnKL+gn1MKE/K31qOh7nwsOoXeniQ3nNQwYorXIFPGzzC9ua/0rV/IHctJ0UBZBHDHIvqHZrET1llPjy5hcgI+acPu6k7nJaoi0L814j+Rz3DYn4J7a6ylNe9q5lAPX8zV2vRxklGblM2j3oAuUqXM6OstfeydjshUqkxviT+a2ghH11Mj+FnyANtrdmw9lMWSUfGJPGPPuS7Yz5gKxBOtrQF34TI/6bSi++XBUxUJk51Y+8ISN27KBjGIP5myyxLMS2lCcMbpV2gyxgfsekSXZ/+jTi38xmXtKLLulXq9pXVY6r5w==
 subtype: python3
 system: true
 tags:
