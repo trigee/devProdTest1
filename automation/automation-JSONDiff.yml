@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The old value of the JSON.
   name: old_json
@@ -17,7 +21,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -43,8 +47,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('JSONDiff', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
   import json
@@ -118,7 +122,7 @@ script: |
 
   register_module_line('JSONDiff', 'end', __line__())
 scripttarget: 0
-signature: NffuRTYo55yglWPkFoL4G6TOUSTwuCalGwZ5ZpH6s3kMVo46O0dQfTVwoDsoglM9dyi6mvhoBJzHYjjQox0sq9klgue3K924NCgZ76jW9mAxGtBlNzBj4g4PoJODYr+h3sTmrqHe70/1PTyWtAMHHWr3L6QeyK2GIRVH9YyaBb1PEkEFsLTZhtwl+vCENTqGY4STtg4dMOtDxmoeIPevDFgUQhViCn2t2ESKPq6KQPRBX7QzQdh8BTXQYlMg9Aw48v60MuMwSkNUYhUUM8+3JDWihg4rCsoi8t8C/lw6tgVMKpoIDzI7D6t1mWDDDc+RGPqm7uuIse61Wvi52nrN3g==
+signature: XiF8OwZOl8e9q6adgynI+Caweci5LsiIGwWYVyUO1G2X+TgcBGPjLitwUTtHoGmj1lug1gRSJKd4nfQwto2ht3OwSREwqJFMO0JVVkESIldw86gK48FLYuYjj1N1850h5tbSt3eCALCOHKjRyXxE9JUdg1xZUGeXdY0cQumchDo5TsCgbaY93vTMMcU/4buf9WyJKUuZXXsCNflpJcBmYhHqPFnfaL5QV8OnNIafqchkFzd+te0WyKOlOlizbdMlxyW3g1aSFB9XA7J7LwF5yzg6IKsBAaDJ6hT/vdyrl1Vzz0N7ExEg9HnWMPC3/3LH2jOY7upv136ixIXxrJsEaQ==
 subtype: python3
 system: true
 tags:
