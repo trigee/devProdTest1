@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Value of the indicator.
@@ -20,7 +24,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -156,8 +160,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CertificateReputation', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   from datetime import timedelta
   from enum import Enum
   from typing import Any
@@ -502,7 +506,7 @@ script: |
 
   register_module_line('CertificateReputation', 'end', __line__())
 scripttarget: 0
-signature: feN0MDU3kExtqZB6jaYMVB3kOfOUma+RA5kWM4Z+T2nIKuyzsqonIhlu9VccH6sEEICqLf/3/bHGb2+caLYjp5wl7KV1AVJOrY3etVXcUeVVfQzfb+QBjccQB7umNrgOkzYXJDpIL5UFHBF/uD6LNDy86FjSi6lK7aw3F/+uCmPdh7hORGGdy9bdqqIDSFDq3sU4S0DgqJg+K+Sj14cIu0RiaZY0UNJW/j24j8huHR9yGggaAS+GO3tgiPdz9v6ATjGS9BwX+q3KxlQRK/m30NVNOHP8JIy+pbCcKmLqCOEVFKxfZeAp4mkMbtqqqTIpxI9+wt8DVVszC9Ev11JRMw==
+signature: fQMdfeA9ocyvMsxZRI7gbgbar8icAZFoo36LxW6NSyd/YSwCreBM4FPXJqPro4x4h4k18fyZi50Gcz2LVmGBhLUuxz7z9/xCIHZrh5Wm6vyHICuWukG1WiMFqSdcRsPRFLOP6fqlHooSvCZ21YIo26+MK6kSRZ+WyJ/MoYW2hUKCnoN8iUcPxQxf04tnOxOYsnWmZ0HbvLtLiObDBhA2KY2PaKTDACQWQlogupQpEkz0lA+p6fUq7VtwXyHilf81mWYsrf9nCkHXECx9XPtUnLpcAJVKrDAw1xHsoJGW1GxePBAAz4OPi4L+z6vkEP9w1P4MCu0lk7Hev2PDt/Xhwg==
 subtype: python3
 system: true
 tags:
