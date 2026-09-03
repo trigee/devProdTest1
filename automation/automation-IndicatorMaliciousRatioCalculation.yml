@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - defaultValue: "100000"
   description: Max number of incidents to query.
@@ -45,7 +49,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -68,8 +72,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('IndicatorMaliciousRatioCalculation', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import hashlib
   import json
   import traceback
@@ -229,7 +233,7 @@ script: |
 
   register_module_line('IndicatorMaliciousRatioCalculation', 'end', __line__())
 scripttarget: 0
-signature: DNfKoCbO950FcwOlaxWWjHjjA+jrfXYoLPKssg8ow8TuSq3DNOwQ2pEIL7mN/1R0KMI4QFjp6UwFyefI8CndJe9g0qqWOy2w/TgZfHxWWM3+vEdYbaleglHGTMnTZzp/nRAhW5EmEwz3Q0k4u/W2DJVGMoW7b8wkkwTy6bzTjmEIpT8TCfhVC29dk3X4anfNeA6d4PYMIv9FFR7+r4CRxOOvS4DfUr9xOgG72R5rEOF++y3h+6D52rzW5krmXWLUg5vSkFl1N17huzDk35XRE4ErOvyhSfKD9nJSlsDCF8LuyyEAnoC35qfYa9Xx2ut5GvNJjic4rr1oTS52QLNdIQ==
+signature: anuSQ3rTTR2LHUHp1Iwq1YUX+sn6m9mTcLia21iDwrELm1H7DTVEKAljyn/5nuZD4QUtzostFS78TruF7+J+LpjmIRcSzjJHzbwszIJIs3YAmvrz2jjtGwNyWqHFtOAsmM50pTqGPAOsRzo3PG67kRPTPL0ZK2hpQBRgBm/+AGuVg/QY9vcGs0KeUaxMG4Bw02gErcj1xVBBZEcDur5eOmkzIKvk1BNnZn0J7x+6LQ1S/pcItmyKBnTuBX99QohUDNf8aAjPNzQ7H3jUnfUKNrhAjKH7vv/quByp6zPdXLYpNFjk4NrwqJkWOIryPQQhPYAnYrrgqYx4cq3U/Hh5Yg==
 subtype: python3
 system: true
 tags:
