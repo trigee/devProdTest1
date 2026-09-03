@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: A comma-separated list of CIDR inputs.
   isArray: true
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -35,8 +39,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('VerifyCIDR', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import ipaddress
 
 
@@ -86,7 +90,7 @@ script: |
 
   register_module_line('VerifyCIDR', 'end', __line__())
 scripttarget: 0
-signature: d7qOCnvAyKcqug2qmfi7vIdP1TQhEJDPV1n9o42l5cnh3DxL31U1bEpWb33gpwq23aEKrSzYQal7HTNh2TAwdKPCG0CcX87+TWawOMQW0fOdNUguaNuTBnL3ln4QkxOnK0VaIBgKDk2d5+1bRZmOx8KAtjU4Ja6ibJ7ZMxCGmklMm9aYijobjndBUk0hhn6EqFzFyd6e8OH7KyPpXS4tWpyRwUmNzDn6PcVsBirbBcLWvmpGH7wYyE79Xn51bTw+Y0WphC5d+73HySxN13sgLVyILe+0KjwfnQeucWiqjzfTNRbclbuVHHItbQDjLOVP+tMKz2zL9CWn8ZrcnmhLww==
+signature: fCzKBe8E0K5fdFjBrla6XDzH+Yls5n1IOzpPAmdGvaT69cLGi7S1XwOSXh4Yn3zmUQBTp1J9jUQ0Qix41XMb7P3U0lFxg7tJvLprBng4vQGYeqJ5Tywfx8DmroiSNNfO+awrKe4aC8GMs2QtveO8jgDcbcgHIEZUZtQsayKpVdY6n8AqAh+O9Fgw7/u5m9sYTjOzcs1002hwDZzzr/MWIoKMdt7H2UdVrK8yS7NEhfQGXMUFloIpKPBhtGwlrmK+xWaeyaQ/SJA5oedxxfGVsAsjQ5yolt4vJbZz272E7Ve6AXpyxOvA9NTj/sru2w0TArwMCiG3Y9IkTEtBe1f3nA==
 subtype: python3
 system: true
 tags:
