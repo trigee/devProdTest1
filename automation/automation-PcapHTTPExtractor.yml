@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: get file entry from file name.
   name: pcapFileName
@@ -32,7 +36,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -41,7 +45,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/pcap-http-extractor:1.0.0.9431560
+dockerimage: demisto/pcap-http-extractor:1.0.0.11195141
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -92,8 +96,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('PcapHTTPExtractor', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import re
   import sys
   import traceback
@@ -516,7 +520,7 @@ script: |
 
   register_module_line('PcapHTTPExtractor', 'end', __line__())
 scripttarget: 0
-signature: xuK6wFoP3Q8ZA7zFG6mu9Vtx67mrSMg1i5b4G4WvI63/uFpTpHNPk51LTVvcc5ioMltn+56aF9dAGxJID8ZRz5Jn3cl97s8QfQ8e0WmrAFKzwoNlcQDY9jPxy0YZL1ATY0n3mTZviDUlaqiMFWmTuxGwPOrFEO/Mvhw9JhWefq8oB2T1dG5C9WuppF+YJMnMETrbHR0Sbw/riv3eXVr1exoIt7Rs5659PSXRjIlD1pJk+pEgQsZp2LB2epQQVV9AASPysbhfTalge9VohI0sr2aQity4PpaPQCA0RtfdQcw8Y0PTKBq03I22Hk8XiZfhFBvFVu/ibIu3UTDhkYhDxA==
+signature: XKORm4atDZ2Xpc6EMh6aK9Elc2M19luel+Yx7k6ZtyAG/imdBTglHKF+qBxusHP7dZIq4J0B3BvNeS3yfH93l/Z1ooFUWtRmpKeGeZP7thTO/yo2BuYTlwsUuTIB5QsQdrs2AxrLMqaYh3KPYXvj3bNiBW5Z3bb/3JfaoeCt4fo7omEGa9vz1pv/+Ux0L2sBmgDiLm5M94mWhkXuPEdtTQBQ9eOoVzNc6UGX0kfwgVwaAvyn68daYvPNbSaWHNrevToitnEOJUiJGj1s7fDP69XDEgAX9dymRTmodEHXl4NuDmi5gu5jTlm4hMEGBJDtY6U8qFWw08Eqzo0uP/KVNg==
 subtype: python3
 system: true
 tags:
