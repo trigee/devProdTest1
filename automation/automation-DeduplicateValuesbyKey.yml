@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: List of objects (dictionaries).
   isArray: true
@@ -30,7 +34,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -56,8 +60,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DeduplicateValuesbyKey', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -113,7 +117,7 @@ script: |
 
   register_module_line('DeduplicateValuesbyKey', 'end', __line__())
 scripttarget: 0
-signature: jJnwjA6LtglRe4UeN2JHmaHSfg8cI9EQsw6Fw7knDdmPq59pstSfERmTPyga0nAWuEX+Q4gbtYskC9jsA67oYSRPHGp2zkrqFZod0H54UEe7NpBHYY9cM6ehktNHBSzc7YadwRbcedzJ5FHkm/t1pKhaG0X7uwgwDhyW8gF3eMxvXxuSB8J7D3nBOGEOPSoQacq5+SpSzImLkk49FbO26gDdZ3ZeyrQZWu4V3CbrwmZdRN0mq0KqP7DTTiGLbUQWEum5nTaVPbiqRpbpnBBXM5kAvd6iFXzXbG/CLGcWjqfXdTlDDNrqP6X0xyTZeCLHdxoNulcUzZSzanVuSfN8wA==
+signature: BM/OKuFgKbOsWLPz6ymrLPiZhoDgF53fCIDAPjDUTQDDd2SRwRBuBoUS7DjZHVFjmoroEf9/uTarFf3SO95objrouFHMon/z9n2wSzMW0O01HUg68Qi/GAET4l/x7VeNB1QFB9p4Ad9DdVO0E6OC1HTFtCAG5AUA6v5DeLnwurYksTVNwI1f4NR8wfnI1Brh3bvFD1c/qRi1GPTQxpX6ERNEXUICNSHdVJM8KpsVnindtlEGslI7rrGhK98tctlcOJIyiNXOTmNmGvDAa9J48l8rib3fsOdmnJKweEIpsnAgBF3Kfrh+PxQZ43dyUAsx0aPdfD29AX/v6VSAyGkemA==
 subtype: python3
 system: true
 tags: []
