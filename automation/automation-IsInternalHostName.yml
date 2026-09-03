@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: A comma-separated list of hostnames to check.
@@ -25,7 +29,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -56,8 +60,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('IsInternalHostName', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import re
 
 
@@ -95,7 +99,7 @@ script: |
 
   register_module_line('IsInternalHostName', 'end', __line__())
 scripttarget: 0
-signature: QwVkTR0UHhYrFyANkUc57GkfIktEC1jaZ+l7/LZ+yCOqShCkOs26IRUvOQURONboZjuXAucfFZ5PYMAx/xMgFhfsFx4KCwbn7C593A8Gpvx8vlgqp/Ie+Oj2uTX/yNphzmfiKRXgvY7qZZIJWbMhf5jQBHaGKKLUfowyw/A0gG0juDcOByDHvQZsd4CFD9zXLD56ayyn8SxkIMsx6X5eINqF72Uq/ckkBeAQWOgd6Hji6fvcco+N5V9RC8IPaQJ3g6sjuAt6WYD4/4XguMvEt83ygwq5YBF37G7fnnY0zGiU/HQtMNF0Yw+kp2FteoKedIj6GrfkQzI1dwDMPEOvoA==
+signature: 2rGbzFIHsiTe3XTzbOzLpAt03umNQRPoq62eyW67hQjAGbkZwUz7j7L5eMGttN9zgUP0nymVe2Z8Fc7NZZGIyYCnspN7wR7fCI+uPiooRyCVQTPo+fQquQZJkzlh3/zh3E7ajh9FAKicygwReWAvbLy6efD6e1YdbpTAfrGauryr8bDXItGaRQD7jBh2gjG/oTXWdiIhVEJlQXitJRP8yRstkp42Bpiax7sXsbV26Hq9f2CgtvZVHUu+5NMUJvKgrYDSDAZc0+4O7YMzDTSQtmR9WVc8bOqC+A4WHc8xTWMGExMgw4GnRq3biFnEQHw3xersHdKwj34bAzSgAB6p/Q==
 subtype: python3
 system: true
 tags:
