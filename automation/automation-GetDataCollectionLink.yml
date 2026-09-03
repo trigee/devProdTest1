@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The data collection task ID.
   name: task_id
@@ -21,7 +25,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -52,8 +56,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetDataCollectionLink', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   from base64 import b64encode
 
 
@@ -133,7 +137,7 @@ script: |
 
   register_module_line('GetDataCollectionLink', 'end', __line__())
 scripttarget: 0
-signature: dJnlbNbdOKYQy5Vscfi3Oq6PE2qvW+fY9ZpXciGABhKDgxcYQvZJuKdO9r0luJMu9ML4IQwMVlzt8cAlqNlzY/tFkj38vPAd2DCDyc9AaiOhZfNe/IHb4tImyH8MaLTdsLcaeLTjyOG92pi85OL5SXOnz1/5AT3EOVg6mTc1Prcp6fixDdRQ79e/rhYhpnEVb/AaMSGaKR4No3Qoq9c+rK47kfHs+UCj87rmqFe8C/8MYuwsw0j2pHuwgiSrImuzBEfNT0+vePmUqPHVnZVhZU1YPqkLIUGHhvG+eMGAz8cGCRgfmH06/jaNJLoa+rGbJkchpFPkQvabC6g7lG7U2Q==
+signature: hMdVs0lk6Cb7uSwc+Qvtl6RCiS1Y+4BklFRKunTt0T4pS8LeueXK01d0otOp20ESRs83fDvN2uY79YXOuO5bU0c10zQ6hfketq7pn+tv2Ijj7KtS2rLMMCflnc5pn/IhojNi72rDJ4GXJD1qaV2hgBb8c96/fNG/ihsrgQ+J1tPV+juZR5kk/40kKi/QAkJJODMd+JVkWuIo2yJchzaL8e4ww+8MEe39dXb8C1lqj49u/GpkbpqKdvAlYmNiq2z9yQv8CNMlyCBRAJ/WuU1Z20a9BwMBROBcAIrRYrKPjRyfBYmQiA5QMUL0dp0C/iNSnQtYK9CXrEXXQTj0TflKuw==
 subtype: python3
 system: true
 tags:
