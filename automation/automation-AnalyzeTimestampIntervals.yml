@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: List of Unix timestamps (in milliseconds) representing time intervals.
   isArray: true
@@ -28,7 +32,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -78,8 +82,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('AnalyzeTimestampIntervals', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import statistics
 
 
@@ -217,7 +221,7 @@ script: |
 
   register_module_line('AnalyzeTimestampIntervals', 'end', __line__())
 scripttarget: 0
-signature: RoXSAx5rey3Ge+++nLAsCSmHlE7xTG47vuBrImEIF0dT2X3xp6Eacxs9qHCBCBDqq5PQpIN73HqqfUgEgm24vDJ7fbIXEiKWJFb0hSOkJZgMg+1mWeTxq8CD/n8oQlJs0dxGjqW4VR8TleNMHIRCsW38iSb+gIozOAhM6fLSZOCDFPiXGqk1OQ5yF9z7I2+QJ2bRlR6Tjz3ajNQcRzm7HQRYmaVWmFYjixWsZg0kAFojtFLikoml0JNxhpgWe5c4YRh+LAqFY7mchENtQ0jq03qQj+8eMgxpHN5u2B46NYRKEBB9lT1ptcGKYO5J37znORbM+j7qWQpmGtzjBqCALQ==
+signature: nwB47QrG/Z7ewBvblZIteW1AjiVc2+p0D/b0sQbh5OpEXgO3VW+ZhGApZkrQ1EAEEiKh/iHwUY+r68ODnHHMa6NlVK2p8Hf8kiBGsARVAWO/WxyuLWbmytQ9jBUTreW8VrxTUlfiOvpVQ0z8725v2IRXdj9Tf6EUhwFd5cEYDss2Fu/f5KCqLlYTw0zYQRCjbEZ4Yv+LCZ8muFCzlPwM+9SoXlj3RFx/OVfyZLZWrCNxv7OuMZYF/7SYci6kNldc2lhhnHIMTqF8vN+fsLopL/YFbRtSwezF6ziF9X0k1X0Iqa4T8mMeSZDbcMgZvqHF2sIJiDc2LbxhNmLbM2XNVw==
 subtype: python3
 system: true
 tags: []
