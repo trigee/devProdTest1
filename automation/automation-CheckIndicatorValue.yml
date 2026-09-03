@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The indicator value to check.
   isArray: true
@@ -22,7 +26,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -55,8 +59,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CheckIndicatorValue', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import base64
   import urllib.parse
   from typing import Any
@@ -127,7 +131,7 @@ script: |
 
   register_module_line('CheckIndicatorValue', 'end', __line__())
 scripttarget: 0
-signature: GXdD2MHysNJiVjeMB7p2Gj0nubt6LdD5cY0gvQLPRuyTO+E/QXqijgnuwsmD3sat8x/BH5FskmB21Nf2PF+zK/8jVHcj9W0GS+XFz+xvWNFCf2uHBIEq03Yq9oWAElT9IBasAojYrDpNgTubbA8UQ1uAmLT7erC27xeF6QmyKVxF/jWP5sGjEtax/hYzmZs4YgjLGBvTHTyebPTTf67tUtvKPrucHn5/IArwzxgv9l79dhlZ7ikYbdlLNGsFdyLabV6qcNBbUpiTLDHrLKc61mQ7T4r4pUIYjN86CqmQpAcFkUu/iQNrNh+pHN+5j6xdWhCJX5tWcwvQHHKx1IlzKA==
+signature: bQknu19IKBUfAWNeN4Ktjm702eb3C4iXlnsbwCIF/LdphXC2lpJ0UGcNsNGmkiDEqkVz5aA9pftpbiiF35EuGJTQlGjd5RzyD7gK9jA/uSerjDQzsTSlcPfMDw5wEG/U6KL4YN/Ou462xTK6MOSElmfUspG/8whGK/r0GrGJ2nwpesEqkdF322e6iTRSvnJgxBHcZW1zItmZerHc4Ax6a1d76gRyYOhh/7RFY26SiaeyBXQUJpGNSCLP/hNX4zWT843cNVmBH00vG9IaJGlWBZsfrNeXBqkMZ47JxIC/W37QdNnNSi4Zx8NhFnfLFTrgApoXcS3QKIUmE1dC6fK1eg==
 subtype: python3
 system: true
 tags:
