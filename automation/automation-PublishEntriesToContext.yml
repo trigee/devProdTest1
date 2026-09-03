@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The entry IDs we want to publish. Accepts comma separated IDs or a
@@ -17,7 +21,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -38,7 +42,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   var ids = argToList(args.ids);
   var out = args.out ? args.out : 'entries';
   var data = [];
@@ -64,7 +68,7 @@ script: |
   }
   return 'No entries found';
 scripttarget: 0
-signature: tjA7KbGGCuvnlWDc4cNIEVWw9/BMnfvw++m9nQRsXWgW2F6ftS4bvR6C4s6dj8J7JlidGKwWEpuKE+w06CRmrGiKAQwY5DJUJ3B7OGdpO8VpyV2o4vGsjZ/nqzkLT2Zwp0uzFWkHwBJdeY3EcuiAgKnmmpPVcigQDEXcsdrX3cvxA5CVovfFwlF30dtrPsN+XyidWF/fSs2w1D65OP1ctCJCH1UlqWFmh29vw5cs/0DDwoue0ewDU/rc52QUOvxsKjhX/TMuBgdBba0sWvj6vILeW1IUlkmevvnnlFkNBlR1vh+jXAdBn/s0L3xvWSzVs4wbbTTHYQejXS/zo4CVRg==
+signature: rkPiT/tE0K5u0POnD2CO5MeY2ZPp45Y4zb9yIKG3OFPaOn9xRPOtMgn/u12BOh0G8/2s1k/Hcwv4d4asv5AY8A0d+QlgHBN6xocxJ6sjeS7nrC2+2y17OerZuRIDVSa7AjHAqmUkaKZrWHfelud261F4zIAXo2TWzUZLtFRLBAtyFAhUQVrd1KAgKzPzmj+JGTdhesLD5ZMhCnodIzP3M33wdeT8+ADAQ0Isc/IAxU6ZR/Daij+Xb4G2bcU8NZhq1mRg1KTqj9Eyvikx4P9xEs3cJwUY0SPcF5d5IchowTxsk8uT0NKHxet7O6/fGcOZoR9dZHj0At1pSmk7Dd2iyQ==
 system: true
 tags:
 - Utility
