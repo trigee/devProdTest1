@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: War Room entryID of the file to read.
@@ -30,7 +34,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -39,7 +43,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/readpdf:1.0.0.9067966
+dockerimage: demisto/readpdf:1.0.0.11193239
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -154,8 +158,8 @@ runas: DBotRole
 runonce: false
 script: |
   register_module_line('ReadPDFFileV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import contextlib
   import glob
   import html
@@ -849,7 +853,7 @@ script: |
 
   register_module_line('ReadPDFFileV2', 'end', __line__())
 scripttarget: 0
-signature: SYFTR1WzWn6WQ7kQhj7xCXcvf9+Am38SRnl6GL3I/WO1xhIhJqqTsPbOb2JluG4Y45yeXFT5349HBIKIDADFO2xYKjGevFX8QZP8GF2b++4SyJVJjlqbKhL4fCNSwyyv9W+2UARVgDXuGwPpk/c+GrgkqLHD2sD++i0059fEyJ53vJgQeHGG7t9BQyaXMKoQ0NdhHW7FDbBUQYLM8TpADyyVCstc2mIX9gFvyuVBtdiWdaKUHn5AlKdG9ruJt40xIb4ffnWTIlVipZGbl0YBWt1AkviEJFH7nC6nR4a3IzaCqi7dZ3Mxyw2WcQJvPKKYaPfNLhp3Fw8rRkfwfP+vdQ==
+signature: TYnyV/q6IB+3wvKe7ePjW3oXEVkHd7+CD+gW+mkQ0L0ZLJDV5TI5Q7g7T54iru5oWY8BZLedF8sm+N50cVRVArBom1GWcn/t+Sa7XoEs7UVBrhtVU2bLEgc4bnitPgJUGPX5zYPGCWS2aS1NuRe/HWgIpMqlQzULJe9ne807OwgSV5apUEpoXjbWfszLd9NTfy/dWhtVL0r8pvD/VgycqZphUZw//BqxjO6abZ6hwh91fWSkIhzZTsVIhrEmUbhHKB3vV2nKMnbkdGpxpoJKzNS/ZDiUVndYrIhgwbyIkEHd/9nQWExJnVu+AxlvfV/jHC9lg/qeghgUJ3+xfWAotg==
 subtype: python3
 system: true
 tags:
