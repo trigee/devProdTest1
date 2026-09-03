@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: List of IDs to poll.
   name: ids
@@ -33,7 +37,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -56,8 +60,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('RunPollingCommand', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -114,7 +118,7 @@ script: |
 
   register_module_line('RunPollingCommand', 'end', __line__())
 scripttarget: 0
-signature: RyqgNweWQ46AgQnXohcdqzwX9J5PdWrZyj7YAQ5tOO7fwGNUEFhyXOSKLI10pB8EsM0bWbDQ1kucP1Yf2jL+1qezUqOW8mH0TUV8ZToyq9Nx/mJMOsYHJj6+DiTAQXnIyIRYDucTlLvz4mpDheKazEpPJvhn6r1zTwR4akA6zUDwiv5gblR3eKB6Eevko4lq08C/nnsZIE+F6Ew3Ln6UmscuzQrk3NaIA/fv17K1X9i2KXsacDtzRVEV2WcdWjeIjuBGUCiofeT7xrD3yzO4h0qWsBMIyOV4j47GkXpSW/j3awrTUuAMxw/Ok+ZfqbtgVpY+njF409nz0hbNlvD1dw==
+signature: gHgjhXhycBv8waANISrjeno2rwz0nXWNJuCRxeWyfLKmkQQntVYGwluDxMyg6udQxfcl7w9lLO6ikndHjdk37gk4KvEXVyOAK7PihfqKzQXDgIdN0NUI/gVoBAujZsOnAKZ419PVrU9CBfaPtoZ3P9+Rn9EvxE5b66jgIxAdKmyB0l+3LWQsfSfqdq3BB8mt46GOuf0g7syroPL2U5WqV1wmkXNpq4qVNu80foxluDPCkMHz3c6VPfYZOwg3ISQUSCM0SojWi0TwcLH3eLlaM2OQO0dr8cTEgqqTQKQQ/BozODYDNoJ1P68Qrl/wY6wT+lVezuKs2VrBbfoBuYErjQ==
 subtype: python3
 system: true
 tags: []
