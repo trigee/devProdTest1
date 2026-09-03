@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Address to ping.
@@ -14,7 +18,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -23,7 +27,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/netutils:1.0.0.10187688
+dockerimage: demisto/netutils:1.0.0.11867191
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -56,8 +60,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('Ping', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import re
   import subprocess
 
@@ -99,7 +103,7 @@ script: |
 
   register_module_line('Ping', 'end', __line__())
 scripttarget: 0
-signature: 2b5U27qXPQbpXMN+Y6pWCvzsu5ZNu4nwv+SRGsYuffCED7iap+iddO1An+dqcIt4u/sL0jlNxVRqpylZI5cJ7RjfbwHzeA94JAFSJWnxOWcRqBzITKKZvtUD+dhvlspRNwcdmsjXXBO+Wqv3GvcnH0sKsBpiyVsAvcj69MyN1/dI8C4ON0FT1e/X3xOKUSwGY6YEcpbUytdQhNQ7bG33Z/ZD+ncDr4jpJ4vApj3538dhfx0uI2Vc2l9JY1J77VDUTELoBqHr+FzXDS1WRWLv6oiiaLm7F+ktupP+AjaAtSB66cmwjHynziirYyZSdFB/uFB38PumwmYWHpUjM6nrdQ==
+signature: Gh5px4atUuUladbTJvAx47QwY5O4V+sJX74ICbGuPKAqoPa2n6g7SOT2tyxAOX7ZoUzHe5yc/ejnfqiZzfX7iOceuahwqgyYWcV3O3fYMPxUJyE/ZJb5sMAX6LvIGLlY0dDkVUp4uzErup2I9p2RyUsraYVC2RXPpapWJE0VIIxSY5PdsCw4e6fmC79A9S5eY93i5XbHyrUvq4hasleTlc1T6GGWMYp5Mj7+KUfZR9oPFN2tSz65xy6bts5hvTDJ5m89gukiPmnaePz+RU5XTldWPDcSv3Bv/Ah3+fI7o+zITZ6ljZxRra1B/M8Rg2KKZC3zReVcTOSjEpC3lGbB/Q==
 subtype: python3
 system: true
 tags:
