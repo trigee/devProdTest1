@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The unique numeric ID of the issue (integer only, e.g. 12345). Do not
     pass placeholder values such as 'n/a', 'unknown', or any non-numeric string.
@@ -206,7 +210,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -228,7 +232,6 @@ dockerimage: demisto/python3:3.12.13.10116658
 enabled: true
 engineinfo: {}
 internal: true
-isInternal: true
 mainengineinfo: {}
 name: SearchIssuesAgentix
 nativeimage:
@@ -311,8 +314,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SearchIssuesAgentix', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import json
 
 
@@ -491,7 +494,7 @@ script: |
 
   register_module_line('SearchIssuesAgentix', 'end', __line__())
 scripttarget: 0
-signature: D04tIgYashC/M+kLpkhXxZ3vMYo6OrEGc0+fIwgX9RiQ2OoP9PU7Z6g8mQ1cern45E+wQ4rG0iHWiXMvqmg4EGq6wr4ApHiGCKzeCDSmZITVej5spbfI83FCcNX7qLotMoGIY/oBQhNQWNAmEvwwxrEaM4HqJDH6g51O0TiNDlhRyzMwjT73cLWQYhYvA7rDx+7tAZ7gf5p0jJzF8kEtXiLklaQlcKeR0eKMWuWbe+mTBd50XoZ2fJj/WQYomzAdyDHLKizdUb+sJiX39naK2BChaBI2p5YC22evN+UL1Jqau3NnedMJ9miJ3Hbsjwmiv6gyWX8PeToLWvWId1bbyw==
+signature: PrVVFxPvDJ/5XVJO6BxDSpvUtA3qhp15BF9ogtIyLujWwibAJkf/EU5+5cZH7nSD8UPuS7QS21HcLuG0dp+Jk3NybQn3apQ83Odl9JviXpnfyE9vEad2YnRcEKbdzvXzxR4pFBa6zHX2Z+Phyr0hb0B5EzKAlKfV2Y+HLcCtV7zgwGivuulZIJNP/0I20uwpDmnQ7kzZmzy0467iH58xnNuZ4FCWzqrw0UGQaizDEAoMMsET4HhoojZ5mquxdu+yOSYEvdSaz4mCV3v53OLvyplpRasr8kdBIQE5KoEQkGpTzfrdHyLDjDe/VpRWPgc5jLLe8vWP6gD1VzNeTanE6g==
 subtype: python3
 system: true
 tags:
