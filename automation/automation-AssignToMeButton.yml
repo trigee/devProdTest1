@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: Assigns the current Incident to the Cortex user who clicked the button.
 commonfields:
   id: AssignToMeButton
@@ -7,7 +11,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -30,8 +34,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('AssignToMeButton', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -50,7 +54,7 @@ script: |
 
   register_module_line('AssignToMeButton', 'end', __line__())
 scripttarget: 0
-signature: JQHn4pRQ6RHurmk3JePssHYrE7v4MMriGRmUuLMcMQE/5XdTnptYU/UsCA9XPGrYMsYesiXrHhl46Bck/UjBhe0xw5qCQwD/EsPJ2kS6UQqnN7JSzgdTbTvXAAIZoMKP29M0iTb2SGJk6PJAvo7OL9GX1AMHSqBW4Co/OMXLd+0BON6FSH3Kc4kHS7KSnDqrIf9oQhoDGI17w5R5qWvdqEr+ucXIhZAb/55osCwd9fR/201aeG/4jB0gz6qc32bswfrdxk7EyY1sJWQ8ndb1j9cmizIf/W/VtEamUMqPoZmGI7Max8kUsmZIJttcEyttqEIG2L7uZaHQWvrelYFd+A==
+signature: ZhFk34w4Om13Ff2DChaCp39f8eFuklfWYJqkkPf5/KqjmMWdVzlhJlefMyFStKbQeGAlXjy4yfa0Q8AomAmLc3ypHB6cuO/PWKSlltaTtVw8NhRUsbxdbYSpPoVN5+9jP/GJjY/0adlgqbi+W4IKoalp7VpFi2g9zZ4thGMHlCyGLljgKVEaeXRKkx2sZRFt9QlVVLeBltAYdlPbMznKuyJTpZGBTl1ZkNvIkfnYuFMl8ecjmxsO2V3zSc5YKHzgzoIeCkPJIpnqzek7deXayr4vmi5KugdwbPdPJ2dEIn/simrSLbkhI/nJivNEbTGsKln9VOksiqfCioFSAAHKHA==
 subtype: python3
 system: true
 tags:
