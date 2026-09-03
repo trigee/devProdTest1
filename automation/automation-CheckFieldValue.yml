@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The field to check.
   name: field
@@ -27,7 +31,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -57,8 +61,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CheckFieldValue', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -116,7 +120,7 @@ script: |
 
   register_module_line('CheckFieldValue', 'end', __line__())
 scripttarget: 0
-signature: kRI4fxTcYDtHfrUGh72S6lNzUmiq6MjXwKMovfGXr5K/fOdPr5IZZnGdH0NInFX3U1s1uzrzL+rig7Tcd/E1c2VST9nIYEWETFpaCUgl6V6cY/wBc/ytCIzNusHRXwbCStkXQC+VngdLnI5Dy7BspZuL5DhiwZGIOsKq5s1tEVUaMeZVNUip1yQeFHuOsqZh93Ah4lDEn9bJvznlyMdbGxSZmY8hAMwIcOP3siURduKWZ69QTnWQrQPFHxS3X70K0WMVD5hKCXAt10CynsHVNj/8OSWpAfbNZD1qfiTLBuQfVJ75r4BffH3/JtTzTSL0MbqsRu2JNhEdrIkbJG2Zqg==
+signature: grSJtFiNJQlTDgo9b0+rS9VZfuSJ3DQ3RfZ/vI8dqEbYxpVenQsmOIeOn79FzD7PqucZlrVmfIMD3WxE71gosADV/MuhUgVl3PHJtau0qUCstNgLqcj7cOTimmqQU+PbVwSFVCRg8Aay6ShSBE+ghPlHvssEtBdsVTT8uh7AU9MsV0GaP79kPaYknZsb5FxmrKrptfy0Fvm9uatmDVpLNGI4Kpwpv2g74Z2q1N5HIYTEJOL1GKO43LcBEWluJZEl5O4ocRSgtNciZ4JDH4qE+oYNstli8AWivutUmurzonW29GPTGpkkWZr1+MYasxPdsHqGlTBlh5zngJsScRKVMw==
 subtype: python3
 system: true
 tags:
