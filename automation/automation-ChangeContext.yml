@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The context to change (i.e., ${Context.Key}).
   name: input
@@ -38,7 +42,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -61,8 +65,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ChangeContext', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import json
 
 
@@ -108,7 +112,7 @@ script: |
 
   register_module_line('ChangeContext', 'end', __line__())
 scripttarget: 0
-signature: Iiu9r98rVj1wDhEeVMzKF5saQ/DaVx/P1zI3k0qf0Dt/1KtNiiY1YONa6h9a+qjxYvLwjulyYMK6Q/OF3Oq4s2bCzIBGNPzI2v1CM1hTUyzGmeXnYhUUmfmJoYg6SERg5q/KOtXVf9QXd1HKEBco0ykl+g2EFxPVREo2oNZ5k0f4meTlG+Cc/qs1FmjDRWSl2+3rcOqKXZINLAODgAhDK9fU7dyiEAqJC4ED4gjL713RGGg5rluG/PNFjE3a18MNI2BuEBIss+a/5uazxEBkj0HfXMvagVauCI0UQtnVjje2dgeqfdzFrbJPzb/zb5uBIc9q9ViwyTi/fAm92vi0Xg==
+signature: GXtawW0YYRf8pX1H/+l+2omxqaYJX4y8OneFL4DvooBIX5YPjROv4/9oBj4CP0jGvF4tudYol2+36UDB4OTfg1Wh6iF7P8b0YZ8menPbsHqikARgSuFDZncJ5LIM/RLCRtJtdRRd4FIUGwht5MJIq0C3+u/Z308atDiiaOugq2oTR42ANXdXiKcaNmJschKV82cpKqwfBlRxOoD4hoVi2ctXWXOaMh7BHtsqPv/tUoxEZxvH+Gw1h9lSMyygWwDZAaTjBIMNbD7qyVSkBlu6hV8ESANhrU3jXfhluu8aXmdsU2qOLQRCiW2JPXUBgRpBfUEHWdO7V2tSm61OptTiIw==
 subtype: python3
 system: true
 tags:
