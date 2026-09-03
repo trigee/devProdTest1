@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Alert ID to copy notes to.
   name: target_incident
@@ -24,7 +28,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -47,8 +51,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CopyNotesToAlert', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -117,7 +121,7 @@ script: |
 
   register_module_line('CopyNotesToAlert', 'end', __line__())
 scripttarget: 0
-signature: 3TClhJpekVorWhNZnUwgwG6vwUQYmOBOK2BDVQrC2qMPE4M2F3DdaBkIVE0gYx3Hi2JDXJEB+PR8M1RjbxKEI15KD1cAdJ9nBkpFYnx9+SZQMPd8IuCxwExwfNC1XCjhvwD/XU/2gYajwg52UMuqBS7cxf0lUcSLhH00xDFfwCWvKVJnsfiNNpTZjz+23IMWEUyQS/BaK1Qu72XzNrxX0raCC3R4dQW6GcHNzAG+XPiZMgrfj3q1jZhnSSFlb9pjYtHrTg5xKjx1z0c1Drk5tCpCePa3qTXmufhxaUxMC8fojvHvMFr+hseBsg4nlqrPVgQoITNH4mV9H2lPUvjICA==
+signature: odzpKUfWFSoHRut/xGErkTEJPQ4yXuLX4Nw9f39Hc92mIa/usxQVAdbzxggVNm9oz7Jzb4imzWsUuW0VebjWWXMkrOh8T5ZTXabyuBjKfsgtprchWM0J8aqFtpE7b8jkKs2tmn8PHdXfN5I7vIotrD0si5vWqlRaqUF7Q16062IraOROx0Qynyhdx3qLlwpltSgFxgkrGHuuou9ba0W6njVbF/FMqpJXukipCXUJwUNctcYf+1yn3+Ws8q5rlj5yImIvdXoLBtXGiYnZI61EQgJ2DGkN94TkeCWf95DypeNzpxXBjaMldR72bey/M/fx78pKi2FSQk0A1ZhP4JzrnQ==
 subtype: python3
 system: true
 tags: []
