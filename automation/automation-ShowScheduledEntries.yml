@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Incident ID to get tasks from
@@ -12,7 +16,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -59,7 +63,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   var incidentId = args.incidentId;
 
   var entries = executeCommand("getEntries", { id: incidentId });
@@ -117,7 +121,7 @@ script: |
   return entryResult;
 scripttarget: 0
 sensitive: true
-signature: wTJm+Giqg/GMdmUkm+2Cg/rx5AqWw4bHNFKyC+aKFpsv9NcDmvXVO4KLdTqSh/+l5ZPnJ4LF86qyfNg6Gp7zVjCF+SrouphDAL3h9ZRogrVOdLgSJw/qbzoJeQWaK08QecaU5pA8PFUOrPSHBBs/BF2mXowevGTp5kaThn6/f9C95Q63g9sgxUAn9nFtK2vQ8oniAwaGHlgbkuh4vhlD7DmoRanVYDf1Cj8YHOQNdRzv6dTrPPLH1RRmciVouppVlFdm3EDxkC6cIUune3YDf9XmomZ8QWf+eFrNu1PdXC6pbM2oZ+ifpok9T3i3ABKi51XKxxLKWsRAPurvZjeTfg==
+signature: XU8VGB6H4Cjk2YOUnsXd/txgjFMjk5Wu1miFNGbO+7pB1+rWHufrAd7tM6cIskQNn5ysgVT9+DgOj1XHYJ5a2MJxBH2XH9C9B5/ki65W3E0yQizPXb1Igv1XrjT9ZxM+OhUMzBFM9AdVHB5SKLmeZ11+4aJ3xM5tZ7Y2fcrF3Iw+BZ403zuAtPibLM+zQr8q5sr/Nh10t4AgXesM3GG9z/3bNpX0ZDTlDJlMuJzdLjTxQi5BdR2VI8aTDlWmhOkiG7J+FX3oI/IdB5gUNEJcSW4rbsUZMDanunrTVNbUbGlHHi7oEG31RvoYYvcnGSM1p3Q/58159sZRRRIx4a69Ag==
 system: true
 tags:
 - Utility
