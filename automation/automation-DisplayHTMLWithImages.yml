@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: Display HTML with embedded images.
 commonfields:
   id: DisplayHTMLWithImages
@@ -7,7 +11,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -29,8 +33,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DisplayHTMLWithImages', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import re
 
 
@@ -246,7 +250,7 @@ script: |
 
   register_module_line('DisplayHTMLWithImages', 'end', __line__())
 scripttarget: 0
-signature: NAY2Vd+2U3C1Oe7S8fPFcU0lpJAcqzrHHfA2HLEDwSySEl9PLJ9AIFmfLFNqAjU4ATANdC0eIMMpD8sTRHEEMAm/MLe2Rr81/rP/hICypkvdhaB+tFT1WiUtTs5IlEigEjTHQOOIFJGhxQ3RfcgTGdUpEhbhwnAu6jgsJYcWKFr3CBkvIkuOELbWKbun0RkE7ci+LIbhfuEex8PRaEC2MZ0OYcdGDXSgL1Y8QUprdQC1kkS4GdML9flcvO7QgKol41DwI9h4gcd7ESmwmM2wCgSxUw2yJ88ZGrHxmjXxcFeVa192KRrhYFH7ZJJto14Qo5fuKpWJpVG9DR74kUvHKQ==
+signature: ocEQACguOCtUfmT0JRRjojouoql+gZCCo1LD+nQpguMoU2ZUy3YTf5qhJVUL+/5GxO3tfSGyE0BEdGJyT2rdWUiUyXUvrl3IfXKVjl/nKwoME95WgDg5wcp4NKcXaJbWrpfSh3HbnxR650ZFX34oAbV0Xn1c+eJWR67VFMCWsa2MD8GH0OZiET7e6frd26YLLvtGWikeD32OMG+CPtYPf5klC5YAaGl90ZBxwkJ7vtHGw+1YL8uoOdrY4InZQ/GQyRM7y9nO8xQPd7TEjLUmyv9n4IQI8HrksCpxY1aNhoQ+5SGvJKv/kBKYB8CSG+1CfbbcNRC6FHUncNIzk4SglQ==
 subtype: python3
 system: true
 tags:
