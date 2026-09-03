@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The text data from which to extract from.
@@ -31,7 +35,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -57,8 +61,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('MatchRegexV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import re
 
 
@@ -144,7 +148,7 @@ script: |
 
   register_module_line('MatchRegexV2', 'end', __line__())
 scripttarget: 0
-signature: 2wgUm4PcXBa7Hhbz7sUfnK9rbZKdoQEKp9S2XMgzav6Pn8c7ou+WJwjj4J/81u6B/fz9EI808d+MybSUDvOq8ovRFTtrQ+YAHP2DQVGiljjIkJwX4k+Bjf7ZoSuRc/FK+st5AQUa4S1Y4J2HLS7899KBY+kDRBufQZUVGZ/2D0Jb7u7fSRfjSCuBQb3i4O9oGIcBloQq3CbCEPSOLlXJU/K6CGwo5uz/eBgdqAGUdE7u0utpwvcW7NqR1QssZmQhjIeMyk4fUqkjksUVDuecZqFL4PJnFHVf5ORN+Sl7GSI7dTMv3J46rje1CaYaW2RS0hXimayjdTZSRkH5Wl8Uxw==
+signature: lDXPOhTPZRVS3WSoiBYpwI5lxRjIaEVY89PzyLBoHU5/iCCkv206fMKNoevYMJywipyp9PptSxJ0yGuuzTB3N1/Rc5CyjVUBNp/JgJv93LgnS7rfzi3PmAakOayhvuNesRUG8wuCtGc8EqSi7obzLaCrXD+Ud0d0GNPqKfJxCs0Au/UGc497Lx7zBTgUc6s1VBw4+jHDFm1KbGTnGIteiDcSl6JP+TGJaCiy1spsviIqyvoaBJLcD12T66OBb2yjokNlG9Sf51XNFUg9ZYdUDoz1Gr7ovJWlZftoxo2BZ4SOhfL9nrJ8NreA71aq8zzfhZH3+ZL8RYaCJgxMRf8ZOw==
 subtype: python3
 system: true
 tags:
