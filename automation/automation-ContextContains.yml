@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Path in the context.
   name: path
@@ -16,7 +20,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -39,8 +43,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ContextContains', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -78,7 +82,7 @@ script: |
 
   register_module_line('ContextContains', 'end', __line__())
 scripttarget: 0
-signature: CxMdMktXdddZR5TMW1opyjDGBr0IHVF7vbu87EzCP0bWR5F/yvxm/o4udqis3lc4SnQaFaray99/yFoYXcGF33SjOVASi95m0ZBl9XPzowxtLsGkhAfEhCjAxpvxrgVoZZKFupKXcRjMX0k3IogXcZ/DAEduq1AgmG5tQTRfDY+TVHYdDsSB7VMA823BFY6AgFKhDIhwIbHBkdrYbJ2qND03tlIeW2Al9sDSuxMfYwiyy/J/A93VUI89fpFYpgyJvc1/+pO07Felnni3q278HjoYv5qXRzVlef8tvRTCQfUAqt89Ll3cOZnGaz0OFES7Q76IFsydwqjeayLa3WZkwQ==
+signature: gClCKKTW/SMicZQtDJvP4GnYz560k86HfpH28nL4b5FlYgbyise1kL74KzNA4xKDTiwEsNwC9HzqJBYiUZ4BSV3JJxCDOsx64pMIUUJcv1O83dBzqCW1ZsfiDmfhNyBiHZQI+i3DcYcr3wkTVpfybfHzTRzTP8KbBoe1f1kym0Q0qav4gL0V0gb2FNnSzaDpzLQ6s5iiFGemveYexm/ihzkj4UV77e/LJTTwW8Or55Kg7WVKf2ctEDBOWBgPhpmsUySe0vhjXY8UqDccXBdH32DMGdTEAQ54MQYDvj2xir+8keEBfkm9pthix7ta7ZL1v8y+4uQGg0ZG2+6scCda/w==
 subtype: python3
 system: true
 tags: []
