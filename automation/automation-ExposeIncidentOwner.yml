@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: Expose the incident owner into IncidentOwner context key
 commonfields:
   id: ExposeIncidentOwner
@@ -7,7 +11,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -37,7 +41,7 @@ runonce: false
 script: |
   return executeCommand('ExposeAlertOwner', args)
 scripttarget: 0
-signature: kgtFNl1hwpQmZIFjNdrnfZ9eWiaKb1e7DW1kZpX14UqvNUxhbGDpzIEkTQO5qKd0NBsKGsDQ9N1wOJvUeDh9Mf9oVsCwKFmfze9sCdRN+WhD4zqh7qZN6PsHCqLDLJLJi6HDCy0Ct6xWF+2OoBSSQThlYM6Axt1JyDYEzvZATWfmNpJXMWOp96jOe5O61P2NdyGzDCoR567zy7+2WPPsghoTr2B+o52ROwyDOqzRADu+oSa3lgLYozgy01qZyi1JgNY4Rjrn8psHrLgaTZhKqrcqR8n5CbRx7qrBjMILYTGKsDh2kKpwJKo+gTkHl+QnTsTVDwsREjvUVKWFCz0MyA==
+signature: IZjIlBzB6xti2T0JJHP+hWfmVgFsAuwpUP6YVhBG1kFwc8vXtPPUdwNZ4nOtNQImTUL+Ww+yt6NsKmbmG/CEVfd5bxVLhkaahEz7DGw0XadIkL/5MP9xJL+z2UCZ2qgncOD4SOxg19XJv6Ny9UbFgtCrgUKSXS18qh27K5n2T5wwA10Q66sFns9zrW3lhC6Ze8z4OuRat+LPrJaPqmv+EXDwMzPHtAGQkD/VmIWjJI/HmLW1kxZ0pFX72tOEyeqqbSJ/aabWl79IHtWnAY5ouGOlBMmwzMO9BarZtKJKoCFhz5Nu6ZaqkTwT3HvjfEq0BzW6d06qrgfsZgrNDZzcQA==
 system: true
 tags:
 - Utility
