@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Entry ID to get the comments from
@@ -22,7 +26,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -40,7 +44,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   var entry = executeCommand("getEntry", {"id":args.entryId});
   var key=args.contextKey;
   var comments=entry[0].Contents;
@@ -59,7 +63,7 @@ script: |
 
   return {Type: entryTypes.note, Contents: entry, ContentsFormat: formats.json, HumanReadable: md, EntryContext: ec};
 scripttarget: 0
-signature: ehCpDV6+TIpWTIs85JoSucTbvmUGMn6Wacy+OqQdfXVXK9IdNCCVUr8b/62EgWg/F6Z956tNE1o9Ia/CvQwfUxfxKxEXvPRoELSsWC2lW3iDXNvsjUCI2cdaknRZ3QNjcsYkS+zIhjkrQKuP63aqoR7Qga5AuOpyzpjOZBxhWGfN3vgwuo+p+NUSPF7MF6iavx5TXZXStcqhGL0dKCHvGQ/VGQ8hrnv63EqQhSN9f7y5xZwo3R1tH4nyzBSc275AJV2Nas7C6k6Ie4QQU2K/ld/KvDTBgTvTn3/YsOvqnPuO2RwgiZj2lk9Hp3N4wGlcMml4SVxuNbC7IE3LRJ+plg==
+signature: Cli1/5WZaNSQnEBCV88lMrh0qhWbMzTRUQSg2rs6Hnir4UPgRu+Gto386L1R94BNiyGWJ2LHWzMSYafl7SzaKKeFKJXDlLrU6aCGyEIB2M7bQkz4PChr+UGKmr7q26JEjm4p59ZwPN/DiP/+NlqYPO7lTIoLim55gMvihCb9nhx4NzJPfakOyRP1PTGuaL5UURdcehVaqyRFYRp5gHbYWoWPYXQP6ATwF+6NNlyCsmcrne5Xs3d+h7lbNpiH8myKr66rUJlKhT3mP30sX7wTMswjWH25xkqiPqfE5y9weDMBEfRiqDrU57i5N8knRI3lTmtMvhTtApVsTv3kKJBxQA==
 system: true
 tags:
 - Utility
