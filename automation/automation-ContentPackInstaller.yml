@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Information about the packs to install including pack ID and version.
   isArray: true
@@ -30,7 +34,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -45,7 +49,7 @@ contentitemexportablefields:
     - xsiam
     - edr
     toServerVersion: ""
-dockerimage: demisto/xsoar-tools:1.0.0.8457987
+dockerimage: demisto/xsoar-tools:1.0.0.11807991
 engineinfo: {}
 mainengineinfo: {}
 name: ContentPackInstaller
@@ -65,8 +69,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ContentPackInstaller', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
   from packaging.version import Version, parse
@@ -425,7 +429,7 @@ script: |
 
   register_module_line('ContentPackInstaller', 'end', __line__())
 scripttarget: 0
-signature: SopnAaa1V9j3rrijPtPwXmFN6i2wtTamVWuYLW8Zz6oAB4tkh/VzIZnPyUxN6b1qDU/9ipuIF1J8n96ve8CAou18U4geYsx0gG0Wn0Yh0ZF0lqT+OkVNlbO/sK/Iq4fhF9U4sTGU/Uh3Y0cTqsoodJmMbLJCQ6W103OqdkNFnSXzTMW1jVaV/zGYq0XhFXr8WnW4hq66UYt34COELVD9tbz6wMrs73h9vXClw3+3Dl5dCQ5yULVGbO+pNdugYkw6lLozVlY91oQnJObecOngW1Kpo8S4L2j6o4cSCjwWzaP/ssYp139j054tYVH6KpaoRxk02mPKXD4y/Qxjmm+uFw==
+signature: o2+40CDDSuN4mUsXG8d6xgjJdvd9VANcQGJ7w1RcWRu5xhWU5ZtHI+PJQzO1TDqhNGC2ae6SM6FqMMJIDQrtQXya+7mN6hqDV1OdKc1gfiHxKz0PkmNpYOdSZeYS7hg7kTNIElM5b+w5QoFZBvpQToBN5Q8ukpmEC7HMXA2A4NKSlxX5/TExj3/FBsb9Sg4Sn9mhxJKy4eQic/fhylxOMAuJaepzMOjGAe9yWnL4dDoJMvdupXxNvNpKBKmGoKKg5zH/0ulo3YVL7mJ2RyPWPY56o+drjUeLae5n8wXAC1YjY5kYfIBfexH8VJicsHU22UGcs6qHNcp0Ch76/JgKIg==
 subtype: python3
 system: true
 tags:
