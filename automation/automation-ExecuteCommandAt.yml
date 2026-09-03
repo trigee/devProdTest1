@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The incident ids to run the command on. Can be passed in as CSV format
     for multiple.
@@ -23,7 +27,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -46,8 +50,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ExecuteCommandAt', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
   import json
@@ -92,7 +96,7 @@ script: |
 
   register_module_line('ExecuteCommandAt', 'end', __line__())
 scripttarget: 0
-signature: k88OjckjmEUKRoDE1VLgP3BhlEGRQ+gLfPwHUQ9Vl6upWdkhqSS53pOcuIG3tbfpfzFk1vfKz/d8TyygKWJxQruqs5B92GU/MuwXOuPhCNFXPeL5QpS0cy5JcSMiqhyNBenvYiVb5gOX50M01z82W10V9wfXhpSXFxCSxQA6WxQ2nscslQg+naqThkM524GjkG3jak/VsytSEYvfbO7xefXispf8PK6M33joMx1tjpdrB0WUlOmnRFcW0VqM7u7RgxkE+qAh7XFdt4oRUh2u6OKcvr0iL2dG0OOH4OtmS4roUpiOaN/2mGd13S1PLDzWuH6UXK1TwClq96CZS8GnRQ==
+signature: SSVmrbQbBv+ufu+F1Sea0NVonpmws4CBdFZ6dx8bTc7cezpeMqJy8SNtTg1xQ7HzTfZ71HGuGbPGup3liXAzntL7z4ba6Q00Acj6e1+r5TZSCyp0RX3XGPYnoI5aR6vQDKfI88lOr37Lj+8ry6MKbwr5phpLtIkF8BoxFx2vvfg1YURtHYe4gS8hULYZqp5mVj9R5v4LJ6c2J1RaB+ZPa4quSdCeWb8CP4lS0gZAFAYRI74w/zvVMGQdMqjUKgohFUr8DNQ7mdlBDemc7/Gj6X3jOqQqLDL+LT/5JTXMiDAU2sF/Z4ra0xjGfETkEfeaQgO8lJECa0zR5yyfw5wdng==
 subtype: python3
 system: true
 tags: []
