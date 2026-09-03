@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The context key from which to get the value.
   name: sourceContextKey
@@ -34,7 +38,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -57,8 +61,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CopyContextToField', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -105,7 +109,7 @@ script: |
 
   register_module_line('CopyContextToField', 'end', __line__())
 scripttarget: 0
-signature: 3VqN4fXbFh+gTJF5TSOJ6J5vHlMSH3+XElhok51Z85JWyin+AIuswGWR12f/brOMJeJ+wkrw26isJgWiR7r1iOJwo+xLBEvdKO4Zj2zxhGPzOaorRqt3jfZdJNJM5ywJ53Y57U/a93cW0meRRwGF1vau1Zni+bj7kew1XmvslHzXE+toZwvbadJYOqWt3dBCTi9LOPI6s8PnZ8jZlnUWh5c+FdRMs62U0uFTdTVdRrIlrNK5x4aNZoio3XSOFrx6nslLGm3vKuER6vcAWlHYogbsu1vMdR9Ze1xKBsoI6GfL5JjVdk4cFEdWUgcyA4Y90uL3MKs8u1k0bsc1lEUjZw==
+signature: L96hGqTNACUtCqDFC83hv1QBW/Whq2oXR/ilgAWtEvYN0OT2MxwmQHwFQ4YnfK55rgpiDs417wkfsbilfibccWdgHR8ee42rBwakwbSsVLJzQ2JU0LIce0/MbZDd30V4fZD6HiZmS5cqM+det1Mt5pP9O1pDbpd/s7Z/CXj636ZIHRTpotczWQdSJ6SsoeNYqRw5X6j+lR8OrnvEV7+voN4wYt8Jx0zaesEWrUmwCtUJGwxqv8N9fCCrdNR2r3SA9WL5cVUS/mOp+Kzw+mzk/T8Dgf9J0vGUTVa8ZXckbWh0zBpJHwyb4Di6wi1iJ+NxZLkAtcs3/2CXORI+W7Hnfw==
 subtype: python3
 system: true
 tags:
