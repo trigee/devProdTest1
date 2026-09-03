@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: First percentage.
@@ -21,7 +25,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -44,7 +48,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   first = parseFloat(args.firstPercentage);
   if (!first) {
       throw 'firstPercentage is not valid: '+args.firstPercentage;
@@ -59,7 +63,7 @@ script: |
       return 'more';
   }
 scripttarget: 0
-signature: LVcT9fVDij7Bc6p0YrX6kQZJ5PL2qyR/Ss4JGhkC79B7m2dSJfouX1Iis4GV2LB5QuyXgxexlfuOfVnDdK732Yt+kMx+7pCEZoNeTECGQybbncEn/aXUzPdXCs+cPzYvLLQBashlfmCXa7MtilrXmmDM7xReo9KxzpENnaAeFZsNhbBMynh4Wr8hYySGsw7jY4R/TYzuepTpxAYiObi/BS9zHuFEFW2cfhCJvidmFjTj/MgqZW2l7ex6+Nq+PlO/G3WJWiUO/wx3hAH/tnp6WWBQu9D9/1haEy6MQqQtTLEvU6LCuJTGX3rt6ChcQs8PINKZPj5sXgu/lweotURI/A==
+signature: jNuGlsEDxIBQ3YaagmQ8qaLxoVvV3ioW3m/lDI++pRXEUGlLoqaZtNbhJsvlH2mX81ZhYB3KLD0ZVrGHnOJTusznVU3r9bE39GyTwaqPMgLkpYz7znDsbv+iMQPAwbBMw5ErlkOSXuKjuBjSisMz5YEGk/L4LwwzAXsnYCN2jv8v+QzNxvq8ZPsZ6U0Gg101mu8nCAt9BQ7HymxU0LFBP0GYd+mRtYNKaRV4yy9i5h+PvWzU0mbagVgG+j3zZr2jzE5/9wljdcnz6P4sG7xZ1H8F/lpv20bb0xmEI2VoQySgmOoBXdqb/rOmjXgHvXyq9/POiYqyq0IbV/ASxojrSA==
 system: true
 tags:
 - Utility
