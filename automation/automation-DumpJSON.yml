@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The context path to the json object.
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -39,8 +43,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DumpJSON', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import json
 
 
@@ -59,7 +63,7 @@ script: |
 
   register_module_line('DumpJSON', 'end', __line__())
 scripttarget: 0
-signature: iQAxa1aKTPDf+i670U6PgeV5tZPxeEMsOk5VKsIswO5XbgK5kmSO7LXSVBHzfEB6ISFxF996ZvlQ6dq3zP3E57aY7IaD9qwmRWQ+3Q27wOkhvbdORzhk8WyHqPwRfStVYQrpAdFnmi4h91avcBv8PjfGnAX7lolKFlNHNUaNmnlSCtGIhEEEmBO7z+HeMI7QdkpXUWex1JQQM6Y8CmyAvfh0PFcwQKhnIvWrfkQDoRT2XU8xaOLXHG2e3PoAmlwDDy0gASg4jWTmYlCgG63hnzKFLT54ddpH6mZZN90rnIC8NNLnvEsvT/no/66xyLn0bDEhWb7FVZvDxuSdaxcKCw==
+signature: lXG8QbQzUJv/elifo3IcK3v6Qyr8hdbtkYiHkC3FIt2rkG98JKSdEX7oryW+feUPPYt/Nf1k64QPExFDIyB6yQZV/D3hP17U6NYbjgKiuesYdJchh9dFqiNXGXbtMQpHoJJGXIw2UYH9WdI9iW7uMwgu6LuGtPY2pOUpfjNyv7vKT0blU/UPw/cMazuNLuBJvpj3MCaxz//S5e6OjR+By6Y/UgDl0JpAN6p24nvs4MC16KWrJk14jAaHMNDkgU74GktYaGZy5om14IYCsrjHN71rBWv4jGFF12F34oSWkiJNJTFHPUKwuDupWjI/uIuy6sW5SXrZsQLNcH9PCDzBbQ==
 subtype: python3
 system: true
 tags:
