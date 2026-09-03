@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: A comma-separated list of identical alert keys.
   name: similarIncidentKeys
@@ -94,7 +98,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -131,8 +135,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('FindSimilarAlerts', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
   from dateutil import parser  # type: ignore[import]
 
@@ -570,7 +574,7 @@ script: |
 
   register_module_line('FindSimilarAlerts', 'end', __line__())
 scripttarget: 0
-signature: RlNsUphP66rmZAjO/4UAqoKFg8RRoqcFBm4u2O5n+lwbRfO+GZzNuJXjGt5oiHBrsTY0q+NRJmAoXzJ2Eo4qDo3Rf4julVrkYLeWdbFCRmeuqDYz9lEDmL15KOqwx7sgNd3d5N/YzQK6LEXZjxfyZODrQcu89YZ10L2+WR/1OHZbe4kSGpkT8C37GpkdKpf0pdE1kHwbmVQUW4eZvq6Z7brWRsE9HxHm2blLzQBqkpF+BPVDKkxRtxOtgHI3A2Ob1O1Cbx+xkwquaFVGhgVXummiKwYIA6S3PTvBHBFBao+W9PLsUtTbb7SAc3m6XowJGE4XEMq/ldYbcInGub5wow==
+signature: ybZFd6RIydYdYHbmwQWojDTfzSBN+oi93pPkEoFlPlAlTl00PLp/ArR19akIMUsKc3tLONsR3HsoOVQQaElFZJ5Mrjd8QVgrbHglvN/fRhSvbjl00Ryc8pLxJbsDL5TpGoIvV3CoguJ91AYCaUL58EiatJ/vbFf0gLXEwHFU7XBIaVamu+GWeR2kT9jVS6b7xOuI6xO3Ot1OmGuy4QH/CtEJTSonF/Ko33EIBLtaDKMOJY5zUyNWpa2Z3PyzBGtj2ewVv9HPF4s7cR1vIdPQNQvulvKH30tKV8X+gy7V1s86XnyOwb+uRV5mfuKHKjg/leaIPsHENtT3r6rSnDnNrA==
 subtype: python3
 system: true
 tags:
