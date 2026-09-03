@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The War Room entryID of the file to convert.
@@ -30,7 +34,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -68,8 +72,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ConvertFile', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import glob
   import os
   import shutil
@@ -233,7 +237,7 @@ script: |
 
   register_module_line('ConvertFile', 'end', __line__())
 scripttarget: 0
-signature: xnOFeGNKLt/y8ruCtxKOXpOOFY5jPoJtdIg8ZNP5uRQj+tSfVRzYsR796bbnQrkeCr5iIfLsucFayeO0L5rnv41hB5MjgvV+SEKjAXdgJiLRxCSu7d3Jyjhh1c9G+TEjuNjN7ks/AggHg5hMxyBJuoD9V71rgIZX8XX+23q5yjkXRu6AJssodwnuGAIeNUjI9maYZHG1qT2JfanWp0t1d4H/nLxg6KwWXj9oH9jI8wbmVNYp3bkNqDerl36EsD3Ttxa2JecGM1CdiT6eIFBhiv34Hk4/oHlXDKwl8m7LjTbxC6/9j8neNgw9lxwnfm95AAroyrYcUWmPJXb3ta6BqQ==
+signature: pR9yTIGSBhw+dbk2ArY6qJJjbbikxA9tAxiUAWKaaLcFYyBYZCTxgomFmD8+tAYfgtUrM378xu8QHVgyJQiMZpEdaMXuVl3WXvfee48isoQ94sJv+iIuvdD34vXwqG5LYXZhJo7Wrce57qYot10pXKdHLWRcXD2zW0iI+L5QbfLcvMUXjJD4URlfdF/1B0Ho30eX599tYukaGgkorokijwXUJQWK7E3/As+9IBH4CuMY3niLt0v+/C1sBO71Nr9rImR3T0x5u6NZb5shZSzrPBvE9HpIBlYVsPBDCMhhi1MV1qrZT39BU+WOKhLCJmqUAU6uYI5Px3dswlcu8MlYNA==
 subtype: python3
 system: true
 tags:
