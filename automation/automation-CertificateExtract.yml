@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Certificate in PEM format. This argument is mutually exclusive with
     the "entry_id" argument.
@@ -16,7 +20,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -151,8 +155,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CertificateExtract', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   from typing import Any, cast
 
 
@@ -662,7 +666,7 @@ script: |
 
   register_module_line('CertificateExtract', 'end', __line__())
 scripttarget: 0
-signature: 0w3n+9nc110ctlwh1CqZbe9zB7k0V8B7iw779IHogY4gD6zrV0fb0GgMKFtpodsv0CKT/xgauWuamlDnhTULl0o553RMLtAGp8ZF5bgYN6Ymj5OeM9ac7nJX1LQWES9cR+h2tqOeTSrnHu6lHIwguQok5czkhDaVAMIYdKp8ys5lUK6LRVeYElWfnZds+UGFZMakdy4IFjc+FwjaxSxgSCEz96CT/CGguN+jEivKwJOyRRNUYoghFrMMQoqRka56CV9TcGLdtvWf+pMzQvWW+N2r2SArBjSB8HChu++xpBqe7vydzbQ3Xq6EwKgnkG5WIy19OF4EVi5YenLZVIg7MA==
+signature: SdTkIxMx0mWKS2Wz7dC6E2yfg+cQ1+/GNNqjTNv3QOdJ2b+JTiJW3T/zEzWfINcnF6BFaUHqFUF1iusuvYtNnz4cA+XkUsE7pXZDcGwGVVGwHvZKQHCRJKhkt2tUwScc2qpWKqEs74u5RxLQsgpxVapSZPsmWZCPVr+w9uCYP93aLqFJP4Me915nE8BQXILWfaqnCSRBUKrETiKcRsgOErP65mDrZeDBJ2IY2elpwX1Lxm7nTWFtNho6ewvP3wEhFVtTTWMoOv7yIqd6lu1/q6AzgVvxYoaZhzCJNlNj6Qigv64AZ3wGwQQK1t06U4ZYOqV/yNyXv5kTjLG2m7K41g==
 subtype: python3
 system: true
 tags: []
