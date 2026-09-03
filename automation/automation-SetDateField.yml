@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The name of the incident custom field of type date.
   name: fieldName
@@ -12,7 +16,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -35,8 +39,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SetDateField', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   from time import strftime
 
 
@@ -56,7 +60,7 @@ script: |
 
   register_module_line('SetDateField', 'end', __line__())
 scripttarget: 0
-signature: WMcJNsepq6csMaN8XLweUKiNsO63jDeWRu2qYTmLQYiaGiyLtF9KK8c0nb+ref3lUNLE+bE7WqM2iXyQemg18bSK+Kc3DpEiJI/sZGuEGcjvflTLJtMpJLZ3VIMj+uPEQ4P5cw3LWNaH02k4de03As04ELgDjLLeAJEFkRXTnZ1R33FOTfg/3DA2G0DV9vQAeG9GkcScduU6jrUWft9T797hXxW/G42+aKThHEJ3tY26sseCioITDckzvdJ7UGgorje7F+QZM52FD8CmQiFT2o2Bx8zSj0xy58JmM+kvYpUnF8BDXHh0IMKaKX3HX6FINSVfWDfuJGc3Jotf8wt/sg==
+signature: ydSMhKGfwavEj6LgV6k+It7sYCZRTQ+eSFgenGAvUX6TyLoy7Z6CkSrubOiZGz0dFzj7jE5IlATCdyOPVyc8fHeZpF6nNdoo9qTnPNAgcP1MSfQlTKVPXCsrV5kWL+ZFkBQToH7S6DLxWIFRk4o3Se/uUv7PsN56Ia9C03uK8ATGTNT1TEhWTyO0hwhGaWI6BxkfQED2tmrCkc2Q/0kqK6J4rJdMkuYs5w/IpoX3xsipZDHk2J42WyuCdtxEAKY8kLGa1bluVSYtQXUp/sP/ZKsaHsKUsP0Pz6I93zXHV9m7XrDRN9tF/g0sk/seQipgP14YnFTmp1ltsplrnOn4wA==
 subtype: python3
 system: true
 tags:
