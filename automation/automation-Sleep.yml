@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Amount of seconds to sleep.
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -32,7 +36,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   if (isDemistoVersionGE('8.0.0')) {
       pollingThreshold = 300;
       if (isDemistoVersionGE('8.4.0', 649563)) {
@@ -59,7 +63,7 @@ script: |
   // Sleep for the given number of seconds
   wait(parseInt(args.seconds));
 scripttarget: 0
-signature: rBOQD+wnWjcQSBF6rGbssTb/YE1Q7u7RJZA51tbFEsT+MTCbCOPgDweLda2W6i0OjkJlI7cyBoqAwM/7IpjzKrvQqkjUJ5oq/MVkoDOsMoPNWU6rnStsjEsC4UwHTbj5benbvn1ayuEwnW0akpvr4Iziy5WNqgmij7u5DYL4C6e+TrmJfRIbHbmtOsckg/wtIyVWH8sSRBA9M7RCtbtbc2wJ/1PKMmiecNHZ9HTXfMKCNj18LKTbyOkH6GSCJqp1PCp/5JbN6cLLqTrdQsdoDzn8bcSSg3j34OINSTpe8NxcDtb1MnCDfmsvntZYYcatIh3Gw4KB/lAAHn+8NkVQmg==
+signature: w1+a75XUcDaKcKMNqW4TzVawZJpt6hBLcTQ/ysnKOsC1hIRZsRIYQRbT7NNrykVYy3ebEhMsUhTu+FeDs2nAtUCgmXBpWPHsfrrwQUGNGuqzyfefa4kH9uY7IhvOXjli+caQsCHmzBcpZVPc0hpTRqHjw/1NyVQ1lBb+wVoD+oGlqyxscZEvX8VUrCiSSZ4wPKL8adpNNumKhxu0SGthEq2GrzFLfl0CWfHmN85xqnQn4ofEk3r8eToWbD+99Cq+LxYqIU0oLUrP/iRakjYAbb77yL/iIy1LQMsnx3w9tZJq0LW3Q4gT+fEb/A9Kxfra3LsSwjYTKDhKIpqx0g0oIQ==
 system: true
 tags:
 - Utility
