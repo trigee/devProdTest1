@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: Get the Server URL.
 commonfields:
   id: GetServerURL
@@ -7,7 +11,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -38,7 +42,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |-
-  // pack version: 1.22.39
+  // pack version: 1.22.52
     function parseUrl(url) {
         match = url.match(urlRegex);
 
@@ -73,7 +77,7 @@ script: |-
         EntryContext: ec
     };
 scripttarget: 0
-signature: d+HRBJ9dX6NJX4UoCyGGpQhiMYNdjBQxs70iKhtqGe7RZjy398OhF8sjEDtLsmK2gIi/tvi4YY4nnv7o4YckpNKUyEyd6rMAR0xn8apBS9+f79SQTH93337POniUWK81F9DiQ9gnIIuZiLUh+EEXmxM6W6f5O60/vq4e+y1Jf86h0BRs1wAClKkhzaQzhJ3bbVEs8zJyKvAUAweZYiAxNgxwNxVZs6azSlXI6dqmDy+FDh9Bb9Fst9ld6iP8Da1gM1PrxSKYf0smvxRkVW7R93yQfXlF3lh4cSGzecGTb/dSLiBkWMMi+FqQO4TDS9pG1I6K5+qxqy895EtIEJq0IA==
+signature: BKEDouQIcxq/LD3bnx81WxwCdbJtKq5tD+i6WkJP0J1OFsS3qsL7Ngip2aC64TBJNrB7kGWyhgTzX2b1CelEIxxhrr1eywNwwEpSp0MWIl6C/XQ6YDaP+hm1Js4DmqQAJizNBw8hkJlWB1V9gd0OyLILttDJJ4Jrn7C14oNj4wiFsFWvyCD/z7FsbpWxekYgJD+v7MxxA7dDsxMZwyJqY98Vft72ptG44ss3TiLJhheAsmzQozevwIpE8NGkol9qGn/0gr8eyvpBzxvPnMSAuiLFhdHMOYAE6Yt+K/U3bs7nt+0/dl8yAw4Ir53NZaqb0VsKo44u3+zVyvbpPc1d+A==
 system: true
 tags: []
 type: javascript
