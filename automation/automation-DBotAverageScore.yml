@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: The script calculates the average DBot score for each indicator in the context.
 commonfields:
   id: DBotAverageScore
@@ -7,7 +11,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -37,8 +41,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DBotAverageScore', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   from collections import defaultdict
 
 
@@ -111,7 +115,7 @@ script: |
 
   register_module_line('DBotAverageScore', 'end', __line__())
 scripttarget: 0
-signature: tfdQ0ansQh26IjrFHBqoT4s4fKI9qzWXzDJN5BsX1jwwKoWo6v7v1MMHPHdLeByatoMqTWzs6P7br9ObLA5NI+WJOHdSO0lEJp2AUFfJoVP2ic9LY+heBVR65Ld+fZAwMAIud1yZSScaN1q+Hzao255D3uM+ZVsPTb6y9w3LOmOYNOxRPmy8c1sOp3+CmDrEmQfN6Rn0/k9yAuOSHyVrZbBBoxe8splwiOh3Tpr+6fTf54V3Kgg+TZfC16YBfMaQKssYt5cRKJO04tptKP1MVFaGFvFJtULg6fo+nBc1x+xOhNwgCLBiCRSdb4T1Bo56etOXGzpJwfM4gbpxc6n4AQ==
+signature: uvs3UgRtfHAPZWkoDQAtQxe+x+mJ8VlfAqRLpm5c30LUcOTCdLxHmKT7xGONdRQt//5KuNCGpirjELZ5aha2dywrbMrybIGmAxXPn04MAFOx90d+74LUFGeBZpf8hkNAi5FqOH069jgGaRRlg0oHe5v0Nf4afwMhClpOE3o85/FzxQ1jpmntDeHTSQs5VLlim17rY4hLx3NLjyz4CsxDrNRQ4wmPAm8GtySX65qGFs3aDS5gWSh79XVcyuMC9jRM+Ef2rll9HjHqqLFrwYEpbRt5me23TNcjncoUDHoP7OsfRM68D8mj6Ax/D286YnJlq+4+T9cH9+hs2kL6e1UFmQ==
 subtype: python3
 system: true
 tags:
