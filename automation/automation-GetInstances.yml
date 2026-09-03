@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Brand name to filter instances by.
   isArray: true
@@ -23,7 +27,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -62,8 +66,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetInstances', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   from collections.abc import Iterator
 
 
@@ -120,7 +124,7 @@ script: |
 
   register_module_line('GetInstances', 'end', __line__())
 scripttarget: 0
-signature: tl+zsM1uIetUeOFkeolmFqzeLn+RiP0+oHgZu4PsaxxzS8xneVlhypBZjj1pG+Ck7QDho4665RvW/9He75kN8XxmRyXVUyr96NXLqHl/GS5x1uzpZJVMJXJ20mdnM3EwgEjCmuor4bgUgfTtHSmaWPZIhCzklht+cYUmMoMRdb+Exr5n46iDozzu72iHubow8rgaVAMcCI0mcN5C+t1dOpTgw/Z5HR0aSlFOOqHjHtsHNIZhPey+Su3YxHQCtsHn1I7ZqSsG9RhpgyiMW8QLbkzimgPOX2ecQ46dD9EtphOKAa7xJeRa6ymvYQIAHok/5h7z+OiyCrwvlBk1gjStIg==
+signature: MaUGtk/pT38ijEPki8GXJL3FNxvG+yHcpNDvMHtubdu/l5Ncls2r1WmdW8jnBus0f2HgBXhzVGhnz96q9lYRTXvSNcV0UGAlPC1hhAVRHmIQUOY08irJ5udEDMhEm6nibLdNjwk2iZiX9SVvM4Gv91ADo+LSrKISC4HqXDgi/vRsdoywRHZBfclY4INoJmXKMLgepzS81mBH/lwYEYMUOIJVRPQ4Bz8moGxjjKpl7EefWvN6zdcyYTxT8ibXuTjbI9sPY+9Yd1DFASQSxS0New36uZf5NrTTt7LSaUrp7c/713z213wwr8IkYHw6uC7TNW9fzkq/79DyixcpHwGbAA==
 subtype: python3
 system: true
 tags: []
