@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: to encode in Base64 format
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -34,7 +38,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   var result = Base64.encode(args.input);
   return {Type: entryTypes.note,
       Contents: result,
@@ -43,7 +47,7 @@ script: |
       EntryContext: {"Base64.encoded": result}
   };
 scripttarget: 0
-signature: LOdP5EjH2bd+TP4oFcdJrvCALjW5hf69suI+uVap29eid/d1fSs7kdpUuIAYBnYygshE41GBU/Vl8w/0Z4KEcImtp+xvX+Rzr5mBDT7WdQ5G5LiSfrRt0JwXeIsAC1ufgKciPvxC2yNnLhjYO9hYY5uuZlfVtCaC6+NLg6ELsq3JcybAEoV7l1rqQ0Q662LCZ0HRyAaeapFp7XaPKee9cBqHfuMpORK577M2tJ+dHrO6CoUgETcNI3tBNUhLhFYKht2Cf02op67QHKtoFrOZdiCEwpdCxWus381MvzK7lF9BH2Tq2/EjtKsYuYcaq+o1/zKibrpvwX22o6jYMLbo7g==
+signature: WzNVi1OGuLJjMWoNmQlqdTDeDrN5j6h4s0KypV7QY+2D+UuuOPdPBaY4CtWV3Je174FlLR89NbfAP/UVpiQB9gB9rH4hN0ZPu42Nxo9KKol04ttK4S6IRi7HnH5jhu08dwoFHzUZvHW0w/qEzvMQCDhrf3C+o5nkK31IUPP60KgmZJX3N9J/15FL9pyJX5HrWRxbtmxGaLd1GxFRXOFLzm1r/av/zYDpUlX9tKYzFkAx5iPvzP+fBsMds+shj9bUg39tOkIo5aWmZ1QcOETDIbmXg0OVb9xsAVsrRim7cIAdxhDD2t+Qi3NOFMtjRAuygo7i09kAcgxHEnEzbe4B6g==
 system: true
 tags:
 - Utility
