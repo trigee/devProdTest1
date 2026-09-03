@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: |-
   This script is used to display the indicators of an incident in an incident field of type Array. It can be used to select indicators from the incident in order to later perform some actions, like tagging the indicators for blocking via EDL.
   This script is a field-display script, so it needs to be configured as such, when editing the incident field that will be used to display the indicators.
@@ -9,7 +13,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.8.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -38,7 +42,7 @@ script: |-
 
   register_module_line('ShowIncidentIndicators', 'end', __line__())
 scripttarget: 0
-signature: CiTnhNUxtDCfoEjxAV1ofzjs3u43Ee/2tHE9c2lWd7mvI6rsoMR/j7go4ZxRZhrM/7Ya0JRDb1o7gLWEtTYAqYbWdohObyx2yShAHHdDXFO3nb098HaLrnWCwi3+3T2JHLti+F2S4q93xnKL1U0QR63tixGx+bkphUkR7RdsUJ8cd2+zqkSVAvFv4+GM1Ql50Nh/+F2sUGWU6LEBmApL2ekeNyve4vj4NojOaO5XuFIqdRBkG5Cem1DGjohld1VzwGRePTsfsHhrmSLPBofx5SJoVu68hFRQ10fiWJl1wKlosPS6Qy4bmQ676rwBmp+AsRlSJhFx8HI4XMKaN/Bv2A==
+signature: UJhqky9vGUok9CMpDCrszz3HRbHb9Qf8BaHoPpwiPkn4dCgH79twDRb+tev+Rf+H1ClKXozl5CiZ4cckH94QoIezAMsWLyJtZUkLCUPcd2Qxmpt4xIRZtDn+8BkRAdOQdf62MvWPa0yX6gAMDgDjI6/JXKq92wbUdeoact++vCTxJ6ltQoudjC1rTF+B3Th49LWHwgCDQa0agX+rX2+daN/JKKsY8Xb6Ly/ZF9Gm0Xp5DRYL//2MBWOAhYN48uY8mQfOuOUSegwNIQD8FyyREl/ynmxkhE1qzcrg8RRojYBmWM6avrz+Re72RML73obBjCgZZlfarkPdmdmHkvWM2g==
 subtype: python3
 system: true
 tags:
