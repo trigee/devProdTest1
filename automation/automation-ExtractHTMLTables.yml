@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The HTML to extract tables from.
@@ -21,7 +25,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -44,8 +48,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ExtractHTMLTables', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
   from bs4 import BeautifulSoup
 
@@ -112,7 +116,7 @@ script: |
 
   register_module_line('ExtractHTMLTables', 'end', __line__())
 scripttarget: 0
-signature: RDQD8pR7JmAW32u+UG/WlZSQ9t8r3su0nI8gWcjm8vMF/Lg0PwFq46aYuk8JCTgYlHT/+bjPwQ8zyt0i4skvy9lCTGuVCmreCG6cLOtmcyL4q6xy+LNPJsTS4GunqgGRecUXjA0vPvEGuYMm3szeusd1VPr0VvtdA4HgevlAnZQCAmeGA+ULi4v+ag2In86Vpg8xiWHUdaO0bDbNprHHqEukiiIXsmLoXSnEtgdItlwRCT6RkEzck8aLKOXw/ppVkpvuw2mS6QoOPI+QphR0pb4Up6NpCzwA93FmzvT7BzPz9exA843H4dvKBxOs1xA8Kif77ktfzJj8zgyZ8ZX06A==
+signature: rpn0x65QKL5qwLu1Mtb6stWGJUB3cyj6IIT9b4WOdHzRJnoVdtbnTFIT06bCa7aOSjnJzAYREm0h6vwmYnzr4r4KZ7lFTrzH7FDwLzdJzM0/OSEQkxNEWsQQ+WD9AdU1qGqO/ky60LCiXwWAtzUX8nsuiwKlz/6In9emRtgDZy+MxfBm55rTD8gljuBfwoB0axxr9bV0/s9cwNQAqK+FF7pu8OoXakX5LMQNFyrXIbyhh5FM8vJ2mUnm1Zz7b7kHgB6pCZacMhT3cwHt2Opab/f/e8YzdBFETWuAKhR/GYH/LuyTLeA07z4Vu5Qi1/jSqTIt9E1oI+dtIxJ8grK1Kg==
 subtype: python3
 system: true
 tags:
