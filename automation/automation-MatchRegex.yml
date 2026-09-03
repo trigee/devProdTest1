@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The text date from which to extract thee regex.
@@ -27,7 +31,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -50,7 +54,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   var data = (typeof args.data) === 'string' ? args.data : JSON.stringify(args.data);
   var flags = args.flags ? args.flags : 'gim';
   var r = new RegExp(args.regex, flags);
@@ -85,7 +89,7 @@ script: |
     return {Type: entryTypes.note, Contents: 'Regex does not match', ContentsFormat: formats.text};
   }
 scripttarget: 0
-signature: 0tyam7PVBRi0V6AY5Tc/HgexxefF2UAzr5fGs6+vdUKhzmFskNL9UBzNBgC3EliIX3M2tSpmgimSodzxGK/u+Q/YJB8zta0XZ6cmiz6yHJfGAe9hg/WQv5RxHsRgr3E/B0Q4NNFQlKmohvXZaGSBq6fH9Jv9npwx+Ho8LIrqZOp9+srWlmCRFipCJErTl8HJ0F2/XRKSaQv1swcGD5gTi1Vcw2debynJgMXQUL2lZqSH4xSQR/PLYue45gWM1zIf5vt92IKgp7iw2rYr54num1CVt5PaB+grtlwjidMYGPdHdtGDphgeOHdy02fCOssnAsjBSBpz9CQhc3/x3lC+Aw==
+signature: OzM6z0DENRvMe040oP0vCUR8lhRnFZOI1dx8J5Yki13imyUlceVinTuZmtdUILUxgASqTe9xfBIMux0h4dH5lmj5L4FE4CQDUMVG2aXxgV4TH9HzmTiQifDXepvwLpvbIcVxtX8UdsbUuqnbYS96LXUtetorraQMaEECQGDAiNhXuAtn1fcyxtVVTGMCw/MABMlJ+LRUJCYAah78nKs5TGyfb3tQk8dAckcqhqCEkyu64jjUD0c/sbMImglAdHI2W6SAuHYGiIGohMkWRpw+SFpKzZgJF/YfkwbJplyBaZEQLQY5dqwrO/ZUwjbKUn/Z5r3i6/2TZ/m84ccH5of7bw==
 system: true
 tags:
 - Utility
