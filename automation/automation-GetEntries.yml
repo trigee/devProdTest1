@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Optional incident ID to fetch entries from. If not specified, current
     incident is used.
@@ -51,7 +55,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -87,8 +91,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetEntries', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -148,7 +152,7 @@ script: |
 
   register_module_line('GetEntries', 'end', __line__())
 scripttarget: 0
-signature: nvUYkTqfgKwbuMuXXQ9PDeGTuv0+QY60KmAEbz3rfnSy0moyyWpnqB/RzfafJOltJPWAJ55HLnQWbBhsFnTSMWXZCJsJ8hXOKGeX97OVHH2Dddfw6ay9ckuMHnilJMLnmNaWZQ/ViOA51AaiK4PpgaCVcE1tbB44Fm2sPCnYa38DLRUzuFZNn0hwvTZFb4l2g/UVZLTFJjLz5xEyrgI2d4kPNskM6q0npD4LkSIkdrbIgPGikv1b4CETlTtLY7DwwxT+Zrdoxf+wyoDk1zoZnqP56/yphZaPz6Wd8jupnH9qx8gIU3b+kQhOwObkkZCeYRQg4tDl62BrkNqZs0i6ZA==
+signature: jQgDDaHEcx22DtpezxyC0wn5L6qbUWxpaywptKYESa9034lgDaA29Rstye72ZHDak0EGgU1Wamkf4/c3t9Ld59Py4gDrD1i5DizhVRsye56GCrZWlKs7HP6r/CFju+EYNFxAuhZKHtyfy/qYaZzwlJdceaawOD6vMSIIa3OUlzKayt50oWcgV/sUgML79VmGt6I3s5N1peRx8ifzc+uFxtHBbOLWrPO785Z+o0V5EmZk1BQ0nTcm6U24Y0vxJBYkEGm6Fdwbfwp0H4mWJM4Ay7Ox/C28JQvyhPpANKllrtK8iOqteqYqcvtm2oFoDhA+h1rBjkjqsNFe9XahyN39SA==
 subtype: python3
 system: true
 tags:
