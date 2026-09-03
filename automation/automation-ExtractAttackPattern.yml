@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: A comma-separated list of Attack Pattern IDs.
@@ -15,7 +19,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -38,8 +42,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ExtractAttackPattern', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
   import urllib3
 
@@ -89,7 +93,7 @@ script: |
 
   register_module_line('ExtractAttackPattern', 'end', __line__())
 scripttarget: 0
-signature: zrqzkrh4EgY6nWpmi6FUlMb5t105SMtn1he6rhu86yMSqy04s6QjNN3/nqkMa8nkqqykz6MhCRs3gK1I2FIwjtvjAKOzpih19hvbOhJ39NkQJYwnZR+sXUxIaQ5W7tX0ydpqpe3yqZW3gQaA59d628NhbsSOJUSgXWu9711/lCjluVLSc+rHMUQo3ImcT+9EusEBRnD8FxHMLPcltRSMZnIT+JZRvE3L3Rfa7S58bE9NE2xAFqOzHNpfLdZk4TGGls2pEy/MyA26L4sEUwkOxxj4+Af+mTggGaX2XK9+bEHPwDy5UuHH+zGEv6FMQRhfvtkZVdaPAWGfJ/L6MsKnYw==
+signature: mfuX0wKGK4aUUg0/zaQRzIiP4loVboAKEagfV/PMYbFxbO/MUdgMdxiEel5wzCHxWgt44S81fPFBH8xGz0uJ97/3BvL4nRuYIkYwxUcswvOPwnN0JQShpVRF6fGS3uBiw9TNWky0W2TaGbWibYCrFUD/aqu4kyPx5LO5iDxnP6gsRh01iUCR6s8HeE64W4zPKm/oa9ZoduejM8u+sFT9VOX8i6bvT5nzlN2XTbEhQ8D9t8OBz1tAx3TQunBPf5N3di7+DJPHT9+MiMJexLrHl2M/6bbMHPitQ/NQ5wUujoV4O9MOak8OS/aL7uiuEmvlTlT2OWeQGw5MP2ybt/zgag==
 subtype: python3
 system: true
 tags:
