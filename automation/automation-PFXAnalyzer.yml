@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The ID of the file entry from the incident context that contains the
@@ -18,7 +22,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -78,8 +82,8 @@ runas: DBotWeakRole
 runonce: true
 script: |
   register_module_line('PFXAnalyzer', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
   from cryptography.hazmat.primitives.serialization import pkcs12
@@ -417,7 +421,7 @@ script: |
 
   register_module_line('PFXAnalyzer', 'end', __line__())
 scripttarget: 0
-signature: RP+vy0BCob3hKNPTqC+su51Ee3vNwOPtgRkxW5FZsEAJyZNrYDd89G+Hm30OjGzZTobXC1sitm7U3em0JvqXw2vOW6oKFkeTVzVrL8uTLMnVifSOfRW6UUCh7uVSFKpgiIUhnu9Rc2Ga9XJ8hVsUMsY8r9F2KYO66PcJSZvsh9fra1iZFUaFtU8gYTQ0/zurNHNmTKOd3Tv8SEsrLK1qWFkRnLsJvBWiTYA682Enwz4IDbqs9uYfNR/xGKBSytwdjd5pqc6vSUMG77taRu3LBV3XqUBXUG+l2hLclAljORS6adVlZxdMWGoQHCJAW4i44jt/Xop2dWadfWxo1B210A==
+signature: x7ygv/CZzCUScVKRKxdrqqN08ciOW3ET6NzpSQalfM9M/GhQExLFWZMmjHG3mTN1kwZIDzNIW+8E3cnAwl3IBHTyI/8qiDldJfqN/Xo73Ae01x9NSm9wBxUpLuPczLV6X0Jye+Oe+XTBfA56/WOdGYF6oOCBfzPXd1PgK6w6cNkZe2Gfxax+xgFbnpazvXlvvQIduDZgHkw+4rR2+SyjncGfbzTHY0UxdrI7niBpCRfLIuwKUTm/a+tcajcEL8ovOIaw1j0OXAogvAT/fYwvLfpGW2EDCs5PDDEnPyzWwNfcl4acDs12DRR1Xmz7+lsvn5+tff9eYLZhsHMd0tentA==
 subtype: python3
 system: true
 tags: []
