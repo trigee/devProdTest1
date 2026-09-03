@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The indicator value (ex 1.1.1.1).
   name: indicator
@@ -37,7 +41,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -60,8 +64,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('AddDBotScoreToContext', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -84,7 +88,7 @@ script: |
 
   register_module_line('AddDBotScoreToContext', 'end', __line__())
 scripttarget: 0
-signature: QDtNUADzXWn4hWM7Ise8HvSEN0caXGDK+vAY0eqFM+RLZpjPFwyhRqr0ZjTbgatuBr8lXOziGqH5FBC5yWalNwFy+zs73C9liVa/nI6BrRfBOzkZ4FWAp/+SDl719NUz0S5gNbPZwp0nxuSF+leggAs5ZqsFziFff90YYsHXowRlON/8GBjTsZzyIoFL4ebl0uqoXuvpNaHHe1sf+o9LnqeMoe8vb5o8UIos9bCgpNveFsyEvSE19FBVAey2ElA471i8jBda4ua90/IifNEZa0orDytCMlEcfvAVbjP6jnd5lgIztJbIRgLzEy3lpMqUFvCQuaPO+nkRoDya/+NVkw==
+signature: uoVS6DXYiBiweOW3J68zvhYvKFOHC75oHIddMua4EFhof5AHmyD7LyFcf3ugmMScCLps4I/r+DdwjpkQ5ZjdnPHAwx7l3msUZd7QsxOwlUy+35LahFcsyf8E2GvZq/LV5WWEqUvTZCcU0hiNLMFlyPo+TyPZMBzydEY5tL1hPCLfwp73PHZDNq+1nPtxHBOYQEIQMzdFL8BNAJmQAL4AGftFRhBC60JeBD/EhmLst44iV98HVpTbyjLFGzwmGetsxZYf79/kXZOILL01/Rv16pqmtXAlI4oQ7Tq2fo9SaCmlbUWyNJVzpKNfxO7aKzZ0KsQg9TS3zYM1PC/vsR1ELQ==
 subtype: python3
 system: true
 tags: []
