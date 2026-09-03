@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: A comma-separated list of domains.
   isArray: true
@@ -18,7 +22,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -50,8 +54,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('IsUrlPartOfDomain', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -94,7 +98,7 @@ script: |
 
   register_module_line('IsUrlPartOfDomain', 'end', __line__())
 scripttarget: 0
-signature: 4M2P1FNifTMjB3fpLQpdXfA3bzIMMPb8wgcs47wrh6Gbpk+nrpJUjyJ5Fqnj9wIJTL2QyxibO29JDX0Zq65vSRLAGJ7fvvCQjU5U486rVp42fmGvOFiJVTPyezyN653klMkuPFKBjCvxSynm0EwfxJS4LEMby3kbEBATCtVdqT4EWFEWWKDTcZ139kqzTMKNf73C5y92cS6P2UoXa4ngEkUdVkuV83S+qlRsC+uIbbmqh4Kbz5dIiRl/Yb7BSV4Tg5ThoQee1R+8flAnDPtzUFVUpdw7wxBQHPdrsC34gpcTPAET6wFWWsVzQFbq5EaKL0L+yMJbFPANNOIwfFeG/w==
+signature: mLX+ntOc9Ha0Hxo5nrxyQEsznhtSXI57Ehve5rkz3lT8nY5A6rtCqU0tMVr/Lrg2rewyXVSBVwS0xSK6j1Hosk1Q470qBiifmCX/cic3EHIRYBv2f4n3QwdrMKcHOFXI9p9sbR8pmEBP1FmyEVvf6grN3nmyfYTdzgavgBTRNS2iHfuR/SwF9QZ3g7WGjfwhfbgCApSLblQQZn3DnRm566YNDWXqHYuRhiGoWOCTFbQo7/9qlxjJYm8xrAqYY8bue1zTWPwBPqcyRmO+WLDat6dk2PehW04rNR9xv+V7p1ftFJmS6NEegXAQG2+Pt5CHN8Fh9qXz+Gumc7nlAQ7y4Q==
 subtype: python3
 system: true
 tags: []
