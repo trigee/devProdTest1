@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: URL to load and count ads on.
@@ -17,7 +21,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -49,8 +53,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('URLNumberOfAds', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import re
   from functools import reduce
 
@@ -100,7 +104,7 @@ script: |
 
   register_module_line('URLNumberOfAds', 'end', __line__())
 scripttarget: 0
-signature: u0eJnkPlbLSlK5koOLZJqTsKr49augP+8OSUEVFX6OzNf7NtrWdsOo59SicsiWyMp6SR1pujFbdQ6zAfDULSCJLMIhBxAIMQHkp9HnTC6euJD6URLBY9GyxoS9B5m46EEdwX9WM0DyBltuoF4YYNeel+F6eYnwmwlR4f/UZ5/eSScpJ5q7cdcTf3VpEkr7s0QSH5sjVh3Rkq+LXryOJ7YO2wPNnNi4A5btjK6qGwVufTJTLUpoQxsBXWQMD3tPV212gB+B1GxmdFPit0OEEsFGFRFBCHYlpUDDO0bCH2ynHobocegxCP1Nr2UtrscLI7reNXUIZk5aGoSLTw/eV4JQ==
+signature: c98YZcHbIQQW3MUD/3e64u4XUIFGNDk+OH+W2u8js7rowvd/CUvhJHN0Ni1w5ovR65zKlLOKYC6iJKwDJAzI8D4g238WSjb1sBLvT/bOlFIq83QA+dbcn2lKrfZzHkG3LyqChM82oDnrQaZk1lg1Mp2BjCgpSnmPJJmyCUmuxP/Er/1YYj0PTtG3qRGBP+CyBiM+mmXliUP6NYrC01U83SHtnB5KWWh4xPBrfcjqM83pn/Ex3cQkcQBs3xwU+dzZOQa/5ZdXtLEZ0oLhoFWAe5VZQ4u6d+zgUsyIt4Eu+0RAm8qhxcSXWovB8X4W26TyqFe7xBdcY1+ECUqlReDFOw==
 subtype: python3
 system: true
 tags:
