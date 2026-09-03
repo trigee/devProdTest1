@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Incident field name to set.
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -35,8 +39,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SetTime', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   from datetime import datetime
 
 
@@ -66,7 +70,7 @@ script: |
 
   register_module_line('SetTime', 'end', __line__())
 scripttarget: 0
-signature: l/zO+gR3WdM2IRKLuEC/7Gi+/AdTqsqOSlXtZQyiTvvP234g87KuJ3lD6CuXynCwQcw5QtKsjI9U9fKYqR7J9/8lDEdkTh5XV0f4Q6mNutz85NyuYoAuefn/glMTH9yMfGMxxK5BWI5cX410UoHXlGAlcFZj4D9GS6JjmAjT0yElm9mRkccVd6fO3yPrLluc08xGL6CEdgo/1xwb6z8HHSa4nkhysiD/3P5durEhVUB/GcQjQoMfMNwoTDwjzUW3O4XBVfLn4hhE/yFcBE33LnJCD87qXL5PKragOSaCEDgle02D19NfTFHOuLenOLIssstt6BttnCYBVRFFRifFOA==
+signature: ELIEJQay4+X+f69SVR2iiAdVmPqHERNmeODxu5WBjFxOzbhrqmouoL6/KjyBvSC9JFsDTfT9QrpYN5kAmZ83x7zdT05aiiipU54+jgNI/bqq4k2rh1u7lYPnvveG8/F7yEeo6htVDMj44UI05e7gVP5BtgRysZqeXfUQiaKFUyCU0sfccxl9cdXTmFrJxf9i5VLCCfNzRvheeDoBHgUU6Sc4QzN9w/mg4AbM5YldNCciQOEvar7IKaTBwFUAomJ2QNRdKiNAtCD6W5mEH7NV+fmQhOJFspa2JVdEMSv7vBFoShA/ehJWwntIJIBZXh0BV5McFgDy3Csrn5e+BNuWKg==
 subtype: python3
 system: true
 tags: []
