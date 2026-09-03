@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The URL to follow.
@@ -38,7 +42,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -64,8 +68,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('HTTPListRedirects', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import os
 
 
@@ -136,7 +140,7 @@ script: |
 
   register_module_line('HTTPListRedirects', 'end', __line__())
 scripttarget: 0
-signature: JXXIVOFHmsTCj3CcxbLpZKL5nvU5WsuXqiJvcXa2Tejg8aTp5TRDd+Qw+8eXDO1LtsTvcCb1ZheaGV/vnbdJUdS0EeHWoZ5L6K6Q98jTGG3oXzPyjixx3QSM3N5MwfysdqtvS56szT5WObQrnBztQwoshnNIP8UWiI/gkHZxVsZ7Jx+pBqWBa+HqYugKXjQLkK5ExZZAUe80MtoSFmc2eP9TDL5Hmw9vtvlMSNBNUyaQCzy9VrmMylxV/+zuMnOJP2kktRUC7BIbIi3j1XprWvtU2CwAe12cBYeZ9Q9IYRdWmFBzVp1HSU/bt/E/qevJmz3EQxgAIuArKQgvEftZiw==
+signature: aSc5JpOem8bPa20M9QgatVpmHmc/LcU0w2N54xe+4RAAKeIcUIWUhNZhr6hhD/sTgl0hMqK4fQw4IVW890P1ic/+vX+xpF3OqVLr2gm6T5k73EUAqv/BdeRnWiDkhMFE2X5hqFbxMjO9ukIzh5ivf1BDdBHLjxxLKDi4xNWOsV91dGM2kEZAAcMri5L56RRb6xyeNW11BHfXxfoKzzuCrAvj+qreWXnYlmhiM5VybcjQi/Wiqur7o9iTXobALWz7YwLVMDgcKKtbN9W8g5u1/HhVTkrZ++fQK6swvy4Vbh7qNvrJLEjTjIJgZlBmX4F6/huO1iayQbaaaiu8Mij4Fw==
 subtype: python3
 system: true
 tags:
