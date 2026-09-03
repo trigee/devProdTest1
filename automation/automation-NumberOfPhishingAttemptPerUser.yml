@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: "Shows a bar chart of the number of incident the 'To' and 'From' email addresses.\n\nThis
   automation runs using the default Limited User role, unless you explicitly change
   the permissions.\nFor more information, see the section about permissions here:\n-
@@ -12,7 +16,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -35,8 +39,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('NumberOfPhishingAttemptPerUser', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -140,7 +144,7 @@ script: |
 
   register_module_line('NumberOfPhishingAttemptPerUser', 'end', __line__())
 scripttarget: 0
-signature: uBsaQ71oq0YmsIgbs4Jw0G69PzeKtdGy3BaSA/4rbMyqx75mn8rHBr1SMGetkFbBFcdktsVhG+KU/IkbgP6rWk7QKJ+w3AC/viyI/44h+XquA6UJhNaRoQy6+071z0jAoshCfmO2kKIDy78esBefxa1Ovn1GJvNJep+pqtLO7WfGjVQ4OQOyI2MO3DUu6rvVbkKRzcdIvi0FXOlfJ4P634DOLcXFJUe9oTKTRTjfia5g29xWpyEQHcblIs+LYfUgWci40Advf1qvcYvU+vs0pX60NEKebWYqyNfbAHduWDnOxvdD7bRypIs2ItgquO6UuL3R212Lx1rqhWpfNoXx5A==
+signature: 4bTfJYwaCk8xz284khGIFRYIyt+ybz4ohytPas8AnduUrfaCSARg2VrWZ+MU0k164tDL6SjnCklxmrbW5ZhpM1B3yeMspEEVpcGaQ6iWM4b0RVsR/+3jyn1fQRI+HWpTMC64wwTudh7KXIQjy1N7IKknguG1/a0GFEagD/uWqWF15jlE463wlxX5l82vxjCbKhlqgBkfT6pOggYi9aLYDdtNPwfeTccMO/jM1AabvgQJW8J7npqbuD2/s2VFK4zQweETolnx0ZJjv6wyr/wqDUrKIMgxdSc7czE6CdswTcRXmpqwpWLBjZ/KI1QekvKMZgHiXe6/Hqlin7/kk2VFYQ==
 subtype: python3
 system: true
 tags:
