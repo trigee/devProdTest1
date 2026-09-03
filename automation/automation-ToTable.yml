@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The data to display as table - expecting array of objects
@@ -21,7 +25,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -39,7 +43,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   var data = args.data;
   var headers = args.columns ? args.columns.split(',') : null;
   if(!Array.isArray(data)) {
@@ -52,7 +56,7 @@ script: |
   });
   return {Type: entryTypes.note, Contents: tableToMarkdown(args.title, flatData, headers), ContentsFormat: formats.markdown};
 scripttarget: 0
-signature: qHw38fAWDu7cJ4tlf1dLdN2htZgJKUI6hH08j/F3AQ/J7ERk1Lgl3jxllnrR60qABRzIHh3217LGg7YhLf/QeE4t0igEE2WG0yXWVqxp05sBDTK9xB744DQszXcinbHSGmEfRbq/W6LFQ2SyLrwcAY024S2xzljr9LuwZak0tW3+bz2u5aY53O8yP4AfJiW8ApC/31T7HS1FqV6Yo4eAV3aZ3bjqb49jeflmNQGJ1HUVjjL/hLBSYWmiI5jTTbg3Y4hxi3A8RuILDZofUC7xvsgN/WhWgUaXfSLUHzOs6r77ZBA8EywRdABySCRNfUMcsfFWbKqja2W+hi11ZN+Npw==
+signature: NXEC1JuMvIwas52d+kQeJXfZm/zrDqkrHGj493ouXxCMDAw4/pymk1ht9jotxb3GnHprD1CMqGvWtUtRh3yo/cb8Tj55vWexQhlsi42gbFirRw/Qsi1ID9jwk7nrYhE2R2kcImLHiajRDuTfNF+wmbTpvFCKHGzPlh6n69K/HHtTka6AriVobrvCNQsNM6vDeSy02OqXrsP62p2XeuNgNg8UC1D2HzfmlzTEdcNOWUaw4OxVq/sHgYO9ny1WD3WD9I4MT2QF/F1VqS+nx0lvvP/RxzV5lU2c4Pa+T8twbAMxeiJeecwE9mkQNOluPUnq/fqW/2W0M85JJq4TW6XDMA==
 system: true
 tags:
 - Utility
