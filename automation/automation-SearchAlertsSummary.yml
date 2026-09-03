@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: A comma-separated list of alert IDs by which to filter the results.
@@ -101,7 +105,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -152,8 +156,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SearchAlertsSummary', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -284,7 +288,7 @@ script: |
 
   register_module_line('SearchAlertsSummary', 'end', __line__())
 scripttarget: 0
-signature: 1vjhd6sXVolP+jFCgfrPLwxJFOXpAifqNhx53QizpsYx5Uz4p8BObggYRzES9Oxm/MXB/aolRa79HT56YsTnNWHCMn2qaskJcyBmoEyQYw+iPaW0Fdw6lSbxja+YVOlpfUxocosiHbigJROxCYYcgteUY8d5sNByXdk9/n6RLgJj/DLHu6meYg2uaoNrs3cJRcIEqBIvu/OPx9sstG3AQRkBKY81MqRVJ3h2UeVG6UYAzIQblZdWyiuuGJmmCRuvPvBsReSKujPhdn38/0AYQa2XArwPr3XcXnWUR0Yixlfym32+aNk3fDIW5HJvVD2ntTBXq1BT1YIcBpIfWMsIZg==
+signature: GKZZdnE2ELhptyZ0h4RqS6+VPA/4viJYaqu/OMp0SE+Tja25T+/z89EvCDt6Ot0UhaIPt8vQbkzrOK37Zo7jic7aZ6VpJ7FQ6KY/PQhAgMkAkJIK5DbUeSD44c/lxQYBwkfkK8gOJI7Y3ykHXN1dVlq034kl3HdZHbPx3oSo9AL2TPSBpWduoctLGND20+PoqjcjYpSVqtn5fcZGQLGUWDW2C1illuz/rKeT7+4+jf9pNvKT0ddOoG7EjDcq0OASlf0b5sub9dKcR1bTPpp7FRkHByqi/VHiQ/410389t7VjQfD4ix+zVQXNdO9HH4G9OFqcqlKnx6dSqRa1IkJ7qw==
 subtype: python3
 system: true
 tags:
