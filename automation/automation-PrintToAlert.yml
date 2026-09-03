@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The value to print to the war-room of specified alert.
   name: value
@@ -25,7 +29,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 8.7.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -48,8 +52,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('PrintToAlert', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -100,7 +104,7 @@ script: |
 
   register_module_line('PrintToAlert', 'end', __line__())
 scripttarget: 0
-signature: siDuJSQInIeXxvXjV0h1N/sEx0lqlwmFJPPVR5U1Nq6urLuiYGKYmMEDwkhRGTf2QaQB0S8CD4FZUaeA4GRjJG32StGn3IFhzwG/UT6Bphr7jONIo6gnkAkOZ6MzjJhx9BXFoCUqtGGiylzO7iwQ8HV0a3/wC904F5VmhMzQ+SojL0DSKwcFkuUz48aZC9MJWEOkIf0V2Zb1b01pDZb7oXjjmzEbv6shLUx0L2yGAmVfSQWFf+w7rRAHnXnlGLJRASIZ7u72vzugFBrgl74TWVfHzNvdhWMka3oGdU42vnIgKjE1umygWOGPYRLZWdrbAFG3dI2Ry/TTCZ918+nN+w==
+signature: Do75ROhVYdZoVYqtwf3LU/Kh+RMmNrUSep8Hviy/cWIqhG4+AqVbu36itIgSQGxYh4AH1+eFDRFWelPXaKfNrT9YS/LH7HMEC91Kzc3D13faDzO8u2O8khGbHfpyEvGLTvhlBdU1ozM34cggUFAZgR9qc0P9/tO8Z7KRUTxUHWlhGH7MkgzEk98gcbt/2b1/rOfu/kMyk53AEzk9nR8bKqxKw3VK4daQ/ixR4tIK11IwyhUtTfpYlb1wBHesS4xSt1FaXS4zUtK/aQXh5sORk6NrZkyg5AMEowicVSUbeR94GQB319SUYoyrVzVvHD/nJT3u0bAZOsPCzyNlQBwcQw==
 subtype: python3
 system: true
 tags: []
