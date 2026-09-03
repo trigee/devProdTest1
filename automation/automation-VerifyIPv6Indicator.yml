@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The IPv6 to vriefy.
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -36,8 +40,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('VerifyIPv6Indicator', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   from ipaddress import IPv6Address
 
 
@@ -86,7 +90,7 @@ script: |
 
   register_module_line('VerifyIPv6Indicator', 'end', __line__())
 scripttarget: 0
-signature: OWXU5hd+Ery8RoWOYpUkLpNu2By1O/nNahDwkAnyB+yNfeuLF9C611qf534JjLfmoC4p1b4lCveMEkMu4XCGeHyJMZQo3ur/TkcL71mGTLIRiogw1s6y9FR4eMsLzJYR6gCC4MjSv1VFZIq4rvuLGvz0Hw4kJvc+HXFT2EbcGubHizO8V7ow1rLYuCodTNOQnAsK0T0oK12dHi4p4KGB+Hue78b2gg7Itt0OeCkKG4vfyp4E+YLV5FDXbkipkhE961m+bvEI+xq6qho3UcLcYbtfs6KgrBLnT9LUMeI42N/Ez/NFmd77cbW/FCaynXR/KZxbW/J4e/X8F0yO1Of/vw==
+signature: HsgSqlfA6UgiU68t8axAVhmIva05J4N8F/TqEwwdkcE8HF1lnkFPa0jEg0CWv1w3NmOUPzK0j1EU+ZkhDnJUPUaMiq/WiUdTvnSC7AaX627AntFA4Yfb2+rumR42okxUCCjDrBeAsyvtMtr3HlcObIZdqSIX0RrCWgPqi6yWCB+NmRq85Ju6TpAHRVa31K0mnEYYDYJLy4NVq8K1xkoK8drljw+yK76IZCVG2rGYsG3bGUb7oyM6Zbv5XGcm2mvRlQx62OsQtewEPID7/j6vrVCd5cvDf2sxGYC5GaIy3ZDP8FuF5WkBg9GLLOPaVnSe3/GKpWF8kygkcEs5g3SdvQ==
 subtype: python3
 system: true
 tags:
