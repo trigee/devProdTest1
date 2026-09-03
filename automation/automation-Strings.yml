@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Entry ID of a file entry to retrieve strings from.
@@ -24,7 +28,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -46,8 +50,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('Strings', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import re
   import string
 
@@ -111,7 +115,7 @@ script: |
 
   register_module_line('Strings', 'end', __line__())
 scripttarget: 0
-signature: xQVbX81VxybZgA4pf0U9DCb5hotg/TZB7dLCP6GZFi1jEZnOmn8AaZqiJdZ277g3r9+Ey49oHUrnAmlB3YwTkAI201gacykbXdbDL8Zq+Zftb7vRvT7KH+UHrgIknLaPezlVPd8ileHR6Sg/hBTnZ9y8cX/SiJHPU1AY+/RNdG6vbIBp9sUqAqLbODFNi/PkVTKbjT8+Ni54AZc+EzmmgYvwL9wFzGxF1hGO874FI4NsGSn1y6bmxElrSAOqv4e6ZjLkDLGAjAQQpyJyCNLLre28ycJXGxypeUPBGXL4KPJKyJLR+ktT68PI3p3drpbIXXuJ+UgTuUtxUj29LdyxoQ==
+signature: bidJoVc4I4+ZiPOFpqJo5BzvE2CI2E/xtFM8GaBsP+6p+sK69vc7ZL8bq+aw9/NF3zYc/6quzlXvdixJLsnnYKd8ng+MTXGjIbBTUkFzlD36m/FKHt1XwZMQVBFCrzRYucyDrAHOu3aLMfjZmGyLREutQ3LUysOxVFCMcza83sdKAtFkDkvgMZJz6XhRJVX6Jmct+yMMa/gznSPcw58g6MLBRShx0hoofKNHIbfAR0IcHkaqd4/lYF4i56WUk8SabjN2bnfmkS8pSkoPJnLdH19Tw6gaQVJQYGOMyr5NbZqAKjBFxN+xJYsB1/tWTuAqmMfIlKKBPIKEdEsmtanpWA==
 subtype: python3
 system: true
 tags:
