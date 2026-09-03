@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: Returns the license ID.
 commonfields:
   id: GetLicenseID
@@ -7,7 +11,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -34,8 +38,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetLicenseID', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -55,7 +59,7 @@ script: |
 
   register_module_line('GetLicenseID', 'end', __line__())
 scripttarget: 0
-signature: r84T4BPVPHC5vu88ZI811kSMmEr4gRm82fWAQfjJF/LskL9ltSsaVcEtt1nXZEycERy2SbXByJxSJMY/jgNMOz+ur/wHUEw51UyDyfrKABbv2MEpLFOWafguMgb3xW+L45nWHVlL5o/XDOVyooPSp6rfz/eBlNRDtJbGAsGZ24j7Vz25+5gLuPNVFmQ7Cp+fCZko+jYj0L3flEZ4KBk5+TaUZc04NcBNykcQKfN+6ax4QEnRpvQHhmVetrAipd/eZQwNEYIfnE69HSsHbwQ7Ew928RbtP/Pav6R27cT/1opshsfZgrAGSGIa0coUumwmLReZMGfOkfphGhc4yyU9iw==
+signature: 29lhOaaE3/yWN/fKHENXQVnWoP7LXajwGkur/ePy2nZfHHhJhMHZh61spKW1gxQvtw5JYMAUzJCuVLO9feV7fkoqAvDlhek1fr1yz7JRYOZdrm1i95K1GHTOPxnHV98OXm7h62dDVUkW3bEZM4iuaBqsIRmrZeqpFlBhBxvNJvS2fY/a4XWANLUrEoKOHDwzwTzU9L2F4kH/z6rlqS/Adkl5PQxLarF7ixRHP7r4E88lDH1oGNCORdYeZWrCS1qRQJxtQJBc/OA4lv8a1VapHLZmd0kVPUbBjzkvKupKNluliFdH5r0NhQER99MwmhsuMEVvMiKMGHuqfFose0/wJQ==
 subtype: python3
 system: true
 tags: []
