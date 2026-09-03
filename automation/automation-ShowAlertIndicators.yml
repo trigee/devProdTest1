@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: |-
   This script is used to display the indicators of an alert in an alert field of type Array. It can be used to select indicators from the alert in order to later perform some actions, like tagging the indicators for blocking via EDL.
   This script is a field-display script, so it needs to be configured as such, when editing the alert field that will be used to display the indicators.
@@ -9,7 +13,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.8.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -32,8 +36,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ShowAlertIndicators', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -85,7 +89,7 @@ script: |
 
   register_module_line('ShowAlertIndicators', 'end', __line__())
 scripttarget: 0
-signature: Sij5XwHsdubjngAukulOm56cakpPZeu6Ru9Zyjy80jeziXA7gBPS4Iiz42ie8l4R+NVj/RvtD1rf7HBWgqSc3K8WH2N3w+BzrtnB3OXoI99ReoA+JrXQ1byASNfahkALwztzdr7mztnWGwmbGJ5T6xQK17K6bb1jc4mbraKG/3hL1uY9O+IOt0Ap5yj12hXeGiTeKkrYSgB65u1mgHOlzZE88KQa/JEvuvn/VtFdKpjQ59Ql9bz4E125KmxyYVzYZ8DMnvqK3nGQrX8O69jvydi+Z33NjiODeCW/B5ulmdFJIRsNFzijQsynwNn87CoBQYCmpRnCVKMcyKElgTI9Eg==
+signature: Q+adFYrGddpg6t33ymM/R8WJAXlHyE+3fDVGXbzgLD/lhlDyttMxPN7CvNl+X7c+dLwk5PZLPxtVosY8Lfy6tShZc+u/nmaZbYeZ6X4su4lmHrSxlmlwqO4jabVuaDQzppumpftgNuB8ZZIKtbbo6R9LWrNmn4drIL7Bf0lotk72Xfle0jUTMrXn91Wiu0YB8/iKurAXTpAzeLCm6ei5LieZUFVl4xZoMNY/OLbXdE+TuVT04ztf9DyIo05TZmkm4AZASgglQdYYhamCmMyCrTU8Q05VJEEF4919hu/Bsp2F1MpsxTWK88cLq3WCaAkev2Y8muGD7aHK4nnhg/edkA==
 subtype: python3
 system: true
 tags:
