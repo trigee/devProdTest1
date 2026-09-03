@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The file entry_id from which to fetch the indicators.
   name: entry_id
@@ -72,7 +76,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -81,7 +85,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/py3-tools:1.0.0.10120494
+dockerimage: demisto/py3-tools:1.0.0.11597437
 engineinfo: {}
 mainengineinfo: {}
 name: FetchIndicatorsFromFile
@@ -101,8 +105,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('FetchIndicatorsFromFile', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import csv
   import re
   import traceback
@@ -392,7 +396,7 @@ script: |
 
   register_module_line('FetchIndicatorsFromFile', 'end', __line__())
 scripttarget: 0
-signature: fdIINUSvq/Ao5NdmiEi65bW8c5P33O+tAvnqRY0jdZh5eEQf4CwABsfNiTOsFrbi7VMyihbb2NIrTNro9SzdWY92No6/4gpROkHPZz0a65+7GSXBgvpQ2EXFom/TAheDChPclWXoYf5bYMk/zriOImKOvF57wk8ETs1CasvXcl0l9iREyGhFHdunSxKOXvdX+uZPPjnVvWn8HlS5YQlEWhABFjLa4bxieTqXPYtIrvqpb7wFbER9FkoEXHB3YLhSdFroPkUL7sapuL5Ie+oiU+Tcyq91Te88jGGg13ESwOo4uggMJLFMED1ZYFGedkx1+tnkDKn/0sc9zbvKbHkcmQ==
+signature: wQDkBDNu9OqGkt5/YA8glH4iPugQoNpT+s3m9oXQqnWa0y/ckyCG4ia/U44yAjSA7yEZh4chUJET2X1hX2VOpqu+/9dWcsTU4JQodxIp2Wmed46YZMUAO1i0KE9JrZ9oFoxKswcT5+d0+oNVHx/waNDXxS9MkIRPw9bxDP60WhiLbV65wn4wR5CUCtb6/wPsBmHIP/RHoyQxs/KLFSIoPJddjlDwV7UhiXnMX5Eldd6vsBqF+yYAd0X2SF6Kp1rjE3HGpFGg9guKXtmz7p6pRBO0BBWE1Tsb5KxiK9bt1ohjoR7K8BXiSai5zJvhcOR1Tl/DQq2XgJVeLjAh+fawtQ==
 subtype: python3
 system: true
 tags:
