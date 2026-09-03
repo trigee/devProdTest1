@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: An array of email addresses to be filtered by domain.
   name: value
@@ -21,7 +25,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -44,8 +48,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ReplaceMatchGroup', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import re
 
 
@@ -80,7 +84,7 @@ script: |
 
   register_module_line('ReplaceMatchGroup', 'end', __line__())
 scripttarget: 0
-signature: ASUhdczG8V7ReP47fGGOV+0UJcUbEJxHvjFQXoee6wrYq/ioriRxsgeaKyyyTfuJn25L/F+7dM4ER3IesZL7hEYoNPcL8UkIIhEgD01/cQkARHmK6FHrNG3VqVxrNBt3QpWD5jFYJ0vesd2CnvZnjgJOiwK8Ak+wUjoU8xhUYgyVnyGy4zIxmkA+4S5wR/x9gmRcpXVAmXDkjx0kU9JH8fz3zNxh+6SdweA78xmXYrt31ku3iJA6Zru4a/Evn5djM95pWtj58GUiUPdLbos+FOPFJkk2UOvu1gzZd6mGYEavDeJCTKRnigTK3htVTYkjfePJqpHGKghyEwtO3GjoHA==
+signature: SoKGLDzbgsx1SidB0uEsAxeZduDsoFMa3AO+uoGL7eNRGp90ZNywY5P8F1dM7F2GOK7ZSfhi1L75Ed/bisNHH1+0fOqwm9Sp7DYniuz8ohdz5b6i3M+vqE1iedTTPTno1gR1TW23gsBlHFRgvL+vdKyXlOO4mJPowJx8TrWtjNV13y+p2SBfORAF/rM7hofbMhK7FOJrdZD6vxlNkDE1tKzHPnz0WZTyc/MSJ/fUQZvkoxUf9OG8yPrnjo75Rc5HUaALIAsNX2AimJHeVtu9skINPmiAJDW6npmduP6ief6/t8kFfup7wtzf05iAOMTuC9f55qGuvsCipawFyVp3wA==
 subtype: python3
 system: true
 tags:
