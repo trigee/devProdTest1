@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: Sends email to incident owner when selected field is triggered.
 commonfields:
   id: emailFieldTriggered
@@ -7,7 +11,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -28,7 +32,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   var users = executeCommand('getUsers', {});
   var email;
   for (var i = 0; i < users[0].Contents.length; i++) {
@@ -43,7 +47,7 @@ script: |
       executeCommand('send-mail', {'to':email, 'subject':subject, 'body':body});
   }
 scripttarget: 0
-signature: LXfDP2Vtr0ZfOyEFoRxfTRYiQsPetCqPVkLL80xwRRJaftMT6wsFBgLUUjcY08AGpJ0CkdO4i8soG6vAVUtnh4VNuq6I1TWCGj5PjsehcrqVzfQ8yJ82M9mDj6R0krBKUVw1w/4LxGdE1y5bioiq70RTQtsEMHCX3uah4mnSCg4TqwXAApW8nMM/YIZOXE7nyVMgdbW8tWc9LX3rPzGmNMNbL3ig1kkbA/ggET2wshDEnkQHSciUysEHglt5zr/yFQt648+5wP3HO1NM/Lu8fVrTeNlAAtVJWNcE7P0uPCfrDF4+fvInb9n0gpnrswXjxvon9rIaKT/GAn1EWSDRVQ==
+signature: Eij7lsVe5bLtPB2PED5kwYKzFP784e5iGJtRyYIaz2qKGLdDiClJvHu0JYdCB8RtPD08tODiNtUMikE70zSQ13uJeTyc7MidKGa8VoddqhyIKzi0GD03cisVF+QKkpdVzPR/5jm5ieS29+mFh3pIKwXrfuTLN+DI6uSzj0uI5UEYray49h9QueXJkinFQN6wEpdsntBpLj0O+LaRy3p6BPuJFq5GdmzgKtJ9UqWFP+0CIiybycw4Tn2+dyAQTED9Wxh534A1gAUXaAK/SJTKGZYaCcaBoQNp+69J0dSh4kc8pUbLj46By8TRkibWpmz7zh34nbKkaWc8kaNsifPSlg==
 system: true
 tags:
 - field-change-triggered
