@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The email of the user to ask.
@@ -92,7 +96,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -109,7 +113,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   // email body type
   var bodyType = 'text';
   if (args.bodyType === 'html') {
@@ -236,7 +240,7 @@ script: |
       return {Type: entryTypes.error, ContentsFormat: formats.text, Contents: 'No email address found'};
   }
 scripttarget: 0
-signature: 0r+8qsghgcHH9kpsjJQnUITyISiBV9V2+lULt2LBWcMBq7phHXn21In/Klrs4CYCd5R/pSDVM+RRonesLRoMcbBR4ficuFk2UxOtuCshrl6ogJ+83DAs8QnuZw6dEWNziLatIR9V3WpWGF9WJTGq1TdY1RMqMMhviV5m/Nl5xFJPOD3kNIzOWvjHEGofHpDutHlUxRgII6TKWayr9xGTnY2rES6/euFLILTvCzYRXoHydefDuSemZxUvA5sKdxLBm9IXSOmB/DsAsPtVSZO4cRf3iIX9993QRGJBEaAnDKV8onIMq3a37WYtnJqgs5Jmp40sdQk1IXC904APPydeBg==
+signature: h8WJDiHk9V+l1gmTfuMFEbJSZeXaQVVSAHAv/WF2Xzb8rUcI29qpjK+1IB+VYdrBVk8TR+4Cn8IshTW/+clGgKoPAIaNDhmYWwWQ1xzbveB33RlJl/vGV5k1g1OJE57vbJ4C4zXvY6EBzLHQ4oHD9ZewsfVym7EKHQSvDT8BRvSur4NB9y3ptnTnM5UBGde2HdbSm8v43C9DYcZh8YaJyP1/DiSvhPWH8y4fPscztNN6r39qlaaJTUAZhz4BMP4Be0TyzDaHzQgezYGplBRVZa2PWjfm9nKlgh5tRgqjQ7Ck7Qb6bpTTn9U0lNmKcagmOn4HKMhPjXTtV50/YZXqhQ==
 system: true
 tags:
 - email
