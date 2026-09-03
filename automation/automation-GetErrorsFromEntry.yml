@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Entry to check.
@@ -15,7 +19,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.2.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -41,8 +45,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetErrorsFromEntry', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -116,7 +120,7 @@ script: |
 
   register_module_line('GetErrorsFromEntry', 'end', __line__())
 scripttarget: 0
-signature: 1WMS+SkA9D40ncpFrbe5xJeem/GPoxzkIg5NO6qOQHmgvpCmrXzkO2xoA4pAkwYr4ozfRF4MEbtK3AI2BOMwzsblUn8OiYcb9Ziy8ykFxzD7Tp3Jvyp4TRJ9rhSd1xx9pEaMEJjkU4Ioa1WPd65QrhwI5MHQJsB7QPzDbQhYds96SprKn4StOfhceYtr0d1dm/dkajt4jqLcZRtBjcWcGUfaRAlUQ8o2OXYlyvD1jJX9fkWZ6RQPlrJFSIcQZWVb2Yw6nOj0VTv3gKoHV+5nQR3Zecpw0Y4Xg2RO/CPOTPaTZwlutzJXu3xmINHd55pki1dF5HgNd8b0w5tQptXEjg==
+signature: L9U6s79gZykdzCKGdGdRKh/Y+RqGLE+axNXF6Nw7vOAFelwzialPIviBtUFFE17G2gh/F9UNbiJSjA0sjDhDOhp1Uh/vciGZbafeu87L7jHx+ueYCvT2/kOfUs7NJEe6byHbli2rgxW9XznVhWlwDTD98Sn0a1bX7dBW31wg3ZivMQcTqB9qTZs7a9/6ThJPPZzCd+v91ksSOXl3aKRI3RpCeMHE8I/nBFi6rnbNLMoiaMG/r616gT/bG0YdC9Yeem2D4N31V/FDwrTCMoz7jU/FgU8or9qfhrCtaSqnNQ5cSa/Hh2XW3tD9+5AfuqeAKXJF6dujVH+2/BBItTpieg==
 subtype: python3
 system: true
 tags:
