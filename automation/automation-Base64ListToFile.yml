@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: List Name of Base64 item (need to be a single file in list).
   name: listname
@@ -23,7 +27,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -61,8 +65,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('Base64ListToFile', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import base64
   import zlib
 
@@ -105,7 +109,7 @@ script: |
 
   register_module_line('Base64ListToFile', 'end', __line__())
 scripttarget: 0
-signature: MrraAepVUt90rAuU1tR0ndmNzxPPI01QwYjkWkssEMqsTkGbO3d/s4XLFR4NX7OagnY9gYdhxRNqJEAvx6jlgMMUobVsUWBS3et5kLZ01/De3PS0c9JOmGk+9lU2uCPUIXUmWG+bw6JRys1YzoYzFJqd5B2q/d+jigrvmmxZ5qyxMw/3Fh6NUUfupf2aJDgG7X8XMKsFyRSqP/IkBLP8dxLlwmy72ldHNXt54dwHA6X2soVGSAOKAV6QFNWqE4k6t0YYv9yHTIk7IswYpq73oAw/w1rNgz2cg0ZP52zqLeCo0aK7HLe8algDQbCz1SEH7g9DOGmsS2twZyKjBhEH+A==
+signature: TNlLoaQXgoZlEzhLFNYB2aSZ99dh2dHQq3qxxVxRkvuoMdXrPv1jRshALN8opTJ7BtA2KCw/eIox7NSz6p05XlNd99dfjkspmkIKtbAZ1Ku01fnl5smQe3I9Rw7wifUE0mDjNvdEiRb3hYxm0heXZAD849wpvP//jF+qva19+v/2F0L/Okg21QuhzlZktcgFp+OzskCG24se4O5W0Fl6rlK60vJql3CBzVcDSOOCLJYeAPlzee6uRe/MWogl6RP0x8MGejzx5sl0GI4Dygxg4Ld/mYXrbDd8e4nzBsLd4B9t7aDj9DSTGiGX4RLCnZJQcazOgL06qIZplFlC0T+Ifg==
 subtype: python3
 system: true
 tags:
