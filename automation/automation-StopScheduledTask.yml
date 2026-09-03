@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: ID of the scheduled to stop.
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -35,8 +39,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('StopScheduledTask', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -55,7 +59,7 @@ script: |
 
   register_module_line('StopScheduledTask', 'end', __line__())
 scripttarget: 0
-signature: mTPgSFzj2TPv04EP8MrZP+T2HJuMYho2n1TGV2R3l/V7HVjD9xKANexExeNqUoscXak6/fjyXUzq9RcUfYz2293Nem9ticzpPZaZb2tSFev9rFhFh8Ru+6U9zBx6JateYD1T7n3JTs1LEnQ8j0oUEzo9tjMs5yr6ybCek7ykYYqL16lbyEx318OvwKKHu6aQ7L20RNIQb3n1veVZUkJcHc0IkgnH9p6FkcPllgz07y3k0xsTI3ko0vW9YH38TrqHiusGXCNNNv8W2BvzZ12cPHtPFtOFCac0CxaXFBAyP3Z0EL6TXnkTWR4nvKdiOnabYNuwCg6XakpQWeluwvrQ0g==
+signature: KClsaV5Iu741q1XAZjxG/OfnwbuRAnYTUHcS7Gap0NC7z1+YKLQTQyxiJrVKnxhZ2WKMHb3v16bpo6l/kIzX5qyugDzfnxkAKoLlmQLBRhcCFhS5kXpT/1vZ16oFgjYX5dgK/RGwf9esBWfypJW6vNTp2jwuO4VUBIzSDdueg/LbgCPz58VztjHGp6MNPIULoeo/TZA9R61zZPCOuJ0lzmWV5JLn9WbE7GVQciCufi3tO/ZozmzvlzgHzg3+Cx42JcxXnmelD46ygC6l0QS1LAN30NY1f87D6kQRhBe/TgVYqo5G8K2H0Tv9aQK3RGibVFdJiAMHnHvp1aDJLOkHSQ==
 subtype: python3
 system: true
 tags:
