@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The username of the user to disable.
   name: username
@@ -22,7 +26,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -86,8 +90,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DisableUserWrapper', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import traceback
 
 
@@ -160,7 +164,7 @@ script: |
 
   register_module_line('DisableUserWrapper', 'end', __line__())
 scripttarget: 0
-signature: qZh9e5Z2IZ4X1t69CaRoGOnXl4JSQIzkURqTIsO71gbYjnv9wIzG9hA8TUR47Gr6nZFornqFjw3rmlevthuwMTMVcRzNe7U3HXD480eqQOmpRTFnJS1QNet72hY9B6GBV0anc2vhNfxW1eZcBnS2MTKsFl2UeLM8YMNS68KtHxUYp7ygDKO933ek2hiBKddUHdUULr6CosL1/6RcHRuXjEi6ACjmySox/wfZCpxsHKMwJJ5Cp8O5D3hYuAOZxtoatq9za2VRkG9cwYNDB8xDhX4H2VWM8/xH/SmpCthOoL0yPbsg5Hw4bdX34s2H8NmKh014h//PJv/rmZihRMYBhg==
+signature: FFdWfxImbbK1uBAMR9a2zrlLArf4kSpvk2Ek1cdZxNXmCw8CaLYaJGaQJG13ypTfKInU0GTdf+w6Qs4AIBYVwl5GBKAaAyzDWoqoKwGsu5Mtw1VlQhjRtArCC0ORRBMidCeEPQq5xuFiLy8fpJxvnJRW8KPCc8RLJWdNvBifJbnbYBSrCZwUmYZQvtCGU0xOQF3yf6oaFs6G4QAYlHkrSAWRqSWD2ee+xT4d+Lv+BeoaJ0yCSKADzUv0naYfFYsCoQBs+EQODT8IZK+SZOyPpK4P4PoEiueEPF/ZHzgSYxNula0kaHiZAIOUjOLyv9DiNWwZTevMTNpspSFpZN+XTQ==
 subtype: python3
 system: true
 tags:
