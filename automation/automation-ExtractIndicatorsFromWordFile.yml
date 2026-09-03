@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The entry ID of the word document to be parsed for indicators. The
     document can be either in DOC or DOCX format.
@@ -18,7 +22,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -41,8 +45,8 @@ runas: DBotRole
 runonce: false
 script: |
   register_module_line('ExtractIndicatorsFromWordFile', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import subprocess
 
 
@@ -197,7 +201,7 @@ script: |
 
   register_module_line('ExtractIndicatorsFromWordFile', 'end', __line__())
 scripttarget: 0
-signature: tGfyggWvDBcZZmhvhYwJrDLH5flHVh9ejqJkU3WjpRMwCLi0Z4JqCHvc0EEBk+wWH5wj8A2kytBN18mogGJtuE5WdyFvIk4epQJ4brLBuVkmaxwzo47iQ1XXUXFu0KW2z4ZQCYqSjNYasjLtQxPsJ0mYfDP+ramZVStNI5EqzJFCWEhH4vrNXaNJECUbedM+p1GN3WjwbyN1vcMWgVdaVu171fQ1VaV14w/Iol5eEt2K7/MYWM74T3Ptyr84QkJGQjt+yLdYaucDt5RsHLcXwJYhdEOHqrQPLhVDBAxgQfxUYk11BGOzZWfvvKW6jsiAGNS3S4TdkdCluVYxj+FENw==
+signature: 39DrxG91B3Zof7Mw+C/1KUxLgp8CNJLrZPpTUCLJsHGHbEtD8c1jPwdvHRLyN4g7OX4G6wbPlkCEN9o2K5qhfSm0Duhof47N63z+ZMOFzn3UNYD9gefkNiYg8agTAly7Zp5HZ9F1GFK6JnixvVAUP3KO7QKP0XRvxCPvISuXmAbBtxNk6hghmyeRAd9DomSL6GxxltXRLJZhNsf9LZLgmkDzFVeljcgVYKV58HHXsYi/KJntaiB/6MQpz02pcmxr3DkoA53CB45nftXAsgSmORyfltLaZyCOkkq11e6LvrX/COijb2kZNLsEJ2kohDopLXuCLtsWoLZSMSau8oh3Jg==
 subtype: python3
 system: true
 tags:
