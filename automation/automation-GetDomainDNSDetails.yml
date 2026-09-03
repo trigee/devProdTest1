@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The domain to query.
   name: domain
@@ -27,7 +31,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -36,7 +40,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/netutils:1.0.0.10187688
+dockerimage: demisto/netutils:1.0.0.11867191
 engineinfo: {}
 mainengineinfo: {}
 name: GetDomainDNSDetails
@@ -68,8 +72,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetDomainDNSDetails', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -164,7 +168,7 @@ script: |
 
   register_module_line('GetDomainDNSDetails', 'end', __line__())
 scripttarget: 0
-signature: FlB0vXjK9boMuteHs+P5SaXTvtlbt9BNvYlq+qZsHdcBHm1XpVnsyRKOqYfW54ak+UUTYD3MmOnJE4zclS5ppmlPZK0gYOle0g0XG7fbihBTzmeaJT+FF9P7/oQJkdyzMaEnhLry6gJWFlXBxA1lgFe7cqjEvWhkwgX83eCpTh1S83SO4ZTgjABYdLlo2io5d/4mWH7qxkIjSd5iifgAPFaswXmkAj/AMGDLPy25gbsS+Htoi+llrFnCOmazSXRQwkCzH9PH8u8RYu0cZomMNu7RnJvUdtrdVW56v1fAoqMaIJDi3rOi6XSP0C5H+GsKBwegRHfdinl6w2EDxx71oA==
+signature: Y5FtBPDSDvIMxbAFard0iyTeCo7VvLWQnlwhaEeVi3yGHbf0QlSYDiCyK+ClOnzReVd0nCV/6eB7D32PQAdl3o0BC21aMkvz+GJiY+wLBrNpqZstkYLF/F5Ko7N7jPziqjJNRCVNzvFJ9XnRVixNpYgGArvf7Cbrx2GkCbW2ZZnIaQW0SjjAQ6yxwQcxVhk5fWNpVGGb5YZ1gc/PY0UZLnzWyJllN61d7+FolzPWUaGSZ5vF1LcLLPEOikdCKYJt15Zrg0y+mEifGLXGEREqNvu1ufXwfAxt8pv/XHzL9D7VKTjCwb7uU4ulMT7Mnze/GoRDGUt8IG9YVKBeVLP+Qw==
 subtype: python3
 system: true
 tags: []
