@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Specific entryid to check if it is an email attachment. If not specified
     will check all entries of the incident.
@@ -16,7 +20,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -47,8 +51,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('IdentifyAttachedEmail', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -139,7 +143,7 @@ script: |
 
   register_module_line('IdentifyAttachedEmail', 'end', __line__())
 scripttarget: 0
-signature: g8byy8FwLBA6arILAcNihU541bcGaptlD0hs8NoibiGzDDPFvUhNwskngftgxOJOh/7zhClIIK9G395tdwx+vuUWOKnv/v1v9EgoiACd5+oCZH9m7YgRqpFEG6gn1lUrZgT7gfIViMO7LoS/yGb6jzt6+ykAjSuTr7TTdfBLxCGlMq3Bm1MEI8mg65APKKHdYDMyyABizQBP+9xESFVaiY51aDdITJ8ReAeJUvmlIb1F77gPjeB6+mJEpJiHkkw4aLsXLBNyavuwjKUiJTFMZl4vtEN78kUuFScRQ0/pV4jT1ud+8m73oobqzFOSsSO6PJxbuWr0NKWitBh4n/NBPA==
+signature: j2CyGjvuG4v1L0N82yNd91fPSJnyA/YTCGqtuM+pkm0oJSNAIoKT6vIr/bibskDbzOvt523/wZjYgEngj/XE7kotIhHk+egNWEIrpHv4z+w7RzQTrox61/64wiy8T6Us/102Y9k8qKU9Gd3AGB5oSRpJFlFvissK88i2R+trPTVr7dZU5gdT3/Te4aihSzS1c+UHcjP7EhNAmYNSUr5alN3S9aTEXptgaiRiEIX4WpUL0BtpS3wgTBPNiT3vgKrwQ42dGtAYCLKStptXXg0vTtNbpymyV3pO0TROjC22NqHkgjlsNFJiUsqlZpiD0ebQQX2g7zo6b4IBFfkjzX27pg==
 subtype: python3
 system: true
 tags:
