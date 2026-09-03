@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Data to be encoded.
   name: data
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -40,8 +44,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('EncodeToAscii', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -70,7 +74,7 @@ script: |
 
   register_module_line('EncodeToAscii', 'end', __line__())
 scripttarget: 0
-signature: Rkfzb1KdO2wjBRcnBLGnERdU+sggAyZbxNBGlQ46PXyW9DR6LMG62To90lkal3kD2dImkMD2R4quq0AjlnXIAhjfyL5njyqDv8+r8HUzlO0eYD6vCkZosI4rQTMxLAIqKY4bSRpf6YDx8IeSidUSC5FqO7OA3DAJazmhjLswhGfgpiLQDlPeXzHbFaCjSEQEr4cjwrysMhrF8BMXrydfRwfKwXW6/prrsBVVoMyrQYTQgXpXIEDfSxdGQq4jqqPrxqCRlRyrbUIn3+eOV+AEkR769YSNjN0GoNQv7QbjdLjr7Gb9UOpDAczRU8sz7LajSMtGtTl/tcKvbX0WhFPkNA==
+signature: kuc3MglBmUgsb0SzmA4JGmgQDRjnLyLabX8jrBWgNl2UBVpaE2Oq9qhWe92P036ltNdGXyjx1RIKOmRG1WPj4kDXrcduvq1c1VYdW26tHmHJ46/QqXJY4SRSSk6M358HfIta8IVBEkTUSUX56q52k2+Nt6VGRH5SbHSceAKE2gd223gpthiBsrdMSYKv5bgJiaLpwoSN3TBvx9uxLfGkG3stspIoXordbwE5MTqORl6zHJ4t/jGWqoO9ly0EiUpVmQdyqv5Gfu0jUbCwdiMrkl9JxTLvILfq7YtMUGBmnsOFn7oFSgig5NQpf2FY4MvAu+uGrTE3vzTIU5MHXeAUmA==
 subtype: python3
 system: true
 tags: []
