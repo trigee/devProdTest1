@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: Show indicator geo location on map.
 commonfields:
   id: ShowLocationOnMap
@@ -7,7 +11,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -30,8 +34,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ShowLocationOnMap', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
   loc = demisto.get(demisto.args().get("indicator") or {}, "CustomFields.geolocation")
@@ -57,7 +61,7 @@ script: |
 
   register_module_line('ShowLocationOnMap', 'end', __line__())
 scripttarget: 0
-signature: mLrnRLtyKTwxo7EEN3YbbDgBgagqiL2PzUBuxIhlg77edd+84r7zlNhzljKjyw+q7wtBE7ksTmxduTfmtAQtEnCicHXjG9/XVSX0O7pLenx/f7G+1YXRcfurrCFtqHrxzQADs0a4KdvyZ+LHP3WGbWL77pP/v6E+P/KJlaQgo3yCfSPp1h47FCCzCRwL4X0140R04eaJYIwMX0FTUt51HhlNL+TSfGSMGgt3UcjxdY/IFCHOCHvj0EvO62jqC6aVebG1v5nC7YyX5/apN45yMoJ9dJCL0jUiElmTl0T/aW1lE2sLxaHy0HG4HxzeEn0eCbB9ib5p0orMT7TbPSGtOg==
+signature: oHGv+y6uqmI6bgdce6Hc70Ht5TCiYFOgCkA/SB4eZVy7U0FDASOIZ3aLqKg7yN2WkpGeVSo5tWIIuT1M3X62+9Q885vwlKaf+Jvry4OjvhBK0tZcFR667ht9YzlAGWMXZvVHIWP50AgRWqHHm/5SomaWx8Rok19IqfnfvZf4xnuyyjAMcLpJGFsw+CqWphY6vZviWDEpUqa0XGHnoLtH5fCv4WZBW7BXG7/VJzo+bG8F4hoDfCzbQ9oStnLyLSj2s0OfjLggrCrXbLy8CzTjwr3d8PROjbEIQqRWp5K9RYxfq8W4VQl1rhAPipNr9VvfQjt4FXbXpikqF8FWsU6mYQ==
 subtype: python3
 system: true
 tags:
