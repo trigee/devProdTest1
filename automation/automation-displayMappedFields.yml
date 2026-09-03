@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: Display the mapped fields in a dynamic-section.
 commonfields:
   id: displayMappedFields
@@ -7,7 +11,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.8.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -30,8 +34,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('displayMappedFields', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
   import html as html_module
@@ -128,7 +132,7 @@ script: |
 
   register_module_line('displayMappedFields', 'end', __line__())
 scripttarget: 0
-signature: lCJxAtEDKVLaNpZ4SXMCf1iG0bHvf4FIKcJsIPuzoIss8gVEgpc/oXLnWyNu2ATJOmxZReThfdlWjGTHUKZ4vIL+vo1uCWy4yoNBySY9atwOKIMRl+hHyKZyxN9EtTg/ovILes4Gt9fOU0IL1WMKBOX3p+3Tv1Ck+JXJpGgkXERCnlnPrN9NFN3ykeafuTl5x0F68gYh+uuCYf2nMFN955XPne4VY7Wd+rFl+J2Gi1r9LL32tMpqyiIN0wroBbkraEixS+qsIepCHUXt1Hlpw79HsEmI0XQhjQ7j5DaHeKfy7moq6syEtxWnGx2+cmje83RjqlBdBlWQrJev/85zgA==
+signature: jjvwG+U5DTUOLeVHMz2fgsmx29xaq599g0o4oQIURIVIWBcEtuYousgv1RdgTdRCvdJqcsvg5z78LM0dSvW3T8Ajs0Ci0lSdLss99i58Ck/JvG6b/uziCRURMk7DteS9lMBg6uHYGxA3CDQrXbh5xnWFhtOD2vfmfvjn4fBwR8idTDPjenDGL7KV93B59lsmDP5kwI8rIRzJowyB/XFK8UL7BleQmWQBpa/CoAD1eSn2khp45UmGfDWrAszDpQmz+CgoifBKV7OO1598SDae2iLcEHcHb7hA7oWVmIia+oMvjtKRPMVdYaQWlPYYzBLWDtwxhsE0jzVJjRyGofn5jg==
 subtype: python3
 system: true
 tags:
