@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Timestamp to compare to the list of timestamps.
   name: tested_time
@@ -23,7 +27,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -56,8 +60,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('TimeStampCompare', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import dateparser
 
 
@@ -128,7 +132,7 @@ script: |
 
   register_module_line('TimeStampCompare', 'end', __line__())
 scripttarget: 0
-signature: lh3SSrdTWvdWxf63rd1S81f3YOBZPmW1cEzruYPDIu8q88VcAyEjDe7nHs8F1FBEYu7Fz3pbbY9CuiPAN0D5JQFMpCMqvoUnm7u5ShyzzzWQsFWl10V/eJHNdRGbfITrVIzCaAlmIWSDe2mmPXDwFJ2nuSrL7+NgFRiI3AFRvwm3YDWrPceDdPRn4FJNKR+MxQiiel5uHQDyV40K+fhEi3yR6H/uEe8UQu73oGFXe8sppsSkt2lcXXIzMikF7LChmRIXW4s6uzzeh6chHzBDgc8lbiPJycuEj/zVi+S0OfhFJIqTRX3SuGrJeqRsnkWOgrXklbPg4M9UItpuNWXQSA==
+signature: w3MBGHp1hBNrRjGhguxPk+/u9IyaEuSUm/B6wIV+gk01r03/RPcg5tLksGb4DJpaqPqHZxS0bzAmE+J9vbsJ/e/bK0z8I8uk/qg5eoUXmBZEM7dmhdYPQrgfSREiXMYgCAQ8rLG/gM0GwBEOwa6sC/hix+gl5XX4sNtWQTIpP10xeSHkUO3PjC/+OF1HDem3ekU0AprkqtVYjhaJrSR0pX/3LTKzqoTT0Qtybi33nxbXJAb5j9wod56/qS/pjDzz8yC7CZl0VMKWyOQTY8OCIZxHJGW9FwTtAnmfs9nac87g0wlW8JM4HnLOvbTzyhBcPFwTBa77NFswE93UfQru6A==
 subtype: python3
 system: true
 tags: []
