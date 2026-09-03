@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - auto: PREDEFINED
   description: The action to make. If update is chosen and the key does not exist,
@@ -25,7 +29,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -53,8 +57,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('EditServerConfig', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import traceback
   from typing import Any
 
@@ -125,7 +129,7 @@ script: |
 
   register_module_line('EditServerConfig', 'end', __line__())
 scripttarget: 0
-signature: FpIEAPXYMwCAMgTLhqyUzm7r9URKaNKhA6272BI2Gjt89OlfqQ86OgOVhAPauWRYF3OH1t/Fwrkv/h3bZa05NlqAgsPu9KcMBM2kCU4nNDH2g7rgFug6jdxbVoHHP5Phi3zOSlQDITMMlFaEestmdcuZbjJXz0nPnQDoYapkDdENi6ce7enyyL+Fryseun26OqRPcOEdr4+vWdAB3LcvEJN6qPmfzRoyZ4K7SDBOviIifcbUQJYa3ZYGmRaxBBVFhJHOzEq+TWr1343R7+0Capo1EeigtEHKf++aB6xWo4gdxMMEcFYmgj/yho6A6eMc32SNEJ1cqd122rKGdGaTfw==
+signature: cBvweSicqTr3ymQzEFT+ByHcvHaxTqY1er4uYnxMxREbxz6+M0Mf2fyrVN4TtQ/VmKSHAUrkSsT/G8lY2ZdbWNygUWb5jEo9OcsEXLJVDFWyCSmeBiI5M7wB6FyunmscBU3Rhs9Hljwd/Ki4CA9Odz3d0VlkwW5tCYME53z4G+uxeZPE+OF6RpS9K/VI1NeCV8E+FEcPK4xMw5if/CNWHu+yCaeeYZrBy43Ih3wWaBBQKBCEN1l7lJ/Jb4cNmGa29H4n7b4cTiHv5+vyfm5YBRlQJ5y5DGDX7iUpirS6BtZsVPOdpiFxdCMjvsUcJRXLyhtRHfcQKRrX9/kApktifw==
 subtype: python3
 system: true
 tags: []
