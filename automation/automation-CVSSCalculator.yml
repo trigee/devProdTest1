@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - auto: PREDEFINED
   default: true
@@ -237,7 +241,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -294,8 +298,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CVSSCalculator', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import math
   from typing import Any
 
@@ -549,7 +553,7 @@ script: |
 
   register_module_line('CVSSCalculator', 'end', __line__())
 scripttarget: 0
-signature: Cz3XSPFF0JApMqQTPtXhHX/JrdVRNxCCR3tNAPT7aRSDCYte6QLNGxNZzzA15BKruv9+ISyxdJzOWjc9v1m8WhNGkiL/PZP+XBRDwJfNqEN40kl/vKqGkFOyRyj4rqIUoB8ce8QnMqkzhwLN05uLDNYE79SQc+Z6pJpZGc1IfEVEpdNaY5IHJkCL+M9Evet2LFKfcEN6ABj0m50VGCjdpUZXjgH4dery2SFT5PLrWlzz+h8fFmE/w16LZF5e54GC7fHU1vcvKvJ9G9J6zEVVn1AHMyN8UWZ2GyluQkgLZhmRDlF/tOwkXA0ciowdItgavA2sqzlhyWuZfImymkyXhQ==
+signature: LZt0AhPFeB5XNKMbyIvhjathfzn3rKr1ocyhTLIS3mXXZDubybcmuRKu4mVnkmCZBx9UkWKsrp96K4lpKIfnTg5PA5+B48qOimexooJWO7ovPXfSzgvbvEymS80w7lQK0aJ2p/rX7FMsPCyUMOM/pEtIAn6kSw6IW2lwpF8qhfhryFbFqg2JskpZKtIXv+Ho6Dmfe3ro7g7Ehn5gwmSUhl0IwJ6yXhU0k4iqx1F7hr9k82URwdYbcWtPhKRA7SrD9JE4fBpmIM6DWUzUee2x2gh6DNojfsaCtU5Zl80lshoR1rxWxj/Tm5OuvNNmVZiAYfGNU09c0YunrHHFMl6bBw==
 subtype: python3
 system: true
 tags: []
