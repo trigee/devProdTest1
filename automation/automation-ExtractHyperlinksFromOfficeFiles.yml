@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The entry id of the file to extract hyperlinks from.
   name: entry_id
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -42,8 +46,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ExtractHyperlinksFromOfficeFiles', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import os
   import zipfile
   from io import BytesIO
@@ -157,7 +161,7 @@ script: |
 
   register_module_line('ExtractHyperlinksFromOfficeFiles', 'end', __line__())
 scripttarget: 0
-signature: e/JAJq1Df5JY1P1ltlSzIqQAjdgMiK8+C+WG7lJq/OqKYL8OSw+vIZR2cdJYW/WRHHmMa7hp9B2SgEMhzqGrY4ajZlYGsd6DgeHmVHqIpbRfIqs/xHNLyUmmZIJ0r1wdt8xIPJioqQD1K87ob8kspKQnvlmK/ZzwdgjpDU1hF+YA12tDC4gU/0rA7qGt2stxqeKilJSKKQdfAPHkguqYGfu3SY0H9yrUL1hxq2WMt4iB4hOpSlsQOPoGrVOLTgdBToEaEj++akiZZs+NTg56lGg7SdbrAzQSq1bJlGhyAP5TCZFRXFkWyIMyynZNckkKnlsrKDecu7LKj5sHrrXXdQ==
+signature: bc1eJWSUC+M+nNZoTFehmcCUsJ45G1Cske82Gkv22msG2I/mPjdFsppKxUGcNWqfC5bwJhS0x9orZVsgxhSHt7J10YNXGihhDQJxYmN3r9gzx3qg/Tr+k/zc/A507LF/gI8k594K0ZlncGTv0+m4Ee3f25i97wUG+xzmbsDY3lTXCb1OxAP8b7q4rkSoHOkoyZRq2MQhFcXvctYaT5y2PwdHzvanwxXg60RpuKqMN633xXBPW5Dd+n/4eB4YbHyek/9S2HKZPMQJcfelgGmKzK3fOjMb8TB0p3Q033vaL3Q0AiYl56nBojaKBF2oA3Xikz5qpetbG+7UK7DBI5q1iA==
 subtype: python3
 system: true
 tags: []
