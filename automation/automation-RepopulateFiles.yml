@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: After running DeleteContext, this script can repopulate all the file entries
   in the ${File} context key.
 commonfields:
@@ -8,7 +12,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -86,8 +90,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('RepopulateFiles', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import hashlib
   import os
   from typing import Any
@@ -206,7 +210,7 @@ script: |
 
   register_module_line('RepopulateFiles', 'end', __line__())
 scripttarget: 0
-signature: P+4SdPVhX/jcBRMJgiIZDCLZvsNgzQ2XrqhdwyUxQY0KBYDpfSYp1As7VlPosBWZo3x8qdGkcgJzlvtA1Jvq4xikdinP0j6PLA0Xn8P6yNsnfZjCMTCKlYma6XH/Guyo/AjOKzrLjrOWoOTTF5rJS6dTo4UB0mvArxMwrS8L7nBTv5e7eODsc+QkZukJMJ/3J7Wf2tZYxxDz2UAVpN5vLbQbtsWENakeh3rNuk4JT/lITJ7t1G1qdUcfptNwiXLsSVN9CcNi/fGz3KGFJNpWCNLjgYOVkZv1+iFy8gYbkgZIBpq54Fts1FuSKhewNLBUWJQ3C+2GsAVl280fM2Nzrw==
+signature: WiDVRToW5WCoBzAlyj44ix8PbZ2MrO2qhJSGETaMp2IOmjXGESgLXd0X5VSKZcAYl1knmLhTLz0nfPxn7ni26mVVUbqPS1dIt48rYTUPENnl5JBwl1X2XrBQJ7m55bBOR3MvgRpRKUZJe6rWlbQZePyBzuDMnrj6yWptMSIv9GyLyUyeIqzSEMLP2jFoFUi1LQQP8GSbFLxA3l3dyeI6TEGndnSbxwevdAy/O1x5LL7Ecs9yZrUgZV2XkMcE0ehcx2edZeFcirXpuJZo2rfyMK6HXr9LXHe2a5MRVADstpkB2BcvzFnj3NfyJsdeo6jLeCpQiPHzUOlSBXHoCmo5pQ==
 subtype: python3
 system: true
 tags:
