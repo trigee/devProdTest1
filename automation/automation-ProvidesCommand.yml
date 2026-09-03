@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The integration command to find.
   name: command
@@ -24,7 +28,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -57,8 +61,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ProvidesCommand', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import sys
 
 
@@ -132,7 +136,7 @@ script: |
 
   register_module_line('ProvidesCommand', 'end', __line__())
 scripttarget: 0
-signature: hrluGUdKZSIR8rE/kKHt9HjIwGJRid3XhpK3Q3MP5ykoGspFe/5h1crs6P+6kSrjfoLCrvSNQDBEmyBWnNndQT7TX5bB68HwUkgfCMQ7x17SUSj14/0luI90Qn/OD9oRT5q25dZv3fFzIcyuZx4AQQFcY6DJGvcHsuMiUKJGSPLqE9rf7/ceqhAGawjveLOVmErsG86TpYb+YqwgivAKIKgNW6BSBF+EWASTDvkpYR/0jU4OEVRlcbwyUC7L+K4zkkVUd4aPCRrL97DysYQiMqxfMWbosIvA611QI9XM7Tau6+x30RK7yCtS0dtAQJ1ka7/h181omYjk1usAncKyTQ==
+signature: gcAGiQ8jst/r3VJil+TDYsCrBiaO8/28wddI71D0/vr07tJFKi4OjrzZNVKrAwtD+lHxSkBOauWX+X+Jvsynju39pjFkGSZ+vRGDaJ10ZFLcg/e8Af6N/BWQ8tX6ar2tM6LLNzm3AvZTtOxwTIBsY5Y8ZpYRihSumj5Tud3Y3E/LePHdoHb5ZITPQn/eTle2Q0KUf09A8D3v7PTDaY8JWl8hyBxZLd5GCO/7SUulVucRyQEzUD9bsjyY+H0B2ydlRNsMAIFd5PZQIgIQwvuciGbOuehfYgaYKZhdxgAH26Q4zPJkAX/oVsBzqJWXVs0Lq7eFKyB0HbnUXg6q/DR6Xw==
 subtype: python3
 system: true
 tags:
