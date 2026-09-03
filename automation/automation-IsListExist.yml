@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: List name to check.
   name: listName
@@ -11,7 +15,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -34,8 +38,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('IsListExist', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -55,7 +59,7 @@ script: |
 
   register_module_line('IsListExist', 'end', __line__())
 scripttarget: 0
-signature: mSZmkVbBXlhtxQPwx8DoyXVMM3/hkoi1f+AAZ3sJuKlMw2e+1pOyRoz/lfPtRgn5OMoo0Rw2vKenzKtar4vxIuPgsIT4UdkwirKGXeKMraQVAGZPoQp55+YbCWFKEYLsTl6A7aC0pfQZa/Y8M8urve8zJe819FhU0iL3W8WIYEmXhLqMNR9fpGSh4GqkpSDDjBK77zZ3xc7gN6LR7V+uuwB58Is35X+ZlV1rvzO/g3cMMqt0+BSzMjI8TRwJJ7B7jBoQ2/VGh/ZA/hSFW7C9jZ+Fh9L6NwasfrtxTte1KCZpyLGEYtyxz7EL8THwdJwqDHz0ILEPf0BrTD5T7b0Cdg==
+signature: zuWD6n3+0vvsUvzn+NUqkyNfJKASB2HvnHU2s7mHqBWBiGT60urfaHQ1sSqoUqvb8WG2lB7kHEwxQ4ncWgaunYfey1t9AV7CSzB8w+qBzATiFBKgJ1tdAYT3WyewEhMvRvIwxI/0hOhedFYUqYILI9LtbMt1J7Zi3h+7w+iXliFUFOJR8BtTZXAaGOm2rLgCf12WsEFgwFbCyP3Cm+OvnAZOipEiOITyDc6E4uVORUt42X/ZY0DjzjQpW09hJMvbsQaA4pU1AGCjfb3ofRvdEIhf/APOI/6mRGmTe5JwEZf9BG/Gchfh9Qc0WIsTRG9ZmrNUi6pIi6FCmLXlYxhSQA==
 subtype: python3
 system: true
 tags:
