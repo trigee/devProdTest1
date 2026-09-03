@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The URL(s) to process.
   isArray: true
@@ -15,7 +19,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -33,7 +37,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   function format_url(input) {
       // Check if it is a Microsoft ATP Safe Link
       var atp_link_re = /(https:\/\/\w*|\w*)\.safelinks\.protection\.outlook\.com\/.*\?url=/;
@@ -152,7 +156,7 @@ script: |
   urls = format_url_list(unformatted_urls);
   return urls;
 scripttarget: 0
-signature: ABeCCqwEbfxycNcBOIeL2HJr+5erzunVN77uqTS3aK+AssH+bBf8bUysCCKARDeDCwKpuCYj0IQ2sQERnH7PveyNdA4EEqGM/sMR+GCn10f7uXTqC418cWrcf6tTb3fHD65n7mKfGFsmRivQ4gTqjjA85941+4m1cvU2+wzD4DgnTTSX4X4jg4IUY/sS3Q5TORjuMcFPGxnvlfn2qqS+pglG8I5NwPAYw7qlSO2VpzCXqhMO5u4qYDRvukPaCOLrYIj1kP8pL0IZN4JAI9IWyiG/3SeAVCkV04Q3lOYELEucGue5kduf6ThSzXiGV/koHOSo/PT6ieIj+JslZpROWA==
+signature: kWPXgUAJYdeAv5Aw+AVkf9xhe86fwHwg7DLpo1mbf243eSek834LwcFubQyHqKE649wpBLi/BsWc1317V00XWC38DQtvq5ey3QHllSO9w7ttOKh9sh8OJQpQL15lwHhH9q9zGYIrVfB6dOYhxBUWo+8jvHfz6BhFTvwfc+kShW+GfCxYvplMvXR3XrHBiOqceHljJBS80HThVZbRO7L6mx62fEXZz8JFgIVLBIU0MEhunYT6ndisMNuIKNT+cuKMdUy5NJzEmgZlOcA+cOEE/tpjRenLtqzWVxkDo8mtxnNzNYrYzmMJsyPVtx2tWvqnDmgbScUJQAylXhste2EYnQ==
 system: true
 tags:
 - indicator-format
