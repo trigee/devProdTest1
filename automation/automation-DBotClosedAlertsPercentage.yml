@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: Data output script for populating dashboard pie graph widget with the percentage
   of alerts closed by DBot vs. alerts closed by analysts.
 commonfields:
@@ -8,7 +12,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -26,7 +30,7 @@ restrictioncenter: {}
 runas: DBotRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   var res = executeCommand("getIncidents", {
       'query': 'status:closed and closingUser:DBot',
       'fromdate': args.from,
@@ -46,7 +50,7 @@ script: |
   var result = Math.round(closedByDbot * 100 / overallClosed);
   return isNaN(result) ? 0 : result;
 scripttarget: 0
-signature: WJZQupi1VzPL5Hr/jAk75gx2apOCgIGCWVcFrhpGaELFFKTz2r0XWoLnVp5k18eCl2c+KUzXtg/D7uH9Xg58Vdbkv9XfPA4jpOrJi1m3FlKpCAdqLua8qaXqTaD9khkrhANyxbGkTXHMNEkLhOKIXZ7Jiroi1l9RBrCcujye6yyg4nhtRfXZ19Ef6krl+mTuOr2PuzsVaRPj0GhpTXWJk4X4JZ3OaR3mAmmBeIWWeqI0FIywjfQdLwxc5/nA+U6d0wRMgV5Csb7bGUtG+kR/XijQdNTFBKEWZVBH8BAU8edDSUXU5iAh+2G5WtutsXtu+pfvXE+/tHw9je+2fb/6cA==
+signature: EiRY+s4pw+H7AESLqaXq63CmbCqZPtLIRa6d+GiXziknjmuaIw9nFPIVC4FdTQnkN+rolnNW4duTXpuNzb7+VHBZSsZv0bm4yyV4fMad3aLBwflj8Y28FgYOxSQYSSY6JUezUITYiKbzqCX9AizyZLMaIW8AOWz+5imgHCX2QKUN9vKuHGlVH5MP+RvVB2/J76RpZqCepSVH5CWUDbIkZ/IfJ0YOUvHucld+/JJoGht6wV71Jwps7iLHSobPHpsH9eC8VHcEoeZx+Kd10sQ8jpENJmR6oHYWqyW0xiBYJJI8o5NItbQcEPSGTo4cfinlohLusAwhlly58DjzCpuuww==
 system: true
 tags:
 - widget
