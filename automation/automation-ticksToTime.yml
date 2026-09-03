@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Time in ticks
@@ -14,7 +18,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -32,7 +36,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   //get date in string
   var getDateString = function(obj) {
       var month = "0" + obj.Month;
@@ -75,7 +79,7 @@ script: |
 
   return({'HumanReadable': obj.Local.Display,'ContentsFormat': formats.json, 'Type': entryTypes['note'], 'Contents': obj});
 scripttarget: 0
-signature: wUPNRkKe+ThVHUh/fRKKqZXtARGkQCsU/IuizAZUJ5bV1rCooA2wuirW+6amG717Ay3c80jud6TsB6HrPn+35687JipJ7BNF6Jy5Drq0BeNT9P8rIoaA2LmfS7E5g2j+MtJYgnV0IaUspNFCtbVPPfraklFmlilIFWsDfW9Cs9kv3SjZgjVr0r70fvPFiuVvtwCmWvPRVM8q04LGV+JaUAMJQRrbdHcD99bBUBwjLFMiYEDUYy4qUVdpf/SDTCIxW32SsKdaQri11VsHKLyxzbpbn8TVbINwDpNaVbd8yObi4f681rihvPWUGDXb/FVr7NxLCs5IJK8nNlFuVUFlFA==
+signature: m2NISv6qfFBFOHFYej9xV7c2Pd+9gEV8atma4NkJtEMYJ6VQLf9+UuYGtr9hlpPx6TjMTLOrvYC6Es3jhnMb9q/3AXkvUPaRfo3aX6qQCk85koci3XQ0I2b44nzCz8A1opY+Y7HTkx7b0mkdQj97yDMGPwUl+wETfd7CvDhiAnzgN5An+CfVn/dUdFauFHBipjZpKY9/qkSPix6A0va1h2rODYy+YL7sRXJ4DnbZoDdLDZjdD/qgdKhx9hzGQIKHpqsIa68wN8djJsdqZzudwUqVYcLY59ZNX0s3ev6waZir9mtfwawOf+JKcOR7KSrf+QiixTw36Uyc+9YMelqJmg==
 system: true
 tags:
 - Utility
