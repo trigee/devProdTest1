@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - auto: PREDEFINED
   description: The alert severity to increase the alert to. Can be "Unknown", "Informational",
@@ -28,7 +32,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -46,7 +50,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   const SEVERITY_VALUES = {
     "unknown": 0,
     "informational": 0.5,
@@ -73,7 +77,7 @@ script: |
 
   return "Severity not increased";
 scripttarget: 0
-signature: LG0WgUxL14Fye1cLcsWzbB4w95nxteBoNJSNs2V/9JfFMY/lgmnDvR3SAIGs7ommymb8Ak9iRLJAs97Au0EFoqdH6wKXCjcC5Inbb5qeRNZGQphigeB2c5Nqj3s9kae7tzSH8ixR8gnpo66cG8RfsW6snfb+nuwUFZ4MYDDn+eBZ9GdB11RLs3UpRjRs81lANMw0ydSKfleZJvLfEA997FoJl/4HaW2npanqVtHpMSGe+xTWHT4X6D0T0F33LOnz87oczTm1waWZsdSJZ0otONTRu287+SVjKBoNPsoDknq+61iQaU6PL8XBzXQde6qv2BrLuINfq8DF0sn/LpdcAg==
+signature: AbOXD4WN0pNL1VfWi3xnF3oB7T7oNbOPCUhXR69nM6yn7hwDJPz02ZFCuRL0bfHdGcrJW55McEnr+XJXQc762YMgeIC+Gymaetdd3SzkzaDY84QfwmTv3qKQBHYXLNxlTsAU7aAVwYvmzeRmcpeL3G8B2YiqwxgbWlCAyZyh3vqgqj9NSH8zlpzD3DmLWjUcDuUYqDWMGqaJKKZBb2ZoffIsHAhefM1/Cu3iwOeA+Q8sDRf5v8z8LCzar80onvmfnlG6JUNQsW0Dpx+pQQ89qTGMqNocxIkC7TtJ8KDIyf3v+63fcIEL+26ux4dotbIRD1m4SVetiNxpvY5TVJNUQw==
 system: true
 tags: []
 type: javascript
