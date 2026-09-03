@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The file name.
@@ -35,7 +39,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -44,7 +48,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/unzip:1.0.0.9067966
+dockerimage: demisto/unzip:1.0.0.11009641
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -62,8 +66,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('UnzipFile', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import os
   import shutil
   import sys
@@ -380,7 +384,7 @@ script: |
 
   register_module_line('UnzipFile', 'end', __line__())
 scripttarget: 0
-signature: aLBVElUSU725rTB7rTVWbx9hjlHDHh6XSBLyAsk05JAsDJzSqH4fJqgW4MUpBLBfitKO4+z4lYsBVI/QWzvNi5KBfNvBEpLEo8hLKzDB8TjuBnRdPIMtsMKE5V1XW+lKEmwV/HbvfpLnU9rkAtuimlrIR4Mie2DamDNgD63ZPstdHsm/tqBC4Rs6gMDqOwgkyNb6LQxfeoukJywHjRfu5B3Ug53K15+GhuRVe3qv6s03fCp2Hadm1R4aE+v0pZPO/CiRMXEAxLIAU3m8lnoGnc2/6VEW0upgDTJ5nlE/L6iKpZLpLa2oUFTDzWJeCbFe2VUk2PeGCU1vwJb+eqVxqQ==
+signature: sEzwvUPMnv55fZiO9k+jouWjXroWDrQLllYu2+eO87/IE+qDn0hEElTFiBZB1C0bXTSHGTuE71UUPBQhQGQMXJ3sQ3NAPAFevOFnHtI2knK+erEDECERP9GAweosilQFCSlvubNTvS1TmFpnNnMg7B8zP9mswIQOWWy+N7n+NOSdOtMmhs5WNuEacDOZorQ/XQjO3/EldihzrYw0H0phTulw/3jCrM6W2oiRfpvj6BU3OKFb2sHRauRpvNv/WeuddrErbZAukuneb9TSduRbXOEGAEQW+0Ucdmd961D+cZjDaEoRjBYH6dDEEjZX2kLTHsAFuBYpQplOl5q1m7uPsQ==
 subtype: python3
 system: true
 tags:
