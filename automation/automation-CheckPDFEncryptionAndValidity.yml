@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The entry ID of the PDF file.
   name: EntryID
@@ -12,7 +16,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -44,8 +48,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CheckPDFEncryptionAndValidity', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -118,7 +122,7 @@ script: |
 
   register_module_line('CheckPDFEncryptionAndValidity', 'end', __line__())
 scripttarget: 0
-signature: tASW/ZXVGTdWLM9xK1/8WLCZKwMA1jblIQcekHjLdNUaBZTwgmhTH3FCp9lW4pD8cb8Rkvg2VX8DjhB7BRGjGNrjoqQzoNwO/up2bcOV3+R05AcQXnT9F+Ng1ixu0vdAV4jH7g7/FVUF+4CVCSWhJxbVC2XylZ0I5AXwVPH9Z/z5HDUc0V/f7W94mkbtd1Xj6voQKe0feFOMv+bveLJ7i6XQEyvNavD9jY6MW6uDa/X8/qEXlXd9EPFmcK2EPuzzfFEc6PnHhcR+JzqbA+/89NhFX3+MvFN+pgMBZ7RSKrbXvHqMjWlpw22m3HbErHf4hd7ATSg1HmXGhiWGjThffw==
+signature: 100y8WH2Zz6RV/LN6EtlFybImRbREepNjKrVrltENBtRhFmI2PMQmIQLMl80iBVmb+W8beQ01mBqxNXfeJ7PR5vntA7TqkW8/qUWEum9UaDhy7EKj1WGE2+cS98ezSnaZBbjuB5cohkHxnwb1mxWZ2VP32u5Hj8yviJKsS9cQzNHxQuzUP44zWqCRkHoA9Eakn78Ij8o2+fI299eifqnjFcHDa2eps1iYKpDTyAFi9DoFp1sV/z4JGC7Ai+kWSWm/0t6JA+x9v4EBwH6SKzbjQ7CZ5QIhWEjkg3WSnG07H8A9zRLFxldr3PEwkreC0FUB28u+q7bpFYg3AAj5up4/g==
 subtype: python3
 system: true
 tags:
