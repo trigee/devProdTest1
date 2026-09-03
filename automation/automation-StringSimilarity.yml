@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: First array of strings to compare.
   isArray: true
@@ -25,7 +29,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.9.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -52,8 +56,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('StringSimilarity', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import difflib
 
 
@@ -110,7 +114,7 @@ script: |
 
   register_module_line('StringSimilarity', 'end', __line__())
 scripttarget: 0
-signature: NBuMjCNpkiegZrJ/xbr74R/g6e3c3VxVgPXeDlq4nxdDXyWr/BY71I9Jkmt951Krgp92ZDRolndbgb3D+vFRxdhbpR5Ck6NIlONe+K39c3drUDqyegbUJoKEiBUeiTC/1AL15uphVeZy4hqGj8Wfv+opZXuOjSzfZ1VDjsz/ETBX/iecbxG1MRy6zSUnxhNhkprDgGs6ftaT1fl53ImBulBEV9DLTvTajEyAGIkW2PdeIQeAX+f3DrHHMdoyLD+OCc3jn9SNVk5o4FAf61ONYqX7KWwreGpC3WsT8VwXxqKh1+hk1NLj5qEgs6gIz8ALmYDKUwTdV15G7rVfn80//w==
+signature: qm8yA7Irrw7TFAKvpbL/m2/VDgvTD7SyME0jUAOPuOvxtCD5137f+qYFY5hDFkbt8C93jZNEGUdCn1Eao3Y5/NmBW+miSQLAW6Yg6W+zDgR7by7kzxz5dD+yHt5PeP/94BVzUNJXeUnxJqR0aCUV1CFl7rzVwRBbPA4iwhqHW26sY3NhhfaXJNMtZ9+OUbuv3sGD42Ke5trynCGPVE7mHH8NgPeguY8osscxQFXqGnqlv2f8NOfa/XMAVDzkkmfHphXUv5xf3Q1mKsa19v62Z9nk30ccckVIFmzmQjcWKhWydAFmWNj4BoomYyyZOgmsX8eQpFprKa/0pHkxbhufVQ==
 subtype: python3
 system: true
 tags: []
