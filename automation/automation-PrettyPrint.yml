@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The value to pretty-print.
@@ -16,7 +20,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -39,8 +43,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('PrettyPrint', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   from pprint import pformat
 
 
@@ -56,7 +60,7 @@ script: |
 
   register_module_line('PrettyPrint', 'end', __line__())
 scripttarget: 0
-signature: ZVeEFuS9rK2FYEH4RQDA0I9qN0XTw78evGsL3AFAzq2QsXJzxvLrfOzP5f4YZBtVqhckleF/FVe1NKmZgZZy46Fi0k0lVEglZzH+vKGyI71hWXnSEQWtkewn6bmVfsBvFblhQFWFD68LfbhUOms0XWBIecUDAGMIzhnVBnwqW3QLuiJVtp0S1Zavtkk0VpGYTdMy8S6wabWbE3YSItPJKtgwcaD6cybYajZTBrM5kpgzzZA41h/wm5E7+cKUdlklUHyPmfWzv1mGf4bTE43bYUKlXp21T2mW9flcqsD/z6NYD+M23ZvYpT7MNTXTQbO4DnRDU0Xycr9fVdua6kitIQ==
+signature: yILlyDR9X/UPtY3LX6UGN78Hp1py4BEqNMuDaJKE5CkHPm3cCmOMnuHM91vQ5sPB8YfZZsuob40DzckiMGRVF7o7V47xnnsdy/6XADBQjVLGggNBKpoFP9rtGztAejxv1fqLsMPi2sa40bl4INuUUG2/gp9IY58/hdFvTgBP+s1M4I8Qzx4zoczLdWhzeYkvEVN15iHVbkS9kQuM7WO8SEBQTEuKSAyJv//LxyZE3xjmaibKKO9bTgns/8Fl7r6Cbvl6Scuek8g9j9JtjuGZCidzv82C1UXm5V2/qEsWkR1zdHaXzvRR/dkiNVWgfmTKcbg3eW3YlHUCbKmET+3oMw==
 subtype: python3
 system: true
 tags: []
