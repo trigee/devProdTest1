@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The Entry ID of the JSON file to load into context.
   name: entryID
@@ -16,7 +20,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -39,8 +43,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('LoadJSONFileToContext', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -75,7 +79,7 @@ script: |
 
   register_module_line('LoadJSONFileToContext', 'end', __line__())
 scripttarget: 0
-signature: 20S3958oWoiYGEjgTVYp1mxcU1CNT7EKuyY9HgDuOcTEWX8/YS2CEPplPabwQP7HXvGcVcCTquubH2HnHHIjIzYytvjmb+mh7yaS4qMDO6n7NGZfBi+vrRbjrZjGiMwKqyYao+5CAbejRtG6nO4H8kFgrMISTH2248wHTjYRQ2IJds8qygbj9zLdf3brwztIldHhubpNQv1VFHpFJ1BHfMTrCHQGSukcFfFeF6DGhZHc9BXHRDPUZfFOeVvR6ofUsyKYL+p/ARXUyETap4KTbS70K/ii/wPAbUqSeuH06rmlgGRLHA9HTA2uggM4BiX618TkZ5foAGmB05M3wz6Uag==
+signature: 2dQasjuFzlw52QLri84aaIckAi0LRYOZ5fflRurjDHcLHnf/hFd07l/j511/ESp8x4iecymUNb2rVjIYH+5MotejuFyVKAVcx3G5Im8S/29m85zbYfOTjU3WobLvPVXC8JIjk+GPnBk4NYoRSPKbRXwkpsra9Pnyhb9LfyrG4Rx+q7dNJwOWjd3QcUjt/91+LMgyMnuWFZc/QVI4xS9pVZxOS+67C70cryLfEdott5/t3I4qJg/vBH9/QPyHuUL3YkiYCeopwY1IzITNuOOreQBb+YGQ6z59WTateijlhLohcrS+jSH4tJQnQvvMH5UGuf/vd9VZW+sDi1zJF7WOfA==
 subtype: python3
 system: true
 tags:
