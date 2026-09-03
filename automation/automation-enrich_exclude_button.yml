@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: This script is only meant to be used to disable the Enrich Excluded button
   in an indicator. It should not be used otherwise.
 commonfields:
@@ -8,7 +12,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 8.8.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -31,8 +35,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('enrich_exclude_button', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -47,7 +51,7 @@ script: |
 
   register_module_line('enrich_exclude_button', 'end', __line__())
 scripttarget: 0
-signature: xo5Ow8KcQDmDhLAhIDk7r6zzIQxVjjhWXMrq8TKHYY679Aj07pUbGex5HGDnXz/V/Loh491vZBuzbh3a7MKASOut45vKicXAeahQXqrr6GJoNGqVB9A05Hil1xsLuKiWJhYs5HHodSSBynye8OvAzp4RJkvfJ6g3BGxIOZaQ5pey7jZbsCzFB4fFN6M3YsV7ddzzX57nSNMkXhtxSa3wLdy8cGg7YZD2PIIXnvWOZkOMXbm99OoXse8YHk4t9ex3FHF0hSRSRH0tZH8QcqXgebkGFB1w/1FESmK3b+q3BYYVpZQ/lmiqpuf/Yea4/dIaDdpmixbF94wSZrVuPXjtKA==
+signature: dyfz0qgGZJTr/WZW3NsGDTe6IfQ0XEt7mFBKmUcAneGf6w2JSNwTNKfzxaQjqn0cmYPbjF4bPITRI9rojThWwAxagIeLm1PzXORK/dhDI0xL/c49Cu1nsHbErXbP6LtbbkbdtxwEo/h3y30vV7nP7cp0eR9mhdt7Plkzh6wdpgWsDwPivbOQtyisGmqgaZ99Nw0sNqnPBdb5eUIsJ/DHWhIz8rlus3OD0qdgdr37JeH1QMvdykOb7mysm5HdvEHpf7qjipA2y73nhXc45a32X8/QfOtbGbrNETMQ3zqMBgefl/2SZcS2DIaKNGbdFsMmXnhFbMoZbREN+Uow9nUNng==
 subtype: python3
 system: true
 tags:
