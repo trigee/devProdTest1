@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The domain to be measured against the domain in the sender's email
@@ -23,7 +27,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -48,8 +52,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CheckSenderDomainDistance', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -130,7 +134,7 @@ script: |
 
   register_module_line('CheckSenderDomainDistance', 'end', __line__())
 scripttarget: 0
-signature: 2wanMOugM1jcC/NIxZXwpl9C7UlSr0HxCds2khuvGkq2KtfQmJnDVCy5xfioPnYAzBekZL+FcmzLl5w5M1NEckdtntEFcgQG6DuPWUO7hIfoYKtM6ViD9Bg8QDfl6+daf/zNOU2plrLifH/4alT1M6z8qsQiKZ3pRYg3KN7orJY/dQqbFQlzYpPKaPmpyFcdFXwdGr8NrRY/xcDAkCxeYKdrLAa9kNWo1VuqGDkR+/OuZsQX2XfvzuCWwS9KrlmztQqvH1p2XDVn0SnsBTJrSc4dCN7XT/rfq0MJZGmG+L78ZNFT7oZiHKJ/Oeblo5j0j/7zJbuD7OAkfBGL2MyjYg==
+signature: dKZwyzr5wrYYN5ee0acE/4QuySGh5YZSgQ1FJjMtS2osVS8MMoezzhuTZkSd4dQ5b6nf8cQ7OvgxvzoYUAQANxhgtV/Hj+w67HQhNCN4rnW0fqpWAAtpRI3pScOl8E76lbq3Ji7zLm+vELrFY4J6stByGqXFwtRnxC+csW34RJsvXuEmrivT63qH6k+nEp05wvVBvLWM1tFzmXvczGAB7y/jG4netgkiHHjFUiuC7h2lvfdu35mjQYjMWwzInWyBc5KZNQay5ImyQpyRBUYiZE+6+UpgQBY2kY8Uu/56qJIwQHB2vVpUK9QRHah1tW2DJ7p6F+sqZrvxZw4mHI0+lw==
 subtype: python3
 system: true
 tags:
