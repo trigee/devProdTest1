@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - auto: PREDEFINED
   deprecated: true
@@ -44,7 +48,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -90,8 +94,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ResolveShortenedURL', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   from abc import ABCMeta
   from typing import NamedTuple
 
@@ -389,7 +393,7 @@ script: |
 
   register_module_line('ResolveShortenedURL', 'end', __line__())
 scripttarget: 0
-signature: WnrCfj7mzD+F9dhIjyyU4O56qI+ycM3xleDYtsHAI90FiqoycSD3DxZtSIcEwo2srBoCREKABfqCSdS0CQAyXqlxZ1j9Byu0lNIpGv0vLNp/WBriZJ9DRQ+TQ2guA5ES8h0iJxRePqaJKsGlJGf2oYHHzQtLFOwpN30PIS9rTUDjM/MeoELO6xjArnJ+tDXYENHJm9yJ1VBpr0QjaeQQS/rP7F9zgT0zGm7VZJVmZrwgIz9dduoWX5ehmj2k7FMgEzPlO+nxWL01z17FH1YdLmz0+1B5Yn3+r7FKH1EdyAbLwQXhJAUQka1LreBTdgpFdPzwYP/yrh0PVrlnRQGnfA==
+signature: e18798/lEbG7OJiQy3reog31id+znwmyaxdnexr0RreW9NO70IR0hLMR+d6Go/i+xFBtYbHbHxry1njROr2xNOZaxJpvd7Mmf2PtjIAqfBk06q+8zPyjTL1V30q6sis0on5HIKfUrXEmKispiNpFdmGUpS+SzuToju2d/ltPPMpXb4xv/1rxOmgn8wFBD0um4Op62Iti4WLAKBnJ8579IE0LKlJTBLWsoxC8uXjO2eX5s0/f2atjM59Z3kP+QTN5RJgliv8dx+dHh6dWW9OFE5SDDnvJp9HLeCx/fKqHJIX7ph+aN03J9HgsU7O+kRbLqbqw106oHZUZTPUtuaX5MA==
 subtype: python3
 system: true
 tags:
