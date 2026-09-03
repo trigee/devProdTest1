@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Text to analyse for language detection.
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -22,7 +26,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/py3-tools:1.0.0.10120494
+dockerimage: demisto/py3-tools:1.0.0.11597437
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -41,8 +45,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('LanguageDetect', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
   from langdetect import detect_langs
@@ -81,7 +85,7 @@ script: |
 
   register_module_line('LanguageDetect', 'end', __line__())
 scripttarget: 0
-signature: 0EOnrs6XJjbiavmU8y7+2BK2PpKZwV6C8tilUsKD26c3MqkIdcZzK27ThjscuSsQTke/NLk/oSrD7PKiBh2amWki3d4rPNEj4dYoKn+VIO7pG0miv0OIzZdCFOMmfgyiJV4CzW3eSxGwuhxVJU+z+EdUF9IGXqj4U8PUPrd8ZRsH9yyUb5AcwVGJOkOO0wAEN6uRHUxDnS4UYv/RlEj+79tN0n7ei7lYScS2SbKFlMxxUtQHE4XDKwEg3Vc348nwi/jdTvAZgzW4G57kL7rDwetQXvbUgomKDXISOteX+tNroeC8mmee6/RPYGoyIAwUcwhdmD68dRfXdnkSGVLwUg==
+signature: O4zruUrD8cfQ7GA2EL+HSBDr6Ahfh6jPq/RsgBOPhZH8WzlorQFbpNgxf8If4rY3PLK/7IDVJ9tR2B3DSaPUdNAwUiROR+GTjoYLUTBrX1/kY7qiaRGo7UrG5XNYJ780u27ir9JToraLcxQH9Ixd8nP719VeE+zUePU1xbTdq+22tcvLvvHYbUo/0BSU4vo8hoCEq127Zh2OaLGAd4Tp2fK3r1epD6z/yrq8UQoszfkbAO2gLS1wO5eedjOdtd1sg4gy6EMpK7igng0xW1uVGEwuAXkR5wSUkzJhxml5e5AkjHl9hNvzQR0UlTQap43GZNTuw1mYrjEb6kfEja2uVQ==
 subtype: python3
 system: true
 tags:
