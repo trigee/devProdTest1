@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Entries with the given tag will be marked as evidence.
@@ -17,7 +21,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -40,8 +44,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('MarkAsEvidenceByTag', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -70,7 +74,7 @@ script: |
 
   register_module_line('MarkAsEvidenceByTag', 'end', __line__())
 scripttarget: 0
-signature: EyO7ht1LBejYEpTW8DLIk4PK+SBMTU/SGz1DioovjXrMUtzy+i79/4RNc2V/O3WvaAOu6XE3LWQENW83h4fVUO6x/tdLoXmXasMTtKIPznutrLghE14giFPnajQa5xoidRQTp50ykATHcahMEgjJvCJRQSZ4I/JfgR3lHb0OfpS/oxBt00ouuItFDD1BmsyNoBgLfe6dlL6PBXLv26zZkR2E/GZCKR3TJ3eIeVt4K2y6KDqJLsNdTRHEOqM9nd7OeYMQ+XOmuBQUtA6vnOwQX9bDpxhRunNJRuenaOS0fySPaiKsNWHRlzaKexh9yU25Y/oGT0XdhYa9TJNT2YmlIQ==
+signature: oGH7qHS3hTDdumpKMmYdz7Rd5TpQ6C7sUa1htB0V0UsJqU+UuCuhwa1w2HQjOES79hhZUQ6v6PW52ivVI+IyQAdW4IjLzcvNDXR2ua4s9yKC2/rdmc1Fjtc4uiRmVeHesMCvvDjFk9StRAzBIplh5o9UxUAo3G6sPnL/evnAOWnbM/bpqERhb33HBfse2U2lLAX3VEfzR3lJFa9395O+L9nYw3CIBa6yB+/mb0AYri++3yNqNsLcuieIAfs9DQu0EsaLTafOJflNdltUzenpvvdVOFtav8JciHuAPMDXeHoR15/l0nkAMp6IPLbkVBToaTlk9J8EHzVUUFkP5ASD5g==
 subtype: python3
 system: true
 tags:
