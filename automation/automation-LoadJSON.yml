@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Input string to transform to JSON object.
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -39,8 +43,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('LoadJSON', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import json
 
 
@@ -60,7 +64,7 @@ script: |
 
   register_module_line('LoadJSON', 'end', __line__())
 scripttarget: 0
-signature: qC36LGuvyskWVbjfOpzMLPPBpKCictClXYbnHPck5ZGi0xX0qtSrwEWTBhGgN7O8Wzy4HGCnDOMFyAN3IdkrW9d5IGwbbDzpU4N3bxaSkk/96/TKepCB89oLeStH6G+8gdKvVFeGn5Z5EKfErrzX0TilUsUr2qhz14fezPMCbrIWqXEi1nYef+yMjFK4dRv+UZdNX/FXyn1wW1QwrGDbsWe5BG3tgXIdJ9w9wjzCCLOQnY5JsfmfFzjwcZvhQ+FxG29CwoY11k7SEqDprD3k0chOKfBV1L8L/u+cC7yN1871utVDkKYvyZpdOlYkg1peI4e3ij/sUApAPaEi1w62Lg==
+signature: fSCHJTgiO9U2lcZkvSuEE0pbw1RY9sOjTgNApMXvlXpxUpUfm8q18f96sFID4QlowzJvAaaBeNkx86POV+sIPCsQhUXtltOE8DDExBByfKjp2mb3oVL+UFI4xguRiJLq/XH7eL1JhKPItwMohe0x1hbBOveSOl7pWt5amxJHDLDFpgRS82Sa+hZupyG2LcNib7vEQ0sTyFfEkmW0hFy5R+TI8nTpkd5gLjBtzXBx+y7kTgmAM4MKaqD+ebFn/g5aRb09lKZAmn2nnidA1OAQi3IyYwJ37n6m2kj48zOA4afSr0o7cItxrhpxYRcx+A8fTGz47MprxOHL1qOmk6BAzw==
 subtype: python3
 system: true
 tags:
