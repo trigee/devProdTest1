@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The MITRE ATT&CK object ID.
   name: input
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -36,8 +40,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('MITRENameByID_Formatter', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -119,7 +123,7 @@ script: |
 
   register_module_line('MITRENameByID_Formatter', 'end', __line__())
 scripttarget: 0
-signature: uReGWFFAgAV1bFSHU8X5G8gVU8GazqXjBZij9N/qlJdQM9nyDbcHF/ff1jjNJandywi5wrdPhmfduiJJ75jM8JhAYggnHY/d0bTWHQL/28CbdbfmQfTeM/RNGWwUyKTqWEW3i5aCfhmr9S6pz/1kF9NyAs0yWoFcxH4Rhz/PWofpSaziI772zY+Dfv2ysF8lwoYE4Iavn+KAtzyH04U5N8KEFhWjH2rWj3oPIsd0tZS7FJqMPmF2Mi6YFMCEgmM/faQ2LzX90r676maMMmkcNpfUXApGU9x+BzjVCg3IcmumSUNnCv3iZq2Vrgyqup3rQcEbyzY6506T0Ob1LARHrA==
+signature: Z9/QrXt2ROx8QdYEsc816+EYrbsjct0PKynP6z1ILMNukiwzT8BeHeF5HeKKn9jLtTJwhqIoikQOolK0cS/hfqB5Gwd7CUF5miQgyHgvopQhCWemYEZ8/m6fSakTZRyzV2nSLs2p7ob17TuChYgIO6zEZswStMzAnAxed4a6D6BXDJaEPoIg2BvL9NIvHXHhjh9sR3sEWsJ7eenjmCR+Wv71JxGncZ5ls8WKqArS3i9AjA5gdYUhSy0Wkp+h9JEY09TUKPOWdSDVieov/hTP5Gu4FvVjzBnrIqRU/EkK52JZOHWYRPVccqFzWOUJgz4bak0k0Mt/ap/uNqCyLurNPg==
 subtype: python3
 system: true
 tags:
