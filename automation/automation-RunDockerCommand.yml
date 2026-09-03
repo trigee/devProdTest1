@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Enter Command.
@@ -21,7 +25,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -53,8 +57,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('RunDockerCommand', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import subprocess
 
 
@@ -100,7 +104,7 @@ script: |
 
   register_module_line('RunDockerCommand', 'end', __line__())
 scripttarget: 0
-signature: srTBANCONtIKGKlT0wO9a3ZennhZd21Q9IcaL94eI3O7GRE72Uzd4lQoYOjWOE0oK/JrsSenI5U6VfbCWwRJg2zYlCnzafHmUZQQ/IsbyQSkW26QA+JC4ovfKwQ04KnLgwcn4K+xmDCjd74L42qluGTbcimyGqnjDnrHAeAfDfyyNTYzts0qwOeWgL21fBVD75JGuco6nIenC245QWowOo3Mhm0ZF+EWlIuUvf1Aco5pqzRnoLWFLld9jJYXECSUw5dXEYLB9EbGl1dDdcdJaIegxyXkvkQMO2lJRjF2cUhpoTX4vxGqr6f8ePir/yIW+I04zIAO7eWJ9XgKUxOgNA==
+signature: RgePKz12Inv/9HLc/7sczwMu+YnH+GQut5xO1SHPfg6Vaj6B9+3H+APW8ioOL+HODUQtuonsKbrqZWWwYMNT8tQTR3dhhq9dOMB3JAjUrsn7negwBt6P+Vcwf+awzJe3M4D6IvQrZ90gCsfC/gnmHSYyTKV/L7IlnMhIW/0nPyrb9AZT6WrzFMct+nOy2KHxieFQJX7qK/TH6audacCMCR1mdTGdcAZeZMJUwUPVEm+gM1kRLEosHHLFBzC+P1bdropy/zn/rA5N4KV5Cz0trgXpwlGG7B6Et1LgTM1F2w1XYPeC607hSx1EYjOrrwEj8K46ks+LcB2/a/nZrDi9GQ==
 subtype: python3
 system: true
 tags:
