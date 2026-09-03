@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The entry ID of the PDF file.
   name: EntryID
@@ -12,7 +16,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -36,8 +40,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('IsPDFFileEncrypted', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
   import PyPDF2
 
@@ -70,7 +74,7 @@ script: |
 
   register_module_line('IsPDFFileEncrypted', 'end', __line__())
 scripttarget: 0
-signature: MpSHmsyhIKyRmOk+nQgCBQAwdJXkQePtNm7aalzOYTn+ZO51uejfR351QPeiLIBg4p39Kes6c33e8tvW+w2ILBHdQGPQKA5pdQuF1MKmXP+8xebs/t9mb+Fgf5RNnQ2jXb/j4FRv3mU0YzqGUjZ9zJhJ8tXoyWd6wBoFZCZu8KvrfvAyjG0aLlyceDB+VMHW1mnJEPyW/ZZWlUfXuix38rzlA28WyZzUVXILUWo6nE4p+jVBtWt5W38gJHP/mLRITlfVkZoT9kXxX0uinBaBcfJGNTCTiUdIeV57hik1/3CXpvMD0SslxPHTpw4AILj2aVToa8/3S4t5QDz+GbJeLw==
+signature: Cyl1pOJdfZ+i2d5e/TgYnAPGa4tKs/gzuP95HUUHKbEHTbGeGMmdtf/0g7dlJ5ko+TC0X3Lvv+vmlGeTXNSGPJoenw2o6IzdDGvMI7JOY6M5usCnBFz4nkOnKcBEtDIOY+FfIH9j57Z21WXM6Tnuji+mP4mitNEM7p9PQGuvoZ/oe4aVNcDJmVe9SfHnaRMDNPSPLXdF8Xu03DmmBEoiIgEMpAqOMVFOfd4hW8IJeOuk8xblQqUrrxRW6mnitglY+lZi2AObLMxhL9hboXfX/l1r/2S6NvBSQ1RMA1WEAcXq1TmClDeM4TXz7F5lcgAp2NOoocj33FAL+fDvM9obGQ==
 subtype: python3
 system: true
 tags:
