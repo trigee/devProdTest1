@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: War Room entryID of the file to read.
@@ -43,7 +47,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -82,8 +86,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ReadFile', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import base64
   import os
 
@@ -190,7 +194,7 @@ script: |
 
   register_module_line('ReadFile', 'end', __line__())
 scripttarget: 0
-signature: b0/oLPEvN3WDzA/D78GhEXC3JM4kqKnSuEi+W1jt37KAESflrscMsp5nu4/Vak0LiHXaNOfNhlbLkqRAyVZLa0fwqn2bXxC5QXWqpgXeW/s4TrCdh0lRcJFFcJJ0pA/gU7wis3yAKMPSh78BRo5D5oVugtNAKnsipYp+G3PJ7rCXi1nLXzlQTSGUZE0cV+R/2MdQwAK6cylBCnjK6ddmv+2BiskQTon7nDpCHb00Uxeyk2FCGHMod0Ijte/EYLmgD1MAqKPDOhibQVIjZZnGaJIQny+7ivpcdyctkRAVY3r9yOvhapCrwlZRWLRIXDkPKUbMDY/OkBtGZI0LjuUYFw==
+signature: DV0Aq8zmKRsQ8BjUOeQwhiMTLk3g/YjE6ZxjICOaBrKK1XBeXuAgSNcd8uwmhYLkxznyTfd3t40y6y7SNqTa/97jEHKJEO4Xqsdtt/Z40ZaLq6cJ0Qix/t5xLM9uIKRmaWf8onSkPGKlIylayqgFwmk+QQoe3Uqr4V/g1sxJvjopUOgqkDiBMEVlsr3eWa+2WHPxol+UgyFN3+N0ZmMupW8q8EJ7HLhNGMphRAvnbfohEYMwdIDctb2FdrMO8AcG/DUgLG8Cn7l8um+cSe48xNv/Nw31xa07MwLGKJPtX78ToVI9NPfmxJXDsj9Zd0Gkhs+qaoFkYcbQrTf2M8YLoA==
 subtype: python3
 system: true
 tags:
