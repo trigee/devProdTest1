@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The HTML to strip tags from.
@@ -57,7 +61,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -84,8 +88,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('TextFromHTML', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import re
 
 
@@ -164,7 +168,7 @@ script: |
 
   register_module_line('TextFromHTML', 'end', __line__())
 scripttarget: 0
-signature: kuquI9DjoFY0PjC6HUhL5z8YPhXX744dmRYb49b+KjJK3PO9LCgtSiZrkUWnDFCoy74xOy31RK46SMa4XmmrEjPB9l1be7TwEt/H+DPfwqh9SkmH25yqPNHolJCe/e0uX4jAtSvnyNeg39GzDqptvjc1iTnkMK0ApCaUyYsfoXADSEnIscSplTMGZzQbF09ECSAfLcOYEpiYx1ptSfToTdfhpTYqOixyh/YvU3xThVlRDR+Ih3TyMncoADZuM30pzYpIV+s1ypUQl2nsDJLzU7w4WS7pKwvoT9R+77RKohzQMMW/Zo8fN4h4IKhN2wD+22V4j/VS3hwxdsVCKnroOA==
+signature: tsisuYm5nYhq1PAoyfry2sSUrx2KVr4V4w84MW0HQBzbk4w4UkkAovzbn4HDms0HBHHpdIy56U3l+ojMj4rMZHEI2cxKYOinN16nq5xjg+QWId2uQ91ydd2vdDwQMeEtCkQ92gjhkc/WrY7C2OXvZwkKLGBZv3I63oxycoDpsqnoVMJkQvtn45blXzqgIEKSudZ0N8eWBIAfwyxQH8HwwGyDnwC5x7r+7RVRjiWeF7A2mYB+13TY2en5Jh7XEr1Qxw1cnvYfaWlr94UNMZM7Cq30EtbPk2V/MjEoN1kbRfCBg1NhgYwjqTCnT2I1bxeE+u2IElz/HZWADKzlpGk6VA==
 subtype: python3
 system: true
 tags:
