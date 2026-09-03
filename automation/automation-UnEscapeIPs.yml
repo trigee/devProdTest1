@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: IP(s) to unescape.
   isArray: true
@@ -14,7 +18,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -32,7 +36,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   function format_ip(ip) {
       return ip.replace(/\[\.\]/g,'.');
   }
@@ -52,7 +56,7 @@ script: |
   ips = format_ip_list(unformatted_ips);
   return ips;
 scripttarget: 0
-signature: aw9K713/6fOuJavEARE1z98uDC77HJxtgcEVT92Zy5F3AnWF1iUbaMqvdGiv2NDgPBgzrC396PQeVpt37JomP55oszE1FyM6D5Chj4WHM9JV5PYNxcP5frXtR4jXJ3yQo65w1WVtJxTTV9GaMkbGC1laKf6YcXhYsc9MINEMdXCgG3GB7N/n2PTDIkR95myM6XFXmmHk8O8rNDqq2qnyvraa55L9NpQvYVf7IT4ZxwQyLscAAbCnP2+Wr5S8NTpSpEf8xvhcy0Mhv+SbVWs1XtsWlAAZhWWBSHylVKUoFSDBWv8rEGiD4p9AATrEwylkRtECJxEKgkE9XMOjwGN0wA==
+signature: 2jZbzoC8/Cg22fNnk1OsdW2+zsS2sUBcbjiQxRhcecDaf2RSTb+gNH294WPIBi1S2XUE/9Z5e9AJx5ahyyF9vAijuC0DXQ1/111oG4Rz3rbm3C+fR6aX4QM2VNoRKf/uOsBL1JSfpb9NpqP3Qmgqelr+nwty+zKwyh56B/pjI1x05Ea7MOEDt75oNIbTFU4hhyLapZDiXEaLyxGRk4vDrGGzQk0SHQNDKW8bgpafOnF9f3l9os6tD9PoWxBbjrLIHHIKQWK8D2em6KlFmGLNFYJHTkxUyTJQHft6l3LRwKuIOXJ+tEXQTz+znEAfTvd3oBw3a5UmbCRP2oZR4dGkBw==
 system: true
 tags:
 - indicator-format
