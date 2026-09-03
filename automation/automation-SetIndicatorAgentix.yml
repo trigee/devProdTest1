@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Indicator value to set.
   name: value
@@ -33,7 +37,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.1.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -55,7 +59,6 @@ dockerimage: demisto/python3:3.12.13.10116658
 enabled: true
 engineinfo: {}
 internal: true
-isInternal: true
 mainengineinfo: {}
 name: SetIndicatorAgentix
 nativeimage:
@@ -75,8 +78,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SetIndicatorAgentix', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -189,7 +192,7 @@ script: |
 
   register_module_line('SetIndicatorAgentix', 'end', __line__())
 scripttarget: 0
-signature: nY9839t2aXzGQIu0NXNDoCGrLAlkJ53UE9qNL1kHYXJIFzCswJTMCjEHzHWILIhSyFch+dFdUrInvKcqJo7sS3vqXN7ea/GY4XAv/tVM48AZTALBcM2WPYrY2jCBocXpQm7LqWDniMEkT3sMAPajcuDwUXy6y29lr/buvyEc2aZet5h7iHtSxdCTa+K9YFRXQsTRdROdDSEqUBveDRjfKDqMazPSKQv+btzpqKL3UMTu2wJumOjTq7+GFgGI/9gsGulK4ckmNB5fl9/oimHNoPSKeKbb3yg5iN+r6zjJZ9Tl+QaPDiOihOsaHUs2prMGOECM617IOS95SUn+l2CwIQ==
+signature: hXboqh0sz5fRJBSPFi5qSCle+J1aDHzCAxqWf8za6lJk4i7Mku8KSE/PnnfzAabHSNcflzM7dzhukzbKyswD/p8lcHs7fsAVbrj0e+5rY3NT5fO8qSUuy2+6Pvcf0sVqEc8BGU3kHl2Ikj3ruqM7c/9zzwKMyZtZN5pU0iyOScAkSUDUkpzvTNZwVh3P7rvglVK+AR6CkgymCKZVAunv6wMN8yygYoDNHFhN6F5WdFAszlvY3o+oi/ewXU6xJgKayoZIVNvL5ctDSWeXz8AnYoLiKL3ANXIQwvyCfauBVqOzShxlC03IGi4ly3HsMggnWRfkbMtWEnSOjnxJaXlhGA==
 subtype: python3
 system: true
 tags: []
