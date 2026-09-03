@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: Expose the alert owner into AlertOwner context key
 commonfields:
   id: ExposeAlertOwner
@@ -7,7 +11,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -34,7 +38,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   var owner = incidents[0].owner;
   owner = owner.replace(/\\/g,'\\\\');
   var users = executeCommand('getUsers', {});
@@ -46,7 +50,7 @@ script: |
       return 'Incident has no owner';
   }
 scripttarget: 0
-signature: M687GPoVL9e6pd2CWNcY24RNCY8Qf3KgjTIt+a/HNr1Zme8iXSXYqyj49msT6SCyspJ5kZaMiROIhegRSDsJpVmGbcOmxrIODqcFo9zPsoKy/gza9UIXeza+JKJEy908Mt/FBVRn37UgGLG8Cat9xA5pPpXSriDSwJgoeW7b1jLzeah+CwoO454S16IfPka9F6jKNQ8MEdNm2fjjt3nb/crCr+PcJP2AaaKhHM/JQxb8BPmbT59LqllCkfPNepUAx5XjW4WrJLW3jqQuGXmwjWG5Tq226j6x6Mpd3pe68YD4iY1s/Nmk9WiO9opleysD4rbPOkKxSy5NwPk3wWxllQ==
+signature: SE07n2ucHb1OfUrb8iQH83MDq+ZAnDRcgOuTu/gz0wNjKlR2FzGEQ5XUIi9XsiLOB+B034X9J996cBZygthmfHYSmsyPqEUE5B66GCYn3fGmikNHKXe7xQt3WU4kNAPfm6E2uffM4vm8PjFqBql5e6hBjqZWHz4Rq2gk4KMZMlHco1r+AfsA6x2atHiF6oBYQJ+QJp63qddI9MDkICju6ZI0bU538lnWDRxfoIIoeDoCfsWrS+ZZW2ye9vdsqLQn936u/nce+nVllOEcCOH1qYH6YzBGGzfcJdNtNLbw5l8p/x/6xzf0HMNg80byGuioyffCoZ/jxiQ13aXNe6xMdw==
 system: true
 tags:
 - Utility
