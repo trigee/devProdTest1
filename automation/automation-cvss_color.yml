@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: This dynamic automation parses the CVSS score of a CVE and presents it in
   the layout in color according to its score.
 commonfields:
@@ -8,7 +12,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -17,7 +21,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10116658
+dockerimage: demisto/python3:3.12.13.11879924
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -31,8 +35,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('cvss_color', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import math
 
 
@@ -84,9 +88,9 @@ script: |
 
       if cvss == 0:
           if theme not in ("light", ""):
-              return_results(CommandResults(readable_output="# <-:->{{color:#FFFFFF}}(**N\A**)"))
+              return_results(CommandResults(readable_output="# <-:->{{color:#FFFFFF}}(**N/A**)"))
           else:
-              return_results(CommandResults(readable_output="# <-:->{{color:#000000}}(**N\A**)"))
+              return_results(CommandResults(readable_output="# <-:->{{color:#000000}}(**N/A**)"))
       else:
           color = get_color(cvss)
           return_results(CommandResults(readable_output=f"# <-:->{{{{color:{color}}}}}(**{cvss}**)"))
@@ -97,7 +101,7 @@ script: |
 
   register_module_line('cvss_color', 'end', __line__())
 scripttarget: 0
-signature: NaYLqUfSBpWsC1n2LF4wbb7iwG5f92oKMK0pYUlbY8EbNxATMLd3AfyI2yncReDnDy1M77CuMdyG2Whb0g3lBMlUSQfsiEJJ6exl7TqaqmRjrHvtcxwevzURLA8VBNky+bniaqQRT42vjkybP9c91AazQSQuvy0Hfh9Ce7rtlysRe8KLVBy8F/tCNVg15dQXAHZl+aqY660yNcmKWJPwceL/ZsgoyUyzt57uO/CBQ3AXBld8SiLJlY5LnSK/IpOVFX48DHgGBgfa81BDtq1NaiYksT19XC4CWDZuOhdFrxJIzAy2hviDH+RRlauVpg06ACMtMuqfc3Y7L7faXufZKg==
+signature: BoWzTpswfyMa+87d7Q1acjFy+fR/BlvgnRIGKhXvox3iRW0VL6J2ZNKhjQBjFALTTO7EmV8sAaWhApi4P0qn6MK9FyniJPZuX9aW9fXn7q/N4qnlLgHl3zvzs0t9nSj1KyMC9QAA70pQPbmHs8htvODEa3wjyAZsNB9EPTwpDtENuag8ybut3IzZCxHCMXfXxcNOvy73p84ySNAmADVZFCROS1dCFDpCQsRVF7kONec8nzSC5VchfdQn3Ut2sG/cn21vxPKIhMOcDxeP32lzmMVxBMFH7WvqP5XMq7DGR8aD0W4LxB2aqdy7t8/0aaz2WXgwEwUKE+Q7twiQXjj4hw==
 subtype: python3
 system: true
 tags:
