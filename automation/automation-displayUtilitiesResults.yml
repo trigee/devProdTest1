@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 comment: This script displays the execution results of the tab's buttons in an HTML
   table format.
 commonfields:
@@ -8,7 +12,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -31,8 +35,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('displayUtilitiesResults', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -136,7 +140,7 @@ script: |
 
   register_module_line('displayUtilitiesResults', 'end', __line__())
 scripttarget: 0
-signature: IiqFeqD0gmdAyNZjbOV3gfad/Xz164LowOyJba4GMnAMDaUtEjYkDBq/JkuErfnXBosgkOANTqd/xW33DNSEEGq6qLm0nRj5dh3iWV65xNjaDnVD2ezmMa/1D5NmlJFqTuUVksNbxZcz6EFEQFip8qr6dYHlQOVJSPxsnsoxURI3wHuAkWEZkIqM0w/0Micg3Ph9tRVs7rw3vIh4p10G4crXiTbct1e5SqI+V6gEZxK9bsygQyuFiO0YfQBO3rRM6FQ54eaLKB9N1ujAPpcWrzocU935hnV+vtfiPh1HSgHgfKCzn1HpN8knPed3Vus5TPjl6IpkIl3gwmvAq8dfUA==
+signature: DX10qOS3zy/xDJkLFtyK9L9Cxszyy9ECjlY0S52Ei9djuoCT8avX9mwvDX082AoSajs+uARGBDeC5/1AO1zSFssGTXvjv4mn55pOEdm/OVNPmrHZ4g3BM8Hc2nwgniPMVSWRTe1PDt33s29KFgeQK2byVPADG4+f+cQK8izs3+cMLW1K7c8+LYg0g1mcvHuT5vDM9AGnbxh5voWFsskZZwsS5sc7hAKoNUHiJG7NAd686W8IFhcC5Y6ibB4n5ZYMwKq+4Yq+vIP3QJoO5R8G+fB1yUDPKZpo0CdbIoH6PQK35h62C5uOSnZHZlzQd3ULe5Ej8naBIulv19OWHxc7Dw==
 subtype: python3
 system: true
 tags:
