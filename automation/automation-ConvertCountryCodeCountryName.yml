@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: 'Country Code Alpha 2 (Example: US).'
   name: country_code
@@ -22,7 +26,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -45,8 +49,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ConvertCountryCodeCountryName', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -601,7 +605,7 @@ script: |
 
   register_module_line('ConvertCountryCodeCountryName', 'end', __line__())
 scripttarget: 0
-signature: w/0XwAlP7ikNZAl8BvJoeFjQAylbU8ocKcaY3SwBR3Cy9hLLacHf9sJJqD01gIcD1sSD841i2fjAZ+cbuX+4j5jTT3VsZdu4Ma2pbUBiWd1C+TpUEibDT2hOd4VLNN/MPJKv5mLOG4xDvVpBRniaZXziN6E9kUuF30n+bUXfJE8ptfH0moAE+NqA4ryJnXgkd6Z6fDw/GvHCcP6ez/Ml7MNXLFh5fJKUGgLM8ErklyZSCr8r4xjoAU6YwMLfVUxcAVu95pYxGLbDOPRIA80bOjg0O38+etmhu2Y5U84MPXngQLux5jkcChxDVi6jF87RlkysucfrA5wBDP5rcDQBAw==
+signature: 1hRtC80TQzRYBpkWNq9bn3LGWlgtx+pqNvOnhgIJuGxFkTL3rPsqCcESnnMi1MDAzlk5mkWvREx9fwYaTkE3EaVfkS8M8/v128LYwCQueib489kdisRB7+9QdkDnpRKKrnXPsyOzHvzBJ5rz2DEuRhOxz8Ie02lKGMjiAVDIIdfiD0llUnummbvTEsvsYh6nYYIE18fy58nkTX4x4PrK/1K0mqbuuzhq9gQ9hqU4yIsdyx2Vqaytz4uzG6sWNRV+fKiFWKwfQjTiHwhEssztIeefftsQe5LFw+WbnIQKB2RNo47euFc/HMg07PfogVsyO0pklJv9223oyIpauK7WDQ==
 subtype: python3
 system: true
 tags:
