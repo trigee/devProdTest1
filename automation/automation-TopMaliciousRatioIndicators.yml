@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - defaultValue: "1000"
   description: Maximum number of indicators for malicious ratio calculation.
@@ -22,7 +26,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -45,8 +49,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('TopMaliciousRatioIndicators', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -132,7 +136,7 @@ script: |
 
   register_module_line('TopMaliciousRatioIndicators', 'end', __line__())
 scripttarget: 0
-signature: nnDAsxFqEBK/p4Srmk46ja3OzhWesDJ8ySTF7riKnyMnEq4NMZUwDIDawWltnqTtSnXAwzjew83LhqFj8utavb4iK6al2gA9bEeZzOMhz13cL8ApVdwJapSinQs6bGtOkGdSDyPeHF5e2UWru24Q8iLkRIyaLtIqJW1WNfa5tx//d/yzY6exrTPFHyiXxPMmGpFULO29UpDVW24zW44Ll2+/77zClNSKgwQ3zmgYOyBjESYYiomeQUynkuPAhSpW/qZaGkB2rc2QYaB4GLuh4UbCrzThkNkwKC1U3+sKanWUXpvitcaRHSd5SCZEk/2szghPh3/5xKwZkyjlRN1Xbg==
+signature: mhzZgc6l1ZX+TOhS2dEcI+w3x5FpnKroNIJdtwnf4KpllILAzWrlU0iW+wuQNXQPFQTZJfZg6c+gvlueUXcMCwlagBkWbUKSuzMRjtLpWWjitMwSvEzOQYu6G+ERhUAmT615GMjGG50+qWu9ydSbK0o4Dormqn5WZPvK2ojCHA5xll4cMHkbhlVLhuaqhfMpZbHYo4vC1F6lLFmi7HOgkqHLam4jdbNeJ8Vme8lFyHPlQ9I/V6Wt+95/Yrl/4XNq6ZjE2XxwWcKvSH2z4ekWR7sL6iKtl2Z65g2y5JvmfMOYV26gZsWiSgB9iIlokP3Khuw/9hQUJ+nxs6y8P2KoGg==
 subtype: python3
 system: true
 tags:
