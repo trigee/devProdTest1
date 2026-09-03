@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The War-Room entryID of the file to read.
   name: entryID
@@ -21,7 +25,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -66,8 +70,8 @@ runas: DBotRole
 runonce: false
 script: |
   register_module_line('ExtractIndicatorsFromTextFile', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import json
 
 
@@ -155,7 +159,7 @@ script: |
 
   register_module_line('ExtractIndicatorsFromTextFile', 'end', __line__())
 scripttarget: 0
-signature: puefMMWgv7072Z0E0u+geOlw+qvwTXAtsIlI3tB4C6kGdSHOaNRNcutB343hqZ7NJqhhyX+52+oMWtwIN/fkaAj3ILGu7eeapwFKrCb2GYx7RA4v8tOjexqhWv3zd/fsZQytWWOj2WjUUSLFgm6Vj5QKytpGgzIMNPHruQcYSFx91JbqGmLUN/zddDotUtyLhSQgdkr19XewqCTmr1dHU9XqEJpcDF2/gEzeS3FNLUWrg08q85g/y821JiS/rgQQOnigBjD4JAhn07Vk1ZUDltxo5tC//Q7OkWpkF/tp0RyrEOJxUTyK4tAo4IsQmQd5HBeswQR/4MpqTok3D8Tv7w==
+signature: jWshlRmJrEn8szUbX9SbJB5uSAMzq8Sbz/h6jrkMhyIoUSzFqs3SrVaCllG6P2StZJcXySi2f+VRR19xWKbJrkI22HzTaByCGUTMQmBLevSAFS2tL/OQwIVcFYFu2hOFuU1k0bL8GEqBzHnjxfyTVfWdg+OYQYsz85QWvHEKisw/d7xktWtACDJsjKm2yLUoisx1gF91onDJw4yl0ntU4WgzPKbra94am5f+yRpspGuvhWFbFNt8bSnC7AjaouXezeGc+4cJepEUQ3DV8HxGiNcaoiJdhixc91LTjl3GaGeETzg2FB//4k1hoTZGh+4NFCVOYgmjJsk5G+riu5PzPA==
 subtype: python3
 system: true
 tags: []
