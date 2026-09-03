@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The data to apply the filter on
@@ -36,7 +40,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -54,7 +58,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   if (!args.data) {
       return {ContentsFormat: formats.text, Type: entryTypes.error, Contents: 'Data is empty, filter not applied'};
   }
@@ -150,7 +154,7 @@ script: |
   }
   return {ContentsFormat: formats.text, Type: entryTypes.error, Contents: 'Unknown filter type - ' + args.filterType};
 scripttarget: 0
-signature: fMlJFJtVfkyWYVGJOG4DQ6+DFmRtpWalc1ecQoxqVqFtfGg5zhJLbZRlI9KpDbR/iAI+naxkNhYiHoSMmu50kymp8uM4ouLI6LFVTK3Ypa/X3xrO/sDSI5ENGRsctB8u4YdHkgmZESPQI/S6Otl8yIOPeJCYJ8q9cGQI2FNxVC0kQoXoBgpG24wB7131houEYBcqV7XE5iW1yQ+WQWfAxhEHtiUGks33qca9A7DPtHYkCJrrz7mY/lL4j9MCZOONZ+FOuBjHrvPL4VGz/cgrocIMeCGt46ZXMjLfwxh+XaVMpmaHm1UcFwaNfeOyPXxQniKeAuCmJn74+hrg8uBOsg==
+signature: Fszk+YqOuXs+mR0yO3/vNGweBgSs1rIAEV7Pbx786qjUYO87u4oCrl3OxUsEP/nWZLynANrS6d/L2oJ/71aTS2UJf21sSUoVKuoko6Jdlx1zUQX+B5BshdYs6985LEedEfn1hhOTbwRNjJcKEfN0oBlxuTO9k1/OajTZeNIyR/bARDWVgczW8mU64BxfcsbIkJTfuwGu9+INeL+qFTQTEgdOtRd1mPQRDk5x6nMYN5MRtFK9hgWu3JhxAXJSmlkM6f9JG4U5tHrQrp3S5aRQFFxeop4aVIkgcx3yEjYVEKcYUdfZXLfHuZvYy1zTO0NXGEXG/tlbWcyP01DFVyA2Xg==
 system: true
 tags:
 - Utility
