@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Entries with the given tag will be marked as notes.
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -36,8 +40,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('MarkAsNoteByTag', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -80,7 +84,7 @@ script: |
 
   register_module_line('MarkAsNoteByTag', 'end', __line__())
 scripttarget: 0
-signature: Aw4iQrYjeE+hj+ezFjc8YxTJZKkbgPUAmP5rjHGL6/bTCbh2SLCcR+YTN/WO/fyc/I1ip/SOspNwOsCeDLB0rNZmKZAT8UjSht4SSOg8u+NRKBQSs6BMHwJ8yS/VUWUR7hyqrXHA724DQIpb0wngfi/bU+4jXxeLs7uu69oCPIPZLFAzrXhav1Xh4SoFRv3LC7PxUqcgvF2M2Q4pdy8MnC1p5+6rqmaSRfr4o9hUsF6K1JboMaFxWrlb7lbtZ4L2vQO1rx2l/tzcMleMv1fNOXMAqbuUcR1vUaon6nQKeldlM6QGyefyKs6+jHgHHjdj1l54xoaoe00Ns7djwNG/vA==
+signature: ZA5yu1DSw9rR5wWZXF7uJnNeXZekMMzAIjcdhDJsVrMllD45pw/VsYRyQZwACNgjUkZAUN8FYs0UQ17G14GCaojyeBxYD+vvq2obvFxL2JUlEchZTr1BzCWTTRxhexaBoV37NMJEsNfF+uueu/DbQty1TLacY3MFTMxjIY417fY8cKjaOEJV4f32hbYptyhcZO91qLwxP3gVMD6s0us9lHreUPFbEiHz4qnGjeqL87D3gcKzTmGddha4vePW8NgsOB2LxbMKAHapY1Zaql+3ecCfSkRhnjeC16GLU1qdM3mkL4HPQNfNptwJyDRyA49FT31MeJzsGL0yZG9ZnLhrdw==
 subtype: python3
 system: true
 tags:
