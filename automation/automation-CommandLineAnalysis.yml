@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The command line input to analyze.
   name: command_line
@@ -25,7 +29,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -34,7 +38,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.12.5490952
+dockerimage: demisto/python3:3.12.13.12042988
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -137,7 +141,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: "register_module_line('CommandLineAnalysis', 'start', __line__())\nCONSTANT_PACK_VERSION
-  = '1.22.39'\ndemisto.debug('pack id = CommonScripts, pack version = 1.22.39')\n\n\n\nimport
+  = '1.22.52'\ndemisto.debug('pack id = CommonScripts, pack version = 1.22.52')\n\n\n\nimport
   base64\nimport ipaddress\nimport json\nimport re\nfrom typing import Any\nfrom collections.abc
   import Callable\n\n\nKNOWN_POWERSHELL_COMMANDS_BREAKPOINTS = [\n    \"[Convert]::FromBase64String\",\n
   \   \"::ASCII\",\n    \"Replace\",\n    \"ForEach-Object\",\n    \"powershell\",\n
@@ -671,7 +675,7 @@ script: "register_module_line('CommandLineAnalysis', 'start', __line__())\nCONST
   \"builtins\", \"__main__\"):\n    main()\n\nregister_module_line('CommandLineAnalysis',
   'end', __line__())\n"
 scripttarget: 0
-signature: 18dMmaSLtE26YvSfekhpOBothsklU1g3X7p4Zt7a4Jpu9FYY7STMTx8HycVgcfAzgn42WA5D7sBHEsu8DF3JbuMqVvoJYKutMHDT9OEnzx3mhcMMMze068Apek0t7t/+ksRyFCtir7tL1SX7XoKZC8/YeK4nRQn8M/IjDDs22fXWdI81iWvzolYrRUqokK9Ny3/8Bo9KXVS+rKFCmKNBrSC+KKYrY03YLiR366RyyjkH9UfwRbzUKQkzBttmiLtMFYFGekQu2cXKegEaj54q3sNaLz721fEXTaEJ3C5BPfg4U4Lg3CczWnGtuUcBw6we5OzdFIUdsexaRU70s6ZdHg==
+signature: sYVHVkM6CAKoAlPF7QyaaG9VfiuTwZ1U2sNQt1H0Qy2He53kEy2TeZaIoUrXM2nw2FRCmqui5SnPyNZIS92Cx0FKDlUI4oCFN1GLjrXU0sdPZrAJeYLKCgnrbWfggL/8/wYo18lEwI/vh2TpSourYyNLpUdeFgbLdY0gQhqcIcKMmX7Kf8yV/4cC1Yn9yTVlGGPoNUoFQRUzu5FJSvl8YifTx3ChmBgSYB/hZG2sccj44vIpy0MiuGLu2NCyWVncpf6Anp6v46wxyAPQTazNjnpJpSfOyTQztkwgZS3fL6Pe2IFc9pFR4OZeF+IdmGvlX6b0kKF9YaxPAgHmn7PstQ==
 subtype: python3
 system: true
 tags: []
