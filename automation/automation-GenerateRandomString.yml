@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Length of the string. Maximum is 10,000.
   name: Length
@@ -44,7 +48,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.2.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -71,8 +75,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GenerateRandomString', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import random
   import string
 
@@ -137,7 +141,7 @@ script: |
 
   register_module_line('GenerateRandomString', 'end', __line__())
 scripttarget: 0
-signature: Ywo8tcyKI2n6JGsqFMJ3bEXTJ2sUq5zhEJXSD0NeLxb0fpruINAqe6B9u6yV/9uzSEbfUZbeNoBb2Qe2yWTFipvdRjACFnA3xkywOKQKT2rPGeJnyoJpjV1xm7UjjvKOH/A9tZEss1pLFkcz+Nb8iAUNokppm0AhqgazsBgNTzZZZ/7gY6eZWgSeHliL0tI+UVaf8K0YxmkI+RBVp4ZuotQfz7/lwrWvhWTUwbzFqdX1AhRH7rA4OamT2bl4khslvDTQ5QH6any2F+YuM/OOCD3OwKqkOwnDgZYfzxc2KE1meh/ykJT5fV4XoYIz3PSJ7rAVcQ/YsGcIZK6YniuUzg==
+signature: jPaOmpmqVZ5oJ538mV1hcZ3eHxFcWYVB0qK1h9bBRM52OAY0GBZmabzVWENJawRMQWbMRN5nUvUyb9fU2efbUd48G7uBt34cXa9UahdgZhUI4eE5a1tvfVxuYlp5jJdh01ezDYUsBY0aLr4hMdxb/4aMtL6u2Dw9tVKUqjbjbZ186r3j4A6ODwSCKc2F7p62mztc8FFoddw/C2SExRyUJ0KMxcVGqMLCdol7pe5+ZIfBFnh6toKzbmO8wutVh0ilqNDWiCdS0oB1wy7greoDzu5hzjr/qnB9Y7WeqwyLc6GN6gR+p7PEj0Qa5EIRZu1NsoWDxA363FGtsLKP9mCuaQ==
 subtype: python3
 system: true
 tags: []
