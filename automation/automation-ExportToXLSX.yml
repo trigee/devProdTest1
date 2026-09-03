@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The output file name (for example "Report.xlsx").
   name: file_name
@@ -50,7 +54,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -70,8 +74,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ExportToXLSX', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
   from xlsxwriter import Workbook
@@ -177,7 +181,7 @@ script: |
 
   register_module_line('ExportToXLSX', 'end', __line__())
 scripttarget: 0
-signature: ZuwBrsB7b1P+GRJAiEXpE84alqMuf47kI3LKTJ/x4V7rcxKm+kmYLYYETVi2pEeC/wAfbGL42lFUb911NdkEhf9shmNoep5/jXLJJsehhaYJHJw1t072YpawJpgdststLvx0wcoXANG8QmIayTZf5CpZhZ8Zzc8Lx+lgS1KuYwW1Zd1OWHDmAqRO+74UmTmH/e35OdeEscJoj5eCJyvPKfEq62MlDUWg3/NyyOZjQcK2juFgKoRFn6Mm05U+51i3e2LskewvqCLc8H5p/TqT/S7X4AIKYFXWQZxVHt8+CYBv+zwFdgiPi7ct9/CtjbKqkDRlZhQ8laOHtcHs7+mDAw==
+signature: iJTO9Nao16e0pI65SOmiy5voEGaE30T8ijhBIAgspxof8LF2AmBB9TVb8yiMBgb53tPhj4ZNAPbKJibOnludGSzmwGfRVglFLFaIragB6UmSXB5dDH+95cjjo/4wQR9rPwJ5LuWWdVtYSPj2vIEANjsgEwT1xD7+eHfIovTcXo6L+fz1MKtBZb8aDlrZt4lQN0mnnyuwIt36ojXvmgR2VcWlr7G9Urzmg33eIIDhlBhreigJD3IwBRDpdLWAofV9W/wspo1sqXB4fEGRRNCFzWBd6m3J7YAeGLRE0hyIcG+BAFzdm1VKpWLc0uaSxqvF+xHQFG3xHXsypN+OmfgsjA==
 subtype: python3
 system: true
 tags: []
