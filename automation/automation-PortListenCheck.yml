@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Hostname to check.
   name: host
@@ -16,7 +20,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -43,8 +47,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('PortListenCheck', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import socket
 
 
@@ -96,7 +100,7 @@ script: |
 
   register_module_line('PortListenCheck', 'end', __line__())
 scripttarget: 0
-signature: TmE+rvUgVfNbVst9xvA06kyQ0siadBUfNOuFiPMaCkXsUIcXmfx/sYymGrgn6dimMS3Lnp5+rnktEqAbrD3ATpyeKHHPWaG8GJL96PjXoJ1lXAWFOEKUFxfw3etw1KdtunQEwUCJmQnWK9L994kOnD1FitBcYKVib3/gYornnRjQFgwJDI2Hq4hX9p9L8wAAnYBt0hVppvObo8Fi6JKWJPHkc8IAcZScI0aDhsIoD1F457xhKKAyqqYtWIQLX8qDISkr6nrH6N4WYzcDbvFbhDveNQ8ABx8prnkOVlh1TeOBqZKP6yPu2Wh9yPrAeM4miq9Ub+LQ6lT4iLWC6huMVw==
+signature: EgTZNg7kCjWuvi7ZsPnrzsL4VjxO5GcIVPSXOu+oR+G2s46a0cyINQKgQOuAgc+mcmInyKVsneMND6yFlg/KdGiC+bTtJdXPRBnubVCVyV5kgPibeWlv7bzA0RgqSI5vifnXFkT2D/TW4AMLEPQ79VlnULSIi0spUSF08xHCn+ePT2b5qcWuXoexnfb2/e59v1hX/gRH30y5kv5duSPlLMzJgDf/jQvwE5nDQDtqYsRwoGJ4q8F6RlSMuy0TC8EXYRYkQ67khkZ4ZrO72D4n2xpYno2v/RHcR8fXnnhM6sOO9LtLFg3wQ7xVTYIuTcXWrODlgtcWQepDMvTyMH8j0g==
 subtype: python3
 system: true
 tags: []
