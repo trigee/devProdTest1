@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: IP address or list of IP addresses to validate.
   isArray: true
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -22,7 +26,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/python3:3.12.13.10404775
+dockerimage: demisto/python3:3.12.13.11879924
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -41,8 +45,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('VerifyValidIP', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -135,7 +139,7 @@ script: |
 
   register_module_line('VerifyValidIP', 'end', __line__())
 scripttarget: 0
-signature: mlMEnkHeuFQELUVu5kKQQBp+G9X19uRdqfHw1ylEY5Ig5v6H2RqGdP/4lA1OJgNsC5zeNUakz6xhOJCzA4l94f7Z20gi0oULMbOv3seYKvWTiI2W2W0sTWJbGWhN9/0mxNmelXGjXQ9mZE3YSOu22k5fIzYvK+G1qpDuizzUWnfPgk1AkKcvJmC4+7YQoEtu/rkvCjpOTESHWJwHoLY2OWVangulB9TuDoz3mmnRRt91ZYekIXDo6MX01xJB0PFjSCwwGY/BhCCyZ4Yyu15wEXo6oqI/LuMA7FoE+RdEzGWGAIZqDpPfOftB4OD8f6H7B4O9VH8NCoZdeGwJf/bFfw==
+signature: Y7/IxcJv9E7HQWqb9mBDwdWcGBJVvABYCNxotOZE2x2ih8yaiwZvqd31P3DODXu26eiXcsGC2cIQBYRYvanoCqxla39Cr2HLWxg5j9IwACIWM08g2Y93T5GpY0MjXBZtihh7MuQFflAp0LYAxXEW0xZSDHGl7P/aUJS+NraETP6oV4sPhQKnXd9Wx2RBqF4j2WlLUwt9yY9G2Uc+jh1Ck6PFELvlhHGZHT6C1q+W7+79LZLw6dsZqhhEuRGgdu3bpWY2umtgdqeHH6FeeJGlDA+AEgCLFpxQ0Dczokks2uo9jY8WSA2QAVOpVAHOFITjx1ZR6SvfDfuukqJ7GUP3/g==
 subtype: python3
 system: true
 tags:
