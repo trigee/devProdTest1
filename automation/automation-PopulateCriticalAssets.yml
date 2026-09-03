@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: A list of all critical assets. Received as output from "Calculate Severity
     - Critical Assets v2" playbook.
@@ -15,7 +19,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -38,8 +42,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('PopulateCriticalAssets', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -66,7 +70,7 @@ script: |
 
   register_module_line('PopulateCriticalAssets', 'end', __line__())
 scripttarget: 0
-signature: GMhaXGUWQ6AZMPaXPKUK+zdY2REWTFaYiAX8jhgj5wZD3FQfdAEAzqMUivWo1SkpIrz5coHvYiWBuwQLUDeHN4t0yA20JHmAxk9KJhOWg5XSIoUHeog7o6OnesEXy+/L2dqQb9QPRnKLwX0l3fas9HBvhHD1d/nSNkwoL9myTIZ2NbXnoAl9BDKWm/BMFgEfHUvWc53+yZY7rj2yFDTyx9+7jNBtCsLOwhygFIcSoPOX5yKIZzbom2+NuSJRRk3Hwl/ceSLFkUDmpviFWNZ4fq5lgMtuWQtDYN8RPhLlEBYPbRfb4L5sjyVNODYWLPXeW+88GZKKwyFyC5LsyycVPQ==
+signature: IZ0r9jBZUhCIsEo5RallclngwBcikYRKQjhMwYIYgdGvu6zSxxELav2Os3lWLXKCrkNjUgzoz9I4BoDrfRaIjQ3jTXRhpo4XqYyBRz62woe7A2Art8c5wPH/4ONnxkiUQSflmx0dyQi2/UkYW27dnp6cCKsk/MGY/uBPovxne5f7Hx60G7bUjKLvP0iu9iwua452vq2PNCiu/PrYZkhDx9223KV0UoxMINGEOAzlndMGnWAAT5U76QPytx2+rj0LJgYDzFC3EYxB9p/2lwsiVOfp24f2Unq1zo/erPn+/n/QFkEZLgue5aTA774L3fUj4HC2yxa/jykToR1P9PX9gw==
 subtype: python3
 system: true
 tags: []
