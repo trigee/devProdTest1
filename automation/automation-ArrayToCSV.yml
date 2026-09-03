@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: An array of strings input.
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -36,8 +40,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ArrayToCSV', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   from traceback import format_exc
 
 
@@ -64,7 +68,7 @@ script: |
 
   register_module_line('ArrayToCSV', 'end', __line__())
 scripttarget: 0
-signature: rdwwPw0GvPEIoXBu6N9tt6XurqOkTTrdTCSQye3Q66qLTOdCgIWHctDA6DekZIlHiLQ03nj7OURd/xjcn0M+SKjInfZutpHqZX7kyR6KqXQf1aRd16zA8ZUUnWou8nxFSFOYN3A/zex8XzQrSopLpHOHd1nFgf3fosMxweolCdDg79GQPmtEzogJgFeHhHjM0YuRe4bdORCWI5wOnnyURXE+PLxP0c8E16Y7bjY3lpaIHxET/WuHWaGergxk9JURlUd7eHD8JP8hNvoGIpoNpIaw0t6jgixv5e72XP1gTJQTIhYPo/3GsaqYcrE9PVoVuyGB6kgPMomK85g6KdXj4A==
+signature: k2R811vb0tlKNPLuiibDHicsS2mbzfaQfKqEDbDsDsJhezDzwtTQEb6tOPS8dMMJ8pYF0mMIOZDPCmF0MF7uFB0QArHokMaJYXSBTLuWLNXxFQiZEbq29RwL5xEy+rJ0tEPHSnBbzmbOgVKHORw8pYYoJdiWrr7CYf+rQlLCUDI8YEjrvPJH0KFDcF/sYaqaCZuRlf+nhRCZ2XU1ynpsdrR1gPvf2dJ8MRkimFjQWx+bXq86ozChGMtx3xA+fUA0O5HD1YfD4v26vJN5YF/ZUrAwIOTLVA6qB7qoiS4PUB3hT7R9ZtPqXzgi8pJK0NBhkjDSbTa4MngzRDP4r5r9Xg==
 subtype: python3
 system: true
 tags:
