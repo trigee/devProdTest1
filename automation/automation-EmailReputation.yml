@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Email address to look up.
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -36,8 +40,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('EmailReputation', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -61,7 +65,7 @@ script: |
 
   register_module_line('EmailReputation', 'end', __line__())
 scripttarget: 0
-signature: OXdsw9HJkqHYByKfc8yaKihBF7iBlEk9Nz8qeGlYNUyHK/OHxbLTGp50F+F1dcmW9TpXGGUY2ItYJ9Ipy2nnyM12SRXW65RzHcQchCktpuKHOrCGe2hKC3G3bVeyXQamL6CsQxsxIKzSwZjaDUlJNrzG6/mKQcPeQJm1d6l8nHPG3aQsJHI+d7e+xvqCLN0GfL+UC/BTuTNt6vPhY9wyQtKiwZ62qfJ+UJ07ZUGxAgp9+nU5yIS4i3Qk4J6HCb1Af50SSCOdca28EdTdlTOtQTHegOHyOV5AbUdKtXrKs9XioIsj0lkfPUl47jR+G/eD+kXcZl7HAIDkjSVTXhhBqA==
+signature: 03LwlRMmcvukm+DVl/ZsuR7m5ZSc9GURPlp8mkW1QmHi2nYOTX37LwvBqIcXV4DLqC3U9KvrwcNQqEL+PbKz59NDm6OF6oATKnXEwKAOIVPyYkKNsFGw1E5zJRW5pXf7wuJhU0Ne54ZbB0ZicUmcw3NLfkpZtvUH/JyfxakvK2PuULVywGCDcxqZ4ieMD/JAmXRCyTDzAgMLZ/nVrEM83mOADq0ZVprTXjdD9HeB8g9jHJm8Gc6tFhTqZH/kr9YOcjyTi7jUyMq7EipcWJVJYe1PTPeYq4UPU+QZQGcPk+/nm90Nk9AJJd8xzdsrGmJHy8suBWizO7bqEtv5tmDExw==
 subtype: python3
 system: true
 tags:
