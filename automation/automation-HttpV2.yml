@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Specify where the request should be sent. Include the URI scheme ('http'
     or 'https').
@@ -129,7 +133,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -170,8 +174,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('HttpV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import json
 
 
@@ -415,7 +419,7 @@ script: |
 
   register_module_line('HttpV2', 'end', __line__())
 scripttarget: 0
-signature: Z0J7niBYYHkmxgqXdZQQcSoJXDiGhdIp6cUoUoTnIoDzNj5cnS2M2BvTmjUXJ3e4/q+41ZrPlXQF7abWNaLRRjpoG99RUokhVMDUpa7LCf/lBejnB3/ko5MHxG4avbvg6WU6Um5HWiwMUEEBtIZSBSAK7q0oQAUF+a/wUSv/p7zvSVAXY+bqU4LVKPuoOlSko8D6EhGWWKlhSOAoc26CCo+DZjDqMwjYImoNcLd2Z4LhOcTmQ24PNd27WCHp9xSLDwYrU1XrBc4nPzAMbyQF0INhOHBkqU/wdKUOKPIWZbfsZzIeHpPHoXakorAGBdiuhOyWPwLHA5mbC4VFArllww==
+signature: XmXHzvDpfwru3oMVIgR8drtbFLeOE8tDr2Nz++5yhoZzZ2o0QwXaI78phpBcMal9ZXbS9tY3zOhm48CVUw0GYXuKQzIY6izYybTpg8rwtCdo2rHjVrmzvVYRVNXixblIx70Hx6dHKANF0N+mUmLlQX7kuB6yfKAbht6MvEokM3Xq352UeB44P3nFuZQnbmUNvUXQNSK4Vm7ZWTl4zo2LX2MTg1L4GzGs7mmBsrOsXEPEnIOJukaRibDFnk8zvOeZAhoD5olk0XMtdEtltaqtKLBxbK0KmhA+z/+DyluzOPyg5gJ+d36v+mH/eTJxU7fMtI84xoI2MfHfMQPMV4bwHg==
 subtype: python3
 system: true
 tags:
