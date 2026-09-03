@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The URLs or emails to process.
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -22,7 +26,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/py3-tools:1.0.0.10120494
+dockerimage: demisto/py3-tools:1.0.0.11597437
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -36,8 +40,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ExtractDomainAndFQDNFromUrlAndEmail', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import re
   from urllib.parse import parse_qs, unquote, urlparse
 
@@ -191,7 +195,7 @@ script: |
 
   register_module_line('ExtractDomainAndFQDNFromUrlAndEmail', 'end', __line__())
 scripttarget: 0
-signature: WhUcEzLYDOz6tK4eVi/RQCGGrEpVF6efv/vy14Qyqc4BCJNUgi3L5Hc64a5x87kjvzXYo2THWeVsQEY8ybclpMfl+tVYLyC0M5YZh3BExPSUzbT1GDwCOjeIe41dnq5UXButmSXgVlAwQZznbVIhQQFFOxuMPxsraxqBkE2AilmAQ0pGCkbwi/+AXTV0jbiJzD2h/Of9EQ8a9UYKnYSxvJiJ9FYZVA9lRJkFX0zE8zeSDBDwxVpIrXIIFIscSh1U6kn0t2HHPXxhQJo31SBXHf5eD73Zb5uw9wWW4WT7FkjF5QFcsuxVclxWJ+5feGIuNGw/96kIEbSHHorkZfx0zg==
+signature: jvgiLDGRjXU+m0h1DCpE2Mjo9WBkgE/GukNZtbDVymG5aWQJ46RrlBqCMe09hW+r1Zwjc2ihe2vZuEr0FLc1QzR50bOnoo0ilLf6TRSgipf2+VuDcuoK0UNyGY+MtZTRnDekFoj3sBMMvjrUKPkPojPv9GJVYgEk8sr9Lh9tKgSu6BEx8/UC7biEFw+0HR6nbERDwBohGONC5tQ9l0cpWV1scTXZkZcwhpbtByW4BQ1nmOrf1hRlfs5jZeXsNWGWxBGG/NAP3cFdAUWlIj9+CCvR5syC04U2rBcfIt061I1/AtTV72LfWWCZk6/lod/XJChqs7E7WmqgEYrkpb1/4g==
 subtype: python3
 system: true
 tags:
