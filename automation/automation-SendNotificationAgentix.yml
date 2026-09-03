@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The message content to send.
   name: message
@@ -48,7 +52,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -64,7 +68,6 @@ dockerimage: demisto/python3:3.12.13.10116658
 enabled: true
 engineinfo: {}
 internal: true
-isInternal: true
 mainengineinfo: {}
 name: SendNotificationAgentix
 nativeimage:
@@ -83,8 +86,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SendNotificationAgentix', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -148,7 +151,7 @@ script: |
 
   register_module_line('SendNotificationAgentix', 'end', __line__())
 scripttarget: 0
-signature: Hhx0WJzsUoK55Lp0LPyEj14feGEnuqKR0CXtOMUvMk911aTFDm9qwwIu1DCDmn7gMUpZie5GkUiMXfVBqAIBZjx4epgfJwX/t44n3iVf9VKxhPvTojqYckHo8SerC4SQl4Vq0qlYIy0R02GHZFuhB2hmnwRxz9E3vceIUaDUs3w0ipaak0f/joec41ggj88UR6QDmz2LggQ4x+fEA0qF36qDeBDgoXsaTdE2rueXk6MYDxE+/htBC2AyIwm8NKxR8+wokSwA2l4Orx5a08OCFqOD++1DTSo/tYJWxcufr1GXt8Wg0oid2pc5OOQWN/HPGaYZFX7M7RO41YVPFbvimg==
+signature: OQlzAattP9zqxKDw6ixd755kuJPSb0hHIvfkNE+NMxFHP5xrFVIuqpCY8ML2BE4wwzkK29DVGGqrliT+GJJQOxoZrZoX798RRRkkkE6jUgtcO92DCMeZe+sefN+c/E1c01SX1lHJRAQc/OxD7NlDZcx+t6Bppxtf/0VXj7px1HtRdJfSGSy+INiT68M5voyJxwwdxlOiPOMjck4zxQMkQ/YBAa41jVj9EnD7/Jt7iP/R0KG1lAyjFICK1wCiyGqaZCc5MQ3hL+eEpHfVeeZl2XdWFpedzi0zNHj4/a1kYfZFKVYepg9XscGRmiZNk9RmiQOC/lgQFvB2dUp4S5k8Yw==
 subtype: python3
 system: true
 tags:
