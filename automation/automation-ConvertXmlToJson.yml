@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The valid xml to convert to json format.
@@ -24,7 +28,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -42,7 +46,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   var xmlJson = x2j(args.xml);
   try {
     xmlJson = JSON.parse(xmlJson);
@@ -55,7 +59,7 @@ script: |
       return xmlJson;
   }
 scripttarget: 0
-signature: XZntXxeUVIoNRVlfaxC2+pF3MsmFQJRHCW0z+L71U+oje1WlzKlQllhANOTYDowiizrbw2oDfV2bjf23ZKp+0t7ALak+oeQXuMYpD1FZMqMmzU/WTs+BtUC7fqXGiYuqiVp5chJ2Jhf1pOqNT7CL6woCaO7sXBlyQ/mU2HNQqqSjFmE559loP6WedM+5OWIoZo+3fOqYLGSSUF1QHbq3d0YAOyMCaSqqlAUAVElIMzw1kmm301wWASfxd2RVLff0h6tBNd4S1FAJPfykxpc1TlW4gHt4EREp7OgLq1wq1rK3d1u+wUb+uXAaWxC8JoOyg1XjsWUv74AfuhM125+pgg==
+signature: XUxRN18qUmeENeMCmQ/0QF3Lm7SHQRGNGX3dNYv+BAEuslxbbwsJistDQqn5hHCedwHHVL3ZBXpDXMIsAjF2xHcF7fCS4KZIoimy8mgx6LMkaZ92Xa0lLG4AGPyLp0qT/yJwkhQlmL1TjotFX8qzDJyg9x/+L2bLw1neZP3V/OH1uGIyqp32l/IJIsFWsoXsvuwl4L7Dh/mes5bMrXYGXeHfksH2FTa+wsQBWIkfxF9YdPyS5uxNAXjghE4uWJD+x6+5kaAeXZ71RNC0gpIerQ3UzKhJlSm4WuUo2zoQkfrYco+RY1+ffrJmJctCy4VEdZ6Qok4COihuCRPAj6WCZw==
 system: true
 tags:
 - Utility
