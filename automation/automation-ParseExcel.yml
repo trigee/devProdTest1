@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The entry id of the excel file.
   name: entryId
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -22,7 +26,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/py3-tools:1.0.0.10120494
+dockerimage: demisto/py3-tools:1.0.0.11597437
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -39,8 +43,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ParseExcel', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
   import xlrd
 
@@ -94,7 +98,7 @@ script: |
 
   register_module_line('ParseExcel', 'end', __line__())
 scripttarget: 0
-signature: t13lauvoy+BGe9h8iJj+1srELJGW4NRUDgtBn3FawtkFbEBc9Mrcm0KBOY/4HXqA2DvCxV28OeuuNjsKJ0ljUaBwv4igJ+utbClPaFnHhHaG+n/cp95t4PFTspOni4DPangNxOZQ8aBNwiWxU5aqSEFkvAzJogrM1D9FE0mucPTi23rGefifHK9mk2N+JeqRHo2mZpASW8597/mIRBhrlIflhRu23+ppNwYm0M87YrESBtuyKdAStSDYHpy0dAXOQfdSvHSZ8QSwo/GDPyeEyADW5kMXFO75q6c0/AZNR0ss4h6E7xtyJxk6+JrmBfzgmkAipO+MEmfi1dqhINY9cA==
+signature: a+yeIw2LakB1rAZAChd3aNVQIYwWsUT+nbxxRPeMhzAx1mY5+0yEf4/GxHDAC5kC2FSYsBTKnHmJpKvTfiWde4eJ7NUS655PqDWkFyRBJr+woIn4Zh+Ldn8Uz6o3CnGGMJ92II7aMFO4q8AZzqxx9rVCIkpJ2J4USLH6pse7u3IZggJXQB1r2vTG7eM3Z4qCTsncHioHko06QQ3vslVyr6CD5hNO2HN3C7H0IpmXZakcOfEeBeg+47X9sjGoM++cGaWxUCfFptFJZ7/Vvtya3L4RjoHVrHWQIeqs0np78Pal8yYZUHwWORu6dQcuOZVJrPEcWBJPPO3Qn/f2pDwjBw==
 subtype: python3
 system: true
 tags: []
