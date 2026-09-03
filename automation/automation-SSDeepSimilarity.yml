@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The SSDeep hash to check for similarity against.
   name: ssdeep_hash
@@ -26,7 +30,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -35,7 +39,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/ssdeep:1.0.0.9067966
+dockerimage: demisto/ssdeep:1.0.0.11009641
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -54,8 +58,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SSDeepSimilarity', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import tempfile
   import traceback
 
@@ -169,7 +173,7 @@ script: |
 
   register_module_line('SSDeepSimilarity', 'end', __line__())
 scripttarget: 0
-signature: NRjiaQmoehNfC/0lJDXttnnFo+q2w84/RoGtPElglVEWG2eFdxQQXqLHiOaWIUdSyC9B8QC8O/5Hof3hAKZHHKH3Y4Wt+ac/lEE67RXrJmJG9/pTq43UYB3DvcEUW8N8VN5OUT9GC+3QGb5jJcjMJTDCWtJjbErlfUrq+0defn1bk9RkJPE8vEsJ6PloBaa2eDRIh+bgD2elLV0TxqV9f9dXP+C/n7lFLc5uKbxu811i1vHqPFeG0e4LrTWxasATTmR87O1Iv3pK2erhAtWvlV4+EUI58ilOe69eEgMnhYUN8dk5pGMkm+4M9JDCrjXifNsvs2semEM3IDB6HJLNuw==
+signature: xsOV4x8AN9Oa8UsucPuOKXAkQtgJ/phPMeLKgbgUFD94O/dZPBol7poeTzLQu0ZovDqFKgGBorQVKLXpsG6M+mgntr+lOHPhNSbXtHa8GbUZebqHwitlGqg849UksFW/dMssbuNplhjk2++k8GJ4g+089DskouzgSkoh3RqUmrc/D0w0HTwsnIQdTGK4dnS5Zllk4CWPiEEPtSWYNKMKNobp56Y584Uqy1UY+Qq/LWums5eL4gdz+qpLWiTvBY+zv00qa5LlhICPHed5oG9beUROQ0+p/jjcBVxpGtszlwnzbLCwU3u+ukesXMpQCCZ8syV+qd4qKFSnynwGYsQLvg==
 subtype: python3
 system: true
 tags: []
