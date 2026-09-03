@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The ID to identify the output value.
   name: id
@@ -40,7 +44,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -70,8 +74,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('EvaluateContextValue', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
   import urllib.parse
@@ -152,7 +156,7 @@ script: |
 
   register_module_line('EvaluateContextValue', 'end', __line__())
 scripttarget: 0
-signature: bzD98HKJFwiiO6XctIPwEHUmqHPpTpsfHtdtqQu4ORL8az0lU2VLQ9XumUhaML0THId5xNLGQypajC4rPd3Fm6MBpbm8dwjvBQp0plTwmXB8u/4Ke1dpt40n6bSon1je14IfmExD/4GvJkj2ougdr6ylIBmt1twYjLyx1SrMFNecL2q/x++zTdk/CZKMNE0J1ju7kO2NyJkRSBu5KV6JuGX2BnUca8Y43x0RRyjBHdV7VKt2N/G6hkX6ZBxicGyoYcl19ZLUoYBRPfkDZoff/RcOLjKJKxkwD1HiwRbDFWywD/9vZuXG47Kh//2A7mRRiE9+jQLjS5XFHTQN9aw34Q==
+signature: lq/eA8j+C9OFNopDqttk6h3gFW59FWfVQzC1RpSe1jowGUeLBCvT1SzRCuYuneV+6KPMd/hq1llIBV1Q5fKSxDhBbRjrCuljgtEua9uZKITbUXpBH+MQ8PUDvrAGJxBFl2z264j/N6izkOp/BMQ7kjxnXw+z8612FhvKfRL33N55dZIJiR9NUtubOPQ8CShG/SvY4abCyPCfBA74QKE0m6W3c+Vuvggn7m0SBeWZZPI0cXXZsYFOdlW2PxfpxwssBGJcKYFv2HeZGfGCK01cR7APEdc6tHDUQrWo1bnZHb8X8iNoEL9leY99uUBY60vojglhykNk3rE5f6vVtyConA==
 subtype: python3
 system: true
 tags:
