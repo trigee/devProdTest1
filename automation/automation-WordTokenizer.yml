@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The text value.
   isArray: true
@@ -44,7 +48,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -69,8 +73,8 @@ runas: DBotWeakRole
 runonce: true
 script: |
   register_module_line('WordTokenizer', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
   import nltk
@@ -151,7 +155,7 @@ script: |
 
   register_module_line('WordTokenizer', 'end', __line__())
 scripttarget: 0
-signature: gELkioED7gb06fTIEKUXyOxzMx9L1uc19F6rMkJZx3JaVKBd2UsmaEWAyhvStzN5XKDcPMuVL21LR6218XlecVG9oqiqyk7C2nolwElEa87fKJaiSdd4Xt7it3rc7vzBjIsiO4BSQDsT1gJlc1BtjyxfLhomx2fwQuwinzZOJpRacqASuJKzCLHE7pVx34A8LbT68ofeGhBcIqGnUGuy9qW5iMIGTNBMJoH9Th8AWJD5nGXdQZ0yKWL+oUWVyp17yutypatwcuh1QHDk9rhzp8W84OvgLjXww5X8D9nZQubwEOZl/CH4Zq0S0dMAMEVEMfWSojOrT3K/hfv5WR8lkA==
+signature: imaTxggrenz0eenlewqGAxCWAgIsNMNl18KyHsJFlbrcryDyHGAQfs9kWXfrrFVs5lashc6xSUFKn3lRz3WgzUllRudGHSgVBGY4rwGm85fgXaPRx4ty0DZUE2IOR82I0zSwM/CTh6gkN4rIVda7N8j7zQo2SBQlQKJMijfANxzriy9yjb+vENr8fkRlZCvtJLt9/OINummzeob9LKNqFbx6oYAL9+r9Zlug4tN0FRZjVHvK2tjnTwKioS2hY8aRdTTK2skbNUsPh4u+bpsIPOf9NEJmJRNZEl47K+/4XXg0uU9Kbm1pUx79Oxy4xvecddb4NnisX5r/3TDoxDGqDw==
 subtype: python3
 system: true
 tags:
