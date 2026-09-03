@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: A comma separated list of case IDs.
   isArray: true
@@ -60,7 +64,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.6.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -74,7 +78,6 @@ dockerimage: demisto/python3:3.12.12.5490952
 enabled: true
 engineinfo: {}
 internal: true
-isInternal: true
 mainengineinfo: {}
 name: SearchCases
 nativeimage:
@@ -214,8 +217,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SearchCases', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -364,7 +367,7 @@ script: |
 
   register_module_line('SearchCases', 'end', __line__())
 scripttarget: 0
-signature: eST0gsmKsA3hv5VkSQ609KPHIqicnH1mJvvBE4LyuuTTMVNRGLCgP5fcNcvufH7CNX+2XIw+D2jhFTAnJWFWzeM8PZcU/8GL6I7OB/+Fk8UsBPYQV2OkOg+kq6RpsQsJuv+h0V70d8LE/dPjmipyCUCKXtyHZr5cdtR6MQy3y7nKzAdivEkuf+E9Gt2twPiwXJ/hcRAAova6dDhS8G4Mu02G0YmhqRlP7cJ5Qt4JQeKOSBQKl7z4FaS1dxcIN8HEBjbfqgqxReKTGX6zyztWYaMObwBdoCiVP+3Di03AiebHTXbjm86DmZOv9NNNAbmQDqydCEKFi/McqKmQRnOpEQ==
+signature: TeoGWrRVeaIQFdTsUPKrPnGnYkydmXm/muST4NyqqJ6pO4guQA42e9DgE17/oQzePDrRLwPtInqY+uQCRxz1de7v+6Oy+D1uMMt1Rf5Yu7CsXU52xjkszM4fpF+6pk9n1AJZRhmIxQ3gExZpU/aSDousixMCMiZ5Pa6UB5GKq9v6PKVUG1e0o8va4ZN33OK2dHdzkg3UDD3WgtNVt3CbXj4RREEjBiIMIK9Nu5r8HSRKjfxhDF3yVsP5V/crVUvfe5Nqb29eu0BTVAV4MGn1L0fGMcPlNw/K5PNTSjWwwE3BGYXZP4voCi7BCfwFvGi/kGEIzEMQx07TZp7bcHjtsQ==
 subtype: python3
 system: true
 tags: []
