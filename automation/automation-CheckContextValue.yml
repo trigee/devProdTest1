@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: 'The context key to check (can contain ".", e.g: My.Context.Path).'
   name: key
@@ -28,7 +32,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -58,8 +62,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CheckContextValue', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -113,7 +117,7 @@ script: |
 
   register_module_line('CheckContextValue', 'end', __line__())
 scripttarget: 0
-signature: CzBTOoCRUXGNe3JKCjeEjttjKy9TQW/+fdoCaQcbhMU0vnwfejeBrZ+cLalSelpLHMRoPh6VWJjHpGVNOswnc2ikE9Y9mnXPbBEOV84jcXNCV9N22EoHGJiQZ2hnqTACRMU5Lhet7ej7pYfNNWfNVEucNyI/2tGkiU6Fqo2Z+MFrur9wffVKfGtZA2fNlSJ5FVJWvALwSHQrx65FwaCs07/BxUQGgABJ16foXOtFnr2gT0SJgY8WyOxceK2AvoBBK6j7w4IYuX6aPFgW4tw3LC0DP9xv4xsX5iK+ml3Iwr+c4gYPfIZIqysz3JFiEaMPbMbv8EegD1vNQS6NJDvNOA==
+signature: PwkLlfJRE3e9Uwm0SMnnY8+zQGHfxKqTeNzdCUkpgfQp1xBxrFWrVlHtPFFU8+5Hsih8ORKdaVAlRrDg+Vd4v3uhsB9E70hXccxECrtH77pjpU5m6uu99CjiPpOrmGf4gwbwd0gP38Q2A4/lYapW9tLUx/KlrM0XJ9d0pzKdRwhyT2tUpMxBfqudC1Zxu44NVU8EmTpuoBrSZH7N6rgZXJLiULma7eMBSCi6N2x27Xl8WxVBoYDCF4E8GsWajk5gTpZ2XV+IJi/pra0dnWeHOebVyZ8LauVb+UQ7nDatbONFvVx1468K1zOJ1OFEnDQrv9n6ClwUmWWNMVnczYK2iw==
 subtype: python3
 system: true
 tags:
