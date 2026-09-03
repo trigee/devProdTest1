@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - auto: PREDEFINED
   defaultValue: original
@@ -28,7 +32,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.9.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -37,7 +41,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/processing-image-file:1.0.0.9067966
+dockerimage: demisto/processing-image-file:1.0.0.11193239
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -55,8 +59,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('PreProcessImage', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import io
 
   import cv2  # noqa: F401
@@ -163,7 +167,7 @@ script: |
 
   register_module_line('PreProcessImage', 'end', __line__())
 scripttarget: 0
-signature: GnTdd0zfAcI9ywvJWZRRHj7Av1teo95MRSkQ9vATl2D6z6q02j3JxGPpbhhVXlNgd8WP2fKForBPhTb2Ji+4fw2JwTBRRIH8pGzmHupkHKV27KeZdGMFcDJy6YRMMSML2qPVlm8Wk9CLQeTBONYe6A9mTT/FolctjbG0vr3uxu+F8l0ICpAVx9XmHJ73m6KgK6WeesAtScSg24DetAJ/2Q+R6dqRnN9aztZmo3r0KMcA6g6YYp4Ee/3Qtg96aRSjrBkYYRYepR0Y3XLJAUAk+ixM83CpnxYKveUW7AkS9RIMYd4NFP82IKH1MCRcA3hge+R1QHEiRlxP9wOctdD1Gg==
+signature: WqIV4MH9gkC4niSGXUJw8OQmdAQrlvVODs0LU78iDb7cY6vJsfeZ15L8QJpmL8uPvpjdn/TDc/whgZLmZuc5t6g8YgcGutKHcIRiEkFwezpyKDtO8d3y5Ddcv0WHT+Q5XtDYBq7UzJAVYKqMjmfQ9laASo53B7zeEfgWh+/aQVFVBCBabNbp+3j5AxP9IiHFSjtmgehT1vrUHBZrLdwK5cpybbi0FJ6EjqL2+aFaffGEf5GXCvI7FT2Z8sdVTt9Pz3k4zBrPz+3cPnVjAg8JGSfvs/h0GJbZ+rMAxHYVoglFTuZarBoMnUjZ2+oqp7b8DKgNmcJoN3pgVCgf2OWeNA==
 subtype: python3
 system: true
 tags: []
