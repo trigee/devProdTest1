@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Device IDs to isolate or unisolate.
   isArray: true
@@ -22,7 +26,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -88,8 +92,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('IsolationAssetWrapper', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
   """ STANDALONE FUNCTION """
@@ -171,7 +175,7 @@ script: |
 
   register_module_line('IsolationAssetWrapper', 'end', __line__())
 scripttarget: 0
-signature: bVWYKUwvgNAPnxm1ZaWeEXoXd2xxN44oXGuChchEZUvEpmJ8190avVnDQ07aqF+JOMyg45+m/p1I3ofIzw9TIUBD1g2l9kOTQIdh7M/BNuH7AY5SWMK6nP4MwKxScUvznSC2jkigju0MDM71KSrHoec978Z1vXTqSdQ7gyTbHtwYmRWsARfE8MFoQ7Yp0/xvlSFkHc5NgQtw1yuqxvexjEmBmWhJa6zj0txwfgZTSy32BQ2Z4FRnuTI66HvOdzEJ8v1fw8ajb7Y5osZkKDaSUIIYXHcFn7JHvg++XzuYZ8RObfioIDER4mLFv+eb4O9AnpWu1AKHnnnbCgIwtr7eeA==
+signature: j0zmqu64Mwq65Suwx7OC6xuBChmFoORZPgIW99q0Tm+UMSIIkx/0N5j8Tt13xNwzonxFwbxrv+mj9g7QP8KFNLWVA23e8Ok1Ybzs9ICdsZSbKc1jiI9XsbZF1sJuJBmQuCMDgC0bAAgFnd+Rcm9vFAhpqgOzs4NYhw4vr8w0K/mJqKz92vlZIoUIvz9PHyOf4s0ne8KUlhlJxT9MRdwiC0hWoKq5hDegCQ3Z4h37qSdlPWkQ9wvssXmzkDimBd4qO9PN3doMaTbvctHICyZiFyd1qgqq0+N7/Z/SHNwdRxEnDc/M2npbbJSO/lR75oSQyCkh67PeMLK2dxqXktbW4A==
 subtype: python3
 system: true
 tags:
