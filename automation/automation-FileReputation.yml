@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: File hash to look up - supports MD5, SHA1 and SHA256.
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -36,8 +40,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('FileReputation', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -71,7 +75,7 @@ script: |
 
   register_module_line('FileReputation', 'end', __line__())
 scripttarget: 0
-signature: QjgvUuvKrh43SmglLvuHLy/rd5AKpIhvszDLSDGDGGPXnrkeXRGdUjVRG8gWKK2p4P658QKPqZBA2dX6eHqO3YnRM+4rZu/FzTGTLXSaxlpC+Wzf1xw7C0M+GCdKbH25F/wnTdic60wrTm/3NrIyfCBV4dJPdWmmmRiiKm7ZeAu/JMW9EV5hovhgJeA9daCA92u+vXxPj03vH8Qrqm23JCgHJPlXH0KHaro8PuySP4RRjbVRmIW2/iuH33EMT2YwBMuVQd8jSpJaS8i7sPXTr+SbgxmNoxPi1EA3HoJmqrpDzacBfYFT6GzFIIoEHUeUPEzwNTSTTF8NK+43cWkbcg==
+signature: 0PH1Bm6xkyh+8rtcTL3MzraCbZ5scMW3M+4/AyqV5i4L9jPRe6buKycUMpUbrs3BNDBhc1028oytWrmH9p5v7yzBXJoQeIO1moJUNNPV5sWA9982lrH2nMxs6RqSSldOcQiPiCKpUyNTfuNmCeSSO0QRoWI/TGWQPtttDtru/f2elHO0XkL/gLf9Bwkvg4aiHMTh8vmrP+nA4CiXzjOMTUdA/aHJL690pYkHK0C1Xtg+bXco4B7Y+w0PoCwSJavVWuAtulM2wmUQ8icUqkWXX7OwPWynwjRu/+9+uilPIRWwzTvuGuwcnWWXONE0NPj+DZnZqGiKckxvwRUJD68dYQ==
 subtype: python3
 system: true
 tags:
