@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The war room entryID of the file.
@@ -43,7 +47,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -85,8 +89,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ParseCSV', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import csv
 
 
@@ -371,7 +375,7 @@ script: |
 
   register_module_line('ParseCSV', 'end', __line__())
 scripttarget: 0
-signature: igpn5c6c98JwLt3MC4A9noqa5ZxefIKGvJ6uCopd+HhMzrImHbdu/RDkyDRZz5vWRJ1vlavtWO4rY0uhT+epUakBHf8moDSiWTvETezc6wdatfVL8K52I7wNxR+850hn4TrxandIqC/IPOdOJFcC/i7mbebWI/FItXaJXCEys+wFTGGC82FPap5X/qWf8nCexScNgBa2PF6Onvk6JPAlwFRyQ+e9nqVyJ0hdT7/Ucgx67+Ka9INudngaueH02wLZbekyHY0PmyLS+/IGclkR6Q0+toNFZ/9OdjxawtOUGq/3Wt6mz0AJ644VUuqwWigA1OEQxiVbFmEMqLm2Hve+mA==
+signature: bWTu/ljbzCH+Gi8GPlNAtCHe/Q4rYXkWCeEX1XCCr4380eBP8Z0fBRHNYVvJYuRY4cedzpFXiTFzHWnTxwu3lPEm6oZ9HoamNeQth2O0pwLp59bVuMEsNcC1W5tPvoU/IKScCC+GBCUd9YPaH9on+q/nklyA/fnnPWUUGwdFLXZjs4efWtesQjQsRY9RFsHWt6GdVT66eW174e7Pk13ufklJFObgx63XkzBbQPCHgzhjSZV9vzRwKGxPaI1KvHnhb2zDhQrMtWWmPXAEnH/bf9lMn+oTbyVYPQttQD1hXAx79aFonTyOw5OKYxX9B1G9KtwXxzj5z8D6RWp8PIGN4w==
 subtype: python3
 system: true
 tags:
