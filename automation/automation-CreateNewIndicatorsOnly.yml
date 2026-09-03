@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: |
     Comma-separated values are not supported because indicator values may contain commas. To pass multiple indicators, provide an array from context.
@@ -68,7 +72,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -108,8 +112,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CreateNewIndicatorsOnly', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import time
   from typing import Any
 
@@ -320,7 +324,7 @@ script: |
 
   register_module_line('CreateNewIndicatorsOnly', 'end', __line__())
 scripttarget: 0
-signature: mqyUxqoBRJl6m0tISYVWWv5OvMk8TW8PvmpeF31p0N7CdCTvuu+Btxl+Rw4dGnyJ2uq6ar42SLcX6ceCv33kKyb7JbfH0r/+7aV8S9LD34+J9gzZfxXREbGRRY4ZMLGFBsMZeGvYqmUYpViydfGPVEFj9FUfNmXVIHSBvXtA71krkFxiO4CxM6TKDTed9ECGBO1e5vszTJIrKF3rV//bckoo580+/R3NdRi/WhCS8vwY2weA24vzG/UlqPRzcV8IV8Rf/YL2Scb8Wd1AbZfxStJ6pQcEt2kxgFe/Rjd6Og0eBWSL6eDjguWaTZknJjLGvQpVCpi8kgouBqiOhtGDlQ==
+signature: a6U3gyUvQsWSNLYTKSJK2WGLBHacrTQ9jphwu79gYG7/bXI5RJw/OYcNCY9ZQ/AIM7PMSUjX7PPG4IZF9kNnBKi57OUBTg3AR0xwrdsTzZXXhsK/Q42VwWthF9DTN9fx/VXK+8boiIOswEvs2TEgkh1lsOx9xVh2u4YJYmxnFRyn2/lpffOgHzimyg4jgx4ynWMRd0qOEoj9OS3Ow8HigQ8hQRoMF5aJpNslk2kH271I8GaxX8Trk/7x2u8d1Jmy7ksMRgepATFRHofUTIPq+BW3l3DfP3aiCWwhftwBlrdYwx5yanFyX/zivlEyqcOGpqXdpLfkn0/nrlHScWnWNA==
 subtype: python3
 system: true
 tags:
