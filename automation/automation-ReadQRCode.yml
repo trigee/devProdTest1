@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The entry ID of the QR code image.
@@ -14,7 +18,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -23,7 +27,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/qrcode:1.0.0.9117276
+dockerimage: demisto/qrcode:1.0.0.11458275
 engineinfo: {}
 mainengineinfo: {}
 name: ReadQRCode
@@ -46,8 +50,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ReadQRCode', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
   from typing import IO
@@ -105,6 +109,12 @@ script: |
   def extract_info_from_qr_code(entry_id: str) -> CommandResults:
       try:
           filename = demisto.getFilePath(entry_id)["path"]
+          if os.path.getsize(filename) == 0:
+              demisto.debug(f"File with entry ID {entry_id} is empty, skipping QR code reading.")
+              return CommandResults(
+                  readable_output="The file is empty. No QR code could be read.",
+                  entry_type=EntryType.WARNING,
+              )
           text = read_qr_code(filename)
           if not any(text):
               return CommandResults(readable_output="No QR code was found in the image.")
@@ -133,7 +143,7 @@ script: |
 
   register_module_line('ReadQRCode', 'end', __line__())
 scripttarget: 0
-signature: TB+ymkJwP7rrU2JgWb94PcuGsysoXHuM7U+oPQ2skceQPq/ojhPWPKoRCbieA4lOfYaseLaGezITNGy/IAI3YauFWkmkaqayzmEmIb6g21hBlMhOZTGWFjFgWKZWRNOoR/zZVV3ZgDeX/r4D1jGH0zSLBilDMyuo3FZ7LUyjcXmK+JmtGP2mKtj5J2ET50D1TJCM0KRytkBwAPZ60Sqw0+s7Ky9e7lvaRXgslv88QKoIZjan6NxBGZK+dAz4kQ8l0BOAW21e7fG/c9uBRtoQnD/mlqZUB2RpRYm+VqII5QC9GbE26n0VNhPvvLnhzZf24NevCOuTRD4in0ahnmzOZA==
+signature: n3sDm55LALM0hqdIlz2f3QrnQltAcmxTYSDkC7bVNqjsLpaDuIC7LhzdCHb8EAzwKhd2pQEXCMmnp+qWPBkWGacgZKGQ1eImXy2zxI7BXIYM51f9dwPP9LPH3H07KY2vvcPUX2R1ddoTSZCUX06Srr8B4xetZ/8KRxCEnb5ap5X+0KgNHq4rdXhjTs+PuYzFPPg87spuprcaWiBZk5xNmaPJ9tg2NEb1c3M6YNGZjBLNqRSW5HtEBdLDVTTpB1V6kAUxtS6IMpZKcu1+EDRimFlMh0HE14IYaqhmCNU/pUMfvF4fG0DLqbJCx42So6yPHcPHpKq4jRNIQkVJRlypmQ==
 subtype: python3
 system: true
 tags: []
