@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Duplicate incident id.
   name: duplicateId
@@ -20,7 +24,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -43,8 +47,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CloseInvestigationAsDuplicate', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -79,7 +83,7 @@ script: |
 
   register_module_line('CloseInvestigationAsDuplicate', 'end', __line__())
 scripttarget: 0
-signature: vN59+NoNd7N8lGx2KpQGuIErdDSZJGybAzwhAT6+ZrcwQEObqThVEZdZ+nyUtmR9jGHjbexlUX48X9FY2HHUNLSFk78PCBAOd53twqjiLhV7m7C8aoeIi/UdJRtX+3gjpu0Ri39g5X3L5Dg6vUKY6ELl8gvWN34MbUhJDpVFwKDxD2Hm3crc5Wuy1Xw6CApcL2ndKwpXqcVvY8WrYrI1zuzpvotS237lhvowR6dTh+XdFvhB/6BR7H3mwZ3+E2GANOPxPeSoyim4Q4cVOAOjsU+Z6Hq4kOM7RPK1bZXBKKLaxv7Mhzw9keewYDQRXi/y54F90rLpkzLrouuOdo5dMw==
+signature: IFCbaSO/pJCtO2cDE+mYF5+JMV/Bn1L1PDmzGMpW+xB7241qpB3tHQ/o74KQxhKCnWsxl18y4A0DOMsynbCnWepGJaK8pjb6tATeTHCuuEQqX/JtGFu5wytlkb3vKT6pHhgDvj/7FT9jgyGvY0LhdIKg+RbtubP+mPsPMJv3q7YsweOL4+sTaiTo9JAtosKdWsdWjIvEHGpR3PyGfazTS1TrdBn8QIAyz3Bp7RbgTzcniCCa3bbQdl+FyExqytDfdPwW8ClTyd2AzWT5o0GUTxZs/Ej5qyvTEUzqdqsCyiwJhxHaoLq+PzIOVtlzIv9f8Eicu48iGKuKUdLiwl9U8w==
 subtype: python3
 system: true
 tags:
