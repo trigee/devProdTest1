@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Entry ID of json.
   name: entryid
@@ -21,7 +25,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -63,8 +67,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('JSONFileToCSV', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import csv
   import io
   import json
@@ -119,7 +123,7 @@ script: |
 
   register_module_line('JSONFileToCSV', 'end', __line__())
 scripttarget: 0
-signature: 29IS96Dqj0g0DQm5JsPgOQ1ic1cr16Uhx4W08nODpV/JuTVEPHwJoesqamDjeiuFVKQgKejkc8blpty3+1eA5sJAA4dW7Rp5w8+NEQMGCf6UjGL4z+B6YhXZAWVNtTtBJIWgU3pykW9TAd02HMKcky1mPepRLXjp1Cdwjhvad40IoLhDht7Nb16A7XFIph7Jm01hyuwF9u7v9WLzlt5vQ9V8LCJuIwO8XaM9R3J0g16S/UaT63eryexxUfLG6x3tyzfr3rGZZceMQwrSETPhmq8/FaTFFMOOTyPqknIK4DcivEHgzNrO+w2EN+3TdVUB4aVYJgKgJo0UJNgvdOF64Q==
+signature: rew5PWXn0+v31pj31Ec56XvGObOaAjIjpdSbHplo7tIRNdv0/d4IbZmLzgAfa7sbEGT3Ki/Ov0mepskGTKYTB+n0T/WZ/XrTsCjudXWbrlNONMqjN9U3ZGSy11wlZoI3MKS+Ml6azbA4/kwPDPCR5YmJBZJTFaCzO6iDoT//bgEm3ScEfUHtrSdjwVd6KGk6sH5diqqoO7is6dR31xvsCDwi1eH8S4m1rx+Bjd4JUtVSOWzr1Uln4fOStC9l3ReY1CVVogTwCt4826mEizaA6Jn2X1YlafUj9Q/R8gdF7TI4qk9hx0qNqCYNlqHRSFXnL74mNYcw2tsdOTfeSV2h1Q==
 subtype: python3
 system: true
 tags: []
