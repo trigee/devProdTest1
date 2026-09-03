@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Alert object.
   name: incident
@@ -15,7 +19,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -38,8 +42,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('hideFieldsOnNewAlert', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -82,7 +86,7 @@ script: |
 
   register_module_line('hideFieldsOnNewAlert', 'end', __line__())
 scripttarget: 0
-signature: H/ehVlCDHhcX2r1rZWoPyeKY8fj4k9DSNsq+CjGNu43yASJMdzJWG+G9YfUz6rPoUpXfLh/uDUwP9cv2ojwJ80JTpq/Oh2P+WIKsas+Gpp9vt4YktNv3L9J1RXiBzRxzL3TVxBuyZxX90V4mAtZLJvruiZXkZieiBsJhmCjJ7ajRriiKWEf8tEn9r4AQHac4PHulSG0hQN+k+mQFBqunfx2rr+cDssKypjKlxWaCvKBhNf4ZXMJe5d8mN5WI3pCPZA0N8oWIm5r+k6284NIxNmn0Hj85VbVheAuKdhX3k28tkdkGe/DikmPKIA7O5DdmoVTHPjDzLBK2Vr8l7iV0kg==
+signature: BqG+2zQroewoGtJwZi8DuERokijee/bfGzDxT1ilCQ8XzOcaxfyGry6DAciQfku412KqV9z32/YEQ+cmG5gzP2ZXf/lQNyVIab3gqgShrYuVbmkBLK7F9EwGCk7E3HCq928jwyudXP7y6H2+x0kWTyzAl1dUeMfelFVSUfVwl9qMFMXWeh8cc7at8GXsDtKecmRO4nK+uteLTFcRZKfelE7Ro9fJNdKf983zb4x4s41fJbEeUGTBywO3ldpXxdpOz8nIZYHBCrHqRHp8DGalTUUT9Jo2g8vWRaBfYAc4OoxsXFdeu+b5dOwFwk51L7gEyJs4lDQjynovhvMhmUlvew==
 subtype: python3
 system: true
 tags:
