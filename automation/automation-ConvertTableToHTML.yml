@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The table to convert to HTML
@@ -24,7 +28,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -45,7 +49,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   headers = args.headers ? args.headers.split(",") : [];
   if (args.table) {
       ec = {};
@@ -58,7 +62,7 @@ script: |
   }
   return 'Data does not exist';
 scripttarget: 0
-signature: fcTq/9d2XLhBP+FOVkwpdGbFCqi/DXTEyrglMfKLHAh42Y036WK5xqgadpKJqwOjcG27g8OvFB27vAXQujVJmgoRSA3HrIoOogrxXzpC7SlTWbDr4QYLSTDWXPpOlgHCqeJuf+aq+s6N3DxT9wAlG7NloafQ8O3ww39rgQM3lTd67vcVsbgnBpB6lwvWUYy/Z5IB5UPhxzM0CIox/fdjRIXb5AllvMW4C8H5moF2jXj/S3TL/u676k7WiGgOMM/wDN1xybwrUDDwSbd3DhP/ogf0tKu899zq095K2yMUv7gbb9dA3mp6Ceo8DmLsPfA4snmwes1PVVh1zUiXS/c17g==
+signature: kM1cx+VIiom1QvV5mxUCKOhZmtdG1+SjXa4PthA+wmAJUv8yA/RAaisNqX1DK2bjn9O8SAoEoC56KVJ8o58i30phrKhJAThmzX27fWK0l87FtSk07KnGz7M9JyIkYFtj0i087HnZUSV9ysbh/+ZumICP6ba3Y5mZYRV0QHGPY0oMrEt1a/ChMM/Cq6tQXgdP0MF0BfW9+lWXFALZVNDX/rloUqIBn10ESh0c1xyzwSgK3sMh0gfd+6syEjCgbc/ayD0tVHnca6igyjwKXyznYwXsQn/rrZd7ceRo7ASscNqO3vwkeQnXZhsVrWfPotyqOUeRdydPc3q3RQ9AJIsvJw==
 system: true
 tags:
 - Utility
