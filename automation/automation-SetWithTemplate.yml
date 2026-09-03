@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The key to set. Can be a full path such as "Key.ID". If using append=true
     can also use a DT selector such as "Data(val.ID == obj.ID)".
@@ -67,7 +71,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -90,8 +94,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SetWithTemplate', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   from collections.abc import Callable
   from typing import Any
 
@@ -362,7 +366,7 @@ script: |
 
   register_module_line('SetWithTemplate', 'end', __line__())
 scripttarget: 0
-signature: 2YdiMH9eTJu12CE9csBtmA8tZD7pH8kRA5Ui8xkCnuAybGI3YYOKsI1UPAPt+3DMwnHs2KdrksbsCIXzC2ICVnZkcQF63aKzHaVLpVlgawPvf3duU14WeyLpi4SNDXvebJaMfNV/YZnkDTtopFscPTfQ+QoA+WCAocdjZSHDGeK4UyAj11DW7iNi/sbFyv8RkZrlU7ecY3Jd+7LmLKj+uq56px3kXIVOy3bhk60cUT+/C1/UEsGLdYZxs37AlnthbUb8Ug7tNLA2XssoFM5EYlqqa92/Ay09Q4pDuaZ54euuI3Wdqh9m1/jHt3yJXEEXpOqLzbCI8hFixDazwksvZA==
+signature: qCFmTY6oVII7ZufZx0oDVYjZvnA4dziD++b7Ydsc7eR7XJpw7BaPUkDNDQBMKsuoxJQ1kXD2tJNDAtHSndC7reV+K8e+MgJPkhuqofmkJxwh4Glu/ytyHtVH3Zy6xTlP6OGnjd1Qtk027Le9QBidGKsKkyCyJdo30KvlHpDON7SXuoqzSIsP5AUn9xnoLd/NhMRmqFBTDuSXo80wqs+cQxtx7H8gzt7Co/NP92nu8S80ko0uhyvhd+03A4Esr8TxLGWdFEwhRaBdbEE/mjhJU3sB2zKIOvTGtp+pXAhqlA8R940pXDG/2zniNi3iJ6OgkuQmoioAwmp9LSiWaOoy8w==
 subtype: python3
 system: true
 tags:
