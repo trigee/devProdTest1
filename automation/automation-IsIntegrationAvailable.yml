@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Integration's brand name to query.
@@ -14,7 +18,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -36,7 +40,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   function isIntegrationAvailable(brandName, allInstances) {
       const brandInstances = Object.keys(allInstances).filter(
           instanceName =>
@@ -76,7 +80,7 @@ script: |
       throw `Failed to execute automation. Error:\n${error}`;
   }
 scripttarget: 0
-signature: vLUg1wYzCwhyNJ8Yr5sBOkLzwW5NvUW/3hJRB4c6TS4gusBT8N8tsMF8uKe0Ad9R7oxAkYEEbPldhwHCYYgTRhTPV29AxLcsxGEcCMDcvk0IqMaM3deaLg1Ld0fpvoyDMSNgwVXXHh/+BKPTXMWjtnLoSyvaHahUz/D7gytz9TjuoWILT/jjLdxisvp9TJIQ3uS5mo66Odza3GLA4FM29gWUYA1AOayCSQZ8a6ovAwUUDqdu2V6TYtHkcz6P/ipD9LJ5dUMTZeBlrXZYqSYm+lgdDvtzWvf3t/m+MCgpSQ3Smm+XU8tG7CgOVlClLJABB2cSxjUiN2ex21+BpejOLQ==
+signature: 3Y0CU4dWNNP13OUAD+klhJ60Dn0vMWZoVeMJdfeZMviWci73QrJ2vqDs4rAswcHxXOieiauqNqUeuwqJJc6G/RzDU2xYGr1OYGpcRIvQCMU8QCvseXAoQj12l+J2Nc0HEe4pDsa9/EFZz2xuUDdhQ5m1/3+0GYwr4mK0aUbIJ8rEIyobKQTw/K5SiasBamr8LHhVURNBylLAUvmQnQ/FuqKXIMh27SHkwSGELt/Wrt/2RxsDjxkkBUuAJouE24X3YJUzcbP6fpv1ZoWucU3Ecgnh4lD41l4uAY6ODnPxSrc3FfkcIuHOURFeJ4dprik0aECsi97V/B2deP3tR07H6w==
 system: true
 tags:
 - infra
