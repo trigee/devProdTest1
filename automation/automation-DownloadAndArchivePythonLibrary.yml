@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The Python library you wish to download and archive.
   name: library_name
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -22,7 +26,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/py3-tools:1.0.0.10120494
+dockerimage: demisto/py3-tools:1.0.0.11597437
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -36,8 +40,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('DownloadAndArchivePythonLibrary', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import shlex
   import subprocess
   import zipfile
@@ -95,7 +99,7 @@ script: |
 
   register_module_line('DownloadAndArchivePythonLibrary', 'end', __line__())
 scripttarget: 0
-signature: jAd1T/o94OANx8jxhsbQxADIW8ZgBcaBjm6VdfhP9YtjuH/uZM0OGq4cQbHKRkOT0JTXGaRX85L8DdGc9l38xa7SbJRcavnhXLGUQCFYy/4UIRvf0y0WXvCr4RaJjz9wnVDhVrREiICrMMPJHaBR47tj57i2KH7M2jy4VhKPKM0UYkORLp4oGzTPNM0Hkvx9Wvjb38B1L5zZfHTKR/vAs7FTKkS9NrnMnrnkJdFTIk0R+hL0Loz+eW8cO6Ines7pfhR2KZwY4D00YCA5rf/gc6WxhRHR338eUNTpCtipYSjG4eil3jmlZCzCuoxKQGWO/xjyhqQjUnbcSsFGVa+Ovw==
+signature: TnVszZPaikHUTWt6+QVp5EKIXeJYMhl9D6YrKc/lsuWGSAZpzrYKq8fLa+YprX1gDn4AjAAIPLjQDaXazV/ObfGXyCKbudGtG9usLahhDF6DqKX/gg1rM9JtgY4Sy/gEXZILsdp/g7qVRiDPFwn9RpJNZ6C+XerecWRy18rzsvMARrwKuE5pQfRey5pDhF+u+5wz3SDnIC4OcdIgRpeAT/RGi0EbSF9KwKEX56UCzS92FrX2+qy+VBk2W3QniOCxgyiiXJdx9ArXua4widBw00qkUZjDT2F1zYSGSKl1V+x+iq83Cf/nI4I/I4pXptftZVWB0PiTYV/95ViGLjmP5g==
 subtype: python3
 system: true
 tags:
