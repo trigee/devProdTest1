@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The parent key to which we append all the other keys.
@@ -29,7 +33,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -52,8 +56,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SetMultipleValues', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -83,7 +87,7 @@ script: |
 
   register_module_line('SetMultipleValues', 'end', __line__())
 scripttarget: 0
-signature: lLQh+VbW0VoZDk2s+08TzqOiZ73BDm5NCemMFdIO8vX2RFXEs9PeYJDxCUNHKYoiVo2v1rnpnHrM77HNOmXgocNzbAyBVh6rfyYi9zZteUf5TabmtNyn5tpBXOTvRUgtCOAcMRhhBNwk5yk4IizqsPpFuJdZkiIWYOz1yJ2SvUdjAXGmIVzCN7UUBcuAWd66CUokODiRtyBeriDdE8EnCf92Ld3RBCJd2djgHH7GnIPy7iL2a4Jo01+X7qcEx9775ZMj0PrWWyNlf7sDug727Mf1YFGku4qbSBQKTz5KCoQjscsaaMLuU+YDJRpvdlLEDFUbBZxgxlCwZghNOQkaWg==
+signature: 0DxF5Y0t0zlQpIwnAo+hUwG/RRdxHFb2dlFAcxuypA8XsyTqiPbIZuMAGHQas9lzl99TXRnwk7F4AhbM1GAJIpMijpesRlwsCCQIs2TKpSBWkhkPk6KmOJ2VBuMuaQ1LmZQqIefAN6gl4MeLyHWDkK5z+di7oYusiyivngkvWT3psyRHoe0tzm2+MjbPIJDeYgp5YkiqJBD7mj8nK9ZKqAmQZ0dNyfbicWVQOEfdnN5MktDG+c3PanpUsK03pK9cZrrc/O0VNYyT6EvS+uQKbXZmlBlC+jtC4FdO+wKpYWiCc+z2gPLcsdYpZV9IOE7ReUA7EMKdQbew2ClIpYRpDA==
 subtype: python3
 system: true
 tags:
