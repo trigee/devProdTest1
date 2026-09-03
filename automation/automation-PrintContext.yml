@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Output format - table, json or markdown. If omitted, default is markdown.
@@ -12,7 +16,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -34,8 +38,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('PrintContext', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -70,7 +74,7 @@ script: |
 
   register_module_line('PrintContext', 'end', __line__())
 scripttarget: 0
-signature: megnZaQCa00Mc8JhieAKlDLeLlVLwF8RQ5E9fNc2wz3/j/EVMBtF3A0sisAeDFF+CYJ4YVz846na26bdT/bxsXPx1mSiXfJQMKoEUexd5kqUVzdS3haUUS83cF1LNQQQV8GTp+GtEtzB0xsxRuWcMqlE5N7zJCnu06vda/wlRIlGC+FzI3WQXWl9i34N8bOC8C0Jat9GLb8Z49QSpnfT0Qv8ycVYbP8hXX5RR++aKx092XHANMw9QMKg6EGwSKV8xkSma1N/zrAWy1HqdB2xqB6S+xGh48i7D/fyTi2ibOA1g0yAHb3QceBYeTP85dahyr7iFrnB5ZXsLxiPcx6b9Q==
+signature: Lkt79YYoJvMi7tF1sfIFb0XMtyaGpq2LImI9utE4CswJ30zAkk6DzSYpz71wxlynlf9/3AEjCoYoVqKDXW91wV61adqXo3Itk8gRE9hallVmZtW6+3AvDw/qVP5V/s/fks+z1y0NBGPRXY0G5SgZDZrsxIyyMoXJH48NXiQtewNVjpQRpxRD7Uz8pjC0IH4EKYL/2NZtoyWrQ2FK6gjAzLZbnuZn8JUhk+uDl0xAKQ0tz65U4+lbNLTVCHn5aWp/22GG1ewcPj3X/g0QNmqV2rXFG98qXFG2ZaNApvhea+EoHUCOG7lX6Xb6HvgOK1oBzLBIUTXKv9BDnPImtDX+zw==
 subtype: python3
 system: true
 tags:
