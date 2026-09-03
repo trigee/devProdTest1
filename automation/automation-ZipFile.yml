@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: CSV list of entry ids for the files to zip.
   isArray: true
@@ -20,7 +24,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -29,7 +33,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/py3-tools:1.0.0.10120494
+dockerimage: demisto/py3-tools:1.0.0.11597437
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -78,8 +82,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ZipFile', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import re
   import shutil
   from os.path import isfile
@@ -205,7 +209,7 @@ script: |
 
   register_module_line('ZipFile', 'end', __line__())
 scripttarget: 0
-signature: Cg7t3KxKpd12Yxsy3mU3Jroxce9kFzyCEAcWUmv0dt4mzkJWYwrgMKvGW6SpT6Bnn+GCyxifUydUct4ZNznnqeEVGygHgAMu5RW7sFcAklBmUCEE6FpHupSV8dd7PpMUGANp+qALf4PlSdNlTlQBLyapGexjyJjKo6n7oH2jXEiyo1FJel/OjgnvzryNivaHCQa+lmd5zw+t3GYbELInKC15qCvfOJ3P9AcXdQn7FwIfd/PWT8klI13Y/bpRlxjKTrcdtQ2KwfQKn/nGNgRqNRUfnhzDKm6uriaFoAreZ6UAZAkSn3Qou13UfUmeSonfptehXzzOu/kczBRblJuDHg==
+signature: 2LHpevzn4gKDcsVXiNzfeTxoo1WcBI+pRgIUG7r5Q5R72SGll/4WzTn4aAObLbfz7XsgUrZFWgHRzKnpaRAFKODTJ4QWKuOdbvXwGGQx9DXppTmMShU7yj4M4ojR7Xid2f8sMA7LwNACJmYELzj+FSrBR5whkLG1NJNbA/DmW2HmRzCah3FaGRc7dznjPuAz8pKi/gi0ltaqYRrUXN6nRnlwOUKyMo/Pgt+Z4/v3XVk69/+Nl26lPmfSEPL2M0ZyuwBdBgdX9jPEb22XdN7+eIEAVkdRgtoNZuDV7P64SXbob/GPvxk2Ypzn3Zte7Stikrk98sVtRPoBZJhkA9PDzg==
 subtype: python3
 system: true
 tags:
