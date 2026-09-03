@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: A JSON object of all indicators and their fields, indicator index mapped
     to XSOAR common indicator fields. Indicator keys that don't match the XSOAR common
@@ -22,7 +26,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -31,7 +35,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/py3-tools:1.0.0.10120494
+dockerimage: demisto/py3-tools:1.0.0.11597437
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -68,8 +72,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('StixCreator', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import dateparser
 
 
@@ -3296,7 +3300,7 @@ script: |
 
   register_module_line('StixCreator', 'end', __line__())
 scripttarget: 0
-signature: x7gR8e8+fwEhjicR28dNbYbhxJGN9IdiAIgiWRqR+rsW6YzFWVLRu9CSSx4QiSpYRseMK+KX977osZkEWEaVlJdFHc+8sZ2KpMkjP4fTMh2pvadVFGLQrPY8spNS0jdugfBKpcZQ9ol787dE6EMxfjiij2hQG/TgXwgmh0Jffcyom0L8S/uozOtcWFRAWbU7iScL7XUEBpuqIHvKnS8WEW/XyQArKV7ks9v/srpeaTvXcnJGn/rByYZVq6IP+jwMfTo33XMD4WsWejX18Ie6VEigc35EaYkbc0n+QVLolhgoWnpbMWKov1l5TJMZ0dP3y+femAuc/bsbmMsxP7R9yA==
+signature: uwnz3UljK+3Vd7klEKrnkZBbrJcGxcqr/B7nxOS46n4U0p1M2aj/izBcG/zqRQG9mzcebtSoZ5+cXONGW1HxlezlqGgxxOZWWzMX/gzCUwqLKDone40QBDKU2RZNwuuE4achkYCtXcuzyidf3B/OF2ow8TOANnGBYUY7M8gV5ZwaHbwF2rwt2McUjiBzBHiwQYrSnHl8LLPjHV2IzvbbxTJIFQrUF2ApMAMBVXmgJh32qhRD/HCN+Z3DOnBtZs9h9skRKC0cKOhYqHlmxJbYXfDdKnQsg4mahvajBVHSMki9EZR90G9/KgcPMH9kH9sGZwTUFMnu5XEn8Wibs95+2Q==
 subtype: python3
 system: true
 tags: []
