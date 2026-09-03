@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The value to check if exists - can handle arrays as well
@@ -14,7 +18,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -37,7 +41,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   if (args.value) {
       if (Array.isArray(args.value)) {
           return args.value.length > 0 ? 'yes' : 'no';
@@ -46,7 +50,7 @@ script: |
   }
   return 'no';
 scripttarget: 0
-signature: UMdW77dQgZ4YZ7OcuiovO0YyjGpcTIzl/VgdkjDddGyPRj1KUEwzuW+5vnlhCdwm6bGID9UrRfqF+eYt3JbBkBSfOMOBK4YoUzrRAz9WuMr8tLcq8zKeAL7eZaOzLVViFCH+me/IlxyRpqehVwYmujqRCWh9Wy8nG8UpLLxc3wEetW9FZ/luRlIXrn77NO+UWmMICl1apSr1+f8Hi4inQSb2e1dzX7paVt5SzH0dYproDxyJZ0c4bAEH8sRCkWw0eDhKJmynM817BJnGNz7VbYrAAG7g92Vu1kaBmn+2GjI0YV89+JvqBnfJ74wobyhqNTQXjELxiJSMWLckfsDFkA==
+signature: nctlNNeyi1Yt3NYwl+AozLv4/dFSmIeiMzgTowBlCIiiqlN3j2fQWyrYHCG866tUnZHkaulInv0H4bHsORkGO7gG6gd5GoXoA4jmN0PfeSvMhWLP8wtoXZhfrcpjBQRPrmjpwpE9pzRVK+3bXmPqUshcvHBU5tslMx22DiS8KXSJIkGch2LKzHUujfalCM8WCNzes5Zq2xWoIqV7+saYj35Aba6A7TxjYoAC2j4Lfy6gzSGR/yDNMYAr664Gh0l2mWuMfbA++aVdGhvlX4BZbXvCsONTUQKg4S3kRKspyyG6Vpe7KoSLf1awfPvo5t2vCSkt4Nd+EocTiw4NuDQa9w==
 system: true
 tags:
 - Utility
