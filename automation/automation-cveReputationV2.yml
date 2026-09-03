@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: CVE ID.
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -39,8 +43,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('cveReputationV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -108,7 +112,7 @@ script: |
 
   register_module_line('cveReputationV2', 'end', __line__())
 scripttarget: 0
-signature: iYYNwjIhgyCblR8rIvnA9qfHZw+se9sHn69iMvgz5Q04xQLeejjm+ddY1FUOUPh/iEnSjPVpP48iVH7SP0c7iPAMuozTHb6AVn1FGfKc8udBaBDRgd4k8A3z4CpWYH1bW1p2R0UqO1jIbadY4j9NCIAR0jAV3AxzQ6lsfa3oJEZ/4nJzryajbNrrMYtsU4FCqRzVLW/h7ExtqLj2y0c6ABF1L5ZOG0GxZqDrrU0V2922/IW2arIpOlpV3PCsTZrqtP0r+YOU7pbZ8bGFeQJiJayo3W3zdyT22XhPWbkzj34AGRVWcI7jjbAJgOlrjrcxIiYlXCZZrV+ijDeOLVht+A==
+signature: EDscJbfi5/wUG9fDOFowK/wqAmO4T4P4tDztNyQR6gdPHl8Fn9G6EPcs+4o4HyhVQgJhXWtxgF4Y1Pz+XwfX7WEk6LCqDw17WM0SuDxbdw/QH4oK1zoMAUaXCqtIajUXqD3M6Pf65ItrJwRy/i8iOKsVqqs+N3Jf8MYi/kYrZm7I56i2c3uqzZijkI+4CSDbUSX78CEET8w54+GMNpvRx3ukMO/eEIvSsm4QNc7+K/rfGz6f1sMIWQI2ri1jrpXFXN178eVG3SBIVDLTr1oEve2OwJMOLmWILfVYSneg7bq989CJZfyaQeMV0+o5P1KD9DaG5/K07RuctjXQh+vRrQ==
 subtype: python3
 system: true
 tags:
