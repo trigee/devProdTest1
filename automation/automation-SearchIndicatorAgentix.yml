@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: A JSON array of indicator values to filter the search results (e.g.,
     `["1.1.1.1", "8.8.8.8"]`, `["https://unit42.paloaltonetworks.com", "https://t.co/i/adsct"]`).
@@ -37,7 +41,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -53,7 +57,6 @@ dockerimage: demisto/python3:3.12.13.10116658
 enabled: true
 engineinfo: {}
 internal: true
-isInternal: true
 mainengineinfo: {}
 name: SearchIndicatorAgentix
 nativeimage:
@@ -83,8 +86,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SearchIndicatorAgentix', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -351,7 +354,7 @@ script: |
 
   register_module_line('SearchIndicatorAgentix', 'end', __line__())
 scripttarget: 0
-signature: y9effPtEoeqbib/V6CYaUlkDuf+jQqFAxSjjlvNrlYMlNigpH6AD4uaLApQM/1BXPW+/khahRea11QafX5fAgINFb+wdiruKpTdsPnu47+ZnGbYumehvgpr4AKndFlKPWdJ4C18AeDXoypgKQR+gK5SFjWKwFKcP6oMjLYQ2DZ2G9WuylVy7EWY07bpmtIwNmvH/jMkdPzu6hifgedgbupfgUCLDvkKKuFw5ZUGnWJWFCxjpb2mI1XofHdTEVRt5ytwvO8e7/HQ9huCuW9hOJ/Z48WWoMM6SLg5ouZkr8LUhtdA5J+Y3WZffMg6D7u8XqtSriau06m/CTqQQrpqynw==
+signature: kzDQscBJZgK0rXhvFryyRvHNOR/tRyhaUaijAlkIBPElH1guRElNe+CXSS+g5nLshJ94IcRhGhPAa3PIhPRy0/ZFX0bpZHWxWhIQIDDDxB8FHFdGZCCYr9vQlOpfqtd6n2sIQFI8shHdtf/X1gVUduCnJ3Zvg1CKnubLJzft6sVif6YM+DdGMmD25XkB3hj5r1p2jAtxsxD+Ro6wQRoR9tJsdA8fOkgWlCFXADnizQDyO0f3kL9auuq+Phhf+5QN9X5kBHojhHivAgujZr0nRIC0hOOAwA02EnO5PfJIDGj5v3KcZSfe3LppyZntmoB79qAIVRoFDgHDBFIcRr0aEg==
 subtype: python3
 system: true
 tags:
