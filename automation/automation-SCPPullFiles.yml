@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: A JSON object mapping RemoteAccess instances to filepaths.
@@ -14,7 +18,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -39,8 +43,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SCPPullFiles', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -73,7 +77,7 @@ script: |
 
   register_module_line('SCPPullFiles', 'end', __line__())
 scripttarget: 0
-signature: ModcgiIbGI9paSk58H2rilFAEDQZomyy0KbkuQZPhsTs+aXV3Keot1gdDuyo0gJ+3B77fU5InQYQoBI27WkOQwKan/cj01yQeR3/WzzK0bDDHh4yKJpwGEFbzXozwmBAUD7PzurNDuh34b0RgG2qG4t0pJIb+RzQF++1Ay5vpTqfFFV7dA4NrVCT+OwZ1MRz6lg0vyYDbNRCaMk2W7RF2i3a9s8g0fAVZT6RkNTi434yBAiyV4C0/PUgy/XtBvJ3dfLyC3rpSnHPKY4WpDAdNwewt5sb9eF+e0V2RgKeRbK5TS6U0mt6gtLrzEi7pUrraWPIfocQE6atEc9O/vHyrw==
+signature: b+uMj4gf8b/Ow2Xgphu1F2ULk1KLtjDuULAAQVXTEmuAzDrqaDQkudDjC9/i/gclcwJzfgxJUiva/xeMziuTTIU2Ppg0WwhvQaabpvhWurPjQW6ucVoG+Ub0d3oIws+rckM+cQYDD+ZBIVc6X/GBwWyMbbNRS14bBQLL/jWygKm0rWfqEkQusf49b7+6CCgRajTy+YAt0cLA8YZ97kPNMv7aR2yJgrdXL0tz6KwVl3znEn6+fSIFEPStdf3LWrWaMved17bAoRRttdBw0yAsyhDelYbewOBRyQpGSasgsqMtzsTkKz9XZBVzQuHcJEOSbY7tOo0L5l1qr3aopFXTPA==
 subtype: python3
 system: true
 tags:
