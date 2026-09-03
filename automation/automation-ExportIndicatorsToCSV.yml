@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The query for the Indicators that you want to export. (e.g. type:IP
     and reputation:Bad and expirationStatus:active). You can and should generate the
@@ -23,7 +27,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -56,8 +60,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ExportIndicatorsToCSV', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -108,7 +112,7 @@ script: |
 
   register_module_line('ExportIndicatorsToCSV', 'end', __line__())
 scripttarget: 0
-signature: 10E4KRK2xifm6LYgy/Pk1S24IyYm2nBtvI2ehfITwnxQPeFYjD+k7YdyYMvioAnafnS5Hj5QAuDbTadZK1HHbdKs+R5DAQjMAlF4bCoyOwZIDOUECXxyaXa711WclQuYVVP3lyXIOPqym3FEz4RIBVIBnCF+KMjaH5Z+LANCN2y29UVi6LEXYvufEa+p1KD8N9UftiO/9/h7YkvvXIklG3c4tkR1oIhNByid31sICjtCipe9xPHBBDGn8EUWCgMVYumc++TOI2sAC5TsSR+bDor6HHif1AzoSCNlxsHw1/B66s7f2UMobCHQt3Tlchw8XqrNmnA7rQiYwD9BgRygtw==
+signature: 39BnjAvQgnP8q+oWa61nTi7ghUbQ1yQ+oBRqwIgDlIzP4N3ucjojtR4O7n03fNopkGZ5FrKctHiezAxHjXOpn3mCO3b3w7C3Vv56Cc3gJjSONbhM41gn5CdEJ1h+h8o4mUIxDzo5VPKnnq48oYKZ98Lr/0xSlKbedEKfBBkNT8rH5UIUVGVAEf1OsSwEz0nN39HX3rc4uvkwm5g8H7tuO32u20UEI3iLo6TxkZss0PPSjZi3x9pmW26vlNx4XCA4Y6CGz/1dMvfR52+KsiczHawgV9kPYPXwuCQ/uoTb+woXOsw9Kk4mYX8IQ9gkqFqaX6wm0KbF6k//AmrFhKmjqw==
 subtype: python3
 system: true
 tags:
