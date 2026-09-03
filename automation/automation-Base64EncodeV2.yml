@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The input to encode using Base64 format.
   name: input
@@ -12,7 +16,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -38,8 +42,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('Base64EncodeV2', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import base64
 
 
@@ -65,7 +69,7 @@ script: |
 
   register_module_line('Base64EncodeV2', 'end', __line__())
 scripttarget: 0
-signature: GDMWGwJjXn98mRnhuYSc7gAJwiBi/yEGDppTFMUNBRt7Jc5ruU14iocHjmLeqAwmLlde5wxQHZV6++gU8cAcZxUNuTEY1m+SDvxScAhaqrHjsIQNo3Uw01Ews4QlVuhjZt02LgNwoVvYiszQZGUZ2fuOVRb2TtAUG5S0EfuOAv9rDFxYTPIC8XZrja19KibuLDCrrYOx3liuidf1kehGjDmT2wt8Qh9MmTH8crIQfsC2ebQzA+GQcGWdcAqzMFwFymhF1HbPwGCnSKbBIXb3aUUgQ81/f7Q2Is+KWviRV4+E+kqPjMk1+d94dsg2ykjIveLmiVkAzUu8f/r3r3f5Zw==
+signature: il2sWg6vLT4M5XO0e4z6ZznxVthZtbSp8VfcAbkCYWpAu9sBZ41x9Fcy+NtfSRUmA3a2MGm+PVNHq14QGBosVpNZqFNFCM3a+LieLAZrSn6P9PFQGpPvHYU2/Xn9OR8vKKKQtfiNUihx0BOFLQLlYoj21PGQl7FKTY3jOkG6bYs1xqHC+VFOBn7bm1OHWANlwVA8PQGoMUJGITCQnGl+hFKKMFbib5LDTbGC/RC8QgfSZ5KpvTSWexm6PR0aJVmmuRpOcI+FTKfqajuom5AF3aHdDdKtEBYroAJNhk2ACBl0Z4aAA/lH2iUMAzM2KBfdXwrQuEs6CRLEWjlhBGg4Pg==
 subtype: python3
 system: true
 tags:
