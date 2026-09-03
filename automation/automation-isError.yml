@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Entry to check
@@ -16,7 +20,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -39,7 +43,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   entryIds = (Array.isArray(args.entryId)) ? args.entryId : [args.entryId];
   for(var entryIdx=0; entryIdx < entryIds.length; ++entryIdx) {
       res = executeCommand("getEntry", {"id":entryIds[entryIdx]});
@@ -51,7 +55,7 @@ script: |
   }
   return 'no';
 scripttarget: 0
-signature: Wk4/4DTJq1qDDrb6E0rtF4FrQkxQ3mU7bsSOu3fe4k/lLEN99Dp528pKv06s47gmiml9TODp+vOKQBfWtKKUVH5T8NGdKM5Syw/SpL2+WOk9Nwy1+NrkH3NqtOSjjBNiWgdRafCzcR3JqmSuQIY36VL9ulmAFJN78bEYLTHh/YOCUbBbYLwjQvRK20Omrny6sXkUohzpgOJRIbtIEd+SrwJ6bw/yCC/ivD9vclm2L3ASzj01f8mimrBNVLOZiXVkKnhIfP/tuDZvV+JVbzp1RQPcqEzmGK7+D9mOoGxdZ5PeYX2ZrVkdwyIxmQy6sSD9gyPGzUe1iHZwsRwzKAZMQQ==
+signature: TAddBCVyzpKdXb7D3kz7nxg8MWv1439NLVYD6B8Vv85t2hGFSFOayiwfBG5djGvTrATspESkD72qEKh5Te5Z+LbwW8gIxBi6pX6qBssIG3exknfB4F1/N3e4LcZMyH6KQIdSCXyQf7Xf+4QmhE32FZ15VqrsA1RJi1FgC3qf9cNdsYb0TngEteDShZJsTJWz5x22Bq+cADBdFhIeIEe9KChurRFlUL8Nj1BYJd1BM8qRdYClw7kALi4MJCTExuy0qjzNH66rIctKQyIkI+30pEBrntslwJE6inhO9opR/ZiYKe49ZGuYtF4E82AjkCwT5iRuOKLTumpbNu9y6whEzQ==
 system: true
 tags:
 - Condition
