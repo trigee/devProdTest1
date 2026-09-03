@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Ssdeep value.
   name: input
@@ -20,7 +24,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -43,8 +47,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('SSDeepReputation', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
   from typing import Any, cast
@@ -186,7 +190,7 @@ script: |
 
   register_module_line('SSDeepReputation', 'end', __line__())
 scripttarget: 0
-signature: FaUNeQ/0gpSMhVQGZCaCB4of0SkLLQGBbupAaJVonxQAdi6JX5XldosJijN1e9fTjGDEEIctDuNZW1Peffba+rNrudn3zW4dhiZ6RZDCWO9+TnyC2rTQ7P8xZxi8ga2/KHSgQS06Z24TlnMoWroVeua4ZF6+1fSQxE9jj1+va8jtIJgBZulP4xP6afpeaNPRk/CPpLVcp2juaIOJa7NpKXoEiiUibfID4WrTjdYjEtwflnHp2/p75YXEaUjIOAfoPmGWlWmOu26OkVJkroBfyAF0U4zK0a+HSm3xvWtlJGOogvr9IwqFgD7iSHL/O/2JjAC3QF4vO4vLso0670bGgQ==
+signature: gC7Nx+PkPJPMhOgSCEOx4oSCWrFV65c/h1N/PoKeP017CZABV/rbLkCMAy/zpbMPkamIRJioolgk2pKwAwMgIVi4PrXX5uyQk+18nIybKzuqOYSj6RGqhbO9PXYRh+3OW3LflTzTr1Qn5agI4eC075zBz2uyfcTndWR5nuDCoKOyxb6QT6pRV0iBekFkZd46gMhUJwLieRWKhqIJ9M/obPXN0HSp/rJpw96Fhgsw8DbiL6csrWxlqGrY+zLrABjs7RWkMoXDvv40jkxXlZxX5z0ou8ZgFcZYvSVncqYbKUOmi7mZ5TbIDcTI+kpCnqKHz8iuqhw4F6DdlOiaTnXoPw==
 subtype: python3
 system: true
 tags:
