@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The file entry ID.
   name: entryId
@@ -25,7 +29,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -48,8 +52,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('FileToBase64List', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import base64
   import zlib
 
@@ -98,7 +102,7 @@ script: |
 
   register_module_line('FileToBase64List', 'end', __line__())
 scripttarget: 0
-signature: THcGymLxKOCO6dnxGCPL/HN7w6cBqxjb9R6UsKqMb5JXbo6OMc5D0qg19SQPhrjrf3ekB0e4wdM3hHRYObmnmyr6XS5pOCw2HPfuzw4SMSIMFQJe1OS2d9eTIA54GH/UauFWrN2/u0MzFhCmtEPSOFflVRv/2ibt/Ggaq/9T9zgQzr4QCylx6NhMkHLkWfh/zW0brs3V9ESXlsYYcRJN2uRZbw6h/iN8uQR5F0CPQDKXmac0UwiFcGM+CfmLmFq3dgLGtP1ZfVJYGHnJ6Cx4k0u3Eh05fAR9alkHw9g3b6J9XL7zLPhUCG0nJjgo5B9Be2KW2+F9vi9qcgMvhUOSiw==
+signature: mTGV0ztHw+EFxytyV3QpqGiPB0FAiWeiP2nWAQ1qN4dlxg2bPiE4ax10x8FED6x3ULa6awMrxTssSh3JaGDSVUyyIO5R89ljnZAqcI+tGH1L5b+MLnHbKd0nFJjtEyCp7sC6yckZ06lWrAA8uP7Xkk5YGUjfaaMtrIBe4jEtoZNi0aDVBGKR1sESNAYP3eZDWhfcpnm03D4IQNvwcsTGH5FmYsJrL1q2Uv+YvjLFwwVHKG9IlyrWa5mweTNOKy/yiRAYOZTYDhKhRztQYbLke438JfMinACud0bdZOGKkfmQbVO8qQ5cDkGtu/+filNrvB2WlIfevwl7go8Pn7vSZg==
 subtype: python3
 system: true
 tags:
