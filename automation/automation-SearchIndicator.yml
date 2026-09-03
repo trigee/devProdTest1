@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: 'Query to use to find the Indicators, same as you''d use on the Threat
     Intel page. '
@@ -26,7 +30,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -56,7 +60,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |-
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   var res = executeCommand('findIndicators', {
       query: args.query,
       size: args.size
@@ -121,7 +125,7 @@ script: |-
       IgnoreAutoExtract: true
   };
 scripttarget: 0
-signature: cMg3fIEojLqGBNfUkulNijW86bdqIPsKgnqPNcYGr6I1F116CLBvagWNP6m/kpr6p4j4plP+vpfAjAvECHjQUSCbyFlhgU1sN6g9L2+4uBK8mvcrRfNiITJD0GIvMb5VLSv+6HboPW7EKnAXTcb1TAZU6esNajShgdfeLj/muoDOJgPBeVLiUVzaPRXIJStThloXxNaf+sm4H8ql4A2yTrNhpZglicn0d3qKQweg+gTgd06P94CS/A9mCgj1nRkAbQ3RxJejedxpjkIPk2fYnEOHBNCi9Ehv4fkqKykO6swk8THr8g80NKlg2EiK75sos0SXG4uGjJN+Y2IwBWpLeg==
+signature: kFd8etm6+iVnn8DeGPdMZD7p6RV0QYv6OtD4UaIQBjzGYXnFvGlewlM8q1JYI2PuqCXOeh4FaNhCX6zpe6MadVOa9f2/p1efjZAwFXNi3b9aUnoXMFdNXIG53WEChNQHSh0Bs4fuSKG7VbP6QU4LOmdN5VK8FcV0um+rTlaMqX3JWQkTGudatCfCJl7zm03f0d25eHaI9QESGVhNRU8uQvn/vbqcaiuE04M5rv94LwLmW8k9iL14zwKNC4gazaHcJyPXTaLreU1JHShhSFrauumn2G/MbdTqOvuKwZUz6lTL6of7HIubuWVTxt/5GY9TUQLGpdtE0Lqx0CiV0EzMZw==
 system: true
 tags:
 - Utility
