@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The alert type for which to return alert field names.
   name: incident_type
@@ -49,7 +53,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -81,8 +85,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetFieldsByAlertType', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   from pprint import pformat
 
 
@@ -144,7 +148,7 @@ script: |
 
   register_module_line('GetFieldsByAlertType', 'end', __line__())
 scripttarget: 0
-signature: 0PRNDH6LvvzehzVMptNd4sOFFuQY2/jTCMmgKOfAhcqSlHt1Ls2j7qd5KHGXPX8vp/ktF7DxXvM+lpoJFXVUsVVHcXm9NYJKL5aLWKEjL/ZeakJChlvUeCmewz/K7BXKwkPYCbYY6VOLT1I31bPFnD19tXyxg0JvbmV+zWJ+SddTzhVmdyOjQU3SzUyHlPLokhQHcv/0ycbuNqeYHEv3jbr3FiNdmofhhuo/dUlZ3nhLBokWa6Rt6tw/Sl7wITDBsDrgTA48lNDmqySwMtooZrzRXQAqOuOhyL78oT+rzel/aot+6NJz0k0+rlveDQFKnfd/O5QcRtLvRYS4jltXlg==
+signature: vd/Iqpm+SuaRf7kVOvUqgjuSRGCeC5uJ94Iha1YR7ioEmNIrt1JsbrSxwpu35YDyT88ZYX82ngyeNiFgASIhPO0algGoZHhcZ7pit8ZN/vuFPyZ1hRv+p2N3dlmlOvHIzNaEPknZi4wT/h07HoEVIkDI33DMfEhHg/Rq6LJu++558+ctGuW7br3PvjzOr+mTWkpfXj+yvD9afuP7VhgXDa4WAesNgWKgdRoqjdS91GWMqhufXWB+okENey65hsxNdFn8i6K0mBSisqRZ3C5MVMp7d0nWrTNEJDbYHgGDpaHu/N7h3cgEd6Odcuq+8RrDdz/dPJUWreEVGR1w5li+ZQ==
 subtype: python3
 system: true
 tags: []
