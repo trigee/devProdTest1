@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Indicator with detections custom fields.
   name: indicator
@@ -12,7 +16,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -35,8 +39,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('PositiveDetectionsVSDetectionEngines', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -105,7 +109,7 @@ script: |
 
   register_module_line('PositiveDetectionsVSDetectionEngines', 'end', __line__())
 scripttarget: 0
-signature: PWF1dJeF8CDLhy9s+cfWhUYbzvz8RcTYXu7yi1sGivwJFIG3la9f+rmEe22fmB4CJvG6QpH7NpLZ5nLPVvkYMagPsY9ZGDHeY2tnV+Xy2vwHMSRPUibLisHRynEYflDDTKg1x5mnxB6Q5AQ111lk5c0gE1doTGB2pRrDljbPi4u92aJ0ibN0eIXSm6o/pqkntdHiSjJ7WG2WXSFBZB1bDUVGngppC+s3zkwkUCL3IdcgQNTIKvosjLRZoQYOgd3wl8SmF30KjiSG94oUJicNdv6snsdFwbqf+/vSFP9m2kCr0Tc0NHQW164oOYfmYgSIb86fCQWPTdDy641ZJHOv2A==
+signature: XikOX37J7qPFO6V96NNkHXeCRzfBF0NjFOMGUDQIaNOetw3n9nRynrFRJlbR5hpPfaUyBnT6vMIoZsn4CbYAcUbHzqMo7DvFSSAFRdHTvKK4QBHy2o+TVHHDny3s2jF92kyhEL3iLBlTO7uLmF28sZiUFTL0kfR2L+KM90pcSlKZNyYV65fbkR4ijDXluGAe+Z8fmoBktSx2AGt7AqqZte6eKQYDjvzYFqhCpETGbro9QYDse/HMAd4wkFjz1ct8dui/S/ejK+6BKp1nJWsLDcdSSxOuNXcLLkGv3bItLDNVssRp8vE/JPjZjGiRsEQH8jbej2biy/8wc6kxnhxBUg==
 subtype: python3
 system: true
 tags:
