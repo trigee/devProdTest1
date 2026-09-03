@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Who has prepared this as-built.
   name: author
@@ -28,7 +32,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -53,8 +57,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GenerateAsBuilt', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
   import jinja2
 
@@ -970,7 +974,7 @@ script: |
 
   register_module_line('GenerateAsBuilt', 'end', __line__())
 scripttarget: 0
-signature: O5g8Anvscy3YP45FetnbXVnTMhRj+hV8VAK/FLU6ErY1QK/orcTAQdfvKWjX+Y9mTAGhBxx+w/FFY5tQexGqaN13b5MHXzCTx4k0uoL8++MfHZrMlQJsjHEgnys1VrnR8guOk5OMUIbygIm1bveSKe6bOuuH+IjXXSniXZXeC/iMqw+H+AjLxZti2ln0rP6vmh9XjCtqLCYIc5vDkOQO63ANNs16UxHMUzlxoK7QiLv/lHO4y9OcCwAQpeFz5Mgw7xL4NRUVSYAMONtPOyChLaWDNslh9rpI1EH9boJQUFNsvDAN+UlNqh5fI3txt7kCY3f6vOZsu/f9l13VjVUtrg==
+signature: lTDFeF7M9ucWHKMyl60pMAfk0HKhDndw+TiqBErCghEZnlx5w983ldzzUPARJiim3tAEn3h9V5yFiZcx8ZvkTiyFbt4OYfxHKcxoM7Ao3pwKVf1P1JxIRYuf9E04LyxiXCk9KEakoNnnuoRUw/wxB0nz+BwrCdsYiTX/NFmLMKUKOpKQUL43UrlgyN3FmZKL/6f9ZmXkm4XuzNQDMFvjse2PIXXYec2TdtbW+ejHy0inaAE5KR3nns+WDp/X0X8qN2izj3XGyVexoaIeafO7Yyab4J/Oj12Mbhzc1JEz7IR1Ii/fVCjEFsTJtikPMt/FWbDB8V0jOjypWSH82G0DLA==
 subtype: python3
 system: true
 tags: []
