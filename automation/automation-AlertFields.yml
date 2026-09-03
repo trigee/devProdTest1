@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - auto: PREDEFINED
   default: true
@@ -27,7 +31,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -59,8 +63,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('AlertFields', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -128,7 +132,7 @@ script: |
 
   register_module_line('AlertFields', 'end', __line__())
 scripttarget: 0
-signature: rYTi8A0fg0CiQ45spaHZ3g+iQUBGm5EulYitrmlLdk2oJpBU4B3ssFbVMThWaIsgIcIn/yG+MfMgs9mHvA8eix9diO+0Bwged0SReVo0kWfLTDF2KrseCNh5Z07qzmXjChA3PI9UmZ/8PhbNXWBl+Izk20qiM6IgDuDcv83eVVIQLIj+Lzh1Qu/4U01fST0Q+qUoRhg9u+EvMc0zxa1BYWH6MJJQq+Qk96kNxHSpsbKH0ogZYd/S9w8Bs6YLwXgJNr8f49At8s5rk44W/76Ri+csXtdFJkV+4ETOnsWgCugTx/b27n3jrz2rlooGXd6eeEKidGx9T43hGJ2WvBn1tQ==
+signature: BOXmWYsvh/v6qoPXXfvr7BTCQuH7sWiemYoFyxvZON0EE/s6ZhjDPINMHWivnTOLZfaEzrDByg8B71Ik7wBkZ9YXcuxwbpQLptJT/bfznFSRfOZMWV43EvA1IYtgPJjrTpxcP9BQfhWKP73dUEUJrG/kGwRJ4YCUwsSF8FPE37Dm/N4xSJEo9PyOhBfUDQ2+a1rQVQxpGffEhTD8btqqUTekikcksUaU0ccWg7f15rV2CBWXU83uymf+Mw/D7wJb5ccbrNDkpeRdikkvQUmfwpLfnr32wOxlpsZpHLSnfsK/GAZUdjrok8XnBNbu1kaMsvRseY5uyOUVfgN74w3HZg==
 subtype: python3
 system: true
 tags: []
