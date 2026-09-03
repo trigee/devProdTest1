@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Text or string for which a hash should be created.
   name: text
@@ -25,7 +29,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -52,8 +56,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CreateHash', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import hashlib
   from hashlib import blake2b
 
@@ -106,7 +110,7 @@ script: |
 
   register_module_line('CreateHash', 'end', __line__())
 scripttarget: 0
-signature: MgVZ3bdN/+8w+kabdL6rOD+GQzheZ4xfPXJs3XBgAHuoTahtJjYadSomsEB/ZbEDXXakstWp4k1CglRYUSf+rnG9JATMZZOZKflI+k01YbErTRi0SCz+9oYegXmTLpbDT1XHVxtD3XwIQWITd/szJQP6Gdrr+/Fi5LOB28NujvkzZaEjiEHwupjfoMlJj3ceOm3Cn+DFc5GSWjG/FoPqrd/21JayVl/2Nu9eb0CmBbjZVwm4AnEO/P2xjsLrsq2lRnCc/T2KJkOrsOrxC9Y8Bli2EpGh0rOn5yCr/SlYJdBn23TU8yg5MPRfdxR+bhS77wJ8LGiPTuRwADqDJ32EDA==
+signature: C2ScgSepTTqMZptyj3YogFLuGCmAu7BNRzQWS0IgQrh0yv/CVy/vaRFklnl/TtG1+M2gSdWvz7EHI1a3aDcJvNdVEEXyDUzjshHNPAEs67EVoqdMXsWT4cV2Q7lnZITKpqpgEVJ9QQBhB9AADf63NRDiE4J8zGSt1IvL2ZLPCjDXNPI4pp+GWv/5Sr34X69jbIz2L4NNUuNk2rczR0N9kcD56Wtz+Jdh1o6lyjA2DV3RKGHO5js85ieT03X4dvWeVwdQQeDh9hnCsa1+GyOxZRT7emKVtC3z5BIUJIGdyqHBcMPjIdPAdpevfynzzrOFGO/tt+GYMNa0nwX2bIXYtA==
 subtype: python3
 system: true
 tags:
