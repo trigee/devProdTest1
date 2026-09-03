@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The indicator to get the reputation of. Only system indicator types
@@ -16,7 +20,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -51,8 +55,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('GetIndicatorDBotScore', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -138,7 +142,7 @@ script: |
 
   register_module_line('GetIndicatorDBotScore', 'end', __line__())
 scripttarget: 0
-signature: Y7y64PTSM+Uy0E3TsahYTkfDOGjRkO4vsRI5gPg4/f4fiIyzgkKtqPlImTQZTH0nL9GyX658HXOx54Ry4X2OMAIvq0EQyyhwvxsuX5QIjF3AolQMpI633E8cpwPOzOApW3N+r9qx/tIiqnnS1Q2+2QuVd4Oo1Y99QYtIbBCwwe2ZzzhiSsyHWk3atkPjGKPU8ndStNUZM5QYRX6hhcJYbuesWo8rA3FAn5oJbBiE5jO87BjxDvJPQ3S8xLTN2S55fB2qILRDcw1ov5msK21Tk5bx9TRpaIR3DnOdCHE8xJhAhXUTUZDtIEIiu04OVhoNPn7Eu3i4/Hfl76dPex5V1Q==
+signature: 23602zjPeqbm0tJ99/jEwvojBcCRkgnqDBdnrniq4oem31pqdVwTQhPpZMDO4dJwfEcMUGX97H5SYq1FbGmw/LUsw2vBtdx+b0o0HYH+gF54SeHxukyfTMB+wN5uwYWxJQFqi1lwBkEhxF7EgV1D5gCCqGeVUUQd7Q661GLHfDSbGJnffJi79N7OeObsNBzwlp+Rym6JPCGSbA4VDBv9SPIY8khHQ2B4eWXCd0/MKnfrxlYunY7prDBMYqK7MT61fzG+yQYoSzVLP57RnHF4MDYTdZH4hMFzNyRjQ10KmlSoDPIeSdpAIVZCNjXRLa7Oi47dJ4B5+U9WpNbngJ1aRA==
 subtype: python3
 system: true
 tags:
