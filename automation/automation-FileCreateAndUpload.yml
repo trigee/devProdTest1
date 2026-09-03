@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The name of the file to be created.
@@ -20,7 +24,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -39,7 +43,7 @@ restrictioncenter: {}
 runas: DBotWeakRole
 runonce: false
 script: |
-  // pack version: 1.22.39
+  // pack version: 1.22.52
   if (!args.data && !args.entryId) {
       return { ContentsFormat: formats.text, Type: entryTypes.error, Contents: 'Either data or entryId arguments need to be provided.' };
   }
@@ -61,7 +65,7 @@ script: |
   var createdFileID = saveFile(data);
   return {Type: 3, FileID: createdFileID, File: args.filename, Contents: args.filename};
 scripttarget: 0
-signature: Np1AtbxpZSlAZBeDq1G4GHJG1VxvFQbG4uyn3RxuNjXYIiRZ2QTeI72aJeRpl/UkkhrhCJU1tBoDrX5nSy7uPVa5LO3RXVAv74OzfCuNAVfzLegRoVVy6+n4c0DUdaSX/4zrSbEK+reX5WXICOztyPckgOMKCX7+AgvNTbZV/RKTHq1QaXh3FHV0+PpbZwmzF93R2n+Fb8cs+YIfYONddvYfqGscS6HuK0dbWuPE6IltRmmj8YKhfbqgmKABY6ax6ELoRtIH0tGrEME4ISU7qU/bWTEyvOKANgzKzYVZHJRcCA0AMKQ3kUXNwRUjliOCyaTYB3e/BFVgKj9kHhmACA==
+signature: 28CXtQxO68N7nkGEOfthpqGkECcOtBhafvSLzl4UGKBiXe+u0m7348fam8eK8zdaDNfnTjRl4ke2qusiCDI7XKE4+K4FQTPqKQutsg7Yl5TqOQj66K07BWK768/Qtn6Jw8v83fDBn/iQoLiPV6j1ILE3Rx8T+J4qKE+IxerdATX+a0AsFejt7OSfT48r22YphHBFvcMoikxkn+5FzzKtEyZtMnaFlDCpLPM/wObkP96iLA+P3hZ424j49oIQJNjC7zfqry/7Ko7SdmfVfYEtDAL/OHSM9rDATkX/A6Jq1KQaGtWpADMgGgfycNT+d9I1umipb3vqA12roYi8RNpAhQ==
 system: true
 tags:
 - Utility
