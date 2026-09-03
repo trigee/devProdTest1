@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: Entry ID of image file.
@@ -13,7 +17,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -22,7 +26,7 @@ contentitemexportablefields:
     propagationLabels: []
     supportedModules: []
     toServerVersion: ""
-dockerimage: demisto/py3-tools:1.0.0.10120494
+dockerimage: demisto/py3-tools:1.0.0.11597437
 enabled: true
 engineinfo: {}
 mainengineinfo: {}
@@ -43,8 +47,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ExifRead', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
   import exifread
 
@@ -83,7 +87,7 @@ script: |
 
   register_module_line('ExifRead', 'end', __line__())
 scripttarget: 0
-signature: TKqK4lRrLQ9/+93LSlBLVKD+/aVHNBD7goLZz80H5+O3XNY6b1BnwTfYsYs39NGb5d1Q59iJtbMHaAnZzL8IAxmIlrqKAKwFsQ7zpJl5mp6j3dhCFrzzNdX8aeawgM6JGCReOYV3fYFz4DFKzC9li043+yIpc/HVE5qsFwyD16LLBlB99r4Zdq+UMFXN7TLxTh2nCTkCo3Z6Ku8jL1WTbCsOz5gmK41AmOZmJYfl844jT/XugFHL4VMCyxfuLEJiuDGjV1hX8wMbmNe83FCiUfcXr4Qe2ZOXPnisK9S9+m3wMDSVyyUSYyqqrkj7rlI2P1cVO9stYCft05+XS1HqHA==
+signature: PMXW1qHAw+Z6PGheVe2S4VvYROEIvO75sOXFGH2Jf8ep/f47ZXPwNO9sYPThQ528CTEzwaTkIvsbqpcibtbfs0HT982fjRxuZ+leemtdXfwG6j3b/ARrvzW9iASQkrq33JvdH/L1H+PIAsufUN0usssJHPGCgC/muiOU5WtOgMGWDqKtgg5cqcu/lYWvxbbDFxJGmFP+efskZANrX/mk0DjGuVIC2Y7r7EShU+C9e4t2T1d+iuPBGZarq1o1+rDdU/NOxZOpn9BA4PfBWdPy01q/Oam/DUFnoEga9CCNrti6QFdoA91MGudx+GwubU4pHO7YrY2jizRms79XU8+hwg==
 subtype: python3
 system: true
 tags:
