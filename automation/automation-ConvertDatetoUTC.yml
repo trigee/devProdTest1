@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: Date to convert to UTC.
   name: date
@@ -21,7 +25,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -51,8 +55,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ConvertDatetoUTC', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
   import pytz
 
@@ -105,7 +109,7 @@ script: |
 
   register_module_line('ConvertDatetoUTC', 'end', __line__())
 scripttarget: 0
-signature: PJbIRw4Rwf0ydMhLUQbJAcClxAA6suKUTHHq5ScsrjUNqvWGaWKAa078k80Mc29cB3ZiRLtenevNvqA/UuPsnIYyHEVtyBTgXAySSADJsI3A9Mr0Zh9MQXYeKqKptzH1sZNs/UAFwb9if5KcYtRZY2Ea5s7KJtHGJkDu8UY40VpooyOE9QKajmT++KGZcRliuFzSrJ0uZ4wtUtDl3+5EUKUabbwfgBrrbWoLNPpdiW/k0Jabcl1jExSPrXNFbgMbLsDh5PtnXaXxCCjPw+qK5QNgVhTpJsKKCuHEoAy+7U1mVkDV2vnqBinvwykRg4yKXcW40DRQrjPzI+n2EHNyBA==
+signature: O9PQFrTXpuMg8sCtYCi5ydmR5E/kc6RBx2FjPWtEgMOXtiSYTKGZF3IEzZhWxYrYjNizP11k8RmbLM6IdNREk/JbuLQ4LalMlw4TJgYwYhDPoIzKr7xDSsfjbWJE/2mJZs7seC6lm1glr4PoQrjxLP1H+dByBjNrA9ZFreoYvPqyMcOLh/dkxLCWuf4hW8cDws8Ulenha2Mf2eascQxFjmTcLgaLPEo8vh+Bg99Ora+w6mZEF7V0uO1K1LEYWofRkKfVJbssikZYcGH2aOjo1ajmVKmFNlorW1PKYATaULyqte8v1eKgUKb17fQ66az192OtJZIJ1d1mFfiWDXkAbQ==
 subtype: python3
 system: true
 tags:
