@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The value to print to the parent incident's war-room.
   name: value
@@ -12,7 +16,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 8.7.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -35,8 +39,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('PrintToParentIncident', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -103,7 +107,7 @@ script: |
 
   register_module_line('PrintToParentIncident', 'end', __line__())
 scripttarget: 0
-signature: sI9x7Udta5X27fQEHc3UIEPHRa5lCFbEwyiBU0LTNfaOWxvrGGzB/FHS8/IZxbs8AsEJvuoYEUGoibEPdy8eROBxBMWewKxhQC1mU0JTBxzJFIO+ddpyCsk9TGnFy9ED+XBllbeftFl0nRftj/F5XgvbpCBSHQ/0Yb6TUXzL0FhnLP1F7KADVNxxAiId+6wg/3aUfKLxdLyIwMXV4zqcwfn2tDxapUQxPCg/f0h/qx/1qGM6B32a0iHFytS+GkFhl303dxCN6XaJiOK11L8/NFYllR2v0D/PbM2qUMSwz6CWealxM4Wc+PU2sRXspxTAImbxJpPXUiJhdeGFBz1TkA==
+signature: NQkJ8JUA7htrzWy0fvfCID5VyeAjsp3SR+7ae3gBTsBQwk9N+8kLT9Jv+/kf67IJCGBFfP+gEmfoSEdJr9K4JckVDEIsfwpSIphWFqgqhCJrPWuilDBVKd9wQva1locA1W8B/y4NF+4DWPBtHbp4q685yBnphLnnJUBX97hiE97Mz6b+mo+yMX7VHWZI+lYu8WDulOAYZJeRcri6mZ1prRmyARmSDzYrVyNE0ORVLs7qizoaggg+mjcZRN5SJpEAoQIssakG7eDVY24fRo84v6xQnOoHGXQTBO/VvEtgZdW3nYSJdxGl/CCYAXcCU/B3l8quJWEALP3EFhVeIoiIJQ==
 subtype: python3
 system: true
 tags: []
