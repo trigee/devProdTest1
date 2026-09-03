@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: The full URL of the blog.
   name: url
@@ -31,7 +35,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -56,8 +60,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ParseHTMLIndicators', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import re
 
 
@@ -144,7 +148,7 @@ script: |
 
   register_module_line('ParseHTMLIndicators', 'end', __line__())
 scripttarget: 0
-signature: xY0IncU3d1A05NYH9s6I4tDgvD3acfJcVBnu42nA6coyZqbmjawzEh6DYLGVj73e3MfQI8wiMOSVSF5iVi3HGT6uE3olmw/4u6TmUV8WAQLl8D1/9Lrfpdb3aOr5IdYvfPuKz7eQ2Wnu9VLAihwdMF0mWnf5VwAK14wZ9Y6Fno5Tu0W4aI+zerw9dFBWo5j3VMHhZzns51JFLs/10PVq97s82iECa8ycuGfieKWV3oCQBT0JIWYWuB4TH4bowsDiIqOgmSWCctnJF/bUaGqJHZFkHD7sSWxAycM8G2lKbvLkOfC6xvWmZMOJYGu8x4RvpPC8sVlo07GoWEYItJ01xg==
+signature: vXI6KMNCvucWT8t9jgHG83dGtKBFpM2JvcmkXT/oGzqk+NWJwf+G5T4QhylKW5Wwqw/t2uU3GqU4JoMNytiDZFehfsg4YbQmRCM0fY7TshLqRQxO/a+aBF8eoiCGU642xZpsO50BWuu8qVYjDmBPE91LiKdToezDlY8363/zrG+QerKxGROIsnPrqsTgrlUCRF1lRvoFylj79IMMXQmx5ek/dt30IvfUQ0qA3RIPFqznFQXWcz0qTkvgZDdPkJjX+YLofA8wUMkv1Bxj+uXiVTu7Us2KuL52lk0DtHtVFMixWZj/Gdw14/UcTl+hqAbItA6w2S0Af8H8vCoy+mtnog==
 subtype: python3
 system: true
 tags: []
