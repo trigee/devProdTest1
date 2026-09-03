@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - default: true
   description: The data for which to calculate entropy.
@@ -17,7 +21,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -46,8 +50,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('CalculateEntropy', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
   import math
   import string
 
@@ -98,7 +102,7 @@ script: |
 
   register_module_line('CalculateEntropy', 'end', __line__())
 scripttarget: 0
-signature: QjvhEARIzpDTbwxCu8a2FWXu9SMAe/VUaZTFfxNGECuhsH/qnzYKDJtujpXDEvepMuRkG9W6IEUQo7BNpoROouAJDLziACAgCFHeP9lqnOhvHSbLRBGtVnoCCAFD/W5U7sr5I/BVA/QIcW8fIkCpO6t9o3Uhins5JAobPPRF5KzMleou734HOO262SxNdv3byfxj8sD8wPl8/l8irlvUnociWELN3Ng4p3n7yVOMi/TpY0KAhAeMcd6RuIMauh3iwNKfxjSE33XJdMDO+Sv/IjJhBRuINDntVovrP3gLSc66NQCWE4ELK8xYyYaT0Jq38CO5GIcWefpRKJvh8tO41g==
+signature: tBV97DOZGBjEKSQ8VBkW/9GuTlLAReenTUI6D0XyvocbB/sPY4i4ZmmwM93Xd+QaKK7/w/toMtckI3kZp25q38hE638jwGhHvwhC4joBI1WYg8YaOCB+Nuxxel5FBXtdRpcnZxjjXIvMJoVG8qHHEKRoZFIhONhcH6GaS0SjYDIpjA4U7a0TLDUAHzNKr+WYo2Qcca6mKGyCnAe6FdvkG0wkSB5AhYvHZrFdKRodU4aHy6bzW3UQdhguU2b79PgaLhkJLMRGSNgPb5uoSOkyYyMA19a/ci7knDgxw5ZV03vUsuqIPnC0XDURY2taJz9DLOmM8d6NNF9xlTnB/E+jaA==
 subtype: python3
 system: true
 tags:
