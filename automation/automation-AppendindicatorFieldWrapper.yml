@@ -1,3 +1,7 @@
+aclowner:
+  id: etrigerman@paloaltonetworks.com
+  name: etrigerman@paloaltonetworks.com
+  type: user
 args:
 - description: A comma-separated list of indicators values. For example, for IP indicators,
     "1.1.1.1,2.2.2.2".
@@ -22,7 +26,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.2.0
     isoverridable: false
-    itemVersion: 1.22.39
+    itemVersion: 1.22.52
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -44,8 +48,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('AppendindicatorFieldWrapper', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.22.39'
-  demisto.debug('pack id = CommonScripts, pack version = 1.22.39')
+  CONSTANT_PACK_VERSION = '1.22.52'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.52')
 
 
 
@@ -108,7 +112,7 @@ script: |
 
   register_module_line('AppendindicatorFieldWrapper', 'end', __line__())
 scripttarget: 0
-signature: ye6h70T55GjHuY4a+DElP7iQaKF1s4gbKPHXRdU/D2HFTzD35p4IXQu3yRS1qXi3DZ8c0eP6eGOzVI1d45BopyJKAEg/6OtXyQvy3+r+5958g1yIScWz6v3UMXEXDJdLXRhfmtX6dF9a5TFP5efpwmp8ld+blzXaLFN5nPCc801KmBQo5UTpwP/89QJ3/eP0U1X/Gn06DgggFbPrbTX7G55VN0mljqLWC6Ul9jAciFSG8KC8hw/+cCOM/9k8u20CpcySpDdonAnM/oIfgTn05qnInZzHm7oTHoMgBPdgTfizCgQyw+ZmKXwKhhLoblQPxomwXD/LCz0Gl2E4gpDjbg==
+signature: 1ztTx8UGa2k3YIOqwK569PZN7JCUSNZatWfRQs5pe/qRIaSHy0VrgANsY0hcpa12Vww4yupGhXFEix2254fZoSNcfKO2omHZ43WGTQ88jHbt07+J4YWb2PFDYkXTeEr3k37Kvt72GnX2BGqn7WtwjRKKynb/CuWCbSyEuHVCI3gAciaLl6jCrfiyvpprE927DLIxFyMmlNZi48wpljDERcQaAuQzCAuFicDuZEM1WbMwUz11LeXKMS8U6p8ffgLnjYEm9QmZDZi51aHRDCP+6NZbdM22h/NNSSFOMekGzHlalG7FLopz6QA+q1slr9//2RUcApi5h3tpH/+HarlfoQ==
 subtype: python3
 system: true
 tags:
