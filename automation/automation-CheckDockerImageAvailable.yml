@@ -1,11 +1,8 @@
-aclowner:
-  id: etrigerman@paloaltonetworks.com
-  name: etrigerman@paloaltonetworks.com
-  type: user
 args:
 - description: 'Docker image full name with version: For example: demisto/python:2.7.15.155.'
   name: input
   required: true
+  supportedFeatures: []
   supportedModules: []
 - auto: PREDEFINED
   defaultValue: "yes"
@@ -14,6 +11,7 @@ args:
   predefined:
   - "yes"
   - "no"
+  supportedFeatures: []
   supportedModules: []
 - auto: PREDEFINED
   defaultValue: "no"
@@ -22,6 +20,7 @@ args:
   predefined:
   - "yes"
   - "no"
+  supportedFeatures: []
   supportedModules: []
 comment: Check if a docker image is available for performing docker pull. Script simulates
   the docker pull flow but doesn't actually pull the image. Returns an entry with
@@ -41,6 +40,7 @@ contentitemexportablefields:
     - all
     prevname: ""
     propagationLabels: []
+    supportedFeatures: []
     supportedModules: []
     toServerVersion: ""
 dockerimage: demisto/python3:3.12.13.10404775
