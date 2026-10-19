@@ -7,59 +7,70 @@ configuration:
     ip:port,ip2:port2 '
   name: Address
   required: true
+  supportedFeatures: []
   supportedModules: []
   type: 0
 - defaultvalue: Demisto
   display: Client ID
   name: ClientID
   required: true
+  supportedFeatures: []
   supportedModules: []
   type: 0
 - display: CA certificate of Kafka server (type pem)
   name: cafile
   required: false
+  supportedFeatures: []
   supportedModules: []
   type: 12
 - display: Client certificate (type pem)
   name: clientcert
   required: false
+  supportedFeatures: []
   supportedModules: []
   type: 12
 - display: Client certificate key (type pem)
   name: clientkey
   required: false
+  supportedFeatures: []
   supportedModules: []
   type: 14
 - display: Do not validate server certificate (insecure)
   name: insecure
   required: false
+  supportedFeatures: []
   supportedModules: []
   type: 8
 - display: Import messges as incidents
   name: isFetch
   required: false
+  supportedFeatures: []
   supportedModules: []
   type: 8
 - display: Alert type
   name: alertType
   required: false
+  supportedFeatures: []
   supportedModules: []
   type: 13
 - defaultvalue: "0"
   display: Import from offset
   name: offset
   required: false
+  supportedFeatures: []
   supportedModules: []
   type: 0
 - display: Import from topic
   name: topic
   required: false
+  supportedFeatures: []
   supportedModules: []
   type: 0
 - defaultvalue: "0"
   display: Import from partition
   name: partition
   required: false
+  supportedFeatures: []
   supportedModules: []
   type: 0
 contentitemexportablefields: {}
@@ -90,48 +101,59 @@ script:
       description: commands.server.kafka.arguments.topic
       name: topic
       required: true
+      supportedFeatures: []
       supportedModules: []
     - description: commands.server.kafka.arguments.value
       name: value
       required: true
+      supportedFeatures: []
       supportedModules: []
     - description: commands.server.kafka.arguments.key
       name: partitioning-key
+      supportedFeatures: []
       supportedModules: []
     deprecated: true
     description: commands.server.kafka.publish.msg
     name: kafka-publish-msg
+    supportedFeatures: []
     supportedModules: []
   - arguments: []
     deprecated: true
     description: commands.server.kafka.print.topics.msg
     name: kafka-print-topics
+    supportedFeatures: []
     supportedModules: []
   - arguments:
     - default: true
       description: commands.server.kafka.arguments.topic
       name: topic
       required: true
+      supportedFeatures: []
       supportedModules: []
     - description: commands.server.kafka.arguments.offset
       name: offset
+      supportedFeatures: []
       supportedModules: []
     - description: commands.server.kafka.arguments.partitions
       name: partition
+      supportedFeatures: []
       supportedModules: []
     deprecated: true
     description: commands.server.kafka.fetch.msg
     name: kafka-consume-msg
+    supportedFeatures: []
     supportedModules: []
   - arguments:
     - default: true
       description: commands.server.kafka.arguments.topic
       name: topic
       required: true
+      supportedFeatures: []
       supportedModules: []
     deprecated: true
     description: commands.server.kafka.fetch.partitions
     name: kafka-fetch-partitions
+    supportedFeatures: []
     supportedModules: []
   runonce: false
   script: ""
