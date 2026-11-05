@@ -1,0 +1,126 @@
+args:
+- defaultValue: name,details
+  description: 'Text fields to compare. Can be label name, incident fields or custom
+    fields. Comma separated value. '
+  name: textFields
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- defaultValue: "0.95"
+  description: TFIDF score threshold (to consider incident as similar).
+  name: threshold
+  supportedFeatures: []
+  supportedModules: []
+- defaultValue: "1000"
+  description: Maximum number of incidents to check.
+  name: maximumNumberOfIncidents
+  supportedFeatures: []
+  supportedModules: []
+- defaultValue: "72"
+  description: Check incidents in this time frame.
+  name: timeFrameHours
+  supportedFeatures: []
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "no"
+  description: Ignore close incidents.
+  name: ignoreClosedIncidents
+  predefined:
+  - "yes"
+  - "no"
+  supportedFeatures: []
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: occurred
+  description: Time field to consider.
+  name: timeField
+  predefined:
+  - occurred
+  - created
+  - modified
+  supportedFeatures: []
+  supportedModules: []
+- defaultValue: "10"
+  description: Maximum number of similar candidates.
+  name: maxResults
+  supportedFeatures: []
+  supportedModules: []
+- defaultValue: "50"
+  description: Minimum required text length to compare.
+  name: minTextLength
+  supportedFeatures: []
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Whether to pre-process text (removing HTML, normilize words)
+  name: preProcessText
+  predefined:
+  - "true"
+  - "false"
+  supportedFeatures: []
+  supportedModules: []
+comment: "Deprecated. Use DBotFindSimilarIncidents instead.\nFind similar incidents
+  by text comparison - the algorithm based on TF-IDF method.\nTo read more about this
+  method: https://en.wikipedia.org/wiki/Tf%E2%80%93idf\n\nThis automation runs using
+  the default Limited User role, unless you explicitly\nchange the permissions.\nFor
+  more information, see the section about permissions here:\n- For Cortex XSOAR 6
+  see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+  \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+  For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+commonfields:
+  id: FindSimilarIncidentsByText
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.42.37
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+dockerimage: demisto/sklearn:1.0.0.12545527
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: FindSimilarIncidentsByText
+outputs:
+- contextPath: similarIncident.rawId
+  description: Similar incident ID.
+  type: string
+- contextPath: isSimilarIncidentFound
+  description: Is similar incident found? (true\false)
+  type: boolean
+- contextPath: similarIncident
+  description: Similar incident.
+  type: Unknown
+- contextPath: similarIncident.name
+  description: Similar incident name.
+  type: string
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: true
+script: |-
+  register_module_line('FindSimilarIncidentsByText', 'start', __line__())
+
+  return_results(demisto.executeCommand('FindSimilarAlertsByText', demisto.args()))
+
+  register_module_line('FindSimilarIncidentsByText', 'end', __line__())
+scripttarget: 0
+signature: gbk0jFiza9FOZ/31LOKLdA3hxPgnPcvlixmEyg6f2ON0/A4Dpgc+RY1//t4TkMXI41gH9gTUkdUYWRiyVci0B9tC9l93MJwYzu0lX1hiA3GOywv8/rA2alWiNFtj1IEMIRvOn2isgyyc13oFMdec+ds2wF39RVmRW6kYD2OKK9jR837u7KiNObStwK5mtJfSD9jXu2XGrLnVoe9H02tjC/OzEiMq4j6rIf+vwEt6DY54ECKtgggZxhhaiZ7JjEGsDPs9JWfBCA/e0qtBTwCcY6gMlOLrzKo8Xun9FicKJW7xMCk6nrnW7Rhte2m8DqpzmUo0KeUmwUpv/KLegno67Q==
+subtype: python3
+system: true
+tags:
+- ml
+- dedup
+- duplicate
+- incidents
+type: python
