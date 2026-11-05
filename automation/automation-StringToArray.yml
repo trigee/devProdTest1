@@ -1,0 +1,66 @@
+args:
+- description: The URL to transform.
+  name: value
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: "Converts string to array. \nFor example: `http://example.com/?score:1,4,time:55`
+  will be transformed to `[\"http://example.com/?score:1,4,time:55\"]`."
+commonfields:
+  id: StringToArray
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    isoverridable: false
+    itemVersion: 1.4.32
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13053055
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: StringToArray
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('StringToArray', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.32'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.32')
+
+
+
+
+  def main(args):
+      value = args.get("value")
+      json_value = [value]
+      return json.dumps(json_value)
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      try:
+          return_results(main(demisto.args()))
+      except Exception as exc:
+          return_error(str(exc), error=exc)
+
+  register_module_line('StringToArray', 'end', __line__())
+scripttarget: 0
+signature: S1gek/Q8gmY7v+d45S7XhjRE8rdc+q3wMHb2dsOSeQ6iyddPKWUzaD5kSEwhCtw/TM3J+JS0ntTtIJqCosOdCM55Ir/2wJ0bbKKlr93Lo3oaGBDyCkgmPb1xypzCy2gyi3CT1Ut7FfPHZS95VDcrafkH+aptWbngDETnm26Y3ee+H0WM46FhAnngkulqr3Y+NCjAFjKjcHGOY5Q31+r0feH65P4EPebfwmoACql/WJbRkEfFsUQaSqN1239i0HCp/ksLsLYR+Dh9k15LHXtTRe27uaYaOaXW3iYC+YKqy+xK1NNkps/+a9Ro4bgIqzvobT3U2heRrEDJ7FC90fmk5w==
+subtype: python3
+system: true
+tags:
+- transformer
+type: python
