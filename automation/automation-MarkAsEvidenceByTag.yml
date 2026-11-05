@@ -1,0 +1,81 @@
+args:
+- default: true
+  description: Entries with the given tag will be marked as evidence.
+  name: tag
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: Description for the Evidence item.
+  name: description
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: Mark entries as evidence if they are tagged with given tag.
+commonfields:
+  id: MarkAsEvidenceByTag
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13053055
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: MarkAsEvidenceByTag
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('MarkAsEvidenceByTag', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.66'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.66')
+
+
+
+  entries = demisto.executeCommand("getEntries", {})
+  if isError(entries[0]):
+      demisto.results({"Type": entryTypes["error"], "ContentsFormat": formats["text"], "Contents": "Unable to retrieve entries"})
+  else:
+      ids = []
+      for e in entries:
+          tags = e.get("Metadata", {}).get("tags")
+          if not tags:
+              tags = []
+          if demisto.getArg("tag") in tags:
+              ids.append(e["Metadata"]["id"])
+      if len(ids) > 0:
+          for i in ids:
+              demisto.results(demisto.executeCommand("markAsEvidence", {"id": i, "description": demisto.getArg("description")}))
+      else:
+          demisto.results(
+              {
+                  "Type": entryTypes["note"],
+                  "ContentsFormat": formats["text"],
+                  "Contents": "No entries with '" + demisto.getArg("tag") + "' found",
+              }
+          )
+
+  register_module_line('MarkAsEvidenceByTag', 'end', __line__())
+scripttarget: 0
+signature: Pl0HsXUD76H5wmJoK3/Yg2t+tQ2c9a198lr2bqX1t/wvmLrvr3T9E/15ASo9vRXXsnKhuBB2htZS00nEk82UndbnaFggAVbRS70WNOtgtlgkj4hCZdbqYt2AzFu+dYs+VjjtnVbdg0Bn0fcyXjpO+uh89643ZzzJpu6AxeCtuc46SxLFZXfGAyz9r5zn6V7sh0vePybcOaPmlvT7/NZzOLH2KQN3/SA4tpi0BjVKkuwF6MVCp6wNjwQTBoi69KjwORfzxV2gmKwd8hox0Mve3ompRz+S+VlynPYH4LQFXc5Uo+VzA3VrB57Tqw7uQxx4DO9/GYq8qouLaVMHH2ZmaA==
+subtype: python3
+system: true
+tags:
+- Utility
+type: python
