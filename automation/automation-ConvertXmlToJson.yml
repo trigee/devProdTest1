@@ -1,0 +1,66 @@
+args:
+- default: true
+  description: The valid xml to convert to json format.
+  name: xml
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: The context Key to push json result to.
+  name: contextKey
+  supportedFeatures: []
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "True"
+  description: Print json result to warrom.
+  name: verbose
+  predefined:
+  - "True"
+  - "False"
+  supportedFeatures: []
+  supportedModules: []
+comment: Converts XML string to JSON format
+commonfields:
+  id: ConvertXmlToJson
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ConvertXmlToJson
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.66
+  var xmlJson = x2j(args.xml);
+  try {
+    xmlJson = JSON.parse(xmlJson);
+  } catch(err) {}
+
+  if (args.contextKey && args.contextKey.length > 0) {
+      setContext(args.contextKey,xmlJson);
+  }
+  if (args.verbose && args.verbose.length > 0 && args.verbose == 'True'){
+      return xmlJson;
+  }
+scripttarget: 0
+signature: RtJHfuYxlesTY+KsUPeapwdS7+vzuMEDYWC8D29vHzHF3ZDG+4NgXjYLZ98XoiP+RknMQRnOOrIBZGNA7y7rKbHU60KwE2D0cKSxCGCRMAW0hiWu9CwD4gxps4aysp5o0bG4rLIv/UTDMRl/RhtGjUAPOROTCuCs4PjtssaFIGNQcN5iJuUusKeaueakQq1KXNnvNdpQRzUmQ3xjxF+d9pD4tRbpWuM55v6ian5dCCDBxXeexMzJ/zA6wtp24v+U8ZDZTlHyOMwwymg4OaaRCKRo38cJtE/WcI4pSgRysn74/+u9C6VQHRC+IM08P2nquMiYt7twlwU/X1LrAzRelw==
+system: true
+tags:
+- Utility
+type: javascript
