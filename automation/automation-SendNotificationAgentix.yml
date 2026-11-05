@@ -1,0 +1,164 @@
+args:
+- description: The message content to send.
+  name: message
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- auto: PREDEFINED
+  description: |
+    Integration brand to send the message to. Valid options: Microsoft Teams, Slack, Mattermost, Zoom.
+  name: brand
+  predefined:
+  - Microsoft Teams
+  - Slack
+  - Mattermost
+  - Zoom
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: The user to send the message to. Can be a username, id or email.
+  name: to
+  supportedFeatures: []
+  supportedModules: []
+- description: The channel to send the message to.
+  name: channel
+  supportedFeatures: []
+  supportedModules: []
+- description: |
+    (Supported only for Slack and Zoom)
+    The ID of the channel to send the message to.
+  name: channel_id
+  supportedFeatures: []
+  supportedModules: []
+  type: string
+- description: |
+    (Supported only for Microsoft Teams)
+    The team in which the specified channel exists.
+    Leave blank to use the default team configured in the integration parameters.
+  name: team
+  supportedFeatures: []
+  supportedModules: []
+  type: string
+- description: The ID of the message to which to reply. Supported only for Microsoft
+    Teams and Slack.
+  name: thread_id
+  supportedFeatures: []
+  supportedModules: []
+  type: string
+comment: |
+  Sends a notification message to a user, group, or channel. Supports sending messages to Slack, Microsoft Teams, Mattermost or Zoom.
+commonfields:
+  id: SendNotificationAgentix
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dependson:
+  must:
+  - send-notification
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+internal: true
+isInternal: true
+mainengineinfo: {}
+name: SendNotificationAgentix
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: MicrosoftTeams.Message.ID
+  description: ID of the message sent.
+  type: String
+- contextPath: Slack.Thread.ID
+  description: The Slack thread ID.
+  type: String
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('SendNotificationAgentix', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.66'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.66')
+
+
+
+
+  BRAND_MAPPING = {
+      "Microsoft Teams": {
+          "brand": "Microsoft Teams",
+          "valid_args": {"brand", "message", "to", "channel", "team", "thread_id"},
+      },
+      "Slack": {
+          "brand": "SlackV3",
+          "valid_args": {"brand", "message", "to", "channel", "channel_id", "thread_id"},
+      },
+      "Mattermost": {
+          "brand": "MattermostV2",
+          "valid_args": {"brand", "message", "to", "channel"},
+      },
+      "Zoom": {
+          "brand": "Zoom",
+          "valid_args": {"brand", "message", "to", "channel", "channel_id"},
+      },
+  }
+
+
+  def send_notification_by_brand(brand: str, args: dict):
+      if not (brand_map := BRAND_MAPPING.get(brand)):
+          raise DemistoException(f"Brand - {brand} is not supported. Supported brands: {BRAND_MAPPING.keys()}")
+
+      valid_args = set(brand_map.get("valid_args", []))
+      invalid_args = list(set(args.keys()) - valid_args)
+      if invalid_args:
+          raise DemistoException(f"Arguments {invalid_args} are not supported for brand - {brand}")
+
+      command_args = {"using-brand": brand_map.get("brand")}
+      command_args.update(args)
+
+      if brand == "Microsoft Teams" and "thread_id" in command_args:
+          command_args["message_id"] = command_args.pop("thread_id")
+      elif brand == "Slack" and "thread_id" in command_args:
+          command_args["threadID"] = command_args.pop("thread_id")
+
+      return demisto.executeCommand("send-notification", args=command_args)
+
+
+  def main():
+      try:
+          args = demisto.args()
+          demisto.debug(f"Calling SendNotificationAgentix with args: {args}")
+
+          return_results(send_notification_by_brand(args.get("brand"), args))
+
+      except Exception as ex:
+          return_error(f"Failed to execute SendNotificationAgentix. Error: {str(ex)}")
+
+
+  """ ENTRY POINT """
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):  # pragma: no cover
+      main()
+
+  register_module_line('SendNotificationAgentix', 'end', __line__())
+scripttarget: 0
+signature: VMK+k4MoaGB7S0FD0UeHIARgqRAJNIBUnFAAHDWrpPgy1yHXnL9c+PTurJ9QvTR88W0cHHFqQeTJkEZ/k5chXSqBmBqdvJ3pR/JnPLH5735a678CVzK2w4jsapYKua3HAqSMqxvwNbEz8tu3K+IVYeV95rjwIxHPAcV8RXNIJu0icNka53kEiiEkQB8WHtTfDXPirDFDGRvcvuFuhlCCi+EYzSABlKQy+V64LZYJqv6O8sCbBuboSZER0uPsxBWUYI8RnD7m/oL8j9ZsGgeqwVw3pYyynIp8O8+QpXy/wotZg2JrwqJTLadVLdf2bJgHKk8BnXGfO0wDrr80wx0mZQ==
+subtype: python3
+system: true
+tags:
+- Utility
+type: python
