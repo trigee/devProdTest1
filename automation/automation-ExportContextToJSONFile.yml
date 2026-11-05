@@ -1,0 +1,62 @@
+args:
+- defaultValue: context
+  description: Name of the file to create in the war room, defaults to context.json.
+  name: filename
+  supportedFeatures: []
+  supportedModules: []
+comment: Exports the Context for the current Incident to a JSON file in the war room.
+commonfields:
+  id: ExportContextToJSONFile
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.5.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13053055
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ExportContextToJSONFile
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('ExportContextToJSONFile', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.66'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.66')
+
+
+
+  # get the incident id
+  incident_id = demisto.incident().get("id")
+
+  # get the filename
+  file_name = f"{demisto.args().get('filename')}.json"
+
+  # get the data from context and return the file to the war room.
+  data = demisto.executeCommand("getContext", {"id": incident_id})
+  demisto.results(fileResult(file_name, json.dumps(data[0].get("Contents", {}).get("context", {}))))
+
+  register_module_line('ExportContextToJSONFile', 'end', __line__())
+scripttarget: 0
+signature: t5AO1Rw+M10dPELQv/3mf8ZAFc4Nni2rb9ntt72SlKwOMlw2rsDdX2OJNuCay2MtWjjr+TDs8NUsnZVn4+grwWo2L1bpo+xdIyaQnBB1Ee1ZqLd/8iQG5Qfua2YWg0wfnYKtxvprIQ6lAuOttBJF05sNAI/SUa7czZrOWsrX4M7GA2BDqZLq9f1G45LycMxYR9RRqiUbWyWcrbpPQAmmVwzRvHSJIg14ptqBLO24n8ZTbz+B8wops1SQB02W12eqV+4eSfapdlBG15yyoDc9YS3onU/iwIYO9BHIz8DJYieZNHlPgCNGypO418UZPdXmC97+xZV1QJSGviSm/6XawQ==
+subtype: python3
+system: true
+tags:
+- Utility
+type: python
