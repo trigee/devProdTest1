@@ -1,0 +1,102 @@
+args:
+- description: Value to check if in range (e.g. 4).
+  name: left
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: Range to check against with the form of from,to (e.g. 2,8).
+  name: right
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: |-
+  checks if left side is in range of right side (from,to anotation)
+  e.g. - InRange left=4right=1,8 will return true.
+commonfields:
+  id: InRange
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.32
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13053055
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: InRange
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('InRange', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.32'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.32')
+
+
+
+  INVALID_ARG = "INVALID_ARG"
+
+
+  def to_float(s):
+      try:
+          return float(s)
+      except Exception:
+          return INVALID_ARG
+
+
+  # "1,8" => will return a tupple (1, 8)
+
+
+  def parse_range(rangeStr):
+      splitted = rangeStr.split(",")
+      if len(splitted) < 2:
+          return INVALID_ARG, INVALID_ARG
+
+      # parse
+      return to_float(splitted[0]), to_float(splitted[1])
+
+
+  def main():
+      leftArg = demisto.args()["left"]
+      rightArg = demisto.args()["right"]
+
+      left = to_float(leftArg)
+      fromRange, toRange = parse_range(rightArg)
+
+      if INVALID_ARG in [left, fromRange, toRange]:
+          demisto.error(
+              "InRange - invalid arguments. left shuld be a number, right should be from,to (e.g. '1,8'). "
+              f"got left - {leftArg}, right - {rightArg}"
+          )
+          demisto.results(False)
+      else:
+          demisto.results(left >= fromRange and left <= toRange)
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('InRange', 'end', __line__())
+scripttarget: 0
+signature: dhEWJKyE2NHQcj40lAiFigctj/7egYMjqNSMgdslw6zwamjJPNSLrie8TW1Xj74rB6mw/FzA1bdcIHJ4x2ihbaOd68jjCTbm09l6XAl1rAUz6XT36drDwt8STRhCm+KmjijxUesrzdGSmd2NhZ3DZS9Rili7KsLvQl6tvLkZ/fAwbQ6mcCvUwfGQ5/j70cC17SYAWLgQx4PhOWSuG7NG05ABa/VQDT1Q1oS98+OULTB/M3WWYt2JfCiemVio6RcE7uWjCXRRS0iwBLF2MpfhdLO5Ii3BLZi4Dqa9GMkXQrYjgF6HDpc3h+Dh7cPL2AF9Z8862VWN6HtbojpFfDjFoA==
+subtype: python3
+system: true
+tags:
+- filter
+- number
+type: python
