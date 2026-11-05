@@ -1,0 +1,87 @@
+args:
+- default: true
+  description: (default) a unique name that will be used in the investigation e.g.
+    when installing an agent.
+  name: name
+  supportedFeatures: []
+  supportedModules: []
+- description: User name in the remote system.
+  name: username
+  supportedFeatures: []
+  supportedModules: []
+- description: (mandatory) Host IP address or network identifiable name.
+  name: host
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: Workgroup or domain of the user.
+  name: workgroup
+  supportedFeatures: []
+  supportedModules: []
+- description: User password used to log in to the remote system (by default you will
+    be prompted to enter the password once you hit enter, however you can type the
+    password in the command line too. If you choose the latter password will be shown).
+  name: password
+  secret: true
+  supportedFeatures: []
+  supportedModules: []
+- description: Choose credentials to apply to system (instead of username & password).
+  name: credentialSet
+  supportedFeatures: []
+  supportedModules: []
+- description: Choose non-standard SMB port (seldom used).
+  name: dmbPort
+  supportedFeatures: []
+  supportedModules: []
+- description: Choose non-standard SSH port (default is 22).
+  name: sshPort
+  supportedFeatures: []
+  supportedModules: []
+- description: OS of the remote system (windows/linux/OSX).
+  name: os
+  supportedFeatures: []
+  supportedModules: []
+- description: Choose amd64 for 64bit systems and i386 for 32bit systems.
+  name: arch
+  supportedFeatures: []
+  supportedModules: []
+- description: Engine to be used if required.
+  name: engineName
+  supportedFeatures: []
+  supportedModules: []
+comment: |
+  Add a remote system (such as a desktop under investigation) to an investigation (this will allow you to install and agent on the system)
+commonfields:
+  id: IncidentAddSystem
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+engineinfo: {}
+mainengineinfo: {}
+name: IncidentAddSystem
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  return executeCommand('AlertAddSystem', args)
+scripttarget: 0
+signature: F7/veNUBHFeLwZdbuXQ7XaB0S2KBUh88qNn4ZmQSTHiI3MfSIPtx0KkvNYo85BC8TjsvkpdfngKDH43LroytNON0XlVs+myXtI1bT4uTe9EfrG9WdcoMfrB6pYj6/iz5jPc8ltSC345nENd8RWSmWroq4kldAwBr6pZLIYK9N51t/vjFi/91qjI2yUCorpQ+tbNOc7nlwFGJM0t2l8b3UI7gHFYzRaTgC3sFrBwrLoD1WASOSux30nNFwlX3gr79r7cZkyeot6QnCy24GMoigc64AZ4ry1vcfEFdTuYHC9orevAWjjuUp0ODA364HMNN3Z0HqQoQ4GNYLekmqXF09w==
+system: true
+tags:
+- management
+type: javascript
