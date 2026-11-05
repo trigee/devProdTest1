@@ -1,0 +1,99 @@
+args:
+- description: Value to check.
+  name: value
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: Lower date range.
+  name: begin_date
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: Upper date range.
+  name: end_date
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: Whether value is within a date range.
+commonfields:
+  id: BetweenDates
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.32
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13053055
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: BetweenDates
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: BetweenDates.result
+  description: Whether the input hour is between the given hours.
+  type: boolean
+- contextPath: BetweenDates.value
+  description: The value to check.
+  type: string
+- contextPath: BetweenDates.begin_date
+  description: Lower date range.
+  type: string
+- contextPath: BetweenDates.end_date
+  description: Upper date range.
+  type: string
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('BetweenDates', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.32'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.32')
+  import dateparser
+
+
+
+
+  def is_between_dates(value, begin_date, end_date):
+      input_time = dateparser.parse(value)
+      start_time = dateparser.parse(begin_date)
+      end_time = dateparser.parse(end_date)
+
+      return start_time <= input_time <= end_time  # type: ignore
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      args = demisto.args()
+      value, begin_date, end_date = args["value"], args["begin_date"], args["end_date"]
+
+      result = is_between_dates(value, begin_date, end_date)
+
+      output = {"value": value, "begin_date": begin_date, "end_date": end_date, "result": result}
+      human_readable = (
+          f'# BetweenDates\nThe date *{value}* {"*IS*" if result else "*IS NOT*"} between *{begin_date}* and *{end_date}*'
+      )
+
+      return_results(CommandResults(outputs_prefix="BetweenDates", readable_output=human_readable, outputs=result))
+
+  register_module_line('BetweenDates', 'end', __line__())
+scripttarget: 0
+signature: XE61naaUAEWST0Vj3vtcvXDAEV36IHn1lRaJAFh4jA04rQaOmtwHPw7N6kbLS5u4gAlV8INThisbUP2tKT4h+Iz7sEr8kkA9CiEkmO1R0PR58A7wtH7L1n7v2ZJA6e7Ni0Z6go//5Ug6txAZFF70jBN3cdLB+nJcGAFRNlo4eihdjbiOKrs2TqNZm3Y/Pb2GS02pSLzdVrqw74xVjD9M2zUeoBL6PHlEHyYQjCY9/oAZhcvZjGkYehXOaUQHZr+kZD9C2ZX6/8XsVv0CR7CPMjnH8ZrbCUS/yCdf5KmnFH2Hgp1NIoqhReVFXk94zw0kWv7nO2DzZlx6qaY13afVlw==
+subtype: python3
+system: true
+tags:
+- transformer
+- date
+type: python
