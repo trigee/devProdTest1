@@ -1,0 +1,75 @@
+args:
+- default: true
+  description: Left list.
+  isArray: true
+  name: left
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- default: true
+  description: An array in which to check if an element is in the left list.
+  isArray: true
+  name: right
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: Returns true if an element is shared between two lists.
+commonfields:
+  id: ArrayAnyMatch
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.10.0
+    isoverridable: false
+    itemVersion: 1.4.32
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ArrayAnyMatch
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  // pack version: 1.4.32
+  function main() {
+      var leftArg = args.left;
+      var rightArg = args.right;
+      var leftList = leftArg ? argToList(leftArg) : [];
+      var rightList = argToList(rightArg);
+      var foundCommon = false;
+
+      for (var i = 0; i < rightList.length; i++) {
+          var rightVal = rightList[i];
+          if (leftList.indexOf(rightVal) > -1) {
+              foundCommon = true;
+              break;
+          }
+      }
+
+      return foundCommon;
+  }
+
+  try {
+      return main();
+  } catch (err) {
+      return 'Error: ' + err.message;
+  }
+scripttarget: 0
+signature: mZTZy9NUHifUm2RsJ/vdu5SFqSjVpxnR3is2jGrhm6orZ9V3ziHVwnajaMH//hfiHm+1xVVGJU0fNpxHPRvkOWRZogf8JnDqHHimbM5GRqb8guLUU5g63ZJ3ejQqfQ4yulfG0DZjb9zSkTAsAPNgiLxwu0HvXhc82q4AsthpRUWIv747ecC3aOdpXUBtkdwA1tRJGKb2gR5HNoC36B7ywhfCqrJwfBo4sDhAou9LN7RNopChMSBl9Ik3g4jn6QPZC4qc0UwsILc7Vs9GSAMZRSPkwFCX0ocbpxhchObtEB+3iOPSV7Kpk85MX1/+/4+9Qsu0cPhANwHL1q/YpI37OA==
+system: true
+tags:
+- general
+- transformer
+- entirelist
+type: javascript
