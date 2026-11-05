@@ -1,0 +1,1425 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.6.0
+    isoverridable: false
+    itemVersion: 2.8.12
+    packID: CommonPlaybooks
+    packName: Common Playbooks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules:
+    - cloud_runtime_security
+    - xsiam
+    - edr
+    toServerVersion: ""
+description: "This playbook handles the main containment actions available with Cortex
+  XSIAM, including the following sub-playbooks:  \n* Containment Plan - Isolate endpoint\n*
+  Containment Plan - Disable account\n* Containment Plan - Quarantine file\n* Containment
+  Plan - Block indicators\n* Containment Plan - Clear user session (currently, the
+  playbook supports only Okta)\n\nNote: The playbook inputs enable manipulating the
+  execution flow. Read the input descriptions for details."
+id: Containment Plan
+inputs:
+- description: |-
+    Whether to execute containment plan (except isolation) automatically.
+    The specific containment playbook inputs should also be set to 'True'.
+  key: AutoContainment
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: Whether to execute endpoint isolation.
+  key: HostContainment
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+- description: Set to 'True' to disable the user account.
+  key: UserContainment
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+- description: Set to 'True' to block the indicators.
+  key: BlockIndicators
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+- description: Set to 'True' to quarantine the identified file.
+  key: FileContainment
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+- description: Set to 'True' to clear the user active Okta sessions.
+  key: ClearUserSessions
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+- description: The endpoint ID to run commands over.
+  key: EndpointID
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The username to disable.
+  key: Username
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The file hash to block.
+  key: FileHash
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The path of the file to block.
+  key: FilePath
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The IP indicators.
+  key: IP
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The domain indicators.
+  key: Domain
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The URL indicator.
+  key: URL
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: "Choose 'Quarantine' or 'Delete'  to avoid file remediation conflicts.
+    \nFor example, choosing 'Quarantine' ignores the 'Delete file' task under the
+    eradication playbook and will execute only file quarantine."
+  key: FileRemediation
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: Quarantine
+- description: The Okta IAM users domain. The domain will be appended to the username.
+    e.g. username@IAMUserDomain.
+  key: IAMUserDomain
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: "Possible values: True/False.\nWhether to provide user verification
+    for blocking those IPs and disabling the users. \n\nFalse - No prompt will be
+    displayed to the user.\nTrue - The server will ask the user for blocking verification
+    and will display the blocking list."
+  key: UserVerification
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: |-
+    Possible values: True/False.  Default: True.
+    Should the given indicators be automatically blocked, or should the user be given the option to choose?
+
+    If set to True - no prompt will appear, and all provided indicators will be blocked automatically.
+    If set to False - the user will be prompted to select which indicators to block.
+  key: AutoBlockIndicators
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+name: Containment Plan
+outlinetasks: {}
+outputs:
+- contextPath: Blocklist.Final
+  description: The blocked accounts.
+  type: unknown
+- contextPath: QuarantinedFilesFromEndpoints
+  description: The quarantined files from endpoint.
+  type: unknown
+- contextPath: Core.blocklist.added_hashes
+  description: The file Hash that was added to the blocklist.
+- contextPath: Core.Isolation.endpoint_id
+  description: The isolated endpoint ID.
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "150"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8aa2ff75-9b37-45eb-8c00-1233cf5410ac
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 8aa2ff75-9b37-45eb-8c00-1233cf5410ac
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 60,
+          "y": -1210
+        }
+      }
+  "48":
+    continueonerrortype: ""
+    id: "48"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "145"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 585cb24c-cfe1-45cd-8c5d-370621442364
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Isolate Device
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 585cb24c-cfe1-45cd-8c5d-370621442364
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -780,
+          "y": 35
+        }
+      }
+  "49":
+    continueonerrortype: ""
+    id: "49"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "141"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: abb87f28-a965-4d8d-8069-eb635815bb13
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Disable Account
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: abb87f28-a965-4d8d-8069-eb635815bb13
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -360,
+          "y": 35
+        }
+      }
+  "50":
+    continueonerrortype: ""
+    id: "50"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "142"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ed18bff1-e327-4889-85e8-65d66ff9ef5a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Quarantine File
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: ed18bff1-e327-4889-85e8-65d66ff9ef5a
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 60,
+          "y": 35
+        }
+      }
+  "51":
+    continueonerrortype: ""
+    id: "51"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "143"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1784b84c-0c06-44ae-8230-83edc6deccba
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Block Indicators
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 1784b84c-0c06-44ae-8230-83edc6deccba
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 35
+        }
+      }
+  "58":
+    continueonerrortype: ""
+    id: "58"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "144"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f495b99b-b851-438c-8fc8-0db9145c81a2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Clear User Sessions
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: f495b99b-b851-438c-8fc8-0db9145c81a2
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 35
+        }
+      }
+  "138":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.AutoContainment
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "138"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "139"
+      "yes":
+      - "147"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |+
+        Whether to perform containment actions automatically or manually.
+
+      id: c69a7bbb-62d0-447a-8184-87aea4d7c440
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should containment automatically?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c69a7bbb-62d0-447a-8184-87aea4d7c440
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 60,
+          "y": -490
+        }
+      }
+  "139":
+    continueonerrortype: ""
+    form:
+      description: Select which containment actions to perform
+      expired: false
+      questions:
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "0"
+        label: ""
+        labelarg:
+          simple: Select the Endpoint to isolate by Endpoint name
+        options: []
+        optionsarg:
+        - complex:
+            accessor: endpoint_name
+            root: Core.Endpoint
+            transformers:
+            - operator: uniq
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: multiSelect
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "1"
+        label: ""
+        labelarg:
+          simple: Select Endpoint to isolate by Endpoint ID
+        options: []
+        optionsarg:
+        - complex:
+            root: inputs.EndpointID
+            transformers:
+            - operator: uniq
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: multiSelect
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "2"
+        label: ""
+        labelarg:
+          simple: Select Users to disable
+        options: []
+        optionsarg:
+        - complex:
+            root: inputs.Username
+            transformers:
+            - operator: uniq
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: multiSelect
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "3"
+        label: ""
+        labelarg:
+          simple: Select Files to quarantine
+        options: []
+        optionsarg:
+        - complex:
+            root: FilesList
+            transformers:
+            - operator: uniq
+            - args:
+                applyIfEmpty: {}
+                defaultValue:
+                  iscontext: true
+                  value:
+                    simple: inputs.FilePath
+              operator: SetIfEmpty
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: multiSelect
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "4"
+        label: ""
+        labelarg:
+          simple: Select IPs to block
+        options: []
+        optionsarg:
+        - complex:
+            root: inputs.IP
+            transformers:
+            - operator: uniq
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: multiSelect
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "5"
+        label: ""
+        labelarg:
+          simple: Select URLs to block
+        options: []
+        optionsarg:
+        - complex:
+            root: inputs.URL
+            transformers:
+            - operator: uniq
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: multiSelect
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "6"
+        label: ""
+        labelarg:
+          simple: 'Select Files Hash to block '
+        options: []
+        optionsarg:
+        - complex:
+            root: inputs.FileHash
+            transformers:
+            - operator: uniq
+        - {}
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: multiSelect
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "7"
+        label: ""
+        labelarg:
+          simple: 'Select Domains to block '
+        options: []
+        optionsarg:
+        - complex:
+            root: inputs.Domain
+            transformers:
+            - operator: uniq
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: multiSelect
+      - defaultrows: []
+        fieldassociated: ""
+        gridcolumns: []
+        id: "8"
+        label: ""
+        labelarg:
+          simple: Select Users to clear their sessions
+        options: []
+        optionsarg:
+        - complex:
+            root: inputs.Username
+            transformers:
+            - operator: uniq
+        placeholder: ""
+        readonly: false
+        required: false
+        tooltip: ""
+        type: multiSelect
+      sender: ""
+      syncid: ""
+      title: Which containment actions would you like to perform?
+      totalanswers: 0
+    id: "139"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    message:
+      bcc: null
+      body: null
+      cc: null
+      format: ""
+      methods: []
+      subject: null
+      timings:
+        completeafterreplies: 1
+        completeaftersla: false
+        completeafterv2: true
+        retriescount: 2
+        retriesinterval: 360
+      to: null
+    nexttasks:
+      '#none#':
+      - "147"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Select which indicators to block.
+      id: 6b328ab7-5553-4c6b-86d3-ca365bf5766d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Which containment actions would you like to perform?
+      playbooktaskmissingcomponent: null
+      type: collection
+      version: -1
+    taskid: 6b328ab7-5553-4c6b-86d3-ca365bf5766d
+    timertriggers: []
+    type: collection
+    view: |-
+      {
+        "position": {
+          "x": -190,
+          "y": -300
+        }
+      }
+  "141":
+    continueonerrortype: ""
+    id: "141"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "148"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      UserContainment:
+        complex:
+          root: inputs.UserContainment
+      UserVerification:
+        complex:
+          root: inputs.UserVerification
+      Username:
+        complex:
+          root: inputs.AutoContainment
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs==rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: Which containment actions would you like to perform?.Answers.2
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: inputs.AutoContainment
+              lhsB: {}
+              options:
+                value:
+                  simple: case_insensitive
+              optionsB: {}
+              rhs:
+                value:
+                  simple: "True"
+              rhsB: {}
+              then:
+                iscontext: true
+                value:
+                  simple: inputs.Username
+            operator: If-Then-Else
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b14b5f26-d428-4b62-8ba3-2c1253e171fc
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment Plan - Disable Account
+      playbookId: Containment Plan - Disable Account
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: b14b5f26-d428-4b62-8ba3-2c1253e171fc
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": -360,
+          "y": 170
+        }
+      }
+  "142":
+    continueonerrortype: ""
+    id: "142"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "148"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AutoContainment:
+        complex:
+          root: inputs.AutoContainment
+      EndpointID:
+        complex:
+          root: inputs.EndpointID
+      FileContainment:
+        complex:
+          root: inputs.FileContainment
+      FileHash:
+        complex:
+          root: inputs.AutoContainment
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs==rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: Which containment actions would you like to perform?.Answers.3
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: inputs.AutoContainment
+              lhsB: {}
+              options:
+                value:
+                  simple: case_insensitive
+              optionsB: {}
+              rhs:
+                value:
+                  simple: "True"
+              rhsB: {}
+              then:
+                iscontext: true
+                value:
+                  simple: inputs.FileHash
+            operator: If-Then-Else
+      FilePath:
+        complex:
+          root: inputs.AutoContainment
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs==rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: Which containment actions would you like to perform?.Answers.3
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: inputs.AutoContainment
+              lhsB: {}
+              options:
+                value:
+                  simple: case_insensitive
+              optionsB: {}
+              rhs:
+                value:
+                  simple: "True"
+              rhsB: {}
+              then:
+                iscontext: true
+                value:
+                  simple: inputs.FilePath
+            operator: If-Then-Else
+      FileRemediation:
+        complex:
+          root: inputs.FileRemediation
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e302b10a-140c-4997-8584-b2dc75debb4a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment Plan - Quarantine File
+      playbookId: Containment Plan - Quarantine File
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: e302b10a-140c-4997-8584-b2dc75debb4a
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 60,
+          "y": 170
+        }
+      }
+  "143":
+    continueonerrortype: ""
+    id: "143"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "148"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AutoBlockIndicators:
+        complex:
+          root: inputs.AutoBlockIndicators
+      AutoContainment:
+        complex:
+          root: inputs.AutoContainment
+      BlockIndicators:
+        complex:
+          root: inputs.BlockIndicators
+      Domain:
+        complex:
+          root: inputs.AutoContainment
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs==rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: Which containment actions would you like to perform?.Answers.7
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: inputs.AutoContainment
+              lhsB: {}
+              options: {}
+              optionsB: {}
+              rhs:
+                value:
+                  simple: "True"
+              rhsB: {}
+              then:
+                iscontext: true
+                value:
+                  simple: inputs.Domain
+            operator: If-Then-Else
+      FileHash:
+        complex:
+          root: inputs.AutoContainment
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs==rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: Which containment actions would you like to perform?.Answers.6
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: inputs.AutoContainment
+              lhsB: {}
+              options:
+                value:
+                  simple: case_insensitive
+              optionsB: {}
+              rhs:
+                value:
+                  simple: "True"
+              rhsB: {}
+              then:
+                iscontext: true
+                value:
+                  simple: inputs.FileHash
+            operator: If-Then-Else
+      FilePath:
+        complex:
+          root: inputs.FilePath
+      IP:
+        complex:
+          root: inputs.AutoContainment
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs==rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: Which containment actions would you like to perform?.Answers.4
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: inputs.AutoContainment
+              lhsB: {}
+              options:
+                value:
+                  simple: case_insensitive
+              optionsB: {}
+              rhs:
+                value:
+                  simple: "True"
+              rhsB: {}
+              then:
+                iscontext: true
+                value:
+                  simple: inputs.IP
+            operator: If-Then-Else
+      URL:
+        complex:
+          root: inputs.AutoContainment
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs==rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: Which containment actions would you like to perform?.Answers.5
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: inputs.AutoContainment
+              lhsB: {}
+              options: {}
+              optionsB: {}
+              rhs:
+                value:
+                  simple: "True"
+              rhsB: {}
+              then:
+                iscontext: true
+                value:
+                  simple: inputs.URL
+            operator: If-Then-Else
+      UserVerification:
+        complex:
+          root: inputs.UserVerification
+      Username:
+        complex:
+          root: inputs.Username
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 07e811df-f4de-42bb-8910-13684b6086f1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment Plan - Block Indicators
+      playbookId: Containment Plan - Block Indicators
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 07e811df-f4de-42bb-8910-13684b6086f1
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 480,
+          "y": 170
+        }
+      }
+  "144":
+    continueonerrortype: ""
+    id: "144"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "148"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      ClearUserSessions:
+        complex:
+          root: inputs.ClearUserSessions
+      IAMUserDomain:
+        complex:
+          root: inputs.IAMUserDomain
+      Username:
+        complex:
+          root: inputs.AutoContainment
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs==rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: Which containment actions would you like to perform?.Answers.8
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: inputs.AutoContainment
+              lhsB: {}
+              options:
+                value:
+                  simple: case_insensitive
+              optionsB: {}
+              rhs:
+                value:
+                  simple: "True"
+              rhsB: {}
+              then:
+                iscontext: true
+                value:
+                  simple: inputs.Username
+            operator: If-Then-Else
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: df1758c9-fbf9-4532-876f-b60ea180dcbc
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment Plan - Clear User Sessions
+      playbookId: Containment Plan - Clear User Sessions
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: df1758c9-fbf9-4532-876f-b60ea180dcbc
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 170
+        }
+      }
+  "145":
+    continueonerrortype: ""
+    id: "145"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "148"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      EndpointHostName:
+        complex:
+          root: inputs.AutoContainment
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs==rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: Which containment actions would you like to perform?.Answers.0
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: inputs.AutoContainment
+              lhsB: {}
+              options:
+                value:
+                  simple: case_insensitive
+              optionsB: {}
+              rhs:
+                value:
+                  simple: "True"
+              rhsB: {}
+              then:
+                iscontext: true
+                value:
+                  simple: Core.Endpoint.endpoint_name
+            operator: If-Then-Else
+      EndpointID:
+        complex:
+          root: inputs.AutoContainment
+          transformers:
+          - args:
+              condition:
+                value:
+                  simple: lhs==rhs
+              conditionB: {}
+              conditionInBetween: {}
+              else:
+                iscontext: true
+                value:
+                  simple: Which containment actions would you like to perform?.Answers.1
+              equals: {}
+              lhs:
+                iscontext: true
+                value:
+                  simple: inputs.AutoContainment
+              lhsB: {}
+              options:
+                value:
+                  simple: case_insensitive
+              optionsB: {}
+              rhs:
+                value:
+                  simple: "True"
+              rhsB: {}
+              then:
+                iscontext: true
+                value:
+                  simple: inputs.EndpointID
+            operator: If-Then-Else
+      HostContainment:
+        complex:
+          root: inputs.HostContainment
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8bd87a2a-710a-479b-8356-540bcdf010fd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment Plan - Isolate Device
+      playbookId: Containment Plan - Isolate Device
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 8bd87a2a-710a-479b-8356-540bcdf010fd
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": -780,
+          "y": 170
+        }
+      }
+  "146":
+    continueonerrortype: ""
+    id: "146"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "138"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      endpoint_id_list:
+        complex:
+          root: inputs.EndpointID
+          transformers:
+          - args:
+              applyIfEmpty: {}
+              defaultValue:
+                value:
+                  simple: No Value
+            operator: SetIfEmpty
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Gets a list of endpoints, according to the passed filters. If there
+        are no filters, all endpoints are returned. Filtering by multiple fields is
+        concatenated using the AND condition (OR is not supported). Maximum result
+        set size is 100. Offset is the zero-based number of endpoints from the start
+        of the result set (start by counting from 0).
+      id: 953056e0-a248-437e-8498-348287ca39bc
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get endpoint info
+      playbooktaskmissingcomponent: null
+      script: '|||core-get-endpoints'
+      type: regular
+      version: -1
+    taskid: 953056e0-a248-437e-8498-348287ca39bc
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 60,
+          "y": -670
+        }
+      }
+  "147":
+    continueonerrortype: ""
+    id: "147"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "50"
+      - "49"
+      - "48"
+      - "51"
+      - "58"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c468a69f-b7e5-4fdc-8ea5-c1b5d6710a2e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: c468a69f-b7e5-4fdc-8ea5-c1b5d6710a2e
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 60,
+          "y": -120
+        }
+      }
+  "148":
+    continueonerrortype: ""
+    id: "148"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a8f6c601-67bc-4dfd-8c09-008797b89324
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: a8f6c601-67bc-4dfd-8c09-008797b89324
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 60,
+          "y": 340
+        }
+      }
+  "149":
+    continueonerrortype: ""
+    id: "149"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "146"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      key:
+        simple: FilesList
+      stringify:
+        simple: "false"
+      value:
+        complex:
+          root: inputs.FilePath
+          transformers:
+          - args:
+              array1_key:
+                iscontext: true
+              array2:
+                iscontext: true
+                value:
+                  simple: inputs.FileHash
+              array2_key: {}
+              determine_output_length_by: {}
+              merge_dict: {}
+              output_name1:
+                value:
+                  simple: Path
+              output_name2:
+                value:
+                  simple: Hash
+            operator: MakePair
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Set a value in context under the key you entered.
+      id: afefe6f1-1bc6-4c69-8fd4-7072d4fa9962
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Set Process list
+      playbooktaskmissingcomponent: null
+      script: Set
+      type: regular
+      version: -1
+    taskid: afefe6f1-1bc6-4c69-8fd4-7072d4fa9962
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -190,
+          "y": -870
+        }
+      }
+  "150":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.FilePath
+          operator: isNotEmpty
+          right:
+            value: {}
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.FileHash
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "150"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "146"
+      "yes":
+      - "149"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Check if the file path and file hash are defined.
+      id: 4541881d-148b-4360-83d3-c66c78b3d624
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: The file path and file hash defined?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 4541881d-148b-4360-83d3-c66c78b3d624
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 60,
+          "y": -1060
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "138_139_#default#": 0.64,
+      "150_146_#default#": 0.45
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1615,
+        "width": 2060,
+        "x": -780,
+        "y": -1210
+      }
+    }
+  }
