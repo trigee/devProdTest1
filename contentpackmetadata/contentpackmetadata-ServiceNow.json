@@ -1,0 +1,1354 @@
+{
+	"author": "Cortex",
+	"authorImage": "content/packs/Base/Author_image.png",
+	"beta": false,
+	"cacheVersn": 0,
+	"categories": [
+		"Case Management"
+	],
+	"certification": "certified",
+	"contentItemTypes": [
+		"integration",
+		"automation",
+		"incidentfield",
+		"incidenttype",
+		"playbook",
+		"classifier",
+		"agentixaction",
+		"modelingrule"
+	],
+	"contentItems": {
+		"agentixaction": [
+			{
+				"category": "",
+				"description": "Updates a ServiceNow ticket based on the specified ticket ID and field values.",
+				"fromversion": "0.0.0",
+				"id": "ServiceNowUpdateTicket",
+				"name": "ServiceNowUpdateTicket",
+				"supportedModules": [
+					"agentix",
+					"xsiam",
+					"cloud_posture"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Enriches network adapters with ownership and configuration item details from ServiceNow based on the specified IP address.",
+				"fromversion": "0.0.0",
+				"id": "ServiceNowCMDBEnrichAsset",
+				"name": "ServiceNowCMDBEnrichAsset",
+				"supportedModules": [
+					"agentix",
+					"xsiam",
+					"cloud_posture"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "script"
+			},
+			{
+				"category": "",
+				"description": "Deletes the specified ticket from ServiceNow based on ticket ID and type.",
+				"fromversion": "0.0.0",
+				"id": "ServiceNowDeleteTicket",
+				"name": "ServiceNowDeleteTicket",
+				"supportedModules": [
+					"agentix",
+					"xsiam",
+					"cloud_posture"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Creates a new ServiceNow ticket with detailed optional inputs for categorization, workflow, assignment, and more.",
+				"fromversion": "0.0.0",
+				"id": "ServiceNowCreateTicket",
+				"name": "ServiceNowCreateTicket",
+				"supportedModules": [
+					"agentix",
+					"xsiam",
+					"cloud_posture"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Retrieves a ServiceNow ticket from ServiceNow based on the specified ID or number.",
+				"fromversion": "0.0.0",
+				"id": "ServiceNowGetTicket",
+				"name": "ServiceNowGetTicket",
+				"supportedModules": [
+					"agentix",
+					"xsiam",
+					"cloud_posture"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			}
+		],
+		"agentixagent": null,
+		"agentixknowledgecollection": null,
+		"agentixknowledgesource": null,
+		"agentixskill": null,
+		"automation": [
+			{
+				"description": "This script is used to wrap the generic update-record command in ServiceNow.\nYou can add fields that you want to update the record with as script arguments or in the\ncode and work with the records easily.",
+				"fromversion": "5.0.0",
+				"id": "ServiceNowUpdateIncident",
+				"name": "ServiceNowUpdateIncident",
+				"tags": [
+					"servicenow",
+					"servicenow v2"
+				]
+			},
+			{
+				"description": "Troubleshot ServiceNow v2 integration by displaying health information of enabled instances and old and active incidents of disabled instances.",
+				"fromversion": "6.1.0",
+				"id": "ServiceNowTroubleshoot",
+				"name": "ServiceNowTroubleshoot",
+				"tags": [
+					"servicenow",
+					"servicenow v2"
+				]
+			},
+			{
+				"description": "populates the value of the ServiceNow Ticket State field and display it in a layout widget.\n",
+				"fromversion": "6.0.0",
+				"id": "ServiceNowIncidentStatus",
+				"name": "ServiceNowIncidentStatus",
+				"tags": [
+					"dynamic-section",
+					"python",
+					"servicenow v2"
+				]
+			},
+			{
+				"description": "This script is used to wrap the generic create-record command in ServiceNow.\nYou can add fields that you want to create the record with as script arguments or in the\ncode and work with the records easily.",
+				"fromversion": "5.0.0",
+				"id": "ServiceNowCreateIncident",
+				"name": "ServiceNowCreateIncident",
+				"tags": [
+					"servicenow",
+					"servicenow v2"
+				]
+			},
+			{
+				"description": "This script is used to wrap the generic query-table command in ServiceNow.\nYou can add fields that you want to use as inputs and outputs from the record as script arguments or in the\ncode and work with the records easily.",
+				"fromversion": "5.0.0",
+				"id": "ServiceNowQueryIncident",
+				"name": "ServiceNowQueryIncident",
+				"tags": [
+					"servicenow",
+					"servicenow v2"
+				]
+			},
+			{
+				"description": "Use this script to add a comment or work note to a ServiceNow ticket. To be run within the incident.",
+				"fromversion": "6.8.0",
+				"id": "ServiceNowAddComment",
+				"name": "ServiceNowAddComment",
+				"tags": [
+					"servicenow",
+					"servicenow v2"
+				]
+			}
+		],
+		"casefield": null,
+		"classifier": [
+			{
+				"description": "Classifies ServiceNow tickets.",
+				"id": "ServiceNow",
+				"name": "ServiceNow Classifier",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				]
+			},
+			{
+				"description": "Maps outgoing ServiceNow incidents fields for ServiceNow create ticket and mirror playbook",
+				"id": "c650b1a2-8f36-4f97-8bea-2dc4eb478ef7",
+				"name": "ServiceNow Create Ticket - Outgoing Mapper",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				]
+			},
+			{
+				"description": "Maps a ServiceNow user data to a User Profile data.",
+				"id": "User Profile - ServiceNow (Incoming)",
+				"name": "User Profile - ServiceNow (Incoming)",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				]
+			},
+			{
+				"description": "Maps a User Profile data to a ServiceNow user data.",
+				"id": "User Profile - ServiceNow (Outgoing)",
+				"name": "User Profile - ServiceNow (Outgoing)",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				]
+			},
+			{
+				"description": "Maps outgoing ServiceNow incident Fields.",
+				"id": "ServiceNow-outgoing-mapper",
+				"name": "ServiceNow - Outgoing Mapper",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				]
+			},
+			{
+				"description": "Maps incoming ServiceNow incidents fields.",
+				"id": "ServiceNow-incoming-mapper",
+				"name": "ServiceNow - Incoming Mapper",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				]
+			},
+			{
+				"description": "Maps incoming ServiceNow incidents fields for ServiceNow create ticket and mirror playbook",
+				"id": "ce3458a0-89ee-4db2-8e13-6a74e5db029b",
+				"name": "ServiceNow Create Ticket - Incoming Mapper",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				]
+			}
+		],
+		"dashboard": null,
+		"genericfield": null,
+		"generictype": null,
+		"incidentfield": [
+			{
+				"description": "ServiceNow Caller who opened the ticket.",
+				"name": "ServiceNow Caller",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "User who closed ServiceNow Incident",
+				"name": "ServiceNow Closed By",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "ServiceNow Severity",
+				"name": "ServiceNow Severity",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "singleSelect"
+			},
+			{
+				"description": "The ticket closed date",
+				"name": "ServiceNow Closed Date",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "date"
+			},
+			{
+				"description": "ServiceNow Ticket Priority",
+				"name": "ServiceNow Priority",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "singleSelect"
+			},
+			{
+				"description": "",
+				"name": "ServiceNow Notify",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "singleSelect"
+			},
+			{
+				"description": "ServiceNow ticket Business Impact",
+				"name": "ServiceNow Business Impact",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "singleSelect"
+			},
+			{
+				"description": "ServiceNow SIR Category",
+				"name": "ServiceNow SIR Category",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "singleSelect"
+			},
+			{
+				"description": "ServiceNow Due Date",
+				"name": "ServiceNow Due Date",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "date"
+			},
+			{
+				"description": "The ticket resolved time",
+				"name": "ServiceNow Resolved Time",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "date"
+			},
+			{
+				"description": "",
+				"name": "ServiceNow Ticket ID",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "The SIR ticket state",
+				"name": "ServiceNow SIR State",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "singleSelect"
+			},
+			{
+				"description": "ServiceNow Escalation",
+				"name": "ServiceNow Escalation",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "ServiceNow Assignment Group",
+				"name": "ServiceNow Assignment Group",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "The ticket state",
+				"name": "ServiceNow State",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "singleSelect"
+			},
+			{
+				"description": "Ticket assignee",
+				"name": "ServiceNow Assigned To",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "ServiceNow ticket Impact",
+				"name": "ServiceNow Impact",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "singleSelect"
+			},
+			{
+				"description": "Resolution Code Of ServiceNow Ticket",
+				"name": "ServiceNow Resolution Code",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "ServiceNow Resolution Notes",
+				"name": "ServiceNow Resolution Notes",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "Ticket description",
+				"name": "ServiceNow Description",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "longText"
+			},
+			{
+				"description": "",
+				"name": "ServiceNow Attack Vector",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "ServiceNow Ticket Number",
+				"name": "ServiceNow Ticket Number",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "ServiceNow Caller who opened the ticket.",
+				"name": "ServiceNow Caller ID",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "shortText"
+			},
+			{
+				"description": "ServiceNow ticket urgency.",
+				"name": "ServiceNow Urgency",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"type": "singleSelect"
+			}
+		],
+		"incidenttype": [
+			{
+				"closureScript": "",
+				"days": 0,
+				"hours": 0,
+				"name": "ServiceNow Create Ticket and Mirror",
+				"playbook": "",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"weeks": 0
+			},
+			{
+				"closureScript": "",
+				"days": 0,
+				"hours": 0,
+				"name": "ServiceNow Ticket",
+				"playbook": "",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"weeks": 0
+			},
+			{
+				"closureScript": "",
+				"days": 0,
+				"hours": 0,
+				"name": "ServiceNow SIR Incident",
+				"playbook": "",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"weeks": 0
+			}
+		],
+		"indicatorfield": null,
+		"integration": [
+			{
+				"category": "Case Management",
+				"commands": [
+					{
+						"description": "Retrieves ticket information by ticket ID.",
+						"hidden": false,
+						"name": "servicenow-get-ticket"
+					},
+					{
+						"description": "Creates new ServiceNow ticket.",
+						"hidden": false,
+						"name": "servicenow-create-ticket"
+					},
+					{
+						"description": "Updates the specified ticket.",
+						"hidden": false,
+						"name": "servicenow-update-ticket"
+					},
+					{
+						"description": "Deletes a ticket from ServiceNow.",
+						"hidden": false,
+						"name": "servicenow-delete-ticket"
+					},
+					{
+						"description": "Delete an attachment from a ticket.",
+						"hidden": false,
+						"name": "servicenow-delete-file"
+					},
+					{
+						"description": "Retrieves ticket information according to the supplied query.",
+						"hidden": false,
+						"name": "servicenow-query-tickets"
+					},
+					{
+						"description": "Adds a link to the specified ticket.",
+						"hidden": false,
+						"name": "servicenow-add-link"
+					},
+					{
+						"description": "Adds a comment to the specified ticket, by ticket ID.",
+						"hidden": false,
+						"name": "servicenow-add-comment"
+					},
+					{
+						"description": "Uploads a file to the specified ticket.",
+						"hidden": false,
+						"name": "servicenow-upload-file"
+					},
+					{
+						"description": "Retrieves record information, by record ID.",
+						"hidden": false,
+						"name": "servicenow-get-record"
+					},
+					{
+						"description": "Queries the specified table in ServiceNow.",
+						"hidden": false,
+						"name": "servicenow-query-table"
+					},
+					{
+						"description": "Creates a new record in the specified ServiceNow table.",
+						"hidden": false,
+						"name": "servicenow-create-record"
+					},
+					{
+						"description": "Updates a record in the specified ServiceNow table.",
+						"hidden": false,
+						"name": "servicenow-update-record"
+					},
+					{
+						"description": "Deletes a record in the specified ServiceNow table.",
+						"hidden": false,
+						"name": "servicenow-delete-record"
+					},
+					{
+						"description": "Lists API fields for the specified ServiceNow table.",
+						"hidden": false,
+						"name": "servicenow-list-table-fields"
+					},
+					{
+						"description": "Queries the cmdb_ci_computer table in ServiceNow.",
+						"hidden": false,
+						"name": "servicenow-query-computers"
+					},
+					{
+						"description": "Queries the sys_user_group table in ServiceNow.",
+						"hidden": false,
+						"name": "servicenow-query-groups"
+					},
+					{
+						"description": "Queries the sys_user table in ServiceNow.",
+						"hidden": false,
+						"name": "servicenow-query-users"
+					},
+					{
+						"description": "Gets table names by a label to use in commands.",
+						"hidden": false,
+						"name": "servicenow-get-table-name"
+					},
+					{
+						"description": "Gets notes from the specified ServiceNow ticket. Notes can be retrieved either by granting \"Read permissions\" for the sys_journal_field table, or by setting the `use_display_value` parameter to true.",
+						"hidden": false,
+						"name": "servicenow-get-ticket-notes"
+					},
+					{
+						"description": "Adds a tag to a ticket. The added tag entry will be visible in the label_entry table and can be retrieved using the \"!servicenow-query-table table_name=label_entry fields=title,table,sys_id,id_display,id_type\" command.",
+						"hidden": false,
+						"name": "servicenow-add-tag"
+					},
+					{
+						"description": "Queries the sc_cat_item table in ServiceNow.",
+						"hidden": false,
+						"name": "servicenow-query-items"
+					},
+					{
+						"description": "Retrieves item details by system ID.",
+						"hidden": false,
+						"name": "servicenow-get-item-details"
+					},
+					{
+						"description": "Orders the specified catalog item.",
+						"hidden": false,
+						"name": "servicenow-create-item-order"
+					},
+					{
+						"description": "Documents a route to a queue. Requires an installation of the Advanced Work Assignments plugin. An active queue and service channel to the designated table.",
+						"hidden": false,
+						"name": "servicenow-document-route-to-queue"
+					},
+					{
+						"description": "Get remote data preview from a remote incident. This method does not update the current incident, and is used to preview the ticket which would be updated.",
+						"hidden": false,
+						"name": "get-remote-data-preview"
+					},
+					{
+						"description": "This function should be used once before running any command when using OAuth2 authentication.",
+						"hidden": false,
+						"name": "servicenow-oauth-login"
+					},
+					{
+						"description": "Test the instance configuration when using OAuth2 authentication.",
+						"hidden": false,
+						"name": "servicenow-oauth-test"
+					},
+					{
+						"description": "Create a change request from a template.",
+						"hidden": false,
+						"name": "servicenow-create-co-from-template"
+					},
+					{
+						"description": "gets the tasks associated to change request.",
+						"hidden": false,
+						"name": "servicenow-get-tasks-for-co"
+					},
+					{
+						"description": "Generic call to ServiceNow api.",
+						"hidden": false,
+						"name": "servicenow-generic-api-call"
+					},
+					{
+						"description": "Retrieves attachments from a ticket.",
+						"hidden": false,
+						"name": "servicenow-get-ticket-attachments"
+					},
+					{
+						"description": "Creates new ServiceNow ticket.",
+						"hidden": true,
+						"name": "servicenow-create-ticket-quick-action"
+					}
+				],
+				"description": "Use The ServiceNow IT Service Management (ITSM) solution to modernize the way you manage and deliver services to your users.",
+				"fromversion": "5.0.0",
+				"id": "ServiceNow v2",
+				"name": "ServiceNow v2",
+				"toversion": ""
+			},
+			{
+				"category": "Analytics \u0026 SIEM",
+				"commands": [
+					{
+						"description": "Returns events extracted from ServiceNow. This command is used for developing/debugging and is to be used with caution, as it can create events, leading to event duplication and exceeding the API request limitation.",
+						"hidden": false,
+						"name": "service-now-get-audit-logs"
+					},
+					{
+						"description": "Returns syslog transactions events extracted from ServiceNow. This command is used for developing/debugging and is to be used with caution, as it can create events, leading to event duplication and exceeding the API request limitation.",
+						"hidden": false,
+						"name": "service-now-get-syslog-transactions"
+					},
+					{
+						"description": "Returns cases extracted from ServiceNow. This command is used for developing/debugging and is to be used with caution, as it can create events, leading to event duplication and exceeding the API request limitation.",
+						"hidden": false,
+						"name": "service-now-get-case-logs"
+					},
+					{
+						"description": "Returns outbound HTTP log events extracted from ServiceNow. This command is used for developing/debugging and is to be used with caution, as it can create events, leading to event duplication and exceeding the API request limitation.",
+						"hidden": false,
+						"name": "service-now-get-outbound-http-logs"
+					},
+					{
+						"description": "Generate a refresh token using your existing credentials. Use this command if you encounter access_denied or other errors related to your access token when using OAuth 2.0.",
+						"hidden": false,
+						"name": "service-now-oauth-login"
+					}
+				],
+				"description": "Use this integration to fetch audits, syslog transactions, cases, and outbound HTTP logs from ServiceNow as Cortex XSIAM events.",
+				"fromversion": "8.4.0",
+				"id": "ServiceNow Event Collector",
+				"name": "ServiceNow Event Collector",
+				"supportedModules": [
+					"xsiam",
+					"agentix",
+					"C1",
+					"C3",
+					"X0",
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS"
+				],
+				"toversion": ""
+			},
+			{
+				"category": "Case Management",
+				"commands": [
+					{
+						"description": "Retrieve ticket information by specific ticket ID",
+						"hidden": false,
+						"name": "servicenow-get-ticket"
+					},
+					{
+						"description": "Deprecated. Use servicenow-get-ticket or servicenow-get-record instead",
+						"hidden": false,
+						"name": "servicenow-get"
+					},
+					{
+						"description": "Create new ServiceNow ticket",
+						"hidden": false,
+						"name": "servicenow-create-ticket"
+					},
+					{
+						"description": "Deprecated. Use servicenow-create-ticket or servicenow-create-record instead",
+						"hidden": false,
+						"name": "servicenow-create"
+					},
+					{
+						"description": "Create a new ServiceNow ticket",
+						"hidden": false,
+						"name": "servicenow-incident-create"
+					},
+					{
+						"description": "Update specific ticket",
+						"hidden": false,
+						"name": "servicenow-update-ticket"
+					},
+					{
+						"description": "Deprecated. Use servicenow-update-ticket or servicenow-update-record instead",
+						"hidden": false,
+						"name": "servicenow-update"
+					},
+					{
+						"description": "Deprecated. Use servicenow-update-ticket or servicenow-update-record instead",
+						"hidden": false,
+						"name": "servicenow-incident-update"
+					},
+					{
+						"description": "Delete a ticket from ServiceNow",
+						"hidden": false,
+						"name": "servicenow-delete-ticket"
+					},
+					{
+						"description": "Add a link to specific ticket",
+						"hidden": false,
+						"name": "servicenow-add-link"
+					},
+					{
+						"description": "Deprecated. Use servicenow-add-link instead.",
+						"hidden": false,
+						"name": "servicenow-incident-add-link"
+					},
+					{
+						"description": "Add comment to specific ticket by providing ticket id",
+						"hidden": false,
+						"name": "servicenow-add-comment"
+					},
+					{
+						"description": "Deprecated. Use servicenow-add-comment instead.",
+						"hidden": false,
+						"name": "servicenow-incident-add-comment"
+					},
+					{
+						"description": "Retrieve ticket info with a query",
+						"hidden": false,
+						"name": "servicenow-query-tickets"
+					},
+					{
+						"description": "Deprecated. Use servicenow-query-table or servicenow-query-tickets instead.",
+						"hidden": false,
+						"name": "servicenow-query"
+					},
+					{
+						"description": "Deprecated. Use servicenow-query-table or servicenow-query-tickets instead.",
+						"hidden": false,
+						"name": "servicenow-incidents-query"
+					},
+					{
+						"description": "Upload a file to a specific ticket",
+						"hidden": false,
+						"name": "servicenow-upload-file"
+					},
+					{
+						"description": "Deprecated. Use servicenow-upload-file instead.",
+						"hidden": false,
+						"name": "servicenow-incident-upload-file"
+					},
+					{
+						"description": "Deprecated. Use servicenow-query-groups instead.",
+						"hidden": false,
+						"name": "servicenow-get-groups"
+					},
+					{
+						"description": "Deprecated. Use servicenow-query-computers instead.",
+						"hidden": false,
+						"name": "servicenow-get-computer"
+					},
+					{
+						"description": "Retrieve record information by specific record ID",
+						"hidden": false,
+						"name": "servicenow-get-record"
+					},
+					{
+						"description": "Query a specified table in ServiceNow",
+						"hidden": false,
+						"name": "servicenow-query-table"
+					},
+					{
+						"description": "Create a new record in a specified ServiceNow table",
+						"hidden": false,
+						"name": "servicenow-create-record"
+					},
+					{
+						"description": "Update a record in a specified ServiceNow table",
+						"hidden": false,
+						"name": "servicenow-update-record"
+					},
+					{
+						"description": "Delete a record in a specified ServiceNow table",
+						"hidden": false,
+						"name": "servicenow-delete-record"
+					},
+					{
+						"description": "List API fields for a specified ServiceNow table",
+						"hidden": false,
+						"name": "servicenow-list-table-fields"
+					},
+					{
+						"description": "Query the cmdb_ci_computer table in ServiceNow",
+						"hidden": false,
+						"name": "servicenow-query-computers"
+					},
+					{
+						"description": "Query the sys_user_group table in ServiceNow",
+						"hidden": false,
+						"name": "servicenow-query-groups"
+					},
+					{
+						"description": "Query the sys_user table in ServiceNow",
+						"hidden": false,
+						"name": "servicenow-query-users"
+					},
+					{
+						"description": "Get table names by a label to use in commands",
+						"hidden": false,
+						"name": "servicenow-get-table-name"
+					},
+					{
+						"description": "Get notes from the specified ServiceNow ticket - Read permissions are required for the sys_journal_field table.",
+						"hidden": false,
+						"name": "servicenow-get-ticket-notes"
+					}
+				],
+				"deprecated": true,
+				"description": "Deprecated. Use the ServiceNow v2 integration instead.",
+				"fromversion": "5.0.0",
+				"id": "ServiceNow",
+				"name": "ServiceNow (Deprecated)",
+				"toversion": ""
+			},
+			{
+				"category": "IT Services",
+				"commands": [
+					{
+						"description": "Query records for a CMDB class.",
+						"hidden": false,
+						"name": "servicenow-cmdb-records-list"
+					},
+					{
+						"description": "Query attributes and relationship information for a specific record.",
+						"hidden": false,
+						"name": "servicenow-cmdb-record-get-by-id"
+					},
+					{
+						"description": "Create a record with associated relations and attributes.",
+						"hidden": false,
+						"name": "servicenow-cmdb-record-create"
+					},
+					{
+						"description": "Update a record with the given attributes.",
+						"hidden": false,
+						"name": "servicenow-cmdb-record-update"
+					},
+					{
+						"description": "Add a new relation to an existing record.",
+						"hidden": false,
+						"name": "servicenow-cmdb-record-add-relations"
+					},
+					{
+						"description": "Delete a relation of an existing record.",
+						"hidden": false,
+						"name": "servicenow-cmdb-record-delete-relations"
+					},
+					{
+						"description": "This function should be used once before running any command when using OAuth authorization.",
+						"hidden": false,
+						"name": "servicenow-cmdb-oauth-login"
+					},
+					{
+						"description": "Test the instance configuration when using OAuth authorization.",
+						"hidden": false,
+						"name": "servicenow-cmdb-oauth-test"
+					}
+				],
+				"description": "ServiceNow CMDB is a service‑centric foundation that proactively analyzes service‑impacting changes, identifies issues, and eliminates outages.",
+				"fromversion": "5.0.0",
+				"id": "ServiceNow CMDB",
+				"name": "ServiceNow CMDB",
+				"toversion": ""
+			},
+			{
+				"category": "Identity and Access Management",
+				"commands": [
+					{
+						"description": "Creates a user in ServiceNow.",
+						"hidden": false,
+						"name": "iam-create-user"
+					},
+					{
+						"description": "Updates an existing user with the data passed in the user-profile argument.",
+						"hidden": false,
+						"name": "iam-update-user"
+					},
+					{
+						"description": "Retrieves a single user resource.",
+						"hidden": false,
+						"name": "iam-get-user"
+					},
+					{
+						"description": "Disable an active user.",
+						"hidden": false,
+						"name": "iam-disable-user"
+					}
+				],
+				"description": "Integrate with ServiceNow's services to execute CRUD operations for employee lifecycle processes.",
+				"fromversion": "6.0.0",
+				"id": "ServiceNow IAM",
+				"name": "ServiceNow IAM",
+				"toversion": ""
+			}
+		],
+		"layoutscontainer": null,
+		"list": null,
+		"modelingrule": [
+			{
+				"datasets": [
+					"servicenow_servicenow_raw"
+				],
+				"deprecated": false,
+				"description": "",
+				"fromversion": "8.4.0",
+				"id": "ServiceNow_ServiceNow_ModelingRule",
+				"name": "ServiceNow ServiceNow Modeling Rule",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"toversion": ""
+			}
+		],
+		"playbook": [
+			{
+				"description": "Create ServiceNow Ticket allows you to open new tickets as a task from a parent playbook.\nWhen creating the ticket, you can decide to update based on on the ticket's state, which will wait for the ticket to resolve or close with StatePolling. \nAlternatively, you can select to mirror the ServiceNow ticket and alert fields. To apply either of these options, set the SyncTicket value in the playbook inputs to one of the following options: \n1. StatePolling\n2. Mirror\n3. Leave Blank to use none.",
+				"fromversion": "6.0.0",
+				"id": "Create ServiceNow Ticket",
+				"name": "Create ServiceNow Ticket",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "Subplaybook for finding CI records in ServiceNow CMDB.\n",
+				"fromversion": "6.0.0",
+				"id": "ServiceNow CMDB Search",
+				"name": "ServiceNow CMDB Search",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"asm",
+					"exposure_management",
+					"agentix",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "Use ServiceNow Alert State Polling as a sub-playbook when required to pause the execution of a master playbook until the ServiceNow ticket state is either resolved or closed.\nThis playbook implements polling by continuously running the servicenow-get-ticket command until the state is either resolved or closed.",
+				"fromversion": "6.0.0",
+				"id": "ServiceNow Ticket State Polling",
+				"name": "ServiceNow Ticket State Polling",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "Mirror ServiceNow Ticket is designed to serve as a sub-playbook, which enables ticket mirroring with ServiceNow.\nIt enables you to manage ServiceNow tickets in Cortex xSOAR while data is continuously synced between ServiceNow and Cortex xSOAR, including ServiceNow schema, fields, comments, work notes, and attachments.\n\nTo enable OOTB mirroring, use the ServiceNow Create ticket - common mappers for incoming and outgoing mirroring.\n\nFieldPolling - You can the FieldPolling value to true if you only want to be informed when the ticket is resolved or closed. If FieldPolling is set to true, the FieldPolling Playbook will poll for the state(ServiceNow State field) of the ServiceNow ticket until it marks as either resolved or closed.\n\nIn Addition to the playbook, we recommend that you use the included layout for ServiceNow Ticket, which helps visualize ServiceNow ticket information in Cortex xSOAR.\nYou can add the new layout as a tab to existing layouts using the Edit Layout page.",
+				"fromversion": "6.0.0",
+				"id": "Mirror ServiceNow Ticket",
+				"name": "Mirror ServiceNow Ticket",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "`ServiceNow - Ticket Management` allows you to open a new ticket or comment on an existing ticket.",
+				"fromversion": "6.8.0",
+				"id": "ServiceNow - Ticket Management",
+				"name": "ServiceNow - Ticket Management",
+				"supportedModules": [
+					"X1",
+					"X3",
+					"X5",
+					"ENT_PLUS",
+					"agentix",
+					"xsiam",
+					"edr",
+					"cloud",
+					"cloud_runtime_security"
+				],
+				"tags": []
+			}
+		],
+		"report": null,
+		"reputation": null,
+		"widget": null,
+		"wizard": null
+	},
+	"created": "2025-03-29T09:32:09Z",
+	"currentVersion": "2.8.24",
+	"defaultDataSource": {
+		"id": "ServiceNow v2",
+		"name": "ServiceNow v2"
+	},
+	"definitionId": "",
+	"dependencies": {
+		"Base": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.41.52",
+			"name": "Base"
+		},
+		"CommonPlaybooks": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "2.7.25",
+			"name": "Common Playbooks"
+		},
+		"CommonScripts": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.20.67",
+			"name": "Common Scripts"
+		},
+		"CommonTypes": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": false,
+			"minVersion": "3.9.7",
+			"name": "Common Types"
+		},
+		"CoreAlertFields": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": false,
+			"minVersion": "1.0.43",
+			"name": "Core Alert Fields"
+		},
+		"FiltersAndTransformers": {
+			"author": "Cortex",
+			"certification": "certified",
+			"mandatory": true,
+			"minVersion": "1.4.8",
+			"name": "Filters And Transformers"
+		}
+	},
+	"deprecated": false,
+	"description": "Use The ServiceNow IT Service Management (ITSM) solution to modernize the way you manage and deliver services to your users.",
+	"downloads": 54268,
+	"eulaLink": "https://github.com/demisto/content/blob/master/LICENSE",
+	"firstCreated": "2025-03-29T09:32:09Z",
+	"fromServerVersion": "5.0.0",
+	"general": [
+		"generalFieldCertified",
+		"generalFieldFree",
+		"generalFieldSupportIncluded",
+		"generalFieldSupportModule"
+	],
+	"hybrid": false,
+	"id": "ServiceNow",
+	"installMessage": "",
+	"integrations": [
+		{
+			"id": "ServiceNow v2",
+			"imagePath": "content/packs/ServiceNow/ServiceNowv2_image.png",
+			"name": "ServiceNow v2"
+		},
+		{
+			"id": "ServiceNow",
+			"imagePath": "content/packs/ServiceNow/ServiceNow_image.png",
+			"name": "ServiceNow (Deprecated)"
+		},
+		{
+			"id": "ServiceNow CMDB",
+			"imagePath": "content/packs/ServiceNow/ServiceNowCMDB_image.png",
+			"name": "ServiceNow CMDB"
+		},
+		{
+			"id": "ServiceNow Event Collector",
+			"imagePath": "content/packs/ServiceNow/ServiceNowEventCollector_image.png",
+			"name": "ServiceNow Event Collector"
+		},
+		{
+			"id": "ServiceNow IAM",
+			"imagePath": "content/packs/ServiceNow/ServiceNowIAM_image.png",
+			"name": "ServiceNow IAM"
+		}
+	],
+	"isOverridable": false,
+	"itemVersion": "2.8.24",
+	"keywords": [
+		"ServiceNow",
+		"Service Now",
+		"snow"
+	],
+	"legacy": true,
+	"modules": [],
+	"name": "ServiceNow",
+	"packID": "ServiceNow",
+	"packName": "",
+	"premium": false,
+	"previewOnly": false,
+	"price": 0,
+	"propagationLabels": [
+		"all"
+	],
+	"rawKeywords": null,
+	"rawTags": null,
+	"rawUseCases": null,
+	"readme": "Cortex interfaces with ServiceNow to help streamline security-related service management and IT operations.\n\n\n\n# What does this pack do?\n\n- View, create, update, or delete a ServiceNow ticket directly from Cortex and enrich it with Cortex data.\n- View, create, update, and delete records from any ServiceNow table.\n- Query ServiceNow data with the ServiceNow query syntax.\n- Enables users to fetch Events from ServiceNow platform into Cortex XSIAM.\n- Log Normalization - XDM mapping for key event types\n\n\n\n\n\n### Supported Event Types\n\n- Audit\n- Syslog Transactions\n- Case\n\n### Configure ServiceNow Event Collector on XSIAM Tenant\n\n1. Go to **Settings** \u003e **Configurations** \u003e **Automation \u0026 Feed Integrations**.\n2. Search for ServiceNow Event Collector\n3. Click **Add instance**.\n4. Insert the ServiceNow URL.\n5. Insert your credentials (user name and password).\n6. Scroll down to the **Collect** section.\n7. Mark **Fetch Events** and select the desire event types to fetch (Audit and Syslog Transactions)\n\n#### Important\n\nTo use ServiceNow on Cortex XSIAM, ensure your user account has the **rest_api_explorer** and **web_service_admin** roles.\nThese roles are required to make API calls. To use the **Case** API endpoint, users must have one of the following roles:  \n\n- csm_ws_integration\n- sn_customerservice.customer\n- sn_customerservice.consumer\n\n### For more information on ServiceNow platform\n\n- [Visit ServiceNow website](https://www.servicenow.com/docs/)\n- [Visit ServiceNow Transaction documentations](https://www.servicenow.com/docs/bundle/utah-platform-security/page/administer/time/reference/r_TransactionLogs.html)\n\n\n\n### Pack Contributors:\n\n---\n - Torbjørn Lium\n\nContributions are welcome and appreciated. For more info, visit our [Contribution Guide](https://xsoar.pan.dev/docs/contributing/contributing).",
+	"searchRank": 10,
+	"serverMaxVersion": "",
+	"serverMinVersion": "5.0.0",
+	"support": "xsoar",
+	"supportDetails": {
+		"email": "",
+		"url": "https://www.paloaltonetworks.com/cortex"
+	},
+	"supportedModules": [
+		"C1",
+		"C3",
+		"X0",
+		"X1",
+		"X3",
+		"X5",
+		"ENT_PLUS",
+		"asm",
+		"exposure_management",
+		"agentix",
+		"cloud",
+		"cloud_runtime_security",
+		"cloud_posture",
+		"xsiam",
+		"edr"
+	],
+	"tags": [
+		"Security",
+		"IT",
+		"Data Source",
+		"Incident Handling",
+		"Collection"
+	],
+	"toServerVersion": "",
+	"updated": "2026-01-06T13:14:12Z",
+	"useCases": [],
+	"version": -1,
+	"versionInfo": "6576318",
+	"videos": []
+}
