@@ -1,0 +1,77 @@
+args:
+- default: true
+  description: The IDs of the relationships to delete. Can accept a list of ID's.
+  isArray: true
+  name: ids
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: This automation allows to delete a relationship between indicator objects
+  based on the relationship id.
+commonfields:
+  id: DeleteIndicatorRelationships
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.2.0
+    isoverridable: false
+    itemVersion: 1.42.37
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13053055
+engineinfo: {}
+mainengineinfo: {}
+name: DeleteIndicatorRelationships
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('DeleteIndicatorRelationships', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.42.37'
+  demisto.debug('pack id = Base, pack version = 1.42.37')
+
+
+
+
+
+  """ MAIN FUNCTION """
+
+
+  def main():
+      try:
+          ids = demisto.args().get("ids")
+          res = demisto.executeCommand("deleteRelationships", {"relationshipsIDsKey": ids})
+          if is_error(res[0]):
+              raise Exception("Error in DeleteIndicatorRelationships command - {}".format(res[0]["Contents"]))
+          hr = f"The relationships {ids!s} were deleted successfully."
+          return_results(CommandResults(readable_output=hr))
+      except Exception as ex:
+          return_error(f"Failed to execute DeleteIndicatorRelationships. Error: {ex!s}")
+
+
+  """ ENTRY POINT """
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('DeleteIndicatorRelationships', 'end', __line__())
+scripttarget: 0
+signature: PgT/mcdmFD57KM6zt+l7Shosk4iX8x7UGDjmk/l+GCkDtnmFzt4QT2X6BMav7ZCpJ9m5zt1PPzpz7MUucJ1wZlCPu2D6tLrDwY4Jjufv5OJJLLaagKMchBlMwhdW6y28xkWQJo6wQsRAXTyF2wUCQs8KH2NJVTsx2LJhe4yVukPH887jl70j9uLbH53pCf1DNH8D+NdmtjASHeHIHdrJ03soYKqLW7//0LxKUtuOP9gakd/56Ol/TiXhP5/f6f5utnzMCCGYr2YH3pPjz4GHtYsMKvzHIZhyjHOEKN6aQCUKKykF7Wa5tHrvfIFIZWArc1RbgxQovkQRs6/Khf2GYA==
+subtype: python3
+system: true
+tags:
+- basescript
+type: python
