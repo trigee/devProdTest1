@@ -1,0 +1,84 @@
+args:
+- description: The indicators to which to add the reputation.
+  isArray: true
+  name: input
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: This script adds the reputation to Onion URL indicators. The script is automatically
+  triggered when a Onion URL indicator is auto-extracted. For instance, if you run
+  a Cortex CLI on a valid Onion URL, the indicators are extracted automatically and
+  this script is triggered for the extracted indicators.
+commonfields:
+  id: OnionURLReputation
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13495286
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: OnionURLReputation
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('OnionURLReputation', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.66'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.66')
+
+
+
+
+  def main():
+      url_list = argToList(demisto.args().get("input"))
+      entry_list = []
+
+      for url in url_list:
+          entry_list.append(
+              {
+                  "Type": entryTypes["note"],
+                  "ContentsFormat": formats["json"],
+                  "Contents": 2,
+                  "EntryContext": {
+                      "DBotScore": {
+                          "Indicator": url,
+                          "Type": "Onion URL",
+                          "Score": 2,  # suspicious
+                          "Vendor": "DBot",
+                      }
+                  },
+              }
+          )
+
+      demisto.results(entry_list)
+
+
+  if __name__ in ("__main__", "builtin", "builtins"):
+      main()
+
+  register_module_line('OnionURLReputation', 'end', __line__())
+scripttarget: 0
+signature: BGySXbrUxSdI1jwAwa7YKJwOlYXSygL0gWCttN5x+pZdrdN0oE68djU87DBvgyIM12BnHOELbSI4xvbEK4u06sN68xLxQLsEVVGASiM2AdcSOliIz+zr9YU3YUwT5nuwuCrjb0VfR/mQM0/QSei1th+hTQltCT4+dAn+UR33rXiYmBlZ1me89H7e5FkQgQB2foj/5HOmZOUyMnkhEbO0PczLmxhQa2p3HMoZPujGenKHHODs9CmqzyQajcVcWtaYQNLf4SPtO6WKiJnuo6y453ZrxE8a6kZ1bMeBnYPnXRa2SWnBiOZyVjL7/LV4ax17qAsbZWzZ1tMu6RsbeSjboQ==
+subtype: python3
+system: true
+tags:
+- reputation
+type: python
