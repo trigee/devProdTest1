@@ -1,0 +1,139 @@
+args:
+- description: The indicator value to check.
+  isArray: true
+  name: indicator
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: none
+  description: Decode indicators by the algorithm given.
+  name: encoding
+  predefined:
+  - none
+  - base64
+  - url-encoding
+  supportedFeatures: []
+  supportedModules: []
+comment: Check if indicators exist in the Threat Intel database.
+commonfields:
+  id: CheckIndicatorValue
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.5.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13495286
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: CheckIndicatorValue
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: CheckIndicatorValue.Indicator
+  description: The indicator value.
+  type: string
+- contextPath: CheckIndicatorValue.EncodedIndicator
+  description: The encoded indicator value given.
+  type: string
+- contextPath: CheckIndicatorValue.Exists
+  description: Whether the indicator exists.
+  type: boolean
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('CheckIndicatorValue', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.66'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.66')
+  import base64
+  import urllib.parse
+  from typing import Any
+
+
+
+
+
+  def exists_indicator(indicator: str) -> bool:
+      # res =  (
+      #     (contents := execute_command("getIndicator", {"value": indicator}))
+      #     and len(contents) > 0
+      #     and contents[0].get("value") in [indicator]
+      # )
+      # return res
+      return bool(
+          (contents := execute_command("getIndicator", {"value": indicator}))
+          and (len(contents) > 0 and contents[0].get("value") in [indicator])
+      )
+
+
+  def decode_indicator(indicator: str, encoding: str | None) -> str:
+      if not encoding or encoding == "none":
+          return indicator
+      elif encoding == "base64":
+          return base64.b64decode(indicator.encode()).decode()
+      elif encoding == "url-encoding":
+          return urllib.parse.unquote(indicator)
+      else:
+          raise DemistoException(f"Unknown encoding mode: {encoding}")  # pragma: no cover
+
+
+  def check_indicators(indicators: List[str], encoding: str) -> List[dict[str, Any]]:
+      # Decode and dedup indicators
+      pairs = {decode_indicator(encoded_indicator, encoding): encoded_indicator for encoded_indicator in indicators}
+
+      # Check if each indicator exists
+      return [
+          {"Indicator": indicator, "EncodedIndicator": encoded_indicator, "Exists": exists_indicator(indicator)}
+          for indicator, encoded_indicator in pairs.items()
+      ]
+
+
+  def main():
+      try:
+          args = demisto.args()
+          encoding = args.get("encoding") or "none"
+          indicators = argToList(args.get("indicator") or [])
+
+          outputs = check_indicators(indicators, encoding)
+          count = sum(1 for ent in outputs if ent.get("Exists"))
+
+          return_results(
+              CommandResults(
+                  outputs_key_field="Indicator",
+                  outputs_prefix="CheckIndicatorValue",
+                  outputs=outputs,
+                  readable_output=f"{count} indicators exist.",
+                  raw_response=outputs,
+              )
+          )
+      except Exception as e:  # pragma: no cover
+          return_error(f"Failed to execute CheckIndicatorValue. Error: {e!s}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('CheckIndicatorValue', 'end', __line__())
+scripttarget: 0
+signature: s7YW+OKsvlaUKXbWQ4ULXq/sIwlFpeObkCB/j1UaKv0dtuL3A6gQ8M1M/6K4XjRx2sFIng+428FGX7fAI6DeOk6mT+O104XPb1EIDDRt2e35TV/CUG2Wu2fW5cITXIbwGI5+pW//P+chhDuQLHOtfcAMuXvfnuOwCxF+nXri6aqgZjZ3I4HUjnvv1b8XG8b8OBm7zr5DqYZcGK/sOhZDbA4QbHJrod2zpncHmIie6PctPGBRgigJ7nfn1UHsnb44Ss6/1lrou/YJMzDeH/V5Llr/Upl8qdDLUTFxGaAp2pGz7bGN5EvoAyAu/L4QVpRtkBzBiJvIkA6kZn3sVVmiFg==
+subtype: python3
+system: true
+tags:
+- evaluation
+- polling
+type: python
