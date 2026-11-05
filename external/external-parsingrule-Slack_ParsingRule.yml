@@ -1,0 +1,41 @@
+automation_type: ""
+commonfields:
+  id: Slack_ParsingRule
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.13.0
+    isoverridable: false
+    itemVersion: 3.8.28
+    packID: Slack
+    packName: Slack
+    packPropagationLabels:
+    - all
+    prevname: ""
+    supportedFeatures: []
+    supportedModules:
+    - xsiam
+    toServerVersion: ""
+externalitemdata: |
+  fromversion: 8.13.0
+  id: Slack_ParsingRule
+  name: Slack Parsing Rule
+  rules: >-
+    [INGEST:vendor="slack", product="slack", target_dataset="slack_slack_raw", no_hit=keep]
+
+    filter to_string(date_create) ~= "\d{10}"
+
+    | alter _time = parse_timestamp("%s",to_string(date_create));
+  samples: ''
+  supportedModules:
+  - xsiam
+  tags: []
+filetype: yml
+is_auto_enabled: false
+name: Slack Parsing Rule
+packid: Slack
+packname: Slack
+packversion: 3.8.28
+playbook_id: ""
+subtype: parsingrule
