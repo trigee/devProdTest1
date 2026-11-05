@@ -1,0 +1,92 @@
+args:
+- default: true
+  description: Array or comma-separated list of IPv4 addresses to filter.
+  isArray: true
+  name: value
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: Array or comma-separated list of IPv4 ranges, in CIDR notation, against
+    which to match the IPv4 addresses.
+  isArray: true
+  name: cidr_ranges
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: Transformer that returns a filtered list of IPv4 addresses, based on whether
+  they do not match a comma-separated list of IPv4 ranges.  Useful for filtering out
+  internal IP address space.
+commonfields:
+  id: IPv4Blacklist
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.32
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/netutils:1.0.0.13231769
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: IPv4Blacklist
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('IPv4Blacklist', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.32'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.32')
+
+
+  from netaddr import IPAddress, IPNetwork
+
+
+  def main():
+      ip_addresses = argToList(demisto.args()["value"])
+      cidr_range_list = argToList(demisto.args()["cidr_ranges"])
+
+      excluded_addresses = []
+
+      for ip_address in ip_addresses:
+          found = False
+          ip = IPAddress(ip_address)
+
+          for cidr_range in cidr_range_list:
+              if ip in IPNetwork(cidr_range):
+                  found = True
+
+          if not found:
+              excluded_addresses.append(ip_address)
+
+      if not excluded_addresses:
+          demisto.results(None)
+      else:
+          demisto.results(excluded_addresses)
+
+
+  if __name__ == "__builtin__" or __name__ == "builtins":
+      main()
+
+  register_module_line('IPv4Blacklist', 'end', __line__())
+scripttarget: 0
+signature: V6llrtSJo/v84+8mkXRPa7B2ot4jLRSKPCS1/khpCpSlGzCI1Ef3qneld+DZxwhhQrYoaWA3XHHgJnq1konTIkCcRsWkGOYjwDLlMRbdB1ZrPQZL6XaoSpZyffka6A9iptGvtr5TNRKMKYSO/SzqY/lSsWIh4G9LcfGaKT2vYJ342VIbDtczVu8OCBR8+9MgeWdZcBo78bg75M9eUfiJz/wjs6GMiZJ2MlhA3ft3Fyc7QyGQIGk9mD5fIWsVwsuT4v+rtTISIUjvt88ONSv8LPW2ENwSEg1zZxNPFnhQPUAWIotzWyXx1WvrdI9yxaiUmE4WwXxn8M97eySxa4xpoA==
+subtype: python3
+system: true
+tags:
+- transformer
+- entirelist
+type: python
