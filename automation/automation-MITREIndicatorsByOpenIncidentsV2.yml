@@ -1,0 +1,55 @@
+args:
+- description: The end date for searching indicators.
+  name: to
+  supportedFeatures: []
+  supportedModules: []
+- description: The start date for searching indicators.
+  name: from
+  supportedFeatures: []
+  supportedModules: []
+comment: This is a widget script returning MITRE indicators information for top indicators
+  shown in incidents.
+commonfields:
+  id: MITREIndicatorsByOpenIncidentsV2
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.5.0
+    isoverridable: false
+    itemVersion: 1.2.35
+    packID: FeedMitreAttackv2
+    packName: MITRE ATT&CK
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+dockerimage: demisto/python3:3.12.14.13495286
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: MITREIndicatorsByOpenIncidentsV2
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  register_module_line('MITREIndicatorsByOpenIncidentsV2', 'start', __line__())
+
+  return_results(demisto.executeCommand('MITREIndicatorsByOpenAlertsV2', demisto.args()))
+
+  register_module_line('MITREIndicatorsByOpenIncidentsV2', 'end', __line__())
+scripttarget: 0
+signature: gQJY/5kPteVln3k/ZE9rS+vmHnmkbgb92wkpTcMQrsb9Ai7TWIIBcxlKtbyQWiDqRVH5mPYuS7pN0CLNC3RY/eYUKW03zXplU3Gr9EefoXwbrJrOJ/kXbYtmfagMhoX48t1VDIHi0FDtqj7jOcWV+V7izJmBaFIXN7EXQ+1zEko/0kfoHoZokfmxaOp9cmxmORaOdsut++7qk4avXbahLF6CGIiPCzWCXXfWaybh8mzYQ/7Ihfzh0/gLqzMvGbiUWVzloXyeytugEmVGgnilNoqjTGRE0epS+Z5Kn8pLHvDQrMRD4zmPFsX3Uh7is8d8Z/vAcRKeGG0cs+ao3G0zhA==
+subtype: python3
+system: true
+tags:
+- widget
+type: python
