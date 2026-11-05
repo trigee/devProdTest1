@@ -1,0 +1,384 @@
+category: Analytics & SIEM
+commonfields:
+  id: HelloWorldEventCollector
+  version: -1
+configuration:
+- defaultvalue: https://test.com
+  display: Server URL
+  name: url
+  required: false
+  section: Connect
+  supportedFeatures: []
+  supportedModules: []
+  type: 0
+- defaultvalue: ACTIVE
+  display: Fetch alerts with status (ACTIVE, CLOSED)
+  name: alert_status
+  options:
+  - ACTIVE
+  - CLOSED
+  required: false
+  section: Collect
+  supportedFeatures: []
+  supportedModules: []
+  type: 15
+- defaultvalue: "10000"
+  display: Max number of events per fetch
+  name: max_events_per_fetch
+  required: false
+  section: Collect
+  supportedFeatures: []
+  supportedModules: []
+  type: 0
+- display: Trust any certificate (not secure)
+  name: insecure
+  required: false
+  section: Connect
+  supportedFeatures: []
+  supportedModules: []
+  type: 8
+- display: Use system proxy settings
+  name: proxy
+  required: false
+  section: Connect
+  supportedFeatures: []
+  supportedModules: []
+  type: 8
+- display: Fetch Events
+  name: isFetchEvents
+  required: false
+  section: Collect
+  supportedFeatures: []
+  supportedModules: []
+  type: 8
+- advanced: true
+  defaultvalue: "1"
+  display: Events Fetch Interval
+  name: eventFetchInterval
+  required: false
+  section: Collect
+  supportedFeatures: []
+  supportedModules: []
+  type: 19
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.4.0
+    isoverridable: false
+    itemVersion: 4.0.20
+    packID: HelloWorld
+    packName: HelloWorld
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules:
+    - xsiam
+    toServerVersion: ""
+description: This is the Hello World event collector integration for Cortex XSIAM.
+detaileddescription: |-
+  ### Community Contributed Integration
+   #### Integration Author: Cortex
+   No support or maintenance is provided by the author. Customers are encouraged to engage with the user community for questions and guidance at the [Cortex XSOAR Live Discussions](https://live.paloaltonetworks.com/t5/cortex-xsoar-discussions/bd-p/Cortex_XSOAR_Discussions).
+  ***
+  ## Hello World
+  This is an example integration. No configuration needed.
+
+  ---
+  [View Integration Documentation](https://xsoar.pan.dev/docs/reference/integrations/hello-world-event-collector)
+display: HelloWorld Event Collector (Community Contribution)
+image: data:image/png;base64,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
+imagepath: content/packs/HelloWorld/HelloWorldEventCollector_image.png
+name: HelloWorldEventCollector
+restrictioncenter: {}
+script:
+  commands:
+  - arguments:
+    - auto: PREDEFINED
+      defaultValue: "false"
+      description: If true, the command will create events, otherwise it will only
+        display them.
+      name: should_push_events
+      predefined:
+      - "true"
+      - "false"
+      required: true
+      supportedFeatures: []
+      supportedModules: []
+    - auto: PREDEFINED
+      description: Filter by alert status.
+      name: status
+      predefined:
+      - ACTIVE
+      - CLOSED
+      supportedFeatures: []
+      supportedModules: []
+    - description: Maximum number of results to return.
+      name: limit
+      required: true
+      supportedFeatures: []
+      supportedModules: []
+    - description: Date from which to get events.
+      name: from_date
+      supportedFeatures: []
+      supportedModules: []
+    description: Gets events from Hello World.
+    name: hello-world-get-events
+    supportedFeatures: []
+    supportedModules: []
+  dockerimage: demisto/python3:3.12.13.10116658
+  isfetchevents: true
+  nativeimage:
+  - "8.8"
+  - "8.6"
+  runonce: false
+  script: |
+    register_module_line('HelloWorldEventCollector', 'start', __line__())
+    CONSTANT_PACK_VERSION = '4.0.20'
+    demisto.debug('pack id = HelloWorld, pack version = 4.0.20')
+    import uuid
+
+
+    import urllib3
+    from typing import Any
+
+    # Disable insecure warnings
+    urllib3.disable_warnings()
+
+    """ CONSTANTS """
+
+    DATE_FORMAT = "%Y-%m-%dT%H:%M:%SZ"
+    VENDOR = "hello"
+    PRODUCT = "world"
+
+    """ CLIENT CLASS """
+
+
+    class Client(BaseClient):
+        """Client class to interact with the service API
+
+        This Client implements API calls, and does not contain any Demisto logic.
+        Should only do requests and return data.
+        It inherits from BaseClient defined in CommonServer Python.
+        Most calls use _http_request() that handles proxy, SSL verification, etc.
+        For this HelloWorld implementation, no special attributes defined
+        """
+
+        def search_events(
+            self, prev_id: int, alert_status: None | str, limit: int, from_date: str | None = None, default_Protocol: str = "UDP"
+        ) -> List[Dict]:  # noqa: E501
+            """
+            Searches for HelloWorld alerts using the '/get_alerts' API endpoint.
+            All the parameters are passed directly to the API as HTTP POST parameters in the request
+
+            Args:
+                prev_id: previous id that was fetched.
+                alert_status:
+                limit: limit.
+                from_date: get events from from_date.
+
+            Returns:
+                List[Dict]: the next event
+            """
+            demisto.debug("Starting to fetch events.")
+            # use limit & from date arguments to query the API
+            return [
+                {
+                    "id": prev_id + 1,
+                    "created_time": datetime.now().isoformat(),
+                    "description": f"This is test description {prev_id + 1}",
+                    "alert_status": alert_status,
+                    "protocol": default_Protocol,
+                    "t_port": prev_id + 1,
+                    "custom_details": {
+                        "triggered_by_name": f"Name for id: {prev_id + 1}",
+                        "triggered_by_uuid": str(uuid.uuid4()),
+                        "type": "customType",
+                        "requested_limit": limit,
+                        "requested_From_date": from_date,
+                    },
+                }
+            ]
+
+
+    def test_module(client: Client, params: dict[str, Any], first_fetch_time: str) -> str:
+        """
+        Tests API connectivity and authentication
+        When 'ok' is returned it indicates the integration works like it is supposed to and connection to the service is
+        successful.
+        Raises exceptions if something goes wrong.
+
+        Args:
+            client (Client): HelloWorld client to use.
+            params (Dict): Integration parameters.
+            first_fetch_time(str): The first fetch time as configured in the integration params.
+
+        Returns:
+            str: 'ok' if test passed, anything else will raise an exception and will fail the test.
+        """
+
+        try:
+            alert_status = params.get("alert_status", None)
+
+            fetch_events(
+                client=client,
+                last_run={},
+                first_fetch_time=first_fetch_time,
+                alert_status=alert_status,
+                max_events_per_fetch=1,
+            )
+
+        except Exception as e:
+            if "Forbidden" in str(e):
+                return "Authorization Error: make sure API Key is correctly set"
+            else:
+                raise e
+
+        return "ok"
+
+
+    def get_events(client: Client, alert_status: str, args: dict) -> tuple[List[Dict], CommandResults]:
+        """Gets events from API
+
+        Args:
+            client (Client): The client
+            alert_status (str): status of the alert to search for. Options are: 'ACTIVE' or 'CLOSED'.
+            args (dict): Additional arguments
+
+        Returns:
+            dict: Next run dictionary containing the timestamp that will be used in ``last_run`` on the next fetch.
+            list: List of events that will be created in XSIAM.
+        """
+        limit = args.get("limit", 50)
+        from_date = args.get("from_date")
+        events = client.search_events(
+            prev_id=0,
+            alert_status=alert_status,
+            limit=limit,
+            from_date=from_date,
+        )
+        hr = tableToMarkdown(name="Test Event", t=events)
+        return events, CommandResults(readable_output=hr)
+
+
+    def fetch_events(
+        client: Client, last_run: dict[str, int], first_fetch_time, alert_status: str | None, max_events_per_fetch: int
+    ) -> tuple[Dict, List[Dict]]:
+        """
+        Args:
+            client (Client): HelloWorld client to use.
+            last_run (dict): A dict with a key containing the latest event created time we got from last fetch.
+            first_fetch_time: If last_run is None (first time we are fetching), it contains the timestamp in
+                milliseconds on when to start fetching events.
+            alert_status (str): status of the alert to search for. Options are: 'ACTIVE' or 'CLOSED'.
+            max_events_per_fetch (int): number of events per fetch
+        Returns:
+            dict: Next run dictionary containing the timestamp that will be used in ``last_run`` on the next fetch.
+            list: List of events that will be created in XSIAM.
+        """
+        prev_id = last_run.get("prev_id", None)
+        if not prev_id:
+            prev_id = 0
+
+        events = client.search_events(
+            prev_id=prev_id,
+            alert_status=alert_status,
+            limit=max_events_per_fetch,
+            from_date=first_fetch_time,
+        )
+        demisto.debug(f"Fetched event with id: {prev_id + 1}.")
+
+        # Save the next_run as a dict with the last_fetch key to be stored
+        next_run = {"prev_id": prev_id + 1}
+        return next_run, events
+
+
+    """ MAIN FUNCTION """
+
+
+    def add_time_to_events(events: List[Dict] | None):
+        """
+        Adds the _time key to the events.
+        Args:
+            events: List[Dict] - list of events to add the _time key to.
+        Returns:
+            list: The events with the _time key.
+        """
+        if events:
+            for event in events:
+                create_time = arg_to_datetime(arg=event.get("created_time"))
+                event["_time"] = create_time.strftime(DATE_FORMAT) if create_time else None
+
+
+    def main() -> None:  # pragma: no cover
+        """
+        main function, parses params and runs command functions
+        """
+
+        params = demisto.params()
+        args = demisto.args()
+        command = demisto.command()
+        api_key = params.get("apikey", {}).get("password")
+        base_url = urljoin(params.get("url"), "/api/v1")
+        verify_certificate = not params.get("insecure", False)
+
+        # How much time before the first fetch to retrieve events
+        first_fetch_time = datetime.now().isoformat()
+        proxy = params.get("proxy", False)
+        alert_status = params.get("alert_status", "")
+        max_events_per_fetch = params.get("max_events_per_fetch", 1000)
+
+        demisto.debug(f"Command being called is {command}")
+        try:
+            headers = {"Authorization": f"Bearer {api_key}"}
+            client = Client(base_url=base_url, verify=verify_certificate, headers=headers, proxy=proxy)
+
+            if command == "test-module":
+                # This is the call made when pressing the integration Test button.
+                result = test_module(client, params, first_fetch_time)
+                return_results(result)
+
+            elif command == "hello-world-get-events":
+                should_push_events = argToBoolean(args.pop("should_push_events"))
+                events, results = get_events(client, alert_status, demisto.args())
+                return_results(results)
+                if should_push_events:
+                    add_time_to_events(events)
+                    send_events_to_xsiam(events, vendor=VENDOR, product=PRODUCT)
+
+            elif command == "fetch-events":
+                last_run = demisto.getLastRun()
+                next_run, events = fetch_events(
+                    client=client,
+                    last_run=last_run,
+                    first_fetch_time=first_fetch_time,
+                    alert_status=alert_status,
+                    max_events_per_fetch=max_events_per_fetch,
+                )
+
+                add_time_to_events(events)
+                demisto.debug(f"Sending {len(events)} events to XSIAM.")
+                send_events_to_xsiam(events, vendor=VENDOR, product=PRODUCT)
+                demisto.debug("Sent events to XSIAM successfully")
+                demisto.setLastRun(next_run)
+                demisto.debug(f"Setting next run to {next_run}.")
+
+        # Log exceptions and return errors
+        except Exception as e:
+            return_error(f"Failed to execute {command} command.\nError:\n{str(e)}")
+
+
+    """ ENTRY POINT """
+
+    if __name__ in ("__main__", "__builtin__", "builtins"):
+        main()
+
+    register_module_line('HelloWorldEventCollector', 'end', __line__())
+  subtype: python3
+  type: python
+sectionorder:
+- Connect
+- Collect
+signature: g0nJSDBrtgN8eVGCtFP16aiE3UeMlcVpas6X2paTUBrd/YuA+EG9TZlOZx553vuCAKhv0idYQSCY2y0XU6P0fLqiwTwsoguNE24UrUt5ylUfXDL5N7FOekZQ+56YyMN3PXWkbHLvP/9mpdiSquco4jXZZcLTXUkatLvU5WXTpNshB20NL+Qn+X+VkJveu3QgfL6m+9z08DOye+19+1mjcoNhpMnfeXzM7/N3U22a70l648NHa5cft6WBRi6we5WzX3ktb9rGhENPxenI4PrtRmvFT9NhZy+IjnRlVN0uzasj7wbYeZA2ERA6Mb3BLy3d4aBOm8TQmpZ7Xrek+JyxpA==
+system: true
