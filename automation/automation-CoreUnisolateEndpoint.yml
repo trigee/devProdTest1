@@ -1,0 +1,91 @@
+args:
+- description: Links the response action to the triggered incident.
+  name: incident_id
+  supportedFeatures: []
+  supportedModules: []
+- description: The endpoint ID (string) to isolate. Retrieve the string from the core-get-endpoints
+    command.
+  name: endpoint_id
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Suppress an error when trying to isolate a disconnected endpoint. When
+    set to false, an error is returned.
+  name: suppress_disconnected_endpoint_error
+  predefined:
+  - "true"
+  - "false"
+  supportedFeatures: []
+  supportedModules: []
+comment: A polling wrapper script; Unisolates the specified endpoint.
+commonfields:
+  id: CoreUnisolateEndpoint
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.1.0
+    isoverridable: false
+    itemVersion: 3.5.99
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules:
+    - xsiam
+    - cloud_runtime_security
+    - edr
+    toServerVersion: ""
+dependson:
+  must:
+  - core-unisolate-endpoint
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+internal: true
+isInternal: true
+mainengineinfo: {}
+name: CoreUnisolateEndpoint
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: Core.UnIsolation.endpoint_id
+  description: The ID of the endpoint that was unisolated.
+  type: String
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('CoreUnisolateEndpoint', 'start', __line__())
+  CONSTANT_PACK_VERSION = '3.5.99'
+  demisto.debug('pack id = Core, pack version = 3.5.99')
+
+
+
+
+  def main():
+      args = demisto.args()
+      try:
+          return_results(execute_polling_command("core-unisolate-endpoint", args))
+      except Exception as e:
+          return_error(f"Failed to execute script.\nError:\n{e!s}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('CoreUnisolateEndpoint', 'end', __line__())
+scripttarget: 0
+signature: kgau3dp4KLfA74I6bcwxlVhtkaC/S0Y+ezi02aneVkkFsMhbZkQToArIU4TaFwNedNYmkXWClmxLNnD3MT2iW8JrkQQQiUOYDJKLP/QHaqjEgp4y38zAV3R/2FpZBfd52ZWqaLzzrwgZ+myw5wrgkJzw/Tare0BRz1l5sZjHNJwz4BuZVMa7yIaFQKYeJNMogydI81DPEEIcLQIL0oYdZOUv9j399yytpXhVu5yVYaQ+u1U/mG1/14lftUChfFS8CpdgLiTtm/W3KyHCe0rRJ21vvEBK4V6mbZLV0A+kF0v4SanfdTikAkPxCwoE2pbJwaR006GU0YYgReDjjT47OQ==
+subtype: python3
+system: true
+tags:
+- Utilities
+type: python
