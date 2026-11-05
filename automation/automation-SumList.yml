@@ -1,0 +1,90 @@
+args:
+- default: true
+  description: A list for which to sum the list values.
+  isArray: true
+  name: value
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: "Sums a List\ne.g. [\"25\", \"10\", \"25\"] =>  \"60\"\n\nThis is an example
+  for number transformer.\n "
+commonfields:
+  id: SumList
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.32
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13053055
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: SumList
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('SumList', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.32'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.32')
+
+
+
+  def sum_value(value):
+      if isinstance(value, float):
+          return value
+
+      if isinstance(value, str):
+          try:
+              value = [float(item) for item in value.split(",")]
+          except ValueError:
+              return "error", "error"
+
+      elif isinstance(value, list):
+          try:
+              value = [float(item) for item in value]
+          except ValueError:
+              return "error", "error"
+
+      result = sum(value)
+      return result, "ok"
+
+
+  def main():
+      value = demisto.args()["value"]
+      result, return_type = sum_value(value)
+
+      if return_type == "error":
+          return_error("This transformer applies only to list of numbers.")
+      demisto.results(result)
+
+
+  # python2 uses __builtin__ python3 uses builtins
+  if __name__ == "__builtin__" or __name__ == "builtins":
+      main()
+
+  register_module_line('SumList', 'end', __line__())
+scripttarget: 0
+signature: DFh3vcQq1CVkxXvDTsG/OJw4s9KDsBV3q6ECQosd+BWbkJYsptrpvGDFJWjBV9JoaHCZpTecx5FamY0rajqmmoxaS8BMmb7V2FJS7S0WDDYooZ0650rp8E9DcnZvZJxJ7BsHVV9+97WtKawrYk0pOePJ8vlsHzCz9NsaGvvxW6psneHMSlqEbvBCmWNnjKg3dbjvrh6eHvfIwDJuNCwVHaTxJKubF9cojG08QuC0lZ6VbFeqK0NS8uLns+aoCvVMLh8Ofmitni0yCrwCzyZ6D49Uo4txdlI1K4Dk//ifVT0GRDp0OwwVasJLod0Nlc8+XPTRQWdNLL/jDWMe53vbjA==
+subtype: python3
+system: true
+tags:
+- transformer
+- number
+- entirelist
+type: python
