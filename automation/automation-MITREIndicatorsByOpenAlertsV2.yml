@@ -1,0 +1,93 @@
+args:
+- description: The end date for searching indicators.
+  name: to
+  supportedFeatures: []
+  supportedModules: []
+- description: The start date for searching indicators.
+  name: from
+  supportedFeatures: []
+  supportedModules: []
+comment: This is a widget script returning MITRE indicators information for top indicators
+  shown in alerts.
+commonfields:
+  id: MITREIndicatorsByOpenAlertsV2
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.5.0
+    isoverridable: false
+    itemVersion: 1.2.35
+    packID: FeedMitreAttackv2
+    packName: MITRE ATT&CK
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13495286
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: MITREIndicatorsByOpenAlertsV2
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('MITREIndicatorsByOpenAlertsV2', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.2.35'
+  demisto.debug('pack id = FeedMitreAttackv2, pack version = 1.2.35')
+  import traceback
+
+
+
+
+
+  def main():
+      try:
+          from_date = demisto.args().get("from", "")
+          to_date = demisto.args().get("to", "")
+          query = 'type:"Attack Pattern" and investigationsCount:>0 and -incident.type:"MITRE ATT&CK CoA"'
+          search_indicators = IndicatorsSearcher()
+
+          res = search_indicators.search_indicators_by_version(query=query, from_date=from_date, to_date=to_date)
+
+          indicators = []
+          iocs = res.get("iocs") if res.get("iocs") is not None else []
+          for ind in iocs:
+              indicators.append(
+                  {
+                      "Value": dict_safe_get(ind, ["value"]),
+                      "Name": dict_safe_get(ind, ["CustomFields", "mitreid"]),
+                      "Phase Name": dict_safe_get(ind, ["CustomFields", "killchainphases"]),
+                      "Description": dict_safe_get(ind, ["CustomFields", "description"]),
+                  }
+              )
+
+          incidents_table = tableToMarkdown(
+              "MITRE ATT&CK techniques by related Incidents", indicators, headers=["Value", "Name", "Phase Name", "Description"]
+          )
+
+          return_outputs(incidents_table)
+      except Exception:
+          demisto.error(traceback.format_exc())  # print the traceback
+          return_error(f"Failed to execute MITREIndicatorsByOpenIncidents script. Error: {traceback.format_exc()}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('MITREIndicatorsByOpenAlertsV2', 'end', __line__())
+scripttarget: 0
+signature: TxrrwIB/L/tUfED7325lTHon+KaB6jfHdpYYh0EX0q7XYjxIOe5QmsOjJGcM8wbVHZKfQMCbPaVePi04DhcYq/3SodKcmfitP2OlIg8ga/5R7L/yhrxrDfvNNEvwxzjf2ie0fYzSydJsWmnfJyape2nvAn/OttlLFvr8aLoD9Jc6JztB36VicBDHA6rSM04qWjlkz+O7sTGubtnO4DVXhSoEjFXSFDeh2Yn8qQMHIXcGoML8HJtKMSf5cEvrPjfhrUVTaz9y17dZ+Xl6MPG84mu6FUrb435k0xekVy5lS+Nj3U81yjTXXwo7c4ZC0W7mur5SiLU7emaoY3GD7D3YRg==
+subtype: python3
+system: true
+tags:
+- widget
+type: python
