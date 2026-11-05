@@ -1,0 +1,76 @@
+args:
+- default: true
+  description: Value to convert.
+  name: value
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: String to convert to.
+  name: convertTo
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: Comma separated list of exceptions.
+  isArray: true
+  name: except
+  supportedFeatures: []
+  supportedModules: []
+comment: Convert all chosen values but exceptions.
+commonfields:
+  id: ConvertAllExcept
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.32
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13053055
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ConvertAllExcept
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('ConvertAllExcept', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.32'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.32')
+
+
+
+
+  def main(args):
+      value = args.get("value")
+      convert_to = args.get("convertTo")
+      exceptions = argToList(args.get("except"))
+
+      return value if value in exceptions else convert_to
+
+
+  if __name__ in ("builtins", "__builtin__"):
+      result = main(demisto.args())
+      demisto.results(result)
+
+  register_module_line('ConvertAllExcept', 'end', __line__())
+scripttarget: 0
+signature: o/IcpmpUDcnKQa4e7naVE7btIZx9oWpoFtQC23JnaNScvuS6Ql13u71MgvOlzwNXUmXA+2tSPGrLhLzvU33Y192Nz/05vczCHGJDkAo732rqNSfJkjIC1OWuv4/kCKLkZDhB4YZIFyo2QRNbNCOrUihX1sjzYlHB9QYl8QHwR3a8ig5bt4fZwltHSd24961kCW5AJkI+3GYYHgeczJxAFeIzYcoKHK7h85DP8XW2JV2JGwFC60nij5RbuYC7lDm7mNvixsX/57KB6Iyny+LAixDgDE2vplHYGZwpkFVorQ+oGAH0GowZDbODOq4us2Ap87imrS+/jStJKbr9IhWTnQ==
+subtype: python3
+system: true
+tags:
+- transformer
+type: python
