@@ -1,0 +1,97 @@
+args:
+- default: true
+  description: domain to discover.
+  name: domain
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: aquatone-discover will find the targets nameservers and shuffle DNS lookups
+  between them. Should a lookup fail on the target domains nameservers, aquatone-discover
+  will fall back to using Google public DNS servers to maximize discovery.
+commonfields:
+  id: AquatoneDiscoverV2
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.5.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/aquatone:2.0.0.13538236
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: AquatoneDiscoverV2
+outputs:
+- contextPath: Aquatone.discover
+  description: find the targets nameservers and shuffle DNS lookups between them.
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: true
+script: |
+  register_module_line('AquatoneDiscoverV2', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.66'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.66')
+  from subprocess import PIPE, Popen
+
+
+
+
+
+
+
+  def main():
+      domain = demisto.args().get("domain")
+
+      cmd = ["aquatone-discover", "--domain", domain]
+
+      p = Popen(cmd, stdout=PIPE, stderr=PIPE, encoding="utf-8")
+
+      stdout, stderr = p.communicate()
+
+      if p.returncode > 0:
+          demisto.results({"Type": entryTypes["error"], "ContentsFormat": formats["text"], "Contents": stdout + stderr})
+      else:
+          res = stdout
+          cmd = ["cat", "/root/aquatone/" + domain + "/hosts.json"]
+          p = Popen(cmd, stdout=PIPE, stderr=PIPE, encoding="utf-8")
+          stdout, stderr = p.communicate()
+          if p.returncode > 0:
+              demisto.results({"Type": entryTypes["error"], "ContentsFormat": formats["text"], "Contents": stdout + stderr})
+          else:
+              hosts = stdout
+              hosts_json = json.loads(hosts)
+
+              ec = {"Aquatone.discover": hosts_json}
+              entry_result = {
+                  "Type": entryTypes["note"],
+                  "ContentsFormat": formats["json"],
+                  "Contents": hosts_json,
+                  "HumanReadable": res,
+                  "ReadableContentsFormat": formats["markdown"],
+                  "EntryContext": ec,
+              }
+              demisto.results(entry_result)
+
+
+  if __name__ in ("__builtin__", "builtins", "__main__"):
+      main()
+
+  register_module_line('AquatoneDiscoverV2', 'end', __line__())
+scripttarget: 0
+signature: ejiIGYoytvP2nSlceb4/Q6KP+6Zju+xUr3I0srdXp3imk3JcAaFXlIaKF3+m/00oe0Tk0I0ICF+gA0U6KDUcZPCLMhGpzg5syfYWh4N5aa/GnBTMqP6xmAjzmcwnLNb0kEPczSfKhbpD19o+2nPili2bc5M8ArAVm83ArdPoqJUqdVppGCt0Jx9ROIyYfyiKWKzhPTJM7y/gdaV2X7bwO1YvbwTyYMneWWh3pPanTGG8WFkWUBoqgpGsN9uNnUW2536bXgGu4B/uQLP47HVlBxbK7OvUwrGQ59CXogu/0Ex/35tP0dZwT5ggYoc5vBisu5tn4oF33eD3RnL1EjYQ5A==
+subtype: python3
+system: true
+tags: []
+timeout: 1h0m0s
+type: python
