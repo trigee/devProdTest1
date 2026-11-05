@@ -1,0 +1,100 @@
+args:
+- description: Incident ID to get the prediction of. If empty, predicts the current
+    incident ID.
+  name: incidentId
+  predefined:
+  - ""
+  supportedFeatures: []
+  supportedModules: []
+- defaultValue: "150"
+  description: The maximum number of incidents that an indicator can be associated
+    with to be retained. This helps to filter out indicators that appear in many incidents.
+  name: maxIncidentsInIndicatorsForWhiteList
+  supportedFeatures: []
+  supportedModules: []
+- defaultValue: "1"
+  description: The minimum number of indicators related to the incident required before
+    running the model.
+  name: minNumberOfIndicators
+  supportedFeatures: []
+  supportedModules: []
+- defaultValue: "0"
+  description: Threshold to similarity value which is between 0 and 1.
+  name: threshold
+  supportedFeatures: []
+  supportedModules: []
+- description: Type of indicators to take into account. If empty, uses all indicators
+    types.
+  name: indicatorsTypes
+  supportedFeatures: []
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "False"
+  description: Whether to show the incident you are investigating.
+  name: showActualIncident
+  predefined:
+  - "True"
+  - "False"
+  supportedFeatures: []
+  supportedModules: []
+- defaultValue: "50"
+  description: The maximum number of incidents to display.
+  name: maxIncidentsToDisplay
+  supportedFeatures: []
+  supportedModules: []
+- defaultValue: type, created, name
+  description: Fields to add in the table of incident.
+  name: fieldsIncidentToDisplay
+  supportedFeatures: []
+  supportedModules: []
+- defaultValue: 1 month ago
+  description: The start date by which we retrieve information on incidents.
+  name: fromDate
+  supportedFeatures: []
+  supportedModules: []
+- description: Argument for the query of similar incidents.
+  name: query
+  supportedFeatures: []
+  supportedModules: []
+comment: Finds similar incidents based on indicators' similarity. Indicators' contribution
+  to the final score is based on their scarcity.
+commonfields:
+  id: DBotFindSimilarIncidentsByIndicators
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.42.37
+    packID: Base
+    packName: Base
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+dockerimage: demisto/sklearn:1.0.0.13538236
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: DBotFindSimilarIncidentsByIndicators
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  register_module_line('DBotFindSimilarIncidentsByIndicators', 'start', __line__())
+
+  return_results(demisto.executeCommand('DBotFindSimilarAlertsByIndicators', demisto.args()))
+
+  register_module_line('DBotFindSimilarIncidentsByIndicators', 'end', __line__())
+scripttarget: 0
+signature: caKLsy4ASu1ao76A7/GwDbHe1UFigjwDHGPnFWhm0bJ9UbhjGLWXs8/uyp3Bv1brhBckyy/lpFhsEPN6D7a1PSpxQWnC1bnZwA47DEgtuMfBHiDRT+4QWYGovukTgOu92TqJnOL9EAQUhsdd9ipO6OOdYuxzGvyHiKT1EW57OjimNUzHHvuXfQSQY/z9jUeKmEn2kUoHf7zzNgxU6sruM6uJ/Ft2Yn8VxDuneFefGAb+nOhxtL7zRlLDM9JwLGsw1zr6B9hVA9IYbQ+xsr19K/Tw22QGLNQg1IVJ3QxfaHvKj7LiWTRZiwianfwIm2EprcLDHIi6gFJXj75iEbdtzQ==
+subtype: python3
+system: true
+tags: []
+type: python
