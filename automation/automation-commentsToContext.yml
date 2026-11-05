@@ -1,0 +1,70 @@
+args:
+- default: true
+  description: Entry ID to get the comments from
+  name: entryId
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: Context key to store comments into
+  name: contextKey
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: If value is list - provide list seperator
+  name: listSeperator
+  supportedFeatures: []
+  supportedModules: []
+comment: "Takes the comments of a given entry ID and stores them in the incident context,
+  under a provided context key. \nFor accessing the last executed task's comments,
+  provide ${lastCompletedTaskEntries.[0]} as the value for the entryId input parameter."
+commonfields:
+  id: commentsToContext
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: commentsToContext
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.66
+  var entry = executeCommand("getEntry", {"id":args.entryId});
+  var key=args.contextKey;
+  var comments=entry[0].Contents;
+
+  var md =  'Comments set to context - '+key+':' + comments + '\n';
+  var ec={};
+  if (args.listSeperator) {
+      ec[key]=[];
+      var list = comments.split(args.listSeperator);
+      for (var i=0;i<list.length;i++) {
+          ec[key].push(list[i].trim());
+      }
+  } else {
+      ec[key]=comments;
+  }
+
+  return {Type: entryTypes.note, Contents: entry, ContentsFormat: formats.json, HumanReadable: md, EntryContext: ec};
+scripttarget: 0
+signature: ERfvdp79YsMfWxWEODHkLtVqkPwLJIYEjcsbmpXDmVNEeAZypyLILUSJ1oMpYHMBHP/EIBlIRIt9qt5/eIpSLf+nSBv3vjzbdG9xB85D5/XHVPSebRKVOBM0ATBn8sZwap4nIN5/ZOjxC6lRGMQb0fnQWsCzO2N2+161nLMuQhj0cLXy80lKJMxLEIWamjK95Dy1Gih63HOsh+fmDK2zjQc0Ix4e4fYlK8jDy8xn0mvvMGxzT/3J+474wec6fG3TLMw/5UjOOqnWO7h48InpCpL19cJx0fVgxLhiC4vGVDdL3MyrI6n5FPaC2w1bcwuA5mddf5JQM0wzIgTH+Y584A==
+system: true
+tags:
+- Utility
+type: javascript
