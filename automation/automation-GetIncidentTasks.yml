@@ -1,0 +1,101 @@
+args:
+- default: true
+  description: Incident ID to get tasks from.
+  name: inc_id
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: 'Comma-separated list of states. Possible values: New, InProgress,
+    Completed, Waiting, Error, LoopError, Skipped, Blocked. (Leave empty to get all
+    tasks).'
+  isArray: true
+  name: states
+  supportedFeatures: []
+  supportedModules: []
+- description: The name of the task to search.
+  name: name
+  supportedFeatures: []
+  supportedModules: []
+- description: The tag to search.
+  name: tag
+  supportedFeatures: []
+  supportedModules: []
+- description: The Cortex REST API integration instance to use for the API request.
+    If not provided, the default instance is used.
+  name: using
+  supportedFeatures: []
+  supportedModules: []
+comment: Get all tasks for a specific incident by the given state, name and/or tag.
+commonfields:
+  id: GetIncidentTasks
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.10.0
+    isoverridable: false
+    itemVersion: 1.5.11
+    packID: DemistoRESTAPI
+    packName: Cortex REST API
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: GetIncidentTasks
+outputs:
+- contextPath: Tasks
+  description: The entire task object.
+- contextPath: Tasks.id
+  description: Task ID.
+  type: string
+- contextPath: Tasks.name
+  description: Task name.
+  type: string
+- contextPath: Tasks.type
+  description: The type of the task (regular, condition, title, playbook, start).
+  type: string
+- contextPath: Tasks.owner
+  description: Task owner.
+  type: string
+- contextPath: Tasks.state
+  description: Task state (inprogress, Completed, WillNotBeExecuted, Error, LoopError,
+    Waiting, Blocked, and empty string for not started).
+  type: string
+- contextPath: Tasks.scriptId
+  description: Task related script (empty if manual).
+  type: string
+- contextPath: Tasks.startDate
+  description: Task start date.
+  type: unknown
+- contextPath: Tasks.completedDate
+  description: Task completed date.
+  type: unknown
+- contextPath: Tasks.dueDate
+  description: Task due date (SLA).
+  type: unknown
+- contextPath: Tasks.parentPlaybookID
+  description: Task parent playbook ID (in case the task is part of a sub-playbook).
+  type: unknown
+- contextPath: Tasks.completedBy
+  description: Task completed by (username).
+  type: string
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  return executeCommand('GetAlertTasks', args)
+scripttarget: 0
+sensitive: true
+signature: x1slcrerMuYRSZWzD29oU/UqQ/UsXUMltXpWWlYeGqxQu0H8YXGvWk1tCXJRWTN229a1GtYZyDp+i8ymhCVJE4DlvxtFbzBwC/KAMPu0PDW8g5f34/eJMjMOTZoRS4h9y3S6FbNK39aEinvma0FoGA2DHG4Dr7aHnWPB8XIfKO1cM5dGHUy58cKzWZ0xpg6iHHy02I7vmR5cab/XMENyTyldm4NEAkPKxrjMUHzIMBSJABqeiCUJ3PG5wGHjPm25JVTbLQAqJ9uprQLtcGoIjvUPR/pnaMkjwY345rlVYU1u+VjyGdkA9sYST4qwiiRWmnaM2IJz4xPsVlualaNoLA==
+system: true
+tags:
+- Utility
+type: javascript
