@@ -1,0 +1,67 @@
+args:
+- description: The string to search in, e.g., "string1"
+  name: left
+  supportedFeatures: []
+  supportedModules: []
+- description: The array of substrings to search in the string, e.g., ["string1","string2"]
+  name: right
+  supportedFeatures: []
+  supportedModules: []
+comment: |
+  Checks whether a substring or an array of substrings is within a string array(each item will be checked). Supports single strings as well. For example, for substrings ['a','b','c'] in a string 'a' the script will return true.
+commonfields:
+  id: StringContainsArray
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.32
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: StringContainsArray
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.4.32
+  var str = args.left;
+  var substring = args.right;
+
+  if(!str || !substring){
+      return false;
+  }
+
+  if (Array.isArray(substring)) {
+      var arr = substring;
+      for (var i = 0; i < arr.length; ++i) {
+          if (arr[i] && str.indexOf(arr[i]) > -1) {
+                  return true;
+          }
+      }
+  } else {
+      if (str.indexOf(substring) > -1) {
+          return true;
+      }
+  }
+
+  return false;
+scripttarget: 0
+signature: M64AzbgoRQxh2sbslhi5INif/QM7KPQxs2eX/IM9TqKjPI61vpbOnikeJlr/OqRUBi9Pfea8+8TL7K1s1wUgkP4E0Ase3JTcwptJU+ddw3LgNXwdYJeyBsx3cDa592IJjHY30TeyXRYkkONMysuGexg6gQboPka9vzqBB+g3gCvrs2Zqfpyv/PfWgimfZ7CTEy5rjoeiCGBPr0mQl9lx8fe2Sx0KwpeR6QHclbg3GWWrX85MNILNUqZTtmReQn6AwegkF1BwWl+uUBhW5OP4OWhy2ib82iH1DqFRgcvQwuLdqe9ZUxXqSZ3g2Z0ec4747g4y3UaZanTG/UJSaYarzg==
+system: true
+tags:
+- filter
+- string
+type: javascript
