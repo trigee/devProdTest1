@@ -1,0 +1,73 @@
+args:
+- default: true
+  description: The string to convert to an array of that string.
+  isArray: true
+  name: value
+  supportedFeatures: []
+  supportedModules: []
+comment: Converts a single string to an array of that string.
+commonfields:
+  id: ConvertToSingleElementArray
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.32
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13053055
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ConvertToSingleElementArray
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('ConvertToSingleElementArray', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.32'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.32')
+
+
+
+
+
+
+  def main():
+      args = demisto.args()
+      value = args.get("value")
+      if value and isinstance(value, list):
+          demisto.results(value)
+      elif value:
+          demisto.results([value])
+      else:
+          demisto.results([])
+
+
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('ConvertToSingleElementArray', 'end', __line__())
+scripttarget: 0
+signature: c/OFl1bJo9PJa9Lx4Q3Xk19jyHLfN4WE4HC4kfrcW/cHD3Kx76VeTx301gIX/S5zKkqRaGmyV/2xu3AU+NxGcNpa7+xuncdUy9A2Jy0wl8SvC3mYbIvnrSqJ2n2TaQ60v3+pe6fHStjQuuite8dYSFi9YF6vt6y/wnGivWLpX9q0CypscYGiuIK8P5EsNkVyFF4XPMmlgnNaTesHE32ru1RHgxJj5RnqN5BWHftuGT1ZXwdVa+/dr7STfZdse2z7uKkF+z/ohuby/i7axirf2XjUAnkEIZGyjbOa2vkgAXQsLet73jUltQRNVVEVtMxZE2Vk3nLY+7GN8/PScBQBzw==
+subtype: python3
+system: true
+tags:
+- transformer
+- entirelist
+type: python
