@@ -1,0 +1,48 @@
+comment: "Total number of incidents per OOTB feed.\n\nThis automation runs using the
+  default Limited User role, unless you explicitly change the permissions.\nFor more
+  information, see the section about permissions here:\n- For Cortex XSOAR 6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+  \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+  For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+commonfields:
+  id: ThreatIntelManagementGetIncidentsPerFeed
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.5.0
+    isoverridable: false
+    itemVersion: 1.1.26
+    packID: ThreatIntelligenceManagement
+    packName: Threat Intelligence Management
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+dockerimage: demisto/python3:3.12.13.10116658
+engineinfo: {}
+mainengineinfo: {}
+name: ThreatIntelManagementGetIncidentsPerFeed
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  register_module_line('ThreatIntelManagementGetIncidentsPerFeed', 'start', __line__())
+
+  return_results(demisto.executeCommand('ThreatIntelManagementGetAlertsPerFeed', demisto.args()))
+
+  register_module_line('ThreatIntelManagementGetIncidentsPerFeed', 'end', __line__())
+scripttarget: 0
+signature: kb3t29GCd9gn1fSxHT3K+i1Z+7cjlgTVDE6zfgnGG1mM3aKLbu4KFj4PrnToPNwdPd2sCn19ZryYawijlq7B7xZBJf+hj2xWdnL/z00X2uXJ7lW5kUkOg1BGzNQ58THCNkTVppGhx7n70Ys83ulHLVD3b3XP6vt04rvNDzS2OBbs/IDF8UgnL2/O2MpHMs1Q60ZDIRSsmyzW7Sy8tEtAoX5MwCg7AOkqpEq57A4I5r/WlAn5/Bhwe3VcxAxX1VOPxZhuAuka3HQPznMD14IrtbByR/x1SaU3a1MAJJ464Yyb3jyhwxCYlOXcCF5GreQ9a3FKb7gROpdGBh5pTtOFOA==
+subtype: python3
+system: true
+tags:
+- Threat Intel Management
+type: python
