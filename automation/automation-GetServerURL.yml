@@ -1,0 +1,80 @@
+comment: Get the Server URL.
+commonfields:
+  id: GetServerURL
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: GetServerURL
+outputs:
+- contextPath: ServerURL.Host
+  description: The server host name.
+  type: String
+- contextPath: ServerURL.Port
+  description: The server port.
+  type: Number
+- contextPath: ServerURL.Scheme
+  description: The server scheme.
+  type: String
+- contextPath: ServerURL.URL
+  description: The server full URL.
+  type: String
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |-
+  // pack version: 1.22.66
+    function parseUrl(url) {
+        match = url.match(urlRegex);
+
+        return match ? {
+            shcema: url.match(/^(https?):/)[1],
+            hostname: match[2],
+            port: match[3] || '',
+        } : null;
+    }
+
+    urls = demistoUrls();
+    server_url = urls['server'].toString();
+
+
+    result = parseUrl(server_url);
+
+    ec = {
+        'ServerURL': {
+            Scheme: result.shcema,
+            Host: result.hostname,
+            Port: Number(result.port),
+            URL: server_url
+        }
+    }
+
+    return {
+        Type: entryTypes.note,
+        Contents: server_url,
+        ContentsFormat: formats.note,
+        HumanReadable: server_url,
+        ReadableContentsFormat: formats.markdown,
+        EntryContext: ec
+    };
+scripttarget: 0
+signature: KKczypqd9NRqXtMRzwaER+/8rpkeBuuq7fjvMkLqzPnZHhjS3Ez2qWRvMD98RR0IxfwdR8/6RUIjQ/KsykF3W2cCReZU7QsYTf/lQUy0WzSoe2d5I/qjFbGOWA8DTkm73m2kitFLs4mTill7vVz4gBPh9yvCDfEWNk0Dsig/h71d+1HkafhCj2SFfQlSKw4ykkIbpYDMpLdt7v370/JQtjEl6JSVaar61PwmiAo2ANJgk0SuezzeyK2o61JEjvK4oDK+bzmWa83tpPMVnCuIEpALw/qLlwY2NqeNxwNhIewDLIfvd/omVanCJw2mj/wCJpS9Q+/0vJkK6z1aWuir3A==
+system: true
+tags: []
+type: javascript
