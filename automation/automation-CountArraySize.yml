@@ -1,0 +1,60 @@
+args:
+- default: true
+  description: The array to count it's size
+  isArray: true
+  name: array
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: The Context key to place result in, default is ArraySize
+  name: contextKey
+  supportedFeatures: []
+  supportedModules: []
+comment: Count an array size
+commonfields:
+  id: CountArraySize
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: CountArraySize
+outputs:
+- contextPath: ArraySize
+  description: Array size
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.66
+  var arr = args.array;
+  if (Array.isArray(arr)) {
+      var key = 'ArraySize';
+      if ((args.contextKey) && (args.contextKey.length > 0 )) {
+          key = args.contextKey;
+      }
+      setContext(key,arr.length);
+      return arr.length;
+  }
+  return 'Given input is not an array';
+scripttarget: 0
+signature: UzRPtyFbRnNSz9Oj2t+R5hv6PhZ695gzyYLhdDYl7fmBz8pQsIIrcLKbK9eqScqHZqlFoUL2OfWtYUhFIC1i3vH7XIpO1QqeQg9/0Hk7AjV9uEwa9SsEM6COiGKhRMYntpx68kUab0odqVAQcoan7lBuinHCxJqdQPpIdzpL1d0jRSapQ4m8sMq41x0SjcJgKrDa5/6IwTvr4keyLhmTQdIqCmVwPEEOY0Qn1AZJ96NVeMRszkSnLXxGwCuZQmwJwWWMVp2uGhQvzXR46THsMDSxyZ1XjMWiQ6zP0ehUl9mRo57cJ956lhR5uTPpJFM8xSJIW2rI416dw1oJy6N3GQ==
+system: true
+tags:
+- Utility
+type: javascript
