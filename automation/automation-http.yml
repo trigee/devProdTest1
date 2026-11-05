@@ -1,0 +1,180 @@
+args:
+- auto: PREDEFINED
+  description: The method for the http request.
+  name: method
+  predefined:
+  - GET
+  - POST
+  - DELETE
+  - PUT
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: The body for the http request.
+  name: body
+  supportedFeatures: []
+  supportedModules: []
+- description: The url for the http request.
+  name: url
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: The headers for the http request, in the format of 'key1:value1,key2:value2,
+    ...'
+  name: headers
+  supportedFeatures: []
+  supportedModules: []
+- auto: PREDEFINED
+  deprecated: true
+  description: Trust any certificate (not secure).
+  name: insecure
+  supportedFeatures: []
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "true"
+  description: Trust any certificate (not secure).
+  name: unsecure
+  predefined:
+  - "true"
+  - "false"
+  supportedFeatures: []
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Use system proxy settings.
+  name: proxy
+  predefined:
+  - "true"
+  - "false"
+  supportedFeatures: []
+  supportedModules: []
+- description: The user for the http request.
+  name: username
+  supportedFeatures: []
+  supportedModules: []
+- description: The password for the http request.
+  name: password
+  secret: true
+  supportedFeatures: []
+  supportedModules: []
+- defaultValue: "no"
+  description: yes to save file, else no. Default is no.
+  name: saveAsFile
+  supportedFeatures: []
+  supportedModules: []
+- description: Using filename from headers if filename is not given. Default is http-file.
+  name: filename
+  supportedFeatures: []
+  supportedModules: []
+comment: Sends http request. Returns the response as json.
+commonfields:
+  id: http
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: http
+outputs:
+- contextPath: HttpRequest.Response
+  description: The response for the http request.
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |+
+  // pack version: 1.22.66
+  var requestObj = {
+      Method: args.method,
+  };
+
+  if (args.username) {
+      requestObj.Username = args.username;
+  }
+
+  if (args.username) {
+      requestObj.Password = args.password;
+  }
+
+  if (args.body) {
+      var body = (typeof args.body) === 'string' ? args.body : JSON.stringify(args.body);
+      requestObj.Body = body;
+  }
+
+  if (args.headers) {
+      var headersJs = {};
+      var headersArr = args.headers.split(',');
+      for (i = 0; i < headersArr.length; i++) {
+          var keyValue = headersArr[i].split(':');
+          if (keyValue.length != 2 ){
+              throw 'Invalid headers. Please make sure you have entered "headers" in correct format.';
+          } else {
+              headersJs[keyValue[0]] = [keyValue[1]];
+          }
+      }
+      requestObj.Headers = headersJs;
+  }
+  if (args.saveAsFile === 'yes') {
+      requestObj.SaveToFile = true;
+  }
+
+  var unsecure = (args.unsecure === 'true' || args.insecure === 'true');
+  var proxy = (args.proxy === 'true');
+
+  // Add scheme if needed
+  var url = args.url;
+  var urlLowerCase = url.toLowerCase();
+  if (!urlLowerCase.startsWith('http://') && !urlLowerCase.startsWith('https://')) {
+      url = 'http://' + url;
+  }
+
+  var res = http(url, requestObj, unsecure, proxy);
+  var fileName;
+  if (args.filename) {
+      fileName = args.filename;
+  } else if (res && res.Headers && res.Headers['Content-disposition'] && res.Headers['Content-disposition'].length > 0) {
+      fileName = res.Headers['Content-disposition'][0];
+  } else {
+      fileName = 'http-file';
+  }
+
+  if (args.saveAsFile === 'yes') {
+      return {
+          Type: 3,
+          FileID: res.Path,
+          File: fileName,
+          Contents: fileName
+      };
+  }
+
+  return {
+      Type: entryTypes.note,
+      Contents: res,
+      ContentsFormat: formats.json,
+      EntryContext: {
+          'HttpRequest.Response': res
+      }
+  };
+
+
+
+scripttarget: 0
+signature: VuLcOCYiPeN3J0bfFq9TS9HVBFDj+6s72qB9vPYUlA0ium+cjtUsb++1Gbw/3swN8VLbhUM6t5Qz3cw0fhUZ/LlqunZOVY7XzwH5Z7aFaKwwyoEtY0hC/XE/pl6SVNVnnCL1yJOXSjQ5slWBMECX+jVGVJ2NwRp6kEMf8GoV4e2ROvP26Y2/IPCQwLVUt6TZxGSX9x9hkOv41lMbcj0LG3IwxaKu7wZdPKN7NLTzAc2pESR6ZJPH2rR7BXzCsSezfc46CX8ovcCT8lIX3c16XDfqHKbXTFJSmnWF/Qi+QGptM/TJJvKBvf0l7wTVdguBoiV1Gf78itGrJwkyZyKcLw==
+system: true
+tags:
+- Utility
+type: javascript
