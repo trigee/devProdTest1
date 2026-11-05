@@ -1,0 +1,73 @@
+args:
+- description: Email addresses to exclude (separated by commas)
+  isArray: true
+  name: excludedEmails
+  supportedFeatures: []
+  supportedModules: []
+comment: Gets all email addresses in context, excluding ones given.
+commonfields:
+  id: ContextGetEmails
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ContextGetEmails
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |+
+  // pack version: 1.22.66
+  var excludedEmails;
+  if (args.excludedEmails) {
+      excludedEmails = args.excludedEmails.split(',');
+  }
+  var flat = {};
+  var res = [];
+  var currentValue;
+  flattenFields(invContext,undefined,flat);
+  keysArr = Object.keys(flat);
+  for (var i = 0; i < keysArr.length; i++) {
+      currentValue=flat[keysArr[i]];
+      if (emailRegex.test(currentValue) && res.indexOf(currentValue) === -1) {
+          if (excludedEmails) {
+              if (excludedEmails.indexOf(currentValue) === -1) {
+                  res.push(currentValue);
+              }
+          } else {
+              res.push(currentValue);
+          }
+      }
+  }
+
+  var md = '### Email addresses in context\n';
+  for (var i = 0; i<res.length; i++) {
+      md += '- ' + res[i] + '\n';
+  }
+  return {
+          Type: entryTypes.note,
+          Contents: res,
+          ContentsFormat: formats.json,
+          HumanReadable: md
+          };
+
+scripttarget: 0
+signature: BLZ8Y/4dbGvHbMTdjj/KtUf/xqrFrvOz3fW4X63ZM/5pOfVM6mVzxIs+h/eR8/9GriWi2AIpfbWdwPB9MUgmg8XlAGnNakFwM7T6lJ/qBHxs76N81aUWxF9PIQ+NFCSo4R0rGsqZuGVhIZx3P1ds/VE8grcnZjvnA4U7b20MLgSURPidfmi+L+xiQSZ+4XjHp1SctQMSC/tDXOgi0gol/YNP0XotjRsIQrMotLtUeqGc6YXNlMv1s2Y3YOx+P1Ez2eCr1er7i6HGU+JOkk46eDuMvgs9zRjagPl9TTUn2ehdQN0uR0JKy5zSAgN8sM5e1FkOKhm+0wJp3OB/gmds/A==
+system: true
+tags: []
+type: javascript
