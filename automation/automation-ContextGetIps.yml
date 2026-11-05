@@ -1,0 +1,72 @@
+args:
+- description: IP addresses to exclude (separated by commas)
+  name: excludedIps
+  supportedFeatures: []
+  supportedModules: []
+comment: Gets all IP addresses in context, excluding ones given.
+commonfields:
+  id: ContextGetIps
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ContextGetIps
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |+
+  // pack version: 1.22.66
+  var excludedIps;
+  if (args.excludedIps) {
+      excludedIps = args.excludedIps.split(',');
+  }
+  var flat = {};
+  var res = [];
+  var currentValue;
+  flattenFields(invContext,undefined,flat);
+  keysArr = Object.keys(flat);
+  for (var i = 0; i < keysArr.length; i++) {
+      currentValue=flat[keysArr[i]];
+      if (ipRegex.test(currentValue) && res.indexOf(currentValue) === -1) {
+          if (excludedIps) {
+              if (excludedIps.indexOf(currentValue) === -1) {
+                  res.push(currentValue);
+              }
+          } else {
+              res.push(currentValue);
+          }
+      }
+  }
+
+  var md = '### IP addresses in context\n';
+  for (var i = 0; i<res.length; i++) {
+      md += '- ' + res[i] + '\n';
+  }
+  return {
+          Type: entryTypes.note,
+          Contents: res,
+          ContentsFormat: formats.json,
+          HumanReadable: md
+          };
+
+scripttarget: 0
+signature: LbRhVacYwhBdRO1bAyeIOzjnHJoPcDNlkJz2lofPvOOBk7BzQzBXeSFH7sojG6KziPus3pPDhGdzEukoSHcAsjg6p3HSPZDRz6hI/9qxeSsxthS46rj+nNfaszloxr42BZ/bcCSVvM4+ySHrUiwAu+kTQosUjXrJYiNrKA47JcQow0oLVcEqy20C0EDMNlQpXm+zFQB2xe8vSaYiMFMZrdHXlwD+0SWIu6bhxznfylJiZddqVWjJEliqdoyx3EIl1RSXa3XDEnM7TyWKlQpp0UXP1BBxOHxfnkc9hNV4/nIaZ7v9W4lXSNGXnEkWY5nFhHNyJS+7Cd3SDgA0AJQI8Q==
+system: true
+tags: []
+type: javascript
