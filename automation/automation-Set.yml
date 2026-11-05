@@ -1,0 +1,103 @@
+args:
+- default: true
+  description: The key to set. Can be a full path such as "Key.ID". If using append=true
+    can also use a DT selector such as "Data(val.ID == obj.ID)".
+  name: key
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: The value to set to the key. Can be an array (e.g. ["192.168.1.1","192.168.1.2"])
+    or JSON (e.g. {"key":"value"}).
+  isArray: true
+  name: value
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- auto: PREDEFINED
+  description: If false then the context key will be overwritten. If set to true then
+    the script will append to existing context key.
+  name: append
+  predefined:
+  - "true"
+  - "false"
+  supportedFeatures: []
+  supportedModules: []
+- auto: PREDEFINED
+  defaultValue: "false"
+  description: Whether the argument should be saved as a string.
+  name: stringify
+  predefined:
+  - "true"
+  - "false"
+  supportedFeatures: []
+  supportedModules: []
+comment: Set a value in context under the key you entered.
+commonfields:
+  id: Set
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: Set
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.66
+  var ec = {};
+  var value;
+  try {
+      if (args.stringify === 'true' ) {
+          if (typeof args.value === 'string') {
+              value = args.value
+          } else {
+              value = JSON.stringify(args.value)
+          }
+      } else {
+          if (!isNaN(args.value) && !args.value.includes('.') && Number(args.value) >= Number.MAX_SAFE_INTEGER) {
+              value = BigInt(args.value);
+          }
+          else {
+              value = JSON.parse(args.value);
+          }
+      }
+  } catch (err) {
+      value = args.value;
+  }
+  ec[args.key] = value;
+  var result = {
+      Type: entryTypes.note,
+      Contents: ec,
+      ContentsFormat: formats.json,
+      HumanReadable: 'Key ' + args.key + ' set'
+  };
+
+  if (!args.append || args.append === 'false') {
+      setContext(args.key, value);
+  } else {
+      result.EntryContext = ec;
+  }
+  logDebug(`Setting ${JSON.stringify(result)}`)
+  return result;
+scripttarget: 0
+signature: 0NP/fy1aFjdFl0T2/hGk7IZ/DVlNPVKu5la4DFIWGXfUHIrfiqu6nY6BVs4RGXgbCctF1hGqEdzidvcZQyvvWySKpDaea5mCSRn1A3qakbRQbNK022R96cFSNvcaII0YHlm74nj9PbZ9e+JkZwy3OmsRFlWCLRLB3B6C1fuKPrskxBUAWmr9XCpe51V3DAaIFaLK3q94fSDUkxuUJtMGVEZBgMvXwJOL5bhY8qY8Dmob9tIv2I4Iz0BRMYAvEsNXO1KUs0dG2w+6u5JG0Hb/v5brEy13D8gow5EqrQ1iwq1n9NwSmw32WbrlznNd5nVRUTX3vKv5X5IaL88YD4HpVg==
+system: true
+tags:
+- Utility
+type: javascript
