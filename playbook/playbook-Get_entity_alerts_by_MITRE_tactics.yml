@@ -1,0 +1,2109 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.8.0
+    isoverridable: false
+    itemVersion: 3.5.99
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules:
+    - agentix
+    - cloud
+    - cloud_posture
+    - cloud_runtime_security
+    - edr
+    - xsiam
+    toServerVersion: ""
+description: |-
+  This playbook searches XDR alerts related to specific entities, on a given timeframe, based on MITRE tactics.
+  Note: The playbook's inputs enable manipulating the execution flow. Read the input descriptions for details.
+id: Get entity alerts by MITRE tactics
+inputSections:
+- description: Generic group for inputs
+  inputs:
+  - HuntReconnaissanceTechniques
+  - HuntInitialAccessTechniques
+  - HuntExecutionTechniques
+  - HuntPersistenceTechniques
+  - HuntPrivilegeEscalationTechniques
+  - HuntDefenseEvasionTechniques
+  - HuntDiscoveryTechniques
+  - HuntLateralMovementTechniques
+  - HuntCollectionTechniques
+  - HuntCnCTechniques
+  - HuntImpactTechniques
+  - HuntCredentialAccessTechniques
+  - timeRange
+  - RunAll
+  - EntityType
+  - EntityID
+  name: General (Inputs group)
+inputs:
+- description: Set to True to hunt for identified alerts with MITRE Reconnaissance
+    techniques.
+  key: HuntReconnaissanceTechniques
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: Set to True to hunt for identified alerts with MITRE Initial Access
+    techniques.
+  key: HuntInitialAccessTechniques
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: Set to True to hunt for identified alerts with MITRE Execution techniques.
+  key: HuntExecutionTechniques
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: Set to True to hunt for identified alerts with MITRE Persistence techniques.
+  key: HuntPersistenceTechniques
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: Set to True to hunt for identified alerts with MITRE Privilege Escalation
+    techniques.
+  key: HuntPrivilegeEscalationTechniques
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: Set to True to hunt for identified alerts with MITRE Defense Evasion
+    techniques.
+  key: HuntDefenseEvasionTechniques
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: Set to True to hunt for identified alerts with MITRE Discovery techniques.
+  key: HuntDiscoveryTechniques
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: Set to True to hunt for identified alerts with MITRE Lateral Movement
+    techniques.
+  key: HuntLateralMovementTechniques
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: Set to True to hunt for identified alerts with MITRE Collection techniques
+    .
+  key: HuntCollectionTechniques
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: Set to True to hunt for identified alerts with MITRE Command and Control
+    techniques.
+  key: HuntCnCTechniques
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: Set to True to hunt for identified alerts with MITRE Impact techniques.
+  key: HuntImpactTechniques
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: Set to True to hunt for identified alerts with MITRE Credential Access
+    techniques.
+  key: HuntCredentialAccessTechniques
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: |-
+    A time range to execute the hunting in.
+    The input should be in the following format:
+    * 1 day
+    * 2 minutes
+    * 4 hours
+    * 8 days
+  key: timeRange
+  playbookInputQuery: null
+  required: true
+  value:
+    simple: 6 hours
+- description: Whether to run all the sub-tasks for Mitre Tactics.
+  key: RunAll
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+- description: Entity type to search. Entity type can be username, hostname, or any
+    other element that exists in the alert.
+  key: EntityType
+  playbookInputQuery: null
+  required: true
+  value: {}
+- description: Entity value.
+  key: EntityID
+  playbookInputQuery: null
+  required: true
+  value: {}
+name: Get entity alerts by MITRE tactics
+outlinetasks: {}
+outputSections:
+- description: Generic group for outputs
+  name: General (Outputs group)
+  outputs:
+  - foundIncidents
+outputs:
+- contextPath: foundIncidents
+  description: Alerts found.
+  type: unknown
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "50"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 302a9eb3-8c68-4d64-8f6b-131e948ecaf7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 302a9eb3-8c68-4d64-8f6b-131e948ecaf7
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 1090,
+          "y": -1020
+        }
+      }
+  "50":
+    continueonerrortype: ""
+    id: "50"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "133"
+      - "134"
+      - "135"
+      - "136"
+      - "137"
+      - "138"
+      - "139"
+      - "140"
+      - "141"
+      - "142"
+      - "143"
+      - "144"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: b0dae12e-e1bc-42f1-8468-b21672f49b3d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Hunt by MITRE Tactics
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: b0dae12e-e1bc-42f1-8468-b21672f49b3d
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1090,
+          "y": -865
+        }
+      }
+  "121":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.HuntCnCTechniques
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.RunAll
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "121"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "157"
+      "yes":
+      - "155"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Whether to hunt for Command and Control techniques.
+      id: 92bebe2e-acb9-41f1-862a-99dbfc76fbe1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should hunt for CnC techniques?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 92bebe2e-acb9-41f1-862a-99dbfc76fbe1
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 3383.67919921875,
+          "y": -550
+        }
+      }
+  "122":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.HuntReconnaissanceTechniques
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.RunAll
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "122"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "157"
+      "yes":
+      - "145"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Whether to hunt for Reconnaissance techniques.
+      id: 21c87448-2958-4f99-8763-9844ee5c5f7d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should hunt for Reconnaissance techniques?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 21c87448-2958-4f99-8763-9844ee5c5f7d
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -1560,
+          "y": -550
+        }
+      }
+  "123":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.HuntInitialAccessTechniques
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.RunAll
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "123"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "157"
+      "yes":
+      - "146"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Whether to hunt for Initial Access techniques.
+      id: c0d21eb1-cdf5-46cb-8855-e1737fd20436
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should hunt for Initial Access techniques?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c0d21eb1-cdf5-46cb-8855-e1737fd20436
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -1080,
+          "y": -550
+        }
+      }
+  "124":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.HuntExecutionTechniques
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.RunAll
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "124"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "157"
+      "yes":
+      - "147"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Whether to hunt for Execution techniques.
+      id: 2313f41a-244e-49fe-8b25-dda1e26b9a68
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should hunt for Execution techniques?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 2313f41a-244e-49fe-8b25-dda1e26b9a68
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -606.32080078125,
+          "y": -550
+        }
+      }
+  "125":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.HuntPersistenceTechniques
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.RunAll
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "125"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "157"
+      "yes":
+      - "148"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Whether to hunt for Persistence techniques.
+      id: 69375df8-d097-430a-8048-f5d672948c9a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should hunt for Persistence techniques?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 69375df8-d097-430a-8048-f5d672948c9a
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -120,
+          "y": -550
+        }
+      }
+  "126":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.HuntPrivilegeEscalationTechniques
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.RunAll
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "126"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "157"
+      "yes":
+      - "149"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Whether to hunt for Privilege Escalation techniques.
+      id: ba7589d2-173e-4816-814a-bf82babec189
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should hunt for Privilege Escalation techniques?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: ba7589d2-173e-4816-814a-bf82babec189
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 383.67919921875,
+          "y": -550
+        }
+      }
+  "127":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.HuntDefenseEvasionTechniques
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.RunAll
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "127"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "157"
+      "yes":
+      - "150"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Whether to hunt for Defense Evasion techniques.
+      id: 643e1f15-ee29-46fd-8dc4-a51f85f4af2f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should hunt for Defense Evasion techniques?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 643e1f15-ee29-46fd-8dc4-a51f85f4af2f
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 853.67919921875,
+          "y": -550
+        }
+      }
+  "128":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.HuntCredentialAccessTechniques
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.RunAll
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "128"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "157"
+      "yes":
+      - "151"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Whether to hunt for Credential Access techniques.
+      id: db6efed8-6d99-4631-8553-4a2908d462e8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should hunt for Credential Access techniques?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: db6efed8-6d99-4631-8553-4a2908d462e8
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1313.67919921875,
+          "y": -550
+        }
+      }
+  "129":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.HuntDiscoveryTechniques
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.RunAll
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "129"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "157"
+      "yes":
+      - "152"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Whether to hunt for Discovery techniques.
+      id: c8d209c1-c723-40d5-8973-c0994cf155c9
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should hunt for Discovery techniques?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: c8d209c1-c723-40d5-8973-c0994cf155c9
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1833.67919921875,
+          "y": -550
+        }
+      }
+  "130":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.HuntLateralMovementTechniques
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.RunAll
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "130"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "157"
+      "yes":
+      - "153"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Whether to hunt for Lateral Movement techniques.
+      id: d964c349-1c7f-45dd-8325-840d89c5f22c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should hunt for Lateral Movement techniques?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: d964c349-1c7f-45dd-8325-840d89c5f22c
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 2363.67919921875,
+          "y": -550
+        }
+      }
+  "131":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.HuntCollectionTechniques
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.RunAll
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "131"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "157"
+      "yes":
+      - "154"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Whether to hunt for Collection techniques.
+      id: d2336303-4d7b-46e2-80c4-11354c4711c8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should hunt for Collection techniques?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: d2336303-4d7b-46e2-80c4-11354c4711c8
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 2903.67919921875,
+          "y": -550
+        }
+      }
+  "132":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              complex:
+                root: inputs.HuntImpactTechniques
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.RunAll
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "132"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "157"
+      "yes":
+      - "156"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Whether to hunt for Impact techniques.
+      id: 81351d91-109f-46db-85cb-7b8086ee3c90
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Should hunt for Impact techniques?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 81351d91-109f-46db-85cb-7b8086ee3c90
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 3860,
+          "y": -550
+        }
+      }
+  "133":
+    continueonerrortype: ""
+    id: "133"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "122"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 18410aa2-af43-40f0-8993-7c1863794957
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Reconnaissance
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 18410aa2-af43-40f0-8993-7c1863794957
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -1560,
+          "y": -695
+        }
+      }
+  "134":
+    continueonerrortype: ""
+    id: "134"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "123"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 775838ce-5fd9-4770-87cc-4e09c46cbb84
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Initial Access
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 775838ce-5fd9-4770-87cc-4e09c46cbb84
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -1080,
+          "y": -695
+        }
+      }
+  "135":
+    continueonerrortype: ""
+    id: "135"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "124"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: dc96d021-21f1-4bce-8b45-35b3c6fb4da0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Execution
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: dc96d021-21f1-4bce-8b45-35b3c6fb4da0
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -606.32080078125,
+          "y": -695
+        }
+      }
+  "136":
+    continueonerrortype: ""
+    id: "136"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "125"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 470a92a2-4d5c-4df4-80bc-33ff9b8be9da
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Persistence
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 470a92a2-4d5c-4df4-80bc-33ff9b8be9da
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -120,
+          "y": -695
+        }
+      }
+  "137":
+    continueonerrortype: ""
+    id: "137"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "126"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1124b474-7d91-4951-8990-b4659ee69bf1
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Privilege Escalation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 1124b474-7d91-4951-8990-b4659ee69bf1
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 383.67919921875,
+          "y": -695
+        }
+      }
+  "138":
+    continueonerrortype: ""
+    id: "138"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "127"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 780dd887-45bf-4c6b-8bfc-d3f0082d7c08
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Defense Evasion
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 780dd887-45bf-4c6b-8bfc-d3f0082d7c08
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 853.67919921875,
+          "y": -695
+        }
+      }
+  "139":
+    continueonerrortype: ""
+    id: "139"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "128"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 3d80ef25-c7e9-446e-8192-d2de3cf0024f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Credential Access
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 3d80ef25-c7e9-446e-8192-d2de3cf0024f
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1313.67919921875,
+          "y": -695
+        }
+      }
+  "140":
+    continueonerrortype: ""
+    id: "140"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "129"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 04010555-8eb5-4b2e-8335-358b5a3d6948
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Discovery
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 04010555-8eb5-4b2e-8335-358b5a3d6948
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1833.67919921875,
+          "y": -695
+        }
+      }
+  "141":
+    continueonerrortype: ""
+    id: "141"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "130"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c14ad20c-3483-4520-80ee-34a637863843
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Lateral Movement
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: c14ad20c-3483-4520-80ee-34a637863843
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 2363.67919921875,
+          "y": -695
+        }
+      }
+  "142":
+    continueonerrortype: ""
+    id: "142"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "131"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: abd7031d-9ccb-4808-abe0-23969bc3ef98
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Collection
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: abd7031d-9ccb-4808-abe0-23969bc3ef98
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 2903.67919921875,
+          "y": -695
+        }
+      }
+  "143":
+    continueonerrortype: ""
+    id: "143"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "121"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 36d96201-1d05-4b04-8714-0cd4f8a8ca9c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Command and Control
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 36d96201-1d05-4b04-8714-0cd4f8a8ca9c
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 3383.67919921875,
+          "y": -695
+        }
+      }
+  "144":
+    continueonerrortype: ""
+    id: "144"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "132"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6305cd34-3716-42fb-846c-ec2b61073bd2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Impact
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 6305cd34-3716-42fb-846c-ec2b61073bd2
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 3860,
+          "y": -695
+        }
+      }
+  "145":
+    continueonerrortype: ""
+    id: "145"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "159"
+    note: false
+    quietmode: 2
+    reputationcalc: 1
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: MITRETactics
+      stringify:
+        simple: "true"
+      value:
+        simple: mitreattcktactic:"TA0043 - Reconnaissance"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: 736fec75-ac14-47bc-87c9-28242bdbcda0
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add Reconnaissance to query
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 736fec75-ac14-47bc-87c9-28242bdbcda0
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -1560,
+          "y": -337.5
+        }
+      }
+  "146":
+    continueonerrortype: ""
+    id: "146"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "159"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: MITRETactics
+      stringify:
+        simple: "true"
+      value:
+        simple: mitreattcktactic:"TA0001 - Initial Access"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: 822b5176-2933-4346-a074-a1bcf269c0f6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add Initial Access to query
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 822b5176-2933-4346-a074-a1bcf269c0f6
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -1080,
+          "y": -337.5
+        }
+      }
+  "147":
+    continueonerrortype: ""
+    id: "147"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "159"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: MITRETactics
+      stringify:
+        simple: "true"
+      value:
+        simple: mitreattcktactic:"TA0002 - Execution"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: a132c041-9f38-4c06-a771-f2bef482419f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add Execution to query
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: a132c041-9f38-4c06-a771-f2bef482419f
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -606.32080078125,
+          "y": -337.5
+        }
+      }
+  "148":
+    continueonerrortype: ""
+    id: "148"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "159"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: MITRETactics
+      stringify:
+        simple: "true"
+      value:
+        simple: mitreattcktactic:"TA0003 - Persistence"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: 30fa6f12-54a3-4cad-a7e1-e8a808012b7c
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add Persistence to query
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 30fa6f12-54a3-4cad-a7e1-e8a808012b7c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -120,
+          "y": -337.5
+        }
+      }
+  "149":
+    continueonerrortype: ""
+    id: "149"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "159"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: MITRETactics
+      stringify:
+        simple: "true"
+      value:
+        simple: mitreattcktactic:"TA0004 - Privilege Escalation"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: bfbdcf64-7e99-4ec1-9392-71fbc52ea97a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add Privilege Escalation to query
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: bfbdcf64-7e99-4ec1-9392-71fbc52ea97a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 383.67919921875,
+          "y": -345
+        }
+      }
+  "150":
+    continueonerrortype: ""
+    id: "150"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "159"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: MITRETactics
+      stringify:
+        simple: "true"
+      value:
+        simple: mitreattcktactic:"TA0005 - Defense Evasion"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: d938942a-7b6a-4dda-986e-cc97fde020d6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add Defense Evasion to query
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: d938942a-7b6a-4dda-986e-cc97fde020d6
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 853.67919921875,
+          "y": -337.5
+        }
+      }
+  "151":
+    continueonerrortype: ""
+    id: "151"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "159"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: MITRETactics
+      stringify:
+        simple: "true"
+      value:
+        simple: mitreattcktactic:"TA0006 - Credential Access"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: 2971d87b-29f6-40fc-8828-e50b0342249a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add Credential Access to query
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 2971d87b-29f6-40fc-8828-e50b0342249a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1313.67919921875,
+          "y": -337.5
+        }
+      }
+  "152":
+    continueonerrortype: ""
+    id: "152"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "159"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: MITRETactics
+      stringify:
+        simple: "true"
+      value:
+        simple: mitreattcktactic:"TA0007 - Discovery"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: bcde5b68-102f-4422-a392-9cc06fa3b1f5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add Discovery to query
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: bcde5b68-102f-4422-a392-9cc06fa3b1f5
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1833.67919921875,
+          "y": -337.5
+        }
+      }
+  "153":
+    continueonerrortype: ""
+    id: "153"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "159"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: MITRETactics
+      stringify:
+        simple: "true"
+      value:
+        simple: mitreattcktactic:"TA0008 - Lateral Movement"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: 258b27a2-85d0-4343-acb7-f95b48ff21f5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add Lateral Movement to query
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 258b27a2-85d0-4343-acb7-f95b48ff21f5
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2363.67919921875,
+          "y": -337.5
+        }
+      }
+  "154":
+    continueonerrortype: ""
+    id: "154"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "159"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: MITRETactics
+      stringify:
+        simple: "true"
+      value:
+        simple: mitreattcktactic:"TA0009 - Collection"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: cce9e46f-32e9-45c5-966b-c0fb4e433a51
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add Collection to query
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: cce9e46f-32e9-45c5-966b-c0fb4e433a51
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 2903.67919921875,
+          "y": -337.5
+        }
+      }
+  "155":
+    continueonerrortype: ""
+    id: "155"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "159"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: MITRETactics
+      stringify:
+        simple: "true"
+      value:
+        simple: mitreattcktactic:"TA0011 - Command and Control"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: 6cf17515-acee-4b95-ad43-13e3e2118a59
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add Command and Control to query
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 6cf17515-acee-4b95-ad43-13e3e2118a59
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 3383.67919921875,
+          "y": -337.5
+        }
+      }
+  "156":
+    continueonerrortype: ""
+    id: "156"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "159"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      append:
+        simple: "true"
+      key:
+        simple: MITRETactics
+      stringify:
+        simple: "true"
+      value:
+        simple: mitreattcktactic:"TA0040 - Impact"
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: c4984cbb-7c9b-4d32-a254-2294774c156b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Add Impact to query
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: c4984cbb-7c9b-4d32-a254-2294774c156b
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 3860,
+          "y": -337.5
+        }
+      }
+  "157":
+    continueonerrortype: ""
+    id: "157"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "162"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 9790ef4c-1e24-4df5-8ff1-b86229b93c6b
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 9790ef4c-1e24-4df5-8ff1-b86229b93c6b
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 4400,
+          "y": -330
+        }
+      }
+  "159":
+    continueonerrortype: ""
+    id: "159"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "161"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      append:
+        simple: "false"
+      key:
+        simple: MITRETacticsClause
+      stringify:
+        simple: "true"
+      value:
+        complex:
+          root: MITRETactics
+          transformers:
+          - args:
+              separator:
+                value:
+                  simple: ' or '
+            operator: join
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Set a value in context under the key you entered. If no value
+        is entered, the script doesn't do anything.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: 143b77bf-6e2c-486b-971b-64e2d57a024e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Join MITRE Tactics list into a single object
+      playbooktaskmissingcomponent: null
+      script: SetAndHandleEmpty
+      type: regular
+      version: -1
+    taskid: 143b77bf-6e2c-486b-971b-64e2d57a024e
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1083.67919921875,
+          "y": -130
+        }
+      }
+  "161":
+    continueonerrortype: ""
+    evidencedata:
+      customfields: {}
+      description:
+        simple: Hunt Impact techniques - Cortex XDR - Endpoint Investigation
+    id: "161"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "162"
+    note: false
+    quietmode: 0
+    reputationcalc: 1
+    scriptarguments:
+      fromdate:
+        complex:
+          root: inputs.timeRange
+      ignore-outputs:
+        simple: "false"
+      query:
+        simple: ${inputs.EntityType}:"${inputs.EntityID}" and (${MITRETacticsClause})
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "Searches Demisto alerts. A summarized version of this scrips is
+        avilable with the summarizedversion argument.\n\nThis automation runs using
+        the default Limited User role, unless you explicitly change the permissions.\nFor
+        more information, see the section about permissions here:\n- For Cortex XSOAR
+        6 see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/6.x/Cortex-XSOAR-Playbook-Design-Guide/Automations
+        \n- For Cortex XSOAR 8 Cloud see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8/Cortex-XSOAR-Cloud-Documentation/Create-a-script\n-
+        For Cortex XSOAR 8.7 On-prem see https://docs-cortex.paloaltonetworks.com/r/Cortex-XSOAR/8.7/Cortex-XSOAR-On-prem-Documentation/Create-a-script"
+      id: a78d500e-2228-444d-812a-95de95d5fb95
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Hunt techniques
+      playbooktaskmissingcomponent: null
+      script: SearchAlertsV2
+      type: regular
+      version: -1
+    taskid: a78d500e-2228-444d-812a-95de95d5fb95
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1083.67919921875,
+          "y": 30
+        }
+      }
+  "162":
+    continueonerrortype: ""
+    id: "162"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: e0859025-0faf-4cad-838d-a288aac16e55
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: e0859025-0faf-4cad-838d-a288aac16e55
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 1083.67919921875,
+          "y": 205
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "121_155_yes": 0.47,
+      "122_145_yes": 0.36,
+      "123_146_yes": 0.41,
+      "124_147_yes": 0.32,
+      "125_148_yes": 0.32,
+      "126_149_yes": 0.41,
+      "127_150_yes": 0.42,
+      "128_151_yes": 0.39,
+      "129_152_yes": 0.44,
+      "130_153_yes": 0.42,
+      "131_154_yes": 0.45,
+      "132_156_yes": 0.36
+    },
+    "paper": {
+      "dimensions": {
+        "height": 1285,
+        "width": 6340,
+        "x": -1560,
+        "y": -1020
+      }
+    }
+  }
