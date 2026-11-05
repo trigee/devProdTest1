@@ -1,0 +1,74 @@
+args:
+- default: true
+  description: The string value to remove null bytes.
+  name: value
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: Removes null bytes from string.
+commonfields:
+  id: RemoveNullBytes
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.10.0
+    isoverridable: false
+    itemVersion: 1.4.32
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13053055
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: RemoveNullBytes
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('RemoveNullBytes', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.32'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.32')
+
+
+
+
+  def removenullbytes(value):
+      if isinstance(value, str):
+          result = value.replace("\x00", "")
+      else:
+          return "error"
+      return result
+
+
+  def main():
+      value = demisto.args()["value"]
+      result = removenullbytes(value)
+      if result == "error":
+          return_error("This transformer applies only to string")
+      return_results(result)
+
+
+  if __name__ == "__builtin__" or __name__ == "builtins":
+      main()
+
+  register_module_line('RemoveNullBytes', 'end', __line__())
+scripttarget: 0
+signature: kLGsS1oAg1Kz6Ov63GwSwRsvWRi47p7ns+DvR7IL8Bzos1y3alhG2204dW1ekR7M2bg2dCuN6RWJBkfYVVwe609TXUkdwOgN55a+cchYSq5/edreTL6gLtEf/wYkZnpM3Sb0KFL70kAhkkXjfi/ndXFFlqRKW6V4K2rdRUEcMztIhOI5tjnVuA4VeQ1DZj0xQ7WPc57PvNQQxodTKtqGw4LzJiJfeNVJXc1KchFq2gXWSjF+c2kI0TMVvGpCGdmGLSdDZl63y8ZCf4wR+LGK3gZMGFsARrzCFDLpghaeADkZC81Muyv1eOA4Fnr94wcfZNVSPRIoHWIP51lXS2JSDA==
+subtype: python3
+system: true
+tags:
+- general
+- transformer
+type: python
