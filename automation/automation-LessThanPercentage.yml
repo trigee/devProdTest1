@@ -1,0 +1,70 @@
+args:
+- default: true
+  description: First percentage.
+  name: firstPercentage
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: Second percentage.
+  name: secondPercentage
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: |-
+  Checks if one percentage is less than another
+  Returns less: if firstPercentage < secondPercentage
+  Returns more: if firstPercentage >= secondPercentage
+  Returns exception if one of the inputs is not a float
+commonfields:
+  id: LessThanPercentage
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: LessThanPercentage
+outputs:
+- contextPath: less
+  description: if firstPercentage < secondPercentage
+- contextPath: more
+  description: if firstPercentage >= secondPercentage
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.66
+  first = parseFloat(args.firstPercentage);
+  if (!first) {
+      throw 'firstPercentage is not valid: '+args.firstPercentage;
+  }
+  second = parseFloat(args.secondPercentage);
+  if (!second) {
+      throw 'firstPercentage is not valid: '+args.secondPercentage;
+  }
+  if (first < second) {
+      return 'less';
+  } else {
+      return 'more';
+  }
+scripttarget: 0
+signature: LQmImSbspNEYv+IQlvt4pZmfGk2ca3M+mG07y2skIX2sj1+bPuXeP0n+Nz6WmxKW6YhUxgA13SkPc48/+y0m/pZPYbpYY51tWtFB7h4ohnXGRWG5t7WsJIgYkMubF6ZWzG5vdVO0hVezwrG71Xt9VbWhZ22mi5x78loF2m0Y72EFg/az1DhhJhayeXNuqo2Tlbyn7cj95J0oTkHkDc/7dcVnprakVdCsogH8UWYKTVcCGLYMG2hI31mSgCYCKget1KJpmg3UqOflbAoaAbxGsARAtuOn09u+5azP8czMNCRBocAVKb6j4gjEYOG26To6HK11b58N09Xac+7V1qKinA==
+system: true
+tags:
+- Utility
+- Condition
+type: javascript
