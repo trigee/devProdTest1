@@ -1,0 +1,51 @@
+args:
+- description: The string to evaluate
+  name: str
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: Returns the length of  the string passed as argument
+commonfields:
+  id: StringLength
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: StringLength
+outputs:
+- contextPath: StringLength.Result
+  description: The length of the string passed as argument
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.66
+  setContext('StringLength.Result', args.str.length);
+  return {
+      Type: entryTypes.note,
+      Contents: args.str.length,
+      ContentsFormat: formats.txt
+
+  };
+scripttarget: 0
+signature: mwHFMIpBrsj2FWQt/0sRw688qC7W95XHf+rsRs9a49EXpYmSng5XMbIxI+0I1ZMD+iaX+Z8iOsK4QHUleni65LXOZmEhN7bfs1aewun4wLGEQ84D0CU2js4Y+G+gGwW4HC59RupBeftX/5GO2PW+LAnJ8F0Ab0oPfxvwgfhQqr6M7e1K9/3ad+MX5rqlHOx0bUTCESWKtK4HtMUbyIitFXJ2AcDO6S6cd+IgzQJG2dW9QmW1yLp4Aw9EvpODhnNXNfdE4rNZA7jy/B5EEPZbBCtosNgIlEIGemA8wRjgkUPXQmJZjdl/tWBgVXaE+jlS6rkTgNXZVSemcw9a4+AflQ==
+system: true
+tags:
+- Utility
+type: javascript
