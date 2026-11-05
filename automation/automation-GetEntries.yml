@@ -1,0 +1,168 @@
+args:
+- description: Optional incident ID to fetch entries from. If not specified, current
+    incident is used.
+  name: id
+  supportedFeatures: []
+  supportedModules: []
+- description: The list of tags.
+  isArray: true
+  name: tags
+  supportedFeatures: []
+  supportedModules: []
+- description: The list of categories. (commandAndResults, playbookTaskResult, playbookTaskStartAndDone,
+    playbookErrors, justFound, deleted, incidentInfo, chats, evidence, notes, attachments).
+  isArray: true
+  name: categories
+  supportedFeatures: []
+  supportedModules: []
+- description: The number of entries to return. Maximum is 1000.
+  name: page_size
+  supportedFeatures: []
+  supportedModules: []
+- description: Return entries starting from the specified entry ID and backward.
+  name: last_id
+  supportedFeatures: []
+  supportedModules: []
+- description: Return entries starting from the specified entry ID and forward.
+  name: first_id
+  supportedFeatures: []
+  supportedModules: []
+- description: Return entries before and after the specified entry ID.
+  name: selected_entry_id
+  supportedFeatures: []
+  supportedModules: []
+- description: Return entries with the specified users.
+  isArray: true
+  name: users
+  supportedFeatures: []
+  supportedModules: []
+- defaultValue: "false"
+  description: Whether to return entries that include all specified tags.
+  name: tags_and_operator
+  predefined:
+  - "true"
+  - "false"
+  supportedFeatures: []
+  supportedModules: []
+- description: Return entries from this time and forward. Format is ISO8601 (i.e.,
+    '2020-04-30T10:35:00.000Z').
+  name: from_time
+  supportedFeatures: []
+  supportedModules: []
+- description: The ID of the parent entry.
+  name: parent_id
+  supportedFeatures: []
+  supportedModules: []
+comment: Collect entries matching to the conditions in the war room.
+commonfields:
+  id: GetEntries
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.5.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13495286
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: GetEntries
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: Entry.ID
+  description: Entry ID.
+- contextPath: Entry.Type
+  description: Entry Type.
+- contextPath: Entry.Tags
+  description: Tags associated with the entry.
+- contextPath: Entry.Category
+  description: Entry categories.
+- contextPath: Entry.Created
+  description: Creation time of the entry.
+- contextPath: Entry.Modified
+  description: Last modified time of the entry.
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('GetEntries', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.66'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.66')
+
+
+
+
+  def main():
+      try:
+          args = demisto.args()
+
+          params = assign_params(
+              id=args.get("id"),
+              filter=assign_params(
+                  tags=argToList(args.get("tags")),
+                  categories=argToList(args.get("categories")),
+                  pageSize=arg_to_number(args.get("page_size")),
+                  lastId=args.get("last_id"),
+                  firstID=args.get("first_id"),
+                  selectedEntryID=args.get("selected_entry_id"),
+                  users=argToList(args.get("users")),
+                  tagsAndOperator=argToBoolean(args.get("tags_and_operator", False)),
+                  fromTime=args.get("from_time"),
+                  parentID=args.get("parent_id"),
+              ),
+          )
+
+          ents = demisto.executeCommand("getEntries", params)
+          if not ents:
+              return_results("No matching entries")
+          else:
+              ents = ents if isinstance(ents, list) else [ents]
+              if is_error(ents) and not demisto.get(ents[0], "ID"):
+                  error_message = get_error(ents)
+                  raise DemistoException(f"Failed to execute getEntries. Error details:\n{error_message}")
+
+              outputs = [
+                  assign_params(
+                      ID=demisto.get(ent, "ID"),
+                      Type=demisto.get(ent, "Type"),
+                      Tags=demisto.get(ent, "Metadata.tags"),
+                      Category=demisto.get(ent, "Metadata.category"),
+                      Created=demisto.get(ent, "Metadata.created"),
+                      Modified=demisto.get(ent, "Metadata.modified"),
+                  )
+                  for ent in ents
+              ]
+              return_results(
+                  CommandResults(
+                      outputs_prefix="Entry", outputs=outputs, readable_output=f"Found {len(ents)} entries.", raw_response=ents
+                  )
+              )
+      except Exception as e:
+          demisto.debug(traceback.format_exc())
+          return_error(f"Failed to execute GetEntries.\nError:\n{type(e)}, {e!s}")
+
+
+  if __name__ in ("__builtin__", "builtins", "__main__"):
+      main()
+
+  register_module_line('GetEntries', 'end', __line__())
+scripttarget: 0
+signature: dKVyEZIrhxmhgP5Rzi7uk8TKMcFECWlHT/wDk8G7kw+gyMtb5zbcCckQyrNDEFMWgol2NochTxcZ71kKqMT65bZM24CgmNj2NWBV8Is7Wt+Mv5dTUUPVubGMskM/SKB0iBbT/hTCUwjVFY79zSmsrdYzfzeW6ZGhRc132R0B4au64HBqE3Lf8pHutu4V+y6BI9HfPeA+C8gZpNkbf53UCg7dRy4e58GqUJW9RIWF8SnJTkf8+sP+Hr3Zx1jRSlspkrxZnv7Rk/6v8RB1GeJi9BgM/MWkDOJvfDxzxJEtT/QvKlIyEESRwNeAOUPPDeS/VKlWX29f3vN+olbV3pBOMw==
+subtype: python3
+system: true
+tags:
+- Utility
+type: python
