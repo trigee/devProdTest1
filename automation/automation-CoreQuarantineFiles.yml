@@ -1,0 +1,128 @@
+args:
+- description: Links the response action to the triggered incident.
+  name: incident_id
+  supportedFeatures: []
+  supportedModules: []
+- description: List of endpoint IDs.
+  isArray: true
+  name: endpoint_id_list
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: String that represents the path of the file you want to quarantine.
+  name: file_path
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: String that represents the file's hash. Must be a valid SHA256 hash.
+  name: file_hash
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: A polling wrapper script; Quarantines a file on selected endpoints. You can
+  select up to 1000 endpoints.
+commonfields:
+  id: CoreQuarantineFiles
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.1.0
+    isoverridable: false
+    itemVersion: 3.5.99
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules:
+    - xsiam
+    - cloud_runtime_security
+    - edr
+    toServerVersion: ""
+dependson:
+  must:
+  - core-quarantine-files
+dockerimage: demisto/python3:3.12.13.10116658
+enabled: true
+engineinfo: {}
+internal: true
+isInternal: true
+mainengineinfo: {}
+name: CoreQuarantineFiles
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: Core.GetActionStatus.action_id
+  description: The quarantine action ID.
+  type: String
+- contextPath: Core.GetActionStatus.endpoint_id
+  description: The endpoint ID on which the quarantine action was taken.
+  type: String
+- contextPath: Core.GetActionStatus.status
+  description: The status of the action.
+  type: String
+- contextPath: Core.GetActionStatus.ErrorReasons
+  description: The error reasons (if occurred).
+  type: unknown
+- contextPath: Core.GetActionStatus.ErrorReasons.bucket
+  description: The bucket in which the error occurred.
+  type: String
+- contextPath: Core.GetActionStatus.ErrorReasons.file_name
+  description: The name of the file that caused the error.
+  type: String
+- contextPath: Core.GetActionStatus.ErrorReasons.file_path
+  description: The path of the file that caused the error.
+  type: String
+- contextPath: Core.GetActionStatus.ErrorReasons.file_size
+  description: The size of the file that caused the error.
+  type: Number
+- contextPath: Core.GetActionStatus.ErrorReasons.missing_files
+  description: The missing files that caused the error.
+  type: Unknown
+- contextPath: Core.GetActionStatus.ErrorReasons.errorData
+  description: The error reason data.
+  type: String
+- contextPath: Core.GetActionStatus.ErrorReasons.terminated_by
+  description: The instance ID which terminated the action and caused the error.
+  type: String
+- contextPath: Core.GetActionStatus.ErrorReasons.errorDescription
+  description: The error reason description.
+  type: String
+- contextPath: Core.GetActionStatus.ErrorReasons.terminate_result
+  description: The error reason terminate result.
+  type: Unknown
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('CoreQuarantineFiles', 'start', __line__())
+  CONSTANT_PACK_VERSION = '3.5.99'
+  demisto.debug('pack id = Core, pack version = 3.5.99')
+
+
+
+
+  def main():
+      args = demisto.args()
+      try:
+          return_results(execute_polling_command("core-quarantine-files", args))
+      except Exception as e:
+          return_error(f"Failed to execute script.\nError:\n{e!s}")
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('CoreQuarantineFiles', 'end', __line__())
+scripttarget: 0
+signature: XWR+HTPfze1+aBOcNl93ZV4KzqddUGr1080eKofKBTyB19uci8Qf8OwdDFqUKjqso61uetSzP2CrDN+CDauQmWXHUv/nQ/LTfZfwGQFXLVqoTYkBBKQPYzInEel9pXPYQxs5a1Scx7nFXRhTSNHXS5t++FqGjKd6Ra01jcXuvm5/XiV9Dgy4ah7SJNi7ZDkB1/MaL02ai6vBF/sRg1iXxHsa1ESnl6jnpnnJ8+y5kLSp7A7WUFUaH0Fu2OQcwjCz4mB0GKuBb3ftjEVD4WpG1y5cjLVLZ5E2H0Qa7n7W2wKgR8VJ76q6Zw6YrT2mvIfWCTCJFZUrVymabWAW+5K3+w==
+subtype: python3
+system: true
+tags:
+- Utilities
+type: python
