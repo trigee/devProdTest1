@@ -1,0 +1,112 @@
+automation_type: ""
+commonfields:
+  id: Palo_Alto_Prisma_Cloud_ModelingRule
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.15.0
+    isoverridable: false
+    itemVersion: 4.4.39
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    supportedFeatures: []
+    supportedModules:
+    - xsiam
+    toServerVersion: ""
+externalitemdata: "fromversion: 8.15.0\nid: Palo_Alto_Prisma_Cloud_ModelingRule\nname:
+  Palo Alto Prisma Cloud Modeling Rule\nrules: >-\n  [MODEL: dataset=\"prisma_cloud_raw\"]\n\n
+  \ alter /* extract alert data (schema docs: https://pan.dev/prisma-cloud/api/cspm/get-alerts-v-2/)
+  */\n      alert_scanner_version = alertAdditionalInfo -> scannerVersion,\n      policy_description
+  = policy -> description,\n      policy_labels = arraymap(policy -> labels[], trim(\"@element\",
+  \"\\\"\")),\n      policy_name = policy -> name, \n      policy_cloudType = policy
+  -> cloudType, \n      policy_policyId = policy -> policyId, \n      policy_policyType
+  = policy -> policyType,  \n      policy_severity = policy -> severity,\n      policy_lastModifiedBy
+  = policy -> lastModifiedBy, \n      policy_recommendation = policy -> recommendation,\n
+  \     policy_mitre_compliance_metadata = arrayfilter(policy -> complianceMetadata[],
+  \"@element\" -> sectionLabel = \"MITRE ATT&CK\"),\n      resource_account = resource
+  -> account, \n      resource_accountId = resource -> accountId, \n      resource_cloudaccountgroups
+  = arraymap(resource -> cloudAccountGroups[], trim(\"@element\", \"\\\"\")),\n      resource_cloudaccountowners
+  = trim(arraystring(resource -> cloudAccountOwners[], \",\"), \"\\\"\"),\n      resource_cloudType
+  = resource -> cloudType, \n      resource_cloudServiceName = resource -> cloudServiceName,\n
+  \     resource_data_zone = resource -> data.zone,\n      resource_data_placement_availabilityZone
+  = resource -> data.placement.availabilityZone,\n      resource_data_snapshot_availabilityZone
+  = resource -> data.snapshot.availabilityZone, // DB_SNAPSHOT resource type\n      resource_data_availabilityZones_zoneName
+  = arraystring(arraymap(resource -> data.availabilityZones[], \"@element\" -> zoneName),
+  \",\"),\n      resource_data_cidrBlock = resource -> data.cidrBlock,\n      resource_data_ipCidrRange
+  = resource -> data.ipCidrRange, // SUBNET resource type\n      resource_data_association_publicIp
+  = resource -> data.association.publicIp, // IFACE resource type\n      resource_data_mac_address
+  = resource -> data.macAddress, // IFACE resource type\n      resource_data_dbname
+  = resource -> data.dbname, // MANAGED_DBMS resource type \n      resource_data_snapshot_port
+  = resource -> data.snapshot.port, // DB_SNAPSHOT resource type \n      resource_data_endpoint_port
+  = resource -> data.endpoint.port, // MANAGED_DBMS resource type\n      resource_data_endpoint
+  = resource -> data.endpoint,\n      resource_data_gatewayAddress = resource -> data.gatewayAddress,
+  // SUBNET resource type\n      resource_data_user = resource -> data.user, // IAM_CREDENTIAL_REPORT
+  & IAM_USER resource types\n      resource_data_host = resource -> data.host, //
+  INSTANCE resource type\n      resource_id = resource -> id, \n      resource_name
+  = resource -> name, \n      resource_region = resource -> region, \n      resource_regionId
+  = resource -> regionId, \n      resource_resourceType = resource -> resourceType,
+  \n      resource_rrn = resource -> rrn,  \n      resource_url = resource -> url\n
+  \ | alter // post extraction processing \n      cloud_type = uppercase(coalesce(policy_cloudType,
+  resource_cloudType)), \n      cloud_region = coalesce(resource_regionId, resource_region),\n
+  \     cloud_zone = coalesce(arrayindex(regextract(resource_data_zone, \"zones\\/([\\w\\-]+)\"),
+  0), resource_data_zone, resource_data_placement_availabilityZone, resource_data_snapshot_availabilityZone,
+  resource_data_availabilityZones_zoneName),\n      hostname = if(resource_resourceType
+  = \"INSTANCE\", resource_name),\n      ip_address = if(resource_resourceType = \"GCP_KUBERNETES_CLUSTER\",
+  resource_data_endpoint, coalesce(resource_data_host, resource_data_gatewayAddress,
+  resource_data_association_publicIp)),\n      port = to_integer(coalesce(resource_data_endpoint_port,
+  resource_data_snapshot_port)),\n      subnet_cidr_range = coalesce(resource_data_cidrBlock,
+  resource_data_ipCidrRange), \n      mac_address = if(resource_data_mac_address !=
+  null, arraycreate(resource_data_mac_address)),\n      mitre_tactics = arraydistinct(arraymap(policy_mitre_compliance_metadata,
+  \"@element\" -> requirementId)),\n      mitre_techniques = arraydistinct(arraymap(policy_mitre_compliance_metadata,
+  \"@element\" -> sectionId))\n  | alter cloud_provider = if(cloud_type ~= \"ALIBABA\",
+  XDM_CONST.CLOUD_PROVIDER_ALIBABA, cloud_type ~= \"AWS|AMAZON\", XDM_CONST.CLOUD_PROVIDER_AWS,
+  cloud_type ~= \"AZURE|MS|MICROSOFT\", XDM_CONST.CLOUD_PROVIDER_AZURE, cloud_type
+  ~= \"GOOGLE|GCP\", XDM_CONST.CLOUD_PROVIDER_GCP, cloud_type)\n\n  | alter // mappings
+  \n      xdm.alert.name = policy_name, \n      xdm.alert.description = policy_description,\n
+  \     xdm.alert.mitre_tactics = mitre_tactics, \n      xdm.alert.mitre_techniques
+  = mitre_techniques,\n      xdm.alert.original_alert_id = id,\n      xdm.alert.original_threat_id
+  = coalesce(policy_policyId, policyId), \n      xdm.alert.severity = policy_severity,\n
+  \     xdm.database.name = resource_data_dbname,\n      xdm.event.id = id,\n      xdm.event.tags
+  = policy_labels,\n      xdm.event.original_event_type = policy_policyType,\n      xdm.event.description
+  = policy_recommendation, \n      xdm.event.outcome = status,\n      xdm.event.outcome_reason
+  = reason, \n      xdm.event.is_completed = if(status in (\"resolved\", \"dismissed\"),
+  to_boolean(\"TRUE\"), status in (\"open\", \"snoozed\"), to_boolean(\"FALSE\")),\n
+  \     xdm.intermediate.user.username = policy_lastModifiedBy, \n      xdm.intermediate.identity.username
+  = policy_lastModifiedBy,\n      xdm.network.rule = policy_name, \n      xdm.observer.version
+  = alert_scanner_version,\n      xdm.target.application.name = resource_cloudServiceName,
+  \n      xdm.target.cloud.project = resource_account,\n      xdm.target.cloud.provider
+  = cloud_provider,\n      xdm.target.cloud.region = cloud_region,\n      xdm.target.cloud.zone
+  = cloud_zone, \n      xdm.target.host.hostname = hostname,\n      xdm.target.host.mac_addresses
+  = mac_address,\n      xdm.target.ipv4 = ip_address,\n      xdm.target.port = port,\n
+  \     xdm.target.resource.id = resource_id,\n      xdm.target.resource.name = resource_rrn,
+  \n      xdm.target.resource.type = resource_resourceType, \n      xdm.target.resource.value
+  = resource_name, \n      xdm.target.resource.parent_id = resource_cloudaccountowners,\n
+  \     xdm.target.subnet = subnet_cidr_range,\n      xdm.target.url = resource_url,\n
+  \     xdm.target.user.ou = resource_accountId,\n      xdm.target.identity.ou = resource_accountId,\n
+  \     xdm.target.user.username = resource_data_user,\n      xdm.target.identity.username
+  = resource_data_user,\n      xdm.target.user.groups = resource_cloudaccountgroups,
+  \    xdm.target.identity.groups = resource_cloudaccountgroups; \nschema: >-\n  {\n
+  \     \"prisma_cloud_raw\": {\n          \"alertAdditionalInfo\": {\n              \"type\":
+  \"string\",\n              \"is_array\": false\n          },\n          \"id\":
+  {\n              \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"policy\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          },\n          \"policyId\": {\n              \"type\": \"string\",\n
+  \             \"is_array\": false\n          },\n          \"reason\": {\n              \"type\":
+  \"string\",\n              \"is_array\": false\n          },\n          \"resource\":
+  {\n              \"type\": \"string\",\n              \"is_array\": false\n          },\n
+  \         \"status\": {\n              \"type\": \"string\",\n              \"is_array\":
+  false\n          },\n          \"alertTime\": {\n              \"type\": \"int\",\n
+  \             \"is_array\": false\n          }\n      }\n  }\ntags: ''\nsupportedModules:\n-
+  xsiam\n"
+filetype: yml
+is_auto_enabled: false
+name: Palo Alto Prisma Cloud Modeling Rule
+packid: PrismaCloud
+packname: Prisma Cloud by Palo Alto Networks
+packversion: 4.4.39
+playbook_id: ""
+subtype: modelingrule
