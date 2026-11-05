@@ -1,0 +1,56 @@
+args:
+- default: true
+  description: The value to check if exists - can handle arrays as well
+  isArray: true
+  name: value
+  supportedFeatures: []
+  supportedModules: []
+comment: Check if a given value exists in the context. Will return 'no' for empty
+  empty arrays. To be used mostly with DQ and selectors.
+commonfields:
+  id: Exists
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: Exists
+outputs:
+- contextPath: "yes"
+  description: if given value exists in context
+- contextPath: "no"
+  description: if given value does not exist in context
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.66
+  if (args.value) {
+      if (Array.isArray(args.value)) {
+          return args.value.length > 0 ? 'yes' : 'no';
+      }
+      return 'yes';
+  }
+  return 'no';
+scripttarget: 0
+signature: GuPs/WylfkSX8VZam8t5zx9i2YTZKfa7OfxYkX0/50DBJlwsylU64UdvFrklvNKE+Fw1mrmN1M/vA/8WOMBAvXxreTTTBrbZVqxu2aAVonK4T9SkTQit98Rkva2xnquCUc5Y2UAuFj497m9EeddcPJT83k65pliHcHLMiI5He1KsQCQjHBOtxkOgMm0C4zP6utDPYsI8wA5emXjlZt/xg0I6MgBREd+1y5PDZfcdAbFB4DkJUPACp4yVc4wkfZQj18Opijp8BbuQGAVacvJfoULcyxcxKwTHAOzjw8jfGCJWs2nrWsApKZYYqxmasFVdrD145SQCGzmQbXe7lCJoww==
+system: true
+tags:
+- Utility
+- Condition
+type: javascript
