@@ -1,0 +1,82 @@
+args:
+- description: Date value to check - Can be any time format. ex. "2020-01-01T00:00:00".
+  name: left
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: Relative time ex. "6 months ago".
+  name: right
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: Checks the given datetime has occured after the provided relative time.
+commonfields:
+  id: AfterRelativeDate
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.32
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13053055
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: AfterRelativeDate
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('AfterRelativeDate', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.4.32'
+  demisto.debug('pack id = FiltersAndTransformers, pack version = 1.4.32')
+  import dateparser
+
+
+
+
+
+
+  def check_date(value, relative_date):
+      settings = {"TO_TIMEZONE": "UTC", "RETURN_AS_TIMEZONE_AWARE": False}
+      v = dateparser.parse(value, settings=settings)  # type: ignore[arg-type]
+      da = dateparser.parse(relative_date, settings=settings)  # type: ignore[arg-type]
+      return v > da  # type: ignore
+
+
+  def main():
+      value = demisto.args().get("left")
+      if isinstance(value, list):
+          value = demisto.args().get("left")[0]
+
+      relative_date = demisto.args().get("right")
+      return_results(check_date(value, relative_date))
+
+
+  if __name__ in ("__builtin__", "builtins", "__main__"):
+      main()
+
+  register_module_line('AfterRelativeDate', 'end', __line__())
+scripttarget: 0
+signature: u1bGaCPDHJMIfctZaQF/5MUD3O5gKQMDzShdVthreKGu5oAj4TYkmsIAbGZv2p7B034j3pp6hz5cZH8jMwcyvMwXQAzAyzTu54yghB/J4w0v2Goyytm/BbagxZAlC+V5H8jxGPiMhXVsMTUnaBBEW9CeJejGkff2EtSPvsAKNC5Z+rVSkIVuAdtBNbCQ0Z3KZEL3MeKLaG+ASrwBAYtBlsLLt5O0NMKLHiIVlTaeftILu1vh1aZb2xlpmSgCF7bdKtXu85Plwz+zekix3b6C8JFe/oK0xUDEQIsZ5GF3OvN5YPhYjx1UrdRyc1UEMolp5Z7T1QN5kY5oaTkCSg6CAg==
+subtype: python3
+system: true
+tags:
+- date
+- filter
+- Condition
+type: python
