@@ -1,0 +1,79 @@
+args:
+- default: true
+  description: Latitude (e.g. `32.064622`)
+  name: lat
+  supportedFeatures: []
+  supportedModules: []
+- description: Longitude (e.g. `34.774131`)
+  name: lng
+  supportedFeatures: []
+  supportedModules: []
+- description: Address (e.g., `1600 Pennsylvania ave, DC`)
+  name: address
+  supportedFeatures: []
+  supportedModules: []
+comment: Returns a map entry with a marker on the given coordinates (lat,lng), or
+  address (requires a configured GoogleMaps instance).
+commonfields:
+  id: ShowOnMap
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ShowOnMap
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.66
+  var lat = parseFloat(args.lat); var lng = parseFloat(args.lng); var address = args.address;
+  if (isNaN(lat) || isNaN(lng)) {
+    if (!address || address.trim().length === 0){
+    return {
+        ContentsFormat: formats.text,
+        Type: entryTypes.error,
+        Contents: "Enter either coordinates (lat,lng) or an address (which requires a GoogleMaps integration instance)."
+    };
+
+    }
+    // An active instance of GoogleMaps exists, geocoding is possible.
+      var commandResult = executeCommand("google-maps-geocode", {"search_address" : address});
+      if (isError(commandResult) || !commandResult || !commandResult[1]) { // EC of an empty result is of length 1.
+          return commandResult;
+      }
+      var ec = commandResult[0].EntryContext["GoogleMaps(val.lat && val.lat == obj.lat && val.lng && val.lng == obj.lng)"];
+      lat = ec.lat;
+      lng = ec.lng;
+  }
+  //  lat,lng are not null (whether they were valid arguments or geocoded)
+  var locationObj = {
+    lat: lat,
+    lng: lng
+  };
+  return {
+    Type: entryTypes.map,
+    ContentsFormat: formats.json,
+    Contents: locationObj
+  };
+scripttarget: 0
+signature: DiMqBnK/yXGjr0VOphZnq2iKEZ8Zwl2y2DAfqqjsAvhUdxtTlSYMHWepnqREnY2RHaRoM/H98zMr/a4d4/I1Yf6ZSOcX2Z70TnseF/KU/ann7mC8tklqo7z4LiYxdHRmXPwljJ0ZyPFFxSqJJGlo32BIePfMKmC8YYdieRjLKTh7+cLs3J9zaRAKoOyCSvx5GUfHx1If+vrFtepwxNBiepkqUHVnHz9okDAQ5Rg25cnavi7LCMNeZ8Cb2DXYABHj8HgK/EVMSHVabp03ZIiAoTguhlr2AAlXloXe0U0PmfkH64n9V24+FkIQFbOE0poJEv2b8wdCp/L/4Uhow2zxrw==
+system: true
+tags:
+- Utility
+type: javascript
