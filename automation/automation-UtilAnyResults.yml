@@ -1,0 +1,85 @@
+args:
+- default: true
+  description: Data to check - can be a list or a string. Strings containing only
+    commas are considered empty results.
+  name: data
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: Utility script to use in playbooks - returns "yes" if the input is non-empty.
+commonfields:
+  id: UtilAnyResults
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13495286
+engineinfo: {}
+mainengineinfo: {}
+name: UtilAnyResults
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('UtilAnyResults', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.66'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.66')
+
+
+
+
+  def util_any_results(args):
+      try:
+          res = []
+          data = demisto.get(args, "data")
+          if isinstance(data, list) and data:
+              res.append("yes")
+          elif isinstance(data, str) and data:
+              if data[0] in ["[", "{"]:
+                  data = data[1:]
+              if data[-1] in ["]", "}"]:
+                  data = data[:-1]
+              # If data resembles one of ",,," or "[,,]" or "[]" it is considered empty of results.
+              res.append("yes" if data.replace(",", "") else "no")
+          else:
+              res.append("no")
+      except Exception as ex:
+          res.append(
+              {  # type: ignore
+                  "Type": entryTypes["error"],
+                  "ContentsFormat": formats["text"],
+                  "Contents": "Error occurred while parsing data. Exception info:\n" + str(ex) + "\n\nInvalid data:\n" + str(data),
+              }
+          )
+      return res
+
+
+  def main():
+      args = demisto.args()
+      demisto.results(util_any_results(args))
+
+  register_module_line('UtilAnyResults', 'end', __line__())
+scripttarget: 0
+signature: d6BybbDpZsvQqjs5mYbwpXbLg6k/BTE/L12P2GJn7jKy4IeZaRh+xVEToAY4lOyT6jw0dXuZNN8U1jmTgKUelVdR6u84HFnMR7zvdIAibrI260WkZjeVHl4VqzppQzX7RNKTqT6s7lIhjT3SP7/Oe/mB4dYm0nbgyvCH+0l+OUiyr6utuLuUdbrerEs8ewsP1qXTUsD13mG2A3CIhWGxpE1CoiOk3Wc4mxN/5YLL43m0uZBmRt24ZYgDdAUW3LHLzxQuG84GV+8Opi12oqmX2OeDpnPt0jolffzkay8z/z6rxXZtKuS8ZBchRdPnN7OYUQJoSZKIwjplzYkTSokUHw==
+subtype: python3
+system: true
+tags:
+- Utility
+- Condition
+type: python
