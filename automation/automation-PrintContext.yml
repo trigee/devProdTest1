@@ -1,0 +1,80 @@
+args:
+- default: true
+  description: Output format - table, json or markdown. If omitted, default is markdown.
+  name: outputformat
+  supportedFeatures: []
+  supportedModules: []
+comment: Pretty-print the contents of the playbook context.
+commonfields:
+  id: PrintContext
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13495286
+engineinfo: {}
+mainengineinfo: {}
+name: PrintContext
+nativeimage:
+- "8.8"
+- "8.6"
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  register_module_line('PrintContext', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.66'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.66')
+
+
+
+
+  def print_context(fmt, ctx):
+      if ctx:
+          if fmt == "table":
+              demisto.results(
+                  {
+                      "ContentsFormat": formats["table"],
+                      "Type": entryTypes["note"],
+                      "Contents": [{"Context key": d, "Value": formatCell(ctx[d])} for d in ctx],
+                  }
+              )
+          elif fmt == "json":
+              demisto.results(ctx)
+          else:
+              md = "**Context data**:\n```\n" + json.dumps(ctx, indent=4) + "\n```"
+              demisto.results({"ContentsFormat": formats["markdown"], "Type": entryTypes["note"], "Contents": md})
+      else:
+          demisto.results("Context empty.")
+
+
+  def main():  # pragma: no cover
+      fmt = demisto.get(demisto.args(), "outputformat")
+      ctx = demisto.context()
+      print_context(fmt, ctx)
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):  # pragma: no cover
+      main()
+
+  register_module_line('PrintContext', 'end', __line__())
+scripttarget: 0
+signature: dxXXiXrat1C9lrzVh1CbJUmIXe0sdTpVlC9ZriF70led+KVD/nHvld06/d1QjqnvcIfD5XV776B9mRfXlnMep18znVQMsH/GW9k78DSWxhOAUeYOfEYLOifXByMc3fy236eyXFdrjJcZPfLHdkx+ZqxFTze21IaVIfjzuleqlkw0eoQoI4NEHTGqGW0TJOmNLJ1yvVE2Pzp5FgWaQ6G0YhqksZcHd9fEIjQfWnTf7GXHM4jeeg2+OW6PS+yl4dnkxpjUKQMm112OKxzTNVruZ7/1jl4gP1V0pQ4i6Seco5cKwn+ODgfnnxrwCKUNnNSdPITCql0+bZUqC4VlzIFqEg==
+subtype: python3
+system: true
+tags:
+- Utility
+type: python
