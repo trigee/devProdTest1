@@ -1,0 +1,98 @@
+args:
+- default: true
+  description: The text date from which to extract thee regex.
+  name: data
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: The regex to match and extract.
+  name: regex
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+- description: The matching group to return (if not provided the full match will be
+    returned), group value should start at 1
+  name: group
+  supportedFeatures: []
+  supportedModules: []
+- description: The context key to populate with the result.
+  name: contextKey
+  supportedFeatures: []
+  supportedModules: []
+- description: The regex flags to match. Default is -gim.
+  name: flags
+  supportedFeatures: []
+  supportedModules: []
+comment: Deprecated. Use the **MatchRegexV2** script instead.
+commonfields:
+  id: MatchRegex
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: MatchRegex
+outputs:
+- contextPath: MatchRegex.results
+  description: List of regex matches.
+  type: string
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.22.66
+  var data = (typeof args.data) === 'string' ? args.data : JSON.stringify(args.data);
+  var flags = args.flags ? args.flags : 'gim';
+  var r = new RegExp(args.regex, flags);
+  var m;
+  var vals = [];
+  while ((m = r.exec(data)) !== null) {
+      if (m && m.length > 0) {
+          var val = m[0];
+          var group = parseInt(args.group);
+          if (args.group && m.length > group) {
+              val = m[group];
+          }
+          var ec = {};
+          if (args.contextKey) {
+              ec[args.contextKey] = val;
+          }
+          vals.push(val);
+
+          if (flags.indexOf('g') === -1) {
+            break;
+          }
+      }
+  }
+  if (vals.length == 1) {
+    setContext('MatchRegex.results', vals[0])
+    return {Type: entryTypes.note, Contents: vals[0], ContentsFormat: formats.text, EntryContext: ec};
+  } else if (vals.length) {
+    setContext('MatchRegex.results', vals)
+    return {Type: entryTypes.note, Contents: vals, ContentsFormat: formats.text, EntryContext: ec};
+  } else {
+    setContext('MatchRegex.results', vals)
+    return {Type: entryTypes.note, Contents: 'Regex does not match', ContentsFormat: formats.text};
+  }
+scripttarget: 0
+signature: J1a1tln7RihuaKvnE8ZO4AZBKxb/tp42KuaryR1QkZrn5ABYkqBrvsDVgv3ySCqiXay996ga/X/f6pIPNfXDd8dXHM3UtceGzHVTFesbEhyQtSBt2pxqr1keHppaPaX4LNai1+VpJw8iSbBYZtX58ir3GwraBg3uLbLjK3+u3OggzbnouziiM0ciDaquxK22NdFUKWnjIgJvvbJy5kIuOC1Tc9EchhCUOLhi3BqNgmZMPXP+2gkuFi5j2Kp5MN0SlwAxWleQTg/GZ/rxSJRPa56MNEm8D3N/TQ8+fV0tA+hV4JAmZNr7lme8U1ht9oMy67+EJ2mqoeIAoVs/pRPJOw==
+system: true
+tags:
+- Utility
+type: javascript
