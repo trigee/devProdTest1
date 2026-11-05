@@ -1,0 +1,80 @@
+comment: Gets all currently enabled integration instances.
+commonfields:
+  id: GetEnabledInstances
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+dockerimage: demisto/python3:3.12.14.13495286
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: GetEnabledInstances
+nativeimage:
+- "8.8"
+- "8.6"
+outputs:
+- contextPath: EnabledInstances
+  description: A list of integration instance names that are currently enabled.
+pswd: ""
+restrictioncenter: {}
+runas: DBotRole
+runonce: false
+script: |
+  register_module_line('GetEnabledInstances', 'start', __line__())
+  CONSTANT_PACK_VERSION = '1.22.66'
+  demisto.debug('pack id = CommonScripts, pack version = 1.22.66')
+
+
+
+  INTERNAL_MODULES_BRANDS = {
+      "Scripts",
+      "Builtin",
+      "d2",
+      "testmodule",
+  }
+
+
+  def get_enabled_instances():
+      enabled_instances = []
+      readable_output = []
+      instances = demisto.getModules()
+      for instance_name, data in instances.items():
+          if data.get("state") == "active" and data.get("brand") not in INTERNAL_MODULES_BRANDS:
+              enabled_instances.append(instance_name)
+              readable_output.append({"Instance Name": instance_name, "Brand": data.get("brand")})
+
+      return CommandResults(
+          outputs_prefix="EnabledInstances",
+          outputs=enabled_instances,
+          readable_output=tableToMarkdown("Enabled Instances", readable_output),
+          raw_response=enabled_instances,
+      )
+
+
+  def main() -> None:
+      return_results(get_enabled_instances())
+
+
+  if __name__ in ("__main__", "__builtin__", "builtins"):
+      main()
+
+  register_module_line('GetEnabledInstances', 'end', __line__())
+scripttarget: 0
+signature: 1Znt7vqug64rFfvVG0ej2N1mPuejHjyGnaq6g9LRk/yh1d+kV4YN/SwK23Zq0F1yodmAO6f4rigzoXg1SIS74p88PNLJudSnFx4mbdKgd6UD1IN/QVrXZBqqMMse3EOaFbo1h6HyA5XpZW7q1LoPyJkvjaRgsFnOXvYyieAywd4cpBj0HBEXidoNE3AKvR/wjjcVG2t5CZ2L66WjAkFzUidhQVg3/59yMwoUx4g0TJLIRfzcR1las0QOpEA1orD1XlTn+UhQYicc7aXGhw2SYCfqNNLTKdR8aDJtLtVdK9zUb5I7av0Pjt5HghKaD4dRxf0H/XjSAnloidFFyunJ4g==
+subtype: python3
+system: true
+tags: []
+type: python
