@@ -1,0 +1,2041 @@
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 6.10.0
+    isoverridable: false
+    itemVersion: 4.4.39
+    packID: PrismaCloud
+    packName: Prisma Cloud by Palo Alto Networks
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules:
+    - cloud
+    - cloud_runtime_security
+    - xsiam
+    - edr
+    toServerVersion: ""
+description: |-
+  This playbook handles alerts of internet exposed services and detect potential risky configurations that can make your cloud environment vulnerable to attacks, and
+  alerts of unusual network and user activity for all users, and are especially critical for privileged users and assumed roles where detecting unusual activity may indicate the first steps in a potential misuse or account compromise.
+id: Prisma Cloud - Network API and Anomaly Incidents
+inputSections:
+- description: |
+    Alert management settings and data,
+  inputs:
+  - CreateTicket
+  - StopForRecommendations
+  name: Alert Management
+- description: Remediation settings and data, including containment, eradication,
+    and recovery.
+  inputs:
+  - EarlyContainment
+  - CloudResponse
+  name: Remediation
+- description: Ticket management settings and data for ServiceNow
+  inputs:
+  - serviceNowShortDescription
+  - serviceNowImpact
+  - serviceNowUrgency
+  - serviceNowSeverity
+  - serviceNowTicketType
+  - serviceNowCategory
+  - serviceNowAssignmentGroup
+  name: Ticket Management- ServiceNow
+- description: Ticket management settings and data for ZenDesk
+  inputs:
+  - ZendeskPriority
+  - ZendeskRequester
+  - ZendeskStatus
+  - ZendeskSubject
+  - ZendeskTags
+  - ZendeskType
+  - ZendeskAssigne
+  - ZendeskCollaborators
+  - ZenDeskDescription
+  name: Ticket Management - ZenDesk
+inputs:
+- description: Whether to create a ticket in ZenDesk or ServiceNow. Insert True or
+    False
+  key: CreateTicket
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: ""
+  key: StopForRecommendations
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+- description: Whether to perform early containment.
+  key: EarlyContainment
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "True"
+- description: Whether to perform cloud response.
+  key: CloudResponse
+  playbookInputQuery: null
+  required: false
+  value:
+    simple: "False"
+- description: A short description of the ticket.
+  key: serviceNowShortDescription
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The impact for the new ticket. Leave empty for ServiceNow default impact.
+  key: serviceNowImpact
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The urgency of the new ticket. Leave empty for ServiceNow default urgency.
+  key: serviceNowUrgency
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The severity of the new ticket. Leave empty for ServiceNow default
+    severity.
+  key: serviceNowSeverity
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The ServiceNow ticket type. Options are "incident", "problem", "change_request",
+    "sc_request", "sc_task", or "sc_req_item". Default is "incident".
+  key: serviceNowTicketType
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The category of the ServiceNow ticket.
+  key: serviceNowCategory
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The group to which to assign the new ticket.
+  key: serviceNowAssignmentGroup
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The urgency with which the ticket should be addressed. Allowed values
+    are "urgent", "high", "normal", or "low".
+  key: ZendeskPriority
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The user who requested this ticket.
+  key: ZendeskRequester
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The state of the ticket. Allowed values are "new", "open", "pending",
+    "hold", "solved", or "closed".
+  key: ZendeskStatus
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The value of the subject field for this ticket.
+  key: ZendeskSubject
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The array of tags applied to this ticket.
+  key: ZendeskTags
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The type of this ticket. Allowed values are "problem", "incident",
+    "question", or "task".
+  key: ZendeskType
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The agent currently assigned to the ticket.
+  key: ZendeskAssigne
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The users currently CC'ed on the ticket.
+  key: ZendeskCollaborators
+  playbookInputQuery: null
+  required: false
+  value: {}
+- description: The ticket description.
+  key: ZenDeskDescription
+  playbookInputQuery: null
+  required: false
+  value: {}
+name: Prisma Cloud - Network API and Anomaly Alerts
+outlinetasks: {}
+outputSections:
+- description: Generic group for outputs
+  name: General (Outputs group)
+  outputs: []
+outputs: []
+possibleresponses: []
+starttaskid: "0"
+system: true
+tasks:
+  "0":
+    continueonerrortype: ""
+    id: "0"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "1"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 4f11a4c9-0954-4f33-8c2f-3f0c56f2a5a2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: ""
+      playbooktaskmissingcomponent: null
+      version: -1
+    taskid: 4f11a4c9-0954-4f33-8c2f-3f0c56f2a5a2
+    timertriggers: []
+    type: start
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -430
+        }
+      }
+  "1":
+    continueonerrortype: ""
+    id: "1"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "34"
+      - "33"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: ae031fc1-70ad-4363-82a6-93475f9024fb
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Enrichment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: ae031fc1-70ad-4363-82a6-93475f9024fb
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": -300
+        }
+      }
+  "2":
+    continueonerrortype: ""
+    fieldMapping:
+    - incidentfield: IP Reputation
+      output:
+        complex:
+          accessor: Score
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: ip
+          root: DBotScore
+    - incidentfield: Source Geolocation
+      output:
+        simple: ${IP.Geo.Country}
+    - incidentfield: ASN
+      output:
+        simple: ${IP.ASN}
+    id: "2"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      ip:
+        simple: ${alert.remoteip}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Checks the reputation of an IP address.
+      id: 97f6bc4a-c84f-46c9-89c0-9687b97bbfda
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: IP Enrichment
+      playbooktaskmissingcomponent: null
+      script: '|||ip'
+      type: regular
+      version: -1
+    taskid: 97f6bc4a-c84f-46c9-89c0-9687b97bbfda
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -40,
+          "y": 40
+        }
+      }
+  "3":
+    continueonerrortype: ""
+    id: "3"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "4"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: aaa5c8f1-f0cf-4946-8e4e-b275ae8947ae
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Early Containment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: aaa5c8f1-f0cf-4946-8e4e-b275ae8947ae
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 390
+        }
+      }
+  "4":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              complex:
+                accessor: Score
+                filters:
+                - - ignorecase: true
+                    left:
+                      iscontext: true
+                      value:
+                        simple: DBotScore.Type
+                    operator: isEqualString
+                    right:
+                      value:
+                        simple: ip
+                root: DBotScore
+                transformers:
+                - operator: FirstArrayElement
+          operator: isEqualString
+          right:
+            value:
+              simple: "3"
+      label: "yes"
+    continueonerrortype: ""
+    id: "4"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "9"
+      "yes":
+      - "5"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 23f631fe-952d-4904-8bdf-d69285021fa3
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Does IP is malicious?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 23f631fe-952d-4904-8bdf-d69285021fa3
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 520
+        }
+      }
+  "5":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.EarlyContainment
+          operator: isEqualString
+          right:
+            value:
+              simple: "true"
+      label: "yes"
+    continueonerrortype: ""
+    id: "5"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "8"
+      "yes":
+      - "6"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 684ae017-441c-43da-8110-4aa00320909e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Early Containment enabled?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 684ae017-441c-43da-8110-4aa00320909e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 30,
+          "y": 690
+        }
+      }
+  "6":
+    continueonerrortype: ""
+    id: "6"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "25"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 3c1d50e7-8350-4585-86d1-6d000a4db3a8
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Early Containment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 3c1d50e7-8350-4585-86d1-6d000a4db3a8
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": -260,
+          "y": 870
+        }
+      }
+  "8":
+    continueonerrortype: ""
+    id: "8"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "9"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: f534ab24-4d30-4974-8a22-629c0618a5dd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Containment Complete
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: f534ab24-4d30-4974-8a22-629c0618a5dd
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 30,
+          "y": 1360
+        }
+      }
+  "9":
+    continueonerrortype: ""
+    id: "9"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "12"
+      - "13"
+      - "28"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 18d1a970-aee6-4ace-8a48-b07c6e6e1a99
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Investigation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 18d1a970-aee6-4ace-8a48-b07c6e6e1a99
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1500
+        }
+      }
+  "10":
+    continueonerrortype: ""
+    id: "10"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "44"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AwsTimeSearchFrom:
+        simple: "1"
+      AzureSearchTime:
+        simple: ago(1d)
+      GcpTimeSearchFrom:
+        simple: "1"
+      MfaAttemptThreshold:
+        simple: "10"
+      Username:
+        simple: ${alert.usernames}
+      cloudProvider:
+        simple: ${alert.cloudprovider.[0]}
+      failedLogonThreshold:
+        simple: "20"
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |
+        This playbook performs an investigation on a specific user in cloud environments, using queries and logs from Azure Log Analytics, AWS CloudTrail, G Suite Auditor, and GCP Logging.
+      id: a14d40f5-2bcc-43f4-8577-750c43d57846
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Cloud User Investigation - Generic
+      playbookId: Cloud User Investigation - Generic
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: a14d40f5-2bcc-43f4-8577-750c43d57846
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 30,
+          "y": 1770
+        }
+      }
+  "11":
+    continueonerrortype: ""
+    id: "11"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      cloudProvider:
+        simple: ${alert.cloudprovider.[0]}
+      instanceID:
+        simple: ${PrismaCloud.Alert.resource.id}
+      instanceName:
+        simple: ${PrismaCloud.Alert.resource.account}
+      region:
+        simple: ${PrismaCloud.Alert.resource.regionId}
+      username:
+        simple: ${alert.usernames}
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |2-
+
+        ## Generic Cloud Enrichment Playbook
+
+        The **Cloud Enrichment - Generic Playbook** is designed to unify all the relevant playbooks concerning the enrichment of information in the cloud. It provides a standardized approach to enriching information in cloud environments.
+
+        ### Supported Blocks
+
+        1. **Cloud IAM Enrichment - Generic**
+           - Enriches information related to Identity and Access Management (IAM) in the cloud.
+
+        2. **Cloud Compute Enrichment - Generic**
+           - Enriches information related to cloud compute resources.
+
+        The playbook supports a single CSP enrichment at a time.
+      id: 6c232656-52c6-4b24-8918-30776fa31077
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Cloud Enrichment - Generic
+      playbookId: Cloud Enrichment - Generic
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 6c232656-52c6-4b24-8918-30776fa31077
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 40
+        }
+      }
+  "12":
+    continueonerrortype: ""
+    id: "12"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "10"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: a699ec17-49ce-415f-8606-1966eb79ce46
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: User Investigation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: a699ec17-49ce-415f-8606-1966eb79ce46
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 30,
+          "y": 1640
+        }
+      }
+  "13":
+    continueonerrortype: ""
+    id: "13"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "43"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: dcaae03d-4ff1-4da5-8cdb-f82bf89d1df7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Vulnerability Enrichment
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: dcaae03d-4ff1-4da5-8cdb-f82bf89d1df7
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 880,
+          "y": 1640
+        }
+      }
+  "15":
+    continueonerrortype: ""
+    id: "15"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "38"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 74c75a3e-d86c-4cf5-86b4-952537f330a5
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Verdict
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 74c75a3e-d86c-4cf5-86b4-952537f330a5
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 2270
+        }
+      }
+  "16":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: alert.verdict
+          operator: isEqualString
+          right:
+            value:
+              simple: malicious
+      label: "yes"
+    continueonerrortype: ""
+    id: "16"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "27"
+      "yes":
+      - "17"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: bd3672c0-2ab6-4835-8cca-3fdc2b1d2af7
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Does response needed?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: bd3672c0-2ab6-4835-8cca-3fdc2b1d2af7
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 2570
+        }
+      }
+  "17":
+    continueonerrortype: ""
+    id: "17"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "21"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 900a4aff-dd98-4611-8b66-b6a56945a6fd
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Remediation
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 900a4aff-dd98-4611-8b66-b6a56945a6fd
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 840,
+          "y": 2780
+        }
+      }
+  "20":
+    continueonerrortype: ""
+    id: "20"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "46"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      cloudProvider:
+        simple: ${alert.cloudprovider.[0]}
+      sourceIP:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: isEqualString
+              right:
+                value:
+                  simple: "3"
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: ip
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: in
+              right:
+                iscontext: true
+                value:
+                  simple: alert.remoteip
+          root: DBotScore.Indicator
+      username:
+        simple: ${alert.usernames}
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: |-
+        This playbook provides response playbooks for:
+        - AWS
+        - Azure
+        - GCP
+
+        The response actions available are:
+        - Terminate/Shut down/Power off an instance
+        - Delete/Disable a user
+        - Delete/Revoke/Disable credentials
+        - Block indicators
+      id: fd02b167-e582-4040-8a9f-302fe467f7be
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Cloud Response - Generic
+      playbookId: Cloud Response - Generic
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: fd02b167-e582-4040-8a9f-302fe467f7be
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 840,
+          "y": 3090
+        }
+      }
+  "21":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.CloudResponse
+          operator: isEqualString
+          right:
+            value:
+              simple: "true"
+      label: "yes"
+    continueonerrortype: ""
+    id: "21"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "27"
+      "yes":
+      - "20"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 6c693e4e-ede1-46b2-8edf-2e90906e2664
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Perform Cloud Response?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 6c693e4e-ede1-46b2-8edf-2e90906e2664
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 840,
+          "y": 2920
+        }
+      }
+  "22":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.StopForRecommendations
+          operator: isEqualString
+          right:
+            value:
+              simple: "true"
+      label: "yes"
+    continueonerrortype: ""
+    id: "22"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "24"
+      "yes":
+      - "23"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: bb6704b2-b3d8-4473-8e26-32cdeed54c20
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Pause the playbook to perform policy recommendations?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: bb6704b2-b3d8-4473-8e26-32cdeed54c20
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 3770
+        }
+      }
+  "23":
+    continueonerrortype: ""
+    id: "23"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "24"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8fe0d4e7-caa6-4776-8a20-0337be0dd38a
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Pause the playbook to perform policy recommendations
+      playbooktaskmissingcomponent: null
+      type: regular
+      version: -1
+    taskid: 8fe0d4e7-caa6-4776-8a20-0337be0dd38a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 690,
+          "y": 3940
+        }
+      }
+  "24":
+    continueonerrortype: ""
+    id: "24"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: c7d45bdf-b5e9-47ea-82f7-cb356e1c1f7f
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Done
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: c7d45bdf-b5e9-47ea-82f7-cb356e1c1f7f
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 4120
+        }
+      }
+  "25":
+    continueonerrortype: ""
+    id: "25"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "39"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      AutoCommit:
+        simple: "No"
+      CustomBlockRule:
+        simple: "True"
+      Folder:
+        simple: Shared
+      IP:
+        complex:
+          filters:
+          - - ignorecase: true
+              left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Type
+              operator: isEqualString
+              right:
+                value:
+                  simple: ip
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Score
+              operator: isEqualString
+              right:
+                value:
+                  simple: "3"
+          - - left:
+                iscontext: true
+                value:
+                  simple: DBotScore.Indicator
+              operator: in
+              right:
+                iscontext: true
+                value:
+                  simple: alert.remoteip
+          root: DBotScore.Indicator
+      InputEnrichment:
+        simple: "False"
+      InternalRange:
+        complex:
+          accessor: PrivateIPs
+          root: lists
+          transformers:
+          - args:
+              error_if_no_match: {}
+              ignore_case: {}
+              multi_line: {}
+              period_matches_newline: {}
+              regex:
+                value:
+                  simple: (\b(?:\d{1,3}\.){3}\d{1,3}\b/\d{1,2})
+              unpack_matches: {}
+            operator: RegexExtractAll
+          - args:
+              separator:
+                value:
+                  simple: ','
+            operator: join
+      RuleDirection:
+        simple: outbound
+      RuleName:
+        simple: XSIAM - Block IP playbook - ${alert.id}
+      UserVerification:
+        simple: "True"
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "This playbook blocks malicious IP addresses using all integrations
+        that are enabled. The direction of the traffic that will be blocked is determined
+        by the XSOAR user (and set by default to outgoing)\nNote the following:\n-
+        \ some of those integrations require specific parameters to run, which are
+        based on the playbook inputs. Also, certain integrations use FW rules or appended
+        network objects.\n- Note that the appended network objects should be specified
+        in blocking rules inside the system later on. \n\n\nSupported integrations
+        for this playbook [Network security products such as FW/WAF/IPs/etc.]: \n\n*
+        Check Point Firewall\n* Palo Alto Networks PAN-OS\n* Zscaler\n* FortiGate\n*
+        Aria Packet Intelligence\n* Cisco Firepower \n* Cisco Secure Cloud Analytics\n*
+        Cisco ASA\n* Akamai WAF\n* F5 SilverLine\n* ThreatX\n* Signal Sciences WAF\n*
+        Sophos Firewall\n\n"
+      id: 9640af49-911a-45a8-8624-da033d349dd2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Block IP - Generic v3
+      playbookId: Block IP - Generic v3
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: 9640af49-911a-45a8-8624-da033d349dd2
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": -260,
+          "y": 1000
+        }
+      }
+  "26":
+    continueonerrortype: ""
+    id: "26"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    loop:
+      exitCondition: ""
+      iscommand: false
+      max: 100
+      wait: 1
+    nexttasks:
+      '#none#':
+      - "22"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      ZendeskAssigne:
+        simple: ${inputs.ZendeskAssigne}
+      ZendeskCollaborators:
+        simple: ${inputs.ZendeskCollaborators}
+      ZendeskPriority:
+        simple: ${inputs.ZendeskPriority}
+      ZendeskRequester:
+        simple: ${inputs.ZendeskRequester}
+      ZendeskStatus:
+        simple: ${inputs.ZendeskStatus}
+      ZendeskSubject:
+        simple: ${inputs.ZendeskSubject}
+      ZendeskTags:
+        simple: ${inputs.ZendeskTags}
+      ZendeskType:
+        simple: ${inputs.ZendeskType}
+      addCommentPerEndpoint:
+        simple: "True"
+      description:
+        simple: ${inputs.ZenDeskDescription}
+      serviceNowAssignmentGroup:
+        simple: ${inputs.serviceNowAssignmentGroup}
+      serviceNowCategory:
+        simple: ${inputs.serviceNowCategory}
+      serviceNowImpact:
+        simple: ${inputs.serviceNowImpact}
+      serviceNowSeverity:
+        simple: ${inputs.serviceNowSeverity}
+      serviceNowShortDescription:
+        simple: ${inputs.serviceNowShortDescription}
+      serviceNowTicketType:
+        simple: ${inputs.serviceNowTicketType}
+      serviceNowUrgency:
+        simple: ${inputs.serviceNowUrgency}
+    separatecontext: true
+    skipunavailable: false
+    task:
+      brand: ""
+      description: "`Ticket Management - Generic` allows you to open new tickets or
+        update comments to the existing ticket in the following ticketing systems:\n-ServiceNow
+        \n-Zendesk \nusing the following sub-playbooks:\n-`ServiceNow - Ticket Management`\n-`Zendesk
+        - Ticket Management`"
+      id: db3a06dc-6674-445a-8fa5-2d5a8e4da825
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Ticket Management - Generic
+      playbookId: Ticket Management - Generic
+      playbooktaskmissingcomponent: null
+      type: playbook
+      version: -1
+    taskid: db3a06dc-6674-445a-8fa5-2d5a8e4da825
+    timertriggers: []
+    type: playbook
+    view: |-
+      {
+        "position": {
+          "x": 690,
+          "y": 3600
+        }
+      }
+  "27":
+    conditions:
+    - condition:
+      - - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: inputs.CreateTicket
+          operator: isEqualString
+          right:
+            value:
+              simple: "True"
+      label: "yes"
+    continueonerrortype: ""
+    id: "27"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "22"
+      "yes":
+      - "26"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: cc2d6c1e-9c5b-4322-8df2-33fecac16230
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Create a ticket?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: cc2d6c1e-9c5b-4322-8df2-33fecac16230
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 3430
+        }
+      }
+  "28":
+    continueonerrortype: ""
+    id: "28"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "29"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 1410b003-f2f9-4bdd-804a-865520e77086
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Risky User
+      playbooktaskmissingcomponent: null
+      type: title
+      version: -1
+    taskid: 1410b003-f2f9-4bdd-804a-865520e77086
+    timertriggers: []
+    type: title
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1640
+        }
+      }
+  "29":
+    continueonerrortype: ""
+    fieldMapping:
+    - incidentfield: User Risk Level
+      output:
+        simple: ${Core.RiskyUser.risk_level}
+    id: "29"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      user_id:
+        simple: ${alert.usernames}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Retrieve the risk score of a specific user or list of users with
+        the highest risk score in the environment along with the reason affecting
+        each score.
+      id: a57b5f12-570d-463f-8e3e-6e20a7dcbb18
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Check if user is risky by XDR
+      playbooktaskmissingcomponent: null
+      script: '|||core-list-risky-users'
+      type: regular
+      version: -1
+    taskid: a57b5f12-570d-463f-8e3e-6e20a7dcbb18
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 1770
+        }
+      }
+  "33":
+    continueonerrortype: ""
+    fieldMapping:
+    - incidentfield: First Seen
+      output:
+        simple: ${PrismaCloud.Alert.firstSeen}
+    - incidentfield: Last Seen
+      output:
+        simple: ${PrismaCloud.Alert.lastSeen}
+    - incidentfield: Alert Rules
+      output:
+        simple: ${PrismaCloud.Alert.alertRules}
+    - incidentfield: Account Name
+      output:
+        simple: ${PrismaCloud.Alert.resource.account}
+    - incidentfield: Account ID
+      output:
+        simple: ${PrismaCloud.Alert.resource.accountId}
+    - incidentfield: Referenced Resource Name
+      output:
+        simple: ${PrismaCloud.Alert.resource.rrn}
+    - incidentfield: Region ID
+      output:
+        simple: ${PrismaCloud.Alert.resource.regionId}
+    - incidentfield: Region
+      output:
+        simple: ${alert.prisma_region.[0]}
+    - incidentfield: Resource Type
+      output:
+        simple: ${PrismaCloud.Alert.resource.resourceType}
+    - incidentfield: System Default Policy
+      output:
+        simple: ${PrismaCloud.Alert.policy.systemDefault}
+    - incidentfield: Resource URL
+      output:
+        simple: ${PrismaCloud.Alert.resource.url}
+    - incidentfield: Last Seen
+      output:
+        simple: ${PrismaCloud.Alert.lastSeen}
+    id: "33"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "35"
+      - "40"
+      - "11"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      alert_id:
+        simple: ${alert.external_id}
+      detailed:
+        simple: "true"
+      using:
+        simple: ${alert.sourceInstance}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Gets the details of an alert based on the alert ID.
+      id: d0cf5850-da44-4de5-8a7e-d8fde47fd66c
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Prisma alert enrichment
+      playbooktaskmissingcomponent: null
+      script: '|||prisma-cloud-alert-get-details'
+      type: regular
+      version: -1
+    taskid: d0cf5850-da44-4de5-8a7e-d8fde47fd66c
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": -130
+        }
+      }
+  "34":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: alert.remoteip
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "34"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      "yes":
+      - "2"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: aab9ed40-9025-4883-88f0-c2ab4c7234e6
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Does Alert Contains IP?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: aab9ed40-9025-4883-88f0-c2ab4c7234e6
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": -50,
+          "y": -130
+        }
+      }
+  "35":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: PrismaCloud.Alert.resource.rrn
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "35"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      "yes":
+      - "36"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 7265dfe6-a8a7-4b86-8066-c118ba872dbe
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Host RRN has received from Prisma?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 7265dfe6-a8a7-4b86-8066-c118ba872dbe
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 40
+        }
+      }
+  "36":
+    continueonerrortype: ""
+    id: "36"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      all_results:
+        simple: "true"
+      rrn:
+        simple: ${PrismaCloud.Alert.resource.rrn}
+      using:
+        simple: ${alert.sourceInstance}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Get resource host finding list.
+      id: 84ddcd55-108f-4bcb-8608-6287ad05bffb
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get host findings
+      playbooktaskmissingcomponent: null
+      script: '|||prisma-cloud-host-finding-list'
+      type: regular
+      version: -1
+    taskid: 84ddcd55-108f-4bcb-8608-6287ad05bffb
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 900,
+          "y": 220
+        }
+      }
+  "38":
+    continueonerrortype: ""
+    id: "38"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "16"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      verdict:
+        complex:
+          accessor: '}'
+          root: ${
+          transformers:
+          - args:
+              conditions:
+                value:
+                  simple: |-
+                    [
+                      {
+                        "condition": "#{alert.ipreputation} == '2'",
+                        "return": "Suspicious"
+                      },
+                      {
+                        "condition": "#{alert.useranomalycount} > '0'",
+                        "return": "Suspicious"
+                      },
+                      {
+                        "condition": "#{alert.ipreputation} == '3'",
+                        "return": "Malicious"
+                      },
+                      {
+                        "default": 'Undetermined'
+                      }
+                    ]
+              flags:
+                iscontext: true
+                value:
+                  simple: alert.ipreputation
+            operator: If-Elif
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: 17a38aca-0335-45d3-8b9e-02c7104517d4
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Determine Verdict
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlert
+      type: regular
+      version: -1
+    taskid: 17a38aca-0335-45d3-8b9e-02c7104517d4
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 450,
+          "y": 2410
+        }
+      }
+  "39":
+    continueonerrortype: ""
+    id: "39"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "8"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      ipblockedstatus:
+        simple: Executed
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: 893a8d8d-ae3a-4d65-8399-128b550d4655
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Set status to layout
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlert
+      type: regular
+      version: -1
+    taskid: 893a8d8d-ae3a-4d65-8399-128b550d4655
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": -260,
+          "y": 1160
+        }
+      }
+  "40":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: PrismaCloud.Alert.alertRules
+          operator: isNotEmpty
+      label: "yes"
+    continueonerrortype: ""
+    id: "40"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "3"
+      "yes":
+      - "41"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 8bab5ef9-fbad-4e40-8750-f235d3e0a15d
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Is Part of Alert Rule?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 8bab5ef9-fbad-4e40-8750-f235d3e0a15d
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 1320,
+          "y": 40
+        }
+      }
+  "41":
+    continueonerrortype: ""
+    fieldMapping:
+    - incidentfield: Alert Rules
+      output:
+        simple: ${prismaalertrules}
+    id: "41"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "3"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      extend-context:
+        simple: prismaalertrules=
+      value:
+        simple: ${PrismaCloud.Alert.alertRules}
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      description: Accepts a json object and returns a markdown.
+      id: 436263bc-db35-424b-8cf0-051512df12a2
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Map Alert Rules
+      playbooktaskmissingcomponent: null
+      script: JsonToTable
+      type: regular
+      version: -1
+    taskid: 436263bc-db35-424b-8cf0-051512df12a2
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 1320,
+          "y": 220
+        }
+      }
+  "42":
+    continueonerrortype: ""
+    fieldMapping:
+    - incidentfield: CVSS
+      output:
+        simple: ${CVE.CVSS.Score}
+    - incidentfield: CVE Description
+      output:
+        simple: ${CVE.Description}
+    - incidentfield: CVE Published
+      output:
+        simple: ${CVE.Published}
+    - incidentfield: Vulnerable Product
+      output:
+        simple: ${CVE.vulnerableproduct}
+    - incidentfield: CVE ID
+      output:
+        simple: ${CVE.ID}
+    id: "42"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      cve:
+        simple: ${CVE.ID}
+    separatecontext: false
+    skipunavailable: true
+    task:
+      brand: ""
+      description: Returns CVE information by CVE ID.
+      id: 3f873b48-5e22-4196-817f-bd02b7a11266
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Get CVE Details
+      playbooktaskmissingcomponent: null
+      script: '|||cve'
+      type: regular
+      version: -1
+    taskid: 3f873b48-5e22-4196-817f-bd02b7a11266
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 880,
+          "y": 1930
+        }
+      }
+  "43":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: CVE
+          operator: isNotEmpty
+          right:
+            value: {}
+      label: "yes"
+    continueonerrortype: ""
+    id: "43"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "15"
+      "yes":
+      - "42"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 47f296ff-d425-4a5d-8fec-5ec90f8dc250
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Has related CVE?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 47f296ff-d425-4a5d-8fec-5ec90f8dc250
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 880,
+          "y": 1770
+        }
+      }
+  "44":
+    conditions:
+    - condition:
+      - - left:
+            iscontext: true
+            value:
+              simple: AwsSuspiciousActivitiesCount
+          operator: isNotEmpty
+          right:
+            value: {}
+        - left:
+            iscontext: true
+            value:
+              simple: GcpAnomalousNetworkTraffic
+          operator: isNotEmpty
+        - ignorecase: true
+          left:
+            iscontext: true
+            value:
+              simple: CountAzureEvents.AzureAnomaliesCount
+          operator: isEqualString
+          right:
+            value:
+              simple: "true"
+      label: "yes"
+    continueonerrortype: ""
+    id: "44"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#default#':
+      - "15"
+      "yes":
+      - "45"
+    note: false
+    quietmode: 0
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: ""
+      id: 2aec9d38-f06a-4694-869f-60f8daa27e8e
+      iscommand: false
+      istaskmissingcomponenterrordismissed: false
+      name: Has Results?
+      playbooktaskmissingcomponent: null
+      type: condition
+      version: -1
+    taskid: 2aec9d38-f06a-4694-869f-60f8daa27e8e
+    timertriggers: []
+    type: condition
+    view: |-
+      {
+        "position": {
+          "x": 30,
+          "y": 1930
+        }
+      }
+  "45":
+    continueonerrortype: ""
+    id: "45"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "15"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      useranomalycount:
+        complex:
+          accessor: AzureAnomaliesCount
+          root: CountAzureEvents
+          transformers:
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: AwsSuspiciousActivitiesCount
+            operator: append
+          - args:
+              item:
+                iscontext: true
+                value:
+                  simple: GcpAnomalousNetworkTraffic
+            operator: append
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: 7837fc50-fa9d-489a-89af-977c5c4100b2
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Set User Investigation Results
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlert
+      type: regular
+      version: -1
+    taskid: 7837fc50-fa9d-489a-89af-977c5c4100b2
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 30,
+          "y": 2100
+        }
+      }
+  "46":
+    continueonerrortype: ""
+    id: "46"
+    ignoreworker: false
+    isautoswitchedtoquietmode: false
+    isoversize: false
+    nexttasks:
+      '#none#':
+      - "27"
+    note: false
+    quietmode: 0
+    scriptarguments:
+      ipblockedstatus:
+        simple: Executed
+      userblockstatus:
+        simple: Executed
+    separatecontext: false
+    skipunavailable: false
+    task:
+      brand: Builtin
+      description: commands.local.cmd.set.incident
+      id: 59de8147-06f1-4f75-8c2d-ba383f66db0a
+      iscommand: true
+      istaskmissingcomponenterrordismissed: false
+      name: Set status to layout
+      playbooktaskmissingcomponent: null
+      script: Builtin|||setAlert
+      type: regular
+      version: -1
+    taskid: 59de8147-06f1-4f75-8c2d-ba383f66db0a
+    timertriggers: []
+    type: regular
+    view: |-
+      {
+        "position": {
+          "x": 840,
+          "y": 3250
+        }
+      }
+version: -1
+view: |-
+  {
+    "linkLabelsPosition": {
+      "35_3_#default#": 0.1,
+      "40_3_#default#": 0.22,
+      "4_6_yes": 0.3
+    },
+    "paper": {
+      "dimensions": {
+        "height": 4615,
+        "width": 1960,
+        "x": -260,
+        "y": -430
+      }
+    }
+  }
