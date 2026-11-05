@@ -1,0 +1,56 @@
+args:
+- default: true
+  description: An array for which to return the last value.
+  isArray: true
+  name: value
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: Returns the last element of an array. If the value passed is not an array,
+  it returns the original value that was passed.
+commonfields:
+  id: LastArrayElement
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.4.32
+    packID: FiltersAndTransformers
+    packName: Filters And Transformers
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: LastArrayElement
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  // pack version: 1.4.32
+  let value = args.value;
+
+  if (Array.isArray(value) && value.length > 0) {
+      value = value[value.length - 1];
+  }
+  if (value === null) {
+      value = [];
+  }
+
+  return value;
+scripttarget: 0
+signature: xdx64A270YBj9SrTnwdjgUs+IANK/MEuIsKKv8aBrkMQ9FW3z7FFlGjSG+OFRaOJZXr4g0Aorq0Jrl/58y+0+geeGfPC3s5EX94s+hQ30QE7ieVNuEu6xc+Fjz9u8GatLW7+9qp+UVoWWQVWyrWi+4aC6KRTGx2kuNTeJWGnVaPx8ByJRVJILPVhtf28EQhL/eaDrtlHtzhStd7RtwcqF535fWFrbCg5XLIdNnvGIf6t3QhQmkuQLPZvF/gekGqqWLEzY/CV0uVPoNSrq/99zIcgiOUPv5QEXz6F/toQgb3ODff75Eww1T5Reg4sh2DdxG6Aq4IRkfGYGc3IXp2dPg==
+system: true
+tags:
+- general
+- transformer
+- entirelist
+type: javascript
