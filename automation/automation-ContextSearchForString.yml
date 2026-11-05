@@ -1,0 +1,78 @@
+args:
+- description: Path in context to search the string in
+  name: path
+  supportedFeatures: []
+  supportedModules: []
+- description: String to search for in context
+  name: str
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: |
+  Searches for string in a path in context. If path is null, string will be searched in full context.
+commonfields:
+  id: ContextSearchForString
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: ContextSearchForString
+outputs:
+- contextPath: "true"
+  description: if given string exists in context
+- contextPath: "false"
+  description: if given string does not exist in context
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |+
+  // pack version: 1.22.66
+  var path = args.path;
+  var str = args.str;
+  var flat={};
+
+  function searchString(obj) {
+      flattenFields(obj,undefined,flat);
+      keysArr = Object.keys(flat);
+      for (i = 0; i < keysArr.length - 1; i++) {
+          if (flat[keysArr[i]] === str) {
+              return true;
+          }
+      }
+      return false;
+  }
+
+  if (!path) {
+      return searchString(invContext);
+  }
+
+  var contextObject = dq(invContext, path);
+
+  if (!contextObject) {
+      throw 'Path ' + path + ' is not in the context.';
+  }
+
+  return searchString(contextObject);
+
+
+scripttarget: 0
+signature: dJ9J7mV80oCAkE+bHtgBpL70ytdzTcVxL9NdyNmYZ1Rr1aXE4lGEYSY2vlb2Lwn6Synv4qNvnIhduWJ0itIwz8zji5D9lBh+csWF11QZWYWE/rMiHbZZFpjqkJWINs+WpDm9rparAwZUyFMbI8BeJ2DWOBZHCV3ioqTzvD/p7knQvuxRxSEd6BkvIgB8p08EQGRJxK1rnN6R98aBN3SpgFbxgsCT7HAibeJ8XgZz7m2FSn9ODqT49w8oar0ZONfmFy7fuwAunGVYf8QGMJOFvlp8sccbLuOe8LCyGPbs6fP0UR97JGZ7HvyxHKvuWG6cL8Gs/QZzXgKnhbx0QAs3Rg==
+system: true
+tags: []
+type: javascript
