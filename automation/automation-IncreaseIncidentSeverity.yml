@@ -1,0 +1,58 @@
+args:
+- auto: PREDEFINED
+  description: The incident severity to increase the incident to. Can be "Unknown",
+    "Informational", "Low", "Medium", "High", "Critical", "0", "0.5", "1", "2", "3",
+    or "4".
+  name: severity
+  predefined:
+  - Unknown
+  - Informational
+  - Low
+  - Medium
+  - High
+  - Critical
+  - "0"
+  - "0.5"
+  - "1"
+  - "2"
+  - "3"
+  - "4"
+  required: true
+  supportedFeatures: []
+  supportedModules: []
+comment: Optionally increases the incident severity to the new value if it is greater
+  than the existing severity.
+commonfields:
+  id: IncreaseIncidentSeverity
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 5.0.0
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: ""
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+deprecated: true
+enabled: true
+engineinfo: {}
+mainengineinfo: {}
+name: IncreaseIncidentSeverity
+pswd: ""
+restrictioncenter: {}
+runas: DBotWeakRole
+runonce: false
+script: |
+  return executeCommand('IncreaseAlertSeverity', args)
+scripttarget: 0
+signature: PEuXQkAbN/qe9OtMjebyQ4Z5oJ+oJx76nd2zXSbCkQCz4pVon0O0CRJcK26+1YB9gQjh0GtXq8IK19hF0gc1iX2GLQkVIDeP9JZT5HRxDux83qXvs+zs5x4tZ5nrp+//jNDsOq4RbEr4Q7+arz+7rCKREXQDGjpsA+KY++KlHwpDt2wDGUPmgL6qFLxlY+Wusw4Phx9p5jWIuNKj5vb53XyyKdCsxezg8zvfRB718zhNJCVFM4cLZxO6w0Uts3VD92VRPr+Ij3g8ff5PTlzE5wLPOxq+tj+LTVBtsEUHq0Q+EhlZxA8V/2WK04dMo4aWS+E6yvP6dZ9MLaVyb6KTHw==
+system: true
+tags: []
+type: javascript
