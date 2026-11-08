@@ -103,7 +103,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 2.1.89
+    itemVersion: 2.1.90
     packID: Palo_Alto_Networks_WildFire
     packName: WildFire by Palo Alto Networks
     packPropagationLabels:
@@ -1467,8 +1467,8 @@ script:
   runonce: false
   script: |
     register_module_line('WildFire-v2', 'start', __line__())
-    CONSTANT_PACK_VERSION = '2.1.89'
-    demisto.debug('pack id = Palo_Alto_Networks_WildFire, pack version = 2.1.89')
+    CONSTANT_PACK_VERSION = '2.1.90'
+    demisto.debug('pack id = Palo_Alto_Networks_WildFire, pack version = 2.1.90')
     import contextlib
     import io
     import os
@@ -3005,10 +3005,13 @@ script:
             try:
                 result = wildfire_get_sample(element)
 
-                # Check if we got a 403 status code (benign sample)
+                # A 403 status code means WildFire does not allow downloading this sample
+                # (e.g. benign samples, including files with a malicious static verdict but a benign dynamic verdict).
                 if result.status_code == 403:
                     demisto.results(
-                        "Benign samples are not available for download. For more info contact your WildFire representative."
+                        "Sample is not available for download. Benign samples (including files with a malicious static verdict "
+                        "that were found benign in dynamic analysis) are not available for download. "
+                        "For more info contact your WildFire representative."
                     )
                 else:
                     # filename will be found under the Content-Disposition header in the format
@@ -3226,5 +3229,5 @@ script:
 sectionorder:
 - Connect
 - Collect
-signature: f6wxa9z2LvRHJS/mwbSXHEdMG2A9s/98Uj2EgRZbVC3G91hu2g91mTX47g1hJ+6ujrTZbc7H9f2ZPZKFt7WvJwZB4Ne3dEFAXTqFz34lQvzZq12Mb76OXy51YiFsS/NVfLJ6Xj0HhydlNWKf9A8S9I6h2AMFNmSCmcE27akr8AAGY0ed9bFWNA8sd2pAr4jcJMzzKKB3qvkqJ7Ok6qPaEo3UH/eSj2HrolzvDQmMqz38KllWUlJiYEf6Qhi1Q7393DFitsEzyDJuzfQmWrrZSS/OzQSd0z0W4tW+7mDFoHe5PUoqXvyXuSsI9j9S3DTwCRqigEygIYfRttaL/hVNBQ==
+signature: kG6fPzDXlt6XpEq6oGdhXBwycZfFGbd1Vm6N36t9W2+VKnjgPoGdCcILDivPCSRt8wV2i9I3UUVPAgACWPy9qc3lsUoezzR/dbnLGTbie3e/zIjXXYR2S+P18ZqXzQC/n8q/z/l0gwDB9dJKyhqCO1sdpgclh4SsUZ+wFjXY41gNi6sUw3eA5If41RSoKjRVXRuvWIK8De9/nJ6Bvm9XoXfXm32gqiTHTM8apNMF84DxAvn+W5o4SymiXqPAyoc8OI8JUEofhAGDkcPR7BDCduWIEkOFgpNvzE5QRGKrCyNJkodBGFIJR+HTbL6DaEAWM/HQgONGjxXLlpIbrPyHFQ==
 system: true
