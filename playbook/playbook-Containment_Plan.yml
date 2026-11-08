@@ -3,7 +3,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.6.0
     isoverridable: false
-    itemVersion: 2.8.12
+    itemVersion: 2.8.13
     packID: CommonPlaybooks
     packName: Common Playbooks
     packPropagationLabels:
@@ -105,8 +105,8 @@ inputs:
   required: false
   value:
     simple: Quarantine
-- description: The Okta IAM users domain. The domain will be appended to the username.
-    e.g. username@IAMUserDomain.
+- description: The IAM users domain. The domain will be appended to the username.
+    E.g., username@IAMUserDomain.
   key: IAMUserDomain
   playbookInputQuery: null
   required: false
@@ -632,6 +632,9 @@ tasks:
     note: false
     quietmode: 0
     scriptarguments:
+      IAMUserDomain:
+        complex:
+          root: inputs.IAMUserDomain
       UserContainment:
         complex:
           root: inputs.UserContainment
