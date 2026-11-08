@@ -3,7 +3,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.5.0
     isoverridable: false
-    itemVersion: 2.8.12
+    itemVersion: 2.8.13
     packID: CommonPlaybooks
     packName: Common Playbooks
     packPropagationLabels:
@@ -61,6 +61,12 @@ inputs:
   required: false
   value:
     simple: "True"
+- description: The IAM users domain. The domain will be appended to the username.
+    E.g., username@IAMUserDomain.
+  key: IAMUserDomain
+  playbookInputQuery: null
+  required: false
+  value: {}
 name: Block Account - Generic v2
 outlinetasks: {}
 outputs:
@@ -2474,6 +2480,54 @@ tasks:
         complex:
           accessor: Final
           root: Blocklist
+          transformers:
+          - args:
+              prefix: {}
+              suffix:
+                value:
+                  simple: '@'
+            operator: concat
+          - args:
+              prefix: {}
+              suffix:
+                iscontext: true
+                value:
+                  simple: inputs.IAMUserDomain
+            operator: concat
+          - args:
+              action_dt: {}
+              ignore_case: {}
+              multi_line: {}
+              output_format:
+                value:
+                  simple: \1
+              period_matches_newline: {}
+              regex:
+                value:
+                  simple: ^([^@]*@[^@]*)@.*$
+            operator: RegexReplace
+          - args:
+              action_dt: {}
+              ignore_case: {}
+              multi_line: {}
+              output_format:
+                value:
+                  simple: \1
+              period_matches_newline: {}
+              regex:
+                value:
+                  simple: ^[^\\]*\\([^@\\]+@.+)$
+            operator: RegexReplace
+          - args:
+              action_dt: {}
+              ignore_case: {}
+              multi_line: {}
+              output_format: {}
+              period_matches_newline: {}
+              regex:
+                value:
+                  simple: '@$'
+            operator: RegexReplace
     separatecontext: false
     skipunavailable: true
     task:
