@@ -3,7 +3,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.6.0
     isoverridable: false
-    itemVersion: 2.8.12
+    itemVersion: 2.8.13
     packID: CommonPlaybooks
     packName: Common Playbooks
     packPropagationLabels:
@@ -39,6 +39,12 @@ inputs:
   required: false
   value:
     simple: "True"
+- description: The IAM users domain. The domain will be appended to the username.
+    E.g., username@IAMUserDomain.
+  key: IAMUserDomain
+  playbookInputQuery: null
+  required: false
+  value: {}
 name: Containment Plan - Disable Account
 outlinetasks: {}
 outputs:
@@ -270,6 +276,9 @@ tasks:
     note: false
     quietmode: 0
     scriptarguments:
+      IAMUserDomain:
+        complex:
+          root: inputs.IAMUserDomain
       Tag:
         simple: XSIAM alert - ${alert.id}
       UserVerification:
