@@ -13,42 +13,28 @@
 		"playbook",
 		"layoutscontainer",
 		"agentixaction",
-		"trigger",
-		"layoutrule"
+		"layoutrule",
+		"trigger"
 	],
 	"contentItems": {
 		"agentixaction": [
 			{
 				"category": "",
-				"description": "Updates (adds or removes) tags on a list of specified endpoints.",
+				"description": "Terminates a full process tree using its causality ID on a specified agent.",
 				"fromversion": "8.12.0",
-				"id": "CortexUpdateEndpointTags",
-				"name": "CortexUpdateEndpointTags",
-				"supportedModules": [
-					"xsiam",
-					"cloud_runtime_security",
-					"edr"
-				],
+				"id": "CortexTerminateCausality",
+				"name": "CortexTerminateCausalityGroup",
 				"toversion": "",
 				"underlyingContentItemType": "command"
 			},
 			{
 				"category": "",
-				"description": "Creates a new assessment profile with specified parameters.",
+				"description": "Updates the scan configuration for one or more repositories identified by their asset IDs. You can enable or disable specific security scanners (SECRETS, SCA, IAC), configure scanner-specific options, set up pull request scanning, configure tagging behavior, and exclude file paths from scanning. Important constraints: - A scanner cannot appear in both enable_scanners and disable_scanners at the same time. - The secret_validation and enable_git_history options require the SECRETS scanner to be included in enable_scanners. - block_on_error only applies when pr_scanning is enabled.",
 				"fromversion": "8.12.0",
-				"id": "CortexCreateAssessmentProfile",
-				"name": "CortexCreateAssessmentProfile",
+				"id": "CortexEnableAppSecScanner",
+				"name": "CortexUpdateAppSecScanConfiguration",
 				"toversion": "",
-				"underlyingContentItemType": "command"
-			},
-			{
-				"category": "",
-				"description": "Retrieves asset information from the Cortex platform using various filters. Use this action to automatically fetch asset details instead of prompting the user for asset-specific information.",
-				"fromversion": "8.12.0",
-				"id": "SearchAssets",
-				"name": "CortexListAssets",
-				"toversion": "",
-				"underlyingContentItemType": "command"
+				"underlyingContentItemType": "script"
 			},
 			{
 				"category": "",
@@ -66,87 +52,37 @@
 			},
 			{
 				"category": "",
-				"description": "Generates Technical Support Files (TSF) for the provided list of endpoints.\n",
+				"description": "Retrieves recommendations for a Cortex issues, including remediation steps, playbook and quick action suggestions. In addition existing and suggested code blocks will return for relevant AppSec issues.",
 				"fromversion": "8.12.0",
-				"id": "CortexGenerateEndpointSupportFile",
-				"name": "CortexGenerateEndpointSupportFile",
+				"id": "GetIssueRecommendations",
+				"name": "CortexGetIssueRecommendations",
 				"toversion": "",
 				"underlyingContentItemType": "command"
 			},
 			{
 				"category": "",
-				"description": "Terminates a specific process on an agent using its instance ID.",
+				"description": "This action searches for application security issues based on a variety of filters. It returns detailed information about each issue, including asset names, CVSS and EPSS scores, issue status, urgency, and repository information.\n",
 				"fromversion": "8.12.0",
-				"id": "CortexTerminateProcess",
-				"name": "CortexTerminateProcess",
-				"supportedModules": [
-					"xsiam",
-					"cloud_runtime_security",
-					"edr"
-				],
-				"toversion": "8.15.0",
-				"underlyingContentItemType": "script"
-			},
-			{
-				"category": "",
-				"description": "Create automated pull requests to fix multiple security issues in a single bulk operation. If more than 10 issues are provided, split them into multiple calls.\n",
-				"fromversion": "8.12.0",
-				"id": "CortexTriggerFixPullRequest",
-				"name": "CortexTriggerFixPullRequest",
+				"id": "CortexListAppSecIssues",
+				"name": "CortexListAppSecIssues",
 				"toversion": "",
 				"underlyingContentItemType": "script"
 			},
 			{
 				"category": "",
-				"description": "Updates the scan configuration for one or more repositories identified by their asset IDs. You can enable or disable specific security scanners (SECRETS, SCA, IAC), configure scanner-specific options, set up pull request scanning, configure tagging behavior, and exclude file paths from scanning. Important constraints: - A scanner cannot appear in both enable_scanners and disable_scanners at the same time. - The secret_validation and enable_git_history options require the SECRETS scanner to be included in enable_scanners. - block_on_error only applies when pr_scanning is enabled.\n",
+				"description": "Reverses the network isolation of an endpoint. This action is typically used after the threat has been mitigated.\n\nWorkflow:\n1. Execute the \"GetEndpointData\" action to get the endpoint ID (unless provided or returned from a previous action).\n2. Use this action to unisolate the endpoint.",
 				"fromversion": "8.12.0",
-				"id": "CortexEnableAppSecScanner",
-				"name": "CortexUpdateAppSecScanConfiguration",
-				"supportedModules": [
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security"
-				],
-				"toversion": "",
-				"underlyingContentItemType": "script"
-			},
-			{
-				"category": "",
-				"description": "Executes an XQL query on the Cortex platform.\nWhen wait_for_results is set to true, polls every 10 seconds until results are available or timeout is reached, then returns the query results.\nResults are limited to a maximum of 1000 records. If the query specifies a larger LIMIT, it will be automatically reduced to 1000.\nIMPORTANT: If asked to visualize existing XQL execution results with a chart (widget / graph), you must first regenerate the query using the same method that produced the original query, adding only the visualization clause at the end of the query and nothing else, and reuse the execution ID of the original XQL run to avoid unnecessary query cost, since queries that differ only by optional `| view graph ...` suffixes return the same results.",
-				"fromversion": "8.14.00",
-				"id": "CortexRunXQLQuery",
-				"name": "CortexRunXQLQuery",
-				"supportedModules": [
-					"xsiam",
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr"
-				],
+				"id": "CortexUnisolateEndpoint",
+				"name": "CortexUnisolateEndpoint",
 				"toversion": "",
 				"underlyingContentItemType": "command"
 			},
 			{
 				"category": "",
-				"description": "Runs a script on selected endpoints through the Cortex Platform.\nNote: Certain scripts require defined parameters to be provided.",
+				"description": "Retrieves the list of Cortex tenant console users (operators, analysts, administrators who log into the Cortex platform itself) along with their core properties (email, first/last name, role, last login, type, groups, scope), optionally filtered by email addresses and/or names. Use this action to resolve a Cortex console user from a display name or partial identifier to a canonical \"user_email\" before passing them to another action (for example, setting a case assignee or adding a case team member). Do NOT use this action to enrich an investigation subject (an employee or identity observed in alerts/events) or to look up risk levels, directory attributes, or data from external identity providers - this action only returns Cortex platform accounts. Disambiguation rules - when the user is identified by name (the \"names\" argument): - If exactly one user matches, use their \"user_email\". - If multiple users match, do NOT guess - ask the requester which user they meant. - If zero users match, do NOT substitute the raw name string for a real email - inform the requester and ask for a more specific name or an email address. Note: The default result size is 50 users; the data returned may be partial.",
 				"fromversion": "8.12.0",
-				"id": "CortexRunScriptOnEndpoints",
-				"name": "CortexRunScriptOnEndpoints",
-				"supportedModules": [
-					"xsiam",
-					"cloud_runtime_security",
-					"edr"
-				],
-				"toversion": "",
-				"underlyingContentItemType": "command"
-			},
-			{
-				"category": "",
-				"description": "Initiates a malware scan on the provided list of endpoints.",
-				"fromversion": "8.12.0",
-				"id": "CortexRunMalwareScanOnEndpoint",
-				"name": "CortexRunMalwareScanOnEndpoint",
+				"id": "CortexListSystemUsers",
+				"name": "CortexListSystemUsers",
 				"toversion": "",
 				"underlyingContentItemType": "command"
 			},
@@ -166,76 +102,11 @@
 			},
 			{
 				"category": "",
-				"description": "Updates the version of the specified endpoints (can also be referred as XDR Agents or Agents) to the provided target version, with optional scheduling support (days and hours).",
+				"description": "Searches for endpoints (can also be referred as XDR Agents or Agents) based on provided filters and retrieves endpoints data.\n",
 				"fromversion": "8.12.0",
-				"id": "CortexUpdateEndpointVersion",
-				"name": "CortexUpdateEndpointVersion",
-				"toversion": "",
-				"underlyingContentItemType": "command"
-			},
-			{
-				"category": "",
-				"description": "Reverses the network isolation of an endpoint. This action is typically used after the threat has been mitigated.\n\nWorkflow:\n1. Execute the \"GetEndpointData\" action to get the endpoint ID (unless provided or returned from a previous action).\n2. Use this action to unisolate the endpoint.",
-				"fromversion": "8.12.0",
-				"id": "CortexUnisolateEndpoint",
-				"name": "CortexUnisolateEndpoint",
-				"toversion": "",
-				"underlyingContentItemType": "command"
-			},
-			{
-				"category": "",
-				"description": "Retrieves recommendations for a Cortex issues, including remediation steps, playbook and quick action suggestions. In addition existing and suggested code blocks will return for relevant AppSec issues.",
-				"fromversion": "8.12.0",
-				"id": "GetIssueRecommendations",
-				"name": "CortexGetIssueRecommendations",
-				"toversion": "",
-				"underlyingContentItemType": "command"
-			},
-			{
-				"category": "",
-				"description": "Retrieves the quarantine action status for a specified file. The ID of the endpoint can be retrieved from the \"GetEndpointData\" action when using the \"Cortex Core - IR\" integration brand as input.\n",
-				"fromversion": "8.12.0",
-				"id": "CortexGetQuarantinedFilesStatus",
-				"name": "CortexGetQuarantinedFileStatus",
+				"id": "CortexListEndpoints",
+				"name": "CortexListEndpoints",
 				"supportedModules": [
-					"xsiam",
-					"cloud_runtime_security",
-					"edr"
-				],
-				"toversion": "",
-				"underlyingContentItemType": "command"
-			},
-			{
-				"category": "",
-				"description": "Blocklists the specified SHA256 file hashes in Cortex by adding them to Cortex's blocklist. Skips any that already exist in Cortex's allowlist or blocklist. Optionally returns detailed results with counts of added and skipped hashes.\n",
-				"fromversion": "8.12.0",
-				"id": "CortexBlocklistFiles",
-				"name": "CortexBlockFile",
-				"supportedModules": [
-					"xsiam",
-					"cloud_runtime_security",
-					"edr"
-				],
-				"toversion": "",
-				"underlyingContentItemType": "command"
-			},
-			{
-				"category": "",
-				"description": "Retrieves endpoints (can also be referred as XDR Agents or Agents) available update versions for the provided endpoint ID.\n",
-				"fromversion": "8.12.0",
-				"id": "CortexGetEndpointUpdateVersions",
-				"name": "CortexGetEndpointUpdateVersions",
-				"toversion": "",
-				"underlyingContentItemType": "command"
-			},
-			{
-				"category": "",
-				"description": "Retrieves resolution status information for a specific case, including pending playbook tasks, active playbooks, completed playbooks, and recommended playbooks.",
-				"fromversion": "8.12.0",
-				"id": "CortexGetCaseResolutionStatuses",
-				"name": "CortexGetCaseResolutionStatuses",
-				"supportedModules": [
-					"agentix",
 					"xsiam",
 					"cloud_posture"
 				],
@@ -248,15 +119,11 @@
 				"fromversion": "8.12.0",
 				"id": "CortexGetAIModelActivity",
 				"name": "CortexGetAIModelActivity",
-				"toversion": "",
-				"underlyingContentItemType": "script"
-			},
-			{
-				"category": "",
-				"description": "Isolates an endpoint through Cortex, restricting all network communication except the required connection to Cortex services.\nWorkflow: 1. Execute the \"GetEndpointData\" action to get the endpoint ID (unless provided or returned from a previous action). 2. Use this action to isolate the endpoint.\n",
-				"fromversion": "8.12.0",
-				"id": "CortexIsolateEndpoint",
-				"name": "CortexIsolateEndpoint",
+				"supportedModules": [
+					"cloud_posture",
+					"cloud",
+					"cloud_runtime_security"
+				],
 				"toversion": "",
 				"underlyingContentItemType": "command"
 			},
@@ -271,10 +138,51 @@
 			},
 			{
 				"category": "",
-				"description": "Retrieves a list of exception rules applied to endpoints (also known as XDR agents) based on provided filters. Note: Due to a value constraint on the result size, the data returned may be partial and not reflect the complete set of matching results.\n",
+				"description": "Generates Technical Support Files (TSF) for the provided list of endpoints.\n",
 				"fromversion": "8.12.0",
-				"id": "CortexListEndpointExceptionRules",
-				"name": "CortexListEndpointExceptionRules",
+				"id": "CortexGenerateEndpointSupportFile",
+				"name": "CortexGenerateEndpointSupportFile",
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Initiates a malware scan on the provided list of endpoints.\n",
+				"fromversion": "8.12.0",
+				"id": "CortexRunMalwareScanOnEndpoint",
+				"name": "CortexRunMalwareScanOnEndpoint",
+				"supportedModules": [
+					"cloud_runtime_security",
+					"xsiam",
+					"edr"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Retrieves the quarantine action status for a specified file. The ID of the endpoint can be retrieved from the \"GetEndpointData\" action when using the \"Cortex Core - IR\" integration brand as input.\n",
+				"fromversion": "8.12.0",
+				"id": "CortexGetQuarantinedFilesStatus",
+				"name": "CortexGetQuarantinedFileStatus",
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Runs a script on selected endpoints through the Cortex Platform.\nNote: Certain scripts require defined parameters to be provided.",
+				"fromversion": "8.12.0",
+				"id": "CortexRunScriptOnEndpoints",
+				"name": "CortexRunScriptOnEndpoints",
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Updates (adds or removes) tags on a list of specified endpoints.",
+				"fromversion": "8.12.0",
+				"id": "CortexUpdateEndpointTags",
+				"name": "CortexUpdateEndpointTags",
 				"supportedModules": [
 					"xsiam",
 					"cloud_runtime_security",
@@ -285,24 +193,38 @@
 			},
 			{
 				"category": "",
-				"description": "Retrieves findings, which represent the specific occurrences and technical details underlying an issue, from the Cortex platform using optional filter criteria.\n",
+				"description": "Lists compliance standards from Cortex based on specified filter criteria. Note: Due to a default value constraint on the result size, the data returned may be partial and not reflect the complete set of matching results.\n",
 				"fromversion": "8.12.0",
-				"id": "CortexListFindings",
-				"name": "CortexListFindings",
+				"id": "CortexListComplianceStandards",
+				"name": "CortexListComplianceStandards",
+				"supportedModules": [
+					"cloud_runtime_security",
+					"cloud_posture"
+				],
 				"toversion": "",
 				"underlyingContentItemType": "command"
 			},
 			{
 				"category": "",
-				"description": "Runs a specified playbook on a provided set of issue IDs.\n",
+				"description": "Creates a new assessment profile with specified parameters.",
 				"fromversion": "8.12.0",
-				"id": "CortexRunPlaybook",
-				"name": "CortexRunPlaybook",
+				"id": "CortexCreateAssessmentProfile",
+				"name": "CortexCreateAssessmentProfile",
 				"supportedModules": [
-					"agentix",
+					"cloud_runtime_security",
+					"cloud_posture"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Retrieves a list of exception rules applied to endpoints (also known as XDR agents) based on provided filters. Note: Due to a value constraint on the result size, the data returned may be partial and not reflect the complete set of matching results.\n",
+				"fromversion": "8.12.0",
+				"id": "CortexListEndpointExceptionRules",
+				"name": "CortexListEndpointExceptionRules",
+				"supportedModules": [
 					"xsiam",
-					"cloud_posture",
-					"cloud",
 					"cloud_runtime_security",
 					"edr"
 				],
@@ -325,19 +247,28 @@
 			},
 			{
 				"category": "",
-				"description": "Retrieves the list of Cortex tenant console users (operators, analysts, administrators who log into the Cortex platform itself) along with their core properties (email, first/last name, role, last login, type, groups, scope), optionally filtered by email addresses and/or names. Use this action to resolve a Cortex console user from a display name or partial identifier to a canonical \"user_email\" before passing them to another action (for example, setting a case assignee or adding a case team member). Do NOT use this action to enrich an investigation subject (an employee or identity observed in alerts/events) or to look up risk levels, directory attributes, or data from external identity providers - this action only returns Cortex platform accounts. Disambiguation rules - when the user is identified by name (the \"names\" argument):\n  - If exactly one user matches, use their \"user_email\".\n  - If multiple users match, do NOT guess - ask the requester which user they meant.\n  - If zero users match, do NOT substitute the raw name string for a real email - inform the requester and ask for a more specific name or an email address.\nNote: The default result size is 50 users; the data returned may be partial.\n",
-				"fromversion": "8.14.01",
-				"id": "CortexListSystemUsers",
-				"name": "CortexListSystemUsers",
+				"description": "Isolates an endpoint through Cortex, restricting all network communication except the required connection to Cortex services.\nWorkflow: 1. Execute the \"GetEndpointData\" action to get the endpoint ID (unless provided or returned from a previous action). 2. Use this action to isolate the endpoint.\n",
+				"fromversion": "8.12.0",
+				"id": "CortexIsolateEndpoint",
+				"name": "CortexIsolateEndpoint",
 				"toversion": "",
 				"underlyingContentItemType": "command"
 			},
 			{
 				"category": "",
-				"description": "Searches for asset groups from the Cortex platform using one or more filter criteria.\n",
+				"description": "Searches for asset groups from the Cortex platform using one or more filter criteria.",
 				"fromversion": "8.12.0",
 				"id": "SearchAssetGroups",
 				"name": "CortexListAssetGroups",
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Retrieves resolution status information for a specific case, including pending playbook tasks, active playbooks, completed playbooks, and recommended playbooks.",
+				"fromversion": "8.12.0",
+				"id": "CortexGetCaseResolutionStatuses",
+				"name": "CortexGetCaseResolutionStatuses",
 				"supportedModules": [
 					"agentix",
 					"xsiam",
@@ -348,17 +279,48 @@
 			},
 			{
 				"category": "",
-				"description": "Retrieves Application Security Posture Management (ASPM) coverage statistics and detailed asset information\nbased on provided filters.\nNote: Due to a default value constraint on the asset result size, the asset data returned may be partial and not reflect the complete set of matching asset results.\n",
-				"fromversion": "8.12.0",
-				"id": "CortexListAppSecAssetCoverage",
-				"name": "CortexListAppSecAssetCoverage",
+				"description": "Executes an XQL query on the Cortex platform.\nWhen wait_for_results is set to true, polls every 10 seconds until results are available or timeout is reached, then returns the query results.\nResults are limited to a maximum of 1000 records. If the query specifies a larger LIMIT, it will be automatically reduced to 1000.\nIMPORTANT: If asked to visualize existing XQL execution results with a chart (widget / graph), you must first regenerate the query using the same method that produced the original query, adding only the visualization clause at the end of the query and nothing else, and reuse the execution ID of the original XQL run to avoid unnecessary query cost, since queries that differ only by optional `| view graph ...` suffixes return the same results.",
+				"fromversion": "8.14.00",
+				"id": "CortexRunXQLQuery",
+				"name": "CortexRunXQLQuery",
 				"supportedModules": [
+					"xsiam",
+					"agentix",
 					"cloud",
 					"cloud_posture",
-					"cloud_runtime_security"
+					"cloud_runtime_security",
+					"edr"
 				],
 				"toversion": "",
-				"underlyingContentItemType": "script"
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Retrieves asset information from the Cortex platform using various filters. Use this action to automatically fetch asset details instead of prompting the user for asset-specific information.\n",
+				"fromversion": "8.12.0",
+				"id": "SearchAssets",
+				"name": "CortexListAssets",
+				"supportedModules": [
+					"agentix",
+					"xsiam",
+					"cloud_posture"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Retrieves findings, which represent the specific occurrences and technical details underlying an issue, from the Cortex platform using optional filter criteria.\n",
+				"fromversion": "8.12.0",
+				"id": "CortexListFindings",
+				"name": "CortexListFindings",
+				"supportedModules": [
+					"cloud",
+					"cloud_runtime_security",
+					"cloud_posture"
+				],
+				"toversion": "8.15.99",
+				"underlyingContentItemType": "command"
 			},
 			{
 				"category": "",
@@ -371,10 +333,10 @@
 			},
 			{
 				"category": "",
-				"description": "This action searches for application security issues based on a variety of filters. It returns detailed information about each issue, including asset names, CVSS and EPSS scores, issue status, urgency, and repository information.\n",
+				"description": "Create automated pull requests to fix multiple security issues in a single bulk operation. If more than 10 issues are provided, split them into multiple calls.\n",
 				"fromversion": "8.12.0",
-				"id": "CortexListAppSecIssues",
-				"name": "CortexListAppSecIssues",
+				"id": "CortexTriggerFixPullRequest",
+				"name": "CortexTriggerFixPullRequest",
 				"supportedModules": [
 					"cloud",
 					"cloud_posture",
@@ -385,30 +347,21 @@
 			},
 			{
 				"category": "",
-				"description": "Searches for endpoints (can also be referred as XDR Agents or Agents) based on provided filters and retrieves endpoints data.\n",
+				"description": "Retrieves Application Security Posture Management (ASPM) coverage statistics and detailed asset information\nbased on provided filters.\nNote: Due to a default value constraint on the asset result size, the asset data returned may be partial and not reflect the complete set of matching asset results.",
 				"fromversion": "8.12.0",
-				"id": "CortexListEndpoints",
-				"name": "CortexListEndpoints",
-				"toversion": "",
-				"underlyingContentItemType": "command"
-			},
-			{
-				"category": "",
-				"description": "Terminates a full process tree using its causality ID on a specified agent.",
-				"fromversion": "8.12.0",
-				"id": "CortexTerminateCausality",
-				"name": "CortexTerminateCausalityGroup",
-				"toversion": "",
-				"underlyingContentItemType": "command"
-			},
-			{
-				"category": "",
-				"description": "Lists compliance standards from Cortex based on specified filter criteria. Note: Due to a default value constraint on the result size, the data returned may be partial and not reflect the complete set of matching results.\n",
-				"fromversion": "8.12.0",
-				"id": "CortexListComplianceStandards",
-				"name": "CortexListComplianceStandards",
+				"id": "CortexListAppSecAssetCoverage",
+				"name": "CortexListAppSecAssetCoverage",
 				"toversion": "",
 				"underlyingContentItemType": "script"
+			},
+			{
+				"category": "",
+				"description": "Blocklists the specified SHA256 file hashes in Cortex by adding them to Cortex's blocklist. Skips any that already exist in Cortex's allowlist or blocklist. Optionally returns detailed results with counts of added and skipped hashes.\n",
+				"fromversion": "8.12.0",
+				"id": "CortexBlocklistFiles",
+				"name": "CortexBlockFile",
+				"toversion": "",
+				"underlyingContentItemType": "command"
 			},
 			{
 				"category": "",
@@ -423,6 +376,60 @@
 				],
 				"toversion": "",
 				"underlyingContentItemType": "script"
+			},
+			{
+				"category": "",
+				"description": "Terminates a specific process on an agent using its instance ID.",
+				"fromversion": "8.12.0",
+				"id": "CortexTerminateProcess",
+				"name": "CortexTerminateProcess",
+				"supportedModules": [
+					"xsiam",
+					"cloud_runtime_security",
+					"edr"
+				],
+				"toversion": "8.15.0",
+				"underlyingContentItemType": "script"
+			},
+			{
+				"category": "",
+				"description": "Updates the version of the specified endpoints (can also be referred as XDR Agents or Agents) to the provided target version, with optional scheduling support (days and hours).",
+				"fromversion": "8.12.0",
+				"id": "CortexUpdateEndpointVersion",
+				"name": "CortexUpdateEndpointVersion",
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Runs a specified playbook on a provided set of issue IDs.\n",
+				"fromversion": "8.12.0",
+				"id": "CortexRunPlaybook",
+				"name": "CortexRunPlaybook",
+				"supportedModules": [
+					"agentix",
+					"xsiam",
+					"cloud_posture",
+					"cloud",
+					"cloud_runtime_security",
+					"edr"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
+			},
+			{
+				"category": "",
+				"description": "Retrieves endpoints (can also be referred as XDR Agents or Agents) available update versions for the provided endpoint ID.\n",
+				"fromversion": "8.12.0",
+				"id": "CortexGetEndpointUpdateVersions",
+				"name": "CortexGetEndpointUpdateVersions",
+				"supportedModules": [
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"toversion": "",
+				"underlyingContentItemType": "command"
 			}
 		],
 		"agentixagent": null,
@@ -430,15 +437,6 @@
 		"agentixknowledgesource": null,
 		"agentixskill": null,
 		"automation": [
-			{
-				"description": "Computes the distance between two sets of coordinates, in miles.",
-				"fromversion": "6.6.0",
-				"id": "impossibleTravelerGetDistance",
-				"name": "impossibleTravelerGetDistance",
-				"tags": [
-					"Utilities"
-				]
-			},
 			{
 				"description": "Creates a new AppSec policy in Cortex Platform with defined conditions, scope, and triggers for application security governance.\nSupports all finding types (Vulnerabilities, Secrets, IaC Misconfiguration, Licenses, Operational Risk, Weaknesses, CI/CD Risk, Drift, Malware),\nfull scope filtering, and all five trigger types (periodic, PR, CI/CD, CI image, image registry).\n",
 				"fromversion": "8.14.0",
@@ -461,20 +459,29 @@
 				]
 			},
 			{
-				"description": "Searches for a specific indicator in the tenant's event and log data, and extracts the logs the indicator appears in.",
-				"fromversion": "6.1.0",
-				"id": "SearchIndicatorInEvents",
-				"name": "SearchIndicatorInEvents",
-				"tags": [
-					"Utilities"
-				]
-			},
-			{
 				"description": "Enable or disable scanners with the specified configuration.",
 				"fromversion": "8.13.0",
 				"id": "CasUpdateRepositoryScanConfiguration",
 				"internal": true,
 				"name": "CasUpdateRepositoryScanConfiguration",
+				"tags": [
+					"Utilities"
+				]
+			},
+			{
+				"description": "Computes the distance between two sets of coordinates, in miles.",
+				"fromversion": "6.6.0",
+				"id": "impossibleTravelerGetDistance",
+				"name": "impossibleTravelerGetDistance",
+				"tags": [
+					"Utilities"
+				]
+			},
+			{
+				"description": "Searches for a specific indicator in the tenant's event and log data, and extracts the logs the indicator appears in.",
+				"fromversion": "6.1.0",
+				"id": "SearchIndicatorInEvents",
+				"name": "SearchIndicatorInEvents",
 				"tags": [
 					"Utilities"
 				]
@@ -489,6 +496,311 @@
 		"incidenttype": null,
 		"indicatorfield": null,
 		"integration": [
+			{
+				"category": "Endpoint",
+				"commands": [
+					{
+						"description": "Calculates the distribution of values (counts and percentages) for specified categorical fields.",
+						"hidden": false,
+						"name": "core-get-asset-coverage-histogram"
+					},
+					{
+						"description": "Retrieves a list of assets (e.g., Repositories, CI/CD Pipelines, Container Image Repositories) along with their scan coverage status.",
+						"hidden": false,
+						"name": "core-get-asset-coverage"
+					},
+					{
+						"description": "Returns a list of issues and their metadata, which you can filter by built-in arguments or use the custom_filter to input a JSON filter object. \nMultiple filter arguments will be concatenated using the AND operator, while arguments that support a comma-separated list of values will use an OR operator between each value.",
+						"hidden": false,
+						"name": "core-get-issues"
+					},
+					{
+						"description": "Get asset information.",
+						"hidden": false,
+						"name": "core-get-asset-details"
+					},
+					{
+						"description": "Get extra data fields of a specific case, including issues and key artifacts.",
+						"hidden": false,
+						"name": "core-get-case-extra-data"
+					},
+					{
+						"description": "Updates the properties of an issue. This command does not provide an explicit indication of success.",
+						"hidden": false,
+						"name": "core-update-issue"
+					},
+					{
+						"description": "Retrieves asset from the Cortex platform using optional filter criteria.",
+						"hidden": false,
+						"name": "core-search-assets"
+					},
+					{
+						"description": "Searches for asset groups from the Cortex platform using one or more filter criteria.",
+						"hidden": false,
+						"name": "core-search-asset-groups"
+					},
+					{
+						"description": "Retrieves vulnerabilities based on specified filters.",
+						"hidden": false,
+						"name": "core-get-vulnerabilities"
+					},
+					{
+						"description": "Get comprehensive recommendations for an issue, including remediation steps, playbook suggestions, and recommended actions.",
+						"hidden": false,
+						"name": "core-get-issue-recommendations"
+					},
+					{
+						"description": "Create automated pull requests to fix multiple security issues in a single bulk operation.",
+						"hidden": false,
+						"name": "core-appsec-remediate-issue"
+					},
+					{
+						"description": "Enable or disable scanners with the specified configuration.",
+						"hidden": false,
+						"name": "core-enable-scanners"
+					},
+					{
+						"description": "Creates a new AppSec policy in Cortex Platform with defined conditions, scope, and triggers for application security governance.",
+						"hidden": false,
+						"name": "core-create-appsec-policy"
+					},
+					{
+						"description": "Get case information based on the specified filters.",
+						"hidden": false,
+						"name": "core-get-cases"
+					},
+					{
+						"description": "Retrieves application security issues based on specified filters.",
+						"hidden": false,
+						"name": "core-get-appsec-issues"
+					},
+					{
+						"description": "Retrieves endpoint support files based on specified endpoint IDs.",
+						"hidden": true,
+						"name": "core-get-endpoint-support-file",
+						"supportedModules": [
+							"cloud_runtime_security",
+							"xsiam",
+							"edr"
+						]
+					},
+					{
+						"description": "Sends endpoint heartbeat.",
+						"hidden": true,
+						"name": "core-send-endpoint-heartbeat"
+					},
+					{
+						"description": "Updates the properties of a case.",
+						"hidden": false,
+						"name": "core-update-case"
+					},
+					{
+						"description": "Runs a playbook on specific issue IDs.",
+						"hidden": true,
+						"name": "core-run-playbook"
+					},
+					{
+						"description": "Gets a list of scripts available in the scripts library.",
+						"hidden": true,
+						"name": "core-list-scripts",
+						"supportedModules": [
+							"cloud_runtime_security",
+							"edr",
+							"xsiam"
+						]
+					},
+					{
+						"description": "Run a script on endpoints.",
+						"hidden": true,
+						"name": "core-run-script-agentix",
+						"supportedModules": [
+							"cloud_runtime_security",
+							"edr",
+							"xsiam"
+						]
+					},
+					{
+						"description": "Retrieves endpoints based on the provided filters.",
+						"hidden": true,
+						"name": "core-list-endpoints",
+						"supportedModules": [
+							"cloud",
+							"cloud_runtime_security",
+							"cloud_posture",
+							"xsiam",
+							"edr"
+						]
+					},
+					{
+						"description": "Create new assessment profile.",
+						"hidden": true,
+						"name": "core-add-assessment-profile",
+						"supportedModules": [
+							"cloud_runtime_security",
+							"cloud_posture"
+						]
+					},
+					{
+						"description": "Create new assessment profile.",
+						"hidden": true,
+						"name": "core-list-compliance-standards",
+						"supportedModules": [
+							"cloud_runtime_security",
+							"cloud_posture"
+						]
+					},
+					{
+						"description": "Retrieves endpoint update versions for the provided endpoint IDs.",
+						"hidden": false,
+						"name": "core-get-endpoint-update-version",
+						"supportedModules": [
+							"cloud_runtime_security",
+							"edr",
+							"xsiam"
+						]
+					},
+					{
+						"description": "Updates the version of the given endpoint to the target version supplied.",
+						"hidden": false,
+						"name": "core-update-endpoint-version",
+						"supportedModules": [
+							"cloud_runtime_security",
+							"edr",
+							"xsiam"
+						]
+					},
+					{
+						"description": "Returns a list of exception rules and their metadata, which you can filter by built-in arguments. Multiple filter arguments will be concatenated using the AND operator, while arguments that support a comma-separated list of values will use an OR operator between each value.",
+						"hidden": true,
+						"name": "core-list-exception-rules"
+					},
+					{
+						"description": "Returns a list users and their core properties within the system. Results are limited to 50.",
+						"hidden": true,
+						"name": "core-list-system-users"
+					},
+					{
+						"description": "Execute an XQL query and retrieve a link to the query in the query center.\nIf set to wait for results, the command will be executed every 10 seconds until results are retrieved or until the timeout is reached.",
+						"hidden": true,
+						"name": "core-xql-generic-query-platform"
+					},
+					{
+						"description": "Retrieves resolution status information for a specific case.",
+						"hidden": true,
+						"name": "core-get-case-resolution-statuses"
+					},
+					{
+						"description": "Retrieves findings from the Cortex platform.",
+						"hidden": true,
+						"name": "core-list-findings"
+					},
+					{
+						"description": "Retrieves AI model activity information including usage statistics and inactive status.",
+						"hidden": true,
+						"name": "core-get-ai-model-activity"
+					},
+					{
+						"description": "Creates a new windows malware profile.",
+						"hidden": true,
+						"name": "core-create-windows-malware-profile"
+					},
+					{
+						"description": "Updates the specified Windows malware profile.",
+						"hidden": true,
+						"name": "core-update-windows-malware-profile"
+					},
+					{
+						"description": "Creates a new Windows exploit profile.",
+						"hidden": true,
+						"name": "core-create-windows-exploit-profile"
+					},
+					{
+						"description": "Updates the specified Windows exploit profile.",
+						"hidden": true,
+						"name": "core-update-windows-exploit-profile"
+					},
+					{
+						"description": "Deletes the provided profiles.",
+						"hidden": true,
+						"name": "core-delete-profile"
+					},
+					{
+						"description": "Retrieves information about broker VMs configured on the system.",
+						"hidden": true,
+						"name": "core-list-brokers"
+					},
+					{
+						"description": "Creates a new endpoint policy and applies it to specified endpoints. Automatically handles priority conflicts by shifting existing policies when needed.",
+						"hidden": true,
+						"name": "core-create-endpoint-policy"
+					},
+					{
+						"description": "Deletes one or more existing endpoint policies from the policy table.",
+						"hidden": true,
+						"name": "core-delete-endpoint-policy"
+					}
+				],
+				"description": "This integration uses the Cortex API to access all the core services and capabilities of the Cortex platform.",
+				"fromversion": "6.2.0",
+				"id": "Cortex Core - Platform",
+				"name": "Cortex Platform - Core",
+				"supportedModules": [
+					"xsiam",
+					"agentix",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr"
+				],
+				"toversion": ""
+			},
+			{
+				"category": "Data Enrichment \u0026 Threat Intelligence",
+				"commands": [
+					{
+						"description": "Sync your IOC with Cortex and delete the previous version.",
+						"hidden": false,
+						"name": "core-iocs-sync"
+					},
+					{
+						"description": "Push modified IOCs to Cortex.",
+						"hidden": false,
+						"name": "core-iocs-push"
+					},
+					{
+						"description": "Set sync time manually (Do not use this command unless you unredstandard the consequences).",
+						"hidden": false,
+						"name": "core-iocs-set-sync-time"
+					},
+					{
+						"description": "Creates the sync file for the manual process. Run this command when instructed by the Cortex support team.",
+						"hidden": false,
+						"name": "core-iocs-create-sync-file"
+					},
+					{
+						"description": "Enables IOCs in the Cortex tenant. Applies only to TIM-managed indicators (indicators synced/pushed by this integration); indicators from other sources are not affected.",
+						"hidden": false,
+						"name": "core-iocs-enable"
+					},
+					{
+						"description": "Disables IOCs in the Cortex server. Applies only to TIM-managed indicators (indicators synced/pushed by this integration); indicators from other sources are not affected.",
+						"hidden": false,
+						"name": "core-iocs-disable"
+					}
+				],
+				"description": "The Cortex Core - IOCs integration uses the Cortex API for detection and response, by natively integrating network, endpoint, and cloud data to stop sophisticated attacks.",
+				"fromversion": "5.5.0",
+				"id": "Cortex Core - IOC",
+				"name": "Indicators detection",
+				"supportedModules": [
+					"xsiam",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr"
+				],
+				"toversion": ""
+			},
 			{
 				"category": "Endpoint",
 				"commands": [
@@ -1056,311 +1368,6 @@
 				"category": "Endpoint",
 				"commands": [
 					{
-						"description": "Calculates the distribution of values (counts and percentages) for specified categorical fields.",
-						"hidden": false,
-						"name": "core-get-asset-coverage-histogram"
-					},
-					{
-						"description": "Retrieves a list of assets (e.g., Repositories, CI/CD Pipelines, Container Image Repositories) along with their scan coverage status.",
-						"hidden": false,
-						"name": "core-get-asset-coverage"
-					},
-					{
-						"description": "Returns a list of issues and their metadata, which you can filter by built-in arguments or use the custom_filter to input a JSON filter object. \nMultiple filter arguments will be concatenated using the AND operator, while arguments that support a comma-separated list of values will use an OR operator between each value.",
-						"hidden": false,
-						"name": "core-get-issues"
-					},
-					{
-						"description": "Get asset information.",
-						"hidden": false,
-						"name": "core-get-asset-details"
-					},
-					{
-						"description": "Get extra data fields of a specific case, including issues and key artifacts.",
-						"hidden": false,
-						"name": "core-get-case-extra-data"
-					},
-					{
-						"description": "Updates the properties of an issue. This command does not provide an explicit indication of success.",
-						"hidden": false,
-						"name": "core-update-issue"
-					},
-					{
-						"description": "Retrieves asset from the Cortex platform using optional filter criteria.",
-						"hidden": false,
-						"name": "core-search-assets"
-					},
-					{
-						"description": "Searches for asset groups from the Cortex platform using one or more filter criteria.",
-						"hidden": false,
-						"name": "core-search-asset-groups"
-					},
-					{
-						"description": "Retrieves vulnerabilities based on specified filters.",
-						"hidden": false,
-						"name": "core-get-vulnerabilities"
-					},
-					{
-						"description": "Get comprehensive recommendations for an issue, including remediation steps, playbook suggestions, and recommended actions.",
-						"hidden": false,
-						"name": "core-get-issue-recommendations"
-					},
-					{
-						"description": "Create automated pull requests to fix multiple security issues in a single bulk operation.",
-						"hidden": false,
-						"name": "core-appsec-remediate-issue"
-					},
-					{
-						"description": "Enable or disable scanners with the specified configuration.",
-						"hidden": false,
-						"name": "core-enable-scanners"
-					},
-					{
-						"description": "Creates a new AppSec policy in Cortex Platform with defined conditions, scope, and triggers for application security governance.",
-						"hidden": false,
-						"name": "core-create-appsec-policy"
-					},
-					{
-						"description": "Get case information based on the specified filters.",
-						"hidden": false,
-						"name": "core-get-cases"
-					},
-					{
-						"description": "Retrieves application security issues based on specified filters.",
-						"hidden": false,
-						"name": "core-get-appsec-issues"
-					},
-					{
-						"description": "Retrieves endpoint support files based on specified endpoint IDs.",
-						"hidden": true,
-						"name": "core-get-endpoint-support-file",
-						"supportedModules": [
-							"cloud_runtime_security",
-							"xsiam",
-							"edr"
-						]
-					},
-					{
-						"description": "Sends endpoint heartbeat.",
-						"hidden": true,
-						"name": "core-send-endpoint-heartbeat"
-					},
-					{
-						"description": "Updates the properties of a case.",
-						"hidden": false,
-						"name": "core-update-case"
-					},
-					{
-						"description": "Runs a playbook on specific issue IDs.",
-						"hidden": true,
-						"name": "core-run-playbook"
-					},
-					{
-						"description": "Gets a list of scripts available in the scripts library.",
-						"hidden": true,
-						"name": "core-list-scripts",
-						"supportedModules": [
-							"cloud_runtime_security",
-							"edr",
-							"xsiam"
-						]
-					},
-					{
-						"description": "Run a script on endpoints.",
-						"hidden": true,
-						"name": "core-run-script-agentix",
-						"supportedModules": [
-							"cloud_runtime_security",
-							"edr",
-							"xsiam"
-						]
-					},
-					{
-						"description": "Retrieves endpoints based on the provided filters.",
-						"hidden": true,
-						"name": "core-list-endpoints",
-						"supportedModules": [
-							"cloud",
-							"cloud_runtime_security",
-							"cloud_posture",
-							"xsiam",
-							"edr"
-						]
-					},
-					{
-						"description": "Create new assessment profile.",
-						"hidden": true,
-						"name": "core-add-assessment-profile",
-						"supportedModules": [
-							"cloud_runtime_security",
-							"cloud_posture"
-						]
-					},
-					{
-						"description": "Create new assessment profile.",
-						"hidden": true,
-						"name": "core-list-compliance-standards",
-						"supportedModules": [
-							"cloud_runtime_security",
-							"cloud_posture"
-						]
-					},
-					{
-						"description": "Retrieves endpoint update versions for the provided endpoint IDs.",
-						"hidden": false,
-						"name": "core-get-endpoint-update-version",
-						"supportedModules": [
-							"cloud_runtime_security",
-							"edr",
-							"xsiam"
-						]
-					},
-					{
-						"description": "Updates the version of the given endpoint to the target version supplied.",
-						"hidden": false,
-						"name": "core-update-endpoint-version",
-						"supportedModules": [
-							"cloud_runtime_security",
-							"edr",
-							"xsiam"
-						]
-					},
-					{
-						"description": "Returns a list of exception rules and their metadata, which you can filter by built-in arguments. Multiple filter arguments will be concatenated using the AND operator, while arguments that support a comma-separated list of values will use an OR operator between each value.",
-						"hidden": true,
-						"name": "core-list-exception-rules"
-					},
-					{
-						"description": "Returns a list users and their core properties within the system. Results are limited to 50.",
-						"hidden": true,
-						"name": "core-list-system-users"
-					},
-					{
-						"description": "Execute an XQL query and retrieve a link to the query in the query center.\nIf set to wait for results, the command will be executed every 10 seconds until results are retrieved or until the timeout is reached.",
-						"hidden": true,
-						"name": "core-xql-generic-query-platform"
-					},
-					{
-						"description": "Retrieves resolution status information for a specific case.",
-						"hidden": true,
-						"name": "core-get-case-resolution-statuses"
-					},
-					{
-						"description": "Retrieves findings from the Cortex platform.",
-						"hidden": true,
-						"name": "core-list-findings"
-					},
-					{
-						"description": "Retrieves AI model activity information including usage statistics and inactive status.",
-						"hidden": true,
-						"name": "core-get-ai-model-activity"
-					},
-					{
-						"description": "Creates a new windows malware profile.",
-						"hidden": true,
-						"name": "core-create-windows-malware-profile"
-					},
-					{
-						"description": "Updates the specified Windows malware profile.",
-						"hidden": true,
-						"name": "core-update-windows-malware-profile"
-					},
-					{
-						"description": "Creates a new Windows exploit profile.",
-						"hidden": true,
-						"name": "core-create-windows-exploit-profile"
-					},
-					{
-						"description": "Updates the specified Windows exploit profile.",
-						"hidden": true,
-						"name": "core-update-windows-exploit-profile"
-					},
-					{
-						"description": "Deletes the provided profiles.",
-						"hidden": true,
-						"name": "core-delete-profile"
-					},
-					{
-						"description": "Retrieves information about broker VMs configured on the system.",
-						"hidden": true,
-						"name": "core-list-brokers"
-					},
-					{
-						"description": "Creates a new endpoint policy and applies it to specified endpoints. Automatically handles priority conflicts by shifting existing policies when needed.",
-						"hidden": true,
-						"name": "core-create-endpoint-policy"
-					},
-					{
-						"description": "Deletes one or more existing endpoint policies from the policy table.",
-						"hidden": true,
-						"name": "core-delete-endpoint-policy"
-					}
-				],
-				"description": "This integration uses the Cortex API to access all the core services and capabilities of the Cortex platform.",
-				"fromversion": "6.2.0",
-				"id": "Cortex Core - Platform",
-				"name": "Cortex Platform - Core",
-				"supportedModules": [
-					"xsiam",
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr"
-				],
-				"toversion": ""
-			},
-			{
-				"category": "Data Enrichment \u0026 Threat Intelligence",
-				"commands": [
-					{
-						"description": "Sync your IOC with Cortex and delete the previous version.",
-						"hidden": false,
-						"name": "core-iocs-sync"
-					},
-					{
-						"description": "Push modified IOCs to Cortex.",
-						"hidden": false,
-						"name": "core-iocs-push"
-					},
-					{
-						"description": "Set sync time manually (Do not use this command unless you unredstandard the consequences).",
-						"hidden": false,
-						"name": "core-iocs-set-sync-time"
-					},
-					{
-						"description": "Creates the sync file for the manual process. Run this command when instructed by the Cortex support team.",
-						"hidden": false,
-						"name": "core-iocs-create-sync-file"
-					},
-					{
-						"description": "Enables IOCs in the Cortex tenant. Applies only to TIM-managed indicators (indicators synced/pushed by this integration); indicators from other sources are not affected.",
-						"hidden": false,
-						"name": "core-iocs-enable"
-					},
-					{
-						"description": "Disables IOCs in the Cortex server. Applies only to TIM-managed indicators (indicators synced/pushed by this integration); indicators from other sources are not affected.",
-						"hidden": false,
-						"name": "core-iocs-disable"
-					}
-				],
-				"description": "The Cortex Core - IOCs integration uses the Cortex API for detection and response, by natively integrating network, endpoint, and cloud data to stop sophisticated attacks.",
-				"fromversion": "5.5.0",
-				"id": "Cortex Core - IOC",
-				"name": "Indicators detection",
-				"supportedModules": [
-					"xsiam",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr"
-				],
-				"toversion": ""
-			},
-			{
-				"category": "Endpoint",
-				"commands": [
-					{
 						"description": "Execute an XQL query and retrieve results of an executed XQL query API. The command will be executed every 10 seconds until results are retrieved or until a timeout error is raised.\nWhen more than 1000 results are retrieved, the command will return a compressed gzipped JSON format file,\nunless the argument 'parse_result_file_to_context' is set to true and then the results will be extracted to the context.",
 						"hidden": false,
 						"name": "xdr-xql-generic-query"
@@ -1461,7 +1468,7 @@
 			{
 				"description": "",
 				"group": "incident",
-				"name": "Default"
+				"name": "Default XDR Alert"
 			},
 			{
 				"description": "",
@@ -1471,7 +1478,7 @@
 			{
 				"description": "",
 				"group": "incident",
-				"name": "Default XDR Alert"
+				"name": "Default"
 			}
 		],
 		"list": [
@@ -1486,168 +1493,10 @@
 		],
 		"playbook": [
 			{
-				"description": "IOCs provide the ability to alert on known malicious objects on endpoints across the organization. \n\n**Analysis Actions:**\nThe playbook will use several enrichment sources to determine the IOC verdict. Additionally, will use the Analytics module to run a prevalence check for the IOC.\n\n**Response Actions:**\nThe playbook's first response action is a containment plan that is based on the playbook input. In that phase, the playbook will execute endpoint isolation\n\n**Investigative Actions:**\nWhen the playbook executes, it checks for additional abnormal activity using the Endpoint Investigation Plan playbook that can indicate the endpoint might be compromised.\n\n**Remediation Actions:**\nIn case results are found within the investigation phase, the playbook will execute remediation actions that include containment and eradication.\n\nThis phase will execute the following containment actions:\n\n* File quarantine\n* Endpoint isolation\n\nAnd the following eradication actions:\n\n* Manual process termination\n* Manual file deletion.",
-				"fromversion": "6.6.0",
-				"id": "IOC Alert",
-				"name": "IOC Alert",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "This playbook manages communication for the approval of a requested issue exception.",
-				"fromversion": "8.14.0",
-				"id": "Issue Exception Approval",
-				"internal": true,
-				"name": "Issue Exception Approval",
-				"tags": []
-			},
-			{
-				"description": "This playbook investigates a “Possible External RDP Brute Force” XDR Alert by gathering user, IP, and hostname information, and investigating if the following suspicious elements exists:\n\n- \"IP Reputation\" - DBot Score is 2-3 \n- \"Source geolocation\" - RDP Connection made from rare geo-location \n- Related to campaign - IP address is related to campaign, based on TIM module\n- Hunting results - the hunt for indicators related to the source IP and the related campaign returned results\n- XDR Alert search - XDR Alerts that related to the same username and endpoint, and to the MITRE tactics that comes after \"Credential Access\", were found.\n- Risky User - The user that was identified in the attack was given a medium or high score by the Core integration's ITDR module.\n- Risky Host - The destination host that was identified in the attack was given a medium or high score by the Core integration's ITDR module.\n\nSet verdict method:\n* Critical Element - The \"Critical Element\" input allows you to select a specific element that, if identified as suspicious, the investigation's final verdict will be deemed a \"True Positive\".\n\n* Final Verdict - Each suspicious element is being added to an array called \"Suspicious Elements\", which is used to count potential security threats. The array size will be compared to a final threshold. If the size is greater than or equal to the threshold, the investigation's final verdict will be deemed a \"True Positive\".\n\n* User Engagement - The \"UserEngagementThreshold\" input allows you to set the number of suspicious elements that trigger user engagement. When this threshold is met, an email will be sent to the user and their manager asking for authorization of RDP activity. If the RDP activity is not authorized by the user, the investigation's final verdict will be deemed a \"True Positive\".\n",
-				"fromversion": "6.8.0",
-				"id": "Possible External RDP Brute-Force",
-				"name": "Possible External RDP Brute-Force",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "When an unknown executable, DLL, or macro attempts to run on a Windows or Mac endpoint, the Cortex XDR agent uses local analysis to determine if it is likely to be malware. Local analysis uses a static set of pattern-matching rules that inspect multiple file features and attributes, and a statistical model that was developed with machine learning on WildFire threat intelligence.\n\n**Investigative Actions:**\n\nInvestigate the executed process image and verify if it is malicious using:\n\n* XDR trusted signers\n* VT trusted signers\n* VT detection rate\n* NSRL DB\n\n**Response Actions**\n\nThe playbook's first response action is a containment plan that is based on the initial data provided within the alert. In that phase, the playbook will execute:\n\n* Auto block indicators\n* Auto file quarantine\n* Manual endpoint isolation\n\nWhen the playbook executes, it checks for additional activity using the Endpoint Investigation Plan playbook, and another phase, which includes containment and eradication, is executed.\n\nThis phase will execute the following containment actions:\n\n* Manual block indicators\n* Manual file quarantine\n* Auto endpoint isolation\n\nAnd the following eradication actions:\n\n* Manual process termination\n* Manual file deletion\n* Manual reset of the user’s password\n\nExternal resources:\n\n[Malware Protection Flow](https://docs-cortex.paloaltonetworks.com/r/Cortex-XSIAM/Cortex-XSIAM-Administrator-Guide/File-Analysis-and-Protection-Flow)",
-				"fromversion": "6.6.0",
-				"id": "Local Analysis alert Investigation",
-				"name": "Local Analysis alert Investigation",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
 				"description": "This playbook handles WildFire Malware alerts.\nIt performs enrichment on the different alert entities and establishes a verdict.\nFor a possible true positive alert, the playbook performs further investigation for related IOCs and executes a containment plan.",
 				"fromversion": "6.6.0",
 				"id": "WildFire Malware",
 				"name": "WildFire Malware",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "Deprecated. Use `Cloud IAM User Access Investigation` instead. Respond to Cortex XDR Cloud alerts where an AWS IAM user`s access key is used suspiciously to access the cloud environment. \nThe following alerts are supported for AWS environments.\n- Penetration testing tool attempt\n- Penetration testing tool activity\n- Suspicious API call from a Tor exit node\n This is a beta playbook, which lets you implement and test pre-release software. Although AWS is supported, we are working towards multi-cloud support. As the playbook is beta, it might contain bugs. Updates to the playbook during the beta phase might include non-backward compatible features. We encourage your feedback on the quality and usability of the content to help us identify and fix issues, so we can continually improve the content.\n",
-				"fromversion": "6.6.0",
-				"id": "AWS IAM User Access Investigation - Remediation",
-				"name": "AWS IAM User Access Investigation - Remediation",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "This playbook get as an input all of the involved IP addresses and identities from the Impossible Traveler playbook alert, and enriches them based on the following:\n* Geo location\n* Active Directory\n* IP enrichment e.g. VirusTotal, AbuseIPDB, etc.",
-				"fromversion": "6.6.0",
-				"id": "Impossible Traveler - Enrichment",
-				"name": "Impossible Traveler - Enrichment",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "The `Identity Analytics - Alert Handling` playbook is designed to handle Identity Analytics alerts and executes the following:\n\nAnalysis:\n- Enriches the Indicators and the account, providing additional context and information about these indicators.\n\nVerdict:\n- Determines the appropriate verdict based on the data collected from the enrichment phase.\n\nInvestigation:\n- Checks for related XDR alerts to the user by Mitre tactics to identify malicious activity.\n- Checks for specific arguments for malicious usage from Okta using the 'Okta User Investigation' sub-playbook.\n- Checks for specific arguments for malicious usage from Azure using the 'Azure User Investigation' sub-playbook.\n\nVerdict Handling:\n- Handles malicious alerts by initiating appropriate response actions, including blocking malicious IP and revoking or clearing user's sessions.\n- Handles non-malicious alerts identified during the investigation.",
-				"fromversion": "6.10.0",
-				"id": "Identity Analytics - Alert Handling",
-				"name": "Identity Analytics - Alert Handling",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "This playbook handles impossible traveler alerts.\n\nAn Impossible Traveler event occurs when multiple login attempts seen for a user from multiple remote countries in a short period of time, which shouldn't be possible. This may indicate the account is compromised.\n\n**Attacker's Goals:**\n\nGain user-account credentials.\n\n**Investigative Actions:**\n\nInvestigate the IP addresses and identities involved in the detected activity using:\n\n* Impossible Traveler - Enrichment playbook\n* CalculateGeoDistance automation\n\n**Response Actions**\n\nThe playbook's first response actions are based on the data available within the alert. In that phase, the playbook will execute:\n\n* Manual block indicators if the IP address found malicious\n* Manual disable user\n* Manual clear of the user’s sessions (Okta)\n\nWhen the playbook continues, after validating the activity with the user’s manager, another phase of response actions is being executed, which includes:\n\n* Auto block indicators \n\n\n**External Resources:**\n\n[Impossible traveler alert](https://docs-cortex.paloaltonetworks.com/r/Cortex-XDR-Analytics-Alert-Reference/Impossible-traveler-SSO)",
-				"fromversion": "6.6.0",
-				"id": "Impossible Traveler Response",
-				"name": "Impossible Traveler Response",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "This playbook creating an array called \"Suspicious Elements\", which is used to count potential security threats. The following elements can be added to the array:\n\n- \"IP Reputation\" - DBot Score is 2-3 \n- \"Source geolocation\" - RDP Connection made from rare geo-location \n- Related to campaign - IP address is related to campaign, based on TIM module\n- Hunting results - the hunt for indicators related to the source IP and the related campaign returned results\n- XDR Alert search - XDR Alerts that related to the same username and endpoint, and to the MITRE tactics that comes after \"Credential Access\", were found.\n- Risky User - one or more risky users are involved in the alert, as identified by the Cortex Core - IR integration's ITDR module.\n- Risky Host - one or more risky hosts are involved in the alert, as identified by the Cortex Core - IR integration's ITDR module.\n\nThe array will then be outputted and its size will be compared to a final threshold. If the size is greater than or equal to the threshold, the investigation's final verdict will be deemed a \"True Positive.\"",
-				"fromversion": "6.8.0",
-				"id": "Possible External RDP Brute-Force - Set Verdict",
-				"name": "Possible External RDP Brute-Force - Set Verdict",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "This playbook detects the ransomware type and searches for available decryptors.\n\nThe playbook uses the ID-Ransomware service, which allows you to detect the ransomware using multiple methods.",
-				"fromversion": "6.6.0",
-				"id": "Ransomware Advanced Analysis",
-				"name": "Ransomware Advanced Analysis",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "This playbook searches XDR alerts related to specific entities, on a given timeframe, based on MITRE tactics.\nNote: The playbook's inputs enable manipulating the execution flow. Read the input descriptions for details.",
-				"fromversion": "6.8.0",
-				"id": "Get entity alerts by MITRE tactics",
-				"name": "Get entity alerts by MITRE tactics",
 				"supportedModules": [
 					"agentix",
 					"cloud",
@@ -1674,6 +1523,36 @@
 				"tags": []
 			},
 			{
+				"description": "When an unknown executable, DLL, or macro attempts to run on a Windows or Mac endpoint, the Cortex XDR agent uses local analysis to determine if it is likely to be malware. Local analysis uses a static set of pattern-matching rules that inspect multiple file features and attributes, and a statistical model that was developed with machine learning on WildFire threat intelligence.\n\n**Investigative Actions:**\n\nInvestigate the executed process image and verify if it is malicious using:\n\n* XDR trusted signers\n* VT trusted signers\n* VT detection rate\n* NSRL DB\n\n**Response Actions**\n\nThe playbook's first response action is a containment plan that is based on the initial data provided within the alert. In that phase, the playbook will execute:\n\n* Auto block indicators\n* Auto file quarantine\n* Manual endpoint isolation\n\nWhen the playbook executes, it checks for additional activity using the Endpoint Investigation Plan playbook, and another phase, which includes containment and eradication, is executed.\n\nThis phase will execute the following containment actions:\n\n* Manual block indicators\n* Manual file quarantine\n* Auto endpoint isolation\n\nAnd the following eradication actions:\n\n* Manual process termination\n* Manual file deletion\n* Manual reset of the user’s password\n\nExternal resources:\n\n[Malware Protection Flow](https://docs-cortex.paloaltonetworks.com/r/Cortex-XSIAM/Cortex-XSIAM-Administrator-Guide/File-Analysis-and-Protection-Flow)",
+				"fromversion": "6.6.0",
+				"id": "Local Analysis alert Investigation",
+				"name": "Local Analysis alert Investigation",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "This playbook handles impossible traveler alerts.\n\nAn Impossible Traveler event occurs when multiple login attempts seen for a user from multiple remote countries in a short period of time, which shouldn't be possible. This may indicate the account is compromised.\n\n**Attacker's Goals:**\n\nGain user-account credentials.\n\n**Investigative Actions:**\n\nInvestigate the IP addresses and identities involved in the detected activity using:\n\n* Impossible Traveler - Enrichment playbook\n* CalculateGeoDistance automation\n\n**Response Actions**\n\nThe playbook's first response actions are based on the data available within the alert. In that phase, the playbook will execute:\n\n* Manual block indicators if the IP address found malicious\n* Manual disable user\n* Manual clear of the user’s sessions (Okta)\n\nWhen the playbook continues, after validating the activity with the user’s manager, another phase of response actions is being executed, which includes:\n\n* Auto block indicators \n\n\n**External Resources:**\n\n[Impossible traveler alert](https://docs-cortex.paloaltonetworks.com/r/Cortex-XDR-Analytics-Alert-Reference/Impossible-traveler-SSO)",
+				"fromversion": "6.6.0",
+				"id": "Impossible Traveler Response",
+				"name": "Impossible Traveler Response",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
 				"description": "Deprecated. Use `Cloud IAM User Access Investigation` instead. Investigate and respond to Cortex XSIAM alerts where an AWS IAM user`s access key is used suspiciously to access the cloud environment. \nThe following alerts are supported for AWS environments.\n- Penetration testing tool attempt\n- Penetration testing tool activity\n- Suspicious API call from a Tor exit node\n This is a beta playbook, which lets you implement and test pre-release software. Although AWS is supported, we are working towards multi-cloud support. As the playbook is beta, it might contain bugs. Updates to the playbook during the beta phase might include non-backward compatible features. We encourage feedback on the quality and usability of the content to help us identify and fix issues, so we can continually improve the content.\n",
 				"fromversion": "6.6.0",
 				"id": "AWS IAM User Access Investigation",
@@ -1689,70 +1568,18 @@
 				"tags": []
 			},
 			{
-				"description": "The playbook investigates Cortex XDR alerts involving large upload alerts. \nThe playbook consists of the following procedures:\n- Searches for similar previous alerts that were closed as false positives.\n- Enrichment and investigation of the initiator and destination hostname and IP address.\n- Enrichment and investigation of the initiator user, process, file, or command if it exists.\n- Detection of related indicators and analysis of the relationship between the detected indicators.\n- Utilize the detected indicators to conduct threat hunting.\n- Blocks detected malicious indicators.\n- Endpoint isolation.\nThis playbook supports the following Cortex XDR alert names:\n- Large Upload (Generic)\n- Large Upload (SMTP)\n- Large Upload (FTP)\n- Large Upload (HTTPS)",
-				"fromversion": "6.10.0",
-				"id": "Large Upload Alert",
-				"name": "Large Upload Alert",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
+				"description": "This playbook manages communication for the approval of a requested issue exception.",
+				"fromversion": "8.14.0",
+				"id": "Issue Exception Approval",
+				"internal": true,
+				"name": "Issue Exception Approval",
 				"tags": []
 			},
 			{
-				"description": "This playbook is responsible for ransomware alert data enrichment and response.\nThe playbook executes the following:\n\n1.Checks if the initiator is a remote attacker and allows isolating the remote host, if possible.\n\n2.Retrieves the WildFire sandbox report and extract the indicators within it.\n    * The playbook tries to retrieve the report, but if there is no report available, the playbook tries to fetch the ransomware file for detonation.\n\n3.Hunts for the ransomware alert indicators from the alert table, searches for endpoints that have been seen with them, and allows containing the identified endpoints.",
+				"description": "This playbook get as an input all of the involved IP addresses and identities from the Impossible Traveler playbook alert, and enriches them based on the following:\n* Geo location\n* Active Directory\n* IP enrichment e.g. VirusTotal, AbuseIPDB, etc.",
 				"fromversion": "6.6.0",
-				"id": "Ransomware Enrich and Contain",
-				"name": "Ransomware Enrich and Contain",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "The \"Remote PsExec-like LOLBIN Command Execution\" playbook is designed to address and respond to alerts indicating suspicious activities related to remote PsExec-like LOLBIN command execution from an unsigned non-standard source. \nThe playbook aims to efficiently:\n\n- Check if the execution is blocked. If not will terminate the process (Manually by default).\n- Enrich any entities and indicators from the alert and find any related campaigns.\n- Perform command analysis to provide insights and verdict for the executed command.\n- Perform further endpoint investigation using XDR.\n- Checks for any malicious verdict found to raise the severity of the alert.\n- Perform Automatic/Manual remediation response by blocking any malicious indicators found.\n\nThe playbook is designed to run as a sub-playbook in ‘Cortex XDR Alert Handling - v3 \u0026 Cortex XDR Alerts Handling’.\nIt depends on the data from the parent playbooks and can not be used as a standalone version.",
-				"fromversion": "6.10.0",
-				"id": "Remote PsExec with LOLBIN command execution alert",
-				"name": "Remote PsExec with LOLBIN command execution alert",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "This playbook handles ransomware alerts based on the Cortex XDR Traps module signature 'Suspicious File Modification'\n\n**Attacker’s Goals:**\n\nAn attacker is attempting to encrypt the victim files for either extortion or destruction purposes.\n\n**Investigative Actions:**\n\nInvestigate the executed process image and verify if it is malicious using:\n\nXDR trusted signers\n\nVT trusted signers\n\nVT detection rate\n\nNSRL DB\n\n**Response Actions:**\n\nThe playbook’s first response action is a remediation plan which includes two sub-playbooks, **Containment Plan** and **Eradication Plan**, which is based on the initial data provided within the alert. In that phase, the playbooks will execute:\n\nAuto endpoint isolation\n\nAuto block indicators\n\nAuto file quarantine\n\nAuto user disable\n\nAuto process termination\n\nNext, the playbook executes an enrichment and response phase which includes two sub-playbooks, **Ransomware Enrich and Contain** \u0026 **Account Enrichment - Generic v2.1**.\nThe Ransomware Enrich and Contain playbook does the following:\n\n1.Checks if the initiator is a remote attacker and allows isolating the remote host, if possible. \n\n2.Retrieves the WildFire sandbox report and extracts the indicators within it. * The playbook tries to retrieve the report, but if there is no report available, the playbook tries to fetch the ransomware file for detonation. \n\n3.Hunts for the ransomware alert indicators from the alert table, searches for endpoints that have been seen with them, and allows containing the identified endpoints.\n\nNext, an advanced analysis playbook, which is currently done mostly manually, will be executed. This sub-playbook, **Ransomware Advanced Analysis** allows the analyst to upload the ransomware note and for the ransomware identification. Using the **ID-Ransomware** service, the analyst will be able to get the ransomware type and the decryptor if available.\n\nWhen the playbook executes, it checks for additional activity using the Endpoint Investigation Plan playbook, and another phase, which includes the Containment Plan sub-playbook, is executed.\n\n**This phase will execute the following containment actions:**\n\nManual block indicators\n\nManual file quarantine\n\nAuto endpoint isolation\n\nFinally, the recovery phase is executed. If the analysts decides to continue with the investigation rather than recover and close the alert, a manual task with **CISA** official ransomware investigation checklist is provided for further investigation.\n\n**External resources:**\n\n[MITRE Technique T1486](https://attack.mitre.org/techniques/T1486/)\n\n[CISA Ransomware Guide](https://www.cisa.gov/stopransomware/ransomware-guide)",
-				"fromversion": "6.6.0",
-				"id": "Ransomware Response",
-				"name": "Ransomware Response",
-				"supportedModules": [
-					"agentix",
-					"cloud",
-					"cloud_posture",
-					"cloud_runtime_security",
-					"edr",
-					"xsiam"
-				],
-				"tags": []
-			},
-			{
-				"description": "This playbook handles command and scripting interpreter alerts based on the MITRE T1059 technique.\nAn attacker might abuse command and script interpreters to execute commands, scripts, or binaries.\nMost systems come with some kind of built-in command line interface and scripting capabilities. For example, macOS and Linux distributions include some form of Unix Shell while Windows installations include the Windows Command Shell and PowerShell.\n\n\n**Attacker's Goals:**\n\nAn attacker can abuse these technologies in various ways as a means of executing arbitrary commands. Commands and scripts can be embedded in initial access payloads delivered to victims as lure documents or as secondary payloads downloaded from an existing C2. An attacker may also execute commands through interactive terminals/shells, as well as utilize various remote services to achieve remote execution.\n\n**Analysis**\n\nDue to the nature of this technique and the usage of built-in command line interfaces, the first step of the playbook is to analyze the command line. \nThe command line analysis does the following:\n- Checks and decodes base64\n- Extracts and enriches indicators from the command line\n- Checks specific arguments for malicious usage \n\n**Investigative Actions:**\nThe playbook checks for additional activity using the 'Endpoint Investigation Plan' playbook and utilizes the power of insight alerts.\n\n**Response Actions**\n\nAfter analyzing the data, the playbook's first response action is to contain the threat based on the initial data provided within the alert. In this phase, the playbook will:\n\n* Isolate the endpoint based on playbook inputs.\n\nWhen the playbook proceeds, it checks for additional activity using the 'Endpoint Investigation Plan' playbook. It then continues with the next stage, which includes, containment and eradication.\n\nThis phase executes the following containment actions:\n\n* Automatically isolates the endpoint\n\nIt then continues with the following eradication actions:\n\n* process termination",
-				"fromversion": "6.6.0",
-				"id": "T1059 - Command and Scripting Interpreter",
-				"name": "T1059 - Command and Scripting Interpreter",
+				"id": "Impossible Traveler - Enrichment",
+				"name": "Impossible Traveler - Enrichment",
 				"supportedModules": [
 					"agentix",
 					"cloud",
@@ -1779,10 +1606,190 @@
 				"tags": []
 			},
 			{
+				"description": "This playbook handles ransomware alerts based on the Cortex XDR Traps module signature 'Suspicious File Modification'\n\n**Attacker’s Goals:**\n\nAn attacker is attempting to encrypt the victim files for either extortion or destruction purposes.\n\n**Investigative Actions:**\n\nInvestigate the executed process image and verify if it is malicious using:\n\nXDR trusted signers\n\nVT trusted signers\n\nVT detection rate\n\nNSRL DB\n\n**Response Actions:**\n\nThe playbook’s first response action is a remediation plan which includes two sub-playbooks, **Containment Plan** and **Eradication Plan**, which is based on the initial data provided within the alert. In that phase, the playbooks will execute:\n\nAuto endpoint isolation\n\nAuto block indicators\n\nAuto file quarantine\n\nAuto user disable\n\nAuto process termination\n\nNext, the playbook executes an enrichment and response phase which includes two sub-playbooks, **Ransomware Enrich and Contain** \u0026 **Account Enrichment - Generic v2.1**.\nThe Ransomware Enrich and Contain playbook does the following:\n\n1.Checks if the initiator is a remote attacker and allows isolating the remote host, if possible. \n\n2.Retrieves the WildFire sandbox report and extracts the indicators within it. * The playbook tries to retrieve the report, but if there is no report available, the playbook tries to fetch the ransomware file for detonation. \n\n3.Hunts for the ransomware alert indicators from the alert table, searches for endpoints that have been seen with them, and allows containing the identified endpoints.\n\nNext, an advanced analysis playbook, which is currently done mostly manually, will be executed. This sub-playbook, **Ransomware Advanced Analysis** allows the analyst to upload the ransomware note and for the ransomware identification. Using the **ID-Ransomware** service, the analyst will be able to get the ransomware type and the decryptor if available.\n\nWhen the playbook executes, it checks for additional activity using the Endpoint Investigation Plan playbook, and another phase, which includes the Containment Plan sub-playbook, is executed.\n\n**This phase will execute the following containment actions:**\n\nManual block indicators\n\nManual file quarantine\n\nAuto endpoint isolation\n\nFinally, the recovery phase is executed. If the analysts decides to continue with the investigation rather than recover and close the alert, a manual task with **CISA** official ransomware investigation checklist is provided for further investigation.\n\n**External resources:**\n\n[MITRE Technique T1486](https://attack.mitre.org/techniques/T1486/)\n\n[CISA Ransomware Guide](https://www.cisa.gov/stopransomware/ransomware-guide)",
+				"fromversion": "6.6.0",
+				"id": "Ransomware Response",
+				"name": "Ransomware Response",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
 				"description": "This playbook handles masquerading alerts based on the MITRE T1036 technique.\nAn attacker might leverage Microsoft Windows well-known image names to run malicious processes without being caught.\n\n**Attacker's Goals:**\n\nAn attacker is attempting to masquerade as standard windows images by using a trusted name to execute malicious code.\n\n**Investigative Actions:**\n\nInvestigate the executed process image and verify if it is malicious using:\n\n* XDR trusted signers\n* VT trusted signers\n* VT detection rate\n* NSRL DB\n\n**Response Actions**\n\nThe playbook's first response action is a containment plan which is based on the initial data provided within the alert. In that phase, the playbook will execute:\n\n* Auto block indicators\n* Auto file quarantine\n* Manual endpoint isolation\n\nWhen the playbook executes, it checks for additional activity using the Endpoint Investigation Plan playbook, and another phase, which includes containment and eradication, is executed.\n\nThis phase will execute the following containment actions:\n\n* Manual block indicators\n* Manual file quarantine\n* Auto endpoint isolation\n\nAnd the following eradication actions:\n\n* Manual process termination\n* Manual file deletion\n* Manual reset of the user’s password\n\nExternal resources:\n\n[MITRE Technique T1036](https://attack.mitre.org/techniques/T1036/)\n\n[Possible Microsoft process masquerading](https://docs-cortex.paloaltonetworks.com/r/Cortex-XDR-Analytics-Alert-Reference/Possible-Microsoft-process-masquerading)",
 				"fromversion": "6.6.0",
 				"id": "T1036 - Masquerading",
 				"name": "T1036 - Masquerading",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "This playbook creating an array called \"Suspicious Elements\", which is used to count potential security threats. The following elements can be added to the array:\n\n- \"IP Reputation\" - DBot Score is 2-3 \n- \"Source geolocation\" - RDP Connection made from rare geo-location \n- Related to campaign - IP address is related to campaign, based on TIM module\n- Hunting results - the hunt for indicators related to the source IP and the related campaign returned results\n- XDR Alert search - XDR Alerts that related to the same username and endpoint, and to the MITRE tactics that comes after \"Credential Access\", were found.\n- Risky User - one or more risky users are involved in the alert, as identified by the Cortex Core - IR integration's ITDR module.\n- Risky Host - one or more risky hosts are involved in the alert, as identified by the Cortex Core - IR integration's ITDR module.\n\nThe array will then be outputted and its size will be compared to a final threshold. If the size is greater than or equal to the threshold, the investigation's final verdict will be deemed a \"True Positive.\"",
+				"fromversion": "6.8.0",
+				"id": "Possible External RDP Brute-Force - Set Verdict",
+				"name": "Possible External RDP Brute-Force - Set Verdict",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "This playbook investigates a “Possible External RDP Brute Force” XDR Alert by gathering user, IP, and hostname information, and investigating if the following suspicious elements exists:\n\n- \"IP Reputation\" - DBot Score is 2-3 \n- \"Source geolocation\" - RDP Connection made from rare geo-location \n- Related to campaign - IP address is related to campaign, based on TIM module\n- Hunting results - the hunt for indicators related to the source IP and the related campaign returned results\n- XDR Alert search - XDR Alerts that related to the same username and endpoint, and to the MITRE tactics that comes after \"Credential Access\", were found.\n- Risky User - The user that was identified in the attack was given a medium or high score by the Core integration's ITDR module.\n- Risky Host - The destination host that was identified in the attack was given a medium or high score by the Core integration's ITDR module.\n\nSet verdict method:\n* Critical Element - The \"Critical Element\" input allows you to select a specific element that, if identified as suspicious, the investigation's final verdict will be deemed a \"True Positive\".\n\n* Final Verdict - Each suspicious element is being added to an array called \"Suspicious Elements\", which is used to count potential security threats. The array size will be compared to a final threshold. If the size is greater than or equal to the threshold, the investigation's final verdict will be deemed a \"True Positive\".\n\n* User Engagement - The \"UserEngagementThreshold\" input allows you to set the number of suspicious elements that trigger user engagement. When this threshold is met, an email will be sent to the user and their manager asking for authorization of RDP activity. If the RDP activity is not authorized by the user, the investigation's final verdict will be deemed a \"True Positive\".\n",
+				"fromversion": "6.8.0",
+				"id": "Possible External RDP Brute-Force",
+				"name": "Possible External RDP Brute-Force",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "The playbook investigates Cortex XDR alerts involving large upload alerts. \nThe playbook consists of the following procedures:\n- Searches for similar previous alerts that were closed as false positives.\n- Enrichment and investigation of the initiator and destination hostname and IP address.\n- Enrichment and investigation of the initiator user, process, file, or command if it exists.\n- Detection of related indicators and analysis of the relationship between the detected indicators.\n- Utilize the detected indicators to conduct threat hunting.\n- Blocks detected malicious indicators.\n- Endpoint isolation.\nThis playbook supports the following Cortex XDR alert names:\n- Large Upload (Generic)\n- Large Upload (SMTP)\n- Large Upload (FTP)\n- Large Upload (HTTPS)",
+				"fromversion": "6.10.0",
+				"id": "Large Upload Alert",
+				"name": "Large Upload Alert",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "This playbook searches XDR alerts related to specific entities, on a given timeframe, based on MITRE tactics.\nNote: The playbook's inputs enable manipulating the execution flow. Read the input descriptions for details.",
+				"fromversion": "6.8.0",
+				"id": "Get entity alerts by MITRE tactics",
+				"name": "Get entity alerts by MITRE tactics",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "IOCs provide the ability to alert on known malicious objects on endpoints across the organization. \n\n**Analysis Actions:**\nThe playbook will use several enrichment sources to determine the IOC verdict. Additionally, will use the Analytics module to run a prevalence check for the IOC.\n\n**Response Actions:**\nThe playbook's first response action is a containment plan that is based on the playbook input. In that phase, the playbook will execute endpoint isolation\n\n**Investigative Actions:**\nWhen the playbook executes, it checks for additional abnormal activity using the Endpoint Investigation Plan playbook that can indicate the endpoint might be compromised.\n\n**Remediation Actions:**\nIn case results are found within the investigation phase, the playbook will execute remediation actions that include containment and eradication.\n\nThis phase will execute the following containment actions:\n\n* File quarantine\n* Endpoint isolation\n\nAnd the following eradication actions:\n\n* Manual process termination\n* Manual file deletion.",
+				"fromversion": "6.6.0",
+				"id": "IOC Alert",
+				"name": "IOC Alert",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "This playbook handles command and scripting interpreter alerts based on the MITRE T1059 technique.\nAn attacker might abuse command and script interpreters to execute commands, scripts, or binaries.\nMost systems come with some kind of built-in command line interface and scripting capabilities. For example, macOS and Linux distributions include some form of Unix Shell while Windows installations include the Windows Command Shell and PowerShell.\n\n\n**Attacker's Goals:**\n\nAn attacker can abuse these technologies in various ways as a means of executing arbitrary commands. Commands and scripts can be embedded in initial access payloads delivered to victims as lure documents or as secondary payloads downloaded from an existing C2. An attacker may also execute commands through interactive terminals/shells, as well as utilize various remote services to achieve remote execution.\n\n**Analysis**\n\nDue to the nature of this technique and the usage of built-in command line interfaces, the first step of the playbook is to analyze the command line. \nThe command line analysis does the following:\n- Checks and decodes base64\n- Extracts and enriches indicators from the command line\n- Checks specific arguments for malicious usage \n\n**Investigative Actions:**\nThe playbook checks for additional activity using the 'Endpoint Investigation Plan' playbook and utilizes the power of insight alerts.\n\n**Response Actions**\n\nAfter analyzing the data, the playbook's first response action is to contain the threat based on the initial data provided within the alert. In this phase, the playbook will:\n\n* Isolate the endpoint based on playbook inputs.\n\nWhen the playbook proceeds, it checks for additional activity using the 'Endpoint Investigation Plan' playbook. It then continues with the next stage, which includes, containment and eradication.\n\nThis phase executes the following containment actions:\n\n* Automatically isolates the endpoint\n\nIt then continues with the following eradication actions:\n\n* process termination",
+				"fromversion": "6.6.0",
+				"id": "T1059 - Command and Scripting Interpreter",
+				"name": "T1059 - Command and Scripting Interpreter",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "The `Identity Analytics - Alert Handling` playbook is designed to handle Identity Analytics alerts and executes the following:\n\nAnalysis:\n- Enriches the Indicators and the account, providing additional context and information about these indicators.\n\nVerdict:\n- Determines the appropriate verdict based on the data collected from the enrichment phase.\n\nInvestigation:\n- Checks for related XDR alerts to the user by Mitre tactics to identify malicious activity.\n- Checks for specific arguments for malicious usage from Okta using the 'Okta User Investigation' sub-playbook.\n- Checks for specific arguments for malicious usage from Azure using the 'Azure User Investigation' sub-playbook.\n\nVerdict Handling:\n- Handles malicious alerts by initiating appropriate response actions, including blocking malicious IP and revoking or clearing user's sessions.\n- Handles non-malicious alerts identified during the investigation.",
+				"fromversion": "6.10.0",
+				"id": "Identity Analytics - Alert Handling",
+				"name": "Identity Analytics - Alert Handling",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "Deprecated. Use `Cloud IAM User Access Investigation` instead. Respond to Cortex XDR Cloud alerts where an AWS IAM user`s access key is used suspiciously to access the cloud environment. \nThe following alerts are supported for AWS environments.\n- Penetration testing tool attempt\n- Penetration testing tool activity\n- Suspicious API call from a Tor exit node\n This is a beta playbook, which lets you implement and test pre-release software. Although AWS is supported, we are working towards multi-cloud support. As the playbook is beta, it might contain bugs. Updates to the playbook during the beta phase might include non-backward compatible features. We encourage your feedback on the quality and usability of the content to help us identify and fix issues, so we can continually improve the content.\n",
+				"fromversion": "6.6.0",
+				"id": "AWS IAM User Access Investigation - Remediation",
+				"name": "AWS IAM User Access Investigation - Remediation",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "The \"Remote PsExec-like LOLBIN Command Execution\" playbook is designed to address and respond to alerts indicating suspicious activities related to remote PsExec-like LOLBIN command execution from an unsigned non-standard source. \nThe playbook aims to efficiently:\n\n- Check if the execution is blocked. If not will terminate the process (Manually by default).\n- Enrich any entities and indicators from the alert and find any related campaigns.\n- Perform command analysis to provide insights and verdict for the executed command.\n- Perform further endpoint investigation using XDR.\n- Checks for any malicious verdict found to raise the severity of the alert.\n- Perform Automatic/Manual remediation response by blocking any malicious indicators found.\n\nThe playbook is designed to run as a sub-playbook in ‘Cortex XDR Alert Handling - v3 \u0026 Cortex XDR Alerts Handling’.\nIt depends on the data from the parent playbooks and can not be used as a standalone version.",
+				"fromversion": "6.10.0",
+				"id": "Remote PsExec with LOLBIN command execution alert",
+				"name": "Remote PsExec with LOLBIN command execution alert",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "This playbook is responsible for ransomware alert data enrichment and response.\nThe playbook executes the following:\n\n1.Checks if the initiator is a remote attacker and allows isolating the remote host, if possible.\n\n2.Retrieves the WildFire sandbox report and extract the indicators within it.\n    * The playbook tries to retrieve the report, but if there is no report available, the playbook tries to fetch the ransomware file for detonation.\n\n3.Hunts for the ransomware alert indicators from the alert table, searches for endpoints that have been seen with them, and allows containing the identified endpoints.",
+				"fromversion": "6.6.0",
+				"id": "Ransomware Enrich and Contain",
+				"name": "Ransomware Enrich and Contain",
+				"supportedModules": [
+					"agentix",
+					"cloud",
+					"cloud_posture",
+					"cloud_runtime_security",
+					"edr",
+					"xsiam"
+				],
+				"tags": []
+			},
+			{
+				"description": "This playbook detects the ransomware type and searches for available decryptors.\n\nThe playbook uses the ID-Ransomware service, which allows you to detect the ransomware using multiple methods.",
+				"fromversion": "6.6.0",
+				"id": "Ransomware Advanced Analysis",
+				"name": "Ransomware Advanced Analysis",
 				"supportedModules": [
 					"agentix",
 					"cloud",
@@ -1799,6 +1806,32 @@
 		"trigger": [
 			{
 				"deprecated": false,
+				"description": "This trigger is responsible for handling Impossible Traveler alerts",
+				"fromversion": "8.0.0",
+				"id": "b0b1552aad770ec22f4bd6c4cc48db01",
+				"managedPaired": false,
+				"name": "Impossible Traveler",
+				"supportedModules": [
+					"xsiam",
+					"agentix"
+				],
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
+				"description": "This trigger is responsible for handling T1059 - Command and Scripting Interpreter alerts",
+				"fromversion": "8.0.0",
+				"id": "546b06f5f92ffe83caf0e884a36df98d",
+				"managedPaired": false,
+				"name": "T1059 - Command and Scripting Interpreter",
+				"supportedModules": [
+					"xsiam",
+					"agentix"
+				],
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
 				"description": "This trigger is responsible for handling \"core - Large Upload\" alerts",
 				"fromversion": "6.10.0",
 				"id": "770cf66716cb3206fb3c07a5f010f8f8",
@@ -1812,50 +1845,11 @@
 			},
 			{
 				"deprecated": false,
-				"description": "This trigger is responsible for handling Remote PsExec with LOLBIN command execution alerts",
-				"fromversion": "6.10.0",
-				"id": "155e823d9d56d1e3cec9061cd9c0523d",
-				"managedPaired": false,
-				"name": "Remote PsExec with LOLBIN command execution alert",
-				"supportedModules": [
-					"xsiam",
-					"agentix"
-				],
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling ransomware alerts",
-				"fromversion": "8.0.0",
-				"id": "437fc412eafbec9c69d8af8322895b69",
-				"managedPaired": false,
-				"name": "Ransomware Response",
-				"supportedModules": [
-					"xsiam",
-					"agentix"
-				],
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
 				"description": "This trigger is responsible for XDR IOC alerts",
 				"fromversion": "8.0.0",
 				"id": "674abe1c33857b48c54832d8244db1a8",
 				"managedPaired": false,
 				"name": "IOC Alert",
-				"supportedModules": [
-					"xsiam",
-					"agentix"
-				],
-				"toversion": ""
-			},
-			{
-				"deprecated": false,
-				"description": "This trigger is responsible for handling alerts involving scanning activity identified by our NGFW",
-				"fromversion": "8.0.0",
-				"id": "73545719a1bdeba6ba91f6a16044c021",
-				"managedPaired": false,
-				"name": "NGFW Scanning Alerts",
 				"supportedModules": [
 					"xsiam",
 					"agentix"
@@ -1890,6 +1884,19 @@
 			},
 			{
 				"deprecated": false,
+				"description": "This trigger is responsible for handling alerts involving scanning activity identified by our NGFW",
+				"fromversion": "8.0.0",
+				"id": "73545719a1bdeba6ba91f6a16044c021",
+				"managedPaired": false,
+				"name": "NGFW Scanning Alerts",
+				"supportedModules": [
+					"xsiam",
+					"agentix"
+				],
+				"toversion": ""
+			},
+			{
+				"deprecated": false,
 				"description": "This trigger is responsible for handling External RDP Brute-Force alerts",
 				"fromversion": "8.0.0",
 				"id": "723030e7f5b76701564877846cd69eec",
@@ -1916,11 +1923,11 @@
 			},
 			{
 				"deprecated": false,
-				"description": "This trigger is responsible for handling T1059 - Command and Scripting Interpreter alerts",
+				"description": "This trigger is responsible for handling ransomware alerts",
 				"fromversion": "8.0.0",
-				"id": "546b06f5f92ffe83caf0e884a36df98d",
+				"id": "437fc412eafbec9c69d8af8322895b69",
 				"managedPaired": false,
-				"name": "T1059 - Command and Scripting Interpreter",
+				"name": "Ransomware Response",
 				"supportedModules": [
 					"xsiam",
 					"agentix"
@@ -1929,11 +1936,11 @@
 			},
 			{
 				"deprecated": false,
-				"description": "This trigger is responsible for handling Impossible Traveler alerts",
-				"fromversion": "8.0.0",
-				"id": "b0b1552aad770ec22f4bd6c4cc48db01",
+				"description": "This trigger is responsible for handling Remote PsExec with LOLBIN command execution alerts",
+				"fromversion": "6.10.0",
+				"id": "155e823d9d56d1e3cec9061cd9c0523d",
 				"managedPaired": false,
-				"name": "Impossible Traveler",
+				"name": "Remote PsExec with LOLBIN command execution alert",
 				"supportedModules": [
 					"xsiam",
 					"agentix"
@@ -1945,7 +1952,7 @@
 		"wizard": null
 	},
 	"created": "2025-03-29T09:30:29Z",
-	"currentVersion": "3.5.99",
+	"currentVersion": "3.6.0",
 	"defaultDataSource": {
 		"id": "",
 		"name": ""
@@ -1970,7 +1977,7 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "1.8.4",
+			"minVersion": "1.8.5",
 			"name": "Active Directory Query"
 		},
 		"Azure-Enrichment-Remediation": {
@@ -1998,14 +2005,14 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "2.8.11",
+			"minVersion": "2.8.13",
 			"name": "Common Playbooks"
 		},
 		"CommonScripts": {
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.22.65",
+			"minVersion": "1.22.66",
 			"name": "Common Scripts"
 		},
 		"CommonTypes": {
@@ -2047,7 +2054,7 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": false,
-			"minVersion": "2.1.89",
+			"minVersion": "2.1.90",
 			"name": "WildFire by Palo Alto Networks"
 		},
 		"TIM_Processing": {
@@ -2102,11 +2109,6 @@
 			"name": "XQL Query Engine"
 		},
 		{
-			"id": "AbuseIPDB",
-			"imagePath": "content/packs/AbuseDB/AbuseIPDB_image.png",
-			"name": "AbuseIPDB"
-		},
-		{
 			"id": "Okta Event Collector",
 			"imagePath": "content/packs/Okta/OktaEventCollector_image.png",
 			"name": "Okta Event Collector"
@@ -2132,6 +2134,11 @@
 			"name": "Active Directory Query v2"
 		},
 		{
+			"id": "AbuseIPDB",
+			"imagePath": "content/packs/AbuseDB/AbuseIPDB_image.png",
+			"name": "AbuseIPDB"
+		},
+		{
 			"id": "Rasterize",
 			"imagePath": "content/packs/rasterize/Rasterize_image.png",
 			"name": "Rasterize"
@@ -2153,7 +2160,7 @@
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "3.5.99",
+	"itemVersion": "3.6.0",
 	"keywords": [],
 	"legacy": true,
 	"modules": [],
@@ -2189,9 +2196,9 @@
 	],
 	"tags": [],
 	"toServerVersion": "",
-	"updated": "2026-10-30T10:27:02Z",
+	"updated": "2026-11-05T20:45:29Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "14230482",
+	"versionInfo": "14447376",
 	"videos": []
 }
