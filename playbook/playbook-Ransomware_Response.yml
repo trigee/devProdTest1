@@ -3,7 +3,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.6.0
     isoverridable: false
-    itemVersion: 3.5.99
+    itemVersion: 3.6.0
     packID: Core
     packName: Core
     packPropagationLabels:
@@ -325,7 +325,7 @@ tasks:
     isoversize: false
     nexttasks:
       '#none#':
-      - "5"
+      - "137"
     note: false
     quietmode: 0
     separatecontext: false
@@ -395,7 +395,7 @@ tasks:
       {
         "position": {
           "x": 360,
-          "y": 3260
+          "y": 3430
         }
       }
   "14":
@@ -407,7 +407,6 @@ tasks:
     nexttasks:
       '#none#':
       - "120"
-      - "137"
     note: false
     quietmode: 0
     separatecontext: false
@@ -428,7 +427,7 @@ tasks:
       {
         "position": {
           "x": 360,
-          "y": 3600
+          "y": 3770
         }
       }
   "36":
@@ -460,7 +459,7 @@ tasks:
       {
         "position": {
           "x": 360,
-          "y": 3930
+          "y": 4100
         }
       }
   "63":
@@ -492,7 +491,7 @@ tasks:
       {
         "position": {
           "x": 360,
-          "y": 4410
+          "y": 4580
         }
       }
   "81":
@@ -524,7 +523,7 @@ tasks:
       {
         "position": {
           "x": 740,
-          "y": 4910
+          "y": 5080
         }
       }
   "95":
@@ -553,7 +552,7 @@ tasks:
       {
         "position": {
           "x": -250,
-          "y": 6070
+          "y": 6350
         }
       }
   "103":
@@ -596,6 +595,25 @@ tasks:
         simple: Quarantine
       HostContainment:
         simple: "True"
+      IAMUserDomain:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: Account.Email
+              operator: match
+              right:
+                value:
+                  simple: ^[^@\s]+@[^@\s]+$
+          root: Account.Email
+          transformers:
+          - args:
+              delimiter:
+                value:
+                  simple: '@'
+            operator: split
+          - operator: LastArrayElement
       UserContainment:
         simple: "True"
       UserVerification:
@@ -641,7 +659,7 @@ tasks:
       {
         "position": {
           "x": 720,
-          "y": 3430
+          "y": 3600
         }
       }
   "106":
@@ -685,6 +703,25 @@ tasks:
         simple: Delete
       HostContainment:
         simple: "True"
+      IAMUserDomain:
+        complex:
+          filters:
+          - - left:
+                iscontext: true
+                value:
+                  simple: Account.Email
+              operator: match
+              right:
+                value:
+                  simple: ^[^@\s]+@[^@\s]+$
+          root: Account.Email
+          transformers:
+          - args:
+              delimiter:
+                value:
+                  simple: '@'
+            operator: split
+          - operator: LastArrayElement
       UserContainment:
         simple: "True"
       UserVerification:
@@ -740,7 +777,7 @@ tasks:
       {
         "position": {
           "x": 740,
-          "y": 4910
+          "y": 5190
         }
       }
   "120":
@@ -799,8 +836,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 720,
-          "y": 3750
+          "x": 360,
+          "y": 3920
         }
       }
   "121":
@@ -848,7 +885,7 @@ tasks:
       {
         "position": {
           "x": 360,
-          "y": 4060
+          "y": 4230
         }
       }
   "122":
@@ -942,8 +979,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 370,
-          "y": 5900
+          "x": 360,
+          "y": 6180
         }
       }
   "125":
@@ -977,8 +1014,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 370,
-          "y": 5205
+          "x": 360,
+          "y": 5485
         }
       }
   "126":
@@ -1025,8 +1062,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 370,
-          "y": 5560
+          "x": 360,
+          "y": 5840
         }
       }
   "127":
@@ -1058,8 +1095,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 730,
-          "y": 5730
+          "x": 720,
+          "y": 6010
         }
       }
   "128":
@@ -1115,8 +1152,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 730,
-          "y": 5380
+          "x": 720,
+          "y": 5660
         }
       }
   "129":
@@ -1147,8 +1184,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 370,
-          "y": 5080
+          "x": 360,
+          "y": 5360
         }
       }
   "130":
@@ -1223,7 +1260,7 @@ tasks:
       {
         "position": {
           "x": 360,
-          "y": 4725
+          "y": 4895
         }
       }
   "133":
@@ -1485,7 +1522,7 @@ tasks:
       {
         "position": {
           "x": 360,
-          "y": 4555
+          "y": 4725
         }
       }
   "136":
@@ -1548,7 +1585,7 @@ tasks:
       {
         "position": {
           "x": 1140,
-          "y": 3430
+          "y": 3600
         }
       }
   "137":
@@ -1564,7 +1601,7 @@ tasks:
       wait: 1
     nexttasks:
       '#none#':
-      - "36"
+      - "5"
     note: false
     quietmode: 0
     scriptarguments:
@@ -1594,8 +1631,8 @@ tasks:
     view: |-
       {
         "position": {
-          "x": 1140,
-          "y": 3750
+          "x": 360,
+          "y": 3260
         }
       }
   "138":
@@ -1637,7 +1674,7 @@ tasks:
       {
         "position": {
           "x": 720,
-          "y": 4230
+          "y": 4400
         }
       }
   "140":
@@ -1837,7 +1874,7 @@ view: |-
     },
     "paper": {
       "dimensions": {
-        "height": 4065,
+        "height": 4340,
         "width": 1780,
         "x": -260,
         "y": 2070
