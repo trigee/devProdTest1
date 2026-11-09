@@ -8,7 +8,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.22.66
+    itemVersion: 1.22.67
     packID: CommonScripts
     packName: Common Scripts
     packPropagationLabels:
@@ -27,7 +27,7 @@ restrictioncenter: {}
 runas: DBotRole
 runonce: false
 script: |
-  // pack version: 1.22.66
+  // pack version: 1.22.67
   var res = executeCommand("getIncidents", {
       'query': 'status:closed and closingUser:DBot',
       'fromdate': args.from,
@@ -47,7 +47,7 @@ script: |
   var result = Math.round(closedByDbot * 100 / overallClosed);
   return isNaN(result) ? 0 : result;
 scripttarget: 0
-signature: 0jQDARADRyBF02CwughAlGXOwX7K9p3Uzn3MRydrWyilI28v7sHFqwReWibBYj45oXNSh/5swVKK3+IFYHejUotWmon5GUCyy2M0tt6+LpIz5HkYBcCnbQZLpZztcseahG284+bXE89PEGHdsPc4QsQ5uB+A3GCR2N89otpurKXWHzLZtzVZeSt/YEeLJAfSrBLn6JQ3w04bOcmITm73hvjfxfwHjGKV8VuzodHHF0kLfdwwOyj4So6OL/bPDqWwlDd/ghrPpWBNatJH8g1QfB+PUmG4+Mz8O2JfUD+OAGELhrSY4YegNFNcSR2nDZ1IuDQkqDyzguGGubCZp4wVFg==
+signature: 29/ZgPNb7UbhnsAIuJ5z0juCfRs4el2WCw6wTF/QQen3Pb9w/DyLG0Q2FjfeuCHpUg4B4w14ma64yXnRLGVs3lN/lYRcYlu4xG+L0xKs0T+YTrIovfgH6W9dzOuzyYOJ/QXC6TVI/21ERiskNvjsHzvRHW4jsrtSBaqBgmm4o5fOdA6eqqANJNse33xaGWx+JIgMIZiSGQY3vKNS7v+QOWoTcVJ0Z/O7xD2jLGi7M8cdOvF1FvA2BZe+sLe8GuS1/Ww5YZVA4nHqncpl5UfvxVRAy5nRaT6oBwCActlih2V0Ipl+W/Lf1FfBRS5rPyEP8jX3ALXs8BmuLcIL1ZTWgA==
 system: true
 tags:
 - widget
