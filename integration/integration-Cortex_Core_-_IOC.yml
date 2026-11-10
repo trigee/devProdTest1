@@ -55,7 +55,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 3.6.0
+    itemVersion: 3.7.1
     packID: Core
     packName: Core
     packPropagationLabels:
@@ -157,12 +157,12 @@ script:
     name: core-iocs-disable
     supportedFeatures: []
     supportedModules: []
-  dockerimage: demisto/google-cloud-storage:1.0.0.12844876
+  dockerimage: demisto/google-cloud-storage:1.0.0.14304551
   runonce: false
   script: |
     register_module_line('Cortex Core - IOC', 'start', __line__())
-    CONSTANT_PACK_VERSION = '3.6.0'
-    demisto.debug('pack id = Core, pack version = 3.6.0')
+    CONSTANT_PACK_VERSION = '3.7.1'
+    demisto.debug('pack id = Core, pack version = 3.7.1')
     import secrets
     import tempfile
     from datetime import UTC, timedelta
@@ -6051,5 +6051,5 @@ script:
 sectionorder:
 - Connect
 - Collect
-signature: WkWEW1qN4ISY5lDo2flNy9a2f44l8f8iUi2zYVooToN1ngoUoH6zt9IogArSLpMaEQVypmXs2up9g7twQAt4aRwI6f2Oy4XvhgAr2Nor8RlFrYfOxa5IW59HWArQdR1NQI59wXEDh+UcoUwcUG3QT/OjGslpmc4uE4Xd1noSiDEynuetFbiEPqxXyItSgIeiiLvFjAPrguoWmtas9D42Y8he0HTRGVFDZGNG5qs3OPuB3SzhKl6w8+zDltoUn0KQhq2/D+fdp0ddgM99c3jd836faikokc0Z6hB5BEU+mqGO3zK4fWkU0a4F0uwojmgUF8gQ3/6BplF4Cpb6AU7g0g==
+signature: vL9PaOSL+n8PBy5NgcnLgoxBf4Npk4rbmDcOaKxk4sZewr9Kl0pyR3Y0qDEvDNiLa8V/pmg2KvXcA2dKzbLs5fRrALEexm70bHJYOrAhybWi6rmY4WUGqzRv26IgjmOAN8/0ODRxR/L/H0TVMrT2m41PAn+MyEwpXeYyQVBcdVXia7y2ydfbeKv3W9uPUdNYoJlIIwDIL9stpSUKYGnEuX74+Kt7OF+66mrtdn3Z8mylr/T0y+sdQc5u+wZpOxuaYjNJ7/xEdifzNXw5FCOsMGslaQonpyjoGPs5DPJGbS5N47vwSSgRtuNBLnU8LC7caUYWAvIvRKU6X/eL+hSPCw==
 system: true
