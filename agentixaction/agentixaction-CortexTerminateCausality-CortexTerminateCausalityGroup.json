@@ -1,0 +1,167 @@
+args:
+- description: The ID of the agent where the process is running.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: agent_id
+  required: true
+  type: string
+  underlyingargname: agent_id
+- description: The ID of the alert initiating the termination. This is optional and
+    used for context tracking.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: alert_id
+  required: false
+  type: string
+  underlyingargname: alert_id
+- description: A list of causality IDs representing the root processes to terminate.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: causality_id
+  required: true
+  type: string
+  underlyingargname: causality_id
+- description: The name of the process associated with the causality ID. This is optional
+    and used for logging or auditing purposes.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: process_name
+  required: false
+  type: string
+  underlyingargname: process_name
+category: Endpoint
+commonfields:
+  id: CortexTerminateCausality
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.6.0
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexTerminateCausalityGroup
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-11-05T13:30:03Z"
+createdby: DBot
+description: Terminates a full process tree using its causality ID on a specified
+  agent.
+display: Cortex - Terminate Causality Group
+isdetailsoverridden: false
+islongrunning: false
+locked: false
+name: CortexTerminateCausalityGroup
+outputs:
+- description: The specified action ID.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.GetActionStatus.action_id
+  type: number
+  underlyingoutputcontextpath: Core.GetActionStatus.action_id
+- description: Endpoint ID.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.GetActionStatus.endpoint_id
+  type: string
+  underlyingoutputcontextpath: Core.GetActionStatus.endpoint_id
+- description: Description of the error if the action failed.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.GetActionStatus.error_description
+  type: string
+  underlyingoutputcontextpath: Core.GetActionStatus.error_description
+- description: The bucket in which the error occurred.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.GetActionStatus.ErrorReasons.bucket
+  type: string
+  underlyingoutputcontextpath: Core.GetActionStatus.ErrorReasons.bucket
+- description: The error reason data.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.GetActionStatus.ErrorReasons.errorData
+  type: string
+  underlyingoutputcontextpath: Core.GetActionStatus.ErrorReasons.errorData
+- description: The error reason description.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.GetActionStatus.ErrorReasons.errorDescription
+  type: string
+  underlyingoutputcontextpath: Core.GetActionStatus.ErrorReasons.errorDescription
+- description: The name of the file that caused the error.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.GetActionStatus.ErrorReasons.file_name
+  type: string
+  underlyingoutputcontextpath: Core.GetActionStatus.ErrorReasons.file_name
+- description: The path of the file that caused the error.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.GetActionStatus.ErrorReasons.file_path
+  type: string
+  underlyingoutputcontextpath: Core.GetActionStatus.ErrorReasons.file_path
+- description: The size of the file that caused the error.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.GetActionStatus.ErrorReasons.file_size
+  type: number
+  underlyingoutputcontextpath: Core.GetActionStatus.ErrorReasons.file_size
+- description: The path of the file the terminate action targeted.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.GetActionStatus.ErrorReasons.terminate_result.path
+  type: string
+  underlyingoutputcontextpath: Core.GetActionStatus.ErrorReasons.terminate_result.path
+- description: The terminate result status code for the file.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.GetActionStatus.ErrorReasons.terminate_result.status
+  type: number
+  underlyingoutputcontextpath: Core.GetActionStatus.ErrorReasons.terminate_result.status
+- description: The instance ID which terminated the action and caused the error.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.GetActionStatus.ErrorReasons.terminated_by
+  type: string
+  underlyingoutputcontextpath: Core.GetActionStatus.ErrorReasons.terminated_by
+- description: The status of the specific endpoint ID.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.GetActionStatus.status
+  type: string
+  underlyingoutputcontextpath: Core.GetActionStatus.status
+- description: The group action ID returned for the terminate request.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.TerminateCausality.action_id
+  type: number
+  underlyingoutputcontextpath: Core.TerminateCausality.action_id
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Endpoint
+- EDR
+- Process Management
+underlyingcontentitem:
+  command: terminateCausality
+  id: _builtin_
+  instance: ""
+  name: _builtin_
+  type: command
