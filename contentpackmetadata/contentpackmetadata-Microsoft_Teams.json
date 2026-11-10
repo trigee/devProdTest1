@@ -30,6 +30,13 @@
 		"agentixskill": null,
 		"automation": [
 			{
+				"description": "This script grants a user the permissions needed to create a Teams meeting. It connects to MS Teams, creating an application access policy to a chosen application and then grants a user permissions.",
+				"fromversion": "5.5.0",
+				"id": "ConfigureAzureApplicationAccessPolicy",
+				"name": "ConfigureAzureApplicationAccessPolicy",
+				"tags": []
+			},
+			{
 				"description": "Send a team member or channel a question with predefined response options on Microsoft Teams. The response can be used to close a task (might be conditional) in a playbook.",
 				"fromversion": "5.0.0",
 				"id": "MicrosoftTeamsAsk",
@@ -37,13 +44,6 @@
 				"tags": [
 					"microsoftteams"
 				]
-			},
-			{
-				"description": "This script grants a user the permissions needed to create a Teams meeting. It connects to MS Teams, creating an application access policy to a chosen application and then grants a user permissions.",
-				"fromversion": "5.5.0",
-				"id": "ConfigureAzureApplicationAccessPolicy",
-				"name": "ConfigureAzureApplicationAccessPolicy",
-				"tags": []
 			}
 		],
 		"casefield": null,
@@ -55,6 +55,111 @@
 		"incidenttype": null,
 		"indicatorfield": null,
 		"integration": [
+			{
+				"category": "Messaging and Conferencing",
+				"commands": [
+					{
+						"description": "Run this command to start the authorization process and follow the instructions in the command results.",
+						"hidden": false,
+						"name": "microsoft-teams-auth-start"
+					},
+					{
+						"description": "Run this command to complete the authorization process.\nShould be used after running the microsoft-teams-auth-start command.",
+						"hidden": false,
+						"name": "microsoft-teams-auth-complete"
+					},
+					{
+						"description": "Run this command if for some reason you need to rerun the authentication process.",
+						"hidden": false,
+						"name": "microsoft-teams-auth-reset"
+					},
+					{
+						"description": "Tests connectivity to Microsoft.",
+						"hidden": false,
+						"name": "microsoft-teams-auth-test"
+					},
+					{
+						"description": "Creates a new team.",
+						"hidden": false,
+						"name": "microsoft-teams-team-create"
+					},
+					{
+						"description": "Create a new team under a group. In order to create a team, the group must have a least one owner and the group cannot be of type Security.",
+						"hidden": false,
+						"name": "microsoft-teams-team-create-from-group"
+					},
+					{
+						"description": "Returns all the groups that have teams in an organization.",
+						"hidden": false,
+						"name": "microsoft-teams-teams-list"
+					},
+					{
+						"description": "Update the properties of the specified team.",
+						"hidden": false,
+						"name": "microsoft-teams-team-update"
+					},
+					{
+						"description": "Deletes a group. Note: it might take time for the team to disappear from the teams list.",
+						"hidden": false,
+						"name": "microsoft-teams-team-delete"
+					},
+					{
+						"description": "Retrieve the properties and relationships of the specified team.",
+						"hidden": false,
+						"name": "microsoft-teams-team-get"
+					},
+					{
+						"description": "Returns the members of the specified team.",
+						"hidden": false,
+						"name": "microsoft-teams-members-list"
+					},
+					{
+						"description": "Gets a member of a team.",
+						"hidden": false,
+						"name": "microsoft-teams-member-get"
+					},
+					{
+						"description": "Add a user to be a team member.",
+						"hidden": false,
+						"name": "microsoft-teams-member-add"
+					},
+					{
+						"description": "Remove a member from the team.",
+						"hidden": false,
+						"name": "microsoft-teams-member-remove"
+					},
+					{
+						"description": "Updates a team member.",
+						"hidden": false,
+						"name": "microsoft-teams-member-update"
+					},
+					{
+						"description": "Archive the specified team. When a team is archived, users can no longer send or like messages on any channel in the team, edit the team's name, description, or other settings, or in general make most changes to the team. Membership changes to the team continue to be allowed. Archiving is an async operation. A team is archived once the async operation completes successfully, which may occur subsequent to a response from this command. In order to archive a team, the team and group must have an owner.",
+						"hidden": false,
+						"name": "microsoft-teams-team-archive"
+					},
+					{
+						"description": "Restore an archived team. This restores the users' ability to send messages and edit the team, abiding by tenant and team settings. Unarchiving is an async operation. A team is unarchived once the async operation completes successfully, which may occur subsequent to a response from this command.",
+						"hidden": false,
+						"name": "microsoft-teams-team-unarchive"
+					},
+					{
+						"description": "Create a copy of a team. This operation also creates a copy of the corresponding group. Cloning is a long-running operation.",
+						"hidden": false,
+						"name": "microsoft-teams-team-clone"
+					},
+					{
+						"description": "Get the teams in Microsoft Teams that the user is a direct member of.",
+						"hidden": false,
+						"name": "microsoft-teams-teams-list-joined"
+					}
+				],
+				"description": "Manage teams and members in Microsoft Teams.",
+				"fromversion": "5.0.0",
+				"id": "Microsoft Teams Management",
+				"name": "Microsoft Teams Management",
+				"toversion": ""
+			},
 			{
 				"category": "Messaging and Conferencing",
 				"commands": [
@@ -219,111 +324,6 @@
 				"id": "Microsoft Teams via Webhook",
 				"name": "Microsoft Teams via Webhook",
 				"toversion": ""
-			},
-			{
-				"category": "Messaging and Conferencing",
-				"commands": [
-					{
-						"description": "Run this command to start the authorization process and follow the instructions in the command results.",
-						"hidden": false,
-						"name": "microsoft-teams-auth-start"
-					},
-					{
-						"description": "Run this command to complete the authorization process.\nShould be used after running the microsoft-teams-auth-start command.",
-						"hidden": false,
-						"name": "microsoft-teams-auth-complete"
-					},
-					{
-						"description": "Run this command if for some reason you need to rerun the authentication process.",
-						"hidden": false,
-						"name": "microsoft-teams-auth-reset"
-					},
-					{
-						"description": "Tests connectivity to Microsoft.",
-						"hidden": false,
-						"name": "microsoft-teams-auth-test"
-					},
-					{
-						"description": "Creates a new team.",
-						"hidden": false,
-						"name": "microsoft-teams-team-create"
-					},
-					{
-						"description": "Create a new team under a group. In order to create a team, the group must have a least one owner and the group cannot be of type Security.",
-						"hidden": false,
-						"name": "microsoft-teams-team-create-from-group"
-					},
-					{
-						"description": "Returns all the groups that have teams in an organization.",
-						"hidden": false,
-						"name": "microsoft-teams-teams-list"
-					},
-					{
-						"description": "Update the properties of the specified team.",
-						"hidden": false,
-						"name": "microsoft-teams-team-update"
-					},
-					{
-						"description": "Deletes a group. Note: it might take time for the team to disappear from the teams list.",
-						"hidden": false,
-						"name": "microsoft-teams-team-delete"
-					},
-					{
-						"description": "Retrieve the properties and relationships of the specified team.",
-						"hidden": false,
-						"name": "microsoft-teams-team-get"
-					},
-					{
-						"description": "Returns the members of the specified team.",
-						"hidden": false,
-						"name": "microsoft-teams-members-list"
-					},
-					{
-						"description": "Gets a member of a team.",
-						"hidden": false,
-						"name": "microsoft-teams-member-get"
-					},
-					{
-						"description": "Add a user to be a team member.",
-						"hidden": false,
-						"name": "microsoft-teams-member-add"
-					},
-					{
-						"description": "Remove a member from the team.",
-						"hidden": false,
-						"name": "microsoft-teams-member-remove"
-					},
-					{
-						"description": "Updates a team member.",
-						"hidden": false,
-						"name": "microsoft-teams-member-update"
-					},
-					{
-						"description": "Archive the specified team. When a team is archived, users can no longer send or like messages on any channel in the team, edit the team's name, description, or other settings, or in general make most changes to the team. Membership changes to the team continue to be allowed. Archiving is an async operation. A team is archived once the async operation completes successfully, which may occur subsequent to a response from this command. In order to archive a team, the team and group must have an owner.",
-						"hidden": false,
-						"name": "microsoft-teams-team-archive"
-					},
-					{
-						"description": "Restore an archived team. This restores the users' ability to send messages and edit the team, abiding by tenant and team settings. Unarchiving is an async operation. A team is unarchived once the async operation completes successfully, which may occur subsequent to a response from this command.",
-						"hidden": false,
-						"name": "microsoft-teams-team-unarchive"
-					},
-					{
-						"description": "Create a copy of a team. This operation also creates a copy of the corresponding group. Cloning is a long-running operation.",
-						"hidden": false,
-						"name": "microsoft-teams-team-clone"
-					},
-					{
-						"description": "Get the teams in Microsoft Teams that the user is a direct member of.",
-						"hidden": false,
-						"name": "microsoft-teams-teams-list-joined"
-					}
-				],
-				"description": "Manage teams and members in Microsoft Teams.",
-				"fromversion": "5.0.0",
-				"id": "Microsoft Teams Management",
-				"name": "Microsoft Teams Management",
-				"toversion": ""
 			}
 		],
 		"layoutscontainer": null,
@@ -335,10 +335,10 @@
 		"wizard": null
 	},
 	"created": "2025-03-29T09:43:16Z",
-	"currentVersion": "1.5.67",
+	"currentVersion": "1.5.68",
 	"defaultDataSource": {
-		"id": "Microsoft Teams",
-		"name": "Microsoft Teams"
+		"id": "",
+		"name": ""
 	},
 	"definitionId": "",
 	"dependencies": {
@@ -346,7 +346,7 @@
 			"author": "Cortex",
 			"certification": "certified",
 			"mandatory": true,
-			"minVersion": "1.42.36",
+			"minVersion": "1.42.37",
 			"name": "Base"
 		}
 	},
@@ -383,7 +383,7 @@
 		}
 	],
 	"isOverridable": false,
-	"itemVersion": "1.5.67",
+	"itemVersion": "1.5.68",
 	"keywords": [],
 	"legacy": true,
 	"modules": [],
@@ -420,9 +420,9 @@
 		"Data Source"
 	],
 	"toServerVersion": "",
-	"updated": "2026-10-20T12:59:19Z",
+	"updated": "2026-11-09T20:40:42Z",
 	"useCases": [],
 	"version": -1,
-	"versionInfo": "13941772",
+	"versionInfo": "14569367",
 	"videos": []
 }
