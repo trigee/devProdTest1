@@ -430,7 +430,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.5.0
     isoverridable: false
-    itemVersion: 3.4.8
+    itemVersion: 3.4.9
     packID: EDL
     packName: Generic Export Indicators Service
     packPropagationLabels:
@@ -767,14 +767,14 @@ script:
     name: export-indicators-list-update
     supportedFeatures: []
     supportedModules: []
-  dockerimage: demisto/flask-nginx:1.0.0.12826098
+  dockerimage: demisto/flask-nginx:1.0.0.14169403
   longRunning: true
   longRunningPort: true
   runonce: false
   script: |
     register_module_line('EDL', 'start', __line__())
-    CONSTANT_PACK_VERSION = '3.4.8'
-    demisto.debug('pack id = EDL, pack version = 3.4.8')
+    CONSTANT_PACK_VERSION = '3.4.9'
+    demisto.debug('pack id = EDL, pack version = 3.4.9')
     import glob
     import hashlib
     import ipaddress
@@ -3965,7 +3965,7 @@ script:
 sectionorder:
 - Connect
 - Collect
-signature: bv/k9GcqNOHbEXUCvKLHr2NTBRJRlbkGR0frc5b9/LV9CPXKTx8Oi9r8xWsRs1/LSWsNutuW7izZFVe6C9WGjpoqcMzow7UJUjwyzyUdLmAcK7DWCjtj/gG53dTZJbzyu6MGjFt81618g/wbp4+U20H3IzJRHVddMEMs4Szx5aOnDQbGbFpCbMSBGhABKIbC+r+qnLPq+KR01xyfzdw1xHITYovtyV8d6RrPkG9tosrOyMpa9zxTvbJ/WYe82UthI0KJwob/4p/Tq+SrB82ePa1lZXSGv9wvC6aJNZh8PV3i1B8i7wNnggX2Meux5wdz20MW/6SZmJ/XK0mTUKHJtQ==
+signature: V13ZvqHMEXf2qK0pZmoGUXjQQJpiXqYaY8QhtkcWdCntXqUSrQxVwbeIZ9nsldxZ3Lvn4Kl06J1SCZzBsIGlPQ/trwyFAFhYUcVSDjO2TTVFJYxeS+1vfuNSv/J+5q12e+z+htC6njymbZOYZC7NLWE1WxpIJhDG/Qoj2tT2u3VSnlmZ9zLew57ZT+mOjgjDRZKiZZWaAXxs9z1HTSjGkSV8hOCZggvk3GTwlj8PwdOI5ZiF1PzK2t84J/SAR4wZArAjKF8PTUnwXtGACTTrDEzmiUIRvAQaUTXUm+nQFuKe3LGahRUaqhioXXbgUaa4zYSlmmVnw9vNM+ngz0k97A==
 system: true
 triggers:
 - conditions:
