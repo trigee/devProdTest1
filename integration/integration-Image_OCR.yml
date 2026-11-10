@@ -27,7 +27,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 5.0.0
     isoverridable: false
-    itemVersion: 1.1.53
+    itemVersion: 1.1.54
     packID: ImageOCR
     packName: Image OCR
     packPropagationLabels:
@@ -84,15 +84,15 @@ script:
       type: String
     supportedFeatures: []
     supportedModules: []
-  dockerimage: demisto/tesseract:1.0.0.13597103
+  dockerimage: demisto/tesseract:1.0.0.14170433
   nativeimage:
   - "8.8"
   - "8.6"
   runonce: false
   script: |
     register_module_line('Image OCR', 'start', __line__())
-    CONSTANT_PACK_VERSION = '1.1.53'
-    demisto.debug('pack id = ImageOCR, pack version = 1.1.53')
+    CONSTANT_PACK_VERSION = '1.1.54'
+    demisto.debug('pack id = ImageOCR, pack version = 1.1.54')
     import subprocess
 
 
@@ -244,5 +244,5 @@ script:
 sectionorder:
 - Connect
 - Collect
-signature: oGZ6/XczFr3aYj7DTOBjcvvKlGMlcXiQ1U3dFYvNzgNPovqAtbKssZwV9tXlerO8ix3zIMs10oCBX1L5YqmuCV5yrjfriR+L8DkTqsloSsSCR3ij1He5F+LOkyWWFwA8cQwHupEm8mrjkt5fNhEjG66CdfvSxUUbG53Ie2AZaTUl/8lcsSK9VwJ4wl9ahv9u0hQSnMfpMUnm2chHBa1n0VCzAt962YyCb8+O3mHvfWH9RRdHqdExmG/UhJuizjoSjgh91XqWKytLmU92vmRmAiiIGlKRHspLWVvYVqmyQbpY8BhRAR+b/bR4Z+0RFWXvIpfP4DAfrQQS0eIN9uBWfQ==
+signature: cEAylaN7lt/wHyd0CcYgGb7+vBHj6A9O5zhtp7Hou1bTSmTrxCSj3fr5W07Vie5oNwL6G1yqDBTT+syW2oKyFjgm2GSDWYxPUIpF7/s6kKsL98xuy6RfNM9SCiFvUrN/VlcFWlwt5b8K2PfwENAZYHLZN4QDaNoMnzAY8xaRt+zHMSMYIiw6fzaLlpusCoJmh8WgJmLg2kZyCPhGb/6G7TSih1BNJygC/FZGm+FLFYusyDK3vhL/ryyIXdpnksYByzpGpeugCMzQeruT2FoVKeWg5fkkITpAQ0PjPI3KkaemPZ27y5vbtlkXY72W3jDJQCPmYs2XHKmMeo2f4Rkv9g==
 system: true
