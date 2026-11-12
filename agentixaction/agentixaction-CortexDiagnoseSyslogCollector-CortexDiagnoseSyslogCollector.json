@@ -1,0 +1,85 @@
+args:
+- description: The name of the Broker VM where the syslog collector is running and
+    needs to be diagnosed.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: broker_vm_name
+  required: true
+  type: string
+  underlyingargname: broker_vm_name
+- defaultvalue: 24 hours
+  description: How far back in time to search for collector errors. Accepts relative
+    time expressions like "24 hours", "7 days", or "1 hour". Defaults to "24 hours"
+    if not specified.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: timeframe
+  required: false
+  type: string
+  underlyingargname: timeframe
+category: Endpoint
+commonfields:
+  id: CortexDiagnoseSyslogCollector
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.14.0
+    isoverridable: false
+    itemVersion: 3.7.1
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexDiagnoseSyslogCollector
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules:
+    - xsiam
+    - cloud_runtime_security
+    - edr
+    toServerVersion: ""
+created: "2026-11-05T13:30:03Z"
+createdby: DBot
+description: |-
+  Diagnoses syslog collector failures on a Broker VM by checking broker status and fetching errors within a specified lookback period.
+  Returns the overall diagnostic status (HEALTHY, WARNING or ERROR) and a detailed diagnosis report with the 10 latest discovered errors.
+display: Cortex - Diagnose Syslog Collector
+isdetailsoverridden: false
+islongrunning: false
+locked: false
+name: CortexDiagnoseSyslogCollector
+outputs:
+- description: Overall diagnostic status indicating the health of the syslog collector.
+    Possible values - HEALTHY, WARNING, ERROR.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.SyslogCollectorDiagnostics.status
+  type: string
+  underlyingoutputcontextpath: Core.SyslogCollectorDiagnostics.status
+- description: Comprehensive diagnosis report containing a list of all error messages
+    found during the diagnostic check.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.SyslogCollectorDiagnostics.diagnosis_report
+  type: unknown
+  underlyingoutputcontextpath: Core.SyslogCollectorDiagnostics.diagnosis_report
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- diagnostics
+- syslog
+- broker
+underlyingcontentitem:
+  command: ""
+  id: DiagnoseSyslogCollector
+  instance: ""
+  name: DiagnoseSyslogCollector
+  type: script
