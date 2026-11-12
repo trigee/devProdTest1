@@ -1,0 +1,100 @@
+args:
+- description: Links the response action to the triggered case (formerly known as
+    incident).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: incident_id
+  required: false
+  type: string
+  underlyingargname: incident_id
+- description: A comma-separated list of file hashes to blocklist. Each entry must
+    be a valid SHA256 hash.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: hash_list
+  required: true
+  type: string
+  underlyingargname: hash_list
+- description: 'Optional text note describing the reason or context for this blocklist
+    action. Example: "Hash added to blocklist by Agentix while handling issue #123".'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: comment
+  required: false
+  type: string
+  underlyingargname: comment
+- defaultvalue: "false"
+  description: If true, returns a detailed response with counts of added and skipped
+    hashes. The default is false.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: true
+  name: detailed_response
+  required: false
+  type: boolean
+  underlyingargname: detailed_response
+category: Endpoint
+commonfields:
+  id: CortexBlocklistFiles
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.5.99
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexBlockFile
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules:
+    - xsiam
+    - cloud_runtime_security
+    - edr
+    toServerVersion: ""
+createdby: DBot
+description: |
+  Blocklists the specified SHA256 file hashes in Cortex by adding them to Cortex's blocklist. Skips any that already exist in Cortex's allowlist or blocklist. Optionally returns detailed results with counts of added and skipped hashes.
+display: Cortex - Block File
+isdetailsoverridden: false
+islongrunning: false
+locked: false
+name: CortexBlockFile
+outputs:
+- description: A dictionary containing a list of file hashes that were successfully
+    added to the blocklist.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.blocklist.added_hashes
+  type: unknown
+  underlyingoutputcontextpath: Core.blocklist.added_hashes
+- description: A dictionary containing a list of file hashes that were not added to
+    the blocklist (e.g., already blocklisted or allowlisted).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.blocklist.excluded_hashes
+  type: unknown
+  underlyingoutputcontextpath: Core.blocklist.excluded_hashes
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Endpoint
+underlyingcontentitem:
+  command: core-blocklist-files
+  id: Cortex Core - IR
+  instance: ""
+  name: Cortex Core - IR
+  type: command
