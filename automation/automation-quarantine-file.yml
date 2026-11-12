@@ -68,7 +68,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.4.4
+    itemVersion: 1.4.5
     packID: AggregatedScripts
     packName: Aggregated Scripts
     packPropagationLabels:
@@ -118,8 +118,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('quarantine-file', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.4'
-  demisto.debug('pack id = AggregatedScripts, pack version = 1.4.4')
+  CONSTANT_PACK_VERSION = '1.4.5'
+  demisto.debug('pack id = AggregatedScripts, pack version = 1.4.5')
   from dataclasses import dataclass, asdict
   from enum import StrEnum
   from abc import ABC, abstractmethod
@@ -1510,7 +1510,7 @@ script: |
 
   register_module_line('quarantine-file', 'end', __line__())
 scripttarget: 0
-signature: uI/2C69z1Jo/jMZTG1qFpF07tFpoFJj6n9RpRINtVLJgzp3q6r1u7voJC21fKVRkrFq8ZaQAsBehWs/YII2yQN6rTR/sO5XLcHhvWNdt2cC+Z8tIuzFAIiHpetHf0YSVBmUojiBsKtPjrArsWIpzkyGRSFWn3TMQ7nY2nsjGf6WIoz/dyOJpH/rZ2nGxo/xwNG1R4yNE7JEgvSUq9UpKVUDQenlQHXiuHuWqhnwi4D2GXc2y9Qv6AA24KW+7src7U9k1a6UL+upyt/zRbyEoaM/l2/e2N+lWJOsbSpQg5giZrT1orzelJYMewmfoCjthNZpoaWOMEXLPYE/pHCl0XA==
+signature: 2e3rZXUmUDGSmki2vO3vOqxC5kRMzKTIM+6hYc0GPBcLvG4KCpHE9+3DRNXEEoEKd71/QOIvvhgWWmqMVcH++wqEeAPrxq6goyH/LgpjlovWnxpSl213u9A2z5qenxwaidKC1TBBMD+nOUwWbE8RPNlEArzo/5Eli/8AZUu89Uip8o3Qv6A8y0LgPjjiQtZQvFuMhFjK0p8adK1Uyg7HEHKlESoiyuQqaZoUh5neNtrkhHscMFXhEXxKvcjF/gOKAbnKCGaG27W8VrKSPLQf+At0o5tpTxrox4Pgm39dEB0fbUjuLJlk7/quhp0aVS/UM/3bOyS8s1sQUrdXl6sqUg==
 subtype: python3
 system: true
 tags: []
