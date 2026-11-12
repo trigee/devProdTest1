@@ -1,0 +1,80 @@
+args:
+- description: A comma-separated list of endpoint IDs to update their tags.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: endpoint_ids
+  required: true
+  type: string
+  underlyingargname: endpoint_ids
+- description: A comma-separated list of tags to add to the endpoints.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: tags_to_add
+  required: false
+  type: string
+  underlyingargname: tags_to_add
+- description: A comma-separated list of tags to remove from the endpoints.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: tags_to_remove
+  required: false
+  type: string
+  underlyingargname: tags_to_remove
+commonfields:
+  id: CortexUpdateEndpointTags
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.5.99
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexUpdateEndpointTags
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules:
+    - xsiam
+    - cloud_runtime_security
+    - edr
+    toServerVersion: ""
+createdby: DBot
+description: Updates (adds or removes) tags on a list of specified endpoints.
+display: Cortex - Update Endpoint Tags
+isdetailsoverridden: false
+islongrunning: false
+locked: false
+name: CortexUpdateEndpointTags
+outputs:
+- description: The success message returned after updating endpoint tags.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.EndpointTags.SuccessMessage
+  type: string
+  underlyingoutputcontextpath: Core.EndpointTags.SuccessMessage
+- description: The error message returned when endpoint tags failed to update.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.EndpointTags.FailureMessage
+  type: string
+  underlyingoutputcontextpath: Core.EndpointTags.FailureMessage
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: core-update-endpoint-tags
+  id: Cortex Core - IR
+  instance: ""
+  name: Cortex Core - IR
+  type: command
