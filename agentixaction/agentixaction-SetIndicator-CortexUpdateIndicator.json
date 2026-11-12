@@ -1,0 +1,99 @@
+args:
+- description: Comma-separated list of issues IDs to associate the indicator with.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: related_issues
+  required: false
+  type: string
+  underlyingargname: related_issues
+- description: Comma-separated list of tags to set for the indicator.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: tags
+  required: false
+  type: string
+  underlyingargname: tags
+- description: 'Indicator type to set. Options: Account, ASN, Attack Pattern, Campaign,
+    CIDR, CVE, Domain, Email, File, Host, IP, IPv6, IPv6CIDR, Malware, Threat Actor.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: type
+  required: false
+  type: string
+  underlyingargname: type
+- description: Indicator value to set.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: value
+  required: true
+  type: string
+  underlyingargname: value
+- description: 'Sets indicator reputation. Options: Unknown, Benign, Suspicious, Malicious.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: verdict
+  required: false
+  type: string
+  underlyingargname: verdict
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: SetIndicator
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 1.22.66
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: CortexUpdateIndicator
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+createdby: DBot
+description: 'Updates indicator properties. Note: At least one of the following arguments
+  must be provided: type, verdict, tags, or related_issues.'
+display: Cortex - Update Indicator
+isdetailsoverridden: false
+islongrunning: false
+locked: false
+name: CortexUpdateIndicator
+outputs:
+- description: The result of the indicator setting operation, including success messages
+    and any error information.
+  disabled: false
+  isdetailsoverridden: false
+  name: SetIndicator.Result
+  type: string
+  underlyingoutputcontextpath: SetIndicator.Result
+- description: The indicator value that was processed.
+  disabled: false
+  isdetailsoverridden: false
+  name: SetIndicator.Value
+  type: string
+  underlyingoutputcontextpath: SetIndicator.Value
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: ""
+  id: CortexUpdateIndicator
+  instance: ""
+  name: CortexUpdateIndicator
+  type: script
