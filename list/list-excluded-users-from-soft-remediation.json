@@ -1,0 +1,39 @@
+commonfields:
+  id: excluded-users-from-soft-remediation
+  version: -1
+contentitemversionedfields:
+  contentitemexportablefields:
+    contentitemfields:
+      definitionid: ""
+      fromServerVersion: ""
+      isoverridable: false
+      itemVersion: ""
+      packID: ""
+      packName: ""
+      prevname: ""
+      propagationLabels:
+      - all
+      supportedFeatures: []
+      supportedModules: []
+      toServerVersion: ""
+  vcShouldKeepItemLegacyProdMachine: false
+data: ""
+description: |-
+  This list allows you to exclude trusted and critical users from **User Soft Remediation** commands such as expiring passwords or other commands that address security issues without completely locking or disabling a user's account. After these commands are run, a user can regain access through steps such as two-factor authentication.
+  Fields supported: id, username, email.
+  Include all relevant identifiers used across systems.
+  Example: "username1, user@compamy.com, userID112, username2"
+locked: false
+name: excluded-users-from-soft-remediation
+namelocked: false
+rbac:
+  aclowner:
+    id: etrigerman@paloaltonetworks.com
+    name: etrigerman@paloaltonetworks.com
+    type: user
+  aclrelations: []
+restrictioncenter: {}
+system: false
+tags: []
+truncated: false
+type: plaintext
