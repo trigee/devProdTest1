@@ -1,0 +1,335 @@
+args:
+- description: A comma-separated list of endpoint alias names.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: alias_name
+  required: false
+  type: string
+  underlyingargname: alias_name
+- description: 'Whether to return all endpoints. If true, overrides the ''limit''
+    and ''page'' arguments  Default is false. Options: true, false.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: all_results
+  required: false
+  type: string
+  underlyingargname: all_results
+- description: A comma-separated list of distribution package names or installation
+    package names.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: dist_name
+  required: false
+  type: string
+  underlyingargname: dist_name
+- description: A comma-separated list of endpoint IDs.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: endpoint_id_list
+  required: false
+  type: string
+  underlyingargname: endpoint_id_list
+- description: All the agents that were first seen after the first_seen_gte (e.g.,
+    "3 days", "2019-10-21T23:45:00", or epoch in milliseconds).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: first_seen_gte
+  required: false
+  type: string
+  underlyingargname: first_seen_gte
+- description: All the agents that were first seen before the first_seen_lte (e.g.,
+    "3 days", "2019-10-21T23:45:00", or epoch in milliseconds).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: first_seen_lte
+  required: false
+  type: string
+  underlyingargname: first_seen_lte
+- description: A comma-separated list of group names to which the agent belongs.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: group_name
+  required: false
+  type: string
+  underlyingargname: group_name
+- description: A comma-separated list of endpoint hostnames.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: hostname
+  required: false
+  type: string
+  underlyingargname: hostname
+- description: A comma-separated list of private IP addresses (e.g., 10.1.1.1,192.168.1.1).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: ip_list
+  required: false
+  type: string
+  underlyingargname: ip_list
+- description: 'Filters endpoints by their isolation status. Options: isolated, unisolated.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: isolate
+  required: false
+  type: string
+  underlyingargname: isolate
+- description: All the agents that were last seen after the last_seen_gte (e.g., "3
+    days", "2019-10-21T23:45:00", or epoch in milliseconds).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: last_seen_gte
+  required: false
+  type: string
+  underlyingargname: last_seen_gte
+- description: All the agents that were last seen before the last_seen_lte (e.g.,
+    "3 days", "2019-10-21T23:45:00", or epoch in milliseconds).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: last_seen_lte
+  required: false
+  type: string
+  underlyingargname: last_seen_lte
+- description: Maximum number of endpoints to return per page. Default and maximum
+    is 30.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: limit
+  required: false
+  type: string
+  underlyingargname: limit
+- description: Page number for pagination. Default is 0.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: page
+  required: false
+  type: string
+  underlyingargname: page
+- description: 'A comma-separated list of endpoint platforms. Options: windows, linux,
+    macos, android.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: platform
+  required: false
+  type: string
+  underlyingargname: platform
+- description: A comma-separated list of public IP addresses correlating to the last
+    IPv4 address from which the agent connected (e.g., 8.8.8.8,1.1.1.1).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: public_ip_list
+  required: false
+  type: string
+  underlyingargname: public_ip_list
+- description: 'Specifies whether to sort endpoints by the first time or last time
+    they were seen. Options: first_seen, last_seen.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: sort_by
+  required: false
+  type: string
+  underlyingargname: sort_by
+- description: 'The order by which to sort results  Default is asc. Options: asc,
+    desc.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: sort_order
+  required: false
+  type: string
+  underlyingargname: sort_order
+- description: 'A comma-separated list of endpoint connection statuses. Options: connected,
+    lost, disconnected, uninstalled.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: status
+  required: false
+  type: string
+  underlyingargname: status
+- description: A comma-separated list of usernames to query for.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: username
+  required: false
+  type: string
+  underlyingargname: username
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: CortexListEndpoints
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.5.99
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexListEndpoints
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+createdby: DBot
+description: |
+  Searches for endpoints (can also be referred as XDR Agents or Agents) based on provided filters and retrieves endpoints data.
+display: Cortex - List Endpoints
+isdetailsoverridden: false
+islongrunning: false
+locked: false
+name: CortexListEndpoints
+outputs:
+- description: Indicates whether the endpoint is running a supported or EOL agent
+    version.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.agent_eol
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.agent_eol
+- description: The agent version installed on the endpoint.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.agent_version
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.agent_version
+- description: The assigned prevention policy.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.assigned_prevention_policy
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.assigned_prevention_policy
+- description: The cloud provider associated with the endpoint.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.cloud_provider
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.cloud_provider
+- description: The cloud region of the endpoint.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.cloud_region
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.cloud_region
+- description: The domain of the endpoint.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.domain
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.domain
+- description: The unique endpoint ID.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.endpoint_id
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.endpoint_id
+- description: The endpoint name.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.endpoint_name
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.endpoint_name
+- description: The endpoint status.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.endpoint_status
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.endpoint_status
+- description: The endpoint type.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.endpoint_type
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.endpoint_type
+- description: A list of group names the endpoint belongs to.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.group_name
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.group_name
+- description: The endpoint IP address.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.ip_address
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.ip_address
+- description: The operating system of the endpoint.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.operating_system
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.operating_system
+- description: The operational status of the endpoint.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.operational_status
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.operational_status
+- description: The operating system version.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.os_version
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.os_version
+- description: The endpoint platform.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.platform
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.platform
+- description: A list of tags assigned to the endpoint.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Endpoint.tags
+  type: string
+  underlyingoutputcontextpath: Core.Endpoint.tags
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: getEndpoints
+  id: _builtin_
+  instance: ""
+  name: _builtin_
+  type: command
