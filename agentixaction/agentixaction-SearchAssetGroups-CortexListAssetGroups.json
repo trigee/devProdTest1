@@ -1,0 +1,172 @@
+args:
+- description: A comma-separated list of creator names to filter by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: created_by
+  required: false
+  type: string
+  underlyingargname: created_by
+- description: A comma-separated list of descriptions to filter by. Supports substring
+    matching.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: descriptions
+  required: false
+  type: string
+  underlyingargname: descriptions
+- description: A comma-separated list of asset group IDs to filter by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: ids
+  required: false
+  type: string
+  underlyingargname: ids
+- defaultvalue: "50"
+  description: Maximum number of results to return.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: limit
+  required: false
+  type: string
+  underlyingargname: limit
+- description: A comma-separated list of modifier names to filter by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: modified_by
+  required: false
+  type: string
+  underlyingargname: modified_by
+- description: A comma-separated list of asset group names to filter by. Supports
+    substring matching.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: names
+  required: false
+  type: string
+  underlyingargname: names
+- description: Filter by asset group type.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: type
+  required: false
+  type: string
+  underlyingargname: type
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: SearchAssetGroups
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.5.99
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexListAssetGroups
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+createdby: DBot
+description: Searches for asset groups from the Cortex platform using one or more
+  filter criteria.
+display: Cortex - List Asset Groups
+isdetailsoverridden: false
+islongrunning: false
+locked: false
+name: CortexListAssetGroups
+outputs:
+- description: The user who created the asset group.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AssetGroups.created_by
+  type: string
+  underlyingoutputcontextpath: Core.AssetGroups.created_by
+- description: The creation timestamp of the asset group.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AssetGroups.creation_time
+  type: number
+  underlyingoutputcontextpath: Core.AssetGroups.creation_time
+- description: The description of the asset group.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AssetGroups.description
+  type: string
+  underlyingoutputcontextpath: Core.AssetGroups.description
+- description: The filter conditions of the asset group.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AssetGroups.filter
+  type: unknown
+  underlyingoutputcontextpath: Core.AssetGroups.filter
+- description: The unique identifier of the asset group.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AssetGroups.id
+  type: number
+  underlyingoutputcontextpath: Core.AssetGroups.id
+- description: Whether the asset group is used by SBAC.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AssetGroups.is_used_by_sbac
+  type: boolean
+  underlyingoutputcontextpath: Core.AssetGroups.is_used_by_sbac
+- description: The last update timestamp of the asset group.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AssetGroups.last_update_time
+  type: number
+  underlyingoutputcontextpath: Core.AssetGroups.last_update_time
+- description: The membership predicate defining asset group membership criteria.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AssetGroups.membership_predicate
+  type: unknown
+  underlyingoutputcontextpath: Core.AssetGroups.membership_predicate
+- description: The user who last modified the asset group.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AssetGroups.modified_by
+  type: string
+  underlyingoutputcontextpath: Core.AssetGroups.modified_by
+- description: The name of the asset group.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AssetGroups.name
+  type: string
+  underlyingoutputcontextpath: Core.AssetGroups.name
+- description: The type of the asset group.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AssetGroups.type
+  type: string
+  underlyingoutputcontextpath: Core.AssetGroups.type
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: getAssetGroup
+  id: _builtin_
+  instance: ""
+  name: _builtin_
+  type: command
