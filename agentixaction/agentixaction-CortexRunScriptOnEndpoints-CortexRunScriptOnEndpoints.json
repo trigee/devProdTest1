@@ -1,0 +1,100 @@
+args:
+- description: The Globally Unique Identifier (UID) of the script to run. Either script_uid
+    or script_name must be provided.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: script_uid
+  required: false
+  type: string
+  underlyingargname: script_uid
+- description: The name of the script to run. Either script_uid or script_name must
+    be provided.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: script_name
+  required: false
+  type: string
+  underlyingargname: script_name
+- description: A comma-separated list of endpoint IDs on which to run the script.
+    Either endpoint_ids or endpoint_names must be provided.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: endpoint_ids
+  required: false
+  type: string
+  underlyingargname: endpoint_ids
+- description: A comma-separated list of endpoint names on which to run the script.
+    Either endpoint_ids or endpoint_names must be provided.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: endpoint_names
+  required: false
+  type: string
+  underlyingargname: endpoint_names
+- description: A JSON dictionary containing parameter names and values for script
+    execution. This field should only be populated if the targeted script requires
+    specific input parameters. Format example, {"param1":"value1","param2":"value2"}.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: parameters
+  required: false
+  type: string
+  underlyingargname: parameters
+commonfields:
+  id: CortexRunScriptOnEndpoints
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.5.99
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexRunScriptOnEndpoints
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules:
+    - xsiam
+    - cloud_runtime_security
+    - edr
+    toServerVersion: ""
+createdby: DBot
+description: |-
+  Runs a script on selected endpoints through the Cortex Platform.
+  Note: Certain scripts require defined parameters to be provided.
+display: Cortex - Run Script On Endpoints
+isdetailsoverridden: false
+islongrunning: false
+locked: false
+name: CortexRunScriptOnEndpoints
+outputs:
+- description: The unique identifier for the initiated script execution action.
+  disabled: false
+  isdetailsoverridden: false
+  name: CoreApiModule.ScriptResult.action_id
+  type: number
+  underlyingoutputcontextpath: CoreApiModule.ScriptResult.action_id
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: core-run-script-agentix
+  id: Cortex Core - Platform
+  instance: ""
+  name: Cortex Core - Platform
+  type: command
