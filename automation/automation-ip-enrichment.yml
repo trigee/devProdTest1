@@ -66,7 +66,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 8.0.0
     isoverridable: false
-    itemVersion: 1.4.4
+    itemVersion: 1.4.5
     packID: AggregatedScripts
     packName: Aggregated Scripts
     packPropagationLabels:
@@ -407,8 +407,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('ip-enrichment', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.4'
-  demisto.debug('pack id = AggregatedScripts, pack version = 1.4.4')
+  CONSTANT_PACK_VERSION = '1.4.5'
+  demisto.debug('pack id = AggregatedScripts, pack version = 1.4.5')
 
 
 
@@ -1905,6 +1905,27 @@ script: |
 
   """HELPER FUNCTIONS"""
 
+  XDR_PLATFORM_MODULE = "x0"
+
+
+  def is_xdr_tenant() -> bool:
+      """
+      Determines whether the script is running on a Cortex XDR tenant (unified platform, XDR module).
+      Shared utility for the aggregated scripts; not used by this module's own logic.
+
+      Returns:
+          bool: True if running on the unified platform with an XDR module, False otherwise.
+                Returns False if the tenant type cannot be determined.
+      """
+      try:
+          version_info = demisto.demistoVersion() or {}
+          demisto.debug(f"Version info: module={version_info.get('module')}, platform={version_info.get('platform')}")
+          module = (version_info.get("module") or "").lower()
+          return is_platform() and module == XDR_PLATFORM_MODULE
+      except Exception as e:
+          demisto.debug(f"Failed to determine whether running on a Cortex XDR tenant, continuing as non-XDR: {e}")
+          return False
+
 
   def build_hash_dict(value: str | None) -> dict[str, str]:
       """
@@ -2494,6 +2515,11 @@ script: |
 
 
   def main():
+      if is_xdr_tenant():
+          demisto.debug("IPEnrichment is not supported on Cortex XDR tenants, returning empty results.")
+          return_results(CommandResults(readable_output="The ip-enrichment script is not supported on this tenant."))
+          return
+
       args = demisto.args()
       ip_list = argToList(args.get("ip_list"))
       external_enrichment = argToBoolean(args.get("external_enrichment", False))
@@ -2517,7 +2543,7 @@ script: |
 
   register_module_line('ip-enrichment', 'end', __line__())
 scripttarget: 0
-signature: TcBgC0Cwa+BTj3UtbVmeHH2QMK3hcXDgKR/TOxJUK/0H/HSv9zkAd7G/qO35FpG3EsctpHFGloBtIll7r5PSZL/Dcbu5lMRsW+rHsWxK/1eeNRZkb+XhIZ6+43+bE8G4DfpxgUG+4N5tZe6FE+eWSEMaBEo4bAzYmzQY54SRy/ANmQUvhe1r3Z1kPaTdcKT+gn7dMllR8wwn18PcOCw+TVss+GJuB8AY7SxqrbYfpdUxCbbWb5Iqbhr8N6VcuzDLD4y7+V8Y7YQlLNpkJ+4HPlSiRSDXYTjxbHPUBugpJJnZiBlY2KSGmdc9Ie5cgQO9xYpYvLsUI3KqoSGdnT0vcw==
+signature: Dq+QPpiFenT+dPCQueo2ZMjnFMkiBUS5gzP9sQbu4ubpgM9IfTUl9/6YaBUVnOLZTVbkiyxPp/BfjFivio3KSTj0lnF+xMckHLPsE/uDOMg9b0cDBytKk09XqBM6ngCb5EIeDp/P4IhZxsSuoqQSwtoE0e4TUW/7PUC/ZxLxQgTWZ61LbjGn5y6vV3JAnZwXC2JUxVYWAkZo389VO40oLVjYz5CC4cZhdMzcQK9bIsr5DHmhOnA7pnXgDBdSwOPKcSl0Tp8Ude9+YR7VvPVI/pJiur7Af6VBHZG1UnS32ms0vSQM/KW7aKgHi1etnY4VF3C/LjYbsbRDsQOq9o56Ew==
 subtype: python3
 system: true
 tags:
