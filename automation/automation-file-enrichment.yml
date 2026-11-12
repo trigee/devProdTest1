@@ -66,7 +66,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 8.0.0
     isoverridable: false
-    itemVersion: 1.4.4
+    itemVersion: 1.4.5
     packID: AggregatedScripts
     packName: Aggregated Scripts
     packPropagationLabels:
@@ -348,8 +348,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('file-enrichment', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.4'
-  demisto.debug('pack id = AggregatedScripts, pack version = 1.4.4')
+  CONSTANT_PACK_VERSION = '1.4.5'
+  demisto.debug('pack id = AggregatedScripts, pack version = 1.4.5')
 
 
 
@@ -1846,6 +1846,27 @@ script: |
 
   """HELPER FUNCTIONS"""
 
+  XDR_PLATFORM_MODULE = "x0"
+
+
+  def is_xdr_tenant() -> bool:
+      """
+      Determines whether the script is running on a Cortex XDR tenant (unified platform, XDR module).
+      Shared utility for the aggregated scripts; not used by this module's own logic.
+
+      Returns:
+          bool: True if running on the unified platform with an XDR module, False otherwise.
+                Returns False if the tenant type cannot be determined.
+      """
+      try:
+          version_info = demisto.demistoVersion() or {}
+          demisto.debug(f"Version info: module={version_info.get('module')}, platform={version_info.get('platform')}")
+          module = (version_info.get("module") or "").lower()
+          return is_platform() and module == XDR_PLATFORM_MODULE
+      except Exception as e:
+          demisto.debug(f"Failed to determine whether running on a Cortex XDR tenant, continuing as non-XDR: {e}")
+          return False
+
 
   def build_hash_dict(value: str | None) -> dict[str, str]:
       """
@@ -2432,6 +2453,11 @@ script: |
 
 
   def main():  # pragma: no cover
+      if is_xdr_tenant():
+          demisto.debug("FileEnrichment is not supported on Cortex XDR tenants, returning empty results.")
+          return_results(CommandResults(readable_output="The file-enrichment script is not supported on this tenant."))
+          return
+
       args = demisto.args()
       file_list = argToList(args.get("file_hash"))
       external_enrichment = argToBoolean(args.get("external_enrichment", False))
@@ -2452,7 +2478,7 @@ script: |
 
   register_module_line('file-enrichment', 'end', __line__())
 scripttarget: 0
-signature: voVAIBJoexDEXzd1HuqyxOjoozC6TLuNnI8ON7xWtAMimniG28wiM4v4Yo/E5ufflJTDaLjKKOVtGI1EqsCRRFnhSBS2JEyTGqc11w8aVPR284hSF6xTtswJ2yHoNKjcxA4DfC12cJahoFvMJvKj99X+wqFfwIQUVuRoX6+dzNPnXUpBtqYIJsRptKmfnLMzfhkQQioHcK3pTdKSG1Jy6Pj+ck/lgP+RSdcu9fF5vSFxIAvbXGmloEM8uoN7ixRImW5ikPEE/QBgRmz2owIKE2uuD5M9Cycw1/hlQWxeCoqg3jn70iqyFfTm4ZZfHOxr0uQgN8otKT7YMfZrLbCZ7g==
+signature: H6HPEH+7SplNVBiVfxUk/+QjCqTpcpRxMwwwgeh5kpjOxTenEJQrZVFkOoGxtE7rEEFIksPxvRDfUHwsc3sRCfvSMhooAyaD/egvNzY3/XB3vGdryS0M3T4MeGzJZtjNAntVU1UShKNtDRRoPAJIisUQqvosO2YzIO4j8gV0gp+90gDj6JlQXc00bH1uN2+fd8VhyZDVBMPY2XLdpDfQL6Y9gT6XsheqsM5CtEQioMLQN7Xu7rkbYCIiRZ4P9d7nn+ijFNWTeVd4PKwS4StcGy+f9zfuTazioF4lXLLSObDPaWEdzNOwaYWL7pz6gUSIiCYO+vid6DBK8h5je7yChA==
 subtype: python3
 system: true
 tags:
