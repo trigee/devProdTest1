@@ -1,0 +1,75 @@
+args:
+- description: |
+    Comma-separated list of issue IDs to fix (maximum 10 per request).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_ids
+  required: true
+  type: string
+  underlyingargname: issue_ids
+- description: Custom title for the pull request.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: title
+  required: false
+  type: string
+  underlyingargname: title
+category: Vulnerability Management
+commonfields:
+  id: CortexTriggerFixPullRequest
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.5.99
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexTriggerFixPullRequest
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+createdby: DBot
+description: |
+  Create automated pull requests to fix multiple security issues in a single bulk operation. If more than 10 issues are provided, split them into multiple calls.
+display: Cortex Trigger Fix Pull Request
+isdetailsoverridden: false
+islongrunning: false
+locked: false
+name: CortexTriggerFixPullRequest
+outputs:
+- description: The issue identifier.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.TriggeredPRs.issueId
+  type: string
+  underlyingoutputcontextpath: Core.TriggeredPRs.issueId
+- description: Either "triggered" or "automated_fix_not_available".
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.TriggeredPRs.status
+  type: string
+  underlyingoutputcontextpath: Core.TriggeredPRs.status
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+tags:
+- vulnerability
+- security
+- scanning
+underlyingcontentitem:
+  command: ""
+  id: CasTriggerFixPullRequest
+  instance: ""
+  name: CasTriggerFixPullRequest
+  type: script
