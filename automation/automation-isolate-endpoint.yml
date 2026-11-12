@@ -32,7 +32,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 6.10.0
     isoverridable: false
-    itemVersion: 1.4.4
+    itemVersion: 1.4.5
     packID: AggregatedScripts
     packName: Aggregated Scripts
     packPropagationLabels:
@@ -76,8 +76,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('isolate-endpoint', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.4'
-  demisto.debug('pack id = AggregatedScripts, pack version = 1.4.4')
+  CONSTANT_PACK_VERSION = '1.4.5'
+  demisto.debug('pack id = AggregatedScripts, pack version = 1.4.5')
 
   from itertools import zip_longest
   from enum import StrEnum
@@ -528,7 +528,7 @@ script: |
 
   register_module_line('isolate-endpoint', 'end', __line__())
 scripttarget: 0
-signature: 3zg+4qUYXXTyWsC/1HJWKWozBW+1AmuYYCIjXBPVV+LiQjQPAoxziZXBgbex2kcfVeDbIE2sR6cq2zlSDoa9nbvyegxT8Inb5UYlyMHqWegneWZ5Q/8M7s+pJcqRcagzkK1i3y5N8QMfI3PdRzPbGEyecbZ6eA2YPUR4yKvvji30jjCZsrpX+51Tg4kXeKoVMItnwz9NO8ZuagTHSHZIyQhQUGAuyqBdlgQMaRBqoKBr+wRjiW0AFFTuXMwJOweXR4BbWlY0PHrcXFaxonB2Gp/qe6VqRs+SOHOABwdhA5Uw/DVv9CSKsxKJ0H9G/24wai48ctt6RZci7E71T7dVfg==
+signature: bnHfm+o5Q44e2aF+0i8bOT7m7oVmeiy/ib80FwCe4AbNce9djJbdXE+cJw0Ybi/SNoCbPqHf/kPAOUQ5NxJbABVbSYmdnXxzbbQ4shHXYjtSjFDvtD3J3lI8FBijLE8ARQbIYeJgc0UjjYDIca3MLSOGixZmDXNQzbfVMr0gMH6sFewa8MXZKlItIoE8Oc2ePWa6/fnfVIMhJvvbt/yVwSKBrA6T+dFyDDl5m1tywDPez3h7YRFGd3BEeIojSVP+9O4T5ljssWpOnUfvV7Hf9yMBzDPR3mFBrUa5enenlM9QA3bll4HskcFO1EQCvhz70R9idsk0GL7fW0NvnU9SHw==
 subtype: python3
 system: true
 tags: []
