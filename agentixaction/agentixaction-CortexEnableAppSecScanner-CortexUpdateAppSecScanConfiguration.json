@@ -1,0 +1,154 @@
+args:
+- description: |
+    A comma-separated list of repository asset IDs whose scan configuration should be updated. Each ID corresponds to a repository asset in the system.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: repository_ids
+  required: true
+  type: string
+  underlyingargname: repository_ids
+- description: |
+    A comma-separated list of scanners to enable for the specified repositories. Allowed values: SECRETS, SCA,IAC. A scanner cannot be in both enable_scanners and disable_scanners.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: enable_scanners
+  required: false
+  type: string
+  underlyingargname: enable_scanners
+- description: |
+    A comma-separated list of scanners to disable for the specified repositories. Allowed values: SECRETS, SCA, IAC. A scanner cannot be in both enable_scanners and disable_scanners.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: disable_scanners
+  required: false
+  type: string
+  underlyingargname: disable_scanners
+- description: |
+    When set to true, enables live validation of discovered secrets to check if they are still active. Requires SECRETS to be included in enable_scanners; otherwise an error is raised.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: secret_validation
+  required: false
+  type: boolean
+  underlyingargname: secret_validation
+- description: |
+    Enable git history secrets scan. Requires SECRETS to be included in enable_scanners; otherwise an error is raised.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: enable_git_history
+  required: false
+  type: boolean
+  underlyingargname: enable_git_history
+- description: Enable scanning on pull requests.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: pr_scanning
+  required: false
+  type: boolean
+  underlyingargname: pr_scanning
+- description: |
+    When set to true, blocks pull request merging if the scanner encounters errors. Only applicable when pr_scanning is enabled.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: block_on_error
+  required: false
+  type: boolean
+  underlyingargname: block_on_error
+- description: |
+    When set to true, enables automatic tagging of IaC resource blocks with trace metadata.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: tag_resource_blocks
+  required: false
+  type: boolean
+  underlyingargname: tag_resource_blocks
+- description: |
+    When set to true, enables automatic tagging of IaC module blocks with trace metadata.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: tag_module_blocks
+  required: false
+  type: boolean
+  underlyingargname: tag_module_blocks
+- description: |
+    A comma-separated list of file or directory paths to exclude from scanning (e.g., "tests/,docs/,*.md").
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: exclude_paths
+  required: false
+  type: string
+  underlyingargname: exclude_paths
+category: Utilities
+commonfields:
+  id: CortexEnableAppSecScanner
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.5.99
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexUpdateAppSecScanConfiguration
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules:
+    - cloud
+    - cloud_posture
+    - cloud_runtime_security
+    toServerVersion: ""
+createdby: DBot
+description: |
+  Updates the scan configuration for one or more repositories identified by their asset IDs. You can enable or disable specific security scanners (SECRETS, SCA, IAC), configure scanner-specific options, set up pull request scanning, configure tagging behavior, and exclude file paths from scanning. Important constraints: - A scanner cannot appear in both enable_scanners and disable_scanners at the same time. - The secret_validation and enable_git_history options require the SECRETS scanner to be included in enable_scanners. - block_on_error only applies when pr_scanning is enabled.
+display: Cortex - Update AppSec Scan Configuration
+isdetailsoverridden: false
+islongrunning: false
+locked: false
+name: CortexUpdateAppSecScanConfiguration
+outputs:
+- description: |
+    A list of repository asset IDs whose scan configuration was successfully updated.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.RepositoryScanConfiguration
+  type: string
+  underlyingoutputcontextpath: Cas.RepositoryScanConfiguration
+requiredroles: []
+requiresuserapproval: true
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Utilities
+- ASPM
+- Repository
+- Scan
+underlyingcontentitem:
+  command: ""
+  id: CasUpdateRepositoryScanConfiguration
+  instance: ""
+  name: CasUpdateRepositoryScanConfiguration
+  type: script
