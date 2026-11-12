@@ -81,7 +81,7 @@ contentitemexportablefields:
     definitionid: ""
     fromServerVersion: 8.0.0
     isoverridable: false
-    itemVersion: 1.4.4
+    itemVersion: 1.4.5
     packID: AggregatedScripts
     packName: Aggregated Scripts
     packPropagationLabels:
@@ -1194,8 +1194,8 @@ runas: DBotWeakRole
 runonce: false
 script: |
   register_module_line('indicator-enrichment', 'start', __line__())
-  CONSTANT_PACK_VERSION = '1.4.4'
-  demisto.debug('pack id = AggregatedScripts, pack version = 1.4.4')
+  CONSTANT_PACK_VERSION = '1.4.5'
+  demisto.debug('pack id = AggregatedScripts, pack version = 1.4.5')
 
 
 
@@ -2691,6 +2691,27 @@ script: |
 
   """HELPER FUNCTIONS"""
 
+  XDR_PLATFORM_MODULE = "x0"
+
+
+  def is_xdr_tenant() -> bool:
+      """
+      Determines whether the script is running on a Cortex XDR tenant (unified platform, XDR module).
+      Shared utility for the aggregated scripts; not used by this module's own logic.
+
+      Returns:
+          bool: True if running on the unified platform with an XDR module, False otherwise.
+                Returns False if the tenant type cannot be determined.
+      """
+      try:
+          version_info = demisto.demistoVersion() or {}
+          demisto.debug(f"Version info: module={version_info.get('module')}, platform={version_info.get('platform')}")
+          module = (version_info.get("module") or "").lower()
+          return is_platform() and module == XDR_PLATFORM_MODULE
+      except Exception as e:
+          demisto.debug(f"Failed to determine whether running on a Cortex XDR tenant, continuing as non-XDR: {e}")
+          return False
+
 
   def build_hash_dict(value: str | None) -> dict[str, str]:
       """
@@ -3689,7 +3710,7 @@ script: |
 
   register_module_line('indicator-enrichment', 'end', __line__())
 scripttarget: 0
-signature: ZrYiDpspkqyJG0EA0xYHQcc+9sb1WVO3O5dOpumiK6GOM8D/XGolV1H66KFYBRGA2lofmBHLUyKRjeOz5bL4hpx8QE4FQu1UnOekpPCw7BnK4NhH1XkJwXFMpZDUaUVYJgWVxUFxkGSPM4D4uzJiI8Ak5rquXOUsZTVnICV5EbIYRtNPG4KiO1Yh8BMPvjoZMNEEf1mQxScZtcnoVUzhJ8EjtspyJERgEtN3EgTrv3o7R4MoJ3MyBOJ70a1mD8PBXtMWAkmNO6W+4vfDELDdZOOSOcD2Ip2B54SNXrU1sGLAwHO6vXwWA31y7El7iLkz6maZYhIRas696UEk/Dd/sw==
+signature: g3b2Zmmxs/OAm4/A7gjIUGvAuNWZ5m2dvXZXFvzbOOEcapAVVI7rlI74INdUmBkdAYA6sAyvAsFMNAEIhOlQ1wAAu2H44jGtdvqLIDeB2x8T0W+eTY6rkFZThVqqsSsiZXseCkpY+gSWOG8C+jRM/t7jnRj9cvSA/vzLQZL1xo/OzGhpXweJnfmJFF60cH9ACcTJyI5c6EQb+aNGTidpCMCVI28m1+umNX2CUC8WmkzcuCvYxgvo743FqmdCEKl/wsMTyaZxh+N2oD5kdOM2GzG08Bw8h/ZutSSCQVPv1xrhswDpVpY11nYfSgHahiPIjYZh48NizsNIJ0m8U+SgGQ==
 subtype: python3
 system: true
 tags:
