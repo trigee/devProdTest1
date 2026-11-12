@@ -1,0 +1,434 @@
+args:
+- defaultvalue: "50"
+  description: The maximum number of issues to return. Default is 50
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: limit
+  required: false
+  type: string
+  underlyingargname: limit
+- defaultvalue: severity
+  description: The field by which to sort the results.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: sort_field
+  required: false
+  type: string
+  underlyingargname: sort_field
+- defaultvalue: DESC
+  description: The order in which to sort the results (Options - DESC, ASC).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: sort_order
+  required: false
+  type: string
+  underlyingargname: sort_order
+- description: 'The start time for filtering according to issue insert time. Supports
+    free-text relative and absolute times. For example: 7 days ago, 2023-06-15T10:30:00Z,
+    13/8/2025.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: start_time
+  required: false
+  type: string
+  underlyingargname: start_time
+- description: 'The end time for filtering according to issue insert time. Supports
+    free-text relative and absolute times. For example: 7 days ago, 2023-06-15T10:30:00Z,
+    13/8/2025.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: end_time
+  required: false
+  type: string
+  underlyingargname: end_time
+- description: The issue ID. Accepts a comma-separated list.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_id
+  required: false
+  type: string
+  underlyingargname: issue_id
+- description: |
+    The email of the user assigned to the issue. Accepts a comma-separated list.
+    Use 'unassigned' for all unassigned issues or 'assigned' for all assigned issues.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: assignee
+  required: false
+  type: string
+  underlyingargname: assignee
+- description: The collaborators of the issue. Accepts a comma-separated list.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: collaborator
+  required: false
+  type: string
+  underlyingargname: collaborator
+- description: The issue status. Accepts a comma-separated list (Options - New, In
+    Progress, Resolved).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: status
+  required: false
+  type: string
+  underlyingargname: status
+- description: The issue name. Accepts a comma-separated list.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_name
+  required: false
+  type: string
+  underlyingargname: issue_name
+- description: The name of the affected asset for the issue. Accepts a comma-separated
+    list.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_name
+  required: false
+  type: string
+  underlyingargname: asset_name
+- description: The repository of the issue. Accepts a comma-separated list.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: repository
+  required: false
+  type: string
+  underlyingargname: repository
+- description: The path of the relevant file for the issue. Accepts a comma-separated
+    list.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: file_path
+  required: false
+  type: string
+  underlyingargname: file_path
+- description: The backlog status of the issue. Accepts a comma-separated list (Options
+    - BACKLOG, NEW).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: backlog_status
+  required: false
+  type: string
+  underlyingargname: backlog_status
+- description: The minimum CVSS score.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: cvss_score_gte
+  required: false
+  type: string
+  underlyingargname: cvss_score_gte
+- description: |
+    The minimum EPSS score. Filters vulnerabilities based on their predicted likelihood of exploitation.
+    This filter should only be applied when an explicit request to evaluate by EPSS or exploit
+    probability is provided.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: epss_score_gte
+  required: false
+  type: string
+  underlyingargname: epss_score_gte
+- description: Filter by issues that are of a Known Exploited Vulnerability (KEV).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: has_kev
+  required: false
+  type: boolean
+  underlyingargname: has_kev
+- description: The severity of the issue. Accepts a comma-separated list (Options
+    - info, low, medium, high, critical).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: severity
+  required: false
+  type: string
+  underlyingargname: severity
+- description: The urgency of the issue. Accepts a comma-separated list (Options -
+    N/A, NOT_URGENT, URGENT, TOP_URGENT).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: urgency
+  required: false
+  type: string
+  underlyingargname: urgency
+- description: Is there an available automated fix.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: automated_fix_available
+  required: false
+  type: boolean
+  underlyingargname: automated_fix_available
+- description: SLA status of the issue. Accepts a comma-separated list (Options -
+    Approaching, On Track, Overdue).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: sla
+  required: false
+  type: string
+  underlyingargname: sla
+- description: Validation status of the issue. Accepts a comma-separated list (Options
+    - INVALID, NO_VALIDATION, PRIVILEGED, UNAVAILABLE, VALID).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: validation
+  required: false
+  type: string
+  underlyingargname: validation
+- description: 'Filter by specific issue categories. Accepts a comma-separated list.
+    Supported values: vulnerabilities, secrets, iac, weaknesses, operational_risk,
+    licenses, cicd. If not specified, all applicable issue categories are queried
+    based on the provided filters.'
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: issue_category
+  required: false
+  type: string
+  underlyingargname: issue_category
+category: Cloud Security
+commonfields:
+  id: CortexListAppSecIssues
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.5.99
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexListAppSecIssues
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules:
+    - cloud
+    - cloud_posture
+    - cloud_runtime_security
+    toServerVersion: ""
+createdby: DBot
+description: |
+  This action searches for application security issues based on a variety of filters. It returns detailed information about each issue, including asset names, CVSS and EPSS scores, issue status, urgency, and repository information.
+display: Cortex - List AppSec Issues
+isdetailsoverridden: false
+islongrunning: false
+locked: false
+name: CortexListAppSecIssues
+outputs:
+- description: The unique identifier for the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.internal_id
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.internal_id
+- description: The names of the assets related to the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.asset_name
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.asset_name
+- description: The severity of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.severity
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.severity
+- description: The Exploit Prediction Scoring System (EPSS) score.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.epss_score
+  type: number
+  underlyingoutputcontextpath: Core.AppsecIssue.epss_score
+- description: The Common Vulnerability Scoring System (CVSS) score.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.cvss_score
+  type: number
+  underlyingoutputcontextpath: Core.AppsecIssue.cvss_score
+- description: The full name of the user assigned to the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.assignee
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.assignee
+- description: Whether a fix is available for the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.is_fixable
+  type: boolean
+  underlyingoutputcontextpath: Core.AppsecIssue.is_fixable
+- description: The name of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.issue_name
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.issue_name
+- description: The source of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.issue_source
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.issue_source
+- description: The category of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.issue_category
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.issue_category
+- description: The domain of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.issue_domain
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.issue_domain
+- description: The description of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.issue_description
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.issue_description
+- description: The status of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.status
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.status
+- description: The timestamp when the issue was inserted.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.time_added
+  type: number
+  underlyingoutputcontextpath: Core.AppsecIssue.time_added
+- description: The urgency of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.urgency
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.urgency
+- description: The SLA status of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.sla_status
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.sla_status
+- description: The secret validation status of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.secret_validation
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.secret_validation
+- description: The name of the repository where the issue was found.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.repository_name
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.repository_name
+- description: The organization of the repository where the issue was found.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.repository_organization
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.repository_organization
+- description: The file path related to the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.file_path
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.file_path
+- description: The collaborator associated with the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.collaborator
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.collaborator
+- description: Whether the issue is part of the Known Exploited Vulnerabilities catalog
+    (KEV).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.has_kev
+  type: boolean
+  underlyingoutputcontextpath: Core.AppsecIssue.has_kev
+- description: The backlog status of the issue.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.backlog_status
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.backlog_status
+- description: The version of the vulnerable package.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.package_version
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.package_version
+- description: The version that fixes the vulnerability.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.fix_version
+  type: string
+  underlyingoutputcontextpath: Core.AppsecIssue.fix_version
+- description: Whether the repository associated with the issue is public.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.AppsecIssue.repository_is_public
+  type: boolean
+  underlyingoutputcontextpath: Core.AppsecIssue.repository_is_public
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- security
+- scanning
+- appsec
+underlyingcontentitem:
+  command: core-get-appsec-issues
+  id: Cortex Core - Platform
+  instance: ""
+  name: Cortex Core - Platform
+  type: command
