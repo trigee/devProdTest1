@@ -1,0 +1,429 @@
+args:
+- description: |
+    A comma-separated list of asset IDs to filter by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_id
+  required: false
+  type: string
+  underlyingargname: asset_id
+- description: |
+    A comma-separated list of asset names to filter by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_name
+  required: false
+  type: string
+  underlyingargname: asset_name
+- description: |
+    A comma-separated list of business application names to filter by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: business_application_names
+  required: false
+  type: string
+  underlyingargname: business_application_names
+- description: |
+    A comma-separated list of coverage statuses to filter by. Options: FULLY SCANNED, NOT SCANNED, PARTIALLY SCANNED.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: status_coverage
+  required: false
+  type: string
+  underlyingargname: status_coverage
+- description: |
+    A comma-separated list of vulnerability scanning statuses to filter by. Options: DISABLED, ENABLED, IRRELEVANT.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: is_scanned_by_vulnerabilities
+  required: false
+  type: string
+  underlyingargname: is_scanned_by_vulnerabilities
+- description: |
+    A comma-separated list of code weakness scanning statuses to filter by. Options: DISABLED, ENABLED, IRRELEVANT.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: is_scanned_by_code_weakness
+  required: false
+  type: string
+  underlyingargname: is_scanned_by_code_weakness
+- description: |
+    A comma-separated list of secret scanning statuses to filter by. Options: DISABLED, ENABLED, IRRELEVANT.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: is_scanned_by_secrets
+  required: false
+  type: string
+  underlyingargname: is_scanned_by_secrets
+- description: |
+    A comma-separated list of infrastructure-as-code (IaC) scanning statuses to filter by. Options: DISABLED, ENABLED, IRRELEVANT.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: is_scanned_by_iac
+  required: false
+  type: string
+  underlyingargname: is_scanned_by_iac
+- description: |
+    A comma-separated list of malware scanning statuses to filter by. Options: DISABLED, ENABLED, IRRELEVANT.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: is_scanned_by_malware
+  required: false
+  type: string
+  underlyingargname: is_scanned_by_malware
+- description: |
+    A comma-separated list of asset types to filter by. Options: CICD PIPELINE, CONTAINER IMAGE REPOSITORY, REPOSITORY.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_type
+  required: false
+  type: string
+  underlyingargname: asset_type
+- description: |
+    A comma-separated list of asset providers to filter by. Options: AWS, AWS_CODE_BUILD, AWS_CODE_COMMIT, AZURE, AZURE_PIPELINES, AZURE_REPOS, BITBUCKET, CIRCLE_CI, DOCKER, GCP, GITHUB, GITHUB_ACTIONS, GITLAB, GITLAB_CI, HCP_TFC_RUN_TASKS, JENKINS, JFROG_ARTIFACTORY, OCI.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_provider
+  required: false
+  type: string
+  underlyingargname: asset_provider
+- defaultvalue: "50"
+  description: |
+    The maximum number of assets to return.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: limit
+  required: false
+  type: number
+  underlyingargname: limit
+category: Utilities
+commonfields:
+  id: CortexListAppSecAssetCoverage
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.5.99
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexListAppSecAssetCoverage
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules:
+    - cloud
+    - cloud_posture
+    - cloud_runtime_security
+    toServerVersion: ""
+createdby: DBot
+description: |
+  Retrieves Application Security Posture Management (ASPM) coverage statistics and detailed asset information
+  based on provided filters.
+  Note: Due to a default value constraint on the asset result size, the asset data returned may be partial and not reflect the complete set of matching asset results.
+display: Cortex - List AppSec Asset Coverage
+isdetailsoverridden: false
+islongrunning: false
+locked: false
+name: CortexListAppSecAssetCoverage
+outputs:
+- description: |
+    IMPORTANT: total_filtered_assets must always be part of the response displayed to the user. This field must be accompanied by its definition: The total number of asset results in the system that match the filter criteria.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.total_filtered_assets
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.total_filtered_assets
+- description: |
+    IMPORTANT: number_returned_assets must always be part of the response displayed to the user. This field must be accompanied by its definition: The actual number of asset results returned in this specific execution.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.number_returned_assets
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.number_returned_assets
+- description: The unique ID of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Asset.asset_id
+  type: string
+  underlyingoutputcontextpath: Cas.Coverage.Asset.asset_id
+- description: The ASPM coverage percentage calculated from the scanner coverage histogram.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.coverage_percentage
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.coverage_percentage
+- description: The percentage of assets scanned for vulnerabilities including not
+    onboarded assets.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.coverage_with_non_onboarded_percentage
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.coverage_with_non_onboarded_percentage
+- description: A list of suggested natural language follow-up queries or actions that
+    guide the user in refining their coverage analysis. This field is offering the
+    LLM or user contextually relevant options to drill down into the data.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.recommended_next_steps
+  type: unknown
+  underlyingoutputcontextpath: Cas.Coverage.recommended_next_steps
+- description: The number of assets that are partially scanned according to ASPM coverage.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.aspm_status_coverage.partially_scanned_count
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.aspm_status_coverage.partially_scanned_count
+- description: The number of assets that are fully scanned according to ASPM coverage.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.aspm_status_coverage.fully_scanned_count
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.aspm_status_coverage.fully_scanned_count
+- description: The number of assets that are not scanned according to ASPM coverage.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.aspm_status_coverage.not_scanned_count
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.aspm_status_coverage.not_scanned_count
+- description: The percentage of assets that are partially scanned according to ASPM
+    coverage.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.aspm_status_coverage.partially_scanned_percentage
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.aspm_status_coverage.partially_scanned_percentage
+- description: The percentage of assets that are fully scanned according to ASPM coverage.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.aspm_status_coverage.fully_scanned_percentage
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.aspm_status_coverage.fully_scanned_percentage
+- description: The percentage of assets that are not scanned according to ASPM coverage.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.aspm_status_coverage.not_scanned_percentage
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.aspm_status_coverage.not_scanned_percentage
+- description: The percentage of assets scanned for vulnerabilities.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_vulnerabilities.coverage_percentage
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_vulnerabilities.coverage_percentage
+- description: The percentage of assets scanned for vulnerabilities including not
+    onboarded assets.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_vulnerabilities.coverage_with_non_onboarded_percentage
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_vulnerabilities.coverage_with_non_onboarded_percentage
+- description: The number of assets where vulnerability scanning is enabled.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_vulnerabilities.enabled
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_vulnerabilities.enabled
+- description: The number of assets where vulnerability scanning is disabled.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_vulnerabilities.disabled
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_vulnerabilities.disabled
+- description: The percentage of assets scanned for code weaknesses.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_code_weakness.coverage_percentage
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_code_weakness.coverage_percentage
+- description: The percentage of assets scanned for code weaknesses including not
+    onboarded assets.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_code_weakness.coverage_with_non_onboarded_percentage
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_code_weakness.coverage_with_non_onboarded_percentage
+- description: The number of assets where code weakness scanning is enabled.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_code_weakness.enabled
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_code_weakness.enabled
+- description: The number of assets where code weakness scanning is disabled.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_code_weakness.disabled
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_code_weakness.disabled
+- description: The percentage of assets scanned for secrets.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_secrets.coverage_percentage
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_secrets.coverage_percentage
+- description: The percentage of assets scanned for secrets including not onboarded
+    assets.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_secrets.coverage_with_non_onboarded_percentage
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_secrets.coverage_with_non_onboarded_percentage
+- description: The number of assets where secret scanning is enabled.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_secrets.enabled
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_secrets.enabled
+- description: The number of assets where secret scanning is disabled.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_secrets.disabled
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_secrets.disabled
+- description: The percentage of assets scanned for infrastructure-as-code (IaC) issues.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_iac.coverage_percentage
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_iac.coverage_percentage
+- description: The percentage of assets scanned for infrastructure-as-code (IaC) issues
+    including not onboarded assets.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_iac.coverage_with_non_onboarded_percentage
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_iac.coverage_with_non_onboarded_percentage
+- description: The number of assets where infrastructure-as-code (IaC) scanning is
+    enabled.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_iac.enabled
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_iac.enabled
+- description: The number of assets where infrastructure-as-code (IaC) scanning is
+    disabled.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_iac.disabled
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_iac.disabled
+- description: The percentage of assets scanned for malware.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_malware.coverage_percentage
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_malware.coverage_percentage
+- description: The percentage of assets scanned for malware including not onboarded
+    assets.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_malware.coverage_with_non_onboarded_percentage
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_malware.coverage_with_non_onboarded_percentage
+- description: The number of assets where malware scanning is enabled.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_malware.enabled
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_malware.enabled
+- description: The number of assets where malware scanning is disabled.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Metrics.is_scanned_by_malware.disabled
+  type: number
+  underlyingoutputcontextpath: Cas.Coverage.Metrics.is_scanned_by_malware.disabled
+- description: The name of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Asset.asset_name
+  type: string
+  underlyingoutputcontextpath: Cas.Coverage.Asset.asset_name
+- description: The vendor or source platform of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Asset.asset_provider
+  type: string
+  underlyingoutputcontextpath: Cas.Coverage.Asset.asset_provider
+- description: The type or category of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Asset.asset_type
+  type: string
+  underlyingoutputcontextpath: Cas.Coverage.Asset.asset_type
+- description: The overall scan coverage status of the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Asset.status_coverage
+  type: string
+  underlyingoutputcontextpath: Cas.Coverage.Asset.status_coverage
+- description: The vulnerability scanning status for the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Asset.is_scanned_by_vulnerabilities
+  type: string
+  underlyingoutputcontextpath: Cas.Coverage.Asset.is_scanned_by_vulnerabilities
+- description: The code weakness scanning status for the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Asset.is_scanned_by_code_weakness
+  type: string
+  underlyingoutputcontextpath: Cas.Coverage.Asset.is_scanned_by_code_weakness
+- description: The secret scanning status for the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Asset.is_scanned_by_secrets
+  type: string
+  underlyingoutputcontextpath: Cas.Coverage.Asset.is_scanned_by_secrets
+- description: The infrastructure-as-code scanning status for the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Asset.is_scanned_by_iac
+  type: string
+  underlyingoutputcontextpath: Cas.Coverage.Asset.is_scanned_by_iac
+- description: The malware scanning status for the asset.
+  disabled: false
+  isdetailsoverridden: false
+  name: Cas.Coverage.Asset.is_scanned_by_malware
+  type: string
+  underlyingoutputcontextpath: Cas.Coverage.Asset.is_scanned_by_malware
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Utilities
+- ASPM
+- Coverage
+underlyingcontentitem:
+  command: ""
+  id: CasGetAppSecCoverage
+  instance: ""
+  name: CasGetAppSecCoverage
+  type: script
