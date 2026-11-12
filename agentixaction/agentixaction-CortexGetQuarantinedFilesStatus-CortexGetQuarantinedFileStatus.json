@@ -1,0 +1,80 @@
+args:
+- description: The unique identifier of the target endpoint (device) on which the
+    action will be performed.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: endpoint_id
+  required: true
+  type: string
+  underlyingargname: endpoint_id
+- description: The hash of the target file on the specified endpoint. Must be a valid
+    SHA256 value.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: file_hash
+  required: true
+  type: string
+  underlyingargname: file_hash
+- description: The file path to the target file on the specified endpoint.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: file_path
+  required: true
+  type: string
+  underlyingargname: file_path
+category: Endpoint
+commonfields:
+  id: CortexGetQuarantinedFilesStatus
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: ""
+    isoverridable: false
+    itemVersion: 3.5.99
+    packID: Core
+    packName: Core
+    packPropagationLabels:
+    - all
+    prevname: CortexGetQuarantinedFileStatus
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules:
+    - xsiam
+    - cloud_runtime_security
+    - edr
+    toServerVersion: ""
+createdby: DBot
+description: |
+  Retrieves the quarantine action status for a specified file. The ID of the endpoint can be retrieved from the "GetEndpointData" action when using the "Cortex Core - IR" integration brand as input.
+display: Cortex - Get Quarantined File Status
+isdetailsoverridden: false
+islongrunning: false
+locked: false
+name: CortexGetQuarantinedFileStatus
+outputs:
+- description: The status of the quarantine action.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.quarantineFiles.status
+  type: string
+  underlyingoutputcontextpath: Core.quarantineFiles.status
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+tags:
+- Endpoint
+underlyingcontentitem:
+  command: core-get-quarantine-status
+  id: Cortex Core - IR
+  instance: ""
+  name: Cortex Core - IR
+  type: command
