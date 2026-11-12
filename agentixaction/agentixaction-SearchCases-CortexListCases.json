@@ -1,0 +1,563 @@
+args:
+- description: A comma-separated list of case IDs to filter by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: case_ids
+  required: false
+  type: string
+  underlyingargname: case_ids
+- description: |
+    Sorts returned cases by the date/time that the case was created. Options: asc (ascending), desc (descending).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: sort_by_creation_time
+  required: false
+  type: string
+  underlyingargname: sort_by_creation_time
+- description: |
+    Sorts returned cases by the date/time that the case was modified. Options: asc (ascending), desc (descending).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: sort_by_modification_time
+  required: false
+  type: string
+  underlyingargname: sort_by_modification_time
+- defaultvalue: "0"
+  description: Page number (for pagination). The default is 0 (the first page).
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: page
+  required: false
+  type: number
+  underlyingargname: page
+- defaultvalue: "50"
+  description: Maximum number of cases to return per page. The maximum value is 50.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: limit
+  required: false
+  type: number
+  underlyingargname: limit
+- description: |
+    A comma-separated list of domains to filter by, For example: DOMAIN_SECURITY, DOMAIN_POSTURE, DOMAIN_IT, DOMAIN_HEALTH, DOMAIN_HUNTING.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: case_domains
+  required: false
+  type: string
+  underlyingargname: case_domains
+- description: |
+    A comma-separated list of case statuses to filter cases by. Options: new, in_progress, resolved.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: status
+  required: false
+  type: string
+  underlyingargname: status
+- description: |
+    A comma-separated list of statuses to exclude from the results of the case search. Options: new, in_progress, resolved.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: not_status
+  required: false
+  type: string
+  underlyingargname: not_status
+- description: |
+    A comma-separated list of severity levels to filter by. Options: low, medium, high, critical.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: severities
+  required: false
+  type: string
+  underlyingargname: severities
+- description: A comma-separated list of Asset IDs related to the case to filter by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_ids
+  required: false
+  type: string
+  underlyingargname: asset_ids
+- description: A comma-separated list of Asset Group IDs related to the case to filter
+    by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: asset_groups
+  required: false
+  type: string
+  underlyingargname: asset_groups
+- description: A comma-separated list of hosts to filter by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: hosts
+  required: false
+  type: string
+  underlyingargname: hosts
+- description: |
+    A comma-separated list of assignee names or emails to filter by. Note: all values must be either names or emails - mixing both in the same request is not supported. Use the special values: "assigned" - to get all cases with assignees, "unassigned" - to get cases with no assignees.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: assignees
+  required: false
+  type: string
+  underlyingargname: assignees
+- description: |
+    Filter cases by starred status. Options: true, false.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: starred
+  required: false
+  type: boolean
+  underlyingargname: starred
+- description: A comma-separated list of names to filter by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: case_names
+  required: false
+  type: string
+  underlyingargname: case_names
+- description: A comma-separated list of descriptions to filter by.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: case_descriptions
+  required: false
+  type: string
+  underlyingargname: case_descriptions
+- description: A datetime with the format 2019-12-31T23:59:00. Only cases that were
+    created on or before the specified datetime will be retrieved.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: lte_creation_time
+  required: false
+  type: date
+  underlyingargname: lte_creation_time
+- description: A datetime with the format 2019-12-31T23:59:00. Only cases that were
+    created on or after the specified datetime will be retrieved.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: gte_creation_time
+  required: false
+  type: date
+  underlyingargname: gte_creation_time
+- description: Filters for returned cases that were created on or after the specified
+    date range, for example, 1 month, 2 days, 1 hour, and so on.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: since_creation_time
+  required: false
+  type: string
+  underlyingargname: since_creation_time
+- description: Filters for returned cases that were modified on or before the specified
+    datetime with the format 2019-12-31T23:59:00.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: lte_modification_time
+  required: false
+  type: date
+  underlyingargname: lte_modification_time
+- description: Filters for returned cases that were modified on or after the specified
+    datetime with the format 2019-12-31T23:59:00.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: gte_modification_time
+  required: false
+  type: date
+  underlyingargname: gte_modification_time
+- description: Filters for returned cases that were modified on or after the specified
+    date range, for example, 1 month, 2 days, 1 hour, and so on.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: since_modification_time
+  required: false
+  type: string
+  underlyingargname: since_modification_time
+- defaultvalue: "false"
+  description: |
+    Whether to include enriched case data in the response (detection_time, notes, xdr_url, manual_description, starred_manually). Only supported for up to 10 cases. When more than 10 cases are returned, the command automatically falls back to standard case data. Options: true, false.
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: get_enriched_case_data
+  required: false
+  type: boolean
+  underlyingargname: get_enriched_case_data
+- description: |
+    A comma-separated list of tags to filter cases by, For example: "DOM:Security", "DOM:Posture", "DS:PANW/AI Security Posture", "DS:PANW/CAS Secret Scanner", "DS:PANW/IoT Security", "DS:PANW/Secrets Scanner".
+  disabled: false
+  hidden: false
+  isdetailsoverridden: false
+  isgeneratable: false
+  name: tags
+  required: false
+  type: string
+  underlyingargname: tags
+category: Data Enrichment & Threat Intelligence
+commonfields:
+  id: SearchCases
+  version: -1
+contentitemexportablefields:
+  contentitemfields:
+    definitionid: ""
+    fromServerVersion: 8.15.0
+    isoverridable: false
+    itemVersion: 1.22.67
+    packID: CommonScripts
+    packName: Common Scripts
+    packPropagationLabels:
+    - all
+    prevname: CortexListCases
+    propagationLabels: []
+    supportedFeatures: []
+    supportedModules: []
+    toServerVersion: ""
+created: "2026-11-05T13:30:03Z"
+createdby: DBot
+description: |-
+  Searches for cases based on provided filters and retrieves case data.
+  Allows retrieval of detailed enriched case data when the number of cases is 10 or fewer.
+  Note: Due to a value constraint on the result size, the data returned may be partial and not reflect the complete set of matching results.
+display: Cortex - List Cases
+isdetailsoverridden: false
+islongrunning: false
+locked: false
+name: CortexListCases
+outputs:
+- description: Unique ID assigned to each returned case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.case_id
+  type: string
+  underlyingoutputcontextpath: Core.Case.case_id
+- description: Name of the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.case_name
+  type: string
+  underlyingoutputcontextpath: Core.Case.case_name
+- description: Description of the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.description
+  type: string
+  underlyingoutputcontextpath: Core.Case.description
+- description: Timestamp when the case was created.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.creation_time
+  type: number
+  underlyingoutputcontextpath: Core.Case.creation_time
+- description: Timestamp when the case was last modified.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.modification_time
+  type: number
+  underlyingoutputcontextpath: Core.Case.modification_time
+- description: Timestamp when the case was resolved.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.resolved_timestamp
+  type: number
+  underlyingoutputcontextpath: Core.Case.resolved_timestamp
+- description: Current status of the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.status
+  type: string
+  underlyingoutputcontextpath: Core.Case.status
+- description: Severity level of the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.severity
+  type: string
+  underlyingoutputcontextpath: Core.Case.severity
+- description: The case team member identifier - user email (for memberType=USER)
+    or group UUID (for memberType=USER_GROUP).
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.caseTeam.id
+  type: string
+  underlyingoutputcontextpath: Core.Case.caseTeam.id
+- description: 'The case team member type. One of: USER, USER_GROUP.'
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.caseTeam.memberType
+  type: string
+  underlyingoutputcontextpath: Core.Case.caseTeam.memberType
+- description: 'The case team member role. One of: CONTRIBUTOR, WATCHER.'
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.caseTeam.teamRole
+  type: string
+  underlyingoutputcontextpath: Core.Case.caseTeam.teamRole
+- description: 'Case visibility mode. One of: CASE_SCOPE, TEAM_ONLY.'
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.accessMode
+  type: string
+  underlyingoutputcontextpath: Core.Case.accessMode
+- description: Email address of the assigned user. May be null.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.assigned_user_mail
+  type: string
+  underlyingoutputcontextpath: Core.Case.assigned_user_mail
+- description: Full name of the assigned user. May be null.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.assigned_user_pretty_name
+  type: string
+  underlyingoutputcontextpath: Core.Case.assigned_user_pretty_name
+- description: Total number of issues in the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.issue_count
+  type: number
+  underlyingoutputcontextpath: Core.Case.issue_count
+- description: Number of issues with low severity.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.low_severity_issue_count
+  type: number
+  underlyingoutputcontextpath: Core.Case.low_severity_issue_count
+- description: Number of issues with medium severity.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.med_severity_issue_count
+  type: number
+  underlyingoutputcontextpath: Core.Case.med_severity_issue_count
+- description: Number of issues with high severity.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.high_severity_issue_count
+  type: number
+  underlyingoutputcontextpath: Core.Case.high_severity_issue_count
+- description: Number of issues with critical severity.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.critical_severity_issue_count
+  type: number
+  underlyingoutputcontextpath: Core.Case.critical_severity_issue_count
+- description: Number of users involved in the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.user_count
+  type: number
+  underlyingoutputcontextpath: Core.Case.user_count
+- description: Number of hosts involved in the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.host_count
+  type: number
+  underlyingoutputcontextpath: Core.Case.host_count
+- description: Comments added when resolving the case. May be null.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.resolve_comment
+  type: string
+  underlyingoutputcontextpath: Core.Case.resolve_comment
+- description: The reason for resolving the case. May be null.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.resolve_reason
+  type: string
+  underlyingoutputcontextpath: Core.Case.resolve_reason
+- description: Severity manually assigned by the user. May be null.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.manual_severity
+  type: string
+  underlyingoutputcontextpath: Core.Case.manual_severity
+- description: Indicates whether the case is starred.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.starred
+  type: boolean
+  underlyingoutputcontextpath: Core.Case.starred
+- description: List of hosts involved in the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.hosts
+  type: unknown
+  underlyingoutputcontextpath: Core.Case.hosts
+- description: List of users involved in the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.users
+  type: unknown
+  underlyingoutputcontextpath: Core.Case.users
+- description: Sources of the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.case_sources
+  type: unknown
+  underlyingoutputcontextpath: Core.Case.case_sources
+- description: Manually assigned score. May be null.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.manual_score
+  type: number
+  underlyingoutputcontextpath: Core.Case.manual_score
+- description: Score based on rules.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.rule_based_score
+  type: number
+  underlyingoutputcontextpath: Core.Case.rule_based_score
+- description: Number of WildFire hits.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.wildfire_hits
+  type: number
+  underlyingoutputcontextpath: Core.Case.wildfire_hits
+- description: Status of issue grouping.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.issues_grouping_status
+  type: string
+  underlyingoutputcontextpath: Core.Case.issues_grouping_status
+- description: List of MITRE ATT&CK tactic IDs and names associated with the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.mitre_tactics_ids_and_names
+  type: unknown
+  underlyingoutputcontextpath: Core.Case.mitre_tactics_ids_and_names
+- description: List of MITRE ATT&CK technique IDs and names associated with the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.mitre_techniques_ids_and_names
+  type: unknown
+  underlyingoutputcontextpath: Core.Case.mitre_techniques_ids_and_names
+- description: Categories of issues associated with the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.issue_categories
+  type: unknown
+  underlyingoutputcontextpath: Core.Case.issue_categories
+- description: Original tags assigned to the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.original_tags
+  type: unknown
+  underlyingoutputcontextpath: Core.Case.original_tags
+- description: Current tags assigned to the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.tags
+  type: unknown
+  underlyingoutputcontextpath: Core.Case.tags
+- description: Domain associated with the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.case_domain
+  type: string
+  underlyingoutputcontextpath: Core.Case.case_domain
+- description: Custom fields for the case with standardized lowercase, whitespace-free
+    names.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.custom_fields
+  type: unknown
+  underlyingoutputcontextpath: Core.Case.custom_fields
+- description: List of issue IDs associated with the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.CaseExtraData.issue_ids
+  type: unknown
+  underlyingoutputcontextpath: Core.Case.CaseExtraData.issue_ids
+- description: File artifacts associated with the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.CaseExtraData.file_artifacts
+  type: unknown
+  underlyingoutputcontextpath: Core.Case.CaseExtraData.file_artifacts
+- description: Network artifacts associated with the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.CaseExtraData.network_artifacts
+  type: unknown
+  underlyingoutputcontextpath: Core.Case.CaseExtraData.network_artifacts
+- description: True if the case was starred manually; false if starred by rules.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.CaseExtraData.starred_manually
+  type: boolean
+  underlyingoutputcontextpath: Core.Case.CaseExtraData.starred_manually
+- description: URL to view the case in Cortex XDR.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.CaseExtraData.xdr_url
+  type: string
+  underlyingoutputcontextpath: Core.Case.CaseExtraData.xdr_url
+- description: Description manually provided by the user.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.CaseExtraData.manual_description
+  type: string
+  underlyingoutputcontextpath: Core.Case.CaseExtraData.manual_description
+- description: The notes related to the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.CaseExtraData.notes
+  type: string
+  underlyingoutputcontextpath: Core.Case.CaseExtraData.notes
+- description: The timestamp when the first issue was detected in the case.
+  disabled: false
+  isdetailsoverridden: false
+  name: Core.Case.CaseExtraData.detection_time
+  type: number
+  underlyingoutputcontextpath: Core.Case.CaseExtraData.detection_time
+requiredroles: []
+requiresuserapproval: false
+state:
+  isuserdisabled: false
+system: true
+underlyingcontentitem:
+  command: getCases
+  id: _builtin_
+  instance: ""
+  name: _builtin_
+  type: command
